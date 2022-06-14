@@ -1,0 +1,42 @@
+---
+name: Spelling 🆎
+
+on:
+  push:
+    branches:
+      - main
+      - pre-release
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - main
+      - pre-release
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: spelling-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  spelling:
+    name: Check spelling 🔠
+    runs-on: ubuntu-latest
+    if: >
+      !contains(github.event.commits[0].message, '[skip spelling]')
+        && github.event.pull_request.draft == false
+    container:
+      image: ghcr.io/insightsengineering/rstudio_4.1.2_bioc_3.14:latest
+
+    steps:
+      - name: Checkout Code 🛎
+        uses: actions/checkout@v3
+
+      - name: Run Spellcheck 👟
+        uses: insightsengineering/r-spellcheck-action@v2
+        with:
+          exclude: inst/extdata/*

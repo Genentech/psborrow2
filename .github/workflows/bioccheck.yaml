@@ -1,0 +1,95 @@
+---
+name: BiocCheck ☣️
+
+on:
+  push:
+    tags:
+      - "v*"
+    branches:
+      - main
+      - pre-release
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - main
+      - pre-release
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        description: |
+          Github token with read access to repositories, required for staged.dependencies installation
+        required: false
+    inputs:
+      enable-bioccheck:
+        description: Enable BiocCheck
+        required: false
+        type: boolean
+        default: false
+      install-system-dependencies:
+        description: Check for and install system dependencies
+        required: false
+        default: false
+        type: boolean
+      enable-staged-dependencies-check:
+        description: Enable staged dependencies YAML check
+        required: false
+        default: true
+        type: boolean
+      allow-failure:
+        description: BiocCheck errors will not fail, but will give a warning.
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: bioccheck-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bioccheck:
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - image: ghcr.io/insightsengineering/rstudio_4.1.2_bioc_3.14
+            tag: latest
+    name: ${{ matrix.config.image }}, version ${{ matrix.config.tag }}
+    runs-on: ubuntu-latest
+    if: >
+      !contains(github.event.commits[0].message, '[skip bioccheck]')
+        && contains(inputs.enable-bioccheck, 'true')
+        && github.event.pull_request.draft == false
+    container:
+      image: ${{ matrix.config.image }}:${{ matrix.config.tag }}
+
+    steps:
+      - name: Get branch names 🌿
+        id: branch-name
+        uses: tj-actions/branch-names@v5
+
+      - name: Checkout repo 🛎
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.branch-name.outputs.head_ref_branch }}
+          path: ${{ github.event.repository.name }}
+
+      - name: Run Staged dependencies 🎦
+        uses: insightsengineering/staged-dependencies-action@v1
+        with:
+          run-system-dependencies: ${{ inputs.install-system-dependencies }}
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+          SD_REPO_PATH: ${{ github.event.repository.name }}
+          SD_ENABLE_CHECK: ${{ inputs.enable-staged-dependencies-check }}
+
+      - name: Run BiocCheck ☣️
+        uses: insightsengineering/bioc-check-action@v1
+        with:
+          path: ${{ github.event.repository.name }}
+          no-check-version-num: true
+          allow-failure: ${{ inputs.allow-failure }}
