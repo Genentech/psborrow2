@@ -1,6 +1,6 @@
 Package: psborrow2
-Title: Bayesian Dynamic Borrowing Simulation Study and Analyis
-Version: 0.0.1
+Title: Bayesian Dynamic Borrowing Simulation Study and Analysis
+Version: 0.0.0.9000
 Authors@R: c(
    person(
       given = "Matt", 
@@ -22,7 +22,7 @@ Authors@R: c(
       )
    )
 Description: An R package for complex, innovative trial designs using
-   Bayesian dynamic borrowing (BDB). ‘psborrow’ has two main goals: 
+   Bayesian dynamic borrowing (BDB). 'psborrow' has two main goals: 
    First, facilitate simulation studies that compare different borrowing 
    parameters (e.g. full borrowing, no borrowing, dynamic borrowing) and 
    other trial and borrowing characteristics (e.g. sample size, covariates) in 
@@ -33,10 +33,11 @@ Encoding: UTF-8
 Depends: 
     R (>= 3.5.0)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Imports:
    cmdstanr
+Suggests:
+   testthat (>= 3.0)
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
-   
-   
+Language: en-US
