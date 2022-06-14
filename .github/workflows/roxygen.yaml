@@ -30,11 +30,6 @@ on:
         required: false
         default: false
         type: boolean
-    secrets:
-      GITHUB_TOKEN:
-        description: |
-          Github token with read access to repositories, required for staged.dependencies installation
-        required: false
 
 concurrency:
   group: roxygen-${{ github.event.pull_request.number || github.ref }}

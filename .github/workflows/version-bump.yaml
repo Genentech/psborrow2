@@ -9,10 +9,6 @@ on:
       - develop
   workflow_dispatch:
   workflow_call:
-    secrets:
-      GITHUB_TOKEN:
-        description: Github token with write access to the repo
-        required: false
 
 concurrency:
   group: vbump-${{ github.event.pull_request.number || github.ref }}

@@ -22,10 +22,6 @@ on:
   workflow_dispatch:
   workflow_call:
     secrets:
-      GITHUB_TOKEN:
-        description: |
-          Github token with read access to repositories, required for staged.dependencies installation
-        required: false
     inputs:
       enable-bioccheck:
         description: Enable BiocCheck
