@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - pre-release
+      - develop
   workflow_dispatch:
   workflow_call:
     secrets:

@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - pre-release
+      - develop
   pull_request:
     types:
       - opened
@@ -15,6 +16,7 @@ on:
     branches:
       - main
       - pre-release
+      - develop
   workflow_dispatch:
   workflow_call:
     inputs:

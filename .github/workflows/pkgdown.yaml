@@ -7,6 +7,7 @@ on:
       - "v*"
     branches:
       - main
+      - develop
   pull_request:
     types:
       - opened
@@ -16,6 +17,7 @@ on:
     branches:
       - main
       - pre-release
+      - develop
     paths:
       - inst/templates/**
       - _pkgdown.yaml
