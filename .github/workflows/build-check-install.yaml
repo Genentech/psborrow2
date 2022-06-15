@@ -89,6 +89,8 @@ jobs:
           url <- sprintf("https://github.com/stan-dev/cmdstan/releases/download/v%s/cmdstan-%s.tar.gz", version, version)
           cmdstanr::install_cmdstan(cores = 2, release_url = url)
         shell: Rscript {0}
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get branch names 🌿
         id: branch-name
