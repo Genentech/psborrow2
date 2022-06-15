@@ -38,7 +38,8 @@ Imports:
    cmdstanr,
    checkmate
 Suggests:
-   testthat (>= 3.0)
+   testthat (>= 3.0),
+   xml2
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
 Language: en-US
