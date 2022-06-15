@@ -76,13 +76,15 @@ jobs:
         shell: bash
 
       - name: Cache cmdstan
-        uses: actions/cache@v2
+        uses: actions/cache@v3
+        id: cache-cmdstan
         with:
           path: ${{ env.CMDSTAN_PATH }}
           key: ${{ runner.os }}-cmdstan-${{ env.CMDSTAN_VERSION }}
           restore-keys: ${{ runner.os }}-cmdstan-
 
       - name: Install cmdstan
+        if: steps.cache-cmdstan.outputs.cache-hit != 'true'
         run: |
           remotes::install_github("stan-dev/cmdstanr@v0.5.2", upgrade = FALSE)
           version <- Sys.getenv("CMDSTAN_VERSION")
