@@ -69,13 +69,13 @@ jobs:
       image: ${{ matrix.config.image }}:${{ matrix.config.tag }}
 
     steps:
-      - name: cmdstan env vars
+      - name: Set environment vars for cmdstan
         run: |
           echo "CMDSTAN_PATH=${HOME}/.cmdstan" >> $GITHUB_ENV
           echo "CMDSTAN_VERSION=2.29.2" >> $GITHUB_ENV
         shell: bash
 
-      - name: Cache cmdstan
+      - name: Cache cmdstan installation
         uses: actions/cache@v3
         id: cache-cmdstan
         with:
@@ -86,7 +86,7 @@ jobs:
       - name: Install cmdstan
         if: steps.cache-cmdstan.outputs.cache-hit != 'true'
         run: |
-          remotes::install_github("stan-dev/cmdstanr@v0.5.2", upgrade = FALSE)
+          install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
           version <- Sys.getenv("CMDSTAN_VERSION")
           url <- sprintf("https://github.com/stan-dev/cmdstan/releases/download/v%s/cmdstan-%s.tar.gz", version, version)
           cmdstanr::install_cmdstan(cores = 2, release_url = url)
