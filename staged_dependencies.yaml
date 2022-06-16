@@ -1,7 +1,7 @@
 ---
 # Information about this file: https://github.com/openpharma/staged.dependencies
 current_repo:
-  repo: gravesti/psborrow2
+  repo: Genentech/psborrow2
   host: https://github.com
 upstream_repos:
 downstream_repos:
