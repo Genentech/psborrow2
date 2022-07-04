@@ -1,0 +1,33 @@
+#' @include prior.R
+
+# Internal constructor
+.uniform_prior <- setClass(
+   "UniformPrior",
+   contains = "Prior",
+   slots = c(alpha = "numeric",
+             beta = "numeric"),
+   prototype = list(
+      n_param = 1L,
+      stan_code = "uniform(alpha={{object@alpha}}, beta={{object@beta}})"
+   ),
+   validity = function(object) {
+      if(object@beta <= object@alpha) {
+         return("beta must be > alpha")
+      }
+      return(TRUE)
+   }
+)
+
+#' Prior uniform distribution
+#'
+#' @param alpha lower bounds
+#' @param beta upper bounds
+#'
+#' @return object of class "UniformPrior"
+#' @export
+#'
+#' @examples
+#' up <- uniform_prior(0, 1)
+uniform_prior <- function(alpha, beta) {
+   .uniform_prior(alpha = alpha, beta = beta)
+}

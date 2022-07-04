@@ -54,3 +54,4 @@ Collate:
     'hello.R'
     'normal_prior.R'
     'package.R'
+    'uniform_prior.R'
