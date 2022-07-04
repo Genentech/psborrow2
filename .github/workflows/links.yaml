@@ -44,6 +44,7 @@ jobs:
       - name: Check URLs in docs 🔬
         uses: lycheeverse/lychee-action@v1.4.1
         with:
+          fail: true
           args: >-
             --exclude-private
             --exclude "https://github.com.*.git|https://insightsengineering.github.io.*|lewagon.*|knightdave.*|.*users.noreply.github.com|lycheeverse.*"
