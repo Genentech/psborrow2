@@ -54,7 +54,5 @@ jobs:
             **/*.md
             **/*.html
             **/*.Rmd
-            **/*.yaml
-            **/*.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
