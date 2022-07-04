@@ -46,8 +46,9 @@ Remotes:
 Language: en-US
 SystemRequirements: cmdstan
 Collate: 
+    'prior.R'
+    'cauchy_prior.R'
     'cmdstan.R'
     'hello.R'
-    'prior.R'
     'normal_prior.R'
     'package.R'
