@@ -7,7 +7,7 @@
 bernoulli_prior(theta)
 }
 \arguments{
-\item{theta}{}
+\item{theta}{theta}
 }
 \value{
 object of class "BernoulliPrior"

@@ -7,7 +7,7 @@
    slots = c(theta = "numeric"),
    prototype = list(
       n_param = 1L,
-      stan_code = "Bernoulli(theta={{object@theta}})"
+      stan_code = "bernoulli(theta={{object@theta}})"
    ),
    validity = function(object) {
       if(object@theta < 0 || object@theta > 1) {
@@ -19,7 +19,7 @@
 
 #' Prior binomial distribution
 #'
-#' @param theta
+#' @param theta theta
 #'
 #' @return object of class "BernoulliPrior"
 #' @export
