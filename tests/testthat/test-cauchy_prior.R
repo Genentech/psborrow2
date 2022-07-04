@@ -10,5 +10,5 @@ test_that("Cauchy priors are rendering correctly", {
 
    # Errors
    expect_error(cauchy_prior(mu = 2, sigma = -1),
-                regexp = 'invalid class “CauchyPrior” object: sigma must be >0')
+                regexp = "invalid class “CauchyPrior” object: sigma must be >0")
 })

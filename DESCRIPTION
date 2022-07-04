@@ -47,6 +47,7 @@ Language: en-US
 SystemRequirements: cmdstan
 Collate: 
     'prior.R'
+    'bernoulli_prior.R'
     'cauchy_prior.R'
     'cmdstan.R'
     'hello.R'
