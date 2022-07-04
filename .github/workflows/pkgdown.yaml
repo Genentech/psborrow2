@@ -124,7 +124,7 @@ jobs:
           path: pkgdown.zip
 
       - name: Publish docs 📢
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/develop'
         run: |
           cd ${{ github.event.repository.name }}
           git config --local user.email "actions@github.com"
