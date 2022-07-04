@@ -1,0 +1,88 @@
+---
+title: "Design for Prior Classes"
+output: html_document
+date: '2022-06-23'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(glue)
+```
+
+It would be useful to have formal classes to hold the prior definitions
+so they can be translated into `stan` code.
+
+Each prior will need to define:
+
+  * distribution
+  * distribution parameters
+  * parameter to which they apply
+  
+  
+First we set up a parent class:
+```{r}
+.Prior <- setClass(
+   "Prior",
+   slots = c(parameter = "character"),
+   contains = "VIRTUAL" # This prevents users from directly creating an object with this class
+)
+```
+
+Then we can define some prior classes:
+```{r}
+.Gamma_Prior <- setClass(
+  Class = "Gamma",
+  contains = "Prior",
+  slots = c(alpha = "numeric", beta = "numeric")
+)
+
+.Cauchy_Prior <- setClass(
+  Class = "Cauchy",
+  contains = "Prior",
+  slots = c(mu = "numeric", sigma = "numeric")
+)
+
+.Custom_Prior <- setClass(
+   Class = "CustomPrior",
+   contains = "Prior",
+   slots = c(distribution = "character", parameters = "numeric", )
+)
+```
+  
+## Methods
+
+A friendly printing method
+```{r}
+setMethod(
+   f = "show",
+   signature = "Prior",
+   definition = function(object) {
+      dist <- class(object) # I wonder if this is good enough or is we want to add a @dist_name?
+      prior_parameters <- setdiff(slotNames(class(object)), "parameter")
+      parameter_values <- vapply(prior_parameters, slot, numeric(1L), object = object)
+      parameter_list <- paste(prior_parameters, "=", parameter_values, collapse = ", ")
+      output <- glue("Prior distribution for {object@parameter}: {dist}({parameter_list})")
+      cat(output)
+   })
+```
+
+Something to convert to stan?
+
+```{r}
+setGeneric("as_stan", function(object, ...) standardGeneric("as_stan"))
+
+setMethod(
+   f = "as_stan",
+   signature = "Gamma",
+   definition = function(object) {
+      glue("{object@parameter} ~ gamma({object@alpha}, {object@beta})")
+   }
+)
+```
+
+Or this could be defined in the object somewhere. Maybe in the Prior class we could have the stan representation.
+If it's a slot, the user could define their own prior.
+
