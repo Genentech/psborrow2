@@ -2,5 +2,6 @@
 
 export(check_cmdstanr)
 export(hello)
+export(normal_prior)
 import(checkmate)
 import(cmdstanr)
