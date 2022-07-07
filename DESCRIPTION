@@ -36,7 +36,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Imports:
    cmdstanr,
-   checkmate
+   checkmate,
+   glue
 Suggests:
    testthat (>= 3.0),
    xml2
@@ -44,3 +45,14 @@ Remotes:
    github::stan-dev/cmdstanr@v0.5.2
 Language: en-US
 SystemRequirements: cmdstan
+Collate: 
+    'prior.R'
+    'bernoulli_prior.R'
+    'beta_prior.R'
+    'cauchy_prior.R'
+    'cmdstan.R'
+    'hello.R'
+    'normal_prior.R'
+    'package.R'
+    'poisson_prior.R'
+    'uniform_prior.R'
