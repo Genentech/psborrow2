@@ -11,7 +11,7 @@
       stan_code = "uniform(alpha={{object@alpha}}, beta={{object@beta}})"
    ),
    validity = function(object) {
-      if(object@beta <= object@alpha) {
+      if (object@beta <= object@alpha) {
          return("beta must be > alpha")
       }
       return(TRUE)
