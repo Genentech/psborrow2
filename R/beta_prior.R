@@ -11,7 +11,7 @@
       stan_code = "beta(alpha={{object@alpha}}, beta={{object@beta}})"
    ),
    validity = function(object) {
-      if(object@alpha < 0 || object@beta < 0) {
+      if (object@alpha < 0 || object@beta < 0) {
          return("Both alpha and beta must be >= 0")
       }
       return(TRUE)
