@@ -10,7 +10,7 @@
       stan_code = "poisson(lambda={{object@lambda}})"
    ),
    validity = function(object) {
-      if(object@lambda <= 0) {
+      if (object@lambda <= 0) {
          return("lambda must be >0")
       }
       return(TRUE)
