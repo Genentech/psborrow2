@@ -11,6 +11,8 @@ setMethod(
    f="show",
    signature = "Prior",
    definition = function(object) {
-      cat(glue::glue(object@stan_code, .open = "{{", .close = "}}"))
+      cat(class(object)[1],
+          "object with parameters",
+          glue::glue(object@stan_code, .open = "{{", .close = "}}"))
    }
 )

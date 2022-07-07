@@ -7,7 +7,7 @@
    slots = c(alpha = "numeric",
              beta = "numeric"),
    prototype = list(
-      n_param = 1L,
+      n_param = 2L,
       stan_code = "beta(alpha={{object@alpha}}, beta={{object@beta}})"
    ),
    validity = function(object) {
