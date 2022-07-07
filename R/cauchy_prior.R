@@ -11,7 +11,7 @@
       stan_code = "cauchy(mu={{object@mu}}, sigma={{object@sigma}})"
    ),
    validity = function(object) {
-      if(object@sigma <= 0) {
+      if (object@sigma <= 0) {
          return("sigma must be >0")
       }
       return(TRUE)
