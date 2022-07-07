@@ -8,7 +8,7 @@ setClass(
 
 # Print method
 setMethod(
-   f="show",
+   f = "show",
    signature = "Prior",
    definition = function(object) {
       cat(class(object)[1],
