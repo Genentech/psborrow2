@@ -10,7 +10,7 @@
       stan_code = "bernoulli(theta={{object@theta}})"
    ),
    validity = function(object) {
-      if(object@theta < 0 || object@theta > 1) {
+      if (object@theta < 0 || object@theta > 1) {
          return("theta must be within [0,1]")
       }
       return(TRUE)
