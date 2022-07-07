@@ -31,6 +31,15 @@
     <loc>improved-waffle-bf365a9a.pages.github.io/news/index.html</loc>
   </url>
   <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/bernoulli_prior.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/beta_prior.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/cauchy_prior.html</loc>
+  </url>
+  <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/check_cmdstanr.html</loc>
   </url>
   <url>
@@ -38,5 +47,14 @@
   </url>
   <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/normal_prior.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/poisson_prior.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/uniform_prior.html</loc>
   </url>
 </urlset>
