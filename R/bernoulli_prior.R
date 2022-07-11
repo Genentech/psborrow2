@@ -1,4 +1,4 @@
-#' @include prior.R
+#' @include prior_class.R
 
 # Internal constructor
 .bernoulli_prior <- setClass(

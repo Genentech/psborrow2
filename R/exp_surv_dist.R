@@ -1,4 +1,4 @@
-#' @include outcome.R
+#' @include outcome_class.R
 
 # Internal constructor
 .exp_surv_dist <- setClass(

@@ -1,5 +1,5 @@
-#' @include outcome.R
-#' @include prior.R
+#' @include outcome_class.R
+#' @include prior_class.R
 #' @include normal_prior.R
 
 # Internal constructor

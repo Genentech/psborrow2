@@ -6,7 +6,11 @@ create_analysis_obj <- function(
    treatment_arms
 ) {
 
-   # Verify inputs
+   # Verify input classes ----
+   if (!"matrix" %in% class(model_matrix)) {
+      stop("`model_matrix` must be a matrix")
+   }
+
 
 
 }
