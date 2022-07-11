@@ -37,7 +37,8 @@ setMethod(
    }
 )
 
-#' Specify covariates and prior distributions for model parameters (ie betas)
+#' Specify column names for adjustment variables in model matrix and prior
+#' distributions for the model parameters for these covariates (ie betas)
 #'
 #' @param covariates character vector naming covariates to be adjusted for
 #' @param priors either a single prior distribution applying to all covariates

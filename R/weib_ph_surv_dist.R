@@ -1,11 +1,11 @@
-#' @include surv_dist.R
+#' @include outcome.R
 #' @include prior.R
 #' @include normal_prior.R
 
 # Internal constructor
 .weib_ph_surv_dist <- setClass(
    "WeibullPHSurvDist",
-   contains = "SurvDist",
+   contains = "TimeToEvent",
    prototype = list(
       n_param = 1L,
       function_stan_code =

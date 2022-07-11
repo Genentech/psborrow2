@@ -1,9 +1,9 @@
-#' @include surv_dist.R
+#' @include outcome.R
 
 # Internal constructor
 .exp_surv_dist <- setClass(
    "ExponentialSurvDist",
-   contains = "SurvDist",
+   contains = "TimeToEvent",
    prototype = list(
       n_param = 0L,
       model_stan_code =

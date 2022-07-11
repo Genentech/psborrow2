@@ -2,7 +2,8 @@
 % Please edit documentation in R/set_covariates.R
 \name{set_covariates}
 \alias{set_covariates}
-\title{Specify covariates and prior distributions for model parameters (ie betas)}
+\title{Specify column names for adjustment variables in model matrix and prior
+distributions for the model parameters for these covariates (ie betas)}
 \usage{
 set_covariates(covariates, priors)
 }
@@ -16,7 +17,8 @@ or a named list of prior distributions, one for each covariate}
 object of class "Covariates"
 }
 \description{
-Specify covariates and prior distributions for model parameters (ie betas)
+Specify column names for adjustment variables in model matrix and prior
+distributions for the model parameters for these covariates (ie betas)
 }
 \examples{
 set_covariates(covariates = c('a','b'),
