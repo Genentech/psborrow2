@@ -7,15 +7,15 @@
    prototype = list(
       n_param = 0L,
       model_stan_code =
-        "
+        glue::glue("
          for (i in 1:N) {
-         if (cens[i] == 0) {
-            target += exponential_lccdf(time[i] | exp_l[i] );
-        }
-         else {
-            target += exponential_lpdf(time[i] | exp_l[i] );
-        }
-      }"
+            if (cens[i] == 0) {
+               target += exponential_lccdf(time[i] | exp_l[i] );
+            } else {
+               target += exponential_lpdf(time[i] | exp_l[i] );
+            }
+         }", .open = "{{", .close = "}}"
+        )
    ),
    validity = function(object) {
       return(TRUE)

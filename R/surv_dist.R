@@ -21,11 +21,6 @@ setMethod(
    f = "show",
    signature = "SurvDist",
    definition = function(object) {
-
-      if(object@n_param == 0) {
-         cat(class(object)[1], "object")
-      } else {
-
-      }
+      cat(class(object)[1], "object")
    }
 )
