@@ -13,5 +13,5 @@ test_that("Uniform priors are rendering correctly", {
 
    # Errors
    expect_error(uniform_prior(alpha = -1, beta = -2),
-                regexp = "invalid class “UniformPrior” object")
+                regexp = "invalid class \"UniformPrior\" object: beta must be > alpha")
 })

@@ -16,5 +16,5 @@ object of class "ExponentialPrior"
 Prior exponential distribution
 }
 \examples{
-ep <- exponential_prior(1,1)
+ep <- exponential_prior(1)
 }

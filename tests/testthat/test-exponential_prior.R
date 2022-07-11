@@ -12,5 +12,5 @@ test_that("Exponential priors are rendering correctly", {
 
    # Errors
    expect_error(exponential_prior(beta = -1L),
-                regexp = "invalid class “ExponentialPrior” object: beta must be >0")
+                regexp = "invalid class \"ExponentialPrior\" object: beta must be >0")
 })

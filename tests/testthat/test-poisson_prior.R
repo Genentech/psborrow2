@@ -12,5 +12,5 @@ test_that("Poisson priors are rendering correctly", {
 
    # Errors
    expect_error(poisson_prior(-1),
-                regexp = "invalid class “PoissonPrior” object")
+                regexp = "invalid class \"PoissonPrior\" object: lambda must be >0")
 })

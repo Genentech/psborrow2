@@ -25,7 +25,7 @@
 #' @export
 #'
 #' @examples
-#' ep <- exponential_prior(1,1)
+#' ep <- exponential_prior(1)
 exponential_prior <- function(beta) {
    .exponential_prior(beta = beta)
 }
