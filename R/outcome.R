@@ -43,6 +43,6 @@ setMethod(
    f = "show",
    signature = "Outcome",
    definition = function(object) {
-      cat(class(object)[1], "object")
+      cat("Outcome object with class ", class(object)[1])
    }
 )

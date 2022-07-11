@@ -1,52 +1,47 @@
-#' # Combine class types
-#' setClassUnion("Outcome_", c("WeibullPHSurvDist","ExponentialPrior"))
+#' Specify outcome details
 #'
-#' # Outcome class
-#' .outcome_class <- setClass(
-#'    "Outcome",
-#'    slots = c(time_var = "character",
-#'              cens_var = "character",
-#'              outcome_object = "Outcome_"),
-#'    validity = function(object) {
-#'       return(TRUE)
-#'    }
-#' )
+#' @param outcome_obj Either a time to event or binary outcome object
+#' @param ... Additional arguments passed to set_outcome()
 #'
-#' # Print method
-#' setMethod(
-#'    f = "show",
-#'    signature = "Outcome",
-#'    definition = function(object) {
-#'       cat("Outcome object with censorship variable `", object@cens_var,
-#'           "` and time variable `", object@time_var,"`")
-#'    }
-#' )
+#' @details Outcome object must be returned by one of the below functions:
+#' exp_surv_dist()
+#' weib_ph_surv_dist()
 #'
-#' #' Specify time and censorship columns in model matrix and specify survival
-#' #' distribution for
-#' #'
-#' #' @param covariates character vector naming covariates to be adjusted for
-#' #' @param priors either a single prior distribution applying to all covariates
-#' #' or a named list of prior distributions, one for each covariate
-#' #'
-#' #' @return object of class "Covariates"
-#' #' @export
-#' #'
-#' #' @examples
-#' #' set_covariates(covariates = c('a','b'),
-#' #'                priors = list('a' = normal_prior(0,1),
-#' #'                              'b' = normal_prior(0,2)))
-#' set_covariates <- function(covariates,
-#'                            priors) {
+#' @return An object of class `outcome_obj`
+#' @export
 #'
-#'    # Additional errors not captured in class
-#'    if (class(priors) != 'list' &&
-#'        !is(priors, "Prior")) {
-#'       stop("priors argument must be a single object of class `Prior`",
-#'            " or a named list of objects of class `Prior`")
-#'    }
+setGeneric("set_outcome", function(outcome_obj,
+                                   ...
+                                   ) {
+   if(! class(outcome_obj) %in% c("ExponentialSurvDist",
+                                  "WeibullPHSurvDist",
+                                  "BinaryEndpoint")) {
+      stop("outcome_obj must be a time to event or binary outcome object")
+   }
+   standardGeneric("set_outcome")
+})
+
+#' Specify outcome details for time-to-event endpoint
 #'
-#'    # Create class
-#'    .covariate_class(covariates = covariates,
-#'                     priors = priors)
-#' }
+#' @param outcome_obj TimeToEvent object
+#' @param time_var Name of time variable column in model matrix
+#' @param cens_var Name of the censorship variable flag in model matrix
+#'
+#' @return An object of class `outcome_obj`
+#' @export
+#'
+#' @examples
+#' oo <- set_outcome(exp_surv_dist(), 'time_months', 'cens_flag')
+#'
+setMethod("set_outcome",
+          c(outcome_obj = "TimeToEvent"),
+          function(outcome_obj,
+                   time_var,
+                   cens_var
+                   ) {
+             outcome_obj@time_var <- time_var
+             outcome_obj@cens_var <- cens_var
+             outcome_obj
+          })
+
+
