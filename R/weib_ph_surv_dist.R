@@ -56,7 +56,7 @@
 #' @export
 #'
 #' @examples
-#' ws <- weib_ph_surv_dist(normal_prior(0, 100))
+#' ws <- weib_ph_surv_dist(exponential_prior(1))
 weib_ph_surv_dist <-  function(shape_prior = NULL) {
    if (is.null(shape_prior)) {
       .weib_ph_surv_dist()

@@ -17,5 +17,5 @@ object of class "WeibullPHSurvDist"
 Weibull survival distribution (proportional hazards formulation)
 }
 \examples{
-ws <- weib_ph_surv_dist(normal_prior(0, 100))
+ws <- weib_ph_surv_dist(exponential_prior(1))
 }
