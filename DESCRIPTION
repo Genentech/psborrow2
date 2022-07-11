@@ -51,6 +51,8 @@ Collate:
     'beta_prior.R'
     'cauchy_prior.R'
     'cmdstan.R'
+    'surv_dist.R'
+    'exp_surv_dist.R'
     'hello.R'
     'normal_prior.R'
     'package.R'
