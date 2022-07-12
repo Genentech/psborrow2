@@ -64,5 +64,7 @@ Collate:
     'set_borrowing.R'
     'set_covariates.R'
     'set_outcome.R'
+    'treatment_class.R'
+    'set_treatment_arms.R'
     'uniform_prior.R'
     'weib_ph_surv_dist.R'
