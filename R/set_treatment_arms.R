@@ -9,8 +9,6 @@
 #' @param trt_log_hazard_ratio_prior object of class `Prior` specifying the
 #' prior distribution of the log hazard ratio comparing experimental to control
 #' treatments.
-#' @param ext_log_hazard_rate_prior object of class `Prior` specifying the prior
-#' distribution for the log hazard rate for the concurrent control arm.
 #'
 #' @return an object of class `Treatment`
 #' @export
@@ -22,20 +20,17 @@
 #' sta <- set_treatment_arms(
 #'    ext_flag_col = 'ext',
 #'    trt_flag_col = 'trt',
-#'    trt_log_hazard_ratio_prior = normal_prior(0, 10000),
-#'    ext_log_hazard_rate_prior = normal_prior(0, 10000)
+#'    trt_log_hazard_ratio_prior = normal_prior(0, 10000)
 #' )
 set_treatment_arms <- function(
       ext_flag_col = "character",
       trt_flag_col = "character",
-      trt_log_hazard_ratio_prior = "Prior",
-      ext_log_hazard_rate_prior = "Prior"
+      trt_log_hazard_ratio_prior = "Prior"
 ) {
 
    .treatment_class(ext_flag_col = ext_flag_col,
                     trt_flag_col = trt_flag_col,
-                    trt_log_hazard_ratio_prior = trt_log_hazard_ratio_prior,
-                    ext_log_hazard_rate_prior = ext_log_hazard_rate_prior
+                    trt_log_hazard_ratio_prior = trt_log_hazard_ratio_prior
    )
 
 }

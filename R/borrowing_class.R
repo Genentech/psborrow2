@@ -6,9 +6,11 @@ setClassUnion("PriorOrNULL", c("Prior","NULL"))
 .borrowing_class <- setClass(
    "Borrowing",
    slots = c(method = "character",
-             tau_prior = "PriorOrNULL"),
+             tau_prior = "PriorOrNULL",
+             ext_log_hazard_rate_prior = "PriorOrNULL"),
    prototype = c(method = "No borrowing",
-                 tau_prior = NULL),
+                 tau_prior = NULL,
+                 ext_log_hazard_rate_prior = NULL),
    validity = function(object) {
       if (!object@method %in% c(
          "BDB",
@@ -18,6 +20,9 @@ setClassUnion("PriorOrNULL", c("Prior","NULL"))
       }
       if (object@method != "BDB" && !is.null(object@tau_prior)) {
          return("no need to specify tau prior when method is not BDB")
+      }
+      if (object@method != "BDB" && !is.null(object@ext_log_hazard_rate_prior)) {
+         return("no need to specify ext_log_hazard_rate_prior prior when method is not BDB")
       }
       return(TRUE)
    }

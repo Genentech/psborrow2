@@ -164,24 +164,42 @@ create_analysis_obj <- function(
    param_str <- glue::glue("{{param_str}} }", .open = "{{", .close = "}}")
 
    ## Model string ----
+   ### Set values shared by all
+   object <- borrowing@ext_log_hazard_rate_prior
+   beta_trt_prior <- glue::glue(object@stan_code, .open="{{", .close ="}}")
    model_str <- glue::glue("model {
                            vector[N] lp;
+                           beta_trt ~ {{beta_trt_prior}} ;
                            ", .open = "{{", .close = "}}")
 
-   if (!is.null(covariates)) {
+   ### Specify different combinations
+   if (!is.null(covariates) && borrowing@method == "BDB") {
       model_str <- glue::glue("{{model_str}}
                               lp = exp(X * beta + Z * alpha + beta_trt * trt );",
                               .open = "{{",
                               .close = "}}"
       )
-   } else {
+   } else if (is.null(covariates) && borrowing@method == "BDB") {
       model_str <- glue::glue("{{model_str}}
                               lp = exp(Z * alpha + beta_trt * trt );",
                               .open = "{{",
                               .close = "}}"
       )
+   } else if (!is.null(covariates) && borrowing@method != "BDB") {
+      model_str <- glue::glue("{{model_str}}
+                              lp = exp(X * beta + beta_trt * trt );",
+                              .open = "{{",
+                              .close = "}}"
+      )
+   } else if (is.null(covariates) && borrowing@method != "BDB") {
+      model_str <- glue::glue("{{model_str}}
+                              lp = exp(beta_trt * trt );",
+                              .open = "{{",
+                              .close = "}}"
+      )
    }
 
+   ### Add priors for relevant parameters
    if (NROW(outcome@param_priors) > 0) {
       for (i in 1:NROW(outcome@param_priors)) {
          name <- names(outcome@param_priors)[i]
@@ -197,13 +215,43 @@ create_analysis_obj <- function(
       }
    }
 
+   ### Add in tau and alphas if method = BDB
+   if (borrowing@method == "BDB") {
+      object <- borrowing@tau_prior
+      tau_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
+
+      object <- borrowing@ext_log_hazard_rate_prior
+      alpha_2_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
+
+      model_str <- glue::glue("
+                           {{model_str}}
+                           tau ~ {{tau_prior}} ;
+                           sigma = 1 / tau;
+                           alpha[2] ~ {{alpha_2_prior}} ;
+                           alpha[1] ~ normal(alpha[2], sqrt(sigma)) ;
+                           ", .open = "{{", .close = "}}")
+   }
+
+   ### Add in likelihood function
    model_str <- glue::glue("
                            {{model_str}}
-                           tau ~
+                           {{outcome@likelihood_stan_code}}",
+                           .open = "{{",
+                           .close = "}}")
 
-                           ")
+   ### Close brackets
+   model_str <- glue::glue("{{model_str}} }", .open = "{{", .close = "}}")
 
-   if (is(outcome, "TimeToEvent")) {
 
-   }
+   ## Combine model components ----
+   model <- glue::glue("
+                       {{function_str}}
+
+                       {{data_str}}
+
+                       {{param_str}}
+
+                       {{model_str}}
+
+                       ", .open = "{{", .close = "}}")
 }

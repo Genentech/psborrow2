@@ -29,9 +29,9 @@
          glue::glue("
          for (i in 1:N) {
             if (cens[i] == 0) {
-               target += weibull_ph_lccdf(time[i] | shape_weibull, exp_l[i] );
+               target += weibull_ph_lccdf(time[i] | shape_weibull, lp[i] );
             } else {
-               target += weibull_ph_lpdf(time[i] | shape_weibull, exp_l[i] );
+               target += weibull_ph_lpdf(time[i] | shape_weibull, lp[i] );
             }
          }", .open="{{",.close="}}"),
       param_stan_code = "real<lower=0> shape_weibull; ",

@@ -6,11 +6,9 @@
    "Treatment",
    slots = c(ext_flag_col = "character",
              trt_flag_col = "character",
-             trt_log_hazard_ratio_prior = "Prior",
-             ext_log_hazard_rate_prior = "Prior"
+             trt_log_hazard_ratio_prior = "Prior"
    ),
-   prototype = c(trt_log_hazard_ratio_prior = normal_prior(0,10000),
-                 ext_log_hazard_rate_prior = normal_prior(0,10000)),
+   prototype = c(trt_log_hazard_ratio_prior = normal_prior(0,10000)),
    validity = function(object) {
       return(TRUE)
    }

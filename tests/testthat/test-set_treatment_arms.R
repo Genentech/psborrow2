@@ -4,8 +4,7 @@ test_that("set_treatment_arms works as expected", {
    sta <- set_treatment_arms(
       ext_flag_col = 'ext',
       trt_flag_col = 'trt',
-      trt_log_hazard_ratio_prior = normal_prior(0, 10000),
-      ext_log_hazard_rate_prior = normal_prior(0, 10000)
+      trt_log_hazard_ratio_prior = normal_prior(0, 10000)
       )
 
    # Check classes

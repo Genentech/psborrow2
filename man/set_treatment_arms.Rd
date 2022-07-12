@@ -8,8 +8,7 @@ priors for treatment effects and external control baseline hazard}
 set_treatment_arms(
   ext_flag_col = "character",
   trt_flag_col = "character",
-  trt_log_hazard_ratio_prior = "Prior",
-  ext_log_hazard_rate_prior = "Prior"
+  trt_log_hazard_ratio_prior = "Prior"
 )
 }
 \arguments{
@@ -23,9 +22,6 @@ flags (1/0 or T/F) for experimental treatment (1 = experimental treatment,
 \item{trt_log_hazard_ratio_prior}{object of class \code{Prior} specifying the
 prior distribution of the log hazard ratio comparing experimental to control
 treatments.}
-
-\item{ext_log_hazard_rate_prior}{object of class \code{Prior} specifying the prior
-distribution for the log hazard rate for the concurrent control arm.}
 }
 \value{
 an object of class \code{Treatment}
@@ -39,7 +35,6 @@ priors for treatment effects and external control baseline hazard
 sta <- set_treatment_arms(
    ext_flag_col = 'ext',
    trt_flag_col = 'trt',
-   trt_log_hazard_ratio_prior = normal_prior(0, 10000),
-   ext_log_hazard_rate_prior = normal_prior(0, 10000)
+   trt_log_hazard_ratio_prior = normal_prior(0, 10000)
 )
 }

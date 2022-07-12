@@ -2,7 +2,7 @@ test_that("set_borrowing works as expected", {
 
    # Create objects
    fb <- set_borrowing("Full borrowing")
-   bdb <- set_borrowing("BDB",normal_prior(0,1000))
+   bdb <- set_borrowing("BDB",normal_prior(0,1000),normal_prior(0,1000))
 
    # Check classes
    expect_class(fb, "Borrowing")
