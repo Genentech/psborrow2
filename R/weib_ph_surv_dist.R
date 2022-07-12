@@ -28,7 +28,7 @@
       likelihood_stan_code =
          glue::glue("
          for (i in 1:N) {
-            if (cens[i] == 0) {
+            if (cens[i] == 1) {
                target += weibull_ph_lccdf(time[i] | shape_weibull, lp[i] );
             } else {
                target += weibull_ph_lpdf(time[i] | shape_weibull, lp[i] );

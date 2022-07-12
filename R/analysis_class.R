@@ -15,7 +15,7 @@ setClassUnion("CovariatesOrNULL", c("Covariates","NULL"))
                 outcome = "Outcome",
                 borrowing = "Borrowing",
                 treatment_arms = "Treatment",
-                model = "environment")
+                model_and_data = "list")
 )
 
 # Print method

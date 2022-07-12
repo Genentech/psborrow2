@@ -9,7 +9,7 @@
       likelihood_stan_code =
         glue::glue("
          for (i in 1:N) {
-            if (cens[i] == 0) {
+            if (cens[i] == 1) {
                target += exponential_lccdf(time[i] | lp[i] );
             } else {
                target += exponential_lpdf(time[i] | lp[i] );
