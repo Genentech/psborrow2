@@ -15,7 +15,7 @@ setGeneric("set_outcome", function(outcome_obj,
                                    ) {
    if(! class(outcome_obj) %in% c("ExponentialSurvDist",
                                   "WeibullPHSurvDist",
-                                  "BinaryEndpoint")) {
+                                  "LogisticBinaryEndpoint")) {
       stop("outcome_obj must be a time to event or binary outcome object")
    }
    standardGeneric("set_outcome")
@@ -43,5 +43,28 @@ setMethod("set_outcome",
              outcome_obj@cens_var <- cens_var
              outcome_obj
           })
+
+#' Specify outcome details for binary endpoint
+#'
+#' @param outcome_obj BinaryEndpoint object
+#' @param endpoint_var Name of binary (1/0 or T/F) endpoint variable in the
+#' model matrix
+#'
+#' @return An object of class `outcome_obj`
+#' @export
+#'
+#' @examples
+#' oo <- set_outcome(logistic_bin_endpoint(), 'outcome')
+#'
+setMethod("set_outcome",
+          c(outcome_obj = "BinaryEndpoint"),
+          function(outcome_obj,
+                   endpoint_var
+          ) {
+             outcome_obj@endpoint_var <- endpoint_var
+             outcome_obj
+          })
+
+
 
 

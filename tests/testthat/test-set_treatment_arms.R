@@ -3,14 +3,14 @@ test_that("set_treatment_arms works as expected", {
    # Create objects
    sta <- set_treatment_arms(
       trt_flag_col = 'trt',
-      trt_log_hazard_ratio_prior = normal_prior(0, 10000)
+      trt_log_HR_or_OR_prior = normal_prior(0, 10000)
       )
 
    # Check classes
    expect_class(sta, "Treatment")
 
    # See that the columns were added
-   expect_equal(sta@trt_log_hazard_ratio_prior, normal_prior(0, 10000))
+   expect_equal(sta@trt_log_HR_or_OR_prior, normal_prior(0, 10000))
    expect_equal(sta@trt_flag_col, "trt")
 
    # Errors

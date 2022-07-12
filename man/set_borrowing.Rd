@@ -9,7 +9,7 @@ set_borrowing(
   method,
   ext_flag_col = NULL,
   tau_prior = NULL,
-  ext_log_hazard_rate_prior = NULL
+  ext_log_hazard_rate_or_odds_prior = NULL
 )
 }
 \arguments{
@@ -26,8 +26,9 @@ the model matrix that corresponds to the external control flag (1/0 or T/F)}
 
 \item{tau_prior}{object of class \code{Prior}. Only needed for method = 'BDB'}
 
-\item{ext_log_hazard_rate_prior}{object of class \code{Prior} specifying the prior
-distribution for the log hazard rate for the concurrent control arm.}
+\item{ext_log_hazard_rate_or_odds_prior}{object of class \code{Prior} specifying
+the prior distribution for the log hazard rate or the log odds
+for the concurrent control arm.}
 }
 \value{
 an object of class \code{Borrowing}

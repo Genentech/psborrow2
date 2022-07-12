@@ -61,7 +61,7 @@
 #'       "BDB",
 #'       "ext",
 #'       exponential_prior(.001),
-#'       ext_log_hazard_rate_prior = normal_prior(0,1000)
+#'       ext_log_hazard_rate_or_odds_prior = normal_prior(0,1000)
 #'       ),
 #'    treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
 #' )

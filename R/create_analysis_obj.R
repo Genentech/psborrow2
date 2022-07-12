@@ -58,7 +58,7 @@
 #'       "BDB",
 #'       "ext",
 #'       exponential_prior(.001),
-#'       ext_log_hazard_rate_prior = normal_prior(0,1000)
+#'       ext_log_hazard_rate_or_odds_prior = normal_prior(0,1000)
 #'       ),
 #'    treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
 #' )
@@ -85,17 +85,24 @@ create_analysis_obj <- function(
    }
 
    ## Outcomes----
-   if (!outcome@time_var %in% colnames(model_matrix)) {
+   if (is(outcome, "TimeToEvent") && !outcome@time_var %in% colnames(model_matrix)) {
       stop(paste0(
          "Time variable `",
          outcome@time_var,
          "` is not a column in the model matrix"))
    }
-   if (!outcome@cens_var %in% colnames(model_matrix)) {
+   if (is(outcome, "TimeToEvent") && !outcome@cens_var %in% colnames(model_matrix)) {
       stop(paste0(
          "Censor variable `",
          outcome@cens_var,
          "` is not a column in the model matrix"))
+   }
+   if (is(outcome, "BinaryEndpoint") && !outcome@endpoint_var %in% colnames(model_matrix)) {
+      stop(paste0(
+         "Endpoint variable `",
+         outcome@endpoint_var,
+         "` is not a column in the model matrix"
+      ))
    }
 
    ## Treatment and external control arms----
@@ -114,19 +121,24 @@ create_analysis_obj <- function(
    }
 
    ## Select only relevant columns in model matrix----
-   cols_of_interest <- c(
-      treatment_arms@trt_flag_col,
-      borrowing@ext_flag_col,
-      outcome@time_var,
-      outcome@cens_var)
+   if (is(outcome, "TimeToEvent")) {
+      cols_of_interest <- c(
+         treatment_arms@trt_flag_col,
+         borrowing@ext_flag_col,
+         outcome@time_var,
+         outcome@cens_var)
+   } else if (is(outcome, "BinaryEndpoint")) {
+      cols_of_interest <- c(
+         treatment_arms@trt_flag_col,
+         borrowing@ext_flag_col,
+         outcome@endpoint_var)
+   }
 
    if(!is.null(covariates)) {
       cols_of_interest <- c(cols_of_interest, covariates@covariates)
    }
 
-   if (is(outcome,"TimeToEvent")) {
-      mm <- model_matrix[, cols_of_interest]
-   }
+   mm <- model_matrix[, cols_of_interest]
 
    if (borrowing@method == "No borrowing") {
       mm <- mm[mm[,borrowing@ext_flag_col]==0,]
@@ -184,11 +196,21 @@ create_analysis_obj <- function(
          ", .open = "{{", .close = "}}")
    }
 
+   ### Data shared by all binary endpoint
+   if (is(outcome,"BinaryEndpoint")) {
+      data_str <- glue::glue("
+         {{data_str}}
+            int<lower=0> N;
+            array[N] int y;
+            vector[N] trt;
+         ", .open = "{{", .close = "}}")
+   }
+
    ### Add external control flag for BDB
    if (borrowing@method=="BDB") {
       data_str <- glue::glue("
                              {{data_str}}
-                             matrix[N,2] Z;
+                              matrix[N,2] Z;
                              ",
                              .open = "{{",
                              .close = "}}")
@@ -244,15 +266,21 @@ create_analysis_obj <- function(
    param_str <- glue::glue("{{param_str}} }", .open = "{{", .close = "}}")
 
    ## Transformed parameters ----
-   transf_param_str <- glue::glue("
-      transformed parameters {
-         real HR_trt = exp(beta_trt);
-      }", .open = "{{",.close = "}}")
-
+   if (is(outcome, "TimeToEvent")) {
+      transf_param_str <- glue::glue("
+         transformed parameters {
+            real HR_trt = exp(beta_trt);
+         }", .open = "{{",.close = "}}")
+   } else if (is(outcome, "BinaryEndpoint")) {
+      transf_param_str <- glue::glue("
+         transformed parameters {
+            real OR_trt = exp(beta_trt);
+         }", .open = "{{",.close = "}}")
+   }
 
    ## Model string ----
    ### Set values shared by all
-   object <- treatment_arms@trt_log_hazard_ratio_prior
+   object <- treatment_arms@trt_log_HR_or_OR_prior
    beta_trt_prior <- glue::glue(object@stan_code, .open="{{", .close ="}}")
    model_str <- glue::glue("model {
                            vector[N] lp;
@@ -313,7 +341,7 @@ create_analysis_obj <- function(
       object <- borrowing@tau_prior
       tau_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
 
-      object <- borrowing@ext_log_hazard_rate_prior
+      object <- borrowing@ext_log_hazard_rate_or_odds_prior
       alpha_2_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
 
       model_str <- glue::glue("
@@ -336,7 +364,6 @@ create_analysis_obj <- function(
    ### Close brackets
    model_str <- glue::glue("{{model_str}} }", .open = "{{", .close = "}}")
 
-
    ## Combine model components ----
    model <- glue::glue("
                        {{function_str}}
@@ -355,6 +382,7 @@ create_analysis_obj <- function(
    stan_file <- cmdstanr::write_stan_file(model)
    analysis_obj@model_and_data <- list(stan_model = cmdstanr::cmdstan_model(stan_file))
    message("\r", "STAN program compiled successfully", appendLF = FALSE)
+   analysis_obj@model_string <- model
 
    # Prepare data ----
    ## Common inputs
@@ -367,6 +395,8 @@ create_analysis_obj <- function(
    if (is(outcome, "TimeToEvent")) {
       data_in[["time"]] <- mm[,outcome@time_var]
       data_in[["cens"]] <-  mm[,outcome@cens_var]
+   } else if (is(outcome, "BinaryEndpoint")) {
+      data_in[["y"]] <- mm[,outcome@endpoint_var]
    }
 
    ## BDB additions

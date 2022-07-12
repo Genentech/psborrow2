@@ -32,8 +32,7 @@ setClass(
              likelihood_stan_code = "character",
              n_param = "integer",
              param_priors = "list",
-             time_var = "character",
-             cens_var = "character"
+             endpoint_var = "character"
    ),
    prototype = list(
       n_param = 0L,

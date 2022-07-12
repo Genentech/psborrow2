@@ -15,6 +15,7 @@ setClassUnion("CovariatesOrNULL", c("Covariates","NULL"))
                 outcome = "Outcome",
                 borrowing = "Borrowing",
                 treatment_arms = "Treatment",
+                model_string = "character",
                 model_and_data = "list",
                 ready_to_sample = "logical"),
    prototype = list(
