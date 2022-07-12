@@ -10,12 +10,13 @@
 #' @return Object of class `Analysis`
 #' @export
 #'
+#' @include analysis_class.R
 #'
 #' @examples
 #'
 #'
 #'
-#' model_matrix <- structure(c(1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+#' model_matrix<-structure(c(1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
 #' 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 #' 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
 #' 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1,
@@ -43,12 +44,23 @@
 #'    NULL, c("ext", "trt", "cov1", "cov2", "time", "cnsr")))
 #'
 #'
-#' anls <- create_analysis_obj(model_matrix = model_matrix,
-#'                             covariates = set_covariates(covariates = c('cov1','cov2'),
-#'                             priors = normal_prior(0, 1000)),
-#'                             outcome = set_outcome(weib_ph_surv_dist(shape_prior = normal_prior(0, 1000)), 'time','cnsr'),
-#'                             borrowing = set_borrowing("BDB", "ext", exponential_prior(.001), ext_log_hazard_rate_prior = normal_prior(0,1000)),
-#'                             treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
+#' anls <- create_analysis_obj(
+#'    model_matrix = model_matrix,
+#'    covariates = set_covariates(covariates = c('cov1','cov2'),
+#'    priors = normal_prior(0, 1000)),
+#'    outcome = set_outcome(
+#'       weib_ph_surv_dist(
+#'          shape_prior = normal_prior(0, 1000)),
+#'          'time',
+#'          'cnsr'
+#'       ),
+#'    borrowing = set_borrowing(
+#'       "BDB",
+#'       "ext",
+#'       exponential_prior(.001),
+#'       ext_log_hazard_rate_prior = normal_prior(0,1000)
+#'       ),
+#'    treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
 #' )
 #'
 create_analysis_obj <- function(
@@ -359,6 +371,7 @@ create_analysis_obj <- function(
 
    # Load data in cmdstanr model
    analysis_obj@model_and_data[["data_in"]] <- data_in
+   analysis_obj@ready_to_sample <- TRUE
    message("\r", "Ready to go! Now call mcmc_sample()", appendLF = FALSE)
 
    # Return

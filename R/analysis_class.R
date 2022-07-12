@@ -15,7 +15,11 @@ setClassUnion("CovariatesOrNULL", c("Covariates","NULL"))
                 outcome = "Outcome",
                 borrowing = "Borrowing",
                 treatment_arms = "Treatment",
-                model_and_data = "list")
+                model_and_data = "list",
+                ready_to_sample = "logical"),
+   prototype = list(
+      ready_to_sample = FALSE
+   )
 )
 
 # Print method
@@ -23,6 +27,12 @@ setMethod(
    f = "show",
    signature = "Analysis",
    definition = function(object) {
-      cat("Analysis object")
+      if(!object@ready_to_sample) {
+         cat("Analysis object (not ready to sample)")
+      }
+      if(object@ready_to_sample) {
+         cat("Analysis object (compiled and ready to sample)",
+             "Call mcmc_sample() next.")
+      }
    }
 )

@@ -7,7 +7,7 @@
    prototype = list(
       n_param = 0L,
       likelihood_stan_code =
-        glue::glue("
+         glue::glue("
          for (i in 1:N) {
             if (cens[i] == 1) {
                target += exponential_lccdf(time[i] | lp[i] );
@@ -15,7 +15,7 @@
                target += exponential_lpdf(time[i] | lp[i] );
             }
          }", .open = "{{", .close = "}}"
-        )
+         )
    ),
    validity = function(object) {
       return(TRUE)

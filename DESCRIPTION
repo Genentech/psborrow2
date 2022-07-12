@@ -37,7 +37,8 @@ RoxygenNote: 7.2.0
 Imports:
    cmdstanr,
    checkmate,
-   glue
+   glue,
+   methods
 Suggests:
    testthat (>= 3.0),
    xml2
@@ -61,6 +62,7 @@ Collate:
     'exp_surv_dist.R'
     'exponential_prior.R'
     'hello.R'
+    'mcmc_sample.R'
     'package.R'
     'poisson_prior.R'
     'set_borrowing.R'
