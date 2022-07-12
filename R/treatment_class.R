@@ -1,4 +1,5 @@
 #' @include prior_class.R
+#' @include normal_prior.R
 
 # Parent class
 .treatment_class <- setClass(

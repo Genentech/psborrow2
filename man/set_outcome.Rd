@@ -18,7 +18,7 @@ An object of class \code{outcome_obj}
 Specify outcome details
 }
 \details{
-Outcome object must be returned by one of the below functions:
-exp_surv_dist()
-weib_ph_surv_dist()
+For TimeToEvent objects, additionally specify
+time_var, the name of the time variable column in the model matrix
+cens_var, the name of the censorship varaible column in the model matrix
 }

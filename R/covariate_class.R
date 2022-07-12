@@ -1,3 +1,5 @@
+#' @include prior_class.R
+
 # Combine class types
 setClassUnion("listOrPrior", c("list","Prior"))
 

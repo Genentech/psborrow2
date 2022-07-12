@@ -1,19 +1,20 @@
 create_analysis_obj <- function(
    model_matrix,
-   covariates = NULL,
-   survival,
+   covariates,
+   outcome,
    borrowing,
    treatment_arms
 ) {
 
-   # Verify input classes ----
-   if (!"matrix" %in% class(model_matrix)) {
-      stop("`model_matrix` must be a matrix")
-   }
-   if (!is.null(covariates)  && !is(covariate, "Covariate")) {
-      stop("`covariates` should take the output of the function `set_covariates()`")
+   # Input checks----
+   ## Covariates----
+   if(!is.null(covariates)) {
+      if (!all(covariates@covariates %in% colnames(model_matrix))) {
+         stop("Covariate columns are not all specified in model matrix")
+      }
    }
 
+   ## Outcomes----
 
 
 }

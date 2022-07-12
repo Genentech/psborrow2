@@ -3,9 +3,9 @@
 #' @param outcome_obj Either a time to event or binary outcome object
 #' @param ... Additional arguments passed to set_outcome()
 #'
-#' @details Outcome object must be returned by one of the below functions:
-#' exp_surv_dist()
-#' weib_ph_surv_dist()
+#' @details For TimeToEvent objects, additionally specify
+#' time_var, the name of the time variable column in the model matrix
+#' cens_var, the name of the censorship varaible column in the model matrix
 #'
 #' @return An object of class `outcome_obj`
 #' @export
