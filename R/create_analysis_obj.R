@@ -243,37 +243,50 @@ create_analysis_obj <- function(
    ### Close brackets
    param_str <- glue::glue("{{param_str}} }", .open = "{{", .close = "}}")
 
+   ## Transformed parameters ----
+   transf_param_str <- glue::glue("
+      transformed parameters {
+         real HR_trt = exp(beta_trt);
+      }", .open = "{{",.close = "}}")
+
+
    ## Model string ----
    ### Set values shared by all
    object <- treatment_arms@trt_log_hazard_ratio_prior
    beta_trt_prior <- glue::glue(object@stan_code, .open="{{", .close ="}}")
    model_str <- glue::glue("model {
                            vector[N] lp;
+                           vector[N] elp;
                            beta_trt ~ {{beta_trt_prior}} ;
                            ", .open = "{{", .close = "}}")
 
    ### Specify different combinations
    if (!is.null(covariates) && borrowing@method == "BDB") {
       model_str <- glue::glue("{{model_str}}
-                              lp = exp(X * beta + Z * alpha + trt * beta_trt );",
+                              lp = X * beta + Z * alpha + trt * beta_trt;
+                              elp = exp(lp) ;
+                              ",
                               .open = "{{",
                               .close = "}}"
       )
    } else if (is.null(covariates) && borrowing@method == "BDB") {
       model_str <- glue::glue("{{model_str}}
-                              lp = exp(Z * alpha + trt * beta_trt);",
+                              lp = Z * alpha + trt * beta_trt;
+                              elp = exp(lp) ;",
                               .open = "{{",
                               .close = "}}"
       )
    } else if (!is.null(covariates) && borrowing@method != "BDB") {
       model_str <- glue::glue("{{model_str}}
-                              lp = exp(X * beta + trt * beta_trt );",
+                              lp = X * beta + trt * beta_trt ;
+                              elp = exp(lp) ;",
                               .open = "{{",
                               .close = "}}"
       )
    } else if (is.null(covariates) && borrowing@method != "BDB") {
       model_str <- glue::glue("{{model_str}}
-                              lp = exp(trt * beta_trt );",
+                              lp = trt * beta_trt ;
+                              elp = exp(lp); ",
                               .open = "{{",
                               .close = "}}"
       )
@@ -331,6 +344,8 @@ create_analysis_obj <- function(
                        {{data_str}}
 
                        {{param_str}}
+
+                       {{transf_param_str}}
 
                        {{model_str}}
 

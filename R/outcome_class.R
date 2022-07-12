@@ -27,11 +27,17 @@ setClass(
 # BinaryEndpoint class
 setClass(
    "BinaryEndpoint",
-   slots = c(param_stan_code = "character",
+   slots = c(function_stan_code = "character",
+             param_stan_code = "character",
              likelihood_stan_code = "character",
-             outcome_var = "character"
+             n_param = "integer",
+             param_priors = "list",
+             time_var = "character",
+             cens_var = "character"
    ),
    prototype = list(
+      n_param = 0L,
+      function_stan_code = "",
       param_stan_code = "",
       likelihood_stan_code = ""
    ),

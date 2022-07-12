@@ -13,7 +13,7 @@
 #'
 #' @include create_analysis_obj.R
 #'
-#' @return A tibble summarizing sampling results
+#' @return An object of class CmdStanMCMC
 #' @export
 #'
 #' @examples
@@ -81,14 +81,5 @@ mcmc_sample <- function(analysis_obj,
       chains = chains,
       ...
    )
-
-   output <- results$summary()
-   output$variable[grep("beta\\[", output$variable)] <- paste0(
-      "beta_",
-      analysis_obj@covariates@covariates
-   )
-
-   output
-
 
 }

@@ -29,7 +29,7 @@ cmdstanr STAN model.
 See https://mc-stan.org/cmdstanr/reference/model-method-sample.html}
 }
 \value{
-A tibble summarizing sampling results
+An object of class CmdStanMCMC
 }
 \description{
 Sample from STAN model
