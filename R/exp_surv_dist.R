@@ -6,7 +6,7 @@
    contains = "TimeToEvent",
    prototype = list(
       n_param = 0L,
-      model_stan_code =
+      likelihood_stan_code =
         glue::glue("
          for (i in 1:N) {
             if (cens[i] == 0) {

@@ -25,7 +25,7 @@
               return lprob;
           }
          ",.open="{{",.close="}}"),
-      model_stan_code =
+      likelihood_stan_code =
          glue::glue("
          for (i in 1:N) {
             if (cens[i] == 0) {
