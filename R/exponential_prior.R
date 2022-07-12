@@ -7,7 +7,7 @@
    slots = c(beta = "numeric"),
    prototype = list(
       n_param = 1L,
-      stan_code = "exponential(beta={{object@beta}})"
+      stan_code = "exponential({{object@beta}})"
    ),
    validity = function(object) {
       if (object@beta <= 0) {

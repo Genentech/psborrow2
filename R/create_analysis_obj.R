@@ -3,9 +3,7 @@ create_analysis_obj <- function(
    covariates = NULL,
    outcome,
    borrowing,
-   treatment_arms,
-   export_stan_model = FALSE,
-   stan_model_path = "./model.stan"
+   treatment_arms
 ) {
 
    # Check columns exist----
@@ -99,8 +97,9 @@ create_analysis_obj <- function(
       data_str <- glue::glue("
          {{data_str}}
             int<lower=0> N;
-            real time[N];
-            int cens[N];
+            vector[N] time;
+            vector[N] cens;
+            vector[N] trt;
          ", .open = "{{", .close = "}}")
    }
 
@@ -109,6 +108,7 @@ create_analysis_obj <- function(
       data_str <- glue::glue("
                              {{data_str}}
                              matrix[N,2] Z;
+                             vector[N] ext;
                              ",
                              .open = "{{",
                              .close = "}}")
@@ -175,25 +175,25 @@ create_analysis_obj <- function(
    ### Specify different combinations
    if (!is.null(covariates) && borrowing@method == "BDB") {
       model_str <- glue::glue("{{model_str}}
-                              lp = exp(X * beta + Z * alpha + beta_trt * trt );",
+                              lp = exp(X * beta + Z * alpha + trt * beta_trt );",
                               .open = "{{",
                               .close = "}}"
       )
    } else if (is.null(covariates) && borrowing@method == "BDB") {
       model_str <- glue::glue("{{model_str}}
-                              lp = exp(Z * alpha + beta_trt * trt );",
+                              lp = exp(Z * alpha + trt * beta_trt);",
                               .open = "{{",
                               .close = "}}"
       )
    } else if (!is.null(covariates) && borrowing@method != "BDB") {
       model_str <- glue::glue("{{model_str}}
-                              lp = exp(X * beta + beta_trt * trt );",
+                              lp = exp(X * beta + trt * beta_trt );",
                               .open = "{{",
                               .close = "}}"
       )
    } else if (is.null(covariates) && borrowing@method != "BDB") {
       model_str <- glue::glue("{{model_str}}
-                              lp = exp(beta_trt * trt );",
+                              lp = exp(trt * beta_trt );",
                               .open = "{{",
                               .close = "}}"
       )
@@ -226,6 +226,7 @@ create_analysis_obj <- function(
       model_str <- glue::glue("
                            {{model_str}}
                            tau ~ {{tau_prior}} ;
+                           real sigma;
                            sigma = 1 / tau;
                            alpha[2] ~ {{alpha_2_prior}} ;
                            alpha[1] ~ normal(alpha[2], sqrt(sigma)) ;
@@ -254,4 +255,10 @@ create_analysis_obj <- function(
                        {{model_str}}
 
                        ", .open = "{{", .close = "}}")
+
+   # Write STAN model and compile ----
+   stan_file <- cmdstanr::write_stan_file(model)
+   stan_model <- cmdstanr::cmdstan_model(stan_file)
+
+
 }

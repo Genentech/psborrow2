@@ -8,7 +8,7 @@
              beta = "numeric"),
    prototype = list(
       n_param = 2L,
-      stan_code = "uniform(alpha={{object@alpha}}, beta={{object@beta}})"
+      stan_code = "uniform({{object@alpha}}, {{object@beta}})"
    ),
    validity = function(object) {
       if (object@beta <= object@alpha) {

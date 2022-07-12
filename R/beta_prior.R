@@ -8,7 +8,7 @@
              beta = "numeric"),
    prototype = list(
       n_param = 2L,
-      stan_code = "beta(alpha={{object@alpha}}, beta={{object@beta}})"
+      stan_code = "beta({{object@alpha}}, {{object@beta}})"
    ),
    validity = function(object) {
       if (object@alpha < 0 || object@beta < 0) {

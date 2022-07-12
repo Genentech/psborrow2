@@ -7,7 +7,7 @@
    slots = c(theta = "numeric"),
    prototype = list(
       n_param = 1L,
-      stan_code = "bernoulli(theta={{object@theta}})"
+      stan_code = "bernoulli({{object@theta}})"
    ),
    validity = function(object) {
       if (object@theta < 0 || object@theta > 1) {

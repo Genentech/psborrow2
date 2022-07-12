@@ -8,7 +8,7 @@
              sigma = "numeric"),
    prototype = list(
       n_param = 2L,
-      stan_code = "normal(mu={{object@mu}}, sigma={{object@sigma}})"
+      stan_code = "normal({{object@mu}}, {{object@sigma}})"
    ),
    validity = function(object) {
       if (object@sigma <= 0) {
