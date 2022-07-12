@@ -1,14 +1,17 @@
 #' @include prior_class.R
 
 setClassUnion("PriorOrNULL", c("Prior","NULL"))
+setClassUnion("characterOrNULL", c("character", "NULL"))
 
 # Parent class
 .borrowing_class <- setClass(
    "Borrowing",
    slots = c(method = "character",
+             ext_flag_col = "characterOrNULL",
              tau_prior = "PriorOrNULL",
              ext_log_hazard_rate_prior = "PriorOrNULL"),
    prototype = c(method = "No borrowing",
+                 ext_flag_col = NULL,
                  tau_prior = NULL,
                  ext_log_hazard_rate_prior = NULL),
    validity = function(object) {
@@ -24,6 +27,10 @@ setClassUnion("PriorOrNULL", c("Prior","NULL"))
       if (object@method != "BDB" && !is.null(object@ext_log_hazard_rate_prior)) {
          return("no need to specify ext_log_hazard_rate_prior prior when method is not BDB")
       }
+      if (object@method != "BDB" && !is.null(object@ext_flag_col)) {
+         return("no need to specify ext_flag_col prior when method is not BDB")
+      }
+
       return(TRUE)
    }
 )

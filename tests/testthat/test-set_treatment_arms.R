@@ -2,7 +2,6 @@ test_that("set_treatment_arms works as expected", {
 
    # Create objects
    sta <- set_treatment_arms(
-      ext_flag_col = 'ext',
       trt_flag_col = 'trt',
       trt_log_hazard_ratio_prior = normal_prior(0, 10000)
       )
@@ -15,7 +14,7 @@ test_that("set_treatment_arms works as expected", {
    expect_equal(sta@trt_flag_col, "trt")
 
    # Errors
-   expect_error(set_treatment_arms(ext_flag_col = 1))
-   expect_error(set_treatment_arms("ext","trt","hi","there"))
+   expect_error(set_treatment_arms(trt_flag_col = 1))
+   expect_error(set_treatment_arms("trt","hi","there"))
 
 })

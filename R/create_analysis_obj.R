@@ -33,11 +33,11 @@ create_analysis_obj <- function(
          "` is not a column in the model matrix"))
    }
 
-   ## Treatment arms----
-   if (!treatment_arms@ext_flag_col %in% colnames(model_matrix)) {
+   ## Treatment and external control arms----
+   if (borrowing@method == "BDB" && !borrowing@ext_flag_col %in% colnames(model_matrix)) {
       stop(paste0(
          "External flag variable `",
-         treatment_arms@ext_flag_col,
+         borrowing@ext_flag_col,
          "` is not a column in the model matrix"))
    }
 
@@ -52,11 +52,22 @@ create_analysis_obj <- function(
    if (is(outcome,"TimeToEvent")) {
       mm <- model_matrix[,c(
          treatment_arms@trt_flag_col,
-         treatment_arms@ext_flag_col,
+         borrowing@ext_flag_col,
          outcome@time_var,
          outcome@cens_var,
          covariates@covariates
       )]
+   }
+
+   if (borrowing@method == "No borrowing") {
+      mm <- mm[mm[,borrowing@ext_flag_col]==0,]
+      if (sum(mm[,borrowing@ext_flag_col]==1) > 0) {
+         warning("\r", paste0("Removing ",
+                              sum(mm[,borrowing@ext_flag_col]==1),
+                              " patients who were from the",
+                              " external control cohort because borrowing",
+                              " type is 'No borrowing'"))
+      }
    }
 
    # Check for correct data types and no missing values----
@@ -259,6 +270,33 @@ create_analysis_obj <- function(
    # Write STAN model and compile ----
    stan_file <- cmdstanr::write_stan_file(model)
    stan_model <- cmdstanr::cmdstan_model(stan_file)
+   message("\r", "STAN program compiled successfully", appendLF = FALSE)
+
+   # Prepare data ----
+   ## Common inputs
+   data_in <- list(
+      N = NROW(mm),
+      trt = mm[,treatment_arms@trt_flag_col]
+   )
+
+   ## TTE additions
+   if (is(outcome, "TimeToEvent")) {
+      data_in[["time"]] <- mm[,outcome@time_var]
+      data_in[["cens"]] <-  mm[,outcome@cens_var]
+   }
+
+   ## BDB additions
+   if (borrowing@method == "BDB") {
+      data_in[["ext"]] <- mm[,borrowing@ext_flag_col]
+   }
+
+   ## Covariate additions
+   if (!is.null(covariates)) {
+
+   }
+
+   ##
+
 
 
 }

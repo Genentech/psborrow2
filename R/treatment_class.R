@@ -4,8 +4,7 @@
 # Parent class
 .treatment_class <- setClass(
    "Treatment",
-   slots = c(ext_flag_col = "character",
-             trt_flag_col = "character",
+   slots = c(trt_flag_col = "character",
              trt_log_hazard_ratio_prior = "Prior"
    ),
    prototype = c(trt_log_hazard_ratio_prior = normal_prior(0,10000)),
@@ -19,8 +18,7 @@ setMethod(
    f = "show",
    signature = "Treatment",
    definition = function(object) {
-      cat("Treatment class with external control flag column of `",
-          object@ext_flag_col, "` and experimental treatment flag ",
+      cat("Treatment class with experimental treatment flag ",
           "column of `", object@trt_flag_col, "`")
    }
 )

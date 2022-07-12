@@ -6,15 +6,11 @@
 priors for treatment effects and external control baseline hazard}
 \usage{
 set_treatment_arms(
-  ext_flag_col = "character",
   trt_flag_col = "character",
   trt_log_hazard_ratio_prior = "Prior"
 )
 }
 \arguments{
-\item{ext_flag_col}{name of the column in the model matrix which contains
-flags (1/0 or T/F) for external controls (1 = external, 0 = internal)}
-
 \item{trt_flag_col}{name of the column in the model matrix which contains
 flags (1/0 or T/F) for experimental treatment (1 = experimental treatment,
 0 = control treatment)}
@@ -33,7 +29,6 @@ priors for treatment effects and external control baseline hazard
 \examples{
 
 sta <- set_treatment_arms(
-   ext_flag_col = 'ext',
    trt_flag_col = 'trt',
    trt_log_hazard_ratio_prior = normal_prior(0, 10000)
 )

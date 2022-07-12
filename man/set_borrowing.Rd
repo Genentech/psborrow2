@@ -5,7 +5,12 @@
 \title{Specify type of borrowing and, for Bayesian Dynamic Borrowing,
 set prior for commensurability parameter tau}
 \usage{
-set_borrowing(method, tau_prior = NULL, ext_log_hazard_rate_prior = NULL)
+set_borrowing(
+  method,
+  ext_flag_col = NULL,
+  tau_prior = NULL,
+  ext_log_hazard_rate_prior = NULL
+)
 }
 \arguments{
 \item{method}{One of:
@@ -16,7 +21,10 @@ set_borrowing(method, tau_prior = NULL, ext_log_hazard_rate_prior = NULL)
 historical controls
 }}
 
-\item{tau_prior}{Object of class \code{Prior}. Only needed for method = 'BDB'}
+\item{ext_flag_col}{character specifying the name of the column in
+the model matrix that corresponds to the external control flag (1/0 or T/F)}
+
+\item{tau_prior}{object of class \code{Prior}. Only needed for method = 'BDB'}
 
 \item{ext_log_hazard_rate_prior}{object of class \code{Prior} specifying the prior
 distribution for the log hazard rate for the concurrent control arm.}
