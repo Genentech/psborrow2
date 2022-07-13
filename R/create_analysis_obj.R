@@ -58,7 +58,7 @@
 #'       "BDB",
 #'       "ext",
 #'       exponential_prior(.001),
-#'       ext_log_hazard_rate_or_odds_prior = normal_prior(0,1000)
+#'       baseline_log_hazard_rate_or_odds_prior = normal_prior(0,1000)
 #'       ),
 #'    treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
 #' )
@@ -243,6 +243,14 @@ create_analysis_obj <- function(
                               .close = "}}")
    }
 
+   ### Set alpha for non-BDB
+   if (borrowing@method != "BDB") {
+      param_str <- glue::glue("{{param_str}}
+                              real alpha;",
+                              .open = "{{",
+                              .close = "}}")
+   }
+
    ### Add outcome specific parameters
    if (NROW(outcome@param_priors) > 0) {
       for (i in 1:NROW(outcome@param_priors)) {
@@ -306,14 +314,14 @@ create_analysis_obj <- function(
       )
    } else if (!is.null(covariates) && borrowing@method != "BDB") {
       model_str <- glue::glue("{{model_str}}
-                              lp = X * beta + trt * beta_trt ;
+                              lp = alpha + X * beta + trt * beta_trt ;
                               elp = exp(lp) ;",
                               .open = "{{",
                               .close = "}}"
       )
    } else if (is.null(covariates) && borrowing@method != "BDB") {
       model_str <- glue::glue("{{model_str}}
-                              lp = trt * beta_trt ;
+                              lp = alpha + trt * beta_trt ;
                               elp = exp(lp); ",
                               .open = "{{",
                               .close = "}}"
@@ -341,7 +349,7 @@ create_analysis_obj <- function(
       object <- borrowing@tau_prior
       tau_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
 
-      object <- borrowing@ext_log_hazard_rate_or_odds_prior
+      object <- borrowing@baseline_log_hazard_rate_or_odds_prior
       alpha_2_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
 
       model_str <- glue::glue("
@@ -351,6 +359,17 @@ create_analysis_obj <- function(
                            sigma = 1 / tau;
                            alpha[2] ~ {{alpha_2_prior}} ;
                            alpha[1] ~ normal(alpha[2], sqrt(sigma)) ;
+                           ", .open = "{{", .close = "}}")
+   }
+
+   ### Add in alphas if method is not BDB
+   if (borrowing@method != "BDB") {
+      object <- borrowing@baseline_log_hazard_rate_or_odds_prior
+      alpha_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
+
+      model_str <- glue::glue("
+                           {{model_str}}
+                           alpha ~ {{alpha_prior}} ;
                            ", .open = "{{", .close = "}}")
    }
 

@@ -9,11 +9,11 @@ setClassUnion("characterOrNULL", c("character", "NULL"))
    slots = c(method = "character",
              ext_flag_col = "characterOrNULL",
              tau_prior = "PriorOrNULL",
-             ext_log_hazard_rate_or_odds_prior = "PriorOrNULL"),
+             baseline_log_hazard_rate_or_odds_prior = "Prior"),
    prototype = c(method = "No borrowing",
                  ext_flag_col = NULL,
                  tau_prior = NULL,
-                 ext_log_hazard_rate_or_odds_prior = NULL),
+                 baseline_log_hazard_rate_or_odds_prior = NULL),
    validity = function(object) {
       if (!object@method %in% c(
          "BDB",
@@ -23,9 +23,6 @@ setClassUnion("characterOrNULL", c("character", "NULL"))
       }
       if (object@method != "BDB" && !is.null(object@tau_prior)) {
          return("no need to specify tau prior when method is not BDB")
-      }
-      if (object@method != "BDB" && !is.null(object@ext_log_hazard_rate_or_odds_prior)) {
-         return("no need to specify ext_log_hazard_rate_or_odds_prior prior when method is not BDB")
       }
       if (object@method != "BDB" && !is.null(object@ext_flag_col)) {
          return("no need to specify ext_flag_col prior when method is not BDB")

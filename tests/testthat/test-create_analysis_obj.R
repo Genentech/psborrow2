@@ -1,6 +1,6 @@
 test_that("Analysis object created correctly", {
 
-   # Create matrix
+   # Create TTE matrix
    mat <- structure(c(1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
                       1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
                       1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
@@ -33,9 +33,10 @@ test_that("Analysis object created correctly", {
       mat,
       outcome = set_outcome(exp_surv_dist(), 'time','cnsr'),
       borrowing = set_borrowing("BDB",
+                                normal_prior(0, 1000),
                                 "ext",
-                                exponential_prior(.001),
-                                normal_prior(0, 1000)),
+                                exponential_prior(.001)
+      ),
       treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
    )
 
@@ -44,26 +45,89 @@ test_that("Analysis object created correctly", {
       covariates = set_covariates(c('cov1','cov2'), normal_prior(0, 1000)),
       outcome = set_outcome(weib_ph_surv_dist(normal_prior(0, 1000)), 'time','cnsr'),
       borrowing = set_borrowing("BDB",
+                                normal_prior(0, 1000),
                                 "ext",
-                                exponential_prior(.001),
-                                normal_prior(0, 1000)),
+                                exponential_prior(.001)
+      ),
       treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
    )
 
    full_exp_noc <- create_analysis_obj(
       mat,
       outcome = set_outcome(exp_surv_dist(), 'time','cnsr'),
-      borrowing = set_borrowing("Full borrowing"),
+      borrowing = set_borrowing("Full borrowing", normal_prior(0, 1000)),
       treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
    )
 
    no_exp_noc <- create_analysis_obj(
       mat,
       outcome = set_outcome(exp_surv_dist(), 'time','cnsr'),
-      borrowing = set_borrowing("No borrowing"),
+      borrowing = set_borrowing("No borrowing", normal_prior(0, 1000)),
       treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
    )
 
-   # Placeholder
+   # Test classes
+   expect_class(bdb_exp_noc, "Analysis")
+   expect_class(bdb_weib_c, "Analysis")
+   expect_class(full_exp_noc, "Analysis")
+   expect_class(no_exp_noc, "Analysis")
+
+   # See that all slots are appropriate
+   expect_class(bdb_exp_noc@model_string, "character")
+   expect_class(bdb_weib_c@model_and_data$stan_model, "CmdStanModel")
+   expect_class(full_exp_noc@model_and_data$stan_model, "CmdStanModel")
+   expect_class(no_exp_noc@model_and_data$data_in, "list")
+
+   # Check for errors
+   expect_error(create_analysis_obj(
+      mat,
+      covariates = set_covariates(c('cov1','cov999'), normal_prior(0, 1000)),
+      outcome = set_outcome(weib_ph_surv_dist(normal_prior(0, 1000)), 'time','cnsr'),
+      borrowing = set_borrowing("BDB",
+                                normal_prior(0, 1000),
+                                "ext",
+                                exponential_prior(.001)
+      ),
+      treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
+   ), "Covariate columns `cov999` are not in the model matrix")
+
+   expect_error(create_analysis_obj(
+      mat,
+      covariates = set_covariates(c('cov1','cov2'), normal_prior(0, 1000)),
+      outcome = set_outcome(weib_ph_surv_dist(normal_prior(0, 1000)), 'time','cnsr'),
+      borrowing = set_borrowing("BDB",
+                                normal_prior(0, 1000),
+                                "ext",
+                                exponential_prior(.001)
+      ),
+      treatment_arms = set_treatment_arms("trtxyz", normal_prior(0, 1000))
+   ), "Treatment flag variable `trtxyz` is not a column in the model matrix")
+
+   expect_error(create_analysis_obj(
+      mat,
+      covariates = set_covariates(c('cov1','cov2'), normal_prior(0, 1000)),
+      outcome = set_outcome(weib_ph_surv_dist(normal_prior(0, 1000)), 'time','cnsr'),
+      borrowing = set_borrowing("BDB",
+                                normal_prior(0, 1000),
+                                "ext123",
+                                exponential_prior(.001)
+      ),
+      treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
+   ), "External flag variable `ext123` is not a column in the model matrix")
+
+   mat2 <- mat
+   mat2[3,'trt'] <- NA
+   expect_error(create_analysis_obj(
+      mat2,
+      outcome = set_outcome(exp_surv_dist(), 'time','cnsr'),
+      borrowing = set_borrowing("BDB",
+                                normal_prior(0, 1000),
+                                "ext",
+                                exponential_prior(.001)
+      ),
+      treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
+   ), "no methods for missing data are supported")
+
+   ## TO ADD: BINARY ENDPOINTS
 
 })
