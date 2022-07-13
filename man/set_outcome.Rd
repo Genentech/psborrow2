@@ -2,23 +2,54 @@
 % Please edit documentation in R/set_outcome.R
 \name{set_outcome}
 \alias{set_outcome}
+\alias{set_outcome,TimeToEvent-method}
+\alias{set_outcome,BinaryEndpoint-method}
 \title{Specify outcome details}
 \usage{
 set_outcome(outcome_obj, ...)
+
+\S4method{set_outcome}{TimeToEvent}(outcome_obj, time_var, cens_var, ...)
+
+\S4method{set_outcome}{BinaryEndpoint}(outcome_obj, endpoint_var, ...)
 }
 \arguments{
-\item{outcome_obj}{Either a time to event or binary outcome object}
+\item{outcome_obj}{BinaryEndpoint object}
 
 \item{...}{Additional arguments passed to set_outcome()}
+
+\item{time_var}{Name of time variable column in model matrix}
+
+\item{cens_var}{Name of the censorship variable flag in model matrix}
+
+\item{endpoint_var}{Name of binary (1/0 or T/F) endpoint variable in the
+model matrix}
 }
 \value{
+An object of class \code{outcome_obj}
+
+An object of class \code{outcome_obj}
+
 An object of class \code{outcome_obj}
 }
 \description{
 Specify outcome details
+
+Specify outcome details for time-to-event endpoint
+
+Specify outcome details for binary endpoint
 }
 \details{
 For TimeToEvent objects, additionally specify
 time_var, the name of the time variable column in the model matrix
 cens_var, the name of the censorship variable column in the model matrix
+}
+\examples{
+
+# For time to event
+oo <- set_outcome(exp_surv_dist(), "time_months", "cens_flag")
+
+
+# For binary outcomes
+oo <- set_outcome(logistic_bin_endpoint(), "outcome")
+
 }
