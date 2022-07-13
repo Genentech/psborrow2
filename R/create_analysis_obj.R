@@ -13,64 +13,64 @@
 #' @include analysis_class.R
 #'
 #' @examples
-#'
-#'
-#'
-#' model_matrix<-structure(c(1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-#' 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-#' 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-#' 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1,
-#' 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
-#' 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1,
-#' 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1,
-#' 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1,
-#' 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0,
-#' 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 5.32295081977934,
-#' 6.96715560527452, 1.17501259866481, 9.45936763681621, 5.75572041253912,
-#' 12.1139661284359, 2.64741266341488, 4.99828513121648, 5.38734198746281,
-#' 4.74770899862051, 0.0803900761309156, 13.7720370325053, 3.03310634382069,
-#' 10.1695853577489, 0.0720591936260462, 10.1367262049345, 2.9709762107209,
-#' 0.659847613424063, 3.88436722227683, 3.2750634373027, 1.90838416890977,
-#' 5.79706331825161, 4.28611800974856, 0.702194716266679, 4.74582234003252,
-#' 6.92417557015123, 6.53942201171797, 5.88460493011677, 1.84311583921956,
-#' 5.28505285794622, 4.34498298102206, 3.17685930818209, 11.0179639531233,
-#' 2.14560192144267, 4.40741405311895, 10.9576044368026, 3.55944875309522,
-#' 9.07620135719862, 1.29542022943497, 3.35630633204141, 14.1141011930051,
-#' 14.3560852138326, 6.76962562138734, 6.60672739803918, 0.727092696356863,
-#' 3.06457582335024, 2.27240795704226, 6.12868075434827, 7.45796004200603,
-#' 9.23882804838511, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1,
-#' 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1,
-#' 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0), dim = c(50L, 6L), dimnames = list(
-#'    NULL, c("ext", "trt", "cov1", "cov2", "time", "cnsr")))
+#' model_matrix <- structure(c(
+#'    1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+#'    1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+#'    1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+#'    0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1,
+#'    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
+#'    0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1,
+#'    0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1,
+#'    1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1,
+#'    1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0,
+#'    1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 5.32295081977934,
+#'    6.96715560527452, 1.17501259866481, 9.45936763681621, 5.75572041253912,
+#'    12.1139661284359, 2.64741266341488, 4.99828513121648, 5.38734198746281,
+#'    4.74770899862051, 0.0803900761309156, 13.7720370325053, 3.03310634382069,
+#'    10.1695853577489, 0.0720591936260462, 10.1367262049345, 2.9709762107209,
+#'    0.659847613424063, 3.88436722227683, 3.2750634373027, 1.90838416890977,
+#'    5.79706331825161, 4.28611800974856, 0.702194716266679, 4.74582234003252,
+#'    6.92417557015123, 6.53942201171797, 5.88460493011677, 1.84311583921956,
+#'    5.28505285794622, 4.34498298102206, 3.17685930818209, 11.0179639531233,
+#'    2.14560192144267, 4.40741405311895, 10.9576044368026, 3.55944875309522,
+#'    9.07620135719862, 1.29542022943497, 3.35630633204141, 14.1141011930051,
+#'    14.3560852138326, 6.76962562138734, 6.60672739803918, 0.727092696356863,
+#'    3.06457582335024, 2.27240795704226, 6.12868075434827, 7.45796004200603,
+#'    9.23882804838511, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1,
+#'    0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1,
+#'    1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0
+#' ), dim = c(50L, 6L), dimnames = list(
+#'    NULL, c("ext", "trt", "cov1", "cov2", "time", "cnsr")
+#' ))
 #'
 #'
 #' anls <- create_analysis_obj(
 #'    model_matrix = model_matrix,
-#'    covariates = set_covariates(covariates = c('cov1','cov2'),
-#'    priors = normal_prior(0, 1000)),
+#'    covariates = set_covariates(
+#'       covariates = c("cov1", "cov2"),
+#'       priors = normal_prior(0, 1000)
+#'    ),
 #'    outcome = set_outcome(
 #'       weib_ph_surv_dist(
-#'          shape_prior = normal_prior(0, 1000)),
-#'          'time',
-#'          'cnsr'
+#'          shape_prior = normal_prior(0, 1000)
 #'       ),
+#'       "time",
+#'       "cnsr"
+#'    ),
 #'    borrowing = set_borrowing(
 #'       "BDB",
 #'       "ext",
 #'       exponential_prior(.001),
-#'       baseline_log_hazard_rate_or_odds_prior = normal_prior(0,1000)
-#'       ),
+#'       baseline_log_hazard_rate_or_odds_prior = normal_prior(0, 1000)
+#'    ),
 #'    treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
 #' )
 #'
-create_analysis_obj <- function(
-   model_matrix,
-   covariates = NULL,
-   outcome,
-   borrowing,
-   treatment_arms
-) {
-
+create_analysis_obj <- function(model_matrix,
+                                covariates = NULL,
+                                outcome,
+                                borrowing,
+                                treatment_arms) {
    # Check columns exist----
    ## Covariates----
    if (!is.null(covariates)) {
@@ -80,7 +80,8 @@ create_analysis_obj <- function(
             paste0(covariates@covariates[
                !covariates@covariates %in% colnames(model_matrix)
             ], collapse = "`, `"),
-            "` are not in the model matrix"))
+            "` are not in the model matrix"
+         ))
       }
    }
 
@@ -89,13 +90,15 @@ create_analysis_obj <- function(
       stop(paste0(
          "Time variable `",
          outcome@time_var,
-         "` is not a column in the model matrix"))
+         "` is not a column in the model matrix"
+      ))
    }
    if (is(outcome, "TimeToEvent") && !outcome@cens_var %in% colnames(model_matrix)) {
       stop(paste0(
          "Censor variable `",
          outcome@cens_var,
-         "` is not a column in the model matrix"))
+         "` is not a column in the model matrix"
+      ))
    }
    if (is(outcome, "BinaryEndpoint") && !outcome@endpoint_var %in% colnames(model_matrix)) {
       stop(paste0(
@@ -110,14 +113,16 @@ create_analysis_obj <- function(
       stop(paste0(
          "External flag variable `",
          borrowing@ext_flag_col,
-         "` is not a column in the model matrix"))
+         "` is not a column in the model matrix"
+      ))
    }
 
    if (!treatment_arms@trt_flag_col %in% colnames(model_matrix)) {
       stop(paste0(
          "Treatment flag variable `",
          treatment_arms@trt_flag_col,
-         "` is not a column in the model matrix"))
+         "` is not a column in the model matrix"
+      ))
    }
 
    ## Select only relevant columns in model matrix----
@@ -126,28 +131,32 @@ create_analysis_obj <- function(
          treatment_arms@trt_flag_col,
          borrowing@ext_flag_col,
          outcome@time_var,
-         outcome@cens_var)
+         outcome@cens_var
+      )
    } else if (is(outcome, "BinaryEndpoint")) {
       cols_of_interest <- c(
          treatment_arms@trt_flag_col,
          borrowing@ext_flag_col,
-         outcome@endpoint_var)
+         outcome@endpoint_var
+      )
    }
 
-   if(!is.null(covariates)) {
+   if (!is.null(covariates)) {
       cols_of_interest <- c(cols_of_interest, covariates@covariates)
    }
 
    mm <- model_matrix[, cols_of_interest]
 
    if (borrowing@method == "No borrowing") {
-      mm <- mm[mm[,borrowing@ext_flag_col]==0,]
-      if (sum(mm[,borrowing@ext_flag_col]==1) > 0) {
-         warning("\r", paste0("Removing ",
-                              sum(mm[,borrowing@ext_flag_col]==1),
-                              " patients who were from the",
-                              " external control cohort because borrowing",
-                              " type is 'No borrowing'"))
+      mm <- mm[mm[, borrowing@ext_flag_col] == 0, ]
+      if (sum(mm[, borrowing@ext_flag_col] == 1) > 0) {
+         warning("\r", paste0(
+            "Removing ",
+            sum(mm[, borrowing@ext_flag_col] == 1),
+            " patients who were from the",
+            " external control cohort because borrowing",
+            " type is 'No borrowing'"
+         ))
       }
    }
 
@@ -156,7 +165,7 @@ create_analysis_obj <- function(
       stop("Model matrix must be numeric")
    }
 
-   if (!all(complete.cases(mm))) {
+   if (!all(stats::complete.cases(mm))) {
       stop("There are missing values in the model matrix! Right now,
            no methods for missing data are supported")
    }
@@ -186,7 +195,7 @@ create_analysis_obj <- function(
    data_str <- glue::glue("data {", .open = "{{", .close = "}}")
 
    ### Data shared by all TTE
-   if (is(outcome,"TimeToEvent")) {
+   if (is(outcome, "TimeToEvent")) {
       data_str <- glue::glue("
          {{data_str}}
             int<lower=0> N;
@@ -197,7 +206,7 @@ create_analysis_obj <- function(
    }
 
    ### Data shared by all binary endpoint
-   if (is(outcome,"BinaryEndpoint")) {
+   if (is(outcome, "BinaryEndpoint")) {
       data_str <- glue::glue("
          {{data_str}}
             int<lower=0> N;
@@ -207,13 +216,14 @@ create_analysis_obj <- function(
    }
 
    ### Add external control flag for BDB
-   if (borrowing@method=="BDB") {
+   if (borrowing@method == "BDB") {
       data_str <- glue::glue("
                              {{data_str}}
                               matrix[N,2] Z;
                              ",
-                             .open = "{{",
-                             .close = "}}")
+         .open = "{{",
+         .close = "}}"
+      )
    }
 
    ### Add covariates for when these are specified
@@ -239,25 +249,27 @@ create_analysis_obj <- function(
       param_str <- glue::glue("{{param_str}}
                               real<lower=0> tau;
                               vector[2] alpha;",
-                              .open = "{{",
-                              .close = "}}")
+         .open = "{{",
+         .close = "}}"
+      )
    }
 
    ### Set alpha for non-BDB
    if (borrowing@method != "BDB") {
       param_str <- glue::glue("{{param_str}}
                               real alpha;",
-                              .open = "{{",
-                              .close = "}}")
+         .open = "{{",
+         .close = "}}"
+      )
    }
 
    ### Add outcome specific parameters
    if (NROW(outcome@param_priors) > 0) {
-      for (i in 1:NROW(outcome@param_priors)) {
+      for (i in seq_len(NROW(outcome@param_priors))) {
          param_str <- glue::glue("{{param_str}}
                                  real {{names(outcome@param_priors[i])}} ;",
-                                 .open = "{{",
-                                 .close = "}}"
+            .open = "{{",
+            .close = "}}"
          )
       }
    }
@@ -266,8 +278,9 @@ create_analysis_obj <- function(
    if (!is.null(covariates)) {
       param_str <- glue::glue("{{param_str}}
                                vector[K] beta ;",
-                              .open = "{{",
-                              .close = "}}")
+         .open = "{{",
+         .close = "}}"
+      )
    }
 
    ### Close brackets
@@ -278,18 +291,18 @@ create_analysis_obj <- function(
       transf_param_str <- glue::glue("
          transformed parameters {
             real HR_trt = exp(beta_trt);
-         }", .open = "{{",.close = "}}")
+         }", .open = "{{", .close = "}}")
    } else if (is(outcome, "BinaryEndpoint")) {
       transf_param_str <- glue::glue("
          transformed parameters {
             real OR_trt = exp(beta_trt);
-         }", .open = "{{",.close = "}}")
+         }", .open = "{{", .close = "}}")
    }
 
    ## Model string ----
    ### Set values shared by all
    object <- treatment_arms@trt_log_HR_or_OR_prior
-   beta_trt_prior <- glue::glue(object@stan_code, .open="{{", .close ="}}")
+   beta_trt_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
    model_str <- glue::glue("model {
                            vector[N] lp;
                            vector[N] elp;
@@ -302,35 +315,35 @@ create_analysis_obj <- function(
                               lp = X * beta + Z * alpha + trt * beta_trt;
                               elp = exp(lp) ;
                               ",
-                              .open = "{{",
-                              .close = "}}"
+         .open = "{{",
+         .close = "}}"
       )
    } else if (is.null(covariates) && borrowing@method == "BDB") {
       model_str <- glue::glue("{{model_str}}
                               lp = Z * alpha + trt * beta_trt;
                               elp = exp(lp) ;",
-                              .open = "{{",
-                              .close = "}}"
+         .open = "{{",
+         .close = "}}"
       )
    } else if (!is.null(covariates) && borrowing@method != "BDB") {
       model_str <- glue::glue("{{model_str}}
                               lp = alpha + X * beta + trt * beta_trt ;
                               elp = exp(lp) ;",
-                              .open = "{{",
-                              .close = "}}"
+         .open = "{{",
+         .close = "}}"
       )
    } else if (is.null(covariates) && borrowing@method != "BDB") {
       model_str <- glue::glue("{{model_str}}
                               lp = alpha + trt * beta_trt ;
                               elp = exp(lp); ",
-                              .open = "{{",
-                              .close = "}}"
+         .open = "{{",
+         .close = "}}"
       )
    }
 
    ### Add priors for relevant parameters
    if (NROW(outcome@param_priors) > 0) {
-      for (i in 1:NROW(outcome@param_priors)) {
+      for (i in seq_len(NROW(outcome@param_priors))) {
          name <- names(outcome@param_priors)[i]
          object <- outcome@param_priors[[name]]
          value <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
@@ -340,7 +353,6 @@ create_analysis_obj <- function(
                                       {{model_str}}
                                       {{prior_str}}
                                       ", .open = "{{", .close = "}}")
-
       }
    }
 
@@ -377,8 +389,9 @@ create_analysis_obj <- function(
    model_str <- glue::glue("
                            {{model_str}}
                            {{outcome@likelihood_stan_code}}",
-                           .open = "{{",
-                           .close = "}}")
+      .open = "{{",
+      .close = "}}"
+   )
 
    ### Close brackets
    model_str <- glue::glue("{{model_str}} }", .open = "{{", .close = "}}")
@@ -407,30 +420,33 @@ create_analysis_obj <- function(
    ## Common inputs
    data_in <- list(
       N = NROW(mm),
-      trt = mm[,treatment_arms@trt_flag_col]
+      trt = mm[, treatment_arms@trt_flag_col]
    )
 
    ## TTE additions
    if (is(outcome, "TimeToEvent")) {
-      data_in[["time"]] <- mm[,outcome@time_var]
-      data_in[["cens"]] <-  mm[,outcome@cens_var]
+      data_in[["time"]] <- mm[, outcome@time_var]
+      data_in[["cens"]] <- mm[, outcome@cens_var]
    } else if (is(outcome, "BinaryEndpoint")) {
-      data_in[["y"]] <- mm[,outcome@endpoint_var]
+      data_in[["y"]] <- mm[, outcome@endpoint_var]
    }
 
    ## BDB additions
    if (borrowing@method == "BDB") {
       data_in[["Z"]] <- matrix(
-         c(1 - mm[,borrowing@ext_flag_col], # First col is ext = 0
-         mm[,borrowing@ext_flag_col]), # Second col is ext = 1
+         c(
+            1 - mm[, borrowing@ext_flag_col], # First col is ext = 0
+            mm[, borrowing@ext_flag_col]
+         ), # Second col is ext = 1
          ncol = 2,
-         byrow = FALSE)
+         byrow = FALSE
+      )
    }
 
    ## Covariate additions
    if (!is.null(covariates)) {
       data_in[["K"]] <- NROW(covariates@covariates)
-      data_in[["X"]] <- mm[,covariates@covariates]
+      data_in[["X"]] <- mm[, covariates@covariates]
    }
 
    # Load data in cmdstanr model
@@ -440,5 +456,4 @@ create_analysis_obj <- function(
 
    # Return
    return(analysis_obj)
-
 }
