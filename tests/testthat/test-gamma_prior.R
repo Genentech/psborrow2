@@ -1,5 +1,4 @@
 test_that("Gamma priors are rendering correctly", {
-
    # Make gamma prior
    prior <- gamma_prior(alpha = 2, beta = 3)
 
@@ -13,5 +12,6 @@ test_that("Gamma priors are rendering correctly", {
 
    # Errors
    expect_error(gamma_prior(alpha = -1, beta = -2),
-                regexp = "invalid class \"GammaPrior\" object: Both alpha and beta must be >= 0")
+      regexp = "invalid class .GammaPrior. object: Both alpha and beta must be >= 0"
+   )
 })

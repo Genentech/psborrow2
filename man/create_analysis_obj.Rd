@@ -79,7 +79,7 @@ anls <- create_analysis_obj(
       "BDB",
       "ext",
       exponential_prior(.001),
-      baseline_log_hazard_rate_or_odds_prior = normal_prior(0, 1000)
+      baseline_prior = normal_prior(0, 1000)
    ),
    treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
 )

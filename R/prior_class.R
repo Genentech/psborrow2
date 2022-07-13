@@ -1,8 +1,10 @@
 # Parent class
 setClass(
    "Prior",
-   slots = c(stan_code = "character",
-             n_param = "integer"),
+   slots = c(
+      stan_code = "character",
+      n_param = "integer"
+   ),
    contains = "VIRTUAL"
 )
 
@@ -11,8 +13,10 @@ setMethod(
    f = "show",
    signature = "Prior",
    definition = function(object) {
-      cat(class(object)[1],
-          "object with parameters",
-          glue::glue(object@stan_code, .open = "{{", .close = "}}"))
+      cat(
+         class(object)[1],
+         "object with parameters",
+         glue::glue(object@stan_code, .open = "{{", .close = "}}")
+      )
    }
 )

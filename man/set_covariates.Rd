@@ -21,7 +21,11 @@ Specify column names for adjustment variables in model matrix and prior
 distributions for the model parameters for these covariates (ie betas)
 }
 \examples{
-set_covariates(covariates = c('a','b'),
-               priors = list('a' = normal_prior(0,1),
-                             'b' = normal_prior(0,2)))
+set_covariates(
+   covariates = c("a", "b"),
+   priors = list(
+      "a" = normal_prior(0, 1),
+      "b" = normal_prior(0, 2)
+   )
+)
 }

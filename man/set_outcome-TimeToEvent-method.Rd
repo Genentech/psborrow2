@@ -20,6 +20,6 @@ An object of class \code{outcome_obj}
 Specify outcome details for time-to-event endpoint
 }
 \examples{
-oo <- set_outcome(exp_surv_dist(), 'time_months', 'cens_flag')
+oo <- set_outcome(exp_surv_dist(), "time_months", "cens_flag")
 
 }

@@ -11,11 +11,12 @@
 #' @export
 #'
 setGeneric("set_outcome", function(outcome_obj,
-                                   ...
-                                   ) {
-   if(! class(outcome_obj) %in% c("ExponentialSurvDist",
-                                  "WeibullPHSurvDist",
-                                  "LogisticBinaryEndpoint")) {
+                                   ...) {
+   if (!class(outcome_obj) %in% c(
+      "ExponentialSurvDist",
+      "WeibullPHSurvDist",
+      "LogisticBinaryEndpoint"
+   )) {
       stop("outcome_obj must be a time to event or binary outcome object")
    }
    standardGeneric("set_outcome")
@@ -31,18 +32,19 @@ setGeneric("set_outcome", function(outcome_obj,
 #' @export
 #'
 #' @examples
-#' oo <- set_outcome(exp_surv_dist(), 'time_months', 'cens_flag')
+#' oo <- set_outcome(exp_surv_dist(), "time_months", "cens_flag")
 #'
-setMethod("set_outcome",
-          c(outcome_obj = "TimeToEvent"),
-          function(outcome_obj,
-                   time_var,
-                   cens_var
-                   ) {
-             outcome_obj@time_var <- time_var
-             outcome_obj@cens_var <- cens_var
-             outcome_obj
-          })
+setMethod(
+   "set_outcome",
+   c(outcome_obj = "TimeToEvent"),
+   function(outcome_obj,
+            time_var,
+            cens_var) {
+      outcome_obj@time_var <- time_var
+      outcome_obj@cens_var <- cens_var
+      outcome_obj
+   }
+)
 
 #' Specify outcome details for binary endpoint
 #'
@@ -54,17 +56,14 @@ setMethod("set_outcome",
 #' @export
 #'
 #' @examples
-#' oo <- set_outcome(logistic_bin_endpoint(), 'outcome')
+#' oo <- set_outcome(logistic_bin_endpoint(), "outcome")
 #'
-setMethod("set_outcome",
-          c(outcome_obj = "BinaryEndpoint"),
-          function(outcome_obj,
-                   endpoint_var
-          ) {
-             outcome_obj@endpoint_var <- endpoint_var
-             outcome_obj
-          })
-
-
-
-
+setMethod(
+   "set_outcome",
+   c(outcome_obj = "BinaryEndpoint"),
+   function(outcome_obj,
+            endpoint_var) {
+      outcome_obj@endpoint_var <- endpoint_var
+      outcome_obj
+   }
+)

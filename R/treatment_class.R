@@ -4,10 +4,11 @@
 # Parent class
 .treatment_class <- setClass(
    "Treatment",
-   slots = c(trt_flag_col = "character",
-             trt_log_HR_or_OR_prior = "Prior"
+   slots = c(
+      trt_flag_col = "character",
+      trt_prior = "Prior"
    ),
-   prototype = c(trt_log_HR_or_OR_prior = normal_prior(0,10000)),
+   prototype = c(trt_prior = normal_prior(0, 10000)),
    validity = function(object) {
       return(TRUE)
    }
@@ -18,7 +19,9 @@ setMethod(
    f = "show",
    signature = "Treatment",
    definition = function(object) {
-      cat("Treatment class with experimental treatment flag ",
-          "column of `", object@trt_flag_col, "`")
+      cat(
+         "Treatment class with experimental treatment flag ",
+         "column of `", object@trt_flag_col, "`"
+      )
    }
 )

@@ -7,7 +7,7 @@ set prior for commensurability parameter tau}
 \usage{
 set_borrowing(
   method,
-  baseline_log_hazard_rate_or_odds_prior = NULL,
+  baseline_prior = NULL,
   ext_flag_col = NULL,
   tau_prior = NULL
 )
@@ -21,7 +21,7 @@ set_borrowing(
 historical controls
 }}
 
-\item{baseline_log_hazard_rate_or_odds_prior}{object of class \code{Prior}
+\item{baseline_prior}{object of class \code{Prior}
 specifying prior distribution for the baseline (ie the prior for the
 external control) log hazard rate or the log odds.}
 
@@ -38,5 +38,5 @@ Specify type of borrowing and, for Bayesian Dynamic Borrowing,
 set prior for commensurability parameter tau
 }
 \examples{
-sb <- set_borrowing('Full borrowing', normal_prior(0, 1000))
+sb <- set_borrowing("Full borrowing", normal_prior(0, 1000))
 }

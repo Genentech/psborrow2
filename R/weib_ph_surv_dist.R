@@ -24,7 +24,7 @@
               real lprob = -lambda * y^alpha;
               return lprob;
           }
-         ",.open="{{",.close="}}"),
+         ", .open = "{{", .close = "}}"),
       likelihood_stan_code =
          glue::glue("
          for (i in 1:N) {
@@ -33,14 +33,14 @@
             } else {
                target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i] );
             }
-         }", .open="{{",.close="}}"),
+         }", .open = "{{", .close = "}}"),
       param_stan_code = "real<lower=0> shape_weibull; ",
       param_priors = list(
          shape_weibull = exponential_prior(beta = 0.0001)
       )
    ),
    validity = function(object) {
-      if (!is(object@param_priors[['shape_weibull']], "Prior")) {
+      if (!is(object@param_priors[["shape_weibull"]], "Prior")) {
          return("shape_weibull must be of class 'Prior'")
       }
       return(TRUE)
@@ -57,7 +57,7 @@
 #'
 #' @examples
 #' ws <- weib_ph_surv_dist(exponential_prior(1))
-weib_ph_surv_dist <-  function(shape_prior = NULL) {
+weib_ph_surv_dist <- function(shape_prior = NULL) {
    if (is.null(shape_prior)) {
       .weib_ph_surv_dist()
    } else {

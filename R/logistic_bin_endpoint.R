@@ -10,8 +10,7 @@
          glue::glue("
          for (i in 1:N) {
             target += bernoulli_logit_lupmf(y[i] | lp[i]);
-         }", .open = "{{", .close = "}}"
-         )
+         }", .open = "{{", .close = "}}")
    ),
    validity = function(object) {
       return(TRUE)
@@ -25,6 +24,6 @@
 #'
 #' @examples
 #' lg <- logistic_bin_endpoint()
-logistic_bin_endpoint <-  function() {
+logistic_bin_endpoint <- function() {
    .logistic_bin_endpoint()
 }

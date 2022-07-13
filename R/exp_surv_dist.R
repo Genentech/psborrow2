@@ -14,8 +14,7 @@
             } else {
                target += exponential_lpdf(time[i] | elp[i] );
             }
-         }", .open = "{{", .close = "}}"
-         )
+         }", .open = "{{", .close = "}}")
    ),
    validity = function(object) {
       return(TRUE)
@@ -29,6 +28,6 @@
 #'
 #' @examples
 #' es <- exp_surv_dist()
-exp_surv_dist <-  function() {
+exp_surv_dist <- function() {
    .exp_surv_dist()
 }

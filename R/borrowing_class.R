@@ -1,24 +1,29 @@
 #' @include prior_class.R
 
-setClassUnion("PriorOrNULL", c("Prior","NULL"))
+setClassUnion("PriorOrNULL", c("Prior", "NULL"))
 setClassUnion("characterOrNULL", c("character", "NULL"))
 
 # Parent class
 .borrowing_class <- setClass(
    "Borrowing",
-   slots = c(method = "character",
-             ext_flag_col = "characterOrNULL",
-             tau_prior = "PriorOrNULL",
-             baseline_log_hazard_rate_or_odds_prior = "Prior"),
-   prototype = c(method = "No borrowing",
-                 ext_flag_col = NULL,
-                 tau_prior = NULL,
-                 baseline_log_hazard_rate_or_odds_prior = NULL),
+   slots = c(
+      method = "character",
+      ext_flag_col = "characterOrNULL",
+      tau_prior = "PriorOrNULL",
+      baseline_prior = "Prior"
+   ),
+   prototype = c(
+      method = "No borrowing",
+      ext_flag_col = NULL,
+      tau_prior = NULL,
+      baseline_prior = NULL
+   ),
    validity = function(object) {
       if (!object@method %in% c(
          "BDB",
          "Full borrowing",
-         "No borrowing")) {
+         "No borrowing"
+      )) {
          return("method must be within ('BDB', 'Full borrowing', 'No borrowing')")
       }
       if (object@method != "BDB" && !is.null(object@tau_prior)) {
@@ -37,7 +42,9 @@ setMethod(
    f = "show",
    signature = "Borrowing",
    definition = function(object) {
-      cat("Borrowing class: ",
-          object@method)
+      cat(
+         "Borrowing class: ",
+         object@method
+      )
    }
 )

@@ -18,5 +18,5 @@ object of class "NormalPrior"
 Prior normal distribution
 }
 \examples{
-np <- normal_prior(1,1)
+np <- normal_prior(1, 1)
 }

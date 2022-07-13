@@ -18,5 +18,5 @@ object of class "CauchyPrior"
 Prior cauchy distribution
 }
 \examples{
-cp <- cauchy_prior(1,1)
+cp <- cauchy_prior(1, 1)
 }

@@ -19,6 +19,6 @@ An object of class \code{outcome_obj}
 Specify outcome details for binary endpoint
 }
 \examples{
-oo <- set_outcome(logistic_bin_endpoint(), 'outcome')
+oo <- set_outcome(logistic_bin_endpoint(), "outcome")
 
 }

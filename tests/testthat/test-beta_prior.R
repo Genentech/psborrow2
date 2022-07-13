@@ -1,5 +1,4 @@
 test_that("Beta priors are rendering correctly", {
-
    # Make beta prior
    prior <- beta_prior(alpha = 2, beta = 3)
 
@@ -13,5 +12,6 @@ test_that("Beta priors are rendering correctly", {
 
    # Errors
    expect_error(beta_prior(alpha = -1, beta = -2),
-                regexp = "invalid class \"BetaPrior\" object: Both alpha and beta must be >= 0")
+      regexp = "invalid class .BetaPrior. object: Both alpha and beta must be >= 0"
+   )
 })

@@ -61,7 +61,7 @@
 #'       "BDB",
 #'       "ext",
 #'       exponential_prior(.001),
-#'       baseline_log_hazard_rate_or_odds_prior = normal_prior(0, 1000)
+#'       baseline_prior = normal_prior(0, 1000)
 #'    ),
 #'    treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
 #' )
@@ -301,7 +301,7 @@ create_analysis_obj <- function(model_matrix,
 
    ## Model string ----
    ### Set values shared by all
-   object <- treatment_arms@trt_log_HR_or_OR_prior
+   object <- treatment_arms@trt_prior
    beta_trt_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
    model_str <- glue::glue("model {
                            vector[N] lp;
@@ -361,7 +361,7 @@ create_analysis_obj <- function(model_matrix,
       object <- borrowing@tau_prior
       tau_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
 
-      object <- borrowing@baseline_log_hazard_rate_or_odds_prior
+      object <- borrowing@baseline_prior
       alpha_2_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
 
       model_str <- glue::glue("
@@ -376,7 +376,7 @@ create_analysis_obj <- function(model_matrix,
 
    ### Add in alphas if method is not BDB
    if (borrowing@method != "BDB") {
-      object <- borrowing@baseline_log_hazard_rate_or_odds_prior
+      object <- borrowing@baseline_prior
       alpha_prior <- glue::glue(object@stan_code, .open = "{{", .close = "}}")
 
       model_str <- glue::glue("

@@ -1,5 +1,4 @@
 test_that("Weibull survival distributions are rendering correctly", {
-
    # Make Weibull survival distribution
    surv_dist <- weib_ph_surv_dist()
 
@@ -10,5 +9,6 @@ test_that("Weibull survival distributions are rendering correctly", {
 
    # Errors
    expect_error(weib_ph_surv_dist(3),
-                regexp = "shape_weibull must be of class 'Prior'")
+      regexp = "shape_weibull must be of class 'Prior'"
+   )
 })

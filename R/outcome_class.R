@@ -7,14 +7,15 @@ setClass(
 # TimeToEvent class
 setClass(
    "TimeToEvent",
-   slots = c(function_stan_code = "character",
-             param_stan_code = "character",
-             likelihood_stan_code = "character",
-             n_param = "integer",
-             param_priors = "list",
-             time_var = "character",
-             cens_var = "character"
-             ),
+   slots = c(
+      function_stan_code = "character",
+      param_stan_code = "character",
+      likelihood_stan_code = "character",
+      n_param = "integer",
+      param_priors = "list",
+      time_var = "character",
+      cens_var = "character"
+   ),
    prototype = list(
       n_param = 0L,
       function_stan_code = "",
@@ -27,12 +28,13 @@ setClass(
 # BinaryEndpoint class
 setClass(
    "BinaryEndpoint",
-   slots = c(function_stan_code = "character",
-             param_stan_code = "character",
-             likelihood_stan_code = "character",
-             n_param = "integer",
-             param_priors = "list",
-             endpoint_var = "character"
+   slots = c(
+      function_stan_code = "character",
+      param_stan_code = "character",
+      likelihood_stan_code = "character",
+      n_param = "integer",
+      param_priors = "list",
+      endpoint_var = "character"
    ),
    prototype = list(
       n_param = 0L,

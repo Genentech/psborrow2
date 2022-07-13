@@ -5,17 +5,14 @@
 \title{Specify treatment arm column, external control arm column, and set
 priors for treatment effects and external control baseline hazard}
 \usage{
-set_treatment_arms(
-  trt_flag_col = "character",
-  trt_log_HR_or_OR_prior = "Prior"
-)
+set_treatment_arms(trt_flag_col = "character", trt_prior = "Prior")
 }
 \arguments{
 \item{trt_flag_col}{name of the column in the model matrix which contains
 flags (1/0 or T/F) for experimental treatment (1 = experimental treatment,
 0 = control treatment)}
 
-\item{trt_log_HR_or_OR_prior}{object of class \code{Prior} specifying the
+\item{trt_prior}{object of class \code{Prior} specifying the
 prior distribution of the log effect estimate (log hazard ratio for
 time to event endpoints and log odds ratio for binary endpoints)}
 }
@@ -29,7 +26,7 @@ priors for treatment effects and external control baseline hazard
 \examples{
 
 sta <- set_treatment_arms(
-   trt_flag_col = 'trt',
-   trt_log_HR_or_OR_prior = normal_prior(0, 10000)
+   trt_flag_col = "trt",
+   trt_prior = normal_prior(0, 10000)
 )
 }

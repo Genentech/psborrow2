@@ -4,8 +4,10 @@
 .beta_prior <- setClass(
    "BetaPrior",
    contains = "Prior",
-   slots = c(alpha = "numeric",
-             beta = "numeric"),
+   slots = c(
+      alpha = "numeric",
+      beta = "numeric"
+   ),
    prototype = list(
       n_param = 2L,
       stan_code = "beta({{object@alpha}}, {{object@beta}})"
@@ -27,7 +29,7 @@
 #' @export
 #'
 #' @examples
-#' bp <- beta_prior(9,235)
+#' bp <- beta_prior(9, 235)
 beta_prior <- function(alpha, beta) {
    .beta_prior(alpha = alpha, beta = beta)
 }

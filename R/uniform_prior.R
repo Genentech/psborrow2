@@ -4,8 +4,10 @@
 .uniform_prior <- setClass(
    "UniformPrior",
    contains = "Prior",
-   slots = c(alpha = "numeric",
-             beta = "numeric"),
+   slots = c(
+      alpha = "numeric",
+      beta = "numeric"
+   ),
    prototype = list(
       n_param = 2L,
       stan_code = "uniform({{object@alpha}}, {{object@beta}})"

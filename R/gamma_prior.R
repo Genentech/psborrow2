@@ -4,8 +4,10 @@
 .gamma_prior <- setClass(
    "GammaPrior",
    contains = "Prior",
-   slots = c(alpha = "numeric",
-             beta = "numeric"),
+   slots = c(
+      alpha = "numeric",
+      beta = "numeric"
+   ),
    prototype = list(
       n_param = 2L,
       stan_code = "gamma({{object@alpha}}, {{object@beta}})"
