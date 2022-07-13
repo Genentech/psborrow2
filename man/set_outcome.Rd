@@ -20,5 +20,5 @@ Specify outcome details
 \details{
 For TimeToEvent objects, additionally specify
 time_var, the name of the time variable column in the model matrix
-cens_var, the name of the censorship varaible column in the model matrix
+cens_var, the name of the censorship variable column in the model matrix
 }
