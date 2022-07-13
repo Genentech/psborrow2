@@ -18,5 +18,5 @@ object of class "BetaPrior"
 Prior beta distribution
 }
 \examples{
-bp <- beta_prior(9,235)
+bp <- beta_prior(9, 235)
 }

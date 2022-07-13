@@ -46,11 +46,13 @@ Remotes:
 Language: en-US
 SystemRequirements: cmdstan
 Collate: 
-    'prior.R'
+    'prior_class.R'
     'bernoulli_prior.R'
     'beta_prior.R'
     'cauchy_prior.R'
     'cmdstan.R'
+    'exponential_prior.R'
+    'gamma_prior.R'
     'hello.R'
     'normal_prior.R'
     'package.R'

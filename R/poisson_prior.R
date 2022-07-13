@@ -1,4 +1,4 @@
-#' @include prior.R
+#' @include prior_class.R
 
 # Internal constructor
 .poisson_prior <- setClass(
@@ -7,7 +7,7 @@
    slots = c(lambda = "numeric"),
    prototype = list(
       n_param = 1L,
-      stan_code = "poisson(lambda={{object@lambda}})"
+      stan_code = "poisson({{object@lambda}})"
    ),
    validity = function(object) {
       if (object@lambda <= 0) {

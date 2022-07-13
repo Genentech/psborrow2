@@ -1,14 +1,16 @@
-#' @include prior.R
+#' @include prior_class.R
 
 # Internal constructor
 .uniform_prior <- setClass(
    "UniformPrior",
    contains = "Prior",
-   slots = c(alpha = "numeric",
-             beta = "numeric"),
+   slots = c(
+      alpha = "numeric",
+      beta = "numeric"
+   ),
    prototype = list(
       n_param = 2L,
-      stan_code = "uniform(alpha={{object@alpha}}, beta={{object@beta}})"
+      stan_code = "uniform({{object@alpha}}, {{object@beta}})"
    ),
    validity = function(object) {
       if (object@beta <= object@alpha) {
