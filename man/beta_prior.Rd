@@ -7,9 +7,9 @@
 beta_prior(alpha, beta)
 }
 \arguments{
-\item{alpha}{alpha}
+\item{alpha}{shape (>=0)}
 
-\item{beta}{beta}
+\item{beta}{shape (>=0)}
 }
 \value{
 object of class "BetaPrior"
@@ -20,3 +20,15 @@ Prior beta distribution
 \examples{
 bp <- beta_prior(9, 235)
 }
+\seealso{
+Other priors: 
+\code{\link{Prior-class}},
+\code{\link{bernoulli_prior}()},
+\code{\link{cauchy_prior}()},
+\code{\link{exponential_prior}()},
+\code{\link{gamma_prior}()},
+\code{\link{normal_prior}()},
+\code{\link{poisson_prior}()},
+\code{\link{uniform_prior}()}
+}
+\concept{priors}

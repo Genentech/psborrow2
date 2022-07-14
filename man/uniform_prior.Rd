@@ -20,3 +20,15 @@ Prior uniform distribution
 \examples{
 up <- uniform_prior(0, 1)
 }
+\seealso{
+Other priors: 
+\code{\link{Prior-class}},
+\code{\link{bernoulli_prior}()},
+\code{\link{beta_prior}()},
+\code{\link{cauchy_prior}()},
+\code{\link{exponential_prior}()},
+\code{\link{gamma_prior}()},
+\code{\link{normal_prior}()},
+\code{\link{poisson_prior}()}
+}
+\concept{priors}

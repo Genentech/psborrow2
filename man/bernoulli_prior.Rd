@@ -7,7 +7,7 @@
 bernoulli_prior(theta)
 }
 \arguments{
-\item{theta}{theta}
+\item{theta}{probability (\link{0, 1})}
 }
 \value{
 object of class "BernoulliPrior"
@@ -18,3 +18,15 @@ Prior binomial distribution
 \examples{
 bp <- bernoulli_prior(0.23)
 }
+\seealso{
+Other priors: 
+\code{\link{Prior-class}},
+\code{\link{beta_prior}()},
+\code{\link{cauchy_prior}()},
+\code{\link{exponential_prior}()},
+\code{\link{gamma_prior}()},
+\code{\link{normal_prior}()},
+\code{\link{poisson_prior}()},
+\code{\link{uniform_prior}()}
+}
+\concept{priors}
