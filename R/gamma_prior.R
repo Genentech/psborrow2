@@ -25,6 +25,9 @@
 #' @param alpha shape (>0)
 #' @param beta inverse scale (>=0)
 #'
+#' @details
+#' Stan reference <https://mc-stan.org/docs/functions-reference/gamma-distribution.html>
+#'
 #' @return object of class "GammaPrior"
 #' @export
 #' @family priors

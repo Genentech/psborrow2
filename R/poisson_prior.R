@@ -21,6 +21,9 @@
 #'
 #' @param lambda rate (>0)
 #'
+#' @details
+#' Stan reference <https://mc-stan.org/docs/functions-reference/poisson.html>
+#'
 #' @return object of class "PoissonPrior"
 #' @export
 #' @family priors

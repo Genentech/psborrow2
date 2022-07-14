@@ -17,6 +17,9 @@ object of class "BetaPrior"
 \description{
 Prior beta distribution
 }
+\details{
+Stan reference \url{https://mc-stan.org/docs/functions-reference/beta-distribution.html}
+}
 \examples{
 bp <- beta_prior(9, 235)
 }

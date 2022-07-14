@@ -21,6 +21,9 @@
 #'
 #' @param beta inverse scale (>0)
 #'
+#' @details
+#' Stan reference <https://mc-stan.org/docs/functions-reference/exponential-distribution.html>
+#'
 #' @return object of class "ExponentialPrior"
 #' @export
 #' @family priors

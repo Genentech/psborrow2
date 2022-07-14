@@ -15,6 +15,9 @@ object of class "PoissonPrior"
 \description{
 Prior poisson distribution
 }
+\details{
+Stan reference \url{https://mc-stan.org/docs/functions-reference/poisson.html}
+}
 \examples{
 pp <- poisson_prior(100)
 }

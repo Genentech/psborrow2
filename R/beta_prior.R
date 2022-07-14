@@ -25,6 +25,9 @@
 #' @param alpha shape (>=0)
 #' @param beta shape (>=0)
 #'
+#' @details
+#' Stan reference <https://mc-stan.org/docs/functions-reference/beta-distribution.html>
+#'
 #' @return object of class "BetaPrior"
 #' @export
 #' @family priors

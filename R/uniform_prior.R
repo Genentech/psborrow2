@@ -22,8 +22,11 @@
 
 #' Prior uniform distribution
 #'
-#' @param alpha lower bounds
-#' @param beta upper bounds
+#' @param alpha lower bound
+#' @param beta upper bound (>`alpha`)
+#'
+#' @details
+#' Stan reference <https://mc-stan.org/docs/functions-reference/uniform-distribution.html>
 #'
 #' @return object of class "UniformPrior"
 #' @export

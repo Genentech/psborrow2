@@ -17,6 +17,9 @@ object of class "CauchyPrior"
 \description{
 Prior cauchy distribution
 }
+\details{
+Stan reference \url{https://mc-stan.org/docs/functions-reference/cauchy-distribution.html}
+}
 \examples{
 cp <- cauchy_prior(1, 1)
 }

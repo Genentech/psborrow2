@@ -17,6 +17,9 @@ object of class "GammaPrior"
 \description{
 Prior gamma distribution
 }
+\details{
+Stan reference \url{https://mc-stan.org/docs/functions-reference/gamma-distribution.html}
+}
 \examples{
 gp <- gamma_prior(0.001, 0.001)
 }

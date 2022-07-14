@@ -19,7 +19,10 @@
 
 #' Prior binomial distribution
 #'
-#' @param theta probability ([0, 1])
+#' @param theta probability (in \[0, 1\])
+#'
+#' @details
+#' Stan reference <https://mc-stan.org/docs/functions-reference/bernoulli-distribution.html>
 #'
 #' @return object of class "BernoulliPrior"
 #' @export

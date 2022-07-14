@@ -25,6 +25,9 @@
 #' @param mu location
 #' @param sigma scale (>0)
 #'
+#' @details
+#' Stan reference <https://mc-stan.org/docs/functions-reference/normal-distribution.html>
+#'
 #' @return object of class "NormalPrior"
 #' @export
 #' @family priors

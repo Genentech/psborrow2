@@ -25,6 +25,9 @@
 #' @param mu location
 #' @param sigma scale (>0)
 #'
+#' @details
+#' Stan reference <https://mc-stan.org/docs/functions-reference/cauchy-distribution.html>
+#'
 #' @return object of class "CauchyPrior"
 #' @export
 #' @family priors

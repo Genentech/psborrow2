@@ -15,6 +15,9 @@ object of class "ExponentialPrior"
 \description{
 Prior exponential distribution
 }
+\details{
+Stan reference \url{https://mc-stan.org/docs/functions-reference/exponential-distribution.html}
+}
 \examples{
 ep <- exponential_prior(1)
 }

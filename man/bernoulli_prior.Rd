@@ -7,13 +7,16 @@
 bernoulli_prior(theta)
 }
 \arguments{
-\item{theta}{probability (\link{0, 1})}
+\item{theta}{probability (in [0, 1])}
 }
 \value{
 object of class "BernoulliPrior"
 }
 \description{
 Prior binomial distribution
+}
+\details{
+Stan reference \url{https://mc-stan.org/docs/functions-reference/bernoulli-distribution.html}
 }
 \examples{
 bp <- bernoulli_prior(0.23)

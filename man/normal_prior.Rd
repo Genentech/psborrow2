@@ -17,6 +17,9 @@ object of class "NormalPrior"
 \description{
 Prior normal distribution
 }
+\details{
+Stan reference \url{https://mc-stan.org/docs/functions-reference/normal-distribution.html}
+}
 \examples{
 np <- normal_prior(1, 1)
 }
