@@ -6,7 +6,7 @@ repos:
     rev: v0.3.2
     hooks:
       - id: style-files
-        args: [--indent_by=3]
+        args: []
       - id: roxygenize
         additional_dependencies:
           - knitr
