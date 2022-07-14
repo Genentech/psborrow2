@@ -7,9 +7,9 @@
 gamma_prior(alpha, beta)
 }
 \arguments{
-\item{alpha}{shape}
+\item{alpha}{shape (>0)}
 
-\item{beta}{inverse scale}
+\item{beta}{inverse scale (>=0)}
 }
 \value{
 object of class "GammaPrior"
@@ -17,6 +17,21 @@ object of class "GammaPrior"
 \description{
 Prior gamma distribution
 }
+\details{
+Stan reference \url{https://mc-stan.org/docs/functions-reference/gamma-distribution.html}
+}
 \examples{
 gp <- gamma_prior(0.001, 0.001)
 }
+\seealso{
+Other priors: 
+\code{\link{Prior-class}},
+\code{\link{bernoulli_prior}()},
+\code{\link{beta_prior}()},
+\code{\link{cauchy_prior}()},
+\code{\link{exponential_prior}()},
+\code{\link{normal_prior}()},
+\code{\link{poisson_prior}()},
+\code{\link{uniform_prior}()}
+}
+\concept{priors}

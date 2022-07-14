@@ -7,7 +7,7 @@
 exponential_prior(beta)
 }
 \arguments{
-\item{beta}{inverse scale}
+\item{beta}{inverse scale (>0)}
 }
 \value{
 object of class "ExponentialPrior"
@@ -15,6 +15,21 @@ object of class "ExponentialPrior"
 \description{
 Prior exponential distribution
 }
+\details{
+Stan reference \url{https://mc-stan.org/docs/functions-reference/exponential-distribution.html}
+}
 \examples{
 ep <- exponential_prior(1)
 }
+\seealso{
+Other priors: 
+\code{\link{Prior-class}},
+\code{\link{bernoulli_prior}()},
+\code{\link{beta_prior}()},
+\code{\link{cauchy_prior}()},
+\code{\link{gamma_prior}()},
+\code{\link{normal_prior}()},
+\code{\link{poisson_prior}()},
+\code{\link{uniform_prior}()}
+}
+\concept{priors}

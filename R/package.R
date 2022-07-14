@@ -1,4 +1,4 @@
 #' @import checkmate
 #' @import cmdstanr
-#' @import methods
+#' @importFrom methods new
 NULL

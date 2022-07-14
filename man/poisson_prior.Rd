@@ -7,7 +7,7 @@
 poisson_prior(lambda)
 }
 \arguments{
-\item{lambda}{lambda}
+\item{lambda}{rate (>0)}
 }
 \value{
 object of class "PoissonPrior"
@@ -15,6 +15,21 @@ object of class "PoissonPrior"
 \description{
 Prior poisson distribution
 }
+\details{
+Stan reference \url{https://mc-stan.org/docs/functions-reference/poisson.html}
+}
 \examples{
 pp <- poisson_prior(100)
 }
+\seealso{
+Other priors: 
+\code{\link{Prior-class}},
+\code{\link{bernoulli_prior}()},
+\code{\link{beta_prior}()},
+\code{\link{cauchy_prior}()},
+\code{\link{exponential_prior}()},
+\code{\link{gamma_prior}()},
+\code{\link{normal_prior}()},
+\code{\link{uniform_prior}()}
+}
+\concept{priors}

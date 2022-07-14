@@ -2,30 +2,33 @@
 
 # Internal constructor
 .bernoulli_prior <- setClass(
-   "BernoulliPrior",
-   contains = "Prior",
-   slots = c(theta = "numeric"),
-   prototype = list(
-      n_param = 1L,
-      stan_code = "bernoulli({{object@theta}})"
-   ),
-   validity = function(object) {
-      if (object@theta < 0 || object@theta > 1) {
-         return("theta must be within [0,1]")
-      }
-      return(TRUE)
-   }
+  "BernoulliPrior",
+  contains = "Prior",
+  slots = c(theta = "numeric"),
+  prototype = list(
+    n_param = 1L,
+    stan_code = "bernoulli({{object@theta}})"
+  ),
+  validity = function(object) {
+    if (object@theta < 0 || object@theta > 1) {
+      return("theta must be within [0,1]")
+    }
+    return(TRUE)
+  }
 )
 
 #' Prior binomial distribution
 #'
-#' @param theta theta
+#' @param theta probability (in \[0, 1\])
+#'
+#' @details
+#' Stan reference <https://mc-stan.org/docs/functions-reference/bernoulli-distribution.html>
 #'
 #' @return object of class "BernoulliPrior"
 #' @export
-#'
+#' @family priors
 #' @examples
 #' bp <- bernoulli_prior(0.23)
 bernoulli_prior <- function(theta) {
-   .bernoulli_prior(theta = theta)
+  .bernoulli_prior(theta = theta)
 }

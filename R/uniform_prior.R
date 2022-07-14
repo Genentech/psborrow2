@@ -2,34 +2,37 @@
 
 # Internal constructor
 .uniform_prior <- setClass(
-   "UniformPrior",
-   contains = "Prior",
-   slots = c(
-      alpha = "numeric",
-      beta = "numeric"
-   ),
-   prototype = list(
-      n_param = 2L,
-      stan_code = "uniform({{object@alpha}}, {{object@beta}})"
-   ),
-   validity = function(object) {
-      if (object@beta <= object@alpha) {
-         return("beta must be > alpha")
-      }
-      return(TRUE)
-   }
+  "UniformPrior",
+  contains = "Prior",
+  slots = c(
+    alpha = "numeric",
+    beta = "numeric"
+  ),
+  prototype = list(
+    n_param = 2L,
+    stan_code = "uniform({{object@alpha}}, {{object@beta}})"
+  ),
+  validity = function(object) {
+    if (object@beta <= object@alpha) {
+      return("beta must be > alpha")
+    }
+    return(TRUE)
+  }
 )
 
 #' Prior uniform distribution
 #'
-#' @param alpha lower bounds
-#' @param beta upper bounds
+#' @param alpha lower bound
+#' @param beta upper bound (>`alpha`)
+#'
+#' @details
+#' Stan reference <https://mc-stan.org/docs/functions-reference/uniform-distribution.html>
 #'
 #' @return object of class "UniformPrior"
 #' @export
-#'
+#' @family priors
 #' @examples
 #' up <- uniform_prior(0, 1)
 uniform_prior <- function(alpha, beta) {
-   .uniform_prior(alpha = alpha, beta = beta)
+  .uniform_prior(alpha = alpha, beta = beta)
 }

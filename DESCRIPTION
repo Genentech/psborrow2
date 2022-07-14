@@ -38,8 +38,7 @@ Imports:
    cmdstanr,
    checkmate,
    glue,
-   methods,
-   stats
+   methods
 Suggests:
    testthat (>= 3.0),
    xml2
@@ -49,22 +48,14 @@ Language: en-US
 SystemRequirements: cmdstan
 Collate:
     'prior_class.R'
-    'normal_prior.R'
-    'treatment_class.R'
-    'borrowing_class.R'
-    'outcome_class.R'
-    'covariate_class.R'
-    'analysis_class.R'
     'bernoulli_prior.R'
     'beta_prior.R'
     'cauchy_prior.R'
     'cmdstan.R'
-    'create_analysis_obj.R'
-    'exp_surv_dist.R'
     'exponential_prior.R'
     'gamma_prior.R'
-    'logistic_bin_endpoint.R'
-    'mcmc_sample.R'
+    'hello.R'
+    'normal_prior.R'
     'package.R'
     'poisson_prior.R'
     'set_borrowing.R'

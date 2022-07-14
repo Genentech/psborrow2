@@ -7,9 +7,9 @@
 uniform_prior(alpha, beta)
 }
 \arguments{
-\item{alpha}{lower bounds}
+\item{alpha}{lower bound}
 
-\item{beta}{upper bounds}
+\item{beta}{upper bound (>\code{alpha})}
 }
 \value{
 object of class "UniformPrior"
@@ -17,6 +17,21 @@ object of class "UniformPrior"
 \description{
 Prior uniform distribution
 }
+\details{
+Stan reference \url{https://mc-stan.org/docs/functions-reference/uniform-distribution.html}
+}
 \examples{
 up <- uniform_prior(0, 1)
 }
+\seealso{
+Other priors: 
+\code{\link{Prior-class}},
+\code{\link{bernoulli_prior}()},
+\code{\link{beta_prior}()},
+\code{\link{cauchy_prior}()},
+\code{\link{exponential_prior}()},
+\code{\link{gamma_prior}()},
+\code{\link{normal_prior}()},
+\code{\link{poisson_prior}()}
+}
+\concept{priors}
