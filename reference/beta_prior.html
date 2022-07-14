@@ -68,11 +68,11 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>alpha</dt>
-<dd><p>alpha</p></dd>
+<dd><p>shape (&gt;=0)</p></dd>
 
 
 <dt>beta</dt>
-<dd><p>beta</p></dd>
+<dd><p>shape (&gt;=0)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -81,10 +81,26 @@
 
 <p>object of class "BetaPrior"</p>
     </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Stan reference <a href="https://mc-stan.org/docs/functions-reference/beta-distribution.html" class="external-link">https://mc-stan.org/docs/functions-reference/beta-distribution.html</a></p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other priors: 
+<code><a href="Prior-class.html">Prior-class</a></code>,
+<code><a href="bernoulli_prior.html">bernoulli_prior</a>()</code>,
+<code><a href="cauchy_prior.html">cauchy_prior</a>()</code>,
+<code><a href="exponential_prior.html">exponential_prior</a>()</code>,
+<code><a href="gamma_prior.html">gamma_prior</a>()</code>,
+<code><a href="normal_prior.html">normal_prior</a>()</code>,
+<code><a href="poisson_prior.html">poisson_prior</a>()</code>,
+<code><a href="uniform_prior.html">uniform_prior</a>()</code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">bp</span> <span class="op">&lt;-</span> <span class="fu">beta_prior</span><span class="op">(</span><span class="fl">9</span>,<span class="fl">235</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">bp</span> <span class="op">&lt;-</span> <span class="fu">beta_prior</span><span class="op">(</span><span class="fl">9</span>, <span class="fl">235</span><span class="op">)</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -31,6 +31,9 @@
     <loc>improved-waffle-bf365a9a.pages.github.io/news/index.html</loc>
   </url>
   <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Prior-class.html</loc>
+  </url>
+  <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/bernoulli_prior.html</loc>
   </url>
   <url>
@@ -41,6 +44,12 @@
   </url>
   <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/check_cmdstanr.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/exponential_prior.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/gamma_prior.html</loc>
   </url>
   <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/hello.html</loc>
