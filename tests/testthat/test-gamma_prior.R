@@ -14,7 +14,7 @@ test_that("Gamma priors are rendering correctly", {
   expect_error(gamma_prior(alpha = -1, beta = -2),
     regexp = "invalid class .GammaPrior. object: Both alpha and beta must be >= 0"
   )
-expect_error(gamma_prior(alpha = 1, beta = -2),
+  expect_error(gamma_prior(alpha = 1, beta = -2),
     regexp = "invalid class .GammaPrior. object: Both alpha and beta must be >= 0"
   )
 })
