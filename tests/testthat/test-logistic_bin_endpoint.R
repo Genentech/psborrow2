@@ -1,6 +1,5 @@
 test_that("LogisticBinaryEndpoint distribution is rendering correctly", {
-
-  # Binomail endpoint class
+  # Binomial endpoint class
   bin_endpoint <- logistic_bin_endpoint()
 
   # Expect correct class
