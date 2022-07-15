@@ -4,12 +4,12 @@
 
 # Internal constructor
 .weib_ph_surv_dist <- setClass(
-   "WeibullPHSurvDist",
-   contains = "TimeToEvent",
-   prototype = list(
-      n_param = 1L,
-      function_stan_code =
-         glue::glue("
+  "WeibullPHSurvDist",
+  contains = "TimeToEvent",
+  prototype = list(
+    n_param = 1L,
+    function_stan_code =
+      glue::glue("
           real weibull_ph_lpdf(real y, real alpha, real lambda) {
               real lprob = log(alpha) + log(lambda) + (alpha - 1) * log(y) - lambda * (y^alpha);
               return lprob;
@@ -25,8 +25,8 @@
               return lprob;
           }
          ", .open = "{{", .close = "}}"),
-      likelihood_stan_code =
-         glue::glue("
+    likelihood_stan_code =
+      glue::glue("
          for (i in 1:N) {
             if (cens[i] == 1) {
                target += weibull_ph_lccdf(time[i] | shape_weibull, elp[i] );
@@ -34,17 +34,17 @@
                target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i] );
             }
          }", .open = "{{", .close = "}}"),
-      param_stan_code = "real<lower=0> shape_weibull; ",
-      param_priors = list(
-         shape_weibull = exponential_prior(beta = 0.0001)
-      )
-   ),
-   validity = function(object) {
-      if (!is(object@param_priors[["shape_weibull"]], "Prior")) {
-         return("shape_weibull must be of class 'Prior'")
-      }
-      return(TRUE)
-   }
+    param_stan_code = "real<lower=0> shape_weibull; ",
+    param_priors = list(
+      shape_weibull = exponential_prior(beta = 0.0001)
+    )
+  ),
+  validity = function(object) {
+    if (!is(object@param_priors[["shape_weibull"]], "Prior")) {
+      return("shape_weibull must be of class 'Prior'")
+    }
+    return(TRUE)
+  }
 )
 
 #' Weibull survival distribution (proportional hazards formulation)
@@ -58,13 +58,13 @@
 #' @examples
 #' ws <- weib_ph_surv_dist(exponential_prior(1))
 weib_ph_surv_dist <- function(shape_prior = NULL) {
-   if (is.null(shape_prior)) {
-      .weib_ph_surv_dist()
-   } else {
-      .weib_ph_surv_dist(
-         param_priors = list(
-            shape_weibull = shape_prior
-         )
+  if (is.null(shape_prior)) {
+    .weib_ph_surv_dist()
+  } else {
+    .weib_ph_surv_dist(
+      param_priors = list(
+        shape_weibull = shape_prior
       )
-   }
+    )
+  }
 }

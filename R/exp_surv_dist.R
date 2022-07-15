@@ -2,12 +2,12 @@
 
 # Internal constructor
 .exp_surv_dist <- setClass(
-   "ExponentialSurvDist",
-   contains = "TimeToEvent",
-   prototype = list(
-      n_param = 0L,
-      likelihood_stan_code =
-         glue::glue("
+  "ExponentialSurvDist",
+  contains = "TimeToEvent",
+  prototype = list(
+    n_param = 0L,
+    likelihood_stan_code =
+      glue::glue("
          for (i in 1:N) {
             if (cens[i] == 1) {
                target += exponential_lccdf(time[i] | elp[i] );
@@ -15,10 +15,10 @@
                target += exponential_lpdf(time[i] | elp[i] );
             }
          }", .open = "{{", .close = "}}")
-   ),
-   validity = function(object) {
-      return(TRUE)
-   }
+  ),
+  validity = function(object) {
+    return(TRUE)
+  }
 )
 
 #' Exponential survival distribution
@@ -29,5 +29,5 @@
 #' @examples
 #' es <- exp_surv_dist()
 exp_surv_dist <- function() {
-   .exp_surv_dist()
+  .exp_surv_dist()
 }

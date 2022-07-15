@@ -13,14 +13,14 @@
 #'
 setGeneric("set_outcome", function(outcome_obj,
                                    ...) {
-   if (!class(outcome_obj) %in% c(
-      "ExponentialSurvDist",
-      "WeibullPHSurvDist",
-      "LogisticBinaryEndpoint"
-   )) {
-      stop("outcome_obj must be a time to event or binary outcome object")
-   }
-   standardGeneric("set_outcome")
+  if (!class(outcome_obj) %in% c(
+    "ExponentialSurvDist",
+    "WeibullPHSurvDist",
+    "LogisticBinaryEndpoint"
+  )) {
+    stop("outcome_obj must be a time to event or binary outcome object")
+  }
+  standardGeneric("set_outcome")
 })
 
 #' Specify outcome details for time-to-event endpoint
@@ -38,15 +38,15 @@ setGeneric("set_outcome", function(outcome_obj,
 #' oo <- set_outcome(exp_surv_dist(), "time_months", "cens_flag")
 #'
 setMethod(
-   "set_outcome",
-   c(outcome_obj = "TimeToEvent"),
-   function(outcome_obj,
-            time_var,
-            cens_var, ...) {
-      outcome_obj@time_var <- time_var
-      outcome_obj@cens_var <- cens_var
-      outcome_obj
-   }
+  "set_outcome",
+  c(outcome_obj = "TimeToEvent"),
+  function(outcome_obj,
+           time_var,
+           cens_var, ...) {
+    outcome_obj@time_var <- time_var
+    outcome_obj@cens_var <- cens_var
+    outcome_obj
+  }
 )
 
 #' Specify outcome details for binary endpoint
@@ -64,11 +64,11 @@ setMethod(
 #' oo <- set_outcome(logistic_bin_endpoint(), "outcome")
 #'
 setMethod(
-   "set_outcome",
-   c(outcome_obj = "BinaryEndpoint"),
-   function(outcome_obj,
-            endpoint_var, ...) {
-      outcome_obj@endpoint_var <- endpoint_var
-      outcome_obj
-   }
+  "set_outcome",
+  c(outcome_obj = "BinaryEndpoint"),
+  function(outcome_obj,
+           endpoint_var, ...) {
+    outcome_obj@endpoint_var <- endpoint_var
+    outcome_obj
+  }
 )
