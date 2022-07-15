@@ -8,14 +8,12 @@
 \usage{
 set_outcome(outcome_obj, ...)
 
-\S4method{set_outcome}{TimeToEvent}(outcome_obj, time_var, cens_var, ...)
+\S4method{set_outcome}{TimeToEvent}(outcome_obj, time_var, cens_var)
 
-\S4method{set_outcome}{BinaryEndpoint}(outcome_obj, endpoint_var, ...)
+\S4method{set_outcome}{BinaryEndpoint}(outcome_obj, endpoint_var)
 }
 \arguments{
-\item{outcome_obj}{BinaryEndpoint object}
-
-\item{...}{Additional arguments passed to set_outcome()}
+\item{outcome_obj}{A \code{TimeToEvent} or \code{BinaryEndpoint} object}
 
 \item{time_var}{Name of time variable column in model matrix}
 
@@ -25,23 +23,10 @@ set_outcome(outcome_obj, ...)
 model matrix}
 }
 \value{
-An object of class \code{outcome_obj}
-
-An object of class \code{outcome_obj}
-
-An object of class \code{outcome_obj}
+An object inheriting from \code{Outcome} class
 }
 \description{
-Specify outcome details
-
-Specify outcome details for time-to-event endpoint
-
-Specify outcome details for binary endpoint
-}
-\details{
-For TimeToEvent objects, additionally specify
-time_var, the name of the time variable column in the model matrix
-cens_var, the name of the censorship variable column in the model matrix
+Specify the outcome model for time to event or binary endpoints.
 }
 \examples{
 

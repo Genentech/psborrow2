@@ -49,10 +49,10 @@
 
 #' Weibull survival distribution (proportional hazards formulation)
 #'
-#' @param shape_prior (optional) Prior class object for the Weibull shape
+#' @param shape_prior (optional) `Prior` class object for the Weibull shape
 #' parameter
 #'
-#' @return object of class "WeibullPHSurvDist"
+#' @return object of class `WeibullPHSurvDist`
 #' @export
 #'
 #' @examples

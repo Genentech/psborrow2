@@ -7,11 +7,11 @@
 weib_ph_surv_dist(shape_prior = NULL)
 }
 \arguments{
-\item{shape_prior}{(optional) Prior class object for the Weibull shape
+\item{shape_prior}{(optional) \code{Prior} class object for the Weibull shape
 parameter}
 }
 \value{
-object of class "WeibullPHSurvDist"
+object of class \code{WeibullPHSurvDist}
 }
 \description{
 Weibull survival distribution (proportional hazards formulation)
