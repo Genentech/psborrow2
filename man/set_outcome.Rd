@@ -3,30 +3,32 @@
 \name{set_outcome}
 \alias{set_outcome}
 \alias{set_outcome,TimeToEvent-method}
-\alias{set_outcome,BinaryEndpoint-method}
+\alias{set_outcome,BinaryOutcome-method}
 \title{Specify outcome details}
 \usage{
 set_outcome(outcome_obj, ...)
 
 \S4method{set_outcome}{TimeToEvent}(outcome_obj, time_var, cens_var)
 
-\S4method{set_outcome}{BinaryEndpoint}(outcome_obj, endpoint_var)
+\S4method{set_outcome}{BinaryOutcome}(outcome_obj, binary_var)
 }
 \arguments{
-\item{outcome_obj}{A \code{TimeToEvent} or \code{BinaryEndpoint} object}
+\item{outcome_obj}{A \code{TimeToEvent} or \code{BinaryOutcome} object}
+
+\item{...}{Passed to class specific methods.}
 
 \item{time_var}{Name of time variable column in model matrix}
 
 \item{cens_var}{Name of the censorship variable flag in model matrix}
 
-\item{endpoint_var}{Name of binary (1/0 or T/F) endpoint variable in the
+\item{binary_var}{Name of binary (1/0 or T/F) outcome variable in the
 model matrix}
 }
 \value{
-An object inheriting from \code{Outcome} class
+An object inheriting from \code{\link[=Outcome-class]{Outcome}} class
 }
 \description{
-Specify the outcome model for time to event or binary endpoints.
+Specify the outcome model for time to event or binary outcomes
 }
 \examples{
 
@@ -35,6 +37,6 @@ oo <- set_outcome(exp_surv_dist(), "time_months", "cens_flag")
 
 
 # For binary outcomes
-oo <- set_outcome(logistic_bin_endpoint(), "outcome")
+oo <- set_outcome(logistic_bin_outcome(), "outcome")
 
 }

@@ -1,11 +1,12 @@
 #' Specify outcome details
 #'
-#' Specify the outcome model for time to event or binary endpoints.
+#' Specify the outcome model for time to event or binary outcomes
 #'
-#' @param outcome_obj A `TimeToEvent` or `BinaryEndpoint` object
+#' @param outcome_obj A `TimeToEvent` or `BinaryOutcome` object
+#' @param ... Passed to class specific methods.
 #'
 #' @rdname set_outcome
-#' @return An object inheriting from `Outcome` class
+#' @return An object inheriting from [`Outcome`][Outcome-class] class
 #' @export
 #'
 setGeneric("set_outcome", function(outcome_obj,
@@ -13,7 +14,7 @@ setGeneric("set_outcome", function(outcome_obj,
   if (!class(outcome_obj) %in% c(
     "ExponentialSurvDist",
     "WeibullPHSurvDist",
-    "LogisticBinaryEndpoint"
+    "LogisticBinaryOutcome"
   )) {
     stop("outcome_obj must be a time to event or binary outcome object")
   }
@@ -44,7 +45,7 @@ setMethod(
 )
 
 
-#' @param endpoint_var Name of binary (1/0 or T/F) endpoint variable in the
+#' @param binary_var Name of binary (1/0 or T/F) outcome variable in the
 #' model matrix
 #'
 #' @export
@@ -52,14 +53,14 @@ setMethod(
 #' @examples
 #'
 #' # For binary outcomes
-#' oo <- set_outcome(logistic_bin_endpoint(), "outcome")
+#' oo <- set_outcome(logistic_bin_outcome(), "outcome")
 #'
 setMethod(
   "set_outcome",
-  c(outcome_obj = "BinaryEndpoint"),
+  c(outcome_obj = "BinaryOutcome"),
   function(outcome_obj,
-           endpoint_var) {
-    outcome_obj@endpoint_var <- endpoint_var
+           binary_var) {
+    outcome_obj@binary_var <- binary_var
     outcome_obj
   }
 )

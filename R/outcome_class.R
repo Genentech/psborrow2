@@ -1,10 +1,25 @@
-# Outcome class
+#' `Outcome` class
+#'
+#' @slot function_stan_code character.
+#' @slot param_stan_code character.
+#' @slot likelihood_stan_code character.
+#' @slot n_param integer.
+#' @slot param_priors list.
+#'
+#' @rdname Outcome-class
 setClass(
   "Outcome",
   contains = "VIRTUAL"
 )
 
-# TimeToEvent class
+
+#' `TimeToEvent` class
+#'
+#' @slot time_var character. Variable used for time in `TimeToEvent` objects.
+#' @slot cens_var character. Variable used for censoring in `TimeToEvent` objects.
+#'
+#' @rdname Outcome-class
+#'
 setClass(
   "TimeToEvent",
   slots = c(
@@ -25,16 +40,21 @@ setClass(
   contains = "Outcome"
 )
 
-# BinaryEndpoint class
+#' `BinaryOutcome` class
+#'
+#' @slot binary_var character. Variable used for outcome in `BinaryOutcome` objects.
+#'
+#' @rdname Outcome-class
+#'
 setClass(
-  "BinaryEndpoint",
+  "BinaryOutcome",
   slots = c(
     function_stan_code = "character",
     param_stan_code = "character",
     likelihood_stan_code = "character",
     n_param = "integer",
     param_priors = "list",
-    endpoint_var = "character"
+    binary_var = "character"
   ),
   prototype = list(
     n_param = 0L,

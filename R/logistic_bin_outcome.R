@@ -1,9 +1,9 @@
 #' @include outcome_class.R
 
 # Internal constructor
-.logistic_bin_endpoint <- setClass(
-  "LogisticBinaryEndpoint",
-  contains = "BinaryEndpoint",
+.logistic_bin_outcome <- setClass(
+  "LogisticBinaryOutcome",
+  contains = "BinaryOutcome",
   prototype = list(
     n_param = 0L,
     likelihood_stan_code =
@@ -19,11 +19,11 @@
 
 #' Bernoulli distribution with logit parametrization
 #'
-#' @return object of class "LogisticBinaryEndpoint"
+#' @return object of class `LogisticBinaryOutcome`
 #' @export
 #'
 #' @examples
-#' lg <- logistic_bin_endpoint()
-logistic_bin_endpoint <- function() {
-  .logistic_bin_endpoint()
+#' lg <- logistic_bin_outcome()
+logistic_bin_outcome <- function() {
+  .logistic_bin_outcome()
 }
