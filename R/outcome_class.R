@@ -6,6 +6,7 @@
 #' @slot n_param integer.
 #' @slot param_priors list.
 #'
+#' @family outcome model
 #' @rdname Outcome-class
 setClass(
   "Outcome",

@@ -33,3 +33,4 @@
 \item{\code{binary_var}}{character. Variable used for outcome in \code{BinaryOutcome} objects.}
 }}
 
+\concept{outcome model}

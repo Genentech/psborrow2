@@ -49,22 +49,26 @@
 
 #' Weibull survival distribution (proportional hazards formulation)
 #'
+#' @param time_var Name of time variable column in model matrix
+#' @param cens_var Name of the censorship variable flag in model matrix
+#'
 #' @param shape_prior (optional) `Prior` class object for the Weibull shape
 #' parameter
 #'
 #' @return object of class `WeibullPHSurvDist`
 #' @export
+#' @family Outcome models
 #'
 #' @examples
 #' ws <- weib_ph_surv_dist(exponential_prior(1))
-weib_ph_surv_dist <- function(shape_prior = NULL) {
-  if (is.null(shape_prior)) {
-    .weib_ph_surv_dist()
-  } else {
-    .weib_ph_surv_dist(
-      param_priors = list(
-        shape_weibull = shape_prior
-      )
+weib_ph_surv_dist <- function(time_var, cens_var, shape_prior = exponential_prior(beta = 0.0001)) {
+  assert_string(time_var)
+  assert_string(cens_var)
+  .weib_ph_surv_dist(
+    time_var = time_var,
+    cens_var = cens_var,
+    param_priors = list(
+      shape_weibull = shape_prior
     )
-  }
+  )
 }

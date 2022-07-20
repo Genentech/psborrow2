@@ -4,7 +4,11 @@
 \alias{logistic_bin_outcome}
 \title{Bernoulli distribution with logit parametrization}
 \usage{
-logistic_bin_outcome()
+logistic_bin_outcome(binary_var)
+}
+\arguments{
+\item{binary_var}{Name of binary (1/0 or TRUE/FALSE) outcome variable in the
+model matrix}
 }
 \value{
 object of class \code{LogisticBinaryOutcome}
@@ -15,3 +19,4 @@ Bernoulli distribution with logit parametrization
 \examples{
 lg <- logistic_bin_outcome()
 }
+\concept{outcome models}

@@ -9,18 +9,17 @@
 #' @return An object inheriting from [`Outcome`][Outcome-class] class
 #' @export
 #'
-setGeneric("set_outcome", function(outcome_obj,
-                                   ...) {
-  if (!class(outcome_obj) %in% c(
-    "ExponentialSurvDist",
-    "WeibullPHSurvDist",
-    "LogisticBinaryOutcome"
-  )) {
-    stop("outcome_obj must be a time to event or binary outcome object")
-  }
+setGeneric("set_outcome", function(outcome_obj, ...) {
   standardGeneric("set_outcome")
 })
 
+setMethod(
+  "set_outcome",
+  c("outcome_obj" = "Outcome"),
+  function(outcome_obj, ...) {
+    stop("outcome_obj must be a `TimeToEvent` or `BinaryOutome` object")
+  }
+)
 
 #' @param time_var Name of time variable column in model matrix
 #' @param cens_var Name of the censorship variable flag in model matrix

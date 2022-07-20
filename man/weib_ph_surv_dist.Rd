@@ -4,9 +4,17 @@
 \alias{weib_ph_surv_dist}
 \title{Weibull survival distribution (proportional hazards formulation)}
 \usage{
-weib_ph_surv_dist(shape_prior = NULL)
+weib_ph_surv_dist(
+  time_var,
+  cens_var,
+  shape_prior = exponential_prior(beta = 1e-04)
+)
 }
 \arguments{
+\item{time_var}{Name of time variable column in model matrix}
+
+\item{cens_var}{Name of the censorship variable flag in model matrix}
+
 \item{shape_prior}{(optional) \code{Prior} class object for the Weibull shape
 parameter}
 }
@@ -19,3 +27,8 @@ Weibull survival distribution (proportional hazards formulation)
 \examples{
 ws <- weib_ph_surv_dist(exponential_prior(1))
 }
+\seealso{
+Other Outcome models: 
+\code{\link{exp_surv_dist}()}
+}
+\concept{Outcome models}
