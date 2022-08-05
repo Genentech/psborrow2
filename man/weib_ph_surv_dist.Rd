@@ -25,7 +25,7 @@ object of class \code{WeibullPHSurvDist}
 Weibull survival distribution (proportional hazards formulation)
 }
 \examples{
-ws <- weib_ph_surv_dist(time_var = 'time', cens_var = 'cens', shape_prior = exponential_prior(1))
+ws <- weib_ph_surv_dist(time_var = "time", cens_var = "cens", shape_prior = exponential_prior(1))
 }
 \seealso{
 Other Outcome models: 

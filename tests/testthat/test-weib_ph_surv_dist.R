@@ -9,6 +9,6 @@ test_that("Weibull survival distributions are rendering correctly", {
 
   # Errors
   expect_error(weib_ph_surv_dist(time_var = "time"),
-    regexp =  'argument \"cens_var\" is missing, with no default'
+    regexp = 'argument \"cens_var\" is missing, with no default'
   )
 })
