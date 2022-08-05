@@ -70,7 +70,7 @@ jobs:
               ext %in% c("R", "Rmd", "Rnw", "Rmarkdown")
           }
           changed_r_files <- Filter(is_r_file, changed_files)
-          detect <- styler::style_file(changed_r_files, dry = "on")
+          detect <- styler::style_file(changed_r_files, dry = "on", indent_by = 3)
           if (TRUE %in% detect$changed) {
             problems <- subset(detect$file, detect$changed == T)
             cat(paste(
@@ -81,7 +81,7 @@ jobs:
             ))
             cat("────────────────────────────────────────\n")
             cat(paste0(
-              "styler::style_file(", capture.output(dput(problems)), ")\n"
+              "styler::style_file(", capture.output(dput(problems)), ", indent_by = 3)\n"
             ))
             cat("────────────────────────────────────────\n")
             quit(status = length(problems))
