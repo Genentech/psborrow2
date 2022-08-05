@@ -18,7 +18,7 @@ object of class "ExponentialSurvDist"
 Exponential survival distribution
 }
 \examples{
-es <- exp_surv_dist()
+es <- exp_surv_dist(time_var = 'time', cens_var = 'cens')
 }
 \seealso{
 Other Outcome models: 

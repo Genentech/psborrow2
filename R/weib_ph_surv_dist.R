@@ -60,7 +60,7 @@
 #' @family Outcome models
 #'
 #' @examples
-#' ws <- weib_ph_surv_dist(exponential_prior(1))
+#' ws <- weib_ph_surv_dist(time_var = 'time', cens_var = 'cens', shape_prior = exponential_prior(1))
 weib_ph_surv_dist <- function(time_var, cens_var, shape_prior = exponential_prior(beta = 0.0001)) {
   assert_string(time_var)
   assert_string(cens_var)

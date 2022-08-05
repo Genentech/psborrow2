@@ -27,7 +27,7 @@
 #' @family outcome models
 #'
 #' @examples
-#' lg <- logistic_bin_outcome()
+#' lg <- logistic_bin_outcome(binary_var = 'response')
 logistic_bin_outcome <- function(binary_var) {
   assert_string(binary_var)
   .logistic_bin_outcome(binary_var = binary_var)
