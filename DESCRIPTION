@@ -61,6 +61,5 @@ Collate:
     'normal_prior.R'
     'package.R'
     'poisson_prior.R'
-    'set_outcome.R'
     'uniform_prior.R'
     'weib_ph_surv_dist.R'
