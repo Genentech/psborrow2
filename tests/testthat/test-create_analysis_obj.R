@@ -33,7 +33,7 @@ test_that("Analysis object created correctly", {
    # Test different combinations
    bdb_exp_noc <- create_analysis_obj(
       mat,
-      outcome = set_outcome(exp_surv_dist(), "time", "cnsr"),
+      outcome = exp_surv_dist("time", "cnsr"),
       borrowing = set_borrowing(
          "BDB",
          normal_prior(0, 1000),
@@ -46,7 +46,7 @@ test_that("Analysis object created correctly", {
    bdb_weib_c <- create_analysis_obj(
       mat,
       covariates = set_covariates(c("cov1", "cov2"), normal_prior(0, 1000)),
-      outcome = set_outcome(weib_ph_surv_dist(normal_prior(0, 1000)), "time", "cnsr"),
+      outcome = weib_ph_surv_dist("time","cnsr", normal_prior(0, 1000)),
       borrowing = set_borrowing(
          "BDB",
          normal_prior(0, 1000),
@@ -58,14 +58,14 @@ test_that("Analysis object created correctly", {
 
    full_exp_noc <- create_analysis_obj(
       mat,
-      outcome = set_outcome(exp_surv_dist(), "time", "cnsr"),
+      outcome = exp_surv_dist( "time", "cnsr"),
       borrowing = set_borrowing("Full borrowing", normal_prior(0, 1000)),
       treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
    )
 
    no_exp_noc <- create_analysis_obj(
       mat,
-      outcome = set_outcome(exp_surv_dist(), "time", "cnsr"),
+      outcome = exp_surv_dist("time", "cnsr"),
       borrowing = set_borrowing("No borrowing", normal_prior(0, 1000)),
       treatment_arms = set_treatment_arms("trt", normal_prior(0, 1000))
    )
@@ -86,7 +86,7 @@ test_that("Analysis object created correctly", {
    expect_error(create_analysis_obj(
       mat,
       covariates = set_covariates(c("cov1", "cov999"), normal_prior(0, 1000)),
-      outcome = set_outcome(weib_ph_surv_dist(normal_prior(0, 1000)), "time", "cnsr"),
+      outcome = weib_ph_surv_dist("time","cnsr",normal_prior(0, 1000)),
       borrowing = set_borrowing(
          "BDB",
          normal_prior(0, 1000),
@@ -99,7 +99,7 @@ test_that("Analysis object created correctly", {
    expect_error(create_analysis_obj(
       mat,
       covariates = set_covariates(c("cov1", "cov2"), normal_prior(0, 1000)),
-      outcome = set_outcome(weib_ph_surv_dist(normal_prior(0, 1000)), "time", "cnsr"),
+      outcome = weib_ph_surv_dist("time","cnsr", normal_prior(0, 1000)),
       borrowing = set_borrowing(
          "BDB",
          normal_prior(0, 1000),
@@ -112,7 +112,7 @@ test_that("Analysis object created correctly", {
    expect_error(create_analysis_obj(
       mat,
       covariates = set_covariates(c("cov1", "cov2"), normal_prior(0, 1000)),
-      outcome = set_outcome(weib_ph_surv_dist(normal_prior(0, 1000)), "time", "cnsr"),
+      outcome = weib_ph_surv_dist("time","cnsr",normal_prior(0, 1000)),
       borrowing = set_borrowing(
          "BDB",
          normal_prior(0, 1000),
@@ -126,7 +126,7 @@ test_that("Analysis object created correctly", {
    mat2[3, "trt"] <- NA
    expect_error(create_analysis_obj(
       mat2,
-      outcome = set_outcome(exp_surv_dist(), "time", "cnsr"),
+      outcome = exp_surv_dist("time", "cnsr"),
       borrowing = set_borrowing(
          "BDB",
          normal_prior(0, 1000),

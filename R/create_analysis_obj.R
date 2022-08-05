@@ -2,7 +2,7 @@
 #'
 #' @param model_matrix model matrix (as output by model.matrix())
 #' @param covariates object of class `Covariate` output by set_covariates()
-#' @param outcome object of class `Outcomes` output by set_outcomes()
+#' @param outcome object of class `Outcomes`
 #' @param borrowing object of class `Borrowing` output by set_borrowing()
 #' @param treatment_arms object of class `Treatment` output by
 #' set_treatment_arms()
@@ -50,10 +50,7 @@
 #'       covariates = c("cov1", "cov2"),
 #'       priors = normal_prior(0, 1000)
 #'    ),
-#'    outcome = set_outcome(
-#'       weib_ph_surv_dist(
-#'          shape_prior = normal_prior(0, 1000)
-#'       ),
+#'    outcome = exp_surv_dist(
 #'       "time",
 #'       "cnsr"
 #'    ),

@@ -33,7 +33,7 @@ test_that("MCMC sampler works appropriately", {
    # Make Analysis object
    bdb_exp_noc <- create_analysis_obj(
       mat,
-      outcome = set_outcome(exp_surv_dist(), "time", "cnsr"),
+      outcome = exp_surv_dist("time", "cnsr"),
       borrowing = set_borrowing(
          "BDB",
          normal_prior(0, 1000),

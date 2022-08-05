@@ -56,12 +56,10 @@
 #'       covariates = c("cov1", "cov2"),
 #'       priors = normal_prior(0, 1000)
 #'    ),
-#'    outcome = set_outcome(
-#'       weib_ph_surv_dist(
-#'          shape_prior = normal_prior(0, 1000)
-#'       ),
+#'    outcome = weib_ph_surv_dist(
 #'       "time",
-#'       "cnsr"
+#'       "cnsr",
+#'       shape_prior = normal_prior(0, 1000)
 #'    ),
 #'    borrowing = set_borrowing(
 #'       "BDB",

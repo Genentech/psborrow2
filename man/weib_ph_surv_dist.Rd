@@ -28,7 +28,7 @@ Weibull survival distribution (proportional hazards formulation)
 ws <- weib_ph_surv_dist(time_var = "time", cens_var = "cens", shape_prior = exponential_prior(1))
 }
 \seealso{
-Other Outcome models:
+Other Outcome models: 
 \code{\link{exp_surv_dist}()}
 }
 \concept{Outcome models}

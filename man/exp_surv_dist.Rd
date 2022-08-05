@@ -21,7 +21,7 @@ Exponential survival distribution
 es <- exp_surv_dist(time_var = "time", cens_var = "cens")
 }
 \seealso{
-Other Outcome models:
+Other Outcome models: 
 \code{\link{weib_ph_surv_dist}()}
 }
 \concept{Outcome models}

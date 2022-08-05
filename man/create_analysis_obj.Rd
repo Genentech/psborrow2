@@ -17,7 +17,7 @@ create_analysis_obj(
 
 \item{covariates}{object of class \code{Covariate} output by set_covariates()}
 
-\item{outcome}{object of class \code{Outcomes} output by set_outcomes()}
+\item{outcome}{object of class \code{Outcomes}}
 
 \item{borrowing}{object of class \code{Borrowing} output by set_borrowing()}
 
@@ -68,10 +68,7 @@ anls <- create_analysis_obj(
       covariates = c("cov1", "cov2"),
       priors = normal_prior(0, 1000)
    ),
-   outcome = set_outcome(
-      weib_ph_surv_dist(
-         shape_prior = normal_prior(0, 1000)
-      ),
+   outcome = exp_surv_dist(
       "time",
       "cnsr"
    ),
