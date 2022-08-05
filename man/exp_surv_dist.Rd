@@ -4,7 +4,12 @@
 \alias{exp_surv_dist}
 \title{Exponential survival distribution}
 \usage{
-exp_surv_dist()
+exp_surv_dist(time_var, cens_var)
+}
+\arguments{
+\item{time_var}{Name of time variable column in model matrix}
+
+\item{cens_var}{Name of the censorship variable flag in model matrix}
 }
 \value{
 object of class "ExponentialSurvDist"
@@ -13,5 +18,10 @@ object of class "ExponentialSurvDist"
 Exponential survival distribution
 }
 \examples{
-es <- exp_surv_dist()
+es <- exp_surv_dist(time_var = "time", cens_var = "cens")
 }
+\seealso{
+Other Outcome models:
+\code{\link{weib_ph_surv_dist}()}
+}
+\concept{Outcome models}
