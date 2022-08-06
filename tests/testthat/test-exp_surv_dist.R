@@ -1,6 +1,6 @@
 test_that("Exponential survival distributions are rendering correctly", {
   # Make exponential survival distribution
-  surv_dist <- exp_surv_dist(time_var = "time", cens_var = "cens")
+  surv_dist <- exp_surv_dist(time_var = "time",cens_var = "cens")
 
   # Expect correct class
   expect_class(surv_dist, "ExponentialSurvDist")

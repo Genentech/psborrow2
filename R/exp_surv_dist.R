@@ -31,7 +31,7 @@
 #' @family Outcome models
 #'
 #' @examples
-#' es <- exp_surv_dist(time_var = "time", cens_var = "cens")
+#' es <- exp_surv_dist(time_var = 'time', cens_var = 'cens')
 exp_surv_dist <- function(time_var, cens_var) {
   assert_string(time_var)
   assert_string(cens_var)

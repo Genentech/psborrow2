@@ -17,6 +17,6 @@ object of class \code{LogisticBinaryOutcome}
 Bernoulli distribution with logit parametrization
 }
 \examples{
-lg <- logistic_bin_outcome(binary_var = "response")
+lg <- logistic_bin_outcome(binary_var = 'response')
 }
 \concept{outcome models}
