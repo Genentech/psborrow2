@@ -28,7 +28,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/gamma-distribution.html>
 #'
-#' @return object of class "GammaPrior"
+#' @return object of class `GammaPrior`
 #' @export
 #' @family priors
 #' @examples
@@ -36,3 +36,18 @@
 gamma_prior <- function(alpha, beta) {
   .gamma_prior(alpha = alpha, beta = beta)
 }
+
+
+# summary ----
+setMethod(
+  f = "summary",
+  signature = "GammaPrior",
+  definition = function(object) {
+    show(object)
+
+    xlim <- stats::qgamma(0.99, shape = object@alpha, rate = object@beta)
+    x <- seq(from = 0, to = xlim, length = 300)
+    y <- stats::dgamma(x, shape = object@alpha, rate = object@beta)
+    plot_pdf(x, y)
+  }
+)

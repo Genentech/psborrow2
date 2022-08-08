@@ -10,7 +10,7 @@ poisson_prior(lambda)
 \item{lambda}{rate (>0)}
 }
 \value{
-object of class "PoissonPrior"
+object of class \code{PoissonPrior}
 }
 \description{
 Prior poisson distribution

@@ -28,7 +28,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/normal-distribution.html>
 #'
-#' @return object of class "NormalPrior"
+#' @return object of class `NormalPrior`
 #' @export
 #' @family priors
 #' @examples
@@ -36,3 +36,17 @@
 normal_prior <- function(mu, sigma) {
   .normal_prior(mu = mu, sigma = sigma)
 }
+
+# summary ----
+setMethod(
+  f = "summary",
+  signature = "NormalPrior",
+  definition = function(object) {
+    show(object)
+
+    xlim <- stats::qnorm(c(0.005, 0.995), mean = object@mu, sd = object@sigma)
+    x <- seq(from = xlim[1], to = xlim[2], length = 300)
+    y <- stats::dnorm(x, mean = object@mu, sd = object@sigma)
+    plot_pdf(x, y)
+  }
+)

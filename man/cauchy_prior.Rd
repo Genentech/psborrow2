@@ -12,7 +12,7 @@ cauchy_prior(mu, sigma)
 \item{sigma}{scale (>0)}
 }
 \value{
-object of class "CauchyPrior"
+object of class \code{CauchyPrior}
 }
 \description{
 Prior cauchy distribution

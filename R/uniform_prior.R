@@ -28,7 +28,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/uniform-distribution.html>
 #'
-#' @return object of class "UniformPrior"
+#' @return object of class `UniformPrior`
 #' @export
 #' @family priors
 #' @examples
@@ -36,3 +36,17 @@
 uniform_prior <- function(alpha, beta) {
   .uniform_prior(alpha = alpha, beta = beta)
 }
+
+
+# summary ----
+setMethod(
+  f = "summary",
+  signature = "UniformPrior",
+  definition = function(object) {
+    show(object)
+
+    x <- seq(from = object@alpha, to = object@beta, length = 2)
+    y <- stats::dunif(x, min = object@alpha, max = object@beta)
+    plot_pdf(x, y)
+  }
+)

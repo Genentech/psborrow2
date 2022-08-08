@@ -28,7 +28,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/cauchy-distribution.html>
 #'
-#' @return object of class "CauchyPrior"
+#' @return object of class `CauchyPrior`
 #' @export
 #' @family priors
 #' @examples
@@ -36,3 +36,17 @@
 cauchy_prior <- function(mu, sigma) {
   .cauchy_prior(mu = mu, sigma = sigma)
 }
+
+# summary ----
+setMethod(
+  f = "summary",
+  signature = "CauchyPrior",
+  definition = function(object) {
+    show(object)
+
+    xlim <- stats::qcauchy(c(0.005, 0.995), location = object@mu, scale = object@sigma)
+    x <- seq(from = xlim[1], to = xlim[2], length = 300)
+    y <- stats::dcauchy(x, location = object@mu, scale = object@sigma)
+    plot_pdf(x, y)
+  }
+)

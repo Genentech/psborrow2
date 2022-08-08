@@ -24,7 +24,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/exponential-distribution.html>
 #'
-#' @return object of class "ExponentialPrior"
+#' @return object of class `ExponentialPrior`
 #' @export
 #' @family priors
 #' @examples
@@ -32,3 +32,17 @@
 exponential_prior <- function(beta) {
   .exponential_prior(beta = beta)
 }
+
+# summary ----
+setMethod(
+  f = "summary",
+  signature = "ExponentialPrior",
+  definition = function(object) {
+    show(object)
+
+    xlim <- stats::qexp(c(0.005, 0.995), rate = object@beta)
+    x <- seq(from = xlim[1], to = xlim[2], length = 300)
+    y <- stats::dexp(x, rate = object@beta)
+    plot_pdf(x, y)
+  }
+)

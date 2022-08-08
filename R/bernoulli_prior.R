@@ -24,7 +24,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/bernoulli-distribution.html>
 #'
-#' @return object of class "BernoulliPrior"
+#' @return object of class `BernoulliPrior`
 #' @export
 #' @family priors
 #' @examples
@@ -32,3 +32,15 @@
 bernoulli_prior <- function(theta) {
   .bernoulli_prior(theta = theta)
 }
+
+# summary ----
+setMethod(
+  f = "summary",
+  signature = "BernoulliPrior",
+  definition = function(object) {
+    show(object)
+    x <- c(0, 1)
+    y <- c(1 - object@theta, object@theta)
+    plot_pmf(x, y)
+  }
+)
