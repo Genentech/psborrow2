@@ -40,9 +40,7 @@
     )
   ),
   validity = function(object) {
-    if (!is(object@param_priors[["shape_weibull"]], "Prior")) {
-      return("shape_weibull must be of class 'Prior'")
-    }
+    check_class(object@param_priors[["shape_weibull"]], "Prior")
     return(TRUE)
   }
 )
@@ -50,7 +48,7 @@
 #' Weibull survival distribution (proportional hazards formulation)
 #'
 #' @param time_var Name of time variable column in model matrix
-#' @param cens_var Name of the censorship variable flag in model matrix
+#' @param cens_var Name of the censorsing variable flag in model matrix
 #'
 #' @param shape_prior (optional) `Prior` class object for the Weibull shape
 #' parameter

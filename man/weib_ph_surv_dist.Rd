@@ -13,7 +13,7 @@ weib_ph_surv_dist(
 \arguments{
 \item{time_var}{Name of time variable column in model matrix}
 
-\item{cens_var}{Name of the censorship variable flag in model matrix}
+\item{cens_var}{Name of the censorsing variable flag in model matrix}
 
 \item{shape_prior}{(optional) \code{Prior} class object for the Weibull shape
 parameter}
