@@ -59,7 +59,7 @@ test_that("add_covariates is working correctly", {
    )
 
    expect_error(
-      add_covariates(covariates = c(1,2,3), normal_prior(0,1000)),
+      add_covariates(covariates = c(1, 2, 3), normal_prior(0, 1000)),
       "Must be of type 'character', not 'double'"
    )
 })
