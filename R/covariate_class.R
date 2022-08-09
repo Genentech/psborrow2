@@ -21,14 +21,14 @@ setClassUnion("listOrPrior", c("list", "Prior"))
       }
 
       if (is(object@priors, "list") &&
-          !all(sapply(object@priors,is, "Prior"))) {
+          !all(sapply(object@priors, is, "Prior"))) {
          return(paste0(
             "If a list is provided to specify priors, all priors ",
             "must be of class `Prior`"
          ))
       }
 
-      if (is(object@priors,"list") &&
+      if (is(object@priors, "list") &&
           !all(names(object@priors) %in% object@covariates)) {
          return(paste0(
             "If a list is provided to specify priors, one prior per ",
