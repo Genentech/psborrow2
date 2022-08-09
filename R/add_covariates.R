@@ -1,5 +1,5 @@
 #' Specify column names for adjustment variables in model matrix and prior
-#' distributions for the model parameters for these covariates (ie betas)
+#' distributions for the model parameters for these covariates (i.e., betas)
 #'
 #' @param covariates character vector naming covariates to be adjusted for in
 #' the outcome model
