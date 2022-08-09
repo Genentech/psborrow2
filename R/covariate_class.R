@@ -19,6 +19,15 @@ setClassUnion("listOrPrior", c("list", "Prior"))
             "covariate"
          ))
       }
+
+      if (inherits(object@priors, "list") &&
+          !all(sapply(object@priors,inherits, "Prior"))) {
+         return(paste0(
+            "If a list is provided to specify priors, all priors ",
+            "must be of class `Prior`"
+         ))
+      }
+
       if (inherits(object@priors,"list") &&
           !all(names(object@priors) %in% object@covariates)) {
          return(paste0(
@@ -26,13 +35,7 @@ setClassUnion("listOrPrior", c("list", "Prior"))
             "covariate must be provided."
          ))
       }
-      if (inherits(object@priors,"list") &&
-          !all(sapply(object@priors, function(z) is(z, "Prior")))) {
-         return(paste0(
-            "If a list is provided to specify priors, all priors ",
-            "must be of class `Prior`"
-         ))
-      }
+
       return(TRUE)
    }
 )
