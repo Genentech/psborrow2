@@ -13,29 +13,29 @@
 #'
 #' @examples
 #' add_covariates(
-#'    covariates = c("a", "b"),
-#'    priors = list(
-#'       "a" = normal_prior(0, 1),
-#'       "b" = normal_prior(0, 2)
-#'    )
+#'   covariates = c("a", "b"),
+#'   priors = list(
+#'     "a" = normal_prior(0, 1),
+#'     "b" = normal_prior(0, 2)
+#'   )
 #' )
 #' @include covariate_class.R
 add_covariates <- function(covariates,
                            priors) {
 
-   # Better messaging for errors that are already considered in class
-   if (!is(priors, "listOrPrior")) {
-      stop(
-         "priors argument must be a single object of class `Prior`",
-         " or a named list of objects of class `Prior`"
-      )
-   }
+  # Better messaging for errors that are already considered in class
+  if (!is(priors, "listOrPrior")) {
+    stop(
+      "priors argument must be a single object of class `Prior`",
+      " or a named list of objects of class `Prior`"
+    )
+  }
 
-   assert_character(covariates)
+  assert_character(covariates)
 
-   # Create class
-   .covariate_class(
-      covariates = covariates,
-      priors = priors
-   )
+  # Create class
+  .covariate_class(
+    covariates = covariates,
+    priors = priors
+  )
 }
