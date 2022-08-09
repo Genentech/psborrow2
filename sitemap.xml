@@ -31,6 +31,9 @@
     <loc>improved-waffle-bf365a9a.pages.github.io/news/index.html</loc>
   </url>
   <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Outcome-class.html</loc>
+  </url>
+  <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/Prior-class.html</loc>
   </url>
   <url>
@@ -46,6 +49,9 @@
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/check_cmdstanr.html</loc>
   </url>
   <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/exp_surv_dist.html</loc>
+  </url>
+  <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/exponential_prior.html</loc>
   </url>
   <url>
@@ -58,6 +64,9 @@
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/index.html</loc>
   </url>
   <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/logistic_bin_outcome.html</loc>
+  </url>
+  <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/normal_prior.html</loc>
   </url>
   <url>
@@ -65,5 +74,8 @@
   </url>
   <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/uniform_prior.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/weib_ph_surv_dist.html</loc>
   </url>
 </urlset>
