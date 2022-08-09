@@ -1,4 +1,5 @@
 test_that("add_covariates is working correctly", {
+
    # Make covariate objects
    covs1 <- add_covariates(
       covariates = c("a", "b", "c"),
@@ -18,7 +19,7 @@ test_that("add_covariates is working correctly", {
    expect_class(covs1, "Covariates")
    expect_class(covs2, "Covariates")
 
-   expect_true(all(sapply(covs1@priors, function(z) is(z, "Prior"))))
+   expect_true(all(sapply(covs1@priors, inherits, "Prior")))
    expect_true(is(covs2@priors, "Prior"))
 
    # Errors
@@ -55,5 +56,10 @@ test_that("add_covariates is working correctly", {
    expect_error(
       add_covariates(covariates = c("a", "b"), 20),
       "priors argument must be a single object of class `Prior` or a named list of objects of class `Prior`"
+   )
+
+   expect_error(
+      add_covariates(covariates = c(1,2,3), normal_prior(0,1000)),
+      "Must be of type 'character', not 'double'"
    )
 })
