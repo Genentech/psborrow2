@@ -1,7 +1,8 @@
 #' Specify column names for adjustment variables in model matrix and prior
 #' distributions for the model parameters for these covariates (ie betas)
 #'
-#' @param covariates character vector naming covariates to be adjusted for
+#' @param covariates character vector naming covariates to be adjusted for in
+#' the outcome model
 #' @param priors either a single prior distribution applying to all covariates
 #' or a named list of prior distributions, one for each covariate
 #'
@@ -21,6 +22,7 @@
 #' @include covariate_class.R
 add_covariates <- function(covariates,
                            priors) {
+
    # Additional errors not captured in class
    if (!inherits(priors, "list") &&
        !is(priors, "Prior")) {

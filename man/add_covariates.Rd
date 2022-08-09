@@ -8,7 +8,8 @@ distributions for the model parameters for these covariates (ie betas)}
 add_covariates(covariates, priors)
 }
 \arguments{
-\item{covariates}{character vector naming covariates to be adjusted for}
+\item{covariates}{character vector naming covariates to be adjusted for in
+the outcome model}
 
 \item{priors}{either a single prior distribution applying to all covariates
 or a named list of prior distributions, one for each covariate}
