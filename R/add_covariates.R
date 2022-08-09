@@ -23,14 +23,15 @@
 add_covariates <- function(covariates,
                            priors) {
 
-   # Additional errors not captured in class
-   if (!inherits(priors, "list") &&
-       !is(priors, "Prior")) {
+   # Better messaging for errors that are already considered in class
+   if (!is(priors, "listOrPrior")) {
       stop(
          "priors argument must be a single object of class `Prior`",
          " or a named list of objects of class `Prior`"
       )
    }
+
+   assert_character(covariates)
 
    # Create class
    .covariate_class(

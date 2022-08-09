@@ -11,7 +11,7 @@ setClassUnion("listOrPrior", c("list", "Prior"))
       priors = "listOrPrior"
    ),
    validity = function(object) {
-      if (inherits(object@priors, "list") &&
+      if (is(object@priors, "list") &&
           NROW(object@priors) != NROW(object@covariates)) {
          return(paste0(
             "Either specify 1 prior distribution for all ",
@@ -20,15 +20,15 @@ setClassUnion("listOrPrior", c("list", "Prior"))
          ))
       }
 
-      if (inherits(object@priors, "list") &&
-          !all(sapply(object@priors,inherits, "Prior"))) {
+      if (is(object@priors, "list") &&
+          !all(sapply(object@priors,is, "Prior"))) {
          return(paste0(
             "If a list is provided to specify priors, all priors ",
             "must be of class `Prior`"
          ))
       }
 
-      if (inherits(object@priors,"list") &&
+      if (is(object@priors,"list") &&
           !all(names(object@priors) %in% object@covariates)) {
          return(paste0(
             "If a list is provided to specify priors, one prior per ",
