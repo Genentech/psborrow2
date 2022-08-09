@@ -3,13 +3,12 @@
 \name{add_covariates}
 \alias{add_covariates}
 \title{Specify column names for adjustment variables in model matrix and prior
-distributions for the model parameters for these covariates (i.e., betas)}
+distributions for the model parameters for these covariates (ie betas)}
 \usage{
 add_covariates(covariates, priors)
 }
 \arguments{
-\item{covariates}{character vector naming covariates to be adjusted for in
-the outcome model}
+\item{covariates}{character vector naming covariates to be adjusted for}
 
 \item{priors}{either a single prior distribution applying to all covariates
 or a named list of prior distributions, one for each covariate}
@@ -19,14 +18,14 @@ object of class "Covariates"
 }
 \description{
 Specify column names for adjustment variables in model matrix and prior
-distributions for the model parameters for these covariates (i.e., betas)
+distributions for the model parameters for these covariates (ie betas)
 }
 \examples{
 add_covariates(
-  covariates = c("a", "b"),
-  priors = list(
-    "a" = normal_prior(0, 1),
-    "b" = normal_prior(0, 2)
-  )
+   covariates = c("a", "b"),
+   priors = list(
+      "a" = normal_prior(0, 1),
+      "b" = normal_prior(0, 2)
+   )
 )
 }
