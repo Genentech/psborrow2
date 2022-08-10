@@ -50,8 +50,8 @@
 #' @param time_var Name of time variable column in model matrix
 #' @param cens_var Name of the censorsing variable flag in model matrix
 #'
-#' @param shape_prior (optional) `Prior` class object for the Weibull shape
-#' parameter
+#' @param shape_prior `Prior` class object for the Weibull shape
+#' parameter. Default is `exponential_prior(beta = 0.0001)`.
 #'
 #' @return object of class `WeibullPHSurvDist`
 #' @export

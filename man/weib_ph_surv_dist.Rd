@@ -15,8 +15,8 @@ weib_ph_surv_dist(
 
 \item{cens_var}{Name of the censorsing variable flag in model matrix}
 
-\item{shape_prior}{(optional) \code{Prior} class object for the Weibull shape
-parameter}
+\item{shape_prior}{\code{Prior} class object for the Weibull shape
+parameter. Default is \code{exponential_prior(beta = 0.0001)}.}
 }
 \value{
 object of class \code{WeibullPHSurvDist}
