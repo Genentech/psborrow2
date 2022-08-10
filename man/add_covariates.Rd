@@ -2,8 +2,7 @@
 % Please edit documentation in R/add_covariates.R
 \name{add_covariates}
 \alias{add_covariates}
-\title{Specify column names for adjustment variables in model matrix and prior
-distributions for the model parameters for these covariates (i.e., betas)}
+\title{Add Covariates for Model Adjustment}
 \usage{
 add_covariates(covariates, priors)
 }
@@ -15,7 +14,7 @@ the outcome model}
 or a named list of prior distributions, one for each covariate}
 }
 \value{
-object of class "Covariates"
+object of class \code{Covariates}
 }
 \description{
 Specify column names for adjustment variables in model matrix and prior
