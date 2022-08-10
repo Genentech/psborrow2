@@ -48,13 +48,13 @@ Language: en-US
 SystemRequirements: cmdstan
 Collate:
     'prior_class.R'
+    'covariate_class.R'
     'add_covariates.R'
     'normal_prior.R'
     'treatment_class.R'
     'borrowing_class.R'
-    'covariate_class.R'
-    'analysis_class.R'
     'outcome_class.R'
+    'analysis_class.R'
     'bernoulli_prior.R'
     'beta_prior.R'
     'cauchy_prior.R'
@@ -68,6 +68,7 @@ Collate:
     'package.R'
     'poisson_prior.R'
     'set_borrowing.R'
+    'set_covariates.R'
     'set_treatment_arms.R'
     'uniform_prior.R'
     'weib_ph_surv_dist.R'
