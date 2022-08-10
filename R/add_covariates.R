@@ -22,7 +22,6 @@
 #' @include covariate_class.R
 add_covariates <- function(covariates,
                            priors) {
-
   # Better messaging for errors that are already considered in class
   if (!is(priors, "listOrPrior")) {
     stop(
