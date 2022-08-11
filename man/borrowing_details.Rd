@@ -13,22 +13,49 @@ borrowing_details(
 )
 }
 \arguments{
-\item{method}{One of:
+\item{method}{This argument specifies the type of borrowing to perform. It
+must be one of:
 \itemize{
-\item 'BDB' for Bayesian Dynamic Borrowing
-\item 'Full borrowing' for pooling of historical and concurrent controls
-\item 'No borrowing' for evaluating only the internal comparison, ignoring
-historical controls
+\item \strong{'BDB'} for Bayesian Dynamic Borrowing. In Bayesian Dynamic
+Borrowing, external control information is borrowed to the extent that the
+outcomes (i.e., log hazard rates or log odds) are similar between
+external and internal control populations. See Viele et. al. 2014
+(https://doi.org/10.1002/pst.1589).
+\item \strong{'Full borrowing'} for pooling of historical and concurrent controls.
+There is no distinction between patients in the internal and external
+control arms.
+\item \strong{'No borrowing'} for evaluating only the internal comparison,
+ignoring historical controls. Note that this method will filter the
+model matrix (if you have included any external control patients).
 }}
 
 \item{baseline_prior}{object of class \code{Prior}
-specifying prior distribution for the baseline (i.e., the prior for the
-external control) log hazard rate or the log odds.}
+specifying prior distribution for the baseline log hazard rate or
+log odds, depending on the outcome type. The interpretation of this parameter
+depends on the \code{method} argument:
+\itemize{
+\item \strong{BDB}: the \code{baseline_prior} for Bayesian Dynamic Borrowing refers
+to the log hazard rate or log odds of the external control arm.
+\item \strong{Full borrowing} or \strong{No borrowing}: the \code{baseline_prior} for
+these borrowing methods refers to the log hazard rate or log odds for the
+internal control arm.
+}}
 
 \item{ext_flag_col}{character specifying the name of the column in
-the model matrix that corresponds to the external control flag (1/0 or T/F)}
+the model matrix that corresponds to the external control flag (1/0 or T/F).
+This argument is required for 'BDB' and is ignored by
+'Full borrowing'. If the argument is specified with method 'No borrowing',
+then the method will filter the cohort to include only patients in the
+internal control. If no argument is specified for method 'No borrowing', it
+will be assumed that the model matrix contains only internal control
+patients.}
 
-\item{tau_prior}{object of class \code{Prior}. Only needed for method = 'BDB'}
+\item{tau_prior}{object of class \code{Prior}. This is the prior on the
+"commensurability parameter", and determines, in addition to the
+comparability of the outcomes between internal and external controls, how
+much borrowing will occur. Example priors include largely uninformative
+priors (e.g., \code{gamma_prior(alpha = .001, beta = .001)}) and somewhat informative
+priors (e.g., \verb{gamma_prior(alpha = 1, beta = 001}).}
 }
 \value{
 an object of class \code{Borrowing}
@@ -38,5 +65,11 @@ Specify type of borrowing and, for Bayesian Dynamic Borrowing,
 set prior for commensurability parameter tau
 }
 \examples{
-sb <- borrowing_details("Full borrowing", normal_prior(0, 1000))
+sb <- borrowing_details(
+  "BDB",
+  normal_prior(0, 1000),
+  "ext",
+  gamma_prior(0.001, 0.001)
+)
+
 }
