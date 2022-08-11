@@ -86,15 +86,15 @@ borrowing_details <- function(method,
     ))
   }
 
-  if (method == "Full borrowing" & !is.null(ext_flag_col)) {
+  if (method == "Full borrowing" && !is.null(ext_flag_col)) {
     message("Ignoring ext_flag_col for full borrowing")
   }
 
-  if (method == "No borrowing" & !is.null(ext_flag_col)) {
+  if (method == "No borrowing" && !is.null(ext_flag_col)) {
     message("Filtering model matrix to exclude external control patients")
   }
 
-  if (method == "No borrowing" & is.null(ext_flag_col)) {
+  if (method == "No borrowing" && is.null(ext_flag_col)) {
     warning(paste0(
       "Not excluding any patients because 'ext_flag_col' is not ",
       "specified. If you have external control patients you ",
