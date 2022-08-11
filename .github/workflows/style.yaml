@@ -43,7 +43,7 @@ jobs:
 
       - name: Install styler 👚
         run: |
-          remotes::install_github("r-lib/styler", auth_token = "${{ secrets.GITHUB_TOKEN }}")
+          remotes::install_github("r-lib/styler", ref = "a3b69e4", auth_token = "${{ secrets.GITHUB_TOKEN }}")
         shell: Rscript {0}
 
       - name: Get changed files 🗞
