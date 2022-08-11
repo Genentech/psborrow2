@@ -40,7 +40,7 @@ test_that("borrowing_details works as expected", {
       normal_prior(0, 100),
       tau_prior = normal_prior(0, 1000)
     ),
-    "ext_flag_col must be specified"
+    "missing, with no default"
   )
 
   expect_error(
@@ -60,7 +60,7 @@ test_that("borrowing_details works as expected", {
       baseline_prior = normal_prior(0, 1),
       "ext"
     ),
-    "Filtering model matrix"
+    "Will filter"
   )
 
   expect_message(
@@ -69,6 +69,6 @@ test_that("borrowing_details works as expected", {
       baseline_prior = normal_prior(0, 1),
       "ext"
     ),
-    "Ignoring ext_flag_col for full borrowing"
+    "Will ignore"
   )
 })

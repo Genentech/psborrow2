@@ -3,66 +3,92 @@
 \name{borrowing_details}
 \alias{borrowing_details}
 \title{Specify type of borrowing and, for Bayesian Dynamic Borrowing,
-set prior for commensurability parameter tau}
+set hyperprior for commensurability parameter tau}
 \usage{
-borrowing_details(
-  method,
-  baseline_prior = NULL,
-  ext_flag_col = NULL,
-  tau_prior = NULL
-)
+borrowing_details(method, baseline_prior, ext_flag_col, tau_prior = NULL)
 }
 \arguments{
 \item{method}{This argument specifies the type of borrowing to perform. It
-must be one of:
-\itemize{
-\item \strong{'BDB'} for Bayesian Dynamic Borrowing. In Bayesian Dynamic
-Borrowing, external control information is borrowed to the extent that the
-outcomes (i.e., log hazard rates or log odds) are similar between
-external and internal control populations. See Viele et. al. 2014
-(https://doi.org/10.1002/pst.1589).
-\item \strong{'Full borrowing'} for pooling of historical and concurrent controls.
-There is no distinction between patients in the internal and external
-control arms.
-\item \strong{'No borrowing'} for evaluating only the internal comparison,
-ignoring historical controls. Note that this method will filter the
-model matrix (if you have included any external control patients).
-}}
+must be one of: 'BDB', 'Full borrowing', or 'No borrowing'. See \code{details} for
+more information.}
 
 \item{baseline_prior}{object of class \code{Prior}
-specifying prior distribution for the baseline log hazard rate or
-log odds, depending on the outcome type. The interpretation of this parameter
-depends on the \code{method} argument:
-\itemize{
-\item \strong{BDB}: the \code{baseline_prior} for Bayesian Dynamic Borrowing refers
-to the log hazard rate or log odds of the external control arm.
-\item \strong{Full borrowing} or \strong{No borrowing}: the \code{baseline_prior} for
-these borrowing methods refers to the log hazard rate or log odds for the
-internal control arm.
-}}
+specifying prior distribution for the baseline outcome.
+See \code{details} for more information.}
 
 \item{ext_flag_col}{character specifying the name of the column in
-the model matrix that corresponds to the external control flag (1/0 or T/F).
-This argument is required for 'BDB' and is ignored by
-'Full borrowing'. If the argument is specified with method 'No borrowing',
-then the method will filter the cohort to include only patients in the
-internal control. If no argument is specified for method 'No borrowing', it
-will be assumed that the model matrix contains only internal control
-patients.}
+the model matrix that corresponds to the external control flag (\code{1/0} or
+\code{T/F}).}
 
-\item{tau_prior}{object of class \code{Prior}. This is the prior on the
-"commensurability parameter", and determines, in addition to the
-comparability of the outcomes between internal and external controls, how
-much borrowing will occur. Example priors include largely uninformative
-priors (e.g., \code{gamma_prior(alpha = .001, beta = .001)}) and somewhat informative
-priors (e.g., \verb{gamma_prior(alpha = 1, beta = 001}).}
+\item{tau_prior}{object of class \code{Prior}. This is the hyperprior on the
+"commensurability parameter". See \code{details} for more information.}
 }
 \value{
 an object of class \code{Borrowing}
 }
 \description{
 Specify type of borrowing and, for Bayesian Dynamic Borrowing,
-set prior for commensurability parameter tau
+set hyperprior for commensurability parameter tau
+}
+\details{
+\strong{method}
+
+The \code{method} argument specifies the type of borrowing that will be
+implemented. There are currently three types of borrowing that are supported:
+\itemize{
+\item \emph{'BDB'} for Bayesian Dynamic Borrowing. In Bayesian Dynamic
+Borrowing, external control information is borrowed to the extent that the
+outcomes (i.e., log hazard rates or log odds) are similar between
+external and internal control populations. See
+\href{https://doi.org/10.1002/pst.1589}{Viele et. al. 2014}.
+\item \emph{'Full borrowing'} for pooling of historical and concurrent controls.
+There is no distinction between patients in the internal and external
+control arms. While the \code{ext_flag_col} must still be specified, it is not
+used.
+\item \emph{'No borrowing'} for evaluating only the internal comparison,
+ignoring historical controls. Note that this method will filter the
+model matrix based on values in \code{ext_flag_col}.
+}
+
+Though the ultimate model specification is the same for 'Full borrowing'
+and 'No borrowing', both are available as options to facilitate comparison
+between methods.
+
+\strong{baseline_prior}
+
+The \code{baseline_prior} argument specifies the prior distribution for the
+baseline log hazard rate or log odds, depending on the outcome type. The
+interpretation of the \code{baseline_prior} differs slightly between methods:
+\itemize{
+\item \emph{'BDB'}: the \code{baseline_prior} for Bayesian Dynamic Borrowing refers
+to the log hazard rate or log odds of the external control arm.
+\item \emph{'Full borrowing'} or \emph{'No borrowing'}: the \code{baseline_prior} for
+these borrowing methods refers to the log hazard rate or log odds for the
+internal control arm.
+}
+
+\strong{ext_flag_col}
+
+The \code{ext_flag_col} argument refers to the column in the model matrix that
+contains the flag indicating a patient is from the external control cohort.
+While this column is not used in 'Full borrowing', it must still be
+specified.
+
+\strong{tau_prior}
+
+The \code{tau_prior} argument specifies the hyperprior on the precision parameter
+commonly referred to as the commensurability parameter.
+See \href{https://doi.org/10.1002/pst.1589}{Viele et. al. 2014} for more
+details.
+This hyperprior determines, in addition to the comparability of the outcomes
+between internal and external controls, how much borrowing of the external
+control group will be performed.
+Example hyperpriors include largely uninformative inverse gamma distributions
+[e.g., \code{gamma_prior(alpha = .001, beta = .001)}] as well as more
+informative distributions [e.g., \verb{gamma_prior(alpha = 1, beta = .001})],
+though any distribution \eqn{x\in (0, \infty)} can be used. Distributions
+with more density at higher values of \eqn{x} (i.e., higher precision)
+will lead to more borrowing.
 }
 \examples{
 sb <- borrowing_details(
