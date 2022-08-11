@@ -58,30 +58,29 @@ borrowing_details <- function(method,
                               tau_prior = NULL) {
   # Additional checks and neater errors than in class definition
 
-  if (!method %in% c(
-    "Full borrowing",
-    "No borrowing",
-    "BDB"
-  )) {
-    stop("method must be one of: 'BDB', 'Full borrowing', 'No borrowing'")
-  }
+  assert_choice(method, c("Full borrowing", "No borrowing", "BDB"))
 
-  if (method == "BDB" && (
-    is.null(tau_prior) ||
-      is.null(ext_flag_col) ||
-      is.null(baseline_prior)
-  )) {
-    stop(paste0(
-      "When method = 'BDB', ext_flag_col, ",
-      "tau_prior, and baseline_prior must be ",
-      "specified"
-    ))
-  }
 
   if (is.null(baseline_prior)) {
     stop(paste0(
       "baseline_prior must be ",
       "specified"
+    ))
+  }
+
+  if (is.null(ext_flag_col)) {
+    stop(paste0(
+      "ext_flag_col must be ",
+      "specified (even though ",
+      "it is ignored by ",
+      "full borrowing"
+    ))
+  }
+
+  if (method == "BDB" && is.null(tau_prior)) {
+    stop(paste0(
+      "When method = 'BDB', tau prior must ",
+      "be specified"
     ))
   }
 
@@ -91,15 +90,6 @@ borrowing_details <- function(method,
 
   if (method == "No borrowing" && !is.null(ext_flag_col)) {
     message("Filtering model matrix to exclude external control patients")
-  }
-
-  if (method == "No borrowing" && is.null(ext_flag_col)) {
-    warning(paste0(
-      "Not excluding any patients because 'ext_flag_col' is not ",
-      "specified. If you have external control patients you ",
-      "would like to exclude, specify the external control flag ",
-      "column in argument 'ext_flag_col'"
-    ))
   }
 
   if (method == "BDB" && !is(tau_prior, "Prior")) {

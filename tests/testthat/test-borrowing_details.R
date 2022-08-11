@@ -2,7 +2,8 @@ test_that("borrowing_details works as expected", {
   # Create objects
   fb <- borrowing_details(
     "Full borrowing",
-    normal_prior(0, 1000)
+    normal_prior(0, 1000),
+    "ext"
   )
 
   bdb <- borrowing_details(
@@ -31,7 +32,7 @@ test_that("borrowing_details works as expected", {
   # Errors
   expect_error(
     borrowing_details("no Borrowing", normal_prior(0, 1)),
-    "method must be one of"
+    "Must be element of set"
   )
 
   expect_error(
@@ -39,26 +40,18 @@ test_that("borrowing_details works as expected", {
       normal_prior(0, 100),
       tau_prior = normal_prior(0, 1000)
     ),
-    "no need to specify tau prior when method is not BDB"
+    "ext_flag_col must be specified"
   )
 
   expect_error(
     borrowing_details("Full borrowing",
-      baseline_prior = "Normal"
+      baseline_prior = "Normal",
+      ext_flag_col = "IMbrave150"
     ),
     'should be or extend class "Prior"'
   )
 
   expect_error(borrowing_details("BDB"), "must be specified")
-
-  # Warnings
-  expect_warning(
-    borrowing_details(
-      method = "No borrowing",
-      baseline_prior = normal_prior(0, 1)
-    ),
-    "Not excluding any patients"
-  )
 
   # Message
   expect_message(
@@ -68,5 +61,14 @@ test_that("borrowing_details works as expected", {
       "ext"
     ),
     "Filtering model matrix"
+  )
+
+  expect_message(
+    borrowing_details(
+      method = "Full borrowing",
+      baseline_prior = normal_prior(0, 1),
+      "ext"
+    ),
+    "Ignoring ext_flag_col for full borrowing"
   )
 })

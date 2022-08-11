@@ -1,14 +1,13 @@
 #' @include prior_class.R
 
 setClassUnion("PriorOrNULL", c("Prior", "NULL"))
-setClassUnion("characterOrNULL", c("character", "NULL"))
 
 # Parent class
 .borrowing_class <- setClass(
   "Borrowing",
   slots = c(
     method = "character",
-    ext_flag_col = "characterOrNULL",
+    ext_flag_col = "character",
     tau_prior = "PriorOrNULL",
     baseline_prior = "Prior"
   ),
