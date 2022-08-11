@@ -19,13 +19,7 @@ setClassUnion("characterOrNULL", c("character", "NULL"))
     baseline_prior = NULL
   ),
   validity = function(object) {
-    if (!object@method %in% c(
-      "BDB",
-      "Full borrowing",
-      "No borrowing"
-    )) {
-      return("method must be one of: 'BDB', 'Full borrowing', 'No borrowing'")
-    }
+  assert_choice(method, c("Full borrowing", "No borrowing", "BDB"))
     if (object@method != "BDB" && !is.null(object@tau_prior)) {
       return("no need to specify tau prior when method is not BDB")
     }
