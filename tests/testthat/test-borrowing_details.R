@@ -1,5 +1,4 @@
 test_that("borrowing_details works as expected", {
-
   # Create objects
   fb <- borrowing_details(
     "Full borrowing",

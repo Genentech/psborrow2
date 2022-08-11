@@ -56,7 +56,6 @@ borrowing_details <- function(method,
                               baseline_prior = NULL,
                               ext_flag_col = NULL,
                               tau_prior = NULL) {
-
   # Additional checks and neater errors than in class definition
 
   if (!method %in% c(
