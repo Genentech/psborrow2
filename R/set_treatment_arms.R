@@ -16,13 +16,13 @@
 #' @examples
 #'
 #' sta <- set_treatment_arms(
-#'    trt_flag_col = "trt",
-#'    trt_prior = normal_prior(0, 10000)
+#'   trt_flag_col = "trt",
+#'   trt_prior = normal_prior(0, 10000)
 #' )
 set_treatment_arms <- function(trt_flag_col = "character",
                                trt_prior = "Prior") {
-   .treatment_class(
-      trt_flag_col = trt_flag_col,
-      trt_prior = trt_prior
-   )
+  .treatment_class(
+    trt_flag_col = trt_flag_col,
+    trt_prior = trt_prior
+  )
 }

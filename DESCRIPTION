@@ -68,8 +68,6 @@ Collate:
     'mcmc_sample.R'
     'package.R'
     'poisson_prior.R'
-    'set_borrowing.R'
-    'set_covariates.R'
     'set_treatment_arms.R'
     'uniform_prior.R'
     'weib_ph_surv_dist.R'

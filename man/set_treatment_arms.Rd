@@ -26,7 +26,7 @@ priors for treatment effects and external control baseline hazard
 \examples{
 
 sta <- set_treatment_arms(
-   trt_flag_col = "trt",
-   trt_prior = normal_prior(0, 10000)
+  trt_flag_col = "trt",
+  trt_prior = normal_prior(0, 10000)
 )
 }
