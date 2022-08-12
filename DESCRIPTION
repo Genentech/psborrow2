@@ -57,6 +57,7 @@ Collate:
     'analysis_class.R'
     'bernoulli_prior.R'
     'beta_prior.R'
+    'borrowing_details.R'
     'cauchy_prior.R'
     'cmdstan.R'
     'create_analysis_obj.R'

@@ -10,7 +10,8 @@
   ),
   prototype = list(
     n_param = 2L,
-    stan_code = "uniform({{object@alpha}}, {{object@beta}})"
+    stan_code = "uniform({{object@alpha}}, {{object@beta}})",
+    constraint = "<lower={{object@alpha}}, upper = {{object@beta}}>"
   ),
   validity = function(object) {
     if (object@beta <= object@alpha) {
@@ -34,5 +35,6 @@
 #' @examples
 #' up <- uniform_prior(0, 1)
 uniform_prior <- function(alpha, beta) {
-  .uniform_prior(alpha = alpha, beta = beta)
+  constraint <- glue::glue("<lower={{alpha}}, upper={{beta}}>", .open = "{{", .close = "}}")
+  .uniform_prior(alpha = alpha, beta = beta, constraint = constraint)
 }

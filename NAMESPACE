@@ -3,6 +3,7 @@
 export(add_covariates)
 export(bernoulli_prior)
 export(beta_prior)
+export(borrowing_details)
 export(cauchy_prior)
 export(check_cmdstanr)
 export(create_analysis_obj)

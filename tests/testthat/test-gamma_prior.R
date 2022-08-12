@@ -8,7 +8,7 @@ test_that("Gamma priors are rendering correctly", {
   expect_equal(prior@beta, 3L)
 
   # Expect N inputs correct
-  expect_equal(NROW(slotNames(prior)) - 2, prior@n_param)
+  expect_equal(NROW(slotNames(prior)) - 3, prior@n_param)
 
   # Errors
   expect_error(gamma_prior(alpha = -1, beta = -2),
