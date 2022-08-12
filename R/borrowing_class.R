@@ -2,7 +2,7 @@
 
 setClassUnion("PriorOrNULL", c("Prior", "NULL"))
 
-# Parent class
+# borrowing class ----
 .borrowing_class <- setClass(
   "Borrowing",
   slots = c(
@@ -27,7 +27,7 @@ setClassUnion("PriorOrNULL", c("Prior", "NULL"))
   }
 )
 
-# Print method
+# show ----
 setMethod(
   f = "show",
   signature = "Borrowing",
