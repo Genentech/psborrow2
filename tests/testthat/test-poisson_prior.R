@@ -7,7 +7,7 @@ test_that("Poisson priors are rendering correctly", {
   expect_equal(prior@lambda, 0.2)
 
   # Expect N inputs correct
-  expect_equal(NROW(slotNames(prior)) - 2, prior@n_param)
+  expect_equal(NROW(slotNames(prior)) - 3, prior@n_param)
 
   # Errors
   expect_error(poisson_prior(-1),

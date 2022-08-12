@@ -10,7 +10,8 @@
   ),
   prototype = list(
     n_param = 2L,
-    stan_code = "beta({{object@alpha}}, {{object@beta}})"
+    stan_code = "beta({{object@alpha}}, {{object@beta}})",
+    constraint = "<lower=0, upper=1>"
   ),
   validity = function(object) {
     if (object@alpha < 0 || object@beta < 0) {
