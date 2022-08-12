@@ -52,6 +52,8 @@ Collate:
     'add_covariates.R'
     'bernoulli_prior.R'
     'beta_prior.R'
+    'borrowing_class.R'
+    'borrowing_details.R'
     'cauchy_prior.R'
     'cmdstan.R'
     'outcome_class.R'

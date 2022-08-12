@@ -8,7 +8,7 @@ test_that("Normal priors are rendering correctly", {
   expect_equal(prior@sigma, 3L)
 
   # Expect N inputs correct
-  expect_equal(NROW(slotNames(prior)) - 2, prior@n_param)
+  expect_equal(NROW(slotNames(prior)) - 3, prior@n_param)
 
   # Errors
   expect_error(normal_prior(mu = 2, sigma = -1),
