@@ -7,7 +7,8 @@
   slots = c(lambda = "numeric"),
   prototype = list(
     n_param = 1L,
-    stan_code = "poisson({{object@lambda}})"
+    stan_code = "poisson({{object@lambda}})",
+    constraint = "<lower=0>"
   ),
   validity = function(object) {
     if (object@lambda <= 0) {
