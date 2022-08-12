@@ -60,7 +60,6 @@ Collate:
     'exp_surv_dist.R'
     'exponential_prior.R'
     'gamma_prior.R'
-    'hello.R'
     'logistic_bin_outcome.R'
     'normal_prior.R'
     'package.R'
