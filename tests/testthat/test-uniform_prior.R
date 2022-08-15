@@ -6,9 +6,10 @@ test_that("Uniform priors are rendering correctly", {
   expect_class(prior, "UniformPrior")
   expect_equal(prior@alpha, 20)
   expect_equal(prior@beta, 300)
+  expect_equal(prior@constraint, "<lower=20, upper=300>")
 
   # Expect N inputs correct
-  expect_equal(NROW(slotNames(prior)) - 2, prior@n_param)
+  expect_equal(NROW(slotNames(prior)) - 3, prior@n_param)
 
   # Errors
   expect_error(uniform_prior(alpha = -1, beta = -2),

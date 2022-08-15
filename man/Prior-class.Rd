@@ -17,6 +17,9 @@ placeholders for parameters surrounded with \verb{\{\{} and \verb{\}\}} to be re
 with \code{\link[glue:glue]{glue::glue()}}.}
 
 \item{\code{n_param}}{integer. Number of prior parameters.}
+
+\item{\code{constraint}}{character. Support of prior distribution expressed as a
+Stan constraint, e.g. \code{"<lower=0, upper=1>"}.}
 }}
 
 \seealso{
