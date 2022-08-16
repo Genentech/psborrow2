@@ -45,3 +45,19 @@ plot_pmf <- function(x, y, ...) {
     ...
   )
 }
+
+#' Glue Strings with Default Arguments
+#'
+#' Calls [glue::glue()] with `.open = '{{'` and `.close = '}}'`
+#' to simplify gluing Stan code.
+#'
+#' @param ... Arguments passed to [glue::glue()]
+#'
+#' @return A string.
+#'
+#' @examples
+#' name <- "Tom"
+#' h_glue("hello, my name is {{name}}.")
+h_glue <- function(...) {
+  glue::glue(..., .open = "{{", .close = "}}", .envir = parent.frame())
+}
