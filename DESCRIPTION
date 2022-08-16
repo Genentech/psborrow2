@@ -40,6 +40,7 @@ Imports:
    glue,
    methods
 Suggests:
+   survival,
    testthat (>= 3.0),
    xml2
 Remotes:
@@ -56,6 +57,7 @@ Collate:
     'borrowing_details.R'
     'cauchy_prior.R'
     'cmdstan.R'
+    'data_matrix.R'
     'outcome_class.R'
     'exp_surv_dist.R'
     'exponential_prior.R'
