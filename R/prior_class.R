@@ -11,7 +11,6 @@
 #' @slot constraint character. Support of prior distribution expressed as a
 #' Stan constraint, e.g. `"<lower=0, upper=1>"`.
 #' @family priors
-#' @exportClass Prior
 setClass(
   "Prior",
   slots = c(

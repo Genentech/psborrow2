@@ -24,6 +24,14 @@ Stan constraint, e.g. \code{"<lower=0, upper=1>"}.}
 
 \seealso{
 Other priors: 
+\code{\link{BernoulliPrior-class}},
+\code{\link{BetaPrior-class}},
+\code{\link{CauchyPrior-class}},
+\code{\link{ExponentialPrior-class}},
+\code{\link{GammaPrior-class}},
+\code{\link{NormalPrior-class}},
+\code{\link{PoissonPrior-class}},
+\code{\link{UniformPrior-class}},
 \code{\link{bernoulli_prior}()},
 \code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},

@@ -7,9 +7,9 @@
 exp_surv_dist(time_var, cens_var)
 }
 \arguments{
-\item{time_var}{Name of time variable column in model matrix}
+\item{time_var}{character. Name of time variable column in model matrix}
 
-\item{cens_var}{Name of the censorship variable flag in model matrix}
+\item{cens_var}{character. Name of the censorship variable flag in model matrix}
 }
 \value{
 object of class "ExponentialSurvDist"

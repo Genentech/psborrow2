@@ -1,6 +1,19 @@
+#' `UniformPrior` Class
+#'
+#' A class for defining uniform priors to be translated to Stan code.
+#' Objects of class `UniformPrior` should not be created directly but by
+#' the constructor `uniform_prior()`.
+#'
+#' @slot stan_code character. Stan implementation of the prior, with
+#' placeholders for uniform stan function parameters surrounded with
+#' `{{` and `}}` to be replaced with [glue::glue()].
+#' @slot n_param integer. Number of prior parameters (2).
+#' @slot constraint character. Support of prior distribution,
+#' `"<lower=`alpha`, upper=`beta`>"`.
+#' @slot alpha numeric. Lower bound.
+#' @slot beta numeric. Upper bound (>`alpha`).
 #' @include prior_class.R
-
-# Internal constructor
+#' @family priors
 .uniform_prior <- setClass(
   "UniformPrior",
   contains = "Prior",
@@ -23,8 +36,8 @@
 
 #' Prior uniform distribution
 #'
-#' @param alpha lower bound
-#' @param beta upper bound (>`alpha`)
+#' @param alpha numeric. Lower bound.
+#' @param beta numeric. Upper bound (>`alpha`).
 #'
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/uniform-distribution.html>

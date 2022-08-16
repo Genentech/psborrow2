@@ -1,9 +1,19 @@
-#' @include prior_class.R
-
-# Combine class types
+# class union----
 setClassUnion("listOrPrior", c("list", "Prior"))
 
-# Covariate class ----
+#' `Covariate` Class
+#'
+#' A class for defining covariate details. Objects of class
+#' `Covariate` should not be created directly but by the constructor
+#' `add_covariates()`.
+#'
+#' @slot covariates character. Names of columns in the data matrix containing
+#' covariates to be adjusted for in the outcome model. Note: the
+#' external and treatment flags should not go here.
+#' @slot priors. Either a single object of class `Prior` specifying the prior
+#' distribution to apply to all covariates or a named list of
+#' distributions of class `Prior`, one for each covariate
+#' @include prior_class.R
 .covariate_class <- setClass(
   "Covariates",
   slots = c(

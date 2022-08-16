@@ -1,6 +1,18 @@
+#' `BernoulliPrior` Class
+#'
+#' A class for defining bernoulli priors to be translated to Stan code.
+#' Objects of class `BernoulliPrior` should not be created directly but by
+#' the constructor `bernoulli_prior()`.
+#'
+#' @slot stan_code character. Stan implementation of the prior, with
+#' placeholders for bernoulli stan function parameters surrounded with
+#' `{{` and `}}` to be replaced with [glue::glue()].
+#' @slot n_param integer. Number of prior parameters (1).
+#' @slot constraint character. Support of prior distribution,
+#' `"<lower=0, upper=1>"`.
+#' @slot theta numeric. Probability (in \[0, 1\]).
 #' @include prior_class.R
-
-# Internal constructor
+#' @family priors
 .bernoulli_prior <- setClass(
   "BernoulliPrior",
   contains = "Prior",
@@ -18,9 +30,9 @@
   }
 )
 
-#' Prior binomial distribution
+#' Prior bernoulli distribution
 #'
-#' @param theta probability (in \[0, 1\])
+#' @param theta numeric. Probability (in \[0, 1\]).
 #'
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/bernoulli-distribution.html>

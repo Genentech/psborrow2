@@ -1,8 +1,24 @@
-#' @include prior_class.R
-
+# class union ----
 setClassUnion("PriorOrNULL", c("Prior", "NULL"))
 
-# borrowing class ----
+#' `Borrowing` Class
+#'
+#' A class for defining borrowing details. Objects of class
+#' `Borrowing` should not be created directly but by the constructor
+#' `borrowing_details()`.
+#'
+#' @slot method character. The type of borrowing to perform. It
+#' must be one of: `'BDB'`, `'Full borrowing'`, or `'No borrowing'`. See `?borrowing_details` for
+#' more information.
+#' @slot baseline_prior `Prior`. Object of class `Prior`
+#' specifying prior distribution for the baseline outcome. See `?borrowing_details` for
+#' more information.
+#' @slot ext_flag_col character. The name of the column in
+#' the data matrix that corresponds to the external control flag (`1`/`0` or
+#' `TRUE`/`FALSE`). This identifies a patient as belonging to the external
+#' control cohort.
+#' @slot tau_prior `Prior`. Object of class `Prior` defining the hyperprior on the
+#' "commensurability parameter". See `?borrowing_details` for more information.
 .borrowing_class <- setClass(
   "Borrowing",
   slots = c(

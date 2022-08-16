@@ -3,17 +3,16 @@
 #' Specify type of borrowing and, for Bayesian Dynamic Borrowing,
 #' set hyperprior for commensurability parameter tau.
 #'
-#' @param method The type of borrowing to perform. It
+#' @param method character. The type of borrowing to perform. It
 #' must be one of: `'BDB'`, `'Full borrowing'`, or `'No borrowing'`. See _Details_ for
 #' more information.
 #' @param baseline_prior Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' See `Details` for more information.
-#' @param ext_flag_col Character specifying the name of the column in
+#' @param ext_flag_col character. The name of the column in
 #' the data matrix that corresponds to the external control flag (`1`/`0` or
 #' `TRUE`/`FALSE`). This identifies a patient as belonging to the external
 #' control cohort.
-#'
 #' @param tau_prior Object of class `Prior` defining the hyperprior on the
 #' "commensurability parameter". See `Details` for more information.
 #'

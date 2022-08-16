@@ -3,34 +3,16 @@
 \docType{class}
 \name{Outcome-class}
 \alias{Outcome-class}
-\alias{TimeToEvent-class}
-\alias{BinaryOutcome-class}
 \title{\code{Outcome} class}
 \description{
 \code{Outcome} class
-
-\code{TimeToEvent} class
-
-\code{BinaryOutcome} class
 }
-\section{Slots}{
-
-\describe{
-\item{\code{function_stan_code}}{character.}
-
-\item{\code{param_stan_code}}{character.}
-
-\item{\code{likelihood_stan_code}}{character.}
-
-\item{\code{n_param}}{integer.}
-
-\item{\code{param_priors}}{list.}
-
-\item{\code{time_var}}{character. Variable used for time in \code{TimeToEvent} objects.}
-
-\item{\code{cens_var}}{character. Variable used for censoring in \code{TimeToEvent} objects.}
-
-\item{\code{binary_var}}{character. Variable used for outcome in \code{BinaryOutcome} objects.}
-}}
-
-\concept{outcome model}
+\seealso{
+Other outcome: 
+\code{\link{BinaryOutcome-class}},
+\code{\link{ExponentialSurvDist-class}},
+\code{\link{LogisticBinaryOutcome-class}},
+\code{\link{TimeToEvent-class}},
+\code{\link{WeibullPHSurvDist-class}}
+}
+\concept{outcome}

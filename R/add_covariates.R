@@ -1,18 +1,18 @@
-#' @include covariate_class.R
-NULL
-
 #' Add Covariates for Model Adjustment
 #'
 #' Specify column names for adjustment variables in model matrix and prior
 #' distributions for the model parameters for these covariates (i.e., betas)
 #'
-#' @param covariates character vector naming covariates to be adjusted for in
-#' the outcome model
-#' @param priors either a single prior distribution applying to all covariates
-#' or a named list of prior distributions, one for each covariate
+#' @param covariates character. Names of columns in the data matrix containing
+#' covariates to be adjusted for in the outcome model. Note: the
+#' external and treatment flags should not go here.
+#' @param priors Either a single object of class `Prior` specifying the prior
+#' distribution to apply to all covariates or a named list of
+#' distributions of class `Prior`, one for each covariate
 #'
 #' @return object of class `Covariates`
 #' @export
+#' @include covariate_class.R
 #'
 #' @examples
 #' add_covariates(

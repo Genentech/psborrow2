@@ -1,6 +1,23 @@
+#' `ExponentialSurvDist` Class
+#'
+#' A class for defining a time-to-event survival analysis with an
+#' exponential survival distribution.
+#' Objects of class `ExponentialSurvDist` should not be created directly
+#' but by the constructor `exp_surv_dist()`.
+#'
+#' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
+#' Empty string for `ExponentialSurvDist`.
+#' @slot param_stan_code character. stan parameter code block containing text to interpolate into stan model.
+#' Empty string for `ExponentialSurvDist`.
+#' @slot likelihood_stan_code character. stan model likelihood code block containing text
+#' to interpolate into stan model.
+#' @slot n_param integer. Number of ancillary parameters for the model to estimate (0).
+#' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
+#' Empty for `ExponentialSurvDist`.
+#' @slot time_var character. Variable used for time in `TimeToEvent` objects.
+#' @slot cens_var character. Variable used for censoring in `TimeToEvent` objects.
 #' @include outcome_class.R
-
-# Internal constructor
+#' @family outcome
 .exp_surv_dist <- setClass(
   "ExponentialSurvDist",
   contains = "TimeToEvent",
@@ -23,8 +40,8 @@
 
 #' Exponential survival distribution
 #'
-#' @param time_var Name of time variable column in model matrix
-#' @param cens_var Name of the censorship variable flag in model matrix
+#' @param time_var character. Name of time variable column in model matrix
+#' @param cens_var character. Name of the censorship variable flag in model matrix
 #'
 #' @return object of class "ExponentialSurvDist"
 #' @export

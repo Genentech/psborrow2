@@ -7,7 +7,7 @@
 exponential_prior(beta)
 }
 \arguments{
-\item{beta}{inverse scale (>0)}
+\item{beta}{numeric. Inverse scale (>0).}
 }
 \value{
 object of class "ExponentialPrior"
@@ -23,7 +23,15 @@ ep <- exponential_prior(1)
 }
 \seealso{
 Other priors: 
+\code{\link{BernoulliPrior-class}},
+\code{\link{BetaPrior-class}},
+\code{\link{CauchyPrior-class}},
+\code{\link{ExponentialPrior-class}},
+\code{\link{GammaPrior-class}},
+\code{\link{NormalPrior-class}},
+\code{\link{PoissonPrior-class}},
 \code{\link{Prior-class}},
+\code{\link{UniformPrior-class}},
 \code{\link{bernoulli_prior}()},
 \code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},

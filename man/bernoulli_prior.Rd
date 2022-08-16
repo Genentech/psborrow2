@@ -2,18 +2,18 @@
 % Please edit documentation in R/bernoulli_prior.R
 \name{bernoulli_prior}
 \alias{bernoulli_prior}
-\title{Prior binomial distribution}
+\title{Prior bernoulli distribution}
 \usage{
 bernoulli_prior(theta)
 }
 \arguments{
-\item{theta}{probability (in [0, 1])}
+\item{theta}{numeric. Probability (in [0, 1]).}
 }
 \value{
 object of class "BernoulliPrior"
 }
 \description{
-Prior binomial distribution
+Prior bernoulli distribution
 }
 \details{
 Stan reference \url{https://mc-stan.org/docs/functions-reference/bernoulli-distribution.html}
@@ -23,7 +23,15 @@ bp <- bernoulli_prior(0.23)
 }
 \seealso{
 Other priors: 
+\code{\link{BernoulliPrior-class}},
+\code{\link{BetaPrior-class}},
+\code{\link{CauchyPrior-class}},
+\code{\link{ExponentialPrior-class}},
+\code{\link{GammaPrior-class}},
+\code{\link{NormalPrior-class}},
+\code{\link{PoissonPrior-class}},
 \code{\link{Prior-class}},
+\code{\link{UniformPrior-class}},
 \code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},
 \code{\link{exponential_prior}()},

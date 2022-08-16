@@ -7,9 +7,9 @@
 beta_prior(alpha, beta)
 }
 \arguments{
-\item{alpha}{shape (>=0)}
+\item{alpha}{numeric. Shape (>=0).}
 
-\item{beta}{shape (>=0)}
+\item{beta}{numeric. Shape (>=0).}
 }
 \value{
 object of class "BetaPrior"
@@ -25,7 +25,15 @@ bp <- beta_prior(9, 235)
 }
 \seealso{
 Other priors: 
+\code{\link{BernoulliPrior-class}},
+\code{\link{BetaPrior-class}},
+\code{\link{CauchyPrior-class}},
+\code{\link{ExponentialPrior-class}},
+\code{\link{GammaPrior-class}},
+\code{\link{NormalPrior-class}},
+\code{\link{PoissonPrior-class}},
 \code{\link{Prior-class}},
+\code{\link{UniformPrior-class}},
 \code{\link{bernoulli_prior}()},
 \code{\link{cauchy_prior}()},
 \code{\link{exponential_prior}()},

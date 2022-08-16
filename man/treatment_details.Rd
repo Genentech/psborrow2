@@ -7,7 +7,7 @@
 treatment_details(trt_flag_col, trt_prior)
 }
 \arguments{
-\item{trt_flag_col}{Character specifying the name of the column
+\item{trt_flag_col}{character. The name of the column
 in the model matrix that corresponds to the treatment flag
 (\code{1}/\code{0} or \code{TRUE}/\code{FALSE}). This identifies patients as belonging
 to the experimental treatment arm.}
