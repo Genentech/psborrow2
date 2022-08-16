@@ -39,7 +39,17 @@ setMethod(
   f = "summary",
   signature = "PoissonPrior",
   definition = function(object) {
-    show(object)
+    cat("Poisson Distribution\n")
+    cat("Parameters:\n")
+    print.data.frame(
+      data.frame(
+        Stan = c("lambda"),
+        R = c("lambda"),
+        Value = c(object@lambda)
+      ),
+      row.names = FALSE, right = FALSE
+    )
+    if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
 
     xlim <- floor(stats::qpois(c(0.005, 0.995), lambda = object@lambda))
     x <- seq(xlim[1], xlim[2] + 1)

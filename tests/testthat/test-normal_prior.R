@@ -15,3 +15,10 @@ test_that("Normal priors are rendering correctly", {
     regexp = "invalid class .NormalPrior. object: sigma must be >0"
   )
 })
+
+test_that("summary works for NormalPrior", {
+  vdiffr::expect_doppelganger(
+    "normal_prior_summary",
+    expect_snapshot_output(summary(normal_prior(0, 0.8)))
+  )
+})

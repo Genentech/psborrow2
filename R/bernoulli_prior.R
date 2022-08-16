@@ -39,7 +39,18 @@ setMethod(
   f = "summary",
   signature = "BernoulliPrior",
   definition = function(object) {
-    show(object)
+    cat("Bernoulli Distribution\n")
+    cat("Parameters:\n")
+    print.data.frame(
+      data.frame(
+        Stan = "theta",
+        R = "prob",
+        Value = object@theta
+      ),
+      row.names = FALSE, right = FALSE
+    )
+    if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
+
     x <- c(0, 1)
     y <- c(1 - object@theta, object@theta)
     plot_pmf(x, y)

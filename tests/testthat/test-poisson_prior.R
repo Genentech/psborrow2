@@ -14,3 +14,10 @@ test_that("Poisson priors are rendering correctly", {
     regexp = "invalid class .PoissonPrior. object: lambda must be >0"
   )
 })
+
+test_that("summary works for PoissonPrior", {
+  vdiffr::expect_doppelganger(
+    "poisson_prior_summary",
+    expect_snapshot_output(summary(poisson_prior(3)))
+  )
+})

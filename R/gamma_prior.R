@@ -44,7 +44,17 @@ setMethod(
   f = "summary",
   signature = "GammaPrior",
   definition = function(object) {
-    show(object)
+    cat("Gamma Distribution\n")
+    cat("Parameters:\n")
+    print.data.frame(
+      data.frame(
+        Stan = c("alpha", "beta"),
+        R = c("shape", "rate"),
+        Value = c(object@alpha, object@beta)
+      ),
+      row.names = FALSE, right = FALSE
+    )
+    if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
 
     xlim <- stats::qgamma(0.99, shape = object@alpha, rate = object@beta)
     x <- seq(from = 0, to = xlim, length = 300)

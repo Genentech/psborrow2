@@ -18,3 +18,10 @@ test_that("Gamma priors are rendering correctly", {
     regexp = "invalid class .GammaPrior. object: Both alpha and beta must be >= 0"
   )
 })
+
+test_that("summary works for GammaPrior", {
+  vdiffr::expect_doppelganger(
+    "gamma_prior_summary",
+    expect_snapshot_output(summary(gamma_prior(2, 5)))
+  )
+})

@@ -14,3 +14,10 @@ test_that("Bernoulli priors are rendering correctly", {
     regexp = "invalid class .BernoulliPrior. object"
   )
 })
+
+test_that("summary works for BernoulliPrior", {
+  vdiffr::expect_doppelganger(
+    "bernoulli_prior_summary",
+    expect_snapshot_output(summary(bernoulli_prior(0.7)))
+  )
+})

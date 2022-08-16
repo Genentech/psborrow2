@@ -16,3 +16,10 @@ test_that("Uniform priors are rendering correctly", {
     regexp = "invalid class .UniformPrior. object: beta must be > alpha"
   )
 })
+
+test_that("summary works for UniformPrior", {
+  vdiffr::expect_doppelganger(
+    "uniform_prior_summary",
+    expect_snapshot_output(summary(uniform_prior(0, 3)))
+  )
+})

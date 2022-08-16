@@ -43,7 +43,17 @@ setMethod(
   f = "summary",
   signature = "CauchyPrior",
   definition = function(object) {
-    show(object)
+    cat("Cauchy Distribution\n")
+    cat("Parameters:\n")
+    print.data.frame(
+      data.frame(
+        Stan = c("mu", "sigma"),
+        R = c("location", "scale"),
+        Value = c(object@mu, object@sigma)
+      ),
+      row.names = FALSE, right = FALSE
+    )
+    if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
 
     xlim <- stats::qcauchy(c(0.005, 0.995), location = object@mu, scale = object@sigma)
     x <- seq(from = xlim[1], to = xlim[2], length = 300)

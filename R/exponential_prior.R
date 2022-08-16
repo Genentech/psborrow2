@@ -39,7 +39,17 @@ setMethod(
   f = "summary",
   signature = "ExponentialPrior",
   definition = function(object) {
-    show(object)
+    cat("Exponential Distribution\n")
+    cat("Parameters:\n")
+    print.data.frame(
+      data.frame(
+        Stan = c("beta"),
+        R = c("rate"),
+        Value = c(object@beta)
+      ),
+      row.names = FALSE, right = FALSE
+    )
+    if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
 
     xlim <- stats::qexp(c(0.005, 0.995), rate = object@beta)
     x <- seq(from = xlim[1], to = xlim[2], length = 300)

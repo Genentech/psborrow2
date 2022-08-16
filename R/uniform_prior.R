@@ -45,7 +45,17 @@ setMethod(
   f = "summary",
   signature = "UniformPrior",
   definition = function(object) {
-    show(object)
+    cat("Uniform Distribution\n")
+    cat("Parameters:\n")
+    print.data.frame(
+      data.frame(
+        Stan = c("alpha", "beta"),
+        R = c("min", "max"),
+        Value = c(object@alpha, object@beta)
+      ),
+      row.names = FALSE, right = FALSE
+    )
+    if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
 
     x <- seq(from = object@alpha, to = object@beta, length = 2)
     y <- stats::dunif(x, min = object@alpha, max = object@beta)
