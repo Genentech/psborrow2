@@ -67,5 +67,7 @@ Collate:
     'normal_prior.R'
     'package.R'
     'poisson_prior.R'
+    'treatment_class.R'
+    'treatment_details.R'
     'uniform_prior.R'
     'weib_ph_surv_dist.R'
