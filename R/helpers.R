@@ -54,10 +54,10 @@ plot_pmf <- function(x, y, ...) {
 #' @param ... Arguments passed to [glue::glue()]
 #'
 #' @return A string.
-#'
+#' @noRd
 #' @examples
 #' name <- "Tom"
-#' h_glue("hello, my name is {{name}}.")
+#' psborrow2:::h_glue("hello, my name is {{name}}.")
 h_glue <- function(...) {
   glue::glue(..., .open = "{{", .close = "}}", .envir = parent.frame())
 }
