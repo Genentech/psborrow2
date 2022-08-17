@@ -54,10 +54,17 @@ setMethod(
       row.names = FALSE, right = FALSE
     )
     if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
+  }
+)
 
-    xlim <- stats::qnorm(c(0.005, 0.995), mean = object@mu, sd = object@sigma)
-    x <- seq(from = xlim[1], to = xlim[2], length = 300)
-    y <- stats::dnorm(x, mean = object@mu, sd = object@sigma)
-    plot_pdf(x, y)
+# plot ----
+setMethod(
+  f = "plot",
+  signature = c("NormalPrior", "missing"),
+  definition = function(x, y, add = FALSE, ...) {
+    limits <- stats::qnorm(c(0.005, 0.995), mean = x@mu, sd = x@sigma)
+    density_fun <- function(values) stats::dnorm(values, mean = x@mu, sd = x@sigma)
+    dist_type <- "continuous"
+    callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )
