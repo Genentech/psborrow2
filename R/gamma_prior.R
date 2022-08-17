@@ -59,6 +59,9 @@ setMethod(
 )
 
 # plot ----
+#' @rdname plot
+#' @examples
+#' plot(gamma_prior(0.1, 0.1))
 setMethod(
   f = "plot",
   signature = c("GammaPrior", "missing"),

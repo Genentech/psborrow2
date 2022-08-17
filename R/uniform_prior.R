@@ -60,6 +60,9 @@ setMethod(
 )
 
 # plot ----
+#' @rdname plot
+#' @examples
+#' plot(uniform_prior(1, 2), xlim = c(0, 3))
 setMethod(
   f = "plot",
   signature = c("UniformPrior", "missing"),

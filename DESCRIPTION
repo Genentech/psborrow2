@@ -41,7 +41,8 @@ Imports:
    glue,
    methods,
    stats,
-   graphics
+   graphics,
+   grDevices
 Suggests:
    testthat (>= 3.0),
    vdiffr,

@@ -52,8 +52,10 @@ setMethod(
     if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
   }
 )
-
 # plot ----
+#' @rdname plot
+#' @examples
+#' plot(bernoulli_prior(0.4), xlim = c(0, 15))
 setMethod(
   f = "plot",
   signature = c("BernoulliPrior", "missing"),

@@ -58,6 +58,9 @@ setMethod(
 )
 
 # plot ----
+#' @rdname plot
+#' @examples
+#' plot(normal_prior(1, 2))
 setMethod(
   f = "plot",
   signature = c("NormalPrior", "missing"),

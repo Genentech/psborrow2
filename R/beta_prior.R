@@ -59,6 +59,9 @@ setMethod(
 )
 
 # plot ----
+#' @rdname plot
+#' @examples
+#' plot(beta_prior(2, 2))
 setMethod(
   f = "plot",
   signature = c("BetaPrior", "missing"),

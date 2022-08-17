@@ -42,6 +42,10 @@ setMethod(
 
 # plot ----
 
+#' @rdname plot
+#' @param default_limits Numeric range to plot distribution over.
+#' @param dist_type Plot a continuous or discrete distribution.
+#' @param density_fun Function which takes a vector of values and returns a vector of density values.
 setMethod(
   f = "plot",
   signature = c("Prior", "missing"),

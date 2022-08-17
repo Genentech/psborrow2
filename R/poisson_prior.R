@@ -54,6 +54,10 @@ setMethod(
 )
 
 # plot ----
+
+#' @rdname plot
+#' @examples
+#' plot(poisson_prior(5), xlim = c(0, 15))
 setMethod(
   f = "plot",
   signature = c("PoissonPrior", "missing"),

@@ -58,6 +58,10 @@ setMethod(
 )
 
 # plot ----
+#' @rdname plot
+#' @examples
+#' plot(cauchy_prior(0, 1), xlim = c(-20, 20))
+#' plot(cauchy_prior(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
 setMethod(
   f = "plot",
   signature = c("CauchyPrior", "missing"),

@@ -41,12 +41,12 @@ plot_pdf <- function(x, y, ...) {
 #' plot_pmf(x, y)
 plot_pmf <- function(x, y, ..., col = "grey", add = FALSE, xlim) {
   if (isFALSE(add)) {
-    xlim <- extendrange(if (missing(xlim)) range(x) else xlim, f = 0.1)
+    xlim <- range(x) + c(-0.5, 0.5)
     ylim <- c(0, max(y))
     plot(x, y, type = "n", xaxt = "n", xlab = "", ylab = "", ..., xlim = xlim, ylim = ylim)
-    axis(side = 1, at = x, col.ticks = NA)
+    graphics::axis(side = 1, at = x, col.ticks = NA)
   }
-  rect(x - 0.5, 0, x + 0.5, y, col = rep(col, length(y)), ...)
+  graphics::rect(x - 0.5, 0, x + 0.5, y, col = rep(col, length(y)), ...)
 }
 
 #' Glue Strings with Default Arguments

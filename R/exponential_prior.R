@@ -54,6 +54,9 @@ setMethod(
 )
 
 # plot ----
+#' @rdname plot
+#' @examples
+#' plot(exponential_prior(0.1))
 setMethod(
   f = "plot",
   signature = c("ExponentialPrior", "missing"),
