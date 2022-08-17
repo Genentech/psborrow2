@@ -38,9 +38,9 @@ cauchy_prior <- function(mu, sigma) {
   .cauchy_prior(mu = mu, sigma = sigma)
 }
 
-# summary ----
+# show ----
 setMethod(
-  f = "summary",
+  f = "show",
   signature = "CauchyPrior",
   definition = function(object) {
     cat("Cauchy Distribution\n")

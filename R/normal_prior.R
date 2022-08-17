@@ -38,9 +38,9 @@ normal_prior <- function(mu, sigma) {
   .normal_prior(mu = mu, sigma = sigma)
 }
 
-# summary ----
+# show ----
 setMethod(
-  f = "summary",
+  f = "show",
   signature = "NormalPrior",
   definition = function(object) {
     cat("Normal Distribution\n")

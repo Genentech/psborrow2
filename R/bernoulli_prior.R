@@ -34,9 +34,9 @@ bernoulli_prior <- function(theta) {
   .bernoulli_prior(theta = theta)
 }
 
-# summary ----
+# show ----
 setMethod(
-  f = "summary",
+  f = "show",
   signature = "BernoulliPrior",
   definition = function(object) {
     cat("Bernoulli Distribution\n")

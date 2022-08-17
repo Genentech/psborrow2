@@ -34,9 +34,9 @@ exponential_prior <- function(beta) {
   .exponential_prior(beta = beta)
 }
 
-# summary ----
+# show ----
 setMethod(
-  f = "summary",
+  f = "show",
   signature = "ExponentialPrior",
   definition = function(object) {
     cat("Exponential Distribution\n")

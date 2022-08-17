@@ -38,10 +38,9 @@ beta_prior <- function(alpha, beta) {
   .beta_prior(alpha = alpha, beta = beta)
 }
 
-
-# summary ----
+# show ----
 setMethod(
-  f = "summary",
+  f = "show",
   signature = "BetaPrior",
   definition = function(object) {
     cat("Beta Distribution\n")

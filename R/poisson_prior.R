@@ -34,9 +34,9 @@ poisson_prior <- function(lambda) {
   .poisson_prior(lambda = lambda)
 }
 
-# summary ----
+# show ----
 setMethod(
-  f = "summary",
+  f = "show",
   signature = "PoissonPrior",
   definition = function(object) {
     cat("Poisson Distribution\n")

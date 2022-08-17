@@ -40,9 +40,9 @@ uniform_prior <- function(alpha, beta) {
 }
 
 
-# summary ----
+# show ----
 setMethod(
-  f = "summary",
+  f = "show",
   signature = "UniformPrior",
   definition = function(object) {
     cat("Uniform Distribution\n")

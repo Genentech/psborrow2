@@ -39,9 +39,9 @@ gamma_prior <- function(alpha, beta) {
 }
 
 
-# summary ----
+# show ----
 setMethod(
-  f = "summary",
+  f = "show",
   signature = "GammaPrior",
   definition = function(object) {
     cat("Gamma Distribution\n")
