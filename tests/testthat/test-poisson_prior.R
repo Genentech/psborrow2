@@ -15,8 +15,8 @@ test_that("Poisson priors are rendering correctly", {
   )
 })
 
-test_that("summary works for PoissonPrior", {
-  expect_snapshot_output(summary(poisson_prior(3)))
+test_that("show works for PoissonPrior", {
+  expect_snapshot_output(show(poisson_prior(3)))
 })
 
 test_that("plot works for PoissonPrior", {

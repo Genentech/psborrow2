@@ -16,8 +16,8 @@ test_that("Cauchy priors are rendering correctly", {
   )
 })
 
-test_that("summary works for CauchyPrior", {
-  expect_snapshot_output(summary(cauchy_prior(0, 0.8)))
+test_that("show works for CauchyPrior", {
+  expect_snapshot_output(show(cauchy_prior(0, 0.8)))
 })
 
 test_that("plot works for CauchyPrior", {

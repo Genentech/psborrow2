@@ -1,4 +1,4 @@
-# summary works for ExponentialPrior
+# show works for ExponentialPrior
 
     Exponential Distribution
     Parameters:

@@ -1,4 +1,4 @@
-# summary works for GammaPrior
+# show works for GammaPrior
 
     Gamma Distribution
     Parameters:

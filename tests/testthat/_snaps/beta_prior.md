@@ -1,4 +1,4 @@
-# summary works for BetaPrior
+# show works for BetaPrior
 
     Beta Distribution
     Parameters:

@@ -17,8 +17,8 @@ test_that("Uniform priors are rendering correctly", {
   )
 })
 
-test_that("summary works for UniformPrior", {
-  expect_snapshot_output(summary(uniform_prior(0, 3)))
+test_that("show works for UniformPrior", {
+  expect_snapshot_output(show(uniform_prior(0, 3)))
 })
 
 

@@ -1,4 +1,4 @@
-# summary works for NormalPrior
+# show works for NormalPrior
 
     Normal Distribution
     Parameters:

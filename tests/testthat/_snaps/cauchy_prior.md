@@ -1,4 +1,4 @@
-# summary works for CauchyPrior
+# show works for CauchyPrior
 
     Cauchy Distribution
     Parameters:

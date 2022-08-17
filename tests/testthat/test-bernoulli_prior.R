@@ -15,8 +15,8 @@ test_that("Bernoulli priors are rendering correctly", {
   )
 })
 
-test_that("summary works for BernoulliPrior", {
-  expect_snapshot_output(summary(bernoulli_prior(0.7)))
+test_that("show works for BernoulliPrior", {
+  expect_snapshot_output(show(bernoulli_prior(0.7)))
 })
 
 test_that("plot works for BernoulliPrior", {

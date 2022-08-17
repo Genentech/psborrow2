@@ -15,8 +15,8 @@ test_that("Exponential priors are rendering correctly", {
   )
 })
 
-test_that("summary works for ExponentialPrior", {
-  expect_snapshot_output(summary(exponential_prior(4)))
+test_that("show works for ExponentialPrior", {
+  expect_snapshot_output(show(exponential_prior(4)))
 })
 
 test_that("plot works for ExponentialPrior", {

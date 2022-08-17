@@ -16,8 +16,8 @@ test_that("Normal priors are rendering correctly", {
   )
 })
 
-test_that("summary works for NormalPrior", {
-  expect_snapshot_output(summary(normal_prior(0, 0.8)))
+test_that("show works for NormalPrior", {
+  expect_snapshot_output(show(normal_prior(0, 0.8)))
 })
 
 test_that("plot works for NormalPrior", {

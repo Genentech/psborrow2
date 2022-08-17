@@ -16,8 +16,8 @@ test_that("Beta priors are rendering correctly", {
   )
 })
 
-test_that("summary works for BetaPrior", {
-  expect_snapshot_output(summary(beta_prior(1.5, 0.8)))
+test_that("show works for BetaPrior", {
+  expect_snapshot_output(show(beta_prior(1.5, 0.8)))
 })
 
 test_that("plot works for BetaPrior", {

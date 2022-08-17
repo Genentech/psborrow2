@@ -1,4 +1,4 @@
-# summary works for UniformPrior
+# show works for UniformPrior
 
     Uniform Distribution
     Parameters:

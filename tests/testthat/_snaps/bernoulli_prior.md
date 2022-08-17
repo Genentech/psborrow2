@@ -1,4 +1,4 @@
-# summary works for BernoulliPrior
+# show works for BernoulliPrior
 
     Bernoulli Distribution
     Parameters:
