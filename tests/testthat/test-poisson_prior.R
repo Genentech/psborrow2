@@ -16,8 +16,12 @@ test_that("Poisson priors are rendering correctly", {
 })
 
 test_that("summary works for PoissonPrior", {
+  expect_snapshot_output(summary(poisson_prior(3)))
+})
+
+test_that("plot works for PoissonPrior", {
   vdiffr::expect_doppelganger(
-    "poisson_prior_summary",
-    expect_snapshot_output(summary(poisson_prior(3)))
+    "poisson_prior_plot",
+    plot(poisson_prior(3))
   )
 })

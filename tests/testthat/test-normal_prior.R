@@ -17,8 +17,12 @@ test_that("Normal priors are rendering correctly", {
 })
 
 test_that("summary works for NormalPrior", {
+  expect_snapshot_output(summary(normal_prior(0, 0.8)))
+})
+
+test_that("plot works for NormalPrior", {
   vdiffr::expect_doppelganger(
-    "normal_prior_summary",
-    expect_snapshot_output(summary(normal_prior(0, 0.8)))
+    "normal_prior_plot",
+    plot(normal_prior(0, 0.8))
   )
 })

@@ -63,7 +63,7 @@ setMethod(
   f = "plot",
   signature = c("GammaPrior", "missing"),
   definition = function(x, y, add = FALSE, ...) {
-    limits <- stats::qgamma(0.99, shape = x@alpha, rate = x@beta)
+    limits <- c(0, stats::qgamma(0.99, shape = x@alpha, rate = x@beta))
     density_fun <- function(values) stats::dgamma(values, shape = x@alpha, rate = x@beta)
     dist_type <- "continuous"
     callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)

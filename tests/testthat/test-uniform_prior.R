@@ -18,8 +18,13 @@ test_that("Uniform priors are rendering correctly", {
 })
 
 test_that("summary works for UniformPrior", {
+  expect_snapshot_output(summary(uniform_prior(0, 3)))
+})
+
+
+test_that("plot works for UniformPrior", {
   vdiffr::expect_doppelganger(
-    "uniform_prior_summary",
-    expect_snapshot_output(summary(uniform_prior(0, 3)))
+    "uniform_prior_plot",
+    plot(uniform_prior(0, 3))
   )
 })

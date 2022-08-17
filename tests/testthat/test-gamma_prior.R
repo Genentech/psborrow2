@@ -20,8 +20,12 @@ test_that("Gamma priors are rendering correctly", {
 })
 
 test_that("summary works for GammaPrior", {
+  expect_snapshot_output(summary(gamma_prior(2, 5)))
+})
+
+test_that("plot works for GammaPrior", {
   vdiffr::expect_doppelganger(
-    "gamma_prior_summary",
-    expect_snapshot_output(summary(gamma_prior(2, 5)))
+    "gamma_prior_plot",
+    plot(gamma_prior(2, 5))
   )
 })

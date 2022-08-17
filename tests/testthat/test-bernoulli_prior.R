@@ -16,8 +16,12 @@ test_that("Bernoulli priors are rendering correctly", {
 })
 
 test_that("summary works for BernoulliPrior", {
+  expect_snapshot_output(summary(bernoulli_prior(0.7)))
+})
+
+test_that("plot works for BernoulliPrior", {
   vdiffr::expect_doppelganger(
-    "bernoulli_prior_summary",
-    expect_snapshot_output(summary(bernoulli_prior(0.7)))
+    "bernoulli_prior_plot",
+    plot(bernoulli_prior(0.7))
   )
 })

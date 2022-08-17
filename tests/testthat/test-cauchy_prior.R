@@ -17,8 +17,12 @@ test_that("Cauchy priors are rendering correctly", {
 })
 
 test_that("summary works for CauchyPrior", {
+  expect_snapshot_output(summary(cauchy_prior(0, 0.8)))
+})
+
+test_that("plot works for CauchyPrior", {
   vdiffr::expect_doppelganger(
-    "cauchy_prior_summary",
-    expect_snapshot_output(summary(cauchy_prior(0, 0.8)))
+    "cauchy_prior_plot",
+    plot(cauchy_prior(0, 0.8))
   )
 })

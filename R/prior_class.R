@@ -40,7 +40,7 @@ setMethod(
   }
 )
 
-# show ----
+# plot ----
 setMethod(
   f = "plot",
   signature = c("Prior", "missing"),

@@ -17,8 +17,12 @@ test_that("Beta priors are rendering correctly", {
 })
 
 test_that("summary works for BetaPrior", {
+  expect_snapshot_output(summary(beta_prior(1.5, 0.8)))
+})
+
+test_that("plot works for BetaPrior", {
   vdiffr::expect_doppelganger(
-    "beta_prior_summary",
-    expect_snapshot_output(summary(beta_prior(1.5, 0.8)))
+    "beta_prior_plot",
+    plot(beta_prior(1.5, 0.8))
   )
 })
