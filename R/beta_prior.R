@@ -55,9 +55,17 @@ setMethod(
       row.names = FALSE, right = FALSE
     )
     if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
+  }
+)
 
-    x <- seq(from = 0, to = 1, length = 300)
-    y <- stats::dbeta(x, shape1 = object@alpha, shape2 = object@beta)
-    plot_pdf(x, y)
+# plot ----
+setMethod(
+  f = "plot",
+  signature = c("BetaPrior", "missing"),
+  definition = function(x, y, add = FALSE, ...) {
+    limits <- c(0, 1)
+    density_fun <- function(values) stats::dbeta(values, shape1 = x@alpha, shape2 = x@beta)
+    dist_type <- "continuous"
+    callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )

@@ -54,10 +54,17 @@ setMethod(
       row.names = FALSE, right = FALSE
     )
     if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
+  }
+)
 
-    xlim <- stats::qcauchy(c(0.005, 0.995), location = object@mu, scale = object@sigma)
-    x <- seq(from = xlim[1], to = xlim[2], length = 300)
-    y <- stats::dcauchy(x, location = object@mu, scale = object@sigma)
-    plot_pdf(x, y)
+# plot ----
+setMethod(
+  f = "plot",
+  signature = c("CauchyPrior", "missing"),
+  definition = function(x, y, add = FALSE, ...) {
+    limits <- stats::qcauchy(c(0.005, 0.995), location = x@mu, scale = x@sigma)
+    density_fun <- function(values) stats::dcauchy(values, location = x@mu, scale = x@sigma)
+    dist_type <- "continuous"
+    callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )

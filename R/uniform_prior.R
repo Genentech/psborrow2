@@ -56,9 +56,17 @@ setMethod(
       row.names = FALSE, right = FALSE
     )
     if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
+  }
+)
 
-    x <- seq(from = object@alpha, to = object@beta, length = 2)
-    y <- stats::dunif(x, min = object@alpha, max = object@beta)
-    plot_pdf(x, y)
+# plot ----
+setMethod(
+  f = "plot",
+  signature = c("UniformPrior", "missing"),
+  definition = function(x, y, add = FALSE, ...) {
+    limits <- c(x@alpha, x@beta)
+    density_fun <- function(values) stats::dunif(values, min = x@alpha, max = x@beta)
+    dist_type <- "continuous"
+    callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )

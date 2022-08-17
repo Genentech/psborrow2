@@ -50,10 +50,17 @@ setMethod(
       row.names = FALSE, right = FALSE
     )
     if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
+  }
+)
 
-    xlim <- floor(stats::qpois(c(0.005, 0.995), lambda = object@lambda))
-    x <- seq(xlim[1], xlim[2] + 1)
-    y <- stats::dpois(x, lambda = object@lambda)
-    plot_pmf(x, y)
+# plot ----
+setMethod(
+  f = "plot",
+  signature = c("PoissonPrior", "missing"),
+  definition = function(x, y, add = FALSE, ...) {
+    limits <- stats::qpois(c(0.005, 0.995), lambda = x@lambda)
+    density_fun <- function(values) stats::dpois(values, lambda = x@lambda)
+    dist_type <- "discrete"
+    callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )

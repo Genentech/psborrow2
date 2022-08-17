@@ -56,3 +56,15 @@ setMethod(
     plot_pmf(x, y)
   }
 )
+
+# plot ----
+setMethod(
+  f = "plot",
+  signature = c("BernoulliPrior", "missing"),
+  definition = function(x, y, add = FALSE, ...) {
+    limits <- c(0, 1)
+    density_fun <- function(values) stats::dbinom(values, prob = x@theta, size = 1)
+    dist_type <- "discrete"
+    callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
+  }
+)

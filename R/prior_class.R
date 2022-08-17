@@ -71,9 +71,9 @@ setMethod(
       if (isTRUE(add)) lines(values, y, ...) else plot_pdf(values, y, ...)
     } else {
       if (isTRUE(add)) {
-        error(paste(
+        stop(call. = FALSE, paste(
           "`add = TRUE` not supported for discrete distributions.",
-          "Consider plotting discrete distribution first"
+          "Consider plotting discrete distribution first and adding a continuous."
         ))
       } else {
         plot_pmf(values, y, ...)

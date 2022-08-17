@@ -50,10 +50,17 @@ setMethod(
       row.names = FALSE, right = FALSE
     )
     if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
+  }
+)
 
-    xlim <- stats::qexp(c(0.005, 0.995), rate = object@beta)
-    x <- seq(from = xlim[1], to = xlim[2], length = 300)
-    y <- stats::dexp(x, rate = object@beta)
-    plot_pdf(x, y)
+# plot ----
+setMethod(
+  f = "plot",
+  signature = c("ExponentialPrior", "missing"),
+  definition = function(x, y, add = FALSE, ...) {
+    limits <- stats::qexp(c(0.005, 0.995), rate = x@beta)
+    density_fun <- function(values) stats::dexp(values, rate = x@beta)
+    dist_type <- "continuous"
+    callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )
