@@ -39,9 +39,10 @@ plot_pdf <- function(x, y, ...) {
 plot_pmf <- function(x, y, ...) {
   graphics::barplot(
     height = y,
-    width = 0.2,
+    width = 1,
     names.arg = x,
     ylim = c(0, 1),
+    space = 0,
     ...
   )
 }

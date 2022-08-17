@@ -41,6 +41,7 @@ setMethod(
 )
 
 # plot ----
+
 setMethod(
   f = "plot",
   signature = c("Prior", "missing"),

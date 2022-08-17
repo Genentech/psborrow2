@@ -64,6 +64,7 @@ Collate:
     'exp_surv_dist.R'
     'exponential_prior.R'
     'gamma_prior.R'
+    'generics.R'
     'helpers.R'
     'logistic_bin_outcome.R'
     'normal_prior.R'
