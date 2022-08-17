@@ -50,10 +50,6 @@ setMethod(
       row.names = FALSE, right = FALSE
     )
     if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
-
-    x <- c(0, 1)
-    y <- c(1 - object@theta, object@theta)
-    plot_pmf(x, y)
   }
 )
 
