@@ -26,7 +26,10 @@ plot_pdf <- function(x, y, ...) {
 #'
 #' @param x values
 #' @param y probability mass values `y = f(x)`
-#' @param ... passed to [barplot()]
+#' @param ... passed to [plot()] and [rect()]
+#' @param col Fill color of bars.
+#' @param add Add bars to existing plot.
+#' @param xlim Limits of x axis.
 #'
 #' Plots the probability values as a barplot.
 #'
@@ -36,15 +39,14 @@ plot_pdf <- function(x, y, ...) {
 #' x <- seq(0, 5)
 #' y <- dpois(x, lambda = 2)
 #' plot_pmf(x, y)
-plot_pmf <- function(x, y, ...) {
-  graphics::barplot(
-    height = y,
-    width = 1,
-    names.arg = x,
-    ylim = c(0, 1),
-    space = 0,
-    ...
-  )
+plot_pmf <- function(x, y, ..., col = "grey", add = FALSE, xlim) {
+  if (isFALSE(add)) {
+    xlim <- extendrange(if (missing(xlim)) range(x) else xlim, f = 0.1)
+    ylim <- c(0, max(y))
+    plot(x, y, type = "n", xaxt = "n", xlab = "", ylab = "", ..., xlim = xlim, ylim = ylim)
+    axis(side = 1, at = x, col.ticks = NA)
+  }
+  rect(x - 0.5, 0, x + 0.5, y, col = rep(col, length(y)), ...)
 }
 
 #' Glue Strings with Default Arguments

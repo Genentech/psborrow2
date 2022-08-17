@@ -4,14 +4,20 @@
 \alias{plot_pmf}
 \title{Plot Probability Mass Function Values}
 \usage{
-plot_pmf(x, y, ...)
+plot_pmf(x, y, ..., col = "grey", add = FALSE, xlim)
 }
 \arguments{
 \item{x}{values}
 
 \item{y}{probability mass values \code{y = f(x)}}
 
-\item{...}{passed to \code{\link[=barplot]{barplot()}}
+\item{...}{passed to \code{\link[=plot]{plot()}} and \code{\link[=rect]{rect()}}}
+
+\item{col}{Fill color of bars.}
+
+\item{add}{Add bars to existing plot.}
+
+\item{xlim}{Limits of x axis.
 
 Plots the probability values as a barplot.}
 }

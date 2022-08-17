@@ -6,13 +6,13 @@
 \arguments{
 \item{x}{Object inheriting from \code{Prior}}
 
-\item{add}{logical. Add curve to existing plot.
-Not implemented for discrete distributions (i.e. Bernoulli, Poisson).}
+\item{add}{logical. Add density to existing plot.}
 
 \item{...}{Optional arguments for plotting.}
 }
 \description{
-Plot prior distributions as densities.
+Plot prior distributions as densities. Continuous distributions are plotted as curves and
+discrete distributions as bar plots.
 }
 \details{
 Plot ranges are selected by default to show 99\% of the density for unbounded distributions.

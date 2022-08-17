@@ -1,14 +1,14 @@
 
 #' Plot Prior Objects
 #'
-#' Plot prior distributions as densities.
+#' Plot prior distributions as densities. Continuous distributions are plotted as curves and
+#' discrete distributions as bar plots.
 #'
 #' @name plot
 #' @aliases plot
 #'
 #' @param x Object inheriting from `Prior`
-#' @param add logical. Add curve to existing plot.
-#'  Not implemented for discrete distributions (i.e. Bernoulli, Poisson).
+#' @param add logical. Add density to existing plot.
 #' @param ... Optional arguments for plotting.
 #'
 #' @details
