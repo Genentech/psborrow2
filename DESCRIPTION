@@ -40,9 +40,7 @@ Imports:
    checkmate,
    glue,
    methods,
-   stats,
-   graphics,
-   grDevices
+   graphics
 Suggests:
    testthat (>= 3.0),
    vdiffr,
