@@ -15,3 +15,14 @@ test_that("Cauchy priors are rendering correctly", {
     regexp = "invalid class .CauchyPrior. object: sigma must be >0"
   )
 })
+
+test_that("show works for CauchyPrior", {
+  expect_snapshot_output(show(cauchy_prior(0, 0.8)))
+})
+
+test_that("plot works for CauchyPrior", {
+  vdiffr::expect_doppelganger(
+    "cauchy_prior_plot",
+    plot(cauchy_prior(0, 0.8))
+  )
+})

@@ -1,0 +1,2 @@
+# Files that prettier should ignore in pre-commit check
+tests/testthat/_snaps/*

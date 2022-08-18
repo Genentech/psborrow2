@@ -26,6 +26,7 @@ repos:
           (.*/|)LICENSE|
           (.*/|)\.Rbuildignore|
           (.*/|)\.lintr|
+          (.*/|)\.prettierignore|
           (.*/|)_pkgdown.yaml|
           (.*/|)staged_dependencies.yaml|
           (.*/|)\.pre-commit-.*|
@@ -37,6 +38,7 @@ repos:
           .*\.rds|
           .*\.Rds|
           .*\.sh|
+          .*\.svg|
           .*\.RData
           )$
       - id: lintr
@@ -54,9 +56,9 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=200"]
       - id: end-of-file-fixer
-        exclude: '\.Rd'
+        exclude: '\.Rd|tests/testthat/_snaps/.*'
       - id: trailing-whitespace
-        exclude: '\.Rd'
+        exclude: '\.Rd|tests/testthat/_snaps/.*'
       - id: check-yaml
       - id: no-commit-to-branch
       - id: mixed-line-ending
@@ -78,3 +80,4 @@ repos:
     rev: v0.31.1
     hooks:
       - id: markdownlint
+        args: ["--ignore=tests/testthat/_snaps/*"]

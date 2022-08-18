@@ -12,7 +12,7 @@ gamma_prior(alpha, beta)
 \item{beta}{numeric. Inverse scale (>=0).}
 }
 \value{
-object of class "GammaPrior"
+object of class \code{GammaPrior}
 }
 \description{
 Prior gamma distribution

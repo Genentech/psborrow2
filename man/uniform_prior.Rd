@@ -12,7 +12,7 @@ uniform_prior(alpha, beta)
 \item{beta}{numeric. Upper bound (>\code{alpha}).}
 }
 \value{
-object of class "UniformPrior"
+object of class \code{UniformPrior}
 }
 \description{
 Prior uniform distribution

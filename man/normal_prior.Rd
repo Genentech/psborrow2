@@ -12,7 +12,7 @@ normal_prior(mu, sigma)
 \item{sigma}{numeric. Scale (>0).}
 }
 \value{
-object of class "NormalPrior"
+object of class \code{NormalPrior}
 }
 \description{
 Prior normal distribution
