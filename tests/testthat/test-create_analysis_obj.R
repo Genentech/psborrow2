@@ -80,7 +80,7 @@ lbo <- logistic_bin_outcome(
   binary_var = "resp"
 )
 
-test_that("Inputs types are correct", {
+test_that("Inputs classes are correct", {
   # Matrix
   expect_error(
     create_analysis_obj(

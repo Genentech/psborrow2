@@ -75,7 +75,7 @@ create_analysis_obj <- function(model_matrix,
                                 outcome,
                                 borrowing,
                                 treatment) {
-  # Input checks ----
+  # Input class checks ----
   expect_matrix(model_matrix)
   if (!is.null(covariates)) {
     expect_class(covariates, "Covariates")
