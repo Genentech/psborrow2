@@ -13,7 +13,7 @@ A class for defining Analysis details. Objects of class
 \section{Slots}{
 
 \describe{
-\item{\code{model_matrix}}{matrix. The data matrix, including all covariates to be
+\item{\code{data_matrix}}{matrix. The data matrix, including all covariates to be
 adjusted for, all relevant outcome variables, and treatment arm and external
 control arm flags.}
 
@@ -35,5 +35,7 @@ Stan model code to be compiled.}
 \item{\code{model_and_data.}}{A named list containing two items: 1) \code{stan_model},
 the compiled Stan model as output by cmdstanr::cmdstan_model, and
 2) \code{data_in}, a named list of inputs that will be passed to the compiled model.}
+
+\item{\code{ready_to_sample}}{logical. Is the object ready to sample?}
 }}
 

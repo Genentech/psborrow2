@@ -69,11 +69,11 @@ td <- treatment_details(
 
 esd <- exp_surv_dist(
   time_var = "time",
-  cens_var = "cens"
+  cens_var = "cnsr"
 )
 wpsd <- weib_ph_surv_dist(
   time_var = "time",
-  cens_var = "cens",
+  cens_var = "cnsr",
   shape_prior = normal_prior(0, 1000)
 )
 lbo <- logistic_bin_outcome(
@@ -84,7 +84,7 @@ test_that("Inputs classes are correct", {
   # Matrix
   expect_error(
     create_analysis_obj(
-      model_matrix = as.data.frame(mm),
+      data_matrix = as.data.frame(mm),
       covariates = ac,
       outcome = esd,
       treatment = td,
@@ -96,7 +96,7 @@ test_that("Inputs classes are correct", {
   # Covariates
   expect_error(
     create_analysis_obj(
-      model_matrix = mm,
+      data_matrix = mm,
       covariates = c("cov1", "cov2"),
       outcome = esd,
       treatment = td,
@@ -108,7 +108,7 @@ test_that("Inputs classes are correct", {
   # Outcomes
   expect_error(
     create_analysis_obj(
-      model_matrix = mm,
+      data_matrix = mm,
       covariates = ac,
       outcome = exponential_prior(.001),
       treatment = td,
@@ -120,7 +120,7 @@ test_that("Inputs classes are correct", {
   # Treatment
   expect_error(
     create_analysis_obj(
-      model_matrix = mm,
+      data_matrix = mm,
       covariates = ac,
       outcome = esd,
       treatment = "trt",
@@ -132,7 +132,7 @@ test_that("Inputs classes are correct", {
   # Borrowing
   expect_error(
     create_analysis_obj(
-      model_matrix = mm,
+      data_matrix = mm,
       covariates = ac,
       outcome = esd,
       treatment = td,
@@ -142,6 +142,93 @@ test_that("Inputs classes are correct", {
   )
 })
 
+test_that("Matrix should have no missing data", {
+  # Matrix should have no missing data
+  mm2 <- rbind(
+    mm,
+    matrix(c(NA, 0, 1, 1, 2.2, 0, 1), ncol = 7)
+  )
+  expect_error(
+    create_analysis_obj(
+      data_matrix = mm2,
+      covariates = ac,
+      outcome = esd,
+      treatment = td,
+      borrowing = bd_fb
+    ),
+    "Data matrix must not include any missing data"
+  )
+})
+
+test_that("Columns in analysis_obj should be in matrix", {
+  expect_error(
+    create_analysis_obj(
+      data_matrix = mm,
+      covariates = add_covariates(c("cov3", "cov2"),
+        priors = normal_prior(0, 1000)
+      ),
+      outcome = esd,
+      treatment = td,
+      borrowing = bd_fb
+    ),
+    "Some columns not detected in data matrix: 'cov3'"
+  )
+
+  expect_error(
+    create_analysis_obj(
+      data_matrix = mm,
+      covariates = ac,
+      outcome = exp_surv_dist("time", "cens"),
+      treatment = td,
+      borrowing = bd_fb
+    ),
+    "Some columns not detected in data matrix: 'cens'"
+  )
+
+  expect_error(
+    create_analysis_obj(
+      data_matrix = mm,
+      covariates = ac,
+      outcome = logistic_bin_outcome("response"),
+      treatment = td,
+      borrowing = bd_fb
+    ),
+    "Some columns not detected in data matrix: 'response'"
+  )
+
+  expect_error(
+    create_analysis_obj(
+      data_matrix = mm,
+      covariates = ac,
+      outcome = esd,
+      treatment = treatment_details(
+        trt_flag_col = "treat",
+        trt_prior = normal_prior(0, 100)
+      ),
+      borrowing = bd_fb
+    ),
+    "Some columns not detected in data matrix: 'treat'"
+  )
+
+  expect_error(
+    create_analysis_obj(
+      data_matrix = mm,
+      covariates = ac,
+      outcome = esd,
+      treatment = td,
+      borrowing = borrowing_details(
+        method = "BDB",
+        baseline_prior = normal_prior(0, 100),
+        ext_flag_col = "tira",
+        tau_prior = gamma_prior(.001, .001)
+      )
+    ),
+    "Some columns not detected in data matrix: 'tira'"
+  )
+})
+
+
+
 test_that("All allowable inputs create Analysis object", {
   # All combinations
   for (bd in list(bd_fb, bd_nb, bd_db)) {
@@ -149,7 +236,7 @@ test_that("All allowable inputs create Analysis object", {
       for (cc in list(ac, ac2, NULL)) {
         expect_class(
           create_analysis_obj(
-            model_matrix = mm,
+            data_matrix = mm,
             covariates = cc,
             outcome = oc,
             treatment = td,

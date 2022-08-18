@@ -1,6 +1,6 @@
 #' Compile MCMC sampler using STAN and create analysis object
 #'
-#' @param model_matrix matrix. The data matrix, including all covariates to be
+#' @param data_matrix matrix. The data matrix, including all covariates to be
 #' adjusted for, all relevant outcome variables, and treatment arm and external
 #' control arm flags.
 #' @param covariates `Covariate`. Object of class `Covariate` as output by
@@ -16,9 +16,10 @@
 #' @export
 #'
 #' @include analysis_class.R
+#' @importFrom stats complete.cases
 #'
 #' @examples
-#' model_matrix <- structure(c(
+#' data_matrix <- structure(c(
 #'   1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
 #'   1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 #'   1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
@@ -49,7 +50,7 @@
 #' ))
 #'
 #' anls <- create_analysis_obj(
-#'   model_matrix = model_matrix,
+#'   data_matrix = data_matrix,
 #'   covariates = add_covariates(
 #'     covariates = c("cov1", "cov2"),
 #'     priors = normal_prior(0, 1000)
@@ -70,13 +71,14 @@
 #'   )
 #' )
 #'
-create_analysis_obj <- function(model_matrix,
+create_analysis_obj <- function(data_matrix,
                                 covariates = NULL,
                                 outcome,
                                 borrowing,
                                 treatment) {
   # Input class checks ----
-  expect_matrix(model_matrix)
+  expect_matrix(data_matrix)
+  expect_numeric(data_matrix)
   if (!is.null(covariates)) {
     expect_class(covariates, "Covariates")
   }
@@ -84,14 +86,26 @@ create_analysis_obj <- function(model_matrix,
   expect_class(borrowing, "Borrowing")
   expect_class(treatment, "Treatment")
 
+  # No missing data in matrix ----
+  ## For now, require all fields (even if not used by model) to be non-missing
+  if (any(!complete.cases(data_matrix))) {
+    stop(
+      "Data matrix must not include any missing data. ",
+      "Filter to only complete cases or remove irrelevant columns"
+    )
+  }
+
   # Constructor ----
   analysis_obj <- .analysis_obj(
-    model_matrix = model_matrix,
+    data_matrix = data_matrix,
     covariates = covariates,
     outcome = outcome,
     borrowing = borrowing,
     treatment = treatment
   )
+
+  # Check data matrix has relevant columns ----
+  check_data_matrix_has_columns(analysis_obj)
 
   # Return----
   return(analysis_obj)
