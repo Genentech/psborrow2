@@ -15,3 +15,14 @@ test_that("Beta priors are rendering correctly", {
     regexp = "invalid class .BetaPrior. object: Both alpha and beta must be >= 0"
   )
 })
+
+test_that("show works for BetaPrior", {
+  expect_snapshot_output(show(beta_prior(1.5, 0.8)))
+})
+
+test_that("plot works for BetaPrior", {
+  vdiffr::expect_doppelganger(
+    "beta_prior_plot",
+    plot(beta_prior(1.5, 0.8))
+  )
+})

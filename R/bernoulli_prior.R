@@ -25,7 +25,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/bernoulli-distribution.html>
 #'
-#' @return object of class "BernoulliPrior"
+#' @return object of class `BernoulliPrior`
 #' @export
 #' @family priors
 #' @examples
@@ -33,3 +33,36 @@
 bernoulli_prior <- function(theta) {
   .bernoulli_prior(theta = theta)
 }
+
+# show ----
+setMethod(
+  f = "show",
+  signature = "BernoulliPrior",
+  definition = function(object) {
+    cat("Bernoulli Distribution\n")
+    cat("Parameters:\n")
+    print.data.frame(
+      data.frame(
+        Stan = "theta",
+        R = "prob",
+        Value = object@theta
+      ),
+      row.names = FALSE, right = FALSE
+    )
+    if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
+  }
+)
+# plot ----
+#' @rdname plot
+#' @examples
+#' plot(bernoulli_prior(0.4), xlim = c(0, 15))
+setMethod(
+  f = "plot",
+  signature = c("BernoulliPrior", "missing"),
+  definition = function(x, y, add = FALSE, ...) {
+    limits <- c(0, 1)
+    density_fun <- function(values) stats::dbinom(values, prob = x@theta, size = 1)
+    dist_type <- "discrete"
+    callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
+  }
+)

@@ -10,7 +10,7 @@ bernoulli_prior(theta)
 \item{theta}{probability (in [0, 1])}
 }
 \value{
-object of class "BernoulliPrior"
+object of class \code{BernoulliPrior}
 }
 \description{
 Prior binomial distribution

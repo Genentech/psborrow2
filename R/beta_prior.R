@@ -37,3 +37,37 @@
 beta_prior <- function(alpha, beta) {
   .beta_prior(alpha = alpha, beta = beta)
 }
+
+# show ----
+setMethod(
+  f = "show",
+  signature = "BetaPrior",
+  definition = function(object) {
+    cat("Beta Distribution\n")
+    cat("Parameters:\n")
+    print.data.frame(
+      data.frame(
+        Stan = c("alpha", "beta"),
+        R = c("shape1", "shape2"),
+        Value = c(object@alpha, object@beta)
+      ),
+      row.names = FALSE, right = FALSE
+    )
+    if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
+  }
+)
+
+# plot ----
+#' @rdname plot
+#' @examples
+#' plot(beta_prior(2, 2))
+setMethod(
+  f = "plot",
+  signature = c("BetaPrior", "missing"),
+  definition = function(x, y, add = FALSE, ...) {
+    limits <- c(0, 1)
+    density_fun <- function(values) stats::dbeta(values, shape1 = x@alpha, shape2 = x@beta)
+    dist_type <- "continuous"
+    callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
+  }
+)

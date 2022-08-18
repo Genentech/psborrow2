@@ -10,7 +10,7 @@ exponential_prior(beta)
 \item{beta}{inverse scale (>0)}
 }
 \value{
-object of class "ExponentialPrior"
+object of class \code{ExponentialPrior}
 }
 \description{
 Prior exponential distribution
