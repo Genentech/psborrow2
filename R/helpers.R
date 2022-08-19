@@ -66,12 +66,13 @@ h_glue <- function(...) {
 }
 
 
-#' Check that the data matrix has all the columns used in the analysis
+#' Check Data Matrix for Required Columns
 #'
-#' @param analysis_obj `Analysis`. Object of class `Analysis` returned by
-#' `create_analysis_obj()`
+#' Check that an `Analysis` object's `data_matrix` has all the required variables.
 #'
-#' @return `stop()` if some columns are missing
+#' @param object `Analysis`. Object to check.
+#'
+#' @return `stop()` if some columns are missing.
 #' @export
 #' @examples
 #' data_matrix <- structure(c(
@@ -129,47 +130,35 @@ h_glue <- function(...) {
 #'
 #' check_data_matrix_has_columns(anls)
 #'
-check_data_matrix_has_columns <- function(analysis_obj) {
-  # Specify cols to check
-  cols_to_check <- c(
-    analysis_obj@treatment@trt_flag_col,
-    analysis_obj@borrowing@ext_flag_col
-  )
+check_data_matrix_has_columns <- function(object) {
+  assert_class(object, "Analysis")
+  data_cols <- colnames(object@data_matrix)
+  error_col <- c()
 
-  if (!is.null(analysis_obj@covariates)) {
-    cols_to_check <- c(
-      cols_to_check,
-      analysis_obj@covariates@covariates
-    )
+  if (!object@treatment@trt_flag_col %in% data_cols) {
+    error_col <- c(error_col, treatment = object@treatment@trt_flag_col)
   }
 
-  if (is(analysis_obj@outcome, "TimeToEvent")) {
-    cols_to_check <- c(
-      cols_to_check,
-      analysis_obj@outcome@time_var,
-      analysis_obj@outcome@cens_var
-    )
-  } else if (is(analysis_obj@outcome, "BinaryOutcome")) {
-    cols_to_check <- c(
-      cols_to_check,
-      analysis_obj@outcome@binary_var
-    )
+  if (!object@borrowing@ext_flag_col %in% data_cols) {
+    error_col <- c(error_col, borrowing = object@borrowing@ext_flag_col)
   }
 
-  # Check
-  cols_are_there <- sapply(
-    cols_to_check,
-    function(col) {
-      col %in% colnames(analysis_obj@data_matrix)
-    }
-  )
+  if (!is.null(object@covariates)) {
+    missing_covariates <- setdiff(object@covariates@covariates, data_cols)
+    if (length(missing_covariates)) error_col <- c(error_col, covariates = toString(missing_covariates))
+  }
 
-  if (!all(cols_are_there)) {
-    cols_are_not_there <- cols_are_there[cols_are_there == FALSE]
-    stop(paste0(
-      "Some columns not detected in data matrix: '",
-      paste0(names(cols_are_not_there), collapse = "', '"),
-      "'"
-    ))
+  if (is(object@outcome, "TimeToEvent")) {
+    missing_outcomes <- setdiff(c(object@outcome@time_var, object@outcome@cens_var), data_cols)
+    if (length(missing_outcomes)) error_col <- c(error_col, outcome = toString(missing_outcomes))
+  } else if (is(object@outcome, "BinaryOutcome")) {
+    if (!object@outcome@binary_var %in% data_cols) error_col <- c(error_col, outcome = object@outcome@binary_var)
+  }
+
+  if (length(error_col)) {
+    stop(
+      "The following specified variables were not found in `data_matrix`:\n",
+      paste0("  ", names(error_col), ": ", error_col, "\n")
+    )
   }
 }

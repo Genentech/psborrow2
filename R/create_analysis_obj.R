@@ -76,17 +76,12 @@ create_analysis_obj <- function(data_matrix,
                                 outcome,
                                 borrowing,
                                 treatment) {
-  # Input class checks ----
-  expect_matrix(data_matrix)
-  expect_numeric(data_matrix)
-  if (!is.null(covariates)) {
-    expect_class(covariates, "Covariates")
-  }
-  expect_class(outcome, "Outcome")
-  expect_class(borrowing, "Borrowing")
-  expect_class(treatment, "Treatment")
+  assert_matrix(data_matrix, mode = "numeric")
+  assert_multi_class(covariates, c("Covariates", "NULL"))
+  assert_class(outcome, "Outcome")
+  assert_class(borrowing, "Borrowing")
+  assert_class(treatment, "Treatment")
 
-  # No missing data in matrix ----
   ## For now, require all fields (even if not used by model) to be non-missing
   if (any(!complete.cases(data_matrix))) {
     stop(
@@ -95,7 +90,6 @@ create_analysis_obj <- function(data_matrix,
     )
   }
 
-  # Constructor ----
   analysis_obj <- .analysis_obj(
     data_matrix = data_matrix,
     covariates = covariates,
@@ -104,9 +98,7 @@ create_analysis_obj <- function(data_matrix,
     treatment = treatment
   )
 
-  # Check data matrix has relevant columns ----
   check_data_matrix_has_columns(analysis_obj)
 
-  # Return----
   return(analysis_obj)
 }

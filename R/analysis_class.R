@@ -41,7 +41,7 @@ setClassUnion("CovariatesOrNULL", c("Covariates", "NULL"))
     model_and_data = "list",
     ready_to_sample = "logical"
   ),
-  prototype = c(
+  prototype = list(
     ready_to_sample = FALSE
   )
 )

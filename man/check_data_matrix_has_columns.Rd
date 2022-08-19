@@ -2,19 +2,18 @@
 % Please edit documentation in R/helpers.R
 \name{check_data_matrix_has_columns}
 \alias{check_data_matrix_has_columns}
-\title{Check that the data matrix has all the columns used in the analysis}
+\title{Check Data Matrix for Required Columns}
 \usage{
-check_data_matrix_has_columns(analysis_obj)
+check_data_matrix_has_columns(object)
 }
 \arguments{
-\item{analysis_obj}{\code{Analysis}. Object of class \code{Analysis} returned by
-\code{create_analysis_obj()}}
+\item{object}{\code{Analysis}. Object to check.}
 }
 \value{
-\code{stop()} if some columns are missing
+\code{stop()} if some columns are missing.
 }
 \description{
-Check that the data matrix has all the columns used in the analysis
+Check that an \code{Analysis} object's \code{data_matrix} has all the required variables.
 }
 \examples{
 data_matrix <- structure(c(

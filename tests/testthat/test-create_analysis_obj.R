@@ -102,7 +102,7 @@ test_that("Inputs classes are correct", {
       treatment = td,
       borrowing = bd_fb
     ),
-    "Must inherit from class 'Covariates', but has class 'character'"
+    "Must inherit from class 'Covariates'/'NULL', but has class 'character'"
   )
 
   # Outcomes
@@ -171,7 +171,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       treatment = td,
       borrowing = bd_fb
     ),
-    "Some columns not detected in data matrix: 'cov3'"
+    "The following specified variables were not found in `data_matrix`:\n  covariates: cov3"
   )
 
   expect_error(
@@ -182,7 +182,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       treatment = td,
       borrowing = bd_fb
     ),
-    "Some columns not detected in data matrix: 'cens'"
+    "The following specified variables were not found in `data_matrix`:\n  outcome: cens"
   )
 
   expect_error(
@@ -193,7 +193,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       treatment = td,
       borrowing = bd_fb
     ),
-    "Some columns not detected in data matrix: 'response'"
+    "The following specified variables were not found in `data_matrix`:\n  outcome: response"
   )
 
   expect_error(
@@ -207,7 +207,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       ),
       borrowing = bd_fb
     ),
-    "Some columns not detected in data matrix: 'treat'"
+    "The following specified variables were not found in `data_matrix`:\n  treatment: treat"
   )
 
   expect_error(
@@ -223,7 +223,7 @@ test_that("Columns in analysis_obj should be in matrix", {
         tau_prior = gamma_prior(.001, .001)
       )
     ),
-    "Some columns not detected in data matrix: 'tira'"
+    "The following specified variables were not found in `data_matrix`:\n  borrowing: tira"
   )
 })
 
@@ -247,4 +247,15 @@ test_that("All allowable inputs create Analysis object", {
       }
     }
   }
+})
+
+test_that("ready_to_sample flag is set", {
+  result <- create_analysis_obj(
+    data_matrix = mm,
+    covariates = ac,
+    outcome = esd,
+    treatment = td,
+    borrowing = bd_fb
+  )
+  expect_false(result@ready_to_sample)
 })
