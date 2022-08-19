@@ -1,24 +1,29 @@
 #' Create Data Matrix
 #'
-#' @param data a `data.frame` containing all variables
-#' @param outcome (`character`) the outcome variable for binary outcomes or the time and censoring variables
-#' @param trt_flag_col (`character`) the treatment indicator variable
-#' @param ext_flag_col (`character`) the external cohort indicator
-#' @param covariates (`character` or `formula`) the covariates for model adjustment
+#' Creates a matrix suitable for [create_analysis_obj()]. Creates dummy variables for factors and
+#' allows transformations of covariates specified with a formula.
 #'
-#' @return  A `matrix` containing all variables to pass to [create_analysis_object()].
+#' @param data data.frame. Data containing all variables
+#' @param outcome character. The outcome variable for binary outcomes or the time and censoring variables.
+#' @param trt_flag_col character. The treatment indicator variable.
+#' @param ext_flag_col character. The external cohort indicator.
+#' @param covariates character or formula. The covariates for model adjustment.
+#'
+#' @return  Invisibly returns a `matrix` containing all variables to pass to [create_analysis_obj()].
+#'  Prints names of covariates columns to use with [add_covariates()].
 #' @export
 #'
 #' @examples
 #' dat <- survival::diabetic
 #' dat$ext <- dat$trt == 0 & dat$id > 1000
-#' create_data_matrix(
+#' data_mat <- create_data_matrix(
 #'   dat,
 #'   outcome = c("time", "status"),
 #'   trt_flag_col = "trt",
 #'   ext_flag_col = "ext",
-#'   covariates = ~ age + laser + risk
+#'   covariates = ~ age + laser + log(risk)
 #' )
+#' data_mat
 create_data_matrix <- function(data, outcome, trt_flag_col, ext_flag_col, covariates = NULL) {
   assert_data_frame(data)
   data_cols <- colnames(data)
@@ -47,5 +52,5 @@ create_data_matrix <- function(data, outcome, trt_flag_col, ext_flag_col, covari
     cat("Call `add_covariates()` with `covariates = ", matrix_cov_cols, "`\n")
     output_matrix <- cbind(output_matrix, covariates_matrix)
   }
-  output_matrix
+  invisible(output_matrix)
 }
