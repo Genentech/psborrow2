@@ -25,10 +25,58 @@
     <loc>improved-waffle-bf365a9a.pages.github.io/news/index.html</loc>
   </url>
   <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/BernoulliPrior-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/BetaPrior-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/BinaryOutcome-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Borrowing-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/CauchyPrior-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Covariates-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/ExponentialPrior-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/ExponentialSurvDist-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/GammaPrior-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/LogisticBinaryOutcome-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/NormalPrior-class.html</loc>
+  </url>
+  <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/Outcome-class.html</loc>
   </url>
   <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/PoissonPrior-class.html</loc>
+  </url>
+  <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/Prior-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/TimeToEvent-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Treatment-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/UniformPrior-class.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/WeibullPHSurvDist-class.html</loc>
   </url>
   <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/add_covariates.html</loc>

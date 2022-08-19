@@ -65,22 +65,22 @@ distributions for the model parameters for these covariates (i.e., betas)</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>covariates</dt>
-<dd><p>character vector naming covariates to be adjusted for in
-the outcome model</p></dd>
+<dd><p>character. Names of columns in the data matrix containing
+covariates to be adjusted for in the outcome model. Note: the
+external and treatment flags should not go here.</p></dd>
 
 
 <dt>priors</dt>
-<dd><p>either a single prior distribution applying to all covariates
-or a named list of prior distributions, one for each covariate</p></dd>
+<dd><p>Either a single object of class <code>Prior</code> specifying the prior
+distribution to apply to all covariates or a named list of
+distributions of class <code>Prior</code>, one for each covariate</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>object of class <code>Covariates</code></p>
-
-
+<p>Object of class <code><a href="Covariates-class.html">Covariates</a></code>.</p>
     </div>
 
     <div class="section level2">
