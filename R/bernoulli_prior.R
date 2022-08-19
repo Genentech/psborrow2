@@ -2,7 +2,7 @@
 #'
 #' A class for defining bernoulli priors to be translated to Stan code.
 #' Objects of class `BernoulliPrior` should not be created directly but by
-#' the constructor `bernoulli_prior()`.
+#' the constructor [bernoulli_prior()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for bernoulli stan function parameters surrounded with

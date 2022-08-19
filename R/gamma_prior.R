@@ -2,7 +2,7 @@
 #'
 #' A class for defining gamma priors to be translated to Stan code.
 #' Objects of class `GammaPrior` should not be created directly but by
-#' the constructor `gamma_prior()`.
+#' the constructor [gamma_prior()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for gamma stan function parameters surrounded with

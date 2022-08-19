@@ -2,7 +2,7 @@
 #'
 #' A class for defining uniform priors to be translated to Stan code.
 #' Objects of class `UniformPrior` should not be created directly but by
-#' the constructor `uniform_prior()`.
+#' the constructor [uniform_prior()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for uniform stan function parameters surrounded with

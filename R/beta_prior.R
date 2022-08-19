@@ -2,7 +2,7 @@
 #'
 #' A class for defining beta priors to be translated to Stan code.
 #' Objects of class `BetaPrior` should not be created directly but by
-#' the constructor `beta_prior()`.
+#' the constructor [beta_prior()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for beta stan function parameters surrounded with

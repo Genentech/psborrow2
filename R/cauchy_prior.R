@@ -2,7 +2,7 @@
 #'
 #' A class for defining the cauchy priors to be translated to Stan code.
 #' Objects of class `CauchyPrior` should not be created directly but by
-#' the constructor `cauchy_prior()`.
+#' the constructor [cauchy_prior()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for cauchy stan function parameters surrounded with

@@ -3,7 +3,7 @@
 #' A class for defining a time-to-event survival analysis with a
 #' Weibull proportional hazards survival distribution.
 #' Objects of class `WeibullPHSurvDist` should not be created directly
-#' but by the constructor `weib_ph_surv_dist()`.
+#' but by the constructor [weib_ph_surv_dist()].
 #'
 #' @slot function_stan_code character. Stan function code block containing text to interpolate into Stan model.
 #' @slot param_stan_code character. Stan parameter code block containing text to interpolate into Stan model.

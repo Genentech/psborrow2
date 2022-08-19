@@ -2,7 +2,7 @@
 #'
 #' A class for defining exponential priors to be translated to Stan code.
 #' Objects of class `ExponentialPrior` should not be created directly but by
-#' the constructor `exponential_prior()`.
+#' the constructor [exponential_prior()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for exponential Stan function parameters surrounded with

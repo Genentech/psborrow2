@@ -3,7 +3,7 @@
 #' A class for defining a time-to-event survival analysis with an
 #' exponential survival distribution.
 #' Objects of class `ExponentialSurvDist` should not be created directly
-#' but by the constructor `exp_surv_dist()`.
+#' but by the constructor [exp_surv_dist()].
 #'
 #' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
 #' Empty string for `ExponentialSurvDist`.

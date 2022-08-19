@@ -2,7 +2,7 @@
 #'
 #' A class for defining normal priors to be translated to Stan code.
 #' Objects of class `NormalPrior` should not be created directly but by
-#' the constructor `normal_prior()`.
+#' the constructor [normal_prior()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for normal stan function parameters surrounded with
