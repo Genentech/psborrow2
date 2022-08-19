@@ -12,6 +12,7 @@
 #' prior distribution of the log effect estimate (log hazard ratio for
 #' time to event endpoints and log odds ratio for binary endpoints).
 #' @include prior_class.R
+#' @include normal_prior.R
 .treatment_class <- setClass(
   "Treatment",
   slots = c(
