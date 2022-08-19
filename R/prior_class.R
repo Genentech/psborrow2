@@ -10,8 +10,9 @@
 #' @slot n_param integer. Number of prior parameters.
 #' @slot constraint character. Support of prior distribution expressed as a
 #' Stan constraint, e.g. `"<lower=0, upper=1>"`.
-#' @family priors
-#' @exportClass Prior
+#' @family prior classes
+#' @seealso Prior constructor functions: [bernoulli_prior()], [beta_prior()], [cauchy_prior()], [gamma_prior()],
+#'  [normal_prior()], [poisson_prior()], [uniform_prior()]
 setClass(
   "Prior",
   slots = c(

@@ -1,6 +1,19 @@
+#' `GammaPrior` Class
+#'
+#' A class for defining gamma priors to be translated to Stan code.
+#' Objects of class `GammaPrior` should not be created directly but by
+#' the constructor [gamma_prior()].
+#'
+#' @slot stan_code character. Stan implementation of the prior, with
+#' placeholders for gamma stan function parameters surrounded with
+#' `{{` and `}}` to be replaced with [glue::glue()].
+#' @slot n_param integer. Number of prior parameters (2).
+#' @slot constraint character. Support of prior distribution,
+#' `"<lower=0>"`.
+#' @slot alpha numeric. Shape (>0).
+#' @slot beta numeric. Inverse scale (>=0).
 #' @include prior_class.R
-
-# Internal constructor
+#' @family prior classes
 .gamma_prior <- setClass(
   "GammaPrior",
   contains = "Prior",
@@ -23,13 +36,13 @@
 
 #' Prior gamma distribution
 #'
-#' @param alpha shape (>0)
-#' @param beta inverse scale (>=0)
+#' @param alpha numeric. Shape (>0).
+#' @param beta numeric. Inverse scale (>=0).
 #'
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/gamma-distribution.html>
 #'
-#' @return object of class `GammaPrior`
+#' @return Object of class [`GammaPrior`][GammaPrior-class].
 #' @export
 #' @family priors
 #' @examples

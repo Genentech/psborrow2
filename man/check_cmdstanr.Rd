@@ -6,11 +6,8 @@
 \usage{
 check_cmdstanr()
 }
-\value{
-Prints version and logistic example.
-}
 \description{
-Check whether \code{cmdstanr} is available.
+Check whether \code{cmdstanr} is available and prints version and logistic example.
 }
 \examples{
 check_cmdstanr()

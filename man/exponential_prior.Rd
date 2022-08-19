@@ -7,10 +7,10 @@
 exponential_prior(beta)
 }
 \arguments{
-\item{beta}{inverse scale (>0)}
+\item{beta}{numeric. Inverse scale (>0).}
 }
 \value{
-object of class \code{ExponentialPrior}
+Object of class \code{\link[=ExponentialPrior-class]{ExponentialPrior}}.
 }
 \description{
 Prior exponential distribution
@@ -23,7 +23,6 @@ ep <- exponential_prior(1)
 }
 \seealso{
 Other priors: 
-\code{\link{Prior-class}},
 \code{\link{bernoulli_prior}()},
 \code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},

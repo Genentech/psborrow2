@@ -7,10 +7,10 @@
 poisson_prior(lambda)
 }
 \arguments{
-\item{lambda}{rate (>0)}
+\item{lambda}{numeric. Rate (>0).}
 }
 \value{
-object of class \code{PoissonPrior}
+Object of class \code{\link[=PoissonPrior-class]{PoissonPrior}}.
 }
 \description{
 Prior poisson distribution
@@ -23,7 +23,6 @@ pp <- poisson_prior(100)
 }
 \seealso{
 Other priors: 
-\code{\link{Prior-class}},
 \code{\link{bernoulli_prior}()},
 \code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},

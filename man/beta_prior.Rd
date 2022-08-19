@@ -7,12 +7,12 @@
 beta_prior(alpha, beta)
 }
 \arguments{
-\item{alpha}{shape (>=0)}
+\item{alpha}{numeric. Shape (>=0).}
 
-\item{beta}{shape (>=0)}
+\item{beta}{numeric. Shape (>=0).}
 }
 \value{
-object of class "BetaPrior"
+Object of class \code{\link[=BetaPrior-class]{BetaPrior}}
 }
 \description{
 Prior beta distribution
@@ -25,7 +25,6 @@ bp <- beta_prior(9, 235)
 }
 \seealso{
 Other priors: 
-\code{\link{Prior-class}},
 \code{\link{bernoulli_prior}()},
 \code{\link{cauchy_prior}()},
 \code{\link{exponential_prior}()},

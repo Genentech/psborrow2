@@ -7,12 +7,12 @@
 cauchy_prior(mu, sigma)
 }
 \arguments{
-\item{mu}{location}
+\item{mu}{numeric. Location.}
 
-\item{sigma}{scale (>0)}
+\item{sigma}{numeric. Scale (>0).}
 }
 \value{
-object of class \code{CauchyPrior}
+Object of class \code{\link[=CauchyPrior-class]{CauchyPrior}}.
 }
 \description{
 Prior cauchy distribution
@@ -25,7 +25,6 @@ cp <- cauchy_prior(1, 1)
 }
 \seealso{
 Other priors: 
-\code{\link{Prior-class}},
 \code{\link{bernoulli_prior}()},
 \code{\link{beta_prior}()},
 \code{\link{exponential_prior}()},

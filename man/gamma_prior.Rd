@@ -7,12 +7,12 @@
 gamma_prior(alpha, beta)
 }
 \arguments{
-\item{alpha}{shape (>0)}
+\item{alpha}{numeric. Shape (>0).}
 
-\item{beta}{inverse scale (>=0)}
+\item{beta}{numeric. Inverse scale (>=0).}
 }
 \value{
-object of class \code{GammaPrior}
+Object of class \code{\link[=GammaPrior-class]{GammaPrior}}.
 }
 \description{
 Prior gamma distribution
@@ -25,7 +25,6 @@ gp <- gamma_prior(0.001, 0.001)
 }
 \seealso{
 Other priors: 
-\code{\link{Prior-class}},
 \code{\link{bernoulli_prior}()},
 \code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},
