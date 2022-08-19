@@ -25,6 +25,9 @@
     <loc>improved-waffle-bf365a9a.pages.github.io/news/index.html</loc>
   </url>
   <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Analysis-class.html</loc>
+  </url>
+  <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/BernoulliPrior-class.html</loc>
   </url>
   <url>
@@ -95,6 +98,12 @@
   </url>
   <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/check_cmdstanr.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/check_data_matrix_has_columns.html</loc>
+  </url>
+  <url>
+    <loc>improved-waffle-bf365a9a.pages.github.io/reference/create_analysis_obj.html</loc>
   </url>
   <url>
     <loc>improved-waffle-bf365a9a.pages.github.io/reference/exp_surv_dist.html</loc>
