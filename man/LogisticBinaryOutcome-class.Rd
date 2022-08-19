@@ -9,7 +9,7 @@
 A class for defining a logistic regression with a binary outcome
 to be translated to Stan code.
 Objects of class \code{LogisticBinaryOutcome} should not be created directly but by
-the constructor \code{logistic_bin_outcome()}.
+the constructor \code{\link[=logistic_bin_outcome]{logistic_bin_outcome()}}.
 }
 \section{Slots}{
 

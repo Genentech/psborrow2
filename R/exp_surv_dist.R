@@ -43,9 +43,9 @@
 #' @param time_var character. Name of time variable column in model matrix
 #' @param cens_var character. Name of the censorship variable flag in model matrix
 #'
-#' @return object of class "ExponentialSurvDist"
+#' @return Object of class [`ExponentialSurvDist`][ExponentialSurvDist-class].
 #' @export
-#' @family Outcome models
+#' @family outcome models
 #'
 #' @examples
 #' es <- exp_surv_dist(time_var = "time", cens_var = "cens")

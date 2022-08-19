@@ -7,16 +7,21 @@
 logistic_bin_outcome(binary_var)
 }
 \arguments{
-\item{binary_var}{Name of binary (1/0 or TRUE/FALSE) outcome variable in the
+\item{binary_var}{character. Name of binary (1/0 or TRUE/FALSE) outcome variable in the
 model matrix}
 }
 \value{
-object of class \code{LogisticBinaryOutcome}
+Object of class \code{\link[=LogisticBinaryOutcome-class]{LogisticBinaryOutcome}}.
 }
 \description{
 Bernoulli distribution with logit parametrization
 }
 \examples{
 lg <- logistic_bin_outcome(binary_var = "response")
+}
+\seealso{
+Other outcome models: 
+\code{\link{exp_surv_dist}()},
+\code{\link{weib_ph_surv_dist}()}
 }
 \concept{outcome models}

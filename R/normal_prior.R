@@ -13,7 +13,7 @@
 #' @slot mu numeric. Location.
 #' @slot sigma numeric. Scale (>0).
 #' @include prior_class.R
-#' @family priors
+#' @family prior classes
 .normal_prior <- setClass(
   "NormalPrior",
   contains = "Prior",
@@ -42,7 +42,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/normal-distribution.html>
 #'
-#' @return object of class `NormalPrior`
+#' @return Object of class [`NormalPrior`][NormalPrior-class].
 #' @export
 #' @family priors
 #' @examples

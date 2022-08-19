@@ -10,7 +10,7 @@
 #' distribution to apply to all covariates or a named list of
 #' distributions of class `Prior`, one for each covariate
 #'
-#' @return object of class `Covariates`
+#' @return Object of class [`Covariates`][Covariates-class].
 #' @export
 #' @include covariate_class.R
 #'

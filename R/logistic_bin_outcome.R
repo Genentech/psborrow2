@@ -35,10 +35,10 @@
 
 #' Bernoulli distribution with logit parametrization
 #'
-#' @param binary_var Name of binary (1/0 or TRUE/FALSE) outcome variable in the
+#' @param binary_var character. Name of binary (1/0 or TRUE/FALSE) outcome variable in the
 #' model matrix
 #'
-#' @return object of class `LogisticBinaryOutcome`
+#' @return Object of class [`LogisticBinaryOutcome`][LogisticBinaryOutcome-class].
 #' @export
 #' @family outcome models
 #'

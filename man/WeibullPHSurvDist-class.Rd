@@ -9,7 +9,7 @@
 A class for defining a time-to-event survival analysis with a
 Weibull proportional hazards survival distribution.
 Objects of class \code{WeibullPHSurvDist} should not be created directly
-but by the constructor \code{weib_ph_surv_dist()}.
+but by the constructor \code{\link[=weib_ph_surv_dist]{weib_ph_surv_dist()}}.
 }
 \section{Slots}{
 

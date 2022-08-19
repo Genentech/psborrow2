@@ -12,7 +12,7 @@
 #' `"<lower=0, upper=1>"`.
 #' @slot theta numeric. Probability (in \[0, 1\]).
 #' @include prior_class.R
-#' @family priors
+#' @family prior classes
 .bernoulli_prior <- setClass(
   "BernoulliPrior",
   contains = "Prior",
@@ -37,7 +37,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/bernoulli-distribution.html>
 #'
-#' @return object of class `BernoulliPrior`
+#' @return Object of class [`BernoulliPrior`][BernoulliPrior-class].
 #' @export
 #' @family priors
 #' @examples

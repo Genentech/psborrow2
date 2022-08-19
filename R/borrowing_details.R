@@ -79,7 +79,7 @@
 #'   Use of historical control data for assessing treatment effects in clinical trials.
 #'   __Pharmaceut. Statist., 13: 41--54__. \doi{10.1002/pst.1589}
 #'
-#' @return An object of class `Borrowing`.
+#' @return Object of class [`Borrowing`][Borrowing-class].
 #' @export
 #'
 #' @include borrowing_class.R

@@ -13,7 +13,7 @@
 #' @slot alpha numeric. Shape (>0).
 #' @slot beta numeric. Inverse scale (>=0).
 #' @include prior_class.R
-#' @family priors
+#' @family prior classes
 .gamma_prior <- setClass(
   "GammaPrior",
   contains = "Prior",
@@ -42,7 +42,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/gamma-distribution.html>
 #'
-#' @return object of class `GammaPrior`
+#' @return Object of class [`GammaPrior`][GammaPrior-class].
 #' @export
 #' @family priors
 #' @examples

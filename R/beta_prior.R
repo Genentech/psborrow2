@@ -13,7 +13,7 @@
 #' @slot alpha numeric. Shape (>=0).
 #' @slot beta numeric. Shape (>=0).
 #' @include prior_class.R
-#' @family priors
+#' @family prior classes
 .beta_prior <- setClass(
   "BetaPrior",
   contains = "Prior",
@@ -42,7 +42,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/beta-distribution.html>
 #'
-#' @return object of class "BetaPrior"
+#' @return Object of class [`BetaPrior`][BetaPrior-class]
 #' @export
 #' @family priors
 #' @examples

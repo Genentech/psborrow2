@@ -9,7 +9,7 @@
 A class for defining a time-to-event survival analysis with an
 exponential survival distribution.
 Objects of class \code{ExponentialSurvDist} should not be created directly
-but by the constructor \code{exp_surv_dist()}.
+but by the constructor \code{\link[=exp_surv_dist]{exp_surv_dist()}}.
 }
 \section{Slots}{
 

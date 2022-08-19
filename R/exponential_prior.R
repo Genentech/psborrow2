@@ -12,7 +12,7 @@
 #' `"<lower=0>"`.
 #' @slot beta numeric. Inverse scale (>0).
 #' @include prior_class.R
-#' @family priors
+#' @family prior classes
 .exponential_prior <- setClass(
   "ExponentialPrior",
   contains = "Prior",
@@ -37,7 +37,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/exponential-distribution.html>
 #'
-#' @return object of class `ExponentialPrior`
+#' @return Object of class [`ExponentialPrior`][ExponentialPrior-class].
 #' @export
 #' @family priors
 #' @examples

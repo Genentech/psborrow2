@@ -24,7 +24,7 @@ control cohort.}
 "commensurability parameter". See \code{Details} for more information.}
 }
 \value{
-An object of class \code{Borrowing}.
+Object of class \code{\link[=Borrowing-class]{Borrowing}}.
 }
 \description{
 Specify type of borrowing and, for Bayesian Dynamic Borrowing,

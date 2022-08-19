@@ -19,7 +19,7 @@ weib_ph_surv_dist(
 parameter. Default is \code{exponential_prior(beta = 0.0001)}.}
 }
 \value{
-object of class \code{WeibullPHSurvDist}
+Object of class \code{\link[=WeibullPHSurvDist-class]{WeibullPHSurvDist}}.
 }
 \description{
 Weibull survival distribution (proportional hazards formulation)
@@ -28,7 +28,8 @@ Weibull survival distribution (proportional hazards formulation)
 ws <- weib_ph_surv_dist(time_var = "time", cens_var = "cens", shape_prior = exponential_prior(1))
 }
 \seealso{
-Other Outcome models: 
-\code{\link{exp_surv_dist}()}
+Other outcome models: 
+\code{\link{exp_surv_dist}()},
+\code{\link{logistic_bin_outcome}()}
 }
-\concept{Outcome models}
+\concept{outcome models}

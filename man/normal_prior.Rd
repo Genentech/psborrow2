@@ -12,7 +12,7 @@ normal_prior(mu, sigma)
 \item{sigma}{numeric. Scale (>0).}
 }
 \value{
-object of class \code{NormalPrior}
+Object of class \code{\link[=NormalPrior-class]{NormalPrior}}.
 }
 \description{
 Prior normal distribution
@@ -25,15 +25,6 @@ np <- normal_prior(1, 1)
 }
 \seealso{
 Other priors: 
-\code{\link{BernoulliPrior-class}},
-\code{\link{BetaPrior-class}},
-\code{\link{CauchyPrior-class}},
-\code{\link{ExponentialPrior-class}},
-\code{\link{GammaPrior-class}},
-\code{\link{NormalPrior-class}},
-\code{\link{PoissonPrior-class}},
-\code{\link{Prior-class}},
-\code{\link{UniformPrior-class}},
 \code{\link{bernoulli_prior}()},
 \code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},
