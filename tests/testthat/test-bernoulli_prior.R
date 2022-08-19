@@ -14,3 +14,14 @@ test_that("Bernoulli priors are rendering correctly", {
     regexp = "invalid class .BernoulliPrior. object"
   )
 })
+
+test_that("show works for BernoulliPrior", {
+  expect_snapshot_output(show(bernoulli_prior(0.7)))
+})
+
+test_that("plot works for BernoulliPrior", {
+  vdiffr::expect_doppelganger(
+    "bernoulli_prior_plot",
+    plot(bernoulli_prior(0.7))
+  )
+})

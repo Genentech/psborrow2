@@ -7,7 +7,7 @@
 borrowing_details(method, baseline_prior, ext_flag_col, tau_prior = NULL)
 }
 \arguments{
-\item{method}{The type of borrowing to perform. It
+\item{method}{character. The type of borrowing to perform. It
 must be one of: \code{'BDB'}, \code{'Full borrowing'}, or \code{'No borrowing'}. See \emph{Details} for
 more information.}
 
@@ -15,7 +15,7 @@ more information.}
 specifying prior distribution for the baseline outcome.
 See \code{Details} for more information.}
 
-\item{ext_flag_col}{Character specifying the name of the column in
+\item{ext_flag_col}{character. The name of the column in
 the data matrix that corresponds to the external control flag (\code{1}/\code{0} or
 \code{TRUE}/\code{FALSE}). This identifies a patient as belonging to the external
 control cohort.}
@@ -24,7 +24,7 @@ control cohort.}
 "commensurability parameter". See \code{Details} for more information.}
 }
 \value{
-An object of class \code{Borrowing}.
+Object of class \code{\link[=Borrowing-class]{Borrowing}}.
 }
 \description{
 Specify type of borrowing and, for Bayesian Dynamic Borrowing,

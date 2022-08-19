@@ -7,14 +7,16 @@
 add_covariates(covariates, priors)
 }
 \arguments{
-\item{covariates}{character vector naming covariates to be adjusted for in
-the outcome model}
+\item{covariates}{character. Names of columns in the data matrix containing
+covariates to be adjusted for in the outcome model. Note: the
+external and treatment flags should not go here.}
 
-\item{priors}{either a single prior distribution applying to all covariates
-or a named list of prior distributions, one for each covariate}
+\item{priors}{Either a single object of class \code{Prior} specifying the prior
+distribution to apply to all covariates or a named list of
+distributions of class \code{Prior}, one for each covariate}
 }
 \value{
-object of class \code{Covariates}
+Object of class \code{\link[=Covariates-class]{Covariates}}.
 }
 \description{
 Specify column names for adjustment variables in model matrix and prior

@@ -1,13 +1,10 @@
-#' @include treatment_class.R
-NULL
-
 #' Specify Treatment Details
 #'
 #' Specify the treatment arm column name in the model matrix and set a prior
 #' distribution for the treatment effect (log hazard ratio or
 #' log odds ratio)
 #'
-#' @param trt_flag_col Character specifying the name of the column
+#' @param trt_flag_col character. The name of the column
 #' in the model matrix that corresponds to the treatment flag
 #' (`1`/`0` or `TRUE`/`FALSE`). This identifies patients as belonging
 #' to the experimental treatment arm.
@@ -15,7 +12,7 @@ NULL
 #' prior distribution of the log effect estimate (log hazard ratio for
 #' time to event endpoints and log odds ratio for binary endpoints).
 #'
-#' @return an object of class `Treatment`
+#' @return Object of class [`Treatment`][Treatment-class].
 #' @export
 #'
 #' @include treatment_class.R

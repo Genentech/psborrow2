@@ -34,14 +34,17 @@ Depends:
     R (>= 3.5.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
+Config/testthat/edition: 3
 Imports:
    cmdstanr,
    checkmate,
    glue,
-   methods
+   methods,
+   graphics
 Suggests:
    survival,
    testthat (>= 3.0),
+   vdiffr,
    xml2
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
@@ -51,22 +54,26 @@ Collate:
     'prior_class.R'
     'covariate_class.R'
     'add_covariates.R'
+    'normal_prior.R'
+    'treatment_class.R'
+    'borrowing_class.R'
+    'outcome_class.R'
+    'analysis_class.R'
     'bernoulli_prior.R'
     'beta_prior.R'
-    'borrowing_class.R'
     'borrowing_details.R'
     'cauchy_prior.R'
     'cmdstan.R'
+    'create_analysis_obj.R'
     'data_matrix.R'
-    'outcome_class.R'
     'exp_surv_dist.R'
     'exponential_prior.R'
     'gamma_prior.R'
+    'generics.R'
+    'helpers.R'
     'logistic_bin_outcome.R'
-    'normal_prior.R'
     'package.R'
     'poisson_prior.R'
-    'treatment_class.R'
     'treatment_details.R'
     'uniform_prior.R'
     'weib_ph_surv_dist.R'

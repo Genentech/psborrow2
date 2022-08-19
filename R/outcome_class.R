@@ -1,26 +1,21 @@
 #' `Outcome` class
-#'
-#' @slot function_stan_code character.
-#' @slot param_stan_code character.
-#' @slot likelihood_stan_code character.
-#' @slot n_param integer.
-#' @slot param_priors list.
-#'
-#' @family outcome model
-#' @rdname Outcome-class
+#' @family outcome
 setClass(
   "Outcome",
   contains = "VIRTUAL"
 )
 
-
 #' `TimeToEvent` class
 #'
+#' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
+#' @slot param_stan_code character. stan parameter code block containing text to interpolate into stan model.
+#' @slot likelihood_stan_code character. stan model likelihood code block containing text
+#' to interpolate into stan model.
+#' @slot n_param integer. Number of ancillary parameters for the model to estimate.
+#' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' @slot time_var character. Variable used for time in `TimeToEvent` objects.
 #' @slot cens_var character. Variable used for censoring in `TimeToEvent` objects.
-#'
-#' @rdname Outcome-class
-#'
+#' @family outcome
 setClass(
   "TimeToEvent",
   slots = c(
@@ -42,11 +37,14 @@ setClass(
 )
 
 #' `BinaryOutcome` class
-#'
+#' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
+#' @slot param_stan_code character. stan parameter code block containing text to interpolate into stan model.
+#' @slot likelihood_stan_code character. stan model likelihood code block containing text
+#' to interpolate into stan model.
+#' @slot n_param integer. Number of ancillary parameters for the model to estimate.
+#' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' @slot binary_var character. Variable used for outcome in `BinaryOutcome` objects.
-#'
-#' @rdname Outcome-class
-#'
+#' @family outcome
 setClass(
   "BinaryOutcome",
   slots = c(
@@ -66,7 +64,7 @@ setClass(
   contains = "Outcome"
 )
 
-# Print method
+# show ----
 setMethod(
   f = "show",
   signature = "Outcome",

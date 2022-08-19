@@ -16,3 +16,15 @@ test_that("Uniform priors are rendering correctly", {
     regexp = "invalid class .UniformPrior. object: beta must be > alpha"
   )
 })
+
+test_that("show works for UniformPrior", {
+  expect_snapshot_output(show(uniform_prior(0, 3)))
+})
+
+
+test_that("plot works for UniformPrior", {
+  vdiffr::expect_doppelganger(
+    "uniform_prior_plot",
+    plot(uniform_prior(0, 3))
+  )
+})

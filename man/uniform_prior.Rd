@@ -7,12 +7,12 @@
 uniform_prior(alpha, beta)
 }
 \arguments{
-\item{alpha}{lower bound}
+\item{alpha}{numeric. Lower bound.}
 
-\item{beta}{upper bound (>\code{alpha})}
+\item{beta}{numeric. Upper bound (>\code{alpha}).}
 }
 \value{
-object of class "UniformPrior"
+Object of class \code{\link[=UniformPrior-class]{UniformPrior}}.
 }
 \description{
 Prior uniform distribution
@@ -25,7 +25,6 @@ up <- uniform_prior(0, 1)
 }
 \seealso{
 Other priors: 
-\code{\link{Prior-class}},
 \code{\link{bernoulli_prior}()},
 \code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},

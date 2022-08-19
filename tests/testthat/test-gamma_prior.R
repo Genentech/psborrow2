@@ -18,3 +18,14 @@ test_that("Gamma priors are rendering correctly", {
     regexp = "invalid class .GammaPrior. object: Both alpha and beta must be >= 0"
   )
 })
+
+test_that("show works for GammaPrior", {
+  expect_snapshot_output(show(gamma_prior(2, 5)))
+})
+
+test_that("plot works for GammaPrior", {
+  vdiffr::expect_doppelganger(
+    "gamma_prior_plot",
+    plot(gamma_prior(2, 5))
+  )
+})

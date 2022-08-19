@@ -14,3 +14,14 @@ test_that("Exponential priors are rendering correctly", {
     regexp = "invalid class .ExponentialPrior. object: beta must be >0"
   )
 })
+
+test_that("show works for ExponentialPrior", {
+  expect_snapshot_output(show(exponential_prior(4)))
+})
+
+test_that("plot works for ExponentialPrior", {
+  vdiffr::expect_doppelganger(
+    "gamma_prior_plot",
+    plot(exponential_prior(4))
+  )
+})

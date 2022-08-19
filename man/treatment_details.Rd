@@ -7,7 +7,7 @@
 treatment_details(trt_flag_col, trt_prior)
 }
 \arguments{
-\item{trt_flag_col}{Character specifying the name of the column
+\item{trt_flag_col}{character. The name of the column
 in the model matrix that corresponds to the treatment flag
 (\code{1}/\code{0} or \code{TRUE}/\code{FALSE}). This identifies patients as belonging
 to the experimental treatment arm.}
@@ -17,7 +17,7 @@ prior distribution of the log effect estimate (log hazard ratio for
 time to event endpoints and log odds ratio for binary endpoints).}
 }
 \value{
-an object of class \code{Treatment}
+Object of class \code{\link[=Treatment-class]{Treatment}}.
 }
 \description{
 Specify the treatment arm column name in the model matrix and set a prior
