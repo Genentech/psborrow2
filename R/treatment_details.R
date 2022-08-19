@@ -12,7 +12,7 @@
 #' prior distribution of the log effect estimate (log hazard ratio for
 #' time to event endpoints and log odds ratio for binary endpoints).
 #'
-#' @return an object of class `Treatment`
+#' @return Object of class [`Treatment`][Treatment-class].
 #' @export
 #'
 #' @include treatment_class.R

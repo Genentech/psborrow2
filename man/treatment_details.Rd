@@ -17,7 +17,7 @@ prior distribution of the log effect estimate (log hazard ratio for
 time to event endpoints and log odds ratio for binary endpoints).}
 }
 \value{
-an object of class \code{Treatment}
+Object of class \code{\link[=Treatment-class]{Treatment}}.
 }
 \description{
 Specify the treatment arm column name in the model matrix and set a prior

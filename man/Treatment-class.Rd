@@ -8,7 +8,7 @@
 \description{
 A class for defining treatment details. Objects of class
 \code{Treatment} should not be created directly but by the constructor
-\code{treatment_details()}.
+\code{\link[=treatment_details]{treatment_details()}}.
 }
 \section{Slots}{
 

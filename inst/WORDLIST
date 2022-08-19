@@ -1,14 +1,26 @@
 Amzal
 BDB
 BetaPrior
+<<<<<<< HEAD
 Enas
 ExponentialSurvDist
+=======
+CauchyPrior
+Enas
+ExponentialPrior
+ExponentialSurvDist
+GammaPrior
+>>>>>>> develop
 Ibrahim
 Kinnersley
 Lindborg
 Micallef
 Neuenschwander
 Pharmaceut
+<<<<<<< HEAD
+=======
+PoissonPrior
+>>>>>>> develop
 Roychoudhury
 Schmidli
 Statist
@@ -16,8 +28,11 @@ Viele
 al
 bernoulli
 cauchy
+<<<<<<< HEAD
 cmdstan
 cmdstanr
+=======
+>>>>>>> develop
 commensurability
 et
 hyperprior

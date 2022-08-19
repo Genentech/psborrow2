@@ -23,7 +23,10 @@ Stan constraint, e.g. \code{"<lower=0, upper=1>"}.}
 }}
 
 \seealso{
-Other priors: 
+Prior constructor functions: \code{\link[=bernoulli_prior]{bernoulli_prior()}}, \code{\link[=beta_prior]{beta_prior()}}, \code{\link[=cauchy_prior]{cauchy_prior()}}, \code{\link[=gamma_prior]{gamma_prior()}},
+\code{\link[=normal_prior]{normal_prior()}}, \code{\link[=poisson_prior]{poisson_prior()}}, \code{\link[=uniform_prior]{uniform_prior()}}
+
+Other prior classes: 
 \code{\link{BernoulliPrior-class}},
 \code{\link{BetaPrior-class}},
 \code{\link{CauchyPrior-class}},
@@ -31,14 +34,6 @@ Other priors:
 \code{\link{GammaPrior-class}},
 \code{\link{NormalPrior-class}},
 \code{\link{PoissonPrior-class}},
-\code{\link{UniformPrior-class}},
-\code{\link{bernoulli_prior}()},
-\code{\link{beta_prior}()},
-\code{\link{cauchy_prior}()},
-\code{\link{exponential_prior}()},
-\code{\link{gamma_prior}()},
-\code{\link{normal_prior}()},
-\code{\link{poisson_prior}()},
-\code{\link{uniform_prior}()}
+\code{\link{UniformPrior-class}}
 }
-\concept{priors}
+\concept{prior classes}

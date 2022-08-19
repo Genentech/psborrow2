@@ -2,7 +2,7 @@
 #'
 #' A class for defining the cauchy priors to be translated to Stan code.
 #' Objects of class `CauchyPrior` should not be created directly but by
-#' the constructor `cauchy_prior()`.
+#' the constructor [cauchy_prior()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for cauchy stan function parameters surrounded with
@@ -13,7 +13,7 @@
 #' @slot mu numeric. Location.
 #' @slot sigma numeric. Scale (>0).
 #' @include prior_class.R
-#' @family priors
+#' @family prior classes
 .cauchy_prior <- setClass(
   "CauchyPrior",
   contains = "Prior",
@@ -42,7 +42,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/cauchy-distribution.html>
 #'
-#' @return object of class `CauchyPrior`
+#' @return Object of class [`CauchyPrior`][CauchyPrior-class].
 #' @export
 #' @family priors
 #' @examples

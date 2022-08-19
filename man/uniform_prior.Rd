@@ -12,7 +12,7 @@ uniform_prior(alpha, beta)
 \item{beta}{numeric. Upper bound (>\code{alpha}).}
 }
 \value{
-object of class \code{UniformPrior}
+Object of class \code{\link[=UniformPrior-class]{UniformPrior}}.
 }
 \description{
 Prior uniform distribution
@@ -25,15 +25,6 @@ up <- uniform_prior(0, 1)
 }
 \seealso{
 Other priors: 
-\code{\link{BernoulliPrior-class}},
-\code{\link{BetaPrior-class}},
-\code{\link{CauchyPrior-class}},
-\code{\link{ExponentialPrior-class}},
-\code{\link{GammaPrior-class}},
-\code{\link{NormalPrior-class}},
-\code{\link{PoissonPrior-class}},
-\code{\link{Prior-class}},
-\code{\link{UniformPrior-class}},
 \code{\link{bernoulli_prior}()},
 \code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},

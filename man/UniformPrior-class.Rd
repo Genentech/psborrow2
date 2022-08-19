@@ -8,7 +8,7 @@
 \description{
 A class for defining uniform priors to be translated to Stan code.
 Objects of class \code{UniformPrior} should not be created directly but by
-the constructor \code{uniform_prior()}.
+the constructor \code{\link[=uniform_prior]{uniform_prior()}}.
 }
 \section{Slots}{
 
@@ -28,7 +28,7 @@ placeholders for uniform stan function parameters surrounded with
 }}
 
 \seealso{
-Other priors: 
+Other prior classes: 
 \code{\link{BernoulliPrior-class}},
 \code{\link{BetaPrior-class}},
 \code{\link{CauchyPrior-class}},
@@ -36,14 +36,6 @@ Other priors:
 \code{\link{GammaPrior-class}},
 \code{\link{NormalPrior-class}},
 \code{\link{PoissonPrior-class}},
-\code{\link{Prior-class}},
-\code{\link{bernoulli_prior}()},
-\code{\link{beta_prior}()},
-\code{\link{cauchy_prior}()},
-\code{\link{exponential_prior}()},
-\code{\link{gamma_prior}()},
-\code{\link{normal_prior}()},
-\code{\link{poisson_prior}()},
-\code{\link{uniform_prior}()}
+\code{\link{Prior-class}}
 }
-\concept{priors}
+\concept{prior classes}

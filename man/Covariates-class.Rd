@@ -8,7 +8,7 @@
 \description{
 A class for defining covariate details. Objects of class
 \code{Covariate} should not be created directly but by the constructor
-\code{add_covariates()}.
+\code{\link[=add_covariates]{add_covariates()}}.
 }
 \section{Slots}{
 

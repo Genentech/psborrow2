@@ -3,7 +3,7 @@
 #' A class for defining a time-to-event survival analysis with an
 #' exponential survival distribution.
 #' Objects of class `ExponentialSurvDist` should not be created directly
-#' but by the constructor `exp_surv_dist()`.
+#' but by the constructor [exp_surv_dist()].
 #'
 #' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
 #' Empty string for `ExponentialSurvDist`.
@@ -43,9 +43,9 @@
 #' @param time_var character. Name of time variable column in model matrix
 #' @param cens_var character. Name of the censorship variable flag in model matrix
 #'
-#' @return object of class "ExponentialSurvDist"
+#' @return Object of class [`ExponentialSurvDist`][ExponentialSurvDist-class].
 #' @export
-#' @family Outcome models
+#' @family outcome models
 #'
 #' @examples
 #' es <- exp_surv_dist(time_var = "time", cens_var = "cens")

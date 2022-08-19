@@ -1,8 +1,7 @@
 #' Check Stan
 #'
-#' @description Check whether `cmdstanr` is available.
+#' @description Check whether `cmdstanr` is available and prints version and logistic example.
 #'
-#' @return Prints version and logistic example.
 #' @export
 #'
 #' @examples

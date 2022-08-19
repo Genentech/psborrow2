@@ -5,7 +5,7 @@ setClassUnion("PriorOrNULL", c("Prior", "NULL"))
 #'
 #' A class for defining borrowing details. Objects of class
 #' `Borrowing` should not be created directly but by the constructor
-#' `borrowing_details()`.
+#' [borrowing_details()].
 #'
 #' @slot method character. The type of borrowing to perform. It
 #' must be one of: `'BDB'`, `'Full borrowing'`, or `'No borrowing'`. See `?borrowing_details` for

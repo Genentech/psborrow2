@@ -2,7 +2,7 @@
 #'
 #' A class for defining beta priors to be translated to Stan code.
 #' Objects of class `BetaPrior` should not be created directly but by
-#' the constructor `beta_prior()`.
+#' the constructor [beta_prior()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for beta stan function parameters surrounded with
@@ -13,7 +13,7 @@
 #' @slot alpha numeric. Shape (>=0).
 #' @slot beta numeric. Shape (>=0).
 #' @include prior_class.R
-#' @family priors
+#' @family prior classes
 .beta_prior <- setClass(
   "BetaPrior",
   contains = "Prior",
@@ -42,7 +42,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/beta-distribution.html>
 #'
-#' @return object of class "BetaPrior"
+#' @return Object of class [`BetaPrior`][BetaPrior-class]
 #' @export
 #' @family priors
 #' @examples

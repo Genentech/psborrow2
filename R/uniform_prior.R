@@ -2,7 +2,7 @@
 #'
 #' A class for defining uniform priors to be translated to Stan code.
 #' Objects of class `UniformPrior` should not be created directly but by
-#' the constructor `uniform_prior()`.
+#' the constructor [uniform_prior()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for uniform stan function parameters surrounded with
@@ -13,7 +13,7 @@
 #' @slot alpha numeric. Lower bound.
 #' @slot beta numeric. Upper bound (>`alpha`).
 #' @include prior_class.R
-#' @family priors
+#' @family prior classes
 .uniform_prior <- setClass(
   "UniformPrior",
   contains = "Prior",
@@ -42,7 +42,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/uniform-distribution.html>
 #'
-#' @return object of class `UniformPrior`
+#' @return Object of class [`UniformPrior`][UniformPrior-class].
 #' @export
 #' @family priors
 #' @examples

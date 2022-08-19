@@ -2,7 +2,7 @@
 #'
 #' A class for defining poisson priors to be translated to Stan code.
 #' Objects of class `PoissonPrior` should not be created directly but by
-#' the constructor `poisson_prior()`.
+#' the constructor [poisson_prior()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for poisson stan function parameters surrounded with
@@ -12,7 +12,7 @@
 #' `"<lower=0>"`.
 #' @slot lambda numeric. Rate (>0).
 #' @include prior_class.R
-#' @family priors
+#' @family prior classes
 .poisson_prior <- setClass(
   "PoissonPrior",
   contains = "Prior",
@@ -37,7 +37,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/poisson.html>
 #'
-#' @return object of class `PoissonPrior`
+#' @return Object of class [`PoissonPrior`][PoissonPrior-class].
 #' @export
 #' @family priors
 #' @examples

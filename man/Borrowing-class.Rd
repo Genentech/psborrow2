@@ -8,7 +8,7 @@
 \description{
 A class for defining borrowing details. Objects of class
 \code{Borrowing} should not be created directly but by the constructor
-\code{borrowing_details()}.
+\code{\link[=borrowing_details]{borrowing_details()}}.
 }
 \section{Slots}{
 

@@ -5,7 +5,7 @@ setClassUnion("listOrPrior", c("list", "Prior"))
 #'
 #' A class for defining covariate details. Objects of class
 #' `Covariate` should not be created directly but by the constructor
-#' `add_covariates()`.
+#' [add_covariates()].
 #'
 #' @slot covariates character. Names of columns in the data matrix containing
 #' covariates to be adjusted for in the outcome model. Note: the

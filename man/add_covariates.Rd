@@ -16,7 +16,7 @@ distribution to apply to all covariates or a named list of
 distributions of class \code{Prior}, one for each covariate}
 }
 \value{
-object of class \code{Covariates}
+Object of class \code{\link[=Covariates-class]{Covariates}}.
 }
 \description{
 Specify column names for adjustment variables in model matrix and prior
