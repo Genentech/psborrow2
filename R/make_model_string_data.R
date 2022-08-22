@@ -20,7 +20,11 @@
 #' anls_obj <- psborrow2:::.analysis_obj(
 #'   data_matrix = data_mat,
 #'   outcome = exp_surv_dist("time", "status"),
-#'   borrowing = borrowing_details("Full borrowing", normal_prior(0, 100), "ext"),
+#'   borrowing = borrowing_details(
+#'     "Full borrowing",
+#'     normal_prior(0, 100),
+#'     "extTRUE"
+#'   ),
 #'   treatment = treatment_details("trt", normal_prior(0, 100))
 #' )
 #'

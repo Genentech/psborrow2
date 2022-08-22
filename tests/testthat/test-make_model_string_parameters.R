@@ -11,7 +11,11 @@ data_mat <- create_data_matrix(
 anls_1 <- psborrow2:::.analysis_obj(
   data_matrix = data_mat,
   outcome = exp_surv_dist("time", "status"),
-  borrowing = borrowing_details("Full borrowing", normal_prior(0, 100), "ext"),
+  borrowing = borrowing_details(
+    "Full borrowing",
+    normal_prior(0, 100),
+    "extTRUE"
+  ),
   treatment = treatment_details("trt", normal_prior(0, 1000))
 )
 
@@ -21,7 +25,7 @@ anls_2 <- psborrow2:::.analysis_obj(
   borrowing = borrowing_details(
     "BDB",
     normal_prior(0, 100),
-    "ext",
+    "extTRUE",
     exponential_prior(0.001)
   ),
   treatment = treatment_details("trt", normal_prior(0, 1000))
@@ -37,7 +41,7 @@ anls_3 <- psborrow2:::.analysis_obj(
   borrowing = borrowing_details(
     "BDB",
     normal_prior(0, 100),
-    "ext",
+    "extTRUE",
     exponential_prior(0.001)
   ),
   treatment = treatment_details("trt", normal_prior(0, 1000))
@@ -53,7 +57,7 @@ anls_4 <- psborrow2:::.analysis_obj(
   borrowing = borrowing_details(
     "BDB",
     normal_prior(0, 100),
-    "ext",
+    "extTRUE",
     exponential_prior(0.001)
   ),
   treatment = treatment_details("trt", normal_prior(0, 1000))
