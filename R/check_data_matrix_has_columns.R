@@ -1,23 +1,11 @@
-#' Compile MCMC sampler using STAN and create analysis object
+
+#' Check Data Matrix for Required Columns
 #'
-#' @param data_matrix matrix. The data matrix, including all covariates to be
-#' adjusted for, all relevant outcome variables, and treatment arm and external
-#' control arm flags.
-#' @param covariates `Covariate`. Object of class `Covariate` as output by
-#' the function `covariate_details()`.
-#' @param outcome `Outcome`. Object of class `Outcome` as output by
-#' `exp_surv_dist()`, `weib_ph_surv_dist()`, or `logistic_bin_outcome()`.
-#' @param borrowing `Borrowing`. Object of class `Borrowing` as output by
-#' `borrowing_details()`.
-#' @param treatment `Treatment`. Object of class `Treatment` as output by
-#' `treatment_details()`.
+#' Check that an `Analysis` object's `data_matrix` has all the required variables.
 #'
-#' @return Object of class `Analysis`
-#' @export
+#' @param object `Analysis`. Object to check.
 #'
-#' @include analysis_class.R
-#' @importFrom stats complete.cases
-#'
+#' @return `stop()` if some columns are missing.
 #' @examples
 #' data_matrix <- structure(c(
 #'   1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
@@ -49,7 +37,7 @@
 #'   NULL, c("ext", "trt", "cov1", "cov2", "time", "cnsr")
 #' ))
 #'
-#' anls <- create_analysis_obj(
+#' anls <- psborrow2:::.analysis_obj(
 #'   data_matrix = data_matrix,
 #'   covariates = add_covariates(
 #'     covariates = c("cov1", "cov2"),
@@ -68,37 +56,41 @@
 #'   treatment = treatment_details(
 #'     "trt",
 #'     normal_prior(0, 1000)
-#'   )
+#'   ),
+#'   ready_to_sample = FALSE
 #' )
 #'
-create_analysis_obj <- function(data_matrix,
-                                covariates = NULL,
-                                outcome,
-                                borrowing,
-                                treatment) {
-  assert_matrix(data_matrix, mode = "numeric")
-  assert_multi_class(covariates, c("Covariates", "NULL"))
-  assert_class(outcome, "Outcome")
-  assert_class(borrowing, "Borrowing")
-  assert_class(treatment, "Treatment")
+#' psborrow2:::check_data_matrix_has_columns(anls)
+#'
+check_data_matrix_has_columns <- function(object) {
+  assert_class(object, "Analysis")
+  data_cols <- colnames(object@data_matrix)
+  error_col <- c()
 
-  ## For now, require all fields (even if not used by model) to be non-missing
-  if (any(!complete.cases(data_matrix))) {
-    stop(
-      "Data matrix must not include any missing data. ",
-      "Filter to only complete cases or remove irrelevant columns"
-    )
+  if (!object@treatment@trt_flag_col %in% data_cols) {
+    error_col <- c(error_col, treatment = object@treatment@trt_flag_col)
   }
 
-  analysis_obj <- .analysis_obj(
-    data_matrix = data_matrix,
-    covariates = covariates,
-    outcome = outcome,
-    borrowing = borrowing,
-    treatment = treatment
-  )
+  if (!object@borrowing@ext_flag_col %in% data_cols) {
+    error_col <- c(error_col, borrowing = object@borrowing@ext_flag_col)
+  }
 
-  psborrow2:::check_data_matrix_has_columns(analysis_obj)
+  if (!is.null(object@covariates)) {
+    missing_covariates <- setdiff(object@covariates@covariates, data_cols)
+    if (length(missing_covariates)) error_col <- c(error_col, covariates = toString(missing_covariates))
+  }
 
-  return(analysis_obj)
+  if (is(object@outcome, "TimeToEvent")) {
+    missing_outcomes <- setdiff(c(object@outcome@time_var, object@outcome@cens_var), data_cols)
+    if (length(missing_outcomes)) error_col <- c(error_col, outcome = toString(missing_outcomes))
+  } else if (is(object@outcome, "BinaryOutcome")) {
+    if (!object@outcome@binary_var %in% data_cols) error_col <- c(error_col, outcome = object@outcome@binary_var)
+  }
+
+  if (length(error_col)) {
+    stop(
+      "The following specified variables were not found in `data_matrix`:\n",
+      paste0("  ", names(error_col), ": ", error_col, "\n")
+    )
+  }
 }
