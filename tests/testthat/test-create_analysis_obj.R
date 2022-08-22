@@ -240,7 +240,8 @@ test_that("All allowable inputs create Analysis object", {
             covariates = cc,
             outcome = oc,
             treatment = td,
-            borrowing = bd
+            borrowing = bd,
+            quiet = TRUE
           ),
           "Analysis"
         )

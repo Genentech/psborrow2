@@ -37,7 +37,7 @@ make_model_string_model <- function(analysis_obj) {
     {{model_string}}
     vector[N] lp;
     vector[N] elp;
-    beta_trt ~ {{beta_trt_prior}}")
+    beta_trt ~ {{beta_trt_prior}}; ")
   rm(object)
 
   ### Linear predictor

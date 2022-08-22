@@ -30,13 +30,13 @@ make_model_string_parameters <- function(analysis_obj) {
   ## Parameters string
   parameters_string <- psborrow2:::h_glue("
     parameters {
-    real beta_trt;}")
+    real beta_trt;")
 
   ### Set tau and alpha[2] for BDB
   if (analysis_obj@borrowing@method == "BDB") {
     parameters_string <- psborrow2:::h_glue("
       {{parameters_string}}
-      real<lower=0> tau;
+      real <lower=0> tau;
       vector[2] alpha;")
   }
 

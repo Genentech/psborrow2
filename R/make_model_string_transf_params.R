@@ -42,6 +42,9 @@ make_model_string_transf_param <- function(analysis_obj) {
       real OR_trt = exp(beta_trt);")
   }
 
+  ### Close block
+  transformed_parameters_string <- psborrow2:::h_glue("{{transformed_parameters_string}} }")
+
   # Return
   return(transformed_parameters_string)
 }

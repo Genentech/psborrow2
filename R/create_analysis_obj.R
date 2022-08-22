@@ -119,7 +119,7 @@ create_analysis_obj <- function(data_matrix,
   model_str <- psborrow2:::make_model_string_model(analysis_obj)
 
   # Model string
-  model_string <- psborrow2:::h_glue("
+  stan_model_string <- psborrow2:::h_glue("
 
     {{functions_str}}
 
@@ -133,7 +133,25 @@ create_analysis_obj <- function(data_matrix,
 
   ")
 
-  analysis_obj@model_string <- model_string
+  analysis_obj@model_string <- stan_model_string
+
+  # Compile model
+  if (!quiet) {
+    message("\r", "Compiling Stan model...", appendLF = FALSE)
+  }
+
+  stan_file <- write_stan_file(analysis_obj@model_string)
+  if (!quiet) {
+    analysis_obj@model_and_data <- list(stan_model = cmdstan_model(stan_file))
+  } else if (quiet) {
+    suppressMessages(
+      analysis_obj@model_and_data <- list(stan_model = cmdstan_model(stan_file))
+    )
+  }
+
+  if (!quiet) {
+    message("\r", "Stan program compiled successfully", appendLF = FALSE)
+  }
 
   return(analysis_obj)
 }
