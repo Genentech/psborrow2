@@ -1,25 +1,17 @@
-#' Compile MCMC sampler using STAN and create analysis object
+#' Trim model matrix to just include relevant columns
 #'
-#' @param data_matrix matrix. The data matrix, including all covariates to be
-#' adjusted for, all relevant outcome variables, and treatment arm and external
-#' control arm flags.
-#' @param covariates `Covariate`. Object of class `Covariate` as output by
-#' the function `covariate_details()`.
-#' @param outcome `Outcome`. Object of class `Outcome` as output by
-#' `exp_surv_dist()`, `weib_ph_surv_dist()`, or `logistic_bin_outcome()`.
-#' @param borrowing `Borrowing`. Object of class `Borrowing` as output by
-#' `borrowing_details()`.
-#' @param treatment `Treatment`. Object of class `Treatment` as output by
-#' `treatment_details()`.
+#' take an `Analysis` object's `data_matrix` and remove
+#' everything unnecessary in preparation of making input data for Stan
 #'
-#' @return Object of class `Analysis`
-#' @export
+#' @param analysis_obj `Analysis`. An object of class `Analysis`
+#' as created through `.create_analysis_obj()`.
 #'
-#' @include analysis_class.R
-#' @importFrom stats complete.cases
+#' @return An object of class `Analysis`
 #'
 #' @examples
-#' data_matrix <- structure(c(
+#'
+#'
+#' mm <- structure(c(
 #'   1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
 #'   1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 #'   1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
@@ -44,13 +36,17 @@
 #'   3.06457582335024, 2.27240795704226, 6.12868075434827, 7.45796004200603,
 #'   9.23882804838511, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1,
 #'   0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1,
-#'   1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0
-#' ), dim = c(50L, 6L), dimnames = list(
-#'   NULL, c("ext", "trt", "cov1", "cov2", "time", "cnsr")
-#' ))
+#'   1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1,
+#'   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+#'   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+#'   1
+#' ), dim = c(50L, 7L), dimnames = list(NULL, c(
+#'   "ext", "trt", "cov1",
+#'   "cov2", "time", "cnsr", "extra"
+#' )))
 #'
-#' anls <- create_analysis_obj(
-#'   data_matrix = data_matrix,
+#' anls <- psborrow2:::.analysis_obj(
+#'   data_matrix = mm,
 #'   covariates = add_covariates(
 #'     covariates = c("cov1", "cov2"),
 #'     priors = normal_prior(0, 1000)
@@ -68,41 +64,41 @@
 #'   treatment = treatment_details(
 #'     "trt",
 #'     normal_prior(0, 1000)
-#'   )
+#'   ),
+#'   ready_to_sample = FALSE
 #' )
 #'
-create_analysis_obj <- function(data_matrix,
-                                covariates = NULL,
-                                outcome,
-                                borrowing,
-                                treatment) {
-  assert_matrix(data_matrix, mode = "numeric")
-  assert_multi_class(covariates, c("Covariates", "NULL"))
-  assert_class(outcome, "Outcome")
-  assert_class(borrowing, "Borrowing")
-  assert_class(treatment, "Treatment")
+#' anls <- psborrow2:::trim_data_matrix(anls)
+#'
+trim_data_matrix <- function(analysis_obj) {
+  # Select only relevant columns in model matrix----
 
-  ## For now, require all fields (even if not used by model) to be non-missing
-  if (any(!complete.cases(data_matrix))) {
-    stop(
-      "Data matrix must not include any missing data. ",
-      "Filter to only complete cases or remove irrelevant columns"
+  ## Endpoints
+  if (is(analysis_obj@outcome, "TimeToEvent")) {
+    cols_of_interest <- c(
+      analysis_obj@outcome@time_var,
+      analysis_obj@outcome@cens_var
+    )
+  } else if (is(analysis_obj@outcome, "BinaryOutcome")) {
+    cols_of_interest <- c(
+      analysis_obj@outcome@binary_var
     )
   }
 
-  analysis_obj <- .analysis_obj(
-    data_matrix = data_matrix,
-    covariates = covariates,
-    outcome = outcome,
-    borrowing = borrowing,
-    treatment = treatment
-  )
+  ## Covariates
+  if (!is.null(analysis_obj@covariates)) {
+    cols_of_interest <- c(cols_of_interest, analysis_obj@covariates@covariates)
+  }
 
-  # check data matrix has columns
-  psborrow2:::check_data_matrix_has_columns(analysis_obj)
+  ## Treatment
+  cols_of_interest <- c(cols_of_interest, analysis_obj@treatment@trt_flag_col)
 
-  # trim model matrix
-  analysis_obj <- psborrow2:::trim_data_matrix(analysis_obj)
+  ## External flag
+  if (analysis_obj@borrowing@method == "BDB") {
+    cols_of_interest <- c(cols_of_interest, analysis_obj@borrowing@ext_flag_col)
+  }
+
+  analysis_obj@data_matrix <- analysis_obj@data_matrix[, cols_of_interest]
 
   return(analysis_obj)
 }

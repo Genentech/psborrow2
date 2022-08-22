@@ -76,5 +76,6 @@ Collate:
     'package.R'
     'poisson_prior.R'
     'treatment_details.R'
+    'trim_data_matrix.R'
     'uniform_prior.R'
     'weib_ph_surv_dist.R'
