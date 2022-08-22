@@ -27,7 +27,7 @@
 #' psborrow2:::make_model_string_data(anls_obj)
 #'
 make_model_string_data <- function(analysis_obj) {
-  # Data string
+  ## Data string
   data_string <- psborrow2:::h_glue("data {")
 
   ## Data shared by all TTE
@@ -64,7 +64,7 @@ make_model_string_data <- function(analysis_obj) {
       matrix[N, K] X;")
   }
 
-  ### Close brackets
+  ### Close block
   data_string <- psborrow2:::h_glue("{{data_string}} }")
 
   ## Return

@@ -111,12 +111,14 @@ create_analysis_obj <- function(data_matrix,
   # Trim model matrix
   analysis_obj <- psborrow2:::trim_data_matrix(analysis_obj)
 
-  # Data string
-  data_str <- make_model_string_data(analysis_obj)
+  # Model string components
+  functions_str <- psborrow2:::make_model_string_functions(analysis_obj)
+  data_str <- psborrow2:::make_model_string_data(analysis_obj)
+
 
   # Model string
   model_string <- psborrow2:::h_glue("
-
+    {{functions_str}}
     {{data_str}}
 
     ")
