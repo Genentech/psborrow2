@@ -73,6 +73,8 @@ Collate:
     'generics.R'
     'helpers.R'
     'logistic_bin_outcome.R'
+    'make_model_string_data.R'
+    'make_stan_tte.R'
     'package.R'
     'poisson_prior.R'
     'treatment_details.R'

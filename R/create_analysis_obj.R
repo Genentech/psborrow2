@@ -11,6 +11,8 @@
 #' `borrowing_details()`.
 #' @param treatment `Treatment`. Object of class `Treatment` as output by
 #' `treatment_details()`.
+#' @param quiet logical. Whether to suppress message (`TRUE`) or not (`FALSE`,
+#' the default)
 #'
 #' @return Object of class `Analysis`
 #' @export
@@ -75,7 +77,8 @@ create_analysis_obj <- function(data_matrix,
                                 covariates = NULL,
                                 outcome,
                                 borrowing,
-                                treatment) {
+                                treatment,
+                                quiet = FALSE) {
   assert_matrix(data_matrix, mode = "numeric")
   assert_multi_class(covariates, c("Covariates", "NULL"))
   assert_class(outcome, "Outcome")
@@ -101,8 +104,24 @@ create_analysis_obj <- function(data_matrix,
   # check data matrix has columns
   psborrow2:::check_data_matrix_has_columns(analysis_obj)
 
-  # trim model matrix
+  if (!quiet) {
+    message("\r", "Inputs look good", appendLF = FALSE)
+  }
+
+  # Trim model matrix
   analysis_obj <- psborrow2:::trim_data_matrix(analysis_obj)
+
+  # Data string
+  data_str <- make_model_string_data(analysis_obj)
+
+  # Model string
+  model_string <- psborrow2:::h_glue("
+
+    {{data_str}}
+
+    ")
+
+  analysis_obj@model_string <- model_string
 
   return(analysis_obj)
 }

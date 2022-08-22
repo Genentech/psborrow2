@@ -9,7 +9,8 @@ create_analysis_obj(
   covariates = NULL,
   outcome,
   borrowing,
-  treatment
+  treatment,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ the function \code{covariate_details()}.}
 
 \item{treatment}{\code{Treatment}. Object of class \code{Treatment} as output by
 \code{treatment_details()}.}
+
+\item{quiet}{logical. Whether to suppress message (\code{TRUE}) or not (\code{FALSE},
+the default)}
 }
 \value{
 Object of class \code{Analysis}
