@@ -42,6 +42,7 @@ Imports:
    methods,
    graphics
 Suggests:
+   survival,
    testthat (>= 3.0),
    vdiffr,
    xml2
@@ -64,6 +65,7 @@ Collate:
     'cauchy_prior.R'
     'cmdstan.R'
     'create_analysis_obj.R'
+    'create_data_matrix.R'
     'exp_surv_dist.R'
     'exponential_prior.R'
     'gamma_prior.R'
