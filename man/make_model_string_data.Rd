@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_model_string_data.R
 \name{make_model_string_data}
 \alias{make_model_string_data}
-\title{Make model string of Stan's data model bloc}
+\title{Make model string of Stan's data block}
 \usage{
 make_model_string_data(analysis_obj)
 }

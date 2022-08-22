@@ -1,4 +1,4 @@
-#' Make model string of Stan's data model bloc
+#' Make model string of Stan's data block
 #'
 #' Create the Stan string encompassed by data {}
 #'

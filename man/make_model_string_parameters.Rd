@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_model_string_parameters.R
 \name{make_model_string_parameters}
 \alias{make_model_string_parameters}
-\title{Make model string of Stan's parameters model bloc}
+\title{Make model string of Stan's parameters model block}
 \usage{
 make_model_string_parameters(analysis_obj)
 }

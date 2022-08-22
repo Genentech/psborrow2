@@ -75,6 +75,7 @@ Collate:
     'logistic_bin_outcome.R'
     'make_model_string_data.R'
     'make_model_string_functions.R'
+    'make_model_string_model.R'
     'make_model_string_parameters.R'
     'make_model_string_transf_params.R'
     'package.R'

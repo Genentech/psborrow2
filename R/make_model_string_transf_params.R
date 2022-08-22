@@ -1,4 +1,4 @@
-#' Make model string of Stan's transformed parameters model bloc
+#' Make model string of Stan's transformed parameters model block
 #'
 #' Create the Stan string encompassed by transformed parameters {}
 #'
