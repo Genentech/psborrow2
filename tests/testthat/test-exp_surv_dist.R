@@ -12,3 +12,10 @@ test_that("Exponential survival distributions are rendering correctly", {
     regexp = 'argument \"time_var\" is missing, with no default'
   )
 })
+
+test_that("get_vars works for ExponentialSurvDist", {
+  expect_identical(
+    get_vars(exp_surv_dist(time_var = "TIME", cens_var = "CENS")),
+    c(time_var = "TIME", cens_var = "CENS")
+  )
+})

@@ -12,3 +12,10 @@ test_that("Weibull survival distributions are rendering correctly", {
     regexp = 'argument \"cens_var\" is missing, with no default'
   )
 })
+
+test_that("get_vars works for WeibullPHSurvDist", {
+  expect_identical(
+    get_vars(weib_ph_surv_dist(time_var = "TIME", cens_var = "CENS")),
+    c(time_var = "TIME", cens_var = "CENS")
+  )
+})

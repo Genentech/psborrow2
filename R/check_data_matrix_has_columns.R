@@ -68,24 +68,19 @@ check_data_matrix_has_columns <- function(object) {
   data_cols <- colnames(object@data_matrix)
   error_col <- c()
 
-  if (!object@treatment@trt_flag_col %in% data_cols) {
-    error_col <- c(error_col, treatment = object@treatment@trt_flag_col)
+  if (!get_vars(object@treatment) %in% data_cols) {
+    error_col <- c(error_col, get_vars(object@treatment))
   }
 
-  if (!object@borrowing@ext_flag_col %in% data_cols) {
-    error_col <- c(error_col, borrowing = object@borrowing@ext_flag_col)
+  if (!get_vars(object@borrowing) %in% data_cols) {
+    error_col <- c(error_col, get_vars(object@borrowing))
   }
 
-  if (!is.null(object@covariates)) {
-    missing_covariates <- setdiff(object@covariates@covariates, data_cols)
-    if (length(missing_covariates)) error_col <- c(error_col, covariates = toString(missing_covariates))
-  }
+  missing_covs <- setdiff(get_vars(object@covariates), data_cols)
+  if (length(missing_covs)) error_col <- c(error_col, covariates = toString(missing_covs))
 
-  if (is(object@outcome, "TimeToEvent")) {
-    missing_outcomes <- setdiff(c(object@outcome@time_var, object@outcome@cens_var), data_cols)
-    if (length(missing_outcomes)) error_col <- c(error_col, outcome = toString(missing_outcomes))
-  } else if (is(object@outcome, "BinaryOutcome")) {
-    if (!object@outcome@binary_var %in% data_cols) error_col <- c(error_col, outcome = object@outcome@binary_var)
+  if (any(missing_outcomes <- !get_vars(object@outcome) %in% data_cols)) {
+    error_col <- c(error_col, get_vars(object@outcome)[missing_outcomes])
   }
 
   if (length(error_col)) {

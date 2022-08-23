@@ -36,7 +36,7 @@ setMethod(
     cat(
       class(object)[1],
       "object with parameters",
-      glue::glue(object@stan_code, .open = "{{", .close = "}}")
+      h_glue(object@stan_code)
     )
   }
 )
