@@ -79,8 +79,9 @@ check_data_matrix_has_columns <- function(object) {
   missing_covs <- setdiff(get_vars(object@covariates), data_cols)
   if (length(missing_covs)) error_col <- c(error_col, covariates = toString(missing_covs))
 
-  missing_outcomes <- setdiff(get_vars(object@outcome), data_cols)
-  if (length(missing_outcomes)) error_col <- c(error_col, outcome = toString(missing_outcomes))
+  if (any(missing_outcomes <- !get_vars(object@outcome) %in% data_cols)) {
+    error_col <- c(error_col, get_vars(object@outcome)[missing_outcomes])
+  }
 
   if (length(error_col)) {
     stop(

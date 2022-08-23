@@ -182,7 +182,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       treatment = td,
       borrowing = bd_fb
     ),
-    "The following specified variables were not found in `data_matrix`:\n  outcome: cens"
+    "The following specified variables were not found in `data_matrix`:\n  cens_var: cens"
   )
 
   expect_error(
@@ -193,7 +193,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       treatment = td,
       borrowing = bd_fb
     ),
-    "The following specified variables were not found in `data_matrix`:\n  outcome: response"
+    "The following specified variables were not found in `data_matrix`:\n  binary_var: response"
   )
 
   expect_error(
@@ -207,7 +207,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       ),
       borrowing = bd_fb
     ),
-    "The following specified variables were not found in `data_matrix`:\n  treatment: treat"
+    "The following specified variables were not found in `data_matrix`:\n  trt_flag_col: treat"
   )
 
   expect_error(
@@ -223,7 +223,7 @@ test_that("Columns in analysis_obj should be in matrix", {
         tau_prior = gamma_prior(.001, .001)
       )
     ),
-    "The following specified variables were not found in `data_matrix`:\n  borrowing: tira"
+    "The following specified variables were not found in `data_matrix`:\n  ext_flag_col: tira"
   )
 })
 
