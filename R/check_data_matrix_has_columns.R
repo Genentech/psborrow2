@@ -6,6 +6,7 @@
 #' @param object `Analysis`. Object to check.
 #'
 #' @return `stop()` if some columns are missing.
+#' @export
 #' @examples
 #' data_matrix <- structure(c(
 #'   1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
@@ -60,7 +61,7 @@
 #'   ready_to_sample = FALSE
 #' )
 #'
-#' psborrow2:::check_data_matrix_has_columns(anls)
+#' check_data_matrix_has_columns(anls)
 #'
 check_data_matrix_has_columns <- function(object) {
   assert_class(object, "Analysis")

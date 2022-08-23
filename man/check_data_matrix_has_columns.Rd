@@ -69,6 +69,6 @@ anls <- psborrow2:::.analysis_obj(
   ready_to_sample = FALSE
 )
 
-psborrow2:::check_data_matrix_has_columns(anls)
+check_data_matrix_has_columns(anls)
 
 }
