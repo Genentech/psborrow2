@@ -102,24 +102,24 @@ create_analysis_obj <- function(data_matrix,
   )
 
   # check data matrix has columns
-  psborrow2:::check_data_matrix_has_columns(analysis_obj)
+  check_data_matrix_has_columns(analysis_obj)
 
   if (!quiet) {
     message("\r", "Inputs look good", appendLF = FALSE)
   }
 
   # Trim model matrix
-  analysis_obj <- psborrow2:::trim_data_matrix(analysis_obj)
+  analysis_obj <- trim_data_matrix(analysis_obj)
 
   # Model string components
-  functions_str <- psborrow2:::make_model_string_functions(analysis_obj)
-  data_str <- psborrow2:::make_model_string_data(analysis_obj)
-  param_str <- psborrow2:::make_model_string_parameters(analysis_obj)
-  trans_param_str <- psborrow2:::make_model_string_transf_param(analysis_obj)
-  model_str <- psborrow2:::make_model_string_model(analysis_obj)
+  functions_str <- make_model_string_functions(analysis_obj)
+  data_str <- make_model_string_data(analysis_obj)
+  param_str <- make_model_string_parameters(analysis_obj)
+  trans_param_str <- make_model_string_transf_param(analysis_obj)
+  model_str <- make_model_string_model(analysis_obj)
 
   # Model string
-  stan_model_string <- psborrow2:::h_glue("
+  stan_model_string <- h_glue("
 
     {{functions_str}}
 

@@ -32,11 +32,11 @@
 #'
 make_model_string_data <- function(analysis_obj) {
   ## Data string
-  data_string <- psborrow2:::h_glue("data {")
+  data_string <- h_glue("data {")
 
   ## Data shared by all TTE
   if (is(analysis_obj@outcome, "TimeToEvent")) {
-    data_string <- psborrow2:::h_glue("
+    data_string <- h_glue("
       {{data_string}}
       int<lower=0> N;
       vector[N] time;
@@ -46,7 +46,7 @@ make_model_string_data <- function(analysis_obj) {
 
   ### Data shared by all binary endpoints
   if (is(analysis_obj@outcome, "BinaryOutcome")) {
-    data_string <- psborrow2:::h_glue("
+    data_string <- h_glue("
       {{data_string}}
       int<lower=0> N;
       array[N] int y;
@@ -55,21 +55,21 @@ make_model_string_data <- function(analysis_obj) {
 
   ### Add external control flag for BDB
   if (analysis_obj@borrowing@method == "BDB") {
-    data_string <- psborrow2:::h_glue("
+    data_string <- h_glue("
       {{data_string}}
       matrix[N,2] Z;")
   }
 
   ### Add covariates for when these are specified
   if (!is.null(analysis_obj@covariates)) {
-    data_string <- psborrow2:::h_glue("
+    data_string <- h_glue("
       {{data_string}}
       int<lower=0> K;
       matrix[N, K] X;")
   }
 
   ### Close block
-  data_string <- psborrow2:::h_glue("{{data_string}} }")
+  data_string <- h_glue("{{data_string}} }")
 
   ## Return
   return(data_string)

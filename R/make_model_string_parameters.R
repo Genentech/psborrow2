@@ -32,13 +32,13 @@
 #'
 make_model_string_parameters <- function(analysis_obj) {
   ## Parameters string
-  parameters_string <- psborrow2:::h_glue("
+  parameters_string <- h_glue("
     parameters {
     real beta_trt;")
 
   ### Set tau and alpha[2] for BDB
   if (analysis_obj@borrowing@method == "BDB") {
-    parameters_string <- psborrow2:::h_glue("
+    parameters_string <- h_glue("
       {{parameters_string}}
       real <lower=0> tau;
       vector[2] alpha;")
@@ -46,7 +46,7 @@ make_model_string_parameters <- function(analysis_obj) {
 
   ### Set alpha for non-BDB
   if (analysis_obj@borrowing@method != "BDB") {
-    parameters_string <- psborrow2:::h_glue("
+    parameters_string <- h_glue("
       {{parameters_string}}
       real alpha;")
   }
@@ -54,7 +54,7 @@ make_model_string_parameters <- function(analysis_obj) {
   ### Add outcome specific parameters
   if (NROW(analysis_obj@outcome@param_priors) > 0) {
     for (i in seq_len(NROW(analysis_obj@outcome@param_priors))) {
-      parameters_string <- psborrow2:::h_glue("
+      parameters_string <- h_glue("
         {{parameters_string}}
         real {{names(analysis_obj@outcome@param_priors[i])}} ;")
     }
@@ -62,13 +62,13 @@ make_model_string_parameters <- function(analysis_obj) {
 
   ### Add in vector of coefficients if covariates are provided
   if (!is.null(analysis_obj@covariates)) {
-    parameters_string <- psborrow2:::h_glue("
+    parameters_string <- h_glue("
       {{parameters_string}}
       vector[K] beta ;")
   }
 
   ### Close block
-  parameters_string <- psborrow2:::h_glue("{{parameters_string}} }")
+  parameters_string <- h_glue("{{parameters_string}} }")
 
   # Return
   return(parameters_string)

@@ -32,12 +32,12 @@
 #'
 make_model_string_model <- function(analysis_obj) {
   ## Model string
-  model_string <- psborrow2:::h_glue("model {")
+  model_string <- h_glue("model {")
 
   ## Set values shared by all - treatment prior
   object <- analysis_obj@treatment@trt_prior
-  beta_trt_prior <- psborrow2:::h_glue(object@stan_code)
-  model_string <- psborrow2:::h_glue("
+  beta_trt_prior <- h_glue(object@stan_code)
+  model_string <- h_glue("
     {{model_string}}
     vector[N] lp;
     vector[N] elp;
@@ -47,25 +47,25 @@ make_model_string_model <- function(analysis_obj) {
   ### Linear predictor
   if (!is.null(analysis_obj@covariates) &&
     analysis_obj@borrowing@method == "BDB") {
-    model_string <- psborrow2:::h_glue("
+    model_string <- h_glue("
       {{model_string}}
       lp = X * beta + Z * alpha + trt * beta_trt;
       elp = exp(lp) ;")
   } else if (is.null(analysis_obj@covariates) &&
     analysis_obj@borrowing@method == "BDB") {
-    model_string <- psborrow2:::h_glue("
+    model_string <- h_glue("
       {{model_string}}
       lp = Z * alpha + trt * beta_trt;
       elp = exp(lp) ;")
   } else if (!is.null(analysis_obj@covariates) &&
     analysis_obj@borrowing@method != "BDB") {
-    model_string <- psborrow2:::h_glue("
+    model_string <- h_glue("
       {{model_string}}
       lp = alpha + X * beta + trt * beta_trt ;
       elp = exp(lp) ;")
   } else if (is.null(analysis_obj@covariates) &&
     analysis_obj@borrowing@method != "BDB") {
-    model_string <- psborrow2:::h_glue("
+    model_string <- h_glue("
       {{model_string}}
       lp = alpha + trt * beta_trt ;
       elp = exp(lp);")
@@ -76,10 +76,10 @@ make_model_string_model <- function(analysis_obj) {
     for (i in seq_len(NROW(analysis_obj@outcome@param_priors))) {
       name <- names(analysis_obj@outcome@param_priors)[i]
       object <- analysis_obj@outcome@param_priors[[name]]
-      value <- psborrow2:::h_glue(object@stan_code)
-      prior_str <- psborrow2:::h_glue("{{name}} ~ {{value}} ;")
+      value <- h_glue(object@stan_code)
+      prior_str <- h_glue("{{name}} ~ {{value}} ;")
 
-      model_string <- psborrow2:::h_glue("
+      model_string <- h_glue("
         {{model_string}}
         {{prior_str}}")
       rm(object)
@@ -89,14 +89,14 @@ make_model_string_model <- function(analysis_obj) {
   ### Add in tau and alphas if method = BDB
   if (analysis_obj@borrowing@method == "BDB") {
     object <- analysis_obj@borrowing@tau_prior
-    tau_prior <- psborrow2:::h_glue(object@stan_code)
+    tau_prior <- h_glue(object@stan_code)
     rm(object)
 
     object <- analysis_obj@borrowing@baseline_prior
-    alpha_2_prior <- psborrow2:::h_glue(object@stan_code)
+    alpha_2_prior <- h_glue(object@stan_code)
     rm(object)
 
-    model_string <- psborrow2:::h_glue("
+    model_string <- h_glue("
       {{model_string}}
       tau ~ {{tau_prior}} ;
       real sigma;
@@ -108,21 +108,21 @@ make_model_string_model <- function(analysis_obj) {
   ### Add in alphas if method is not BDB
   if (analysis_obj@borrowing@method != "BDB") {
     object <- analysis_obj@borrowing@baseline_prior
-    alpha_prior <- psborrow2:::h_glue(object@stan_code)
+    alpha_prior <- h_glue(object@stan_code)
 
-    model_string <- psborrow2:::h_glue("
+    model_string <- h_glue("
       {{model_string}}
       alpha ~ {{alpha_prior}} ;")
     rm(object)
   }
 
   ### Add in likelihood function
-  model_string <- psborrow2:::h_glue("
+  model_string <- h_glue("
     {{model_string}}
     {{analysis_obj@outcome@likelihood_stan_code}}")
 
   ### Close brackets
-  model_string <- psborrow2:::h_glue("
+  model_string <- h_glue("
     {{model_string}}
     }")
 
