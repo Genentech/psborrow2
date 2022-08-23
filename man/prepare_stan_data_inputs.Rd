@@ -30,11 +30,17 @@ data_mat <- create_data_matrix(
 anls_obj <- psborrow2:::.analysis_obj(
   data_matrix = data_mat,
   outcome = exp_surv_dist("time", "status"),
-  borrowing = borrowing_details("Full borrowing", normal_prior(0, 100), "ext"),
+  borrowing = borrowing_details(
+    "BDB",
+    normal_prior(0, 100),
+    "extTRUE",
+    exponential_prior(0.001)
+  ),
   treatment = treatment_details("trt", normal_prior(0, 100))
 )
 
 anls_obj@model_and_data <- list(
   data_in = psborrow2:::prepare_stan_data_inputs(anls_obj)
-  )
+)
+#
 }

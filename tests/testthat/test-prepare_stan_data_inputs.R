@@ -11,7 +11,11 @@ data_mat <- create_data_matrix(
 anls_1 <- psborrow2:::.analysis_obj(
   data_matrix = data_mat,
   outcome = exp_surv_dist("time", "status"),
-  borrowing = borrowing_details("Full borrowing", normal_prior(0, 100), "ext"),
+  borrowing = borrowing_details(
+    "Full borrowing",
+    normal_prior(0, 100),
+    "extTRUE"
+  ),
   treatment = treatment_details("trt", normal_prior(0, 1000))
 )
 
@@ -21,7 +25,7 @@ anls_2 <- psborrow2:::.analysis_obj(
   borrowing = borrowing_details(
     "BDB",
     normal_prior(0, 100),
-    "ext",
+    "extTRUE",
     exponential_prior(0.001)
   ),
   treatment = treatment_details("trt", normal_prior(0, 1000))
@@ -37,7 +41,7 @@ anls_3 <- psborrow2:::.analysis_obj(
   borrowing = borrowing_details(
     "BDB",
     normal_prior(0, 100),
-    "ext",
+    "extTRUE",
     exponential_prior(0.001)
   ),
   treatment = treatment_details("trt", normal_prior(0, 1000))
@@ -53,7 +57,7 @@ anls_4 <- psborrow2:::.analysis_obj(
   borrowing = borrowing_details(
     "BDB",
     normal_prior(0, 100),
-    "ext",
+    "extTRUE",
     exponential_prior(0.001)
   ),
   treatment = treatment_details("trt", normal_prior(0, 1000))
@@ -65,32 +69,28 @@ test_that("prepare_stan_data_inputs appears to function correctly", {
   data_in3 <- psborrow2:::prepare_stan_data_inputs(anls_3)
   data_in4 <- psborrow2:::prepare_stan_data_inputs(anls_4)
 
-  expect_true(is(model_str1, "glue"))
-  expect_true(is(model_str2, "glue"))
-  expect_true(is(model_str3, "glue"))
-  expect_true(is(model_str4, "glue"))
+  expect_true(is(data_in1, "list"))
+  expect_true(is(data_in2, "list"))
+  expect_true(is(data_in3, "list"))
+  expect_true(is(data_in4, "list"))
 
-  expect_true(grepl("exponential_lccdf", model_str1))
-  expect_true(grepl("alpha \\+ trt \\* beta_trt", model_str1))
-  expect_true(grepl("alpha \\~ normal\\(0, 100\\)", model_str1))
-  expect_false(grepl("alpha\\[2\\]", model_str1))
-  expect_false(grepl("alpha\\[1\\]", model_str1))
+  expect_equal(
+    names(data_in1),
+    c("N", "trt", "time", "cens")
+  )
 
-  expect_true(grepl("exponential_lccdf", model_str2))
-  expect_true(grepl("Z \\* alpha \\+ trt \\* beta_trt", model_str2))
-  expect_true(grepl("alpha\\[2\\]", model_str2))
-  expect_true(grepl("alpha\\[1\\]", model_str2))
-  expect_true(grepl("alpha\\[1\\] \\~ normal\\(alpha\\[2\\]", model_str2))
+  expect_equal(
+    names(data_in2),
+    c("N", "trt", "time", "cens", "Z")
+  )
 
-  expect_true(grepl("weibull_ph_lccdf", model_str3))
-  expect_true(grepl("X \\* beta \\+ Z \\* alpha \\+ trt \\* beta_trt", model_str3))
-  expect_true(grepl("alpha\\[2\\]", model_str3))
-  expect_true(grepl("alpha\\[1\\]", model_str3))
-  expect_true(grepl("alpha\\[1\\] \\~ normal\\(alpha\\[2\\]", model_str3))
+  expect_equal(
+    names(data_in3),
+    c("N", "trt", "time", "cens", "Z", "K", "X")
+  )
 
-  expect_true(grepl("bernoulli_logit_lupmf", model_str4))
-  expect_true(grepl("X \\* beta \\+ Z \\* alpha \\+ trt \\* beta_trt", model_str4))
-  expect_true(grepl("alpha\\[2\\]", model_str4))
-  expect_true(grepl("alpha\\[1\\]", model_str4))
-  expect_true(grepl("alpha\\[1\\] \\~ normal\\(alpha\\[2\\]", model_str4))
+  expect_equal(
+    names(data_in4),
+    c("N", "trt", "y", "Z", "K", "X")
+  )
 })

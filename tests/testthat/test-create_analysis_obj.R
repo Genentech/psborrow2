@@ -258,5 +258,5 @@ test_that("ready_to_sample flag is set", {
     treatment = td,
     borrowing = bd_fb
   )
-  expect_false(result@ready_to_sample)
+  expect_true(result@ready_to_sample)
 })
