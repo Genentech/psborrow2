@@ -25,3 +25,7 @@ test_that("plot works for PoissonPrior", {
     plot(poisson_prior(3))
   )
 })
+
+test_that("get_stan_code works for PoissonPrior", {
+  expect_equal(get_stan_code(poisson_prior(2)), "poisson(2)")
+})

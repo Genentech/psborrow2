@@ -25,3 +25,7 @@ test_that("plot works for BernoulliPrior", {
     plot(bernoulli_prior(0.7))
   )
 })
+
+test_that("get_stan_code works for BernoulliPrior", {
+  expect_equal(get_stan_code(bernoulli_prior(0.7)), "bernoulli(0.7)")
+})

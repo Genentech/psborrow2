@@ -33,7 +33,7 @@ Encoding: UTF-8
 Depends:
     R (>= 3.5.0)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Config/testthat/edition: 3
 Imports:
    cmdstanr,
@@ -51,6 +51,7 @@ Remotes:
 Language: en-US
 SystemRequirements: cmdstan
 Collate:
+    'generics.R'
     'prior_class.R'
     'covariate_class.R'
     'add_covariates.R'
@@ -69,7 +70,6 @@ Collate:
     'exp_surv_dist.R'
     'exponential_prior.R'
     'gamma_prior.R'
-    'generics.R'
     'helpers.R'
     'logistic_bin_outcome.R'
     'package.R'

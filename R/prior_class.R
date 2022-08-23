@@ -36,7 +36,7 @@ setMethod(
     cat(
       class(object)[1],
       "object with parameters",
-      glue::glue(object@stan_code, .open = "{{", .close = "}}")
+      get_stan_code(object)
     )
   }
 )
@@ -78,5 +78,19 @@ setMethod(
     } else {
       plot_pmf(values, y, add = add, ...)
     }
+  }
+)
+
+
+# get_stan_code ----
+#' @rdname get_stan_code
+#' @include generics.R
+#' @examples
+#' get_stan_code(normal_prior(0, 2))
+setMethod(
+  f = "get_stan_code",
+  signature = "Prior",
+  definition = function(object, ...) {
+    h_glue(object@stan_code)
   }
 )

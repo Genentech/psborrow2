@@ -26,3 +26,13 @@ test_that("treatment_details fails fails for invalid prior and flag specificatio
     "Must be of type 'string', not 'double'"
   )
 })
+
+test_that("get_vars works for treatment_details", {
+  expect_identical(
+    get_vars(treatment_details(
+      trt_flag_col = "treat_fl",
+      trt_prior = normal_prior(0, 1000)
+    )),
+    c(trt_flag_col = "treat_fl")
+  )
+})

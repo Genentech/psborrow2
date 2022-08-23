@@ -64,3 +64,13 @@ test_that("add_covariates fails for invalid prior specification", {
     "Must be of type 'character', not 'double'"
   )
 })
+
+test_that("get_vars works for Covariates", {
+  expect_identical(
+    get_vars(add_covariates(
+      covariates = c("a", "b", "c"),
+      priors = normal_prior(0, 1000)
+    )),
+    c("a", "b", "c")
+  )
+})

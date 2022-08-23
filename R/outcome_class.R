@@ -72,3 +72,24 @@ setMethod(
     cat("Outcome object with class ", class(object)[1])
   }
 )
+
+# get_vars ----
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "TimeToEvent",
+  definition = function(object) {
+    c(time_var = object@time_var, cens_var = object@cens_var)
+  }
+)
+
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "BinaryOutcome",
+  definition = function(object) {
+    c(binary_var = object@binary_var)
+  }
+)

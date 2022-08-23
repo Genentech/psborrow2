@@ -28,3 +28,7 @@ test_that("plot works for UniformPrior", {
     plot(uniform_prior(0, 3))
   )
 })
+
+test_that("get_stan_code works for UniformPrior", {
+  expect_equal(get_stan_code(uniform_prior(0, 3)), "uniform(0, 3)")
+})

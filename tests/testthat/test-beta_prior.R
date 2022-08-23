@@ -26,3 +26,7 @@ test_that("plot works for BetaPrior", {
     plot(beta_prior(1.5, 0.8))
   )
 })
+
+test_that("get_stan_code works for BetaPrior", {
+  expect_equal(get_stan_code(beta_prior(1.5, 0.8)), "beta(1.5, 0.8)")
+})

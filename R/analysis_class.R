@@ -60,3 +60,29 @@ setMethod(
     }
   }
 )
+
+# get_vars ----
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "Analysis",
+  definition = function(object) {
+    c(
+      get_vars(object@outcome),
+      get_vars(object@borrowing),
+      get_vars(object@treatment),
+      get_vars(object@covariates)
+    )
+  }
+)
+
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "NULL",
+  definition = function(object) {
+    NULL
+  }
+)

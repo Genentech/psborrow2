@@ -60,3 +60,15 @@ setMethod(
     )
   }
 )
+
+
+# get_vars ----
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "Covariates",
+  definition = function(object) {
+    c(object@covariates)
+  }
+)

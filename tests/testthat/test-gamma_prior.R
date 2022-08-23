@@ -29,3 +29,7 @@ test_that("plot works for GammaPrior", {
     plot(gamma_prior(2, 5))
   )
 })
+
+test_that("get_stan_code works for GammaPrior", {
+  expect_equal(get_stan_code(gamma_prior(2, 5)), "gamma(2, 5)")
+})

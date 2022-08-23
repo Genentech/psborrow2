@@ -259,3 +259,23 @@ test_that("ready_to_sample flag is set", {
   )
   expect_false(result@ready_to_sample)
 })
+
+test_that("get_vars works for Analysis", {
+  analysis <- create_analysis_obj(
+    data_matrix = mm,
+    covariates = ac,
+    outcome = esd,
+    treatment = td,
+    borrowing = bd_fb
+  )
+  expect_equal(
+    get_vars(analysis),
+    c(time_var = "time", cens_var = "cnsr", ext_flag_col = "ext", trt_flag_col = "trt", "cov1", "cov2")
+  )
+
+  analysis@covariates <- NULL
+  expect_equal(
+    get_vars(analysis),
+    c(time_var = "time", cens_var = "cnsr", ext_flag_col = "ext", trt_flag_col = "trt")
+  )
+})

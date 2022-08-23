@@ -23,7 +23,7 @@
   ),
   prototype = list(
     n_param = 2L,
-    stan_code = "cauchy({{object@mu}},{{object@sigma}})",
+    stan_code = "cauchy({{object@mu}}, {{object@sigma}})",
     constraint = ""
   ),
   validity = function(object) {

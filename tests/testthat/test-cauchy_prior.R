@@ -26,3 +26,8 @@ test_that("plot works for CauchyPrior", {
     plot(cauchy_prior(0, 0.8))
   )
 })
+
+
+test_that("get_stan_code works for CauchyPrior", {
+  expect_equal(get_stan_code(cauchy_prior(0, 2)), "cauchy(0, 2)")
+})

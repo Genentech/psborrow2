@@ -25,3 +25,7 @@ test_that("plot works for ExponentialPrior", {
     plot(exponential_prior(4))
   )
 })
+
+test_that("get_stan_code works for ExponentialPrior", {
+  expect_equal(get_stan_code(exponential_prior(2)), "exponential(2)")
+})
