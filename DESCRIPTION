@@ -64,6 +64,7 @@ Collate:
     'beta_prior.R'
     'borrowing_details.R'
     'cauchy_prior.R'
+    'check_data_matrix_has_columns.R'
     'cmdstan.R'
     'create_analysis_obj.R'
     'create_data_matrix.R'
