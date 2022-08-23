@@ -11,3 +11,10 @@ test_that("LogisticBinaryOutcome distribution is rendering correctly", {
     regexp = 'argument \"binary_var\" is missing, with no default'
   )
 })
+
+test_that("get_vars works for LogisticBinaryOutcome", {
+  expect_identical(
+    get_vars(logistic_bin_outcome(binary_var = "response")),
+    c(binary_var = "response")
+  )
+})

@@ -87,3 +87,15 @@ test_that("borrowing_details gives expected messages", {
     "Will ignore"
   )
 })
+
+test_that("get_vars works for borrowing_details", {
+  expect_identical(
+    get_vars(borrowing_details(
+      "BDB",
+      normal_prior(0, 1000),
+      "ext_fl",
+      gamma_prior(.1, .1)
+    )),
+    c(ext_flag_col = "ext_fl")
+  )
+})

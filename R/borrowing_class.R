@@ -54,3 +54,14 @@ setMethod(
     )
   }
 )
+
+# get_vars ----
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "Borrowing",
+  definition = function(object) {
+    c(ext_flag_col = object@ext_flag_col)
+  }
+)

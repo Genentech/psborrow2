@@ -51,6 +51,7 @@ Remotes:
 Language: en-US
 SystemRequirements: cmdstan
 Collate:
+    'generics.R'
     'prior_class.R'
     'covariate_class.R'
     'add_covariates.R'
@@ -70,7 +71,6 @@ Collate:
     'exp_surv_dist.R'
     'exponential_prior.R'
     'gamma_prior.R'
-    'generics.R'
     'helpers.R'
     'logistic_bin_outcome.R'
     'make_model_string_data.R'

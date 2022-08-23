@@ -36,3 +36,19 @@ setMethod(
     )
   }
 )
+
+# get_vars ----
+#' @rdname get_vars
+#' @include generics.R
+#' @examples
+#' get_vars(treatment_details(
+#'   trt_flag_col = "treat_fl",
+#'   trt_prior = normal_prior(0, 1000)
+#' ))
+setMethod(
+  f = "get_vars",
+  signature = "Treatment",
+  definition = function(object) {
+    c(trt_flag_col = object@trt_flag_col)
+  }
+)

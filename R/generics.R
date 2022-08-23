@@ -20,3 +20,17 @@
 #' Colors, line types, and other typical [par()] parameters can be used.
 #'
 if (!isGeneric("plot")) setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
+
+
+#' Get Variables
+#'
+#' Gets the data variable names from an object.
+#'
+#' @name get_vars
+#' @aliases get_vars
+#'
+#' @param object Object
+#' @returns A `character` vector containing variable names
+#' @export
+#'
+setGeneric("get_vars", function(object) standardGeneric("get_vars"))
