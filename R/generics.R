@@ -22,21 +22,6 @@
 if (!isGeneric("plot")) setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 
 
-#' Get Stan Code
-#'
-#' Gets the completed Stan code from an object with parameters inserted
-#'
-#' @name get_stan_code
-#' @aliases get_stan_code
-#'
-#' @param object Object
-#' @param ... Optional arguments passed to methods.
-#'
-#' @returns A `character` with Stan code.
-#' @export
-#'
-setGeneric("get_stan_code", function(object, ...) standardGeneric("get_stan_code"))
-
 #' Get Variables
 #'
 #' Gets the data variable names from an object.

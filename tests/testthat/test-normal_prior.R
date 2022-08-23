@@ -26,7 +26,3 @@ test_that("plot works for NormalPrior", {
     plot(normal_prior(0, 0.8))
   )
 })
-
-test_that("get_stan_code works for NormalPrior", {
-  expect_equal(get_stan_code(normal_prior(0, 2)), "normal(0, 2)")
-})
