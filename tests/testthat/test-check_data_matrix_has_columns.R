@@ -1,24 +1,22 @@
-# Build some valid inputs ----
-
-anls_full <- psborrow2:::.analysis_obj(
-  data_matrix = example_matrix,
-  covariates = add_covariates(c("cov1", "cov2"), normal_prior(0, 1000)),
-  outcome = exp_surv_dist(
-    time_var = "time",
-    cens_var = "cnsr"
-  ),
-  treatment = treatment_details(
-    "trt",
-    normal_prior(0, 1000)
-  ),
-  borrowing = borrowing_details(
-    "Full borrowing",
-    ext_flag_col = "ext",
-    baseline_prior = normal_prior(0, 1000)
-  )
-)
-
 test_that("check_data_matrix() catches errors", {
+  anls_full <- psborrow2:::.analysis_obj(
+    data_matrix = example_matrix,
+    covariates = add_covariates(c("cov1", "cov2"), normal_prior(0, 1000)),
+    outcome = exp_surv_dist(
+      time_var = "time",
+      cens_var = "cnsr"
+    ),
+    treatment = treatment_details(
+      "trt",
+      normal_prior(0, 1000)
+    ),
+    borrowing = borrowing_details(
+      "Full borrowing",
+      ext_flag_col = "ext",
+      baseline_prior = normal_prior(0, 1000)
+    )
+  )
+
   expect_null(psborrow2:::check_data_matrix_has_columns(anls_full))
 
   anls_broken <- anls_full
