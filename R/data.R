@@ -11,5 +11,6 @@
 #'   \item{cov2}{0/1, baseline covariate}
 #'   \item{time}{numeric >0, survival time}
 #'   \item{cnsr}{0/1, censoring indicator}
+#'   \item{resp}{0/1, indicator for respiratory outcome}
 #' }
 "example_matrix"
