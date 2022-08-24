@@ -7,14 +7,14 @@
 make_model_string_model(analysis_obj)
 }
 \arguments{
-\item{analysis_obj}{\code{Analysis}. Object of class \code{Analysis} created by
+\item{analysis_obj}{\code{Analysis}. Object of class \code{\link[=Analysis-class]{Analysis}} created by
 \code{psborrow2:::.analysis_obj()}.}
 }
 \value{
-glue character containing the text for the data block
+\code{glue} \code{character} containing the Stan code for the data block.
 }
 \description{
-Create the Stan string encompassed by model {}
+Create the Stan string encompassed by model \code{{}}
 }
 \examples{
 dat <- survival::diabetic

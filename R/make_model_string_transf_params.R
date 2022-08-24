@@ -1,11 +1,11 @@
 #' Make model string of Stan's transformed parameters model block
 #'
-#' Create the Stan string encompassed by transformed parameters {}
+#' Create the Stan string encompassed by transformed parameters `{}`
 #'
-#' @param analysis_obj `Analysis`. Object of class `Analysis` created by
+#' @param analysis_obj `Analysis`. Object of class [`Analysis`][Analysis-class] created by
 #' `psborrow2:::.analysis_obj()`.
 #'
-#' @return glue character containing the text for the functions block
+#' @return `glue` `character` containing the Stan code for the functions block.
 #'
 #' @examples
 #' dat <- survival::diabetic

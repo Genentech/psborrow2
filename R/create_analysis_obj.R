@@ -3,18 +3,18 @@
 #' @param data_matrix matrix. The data matrix, including all covariates to be
 #' adjusted for, all relevant outcome variables, and treatment arm and external
 #' control arm flags.
-#' @param covariates `Covariate`. Object of class `Covariate` as output by
-#' the function `covariate_details()`.
-#' @param outcome `Outcome`. Object of class `Outcome` as output by
-#' `exp_surv_dist()`, `weib_ph_surv_dist()`, or `logistic_bin_outcome()`.
-#' @param borrowing `Borrowing`. Object of class `Borrowing` as output by
-#' `borrowing_details()`.
-#' @param treatment `Treatment`. Object of class `Treatment` as output by
-#' `treatment_details()`.
+#' @param covariates `Covariate`. Object of class [`Covariate`][Covariate-class] as output by
+#' the function [`covariate_details()`].
+#' @param outcome `Outcome`. Object of class `Outcome`[Outcome-class] as output by
+#' [`exp_surv_dist()`], [`weib_ph_surv_dist()`], or [`logistic_bin_outcome()`].
+#' @param borrowing `Borrowing`. Object of class [`Borrowing`][Borrowing-class] as output by
+#' [`borrowing_details()`].
+#' @param treatment `Treatment`. Object of class [`Treatment`][Treatment-class] as output by
+#' [`treatment_details()`].
 #' @param quiet logical. Whether to suppress message (`TRUE`) or not (`FALSE`,
 #' the default)
 #'
-#' @return Object of class `Analysis`
+#' @return Object of class [`Analysis`][Analysis-class].
 #' @export
 #'
 #' @include analysis_class.R

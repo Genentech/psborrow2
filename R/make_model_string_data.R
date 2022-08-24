@@ -1,11 +1,11 @@
 #' Make model string of Stan's data block
 #'
-#' Create the Stan string encompassed by data {}
+#' Create the Stan string encompassed by data `{}`
 #'
-#' @param analysis_obj `Analysis`. Object of class `Analysis` created by
+#' @param analysis_obj `Analysis`. Object of class [`Analysis`][Analysis-class] created by
 #' `psborrow2:::.analysis_obj()`.
 #'
-#' @return glue character containing the text for the data block
+#' @return `glue` `character` containing the text for the data block.
 #'
 #' @examples
 #' dat <- survival::diabetic

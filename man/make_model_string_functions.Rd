@@ -7,14 +7,14 @@
 make_model_string_functions(analysis_obj)
 }
 \arguments{
-\item{analysis_obj}{\code{Analysis}. Object of class \code{Analysis} created by
+\item{analysis_obj}{\code{Analysis}. Object of class \code{\link[=Analysis-class]{Analysis}} created by
 \code{psborrow2:::.analysis_obj()}.}
 }
 \value{
-glue character containing the text for the functions block
+\code{glue} \code{character} containing the text for the functions block.
 }
 \description{
-Create the Stan string encompassed by functions {}
+Create the Stan string encompassed by functions \code{{}}
 }
 \examples{
 dat <- survival::diabetic
