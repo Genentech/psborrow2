@@ -35,36 +35,33 @@ make_model_string_model <- function(analysis_obj) {
   model_string <- h_glue("model {")
 
   ## Set values shared by all - treatment prior
-  object <- analysis_obj@treatment@trt_prior
-  beta_trt_prior <- h_glue(object@stan_code)
+  beta_trt_prior <- h_glue(analysis_obj@treatment@trt_prior@stan_code, object = analysis_obj@treatment@trt_prior)
   model_string <- h_glue("
     {{model_string}}
     vector[N] lp;
     vector[N] elp;
     beta_trt ~ {{beta_trt_prior}}; ")
-  rm(object)
 
   ### Linear predictor
-  if (!is.null(analysis_obj@covariates) &&
-    analysis_obj@borrowing@method == "BDB") {
+  has_covariates <- !is.null(analysis_obj@covariates)
+  is_bdb <- analysis_obj@borrowing@method == "BDB"
+
+  if (has_covariates && is_bdb) {
     model_string <- h_glue("
       {{model_string}}
       lp = X * beta + Z * alpha + trt * beta_trt;
       elp = exp(lp) ;")
-  } else if (is.null(analysis_obj@covariates) &&
-    analysis_obj@borrowing@method == "BDB") {
+  } else if (!has_covariates && is_bdb) {
     model_string <- h_glue("
       {{model_string}}
       lp = Z * alpha + trt * beta_trt;
       elp = exp(lp) ;")
-  } else if (!is.null(analysis_obj@covariates) &&
-    analysis_obj@borrowing@method != "BDB") {
+  } else if (has_covariates && !is_bdb) {
     model_string <- h_glue("
       {{model_string}}
       lp = alpha + X * beta + trt * beta_trt ;
       elp = exp(lp) ;")
-  } else if (is.null(analysis_obj@covariates) &&
-    analysis_obj@borrowing@method != "BDB") {
+  } else if (!has_covariates && !is_bdb) {
     model_string <- h_glue("
       {{model_string}}
       lp = alpha + trt * beta_trt ;
@@ -73,28 +70,24 @@ make_model_string_model <- function(analysis_obj) {
 
   ### Add priors for relevant parameters
   if (NROW(analysis_obj@outcome@param_priors) > 0) {
-    for (i in seq_len(NROW(analysis_obj@outcome@param_priors))) {
-      name <- names(analysis_obj@outcome@param_priors)[i]
-      object <- analysis_obj@outcome@param_priors[[name]]
-      value <- h_glue(object@stan_code)
-      prior_str <- h_glue("{{name}} ~ {{value}} ;")
-
+    for (name in names(analysis_obj@outcome@param_priors)) {
+      value <- h_glue(analysis_obj@outcome@param_priors[[name]]@stan_code,
+        object = analysis_obj@outcome@param_priors[[name]]
+      )
       model_string <- h_glue("
         {{model_string}}
-        {{prior_str}}")
-      rm(object)
+        {{name}} ~ {{value}} ;")
     }
   }
 
   ### Add in tau and alphas if method = BDB
   if (analysis_obj@borrowing@method == "BDB") {
-    object <- analysis_obj@borrowing@tau_prior
-    tau_prior <- h_glue(object@stan_code)
-    rm(object)
+    tau_prior <- h_glue(analysis_obj@borrowing@tau_prior@stan_code, object = analysis_obj@borrowing@tau_prior)
 
-    object <- analysis_obj@borrowing@baseline_prior
-    alpha_2_prior <- h_glue(object@stan_code)
-    rm(object)
+    alpha_2_prior <- h_glue(
+      analysis_obj@borrowing@baseline_prior@stan_code,
+      object = analysis_obj@borrowing@baseline_prior
+    )
 
     model_string <- h_glue("
       {{model_string}}
@@ -107,13 +100,14 @@ make_model_string_model <- function(analysis_obj) {
 
   ### Add in alphas if method is not BDB
   if (analysis_obj@borrowing@method != "BDB") {
-    object <- analysis_obj@borrowing@baseline_prior
-    alpha_prior <- h_glue(object@stan_code)
+    alpha_prior <- h_glue(
+      analysis_obj@borrowing@baseline_prior@stan_code,
+      object = analysis_obj@borrowing@baseline_prior
+    )
 
     model_string <- h_glue("
       {{model_string}}
       alpha ~ {{alpha_prior}} ;")
-    rm(object)
   }
 
   ### Add in likelihood function
