@@ -32,31 +32,40 @@
 #'
 make_model_string_parameters <- function(analysis_obj) {
   ## Parameters string
-  parameters_string <- h_glue("
-    parameters {
-    real beta_trt;")
+  parameters_string <- h_glue(
+    "parameters {
+    real{{constraint}} beta_trt;",
+    constraint = analysis_obj@treatment@trt_prior@constraint
+  )
 
   ### Set tau and alpha[2] for BDB
   if (analysis_obj@borrowing@method == "BDB") {
     parameters_string <- h_glue("
       {{parameters_string}}
       real <lower=0> tau;
-      vector[2] alpha;")
+      vector[2] alpha;",
+      alpha_constraint = analysis_obj@borrowing@baseline_prior@constraint,
+      tau_constraint = analysis_obj@borrowing@tau_prior@constraint
+    )
   }
 
   ### Set alpha for non-BDB
   if (analysis_obj@borrowing@method != "BDB") {
     parameters_string <- h_glue("
       {{parameters_string}}
-      real alpha;")
+      real{{constraint}} alpha;",
+      constraint = analysis_obj@borrowing@baseline_prior@constraint
+    )
   }
 
   ### Add outcome specific parameters
   if (NROW(analysis_obj@outcome@param_priors) > 0) {
-    for (i in seq_len(NROW(analysis_obj@outcome@param_priors))) {
-      parameters_string <- h_glue("
-        {{parameters_string}}
-        real {{names(analysis_obj@outcome@param_priors[i])}} ;")
+    for (name in names(analysis_obj@outcome@param_priors)) {
+      parameters_string <- h_glue(
+        "{{parameters_string}}
+        real{{constraint}} {{name}};",
+        constraint = analysis_obj@outcome@param_priors[[name]]@constraint
+      )
     }
   }
 
