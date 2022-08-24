@@ -68,6 +68,7 @@ Collate:
     'cmdstan.R'
     'create_analysis_obj.R'
     'create_data_matrix.R'
+    'data.R'
     'exp_surv_dist.R'
     'exponential_prior.R'
     'gamma_prior.R'
@@ -78,3 +79,4 @@ Collate:
     'treatment_details.R'
     'uniform_prior.R'
     'weib_ph_surv_dist.R'
+LazyData: true
