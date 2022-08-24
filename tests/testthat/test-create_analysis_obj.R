@@ -227,28 +227,34 @@ test_that("Columns in analysis_obj should be in matrix", {
   )
 })
 
+# Test All combinations
+borrowing_list <- list(bd_fb, bd_nb, bd_db)
+outcome_list <- list(esd, wpsd, lbo)
+covariates_list <- list(ac, ac2, NULL)
 
-
-test_that("All allowable inputs create Analysis object", {
-  # All combinations
-  for (bd in list(bd_fb, bd_nb, bd_db)) {
-    for (oc in list(esd, wpsd, lbo)) {
-      for (cc in list(ac, ac2, NULL)) {
+for (bd in 1:3) {
+  for (oc in 1:3) {
+    for (cc in 1:3) {
+      test_that(paste(
+        "All allowable inputs create Analysis object (",
+        "borrowing:", bd, "outcome:", oc, "covariates:", cc, ")"
+      ), {
         expect_class(
           create_analysis_obj(
             data_matrix = mm,
-            covariates = cc,
-            outcome = oc,
+            covariates = covariates_list[[cc]],
+            outcome = outcome_list[[oc]],
             treatment = td,
-            borrowing = bd,
+            borrowing = borrowing_list[[bd]],
             quiet = TRUE
           ),
-          "Analysis"
+          classes = "Analysis"
         )
-      }
+      })
     }
   }
-})
+}
+
 
 test_that("ready_to_sample flag is set", {
   result <- create_analysis_obj(

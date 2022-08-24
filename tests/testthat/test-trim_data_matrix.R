@@ -57,11 +57,11 @@ test_that("data matrix trimming works", {
   anls1_trim <- psborrow2:::trim_data_matrix(anls1)
   anls2_trim <- psborrow2:::trim_data_matrix(anls2)
 
-  expect_equal(
+  expect_set_equal(
     colnames(anls1_trim@data_matrix), c("time", "cnsr", "cov1", "trt", "ext")
   )
 
-  expect_equal(
+  expect_set_equal(
     colnames(anls2_trim@data_matrix), c("time", "cnsr", "trt")
   )
 })

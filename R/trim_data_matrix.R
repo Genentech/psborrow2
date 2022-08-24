@@ -71,34 +71,19 @@
 #' anls <- psborrow2:::trim_data_matrix(anls)
 #'
 trim_data_matrix <- function(analysis_obj) {
-  # Select only relevant columns in model matrix----
-
-  ## Endpoints
-  if (is(analysis_obj@outcome, "TimeToEvent")) {
-    cols_of_interest <- c(
-      analysis_obj@outcome@time_var,
-      analysis_obj@outcome@cens_var
-    )
-  } else if (is(analysis_obj@outcome, "BinaryOutcome")) {
-    cols_of_interest <- c(
-      analysis_obj@outcome@binary_var
-    )
+  required_rows <- if (analysis_obj@borrowing@method == "No borrowing") {
+    !as.logical(analysis_obj@data_matrix[, get_vars(analysis_obj@borrowing)])
+  } else {
+    seq_len(NROW(analysis_obj@data_matrix))
   }
 
-  ## Covariates
-  if (!is.null(analysis_obj@covariates)) {
-    cols_of_interest <- c(cols_of_interest, analysis_obj@covariates@covariates)
+  required_cols <- if (analysis_obj@borrowing@method != "BDB") {
+    setdiff(get_vars(analysis_obj), get_vars(analysis_obj@borrowing))
+  } else {
+    get_vars(analysis_obj)
   }
 
-  ## Treatment
-  cols_of_interest <- c(cols_of_interest, analysis_obj@treatment@trt_flag_col)
-
-  ## External flag
-  if (analysis_obj@borrowing@method == "BDB") {
-    cols_of_interest <- c(cols_of_interest, analysis_obj@borrowing@ext_flag_col)
-  }
-
-  analysis_obj@data_matrix <- analysis_obj@data_matrix[, cols_of_interest]
+  analysis_obj@data_matrix <- analysis_obj@data_matrix[required_rows, required_cols]
 
   return(analysis_obj)
 }
