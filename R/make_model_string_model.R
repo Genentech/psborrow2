@@ -80,6 +80,29 @@ make_model_string_model <- function(analysis_obj) {
     }
   }
 
+  ### Add priors on betas
+  if (has_covariates) {
+    if (is(analysis_obj@covariates@priors, "Prior")) {
+      value <- h_glue(analysis_obj@covariates@priors@stan_code,
+        object = analysis_obj@covariates@priors
+      )
+      for (i in seq_along(analysis_obj@covariates@covariates)) {
+        model_string <- h_glue("
+          {{model_string}}
+          beta[{{i}}] ~ {{value}} ;")
+      }
+    } else if (is(analysis_obj@covariates@priors, "list")) {
+      for (i in seq_along(analysis_obj@covariates@priors)) {
+        value <- h_glue(analysis_obj@covariates@priors[[i]]@stan_code,
+          object = analysis_obj@covariates@priors[[i]]
+        )
+        model_string <- h_glue("
+          {{model_string}}
+          beta[{{i}}] ~ {{value}} ;")
+      }
+    }
+  }
+
   ### Add in tau and alphas if method = BDB
   if (analysis_obj@borrowing@method == "BDB") {
     tau_prior <- h_glue(analysis_obj@borrowing@tau_prior@stan_code, object = analysis_obj@borrowing@tau_prior)
