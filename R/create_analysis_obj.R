@@ -3,16 +3,18 @@
 #' @param data_matrix matrix. The data matrix, including all covariates to be
 #' adjusted for, all relevant outcome variables, and treatment arm and external
 #' control arm flags.
-#' @param covariates `Covariate`. Object of class `Covariate` as output by
-#' the function `covariate_details()`.
-#' @param outcome `Outcome`. Object of class `Outcome` as output by
-#' `exp_surv_dist()`, `weib_ph_surv_dist()`, or `logistic_bin_outcome()`.
-#' @param borrowing `Borrowing`. Object of class `Borrowing` as output by
-#' `borrowing_details()`.
-#' @param treatment `Treatment`. Object of class `Treatment` as output by
-#' `treatment_details()`.
+#' @param covariates `Covariates`. Object of class [`Covariates`][Covariates-class] as output by
+#' the function [`add_covariates()`].
+#' @param outcome `Outcome`. Object of class `Outcome`[Outcome-class] as output by
+#' [`exp_surv_dist()`], [`weib_ph_surv_dist()`], or [`logistic_bin_outcome()`].
+#' @param borrowing `Borrowing`. Object of class [`Borrowing`][Borrowing-class] as output by
+#' [`borrowing_details()`].
+#' @param treatment `Treatment`. Object of class [`Treatment`][Treatment-class] as output by
+#' [`treatment_details()`].
+#' @param quiet logical. Whether to suppress message (`TRUE`) or not (`FALSE`,
+#' the default)
 #'
-#' @return Object of class `Analysis`
+#' @return Object of class [`Analysis`][Analysis-class].
 #' @export
 #'
 #' @include analysis_class.R
@@ -75,7 +77,8 @@ create_analysis_obj <- function(data_matrix,
                                 covariates = NULL,
                                 outcome,
                                 borrowing,
-                                treatment) {
+                                treatment,
+                                quiet = FALSE) {
   assert_matrix(data_matrix, mode = "numeric")
   assert_multi_class(covariates, c("Covariates", "NULL"))
   assert_class(outcome, "Outcome")
@@ -98,7 +101,57 @@ create_analysis_obj <- function(data_matrix,
     treatment = treatment
   )
 
+  # check data matrix has columns
   check_data_matrix_has_columns(analysis_obj)
+
+  if (!quiet) {
+    message("\r", "Inputs look good", appendLF = FALSE)
+  }
+
+  # Trim model matrix
+  analysis_obj <- trim_data_matrix(analysis_obj)
+
+  # Model string components
+  functions_str <- make_model_string_functions(analysis_obj)
+  data_str <- make_model_string_data(analysis_obj)
+  param_str <- make_model_string_parameters(analysis_obj)
+  trans_param_str <- make_model_string_transf_param(analysis_obj)
+  model_str <- make_model_string_model(analysis_obj)
+
+  # Model string
+  stan_model_string <- h_glue("
+
+    {{functions_str}}
+
+    {{data_str}}
+
+    {{param_str}}
+
+    {{trans_param_str}}
+
+    {{model_str}}
+
+  ")
+
+  analysis_obj@model_string <- stan_model_string
+
+  # Compile model
+  if (!quiet) {
+    message("\r", "Compiling Stan model...", appendLF = FALSE)
+  }
+
+  stan_file <- write_stan_file(analysis_obj@model_string)
+  if (!quiet) {
+    analysis_obj@model_and_data <- list(stan_model = cmdstan_model(stan_file))
+  } else if (quiet) {
+    suppressMessages(
+      analysis_obj@model_and_data <- list(stan_model = cmdstan_model(stan_file))
+    )
+  }
+
+  if (!quiet) {
+    message("\r", "Stan program compiled successfully", appendLF = FALSE)
+  }
 
   return(analysis_obj)
 }
