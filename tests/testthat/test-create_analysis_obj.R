@@ -253,3 +253,11 @@ test_that("get_vars works for Analysis", {
     c(time_var = "time", cens_var = "cnsr", ext_flag_col = "ext", trt_flag_col = "trt")
   )
 })
+
+rm(
+  borrowing_list, outcome_list, covariates_list,
+  ac, ac2,
+  bd_fb, bd_nb, bd_db,
+  td, esd, wpsd, lbo,
+  bd, cc, oc
+)
