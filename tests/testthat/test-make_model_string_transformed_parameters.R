@@ -5,7 +5,7 @@ test_that("make_model_string_transf_param works with exponential survival and fu
     borrowing = borrowing_details(
       "Full borrowing",
       normal_prior(0, 100),
-      "extTRUE"
+      "ext"
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
@@ -24,7 +24,7 @@ test_that("make_model_string_transf_param works with exponential survival and BD
     borrowing = borrowing_details(
       "BDB",
       normal_prior(0, 100),
-      "extTRUE",
+      "ext",
       exponential_prior(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
@@ -37,7 +37,7 @@ test_that("make_model_string_transf_param works with exponential survival and BD
   expect_snapshot(result)
 })
 
-test_that("make_model_string_transf_param works with weibull survival and BDB", {
+test_that("make_model_string_transf_param works with weibull survival and BDB and covariates", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates(
@@ -48,7 +48,7 @@ test_that("make_model_string_transf_param works with weibull survival and BDB", 
     borrowing = borrowing_details(
       "BDB",
       normal_prior(0, 100),
-      "extTRUE",
+      "ext",
       exponential_prior(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
@@ -61,7 +61,7 @@ test_that("make_model_string_transf_param works with weibull survival and BDB", 
   expect_snapshot(result)
 })
 
-test_that("make_model_string_transf_param works with binary outcome and BDB", {
+test_that("make_model_string_transf_param works with binary outcome and BDB  and covariates", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates(
@@ -72,7 +72,7 @@ test_that("make_model_string_transf_param works with binary outcome and BDB", {
     borrowing = borrowing_details(
       "BDB",
       normal_prior(0, 100),
-      "extTRUE",
+      "ext",
       exponential_prior(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
