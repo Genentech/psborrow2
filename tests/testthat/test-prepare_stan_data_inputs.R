@@ -1,4 +1,4 @@
-test_that("make_model_string_functions works with exponential survival and full borrowing", {
+test_that("prepare_stan_data_inputs works with exponential survival and full borrowing", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr"),
@@ -10,13 +10,12 @@ test_that("make_model_string_functions works with exponential survival and full 
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
 
-  result <- psborrow2:::make_model_string_functions(object)
-  expect_class(result, "glue")
-  expect_string(fixed = "functions", x = result)
-  expect_snapshot(result)
+  result <- psborrow2:::prepare_stan_data_inputs(object)
+  expect_list(result, types = "numeric", len = 4)
+  expect_equal(names(result), c("N", "trt", "time", "cens"))
 })
 
-test_that("make_model_string_functions works with exponential survival and BDB", {
+test_that("prepare_stan_data_inputs works with exponential survival and BDB", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr"),
@@ -29,13 +28,12 @@ test_that("make_model_string_functions works with exponential survival and BDB",
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
 
-  result <- psborrow2:::make_model_string_functions(object)
-  expect_class(result, "glue")
-  expect_string(fixed = "functions", x = result)
-  expect_snapshot(result)
+  result <- psborrow2:::prepare_stan_data_inputs(object)
+  expect_list(result, types = "numeric", len = 5)
+  expect_equal(names(result), c("N", "trt", "time", "cens", "Z"))
 })
 
-test_that("make_model_string_functions works with weibull survival and BDB and covariates", {
+test_that("prepare_stan_data_inputs works with weibull survival and BDB  and covariates", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates(
@@ -52,17 +50,12 @@ test_that("make_model_string_functions works with weibull survival and BDB and c
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
 
-  result <- psborrow2:::make_model_string_functions(object)
-  expect_class(result, "glue")
-  expect_string(fixed = "functions", x = result)
-  expect_string(fixed = "real", x = result)
-  expect_string(fixed = "weibull_ph_lpdf", x = result)
-  expect_string(fixed = "weibull_ph_lcdf", x = result)
-  expect_string(fixed = "weibull_ph_lccdf", x = result)
-  expect_snapshot(result)
+  result <- psborrow2:::prepare_stan_data_inputs(object)
+  expect_list(result, types = "numeric", len = 7)
+  expect_equal(names(result), c("N", "trt", "time", "cens", "Z", "K", "X"))
 })
 
-test_that("make_model_string_functions works with binary outcome and BDB and covariates", {
+test_that("prepare_stan_data_inputs works with binary outcome and BDB and covariates", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates(
@@ -79,8 +72,7 @@ test_that("make_model_string_functions works with binary outcome and BDB and cov
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
 
-  result <- psborrow2:::make_model_string_functions(object)
-  expect_class(result, "glue")
-  expect_string(fixed = "functions", x = result)
-  expect_snapshot(result)
+  result <- psborrow2:::prepare_stan_data_inputs(object)
+  expect_list(result, types = "numeric", len = 6)
+  expect_equal(names(result), c("N", "trt", "y", "Z", "K", "X"))
 })

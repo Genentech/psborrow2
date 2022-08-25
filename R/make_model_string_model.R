@@ -8,22 +8,13 @@
 #' @return `glue` `character` containing the Stan code for the data block.
 #'
 #' @examples
-#' dat <- survival::diabetic
-#' dat$ext <- dat$trt == 0 & dat$id > 1000
-#' data_mat <- create_data_matrix(
-#'   dat,
-#'   outcome = c("time", "status"),
-#'   trt_flag_col = "trt",
-#'   ext_flag_col = "ext"
-#' )
-#'
 #' anls_obj <- psborrow2:::.analysis_obj(
-#'   data_matrix = data_mat,
-#'   outcome = exp_surv_dist("time", "status"),
+#'   data_matrix = example_matrix,
+#'   outcome = exp_surv_dist("time", "cnsr"),
 #'   borrowing = borrowing_details(
 #'     "Full borrowing",
 #'     normal_prior(0, 100),
-#'     "extTRUE"
+#'     "ext"
 #'   ),
 #'   treatment = treatment_details("trt", normal_prior(0, 100))
 #' )
@@ -77,6 +68,29 @@ make_model_string_model <- function(analysis_obj) {
       model_string <- h_glue("
         {{model_string}}
         {{name}} ~ {{value}} ;")
+    }
+  }
+
+  ### Add priors on betas
+  if (has_covariates) {
+    if (is(analysis_obj@covariates@priors, "Prior")) {
+      value <- h_glue(analysis_obj@covariates@priors@stan_code,
+        object = analysis_obj@covariates@priors
+      )
+      for (i in seq_along(analysis_obj@covariates@covariates)) {
+        model_string <- h_glue("
+          {{model_string}}
+          beta[{{i}}] ~ {{value}} ;")
+      }
+    } else if (is(analysis_obj@covariates@priors, "list")) {
+      for (i in seq_along(analysis_obj@covariates@priors)) {
+        value <- h_glue(analysis_obj@covariates@priors[[i]]@stan_code,
+          object = analysis_obj@covariates@priors[[i]]
+        )
+        model_string <- h_glue("
+          {{model_string}}
+          beta[{{i}}] ~ {{value}} ;")
+      }
     }
   }
 

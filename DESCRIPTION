@@ -42,11 +42,11 @@ Imports:
    methods,
    graphics
 Suggests:
-   survival,
-   flexsurv,
-   testthat (>= 3.0),
-   vdiffr,
-   xml2
+    survival,
+    testthat (>= 3.0),
+    usethis (>= 2.1.5),
+    vdiffr,
+    xml2
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
 Language: en-US
@@ -69,6 +69,7 @@ Collate:
     'cmdstan.R'
     'create_analysis_obj.R'
     'create_data_matrix.R'
+    'data.R'
     'exp_surv_dist.R'
     'exponential_prior.R'
     'gamma_prior.R'
@@ -82,7 +83,9 @@ Collate:
     'mcmc_sample.R'
     'package.R'
     'poisson_prior.R'
+    'prepare_stan_data_inputs.R'
     'treatment_details.R'
     'trim_data_matrix.R'
     'uniform_prior.R'
     'weib_ph_surv_dist.R'
+LazyData: true

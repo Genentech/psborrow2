@@ -29,6 +29,7 @@ repos:
           (.*/|)\.prettierignore|
           (.*/|)_pkgdown.yaml|
           (.*/|)staged_dependencies.yaml|
+          (.*/|)tests/testthat/_snaps/.*|
           (.*/|)\.pre-commit-.*|
           \.github/.*|
           .*\.[rR]|
