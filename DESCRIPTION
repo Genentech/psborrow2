@@ -46,7 +46,10 @@ Suggests:
     testthat (>= 3.0),
     usethis (>= 2.1.5),
     vdiffr,
-    xml2
+    xml2,
+    dplyr,
+    tibble,
+    flexsurv
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
 Language: en-US

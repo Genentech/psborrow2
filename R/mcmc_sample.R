@@ -29,9 +29,14 @@ mcmc_sample <- function(x, ...) {
 #' @export
 mcmc_sample.default <- function(x, ...) {
   if (length(class(x)) > 1) {
-    stop("Objects of type `", paste0(class(x), collapse = "` / `"), "` not supported by `mcmc_sample()`.")
+    stop("\nObjects of class `", paste0(class(x), collapse = "` / `"), "` not supported by `mcmc_sample()`.\n",
+         "For analyses on a single dataset, pass an object of class `Analysis` created by `create_analysis_obj()`.\n",
+         "For simulation analyses, pass an object of class `Simulation` created by `create_simulation_obj()`."
+    )
   } else if (length(class(x)) == 1) {
-    stop(paste0("Objects of type `", class(x), "` not supported by `mcmc_sample()`."))
+    stop(paste0("\nObjects of class `", class(x), "` not supported by `mcmc_sample()`.\n",
+         "For analyses on a single dataset, pass an object of class `Analysis` created by `create_analysis_obj()`.\n",
+         "For simulation analyses, pass an object of class `Simulation` created by `create_simulation_obj()`."))
   }
 }
 
@@ -84,12 +89,26 @@ mcmc_sample.Analysis <- function(x,
                                  iter_warmup = 1000L,
                                  iter_sampling = 10000L,
                                  chains = 4L,
+                                 verbose = FALSE,
                                  ...) {
-  analysis_obj@model_and_data$stan_model$sample(
-    data = analysis_obj@model_and_data$data_in,
-    iter_warmup = iter_warmup,
-    iter_sampling = iter_sampling,
-    chains = chains,
-    ...
-  )
+  if(verbose) {
+    x@model_and_data$stan_model$sample(
+      data = x@model_and_data$data_in,
+      iter_warmup = iter_warmup,
+      iter_sampling = iter_sampling,
+      chains = chains,
+      ...
+    )
+  } else {
+    suppressMessages(
+      x@model_and_data$stan_model$sample(
+        data = x@model_and_data$data_in,
+        iter_warmup = iter_warmup,
+        iter_sampling = iter_sampling,
+        chains = chains,
+        refresh = 0L,
+        ...
+      )
+    )
+  }
 }
