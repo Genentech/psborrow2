@@ -1,37 +1,4 @@
 # Build some valid inputs ----
-mm <- structure(c(
-  1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-  1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
-  0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1,
-  0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1,
-  1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1,
-  1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0,
-  1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 5.32295081977934,
-  6.96715560527452, 1.17501259866481, 9.45936763681621, 5.75572041253912,
-  12.1139661284359, 2.64741266341488, 4.99828513121648, 5.38734198746281,
-  4.74770899862051, 0.0803900761309156, 13.7720370325053, 3.03310634382069,
-  10.1695853577489, 0.0720591936260462, 10.1367262049345, 2.9709762107209,
-  0.659847613424063, 3.88436722227683, 3.2750634373027, 1.90838416890977,
-  5.79706331825161, 4.28611800974856, 0.702194716266679, 4.74582234003252,
-  6.92417557015123, 6.53942201171797, 5.88460493011677, 1.84311583921956,
-  5.28505285794622, 4.34498298102206, 3.17685930818209, 11.0179639531233,
-  2.14560192144267, 4.40741405311895, 10.9576044368026, 3.55944875309522,
-  9.07620135719862, 1.29542022943497, 3.35630633204141, 14.1141011930051,
-  14.3560852138326, 6.76962562138734, 6.60672739803918, 0.727092696356863,
-  3.06457582335024, 2.27240795704226, 6.12868075434827, 7.45796004200603,
-  9.23882804838511, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1,
-  0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1,
-  1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1,
-  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1,
-  1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1,
-  1
-), dim = c(50L, 7L), dimnames = list(NULL, c(
-  "ext", "trt", "cov1",
-  "cov2", "time", "cnsr", "resp"
-)))
 
 ac <- add_covariates(
   c("cov1", "cov2"),
@@ -84,7 +51,7 @@ test_that("Inputs classes are correct", {
   # Matrix
   expect_error(
     create_analysis_obj(
-      data_matrix = as.data.frame(mm),
+      data_matrix = as.data.frame(example_matrix),
       covariates = ac,
       outcome = esd,
       treatment = td,
@@ -96,7 +63,7 @@ test_that("Inputs classes are correct", {
   # Covariates
   expect_error(
     create_analysis_obj(
-      data_matrix = mm,
+      data_matrix = example_matrix,
       covariates = c("cov1", "cov2"),
       outcome = esd,
       treatment = td,
@@ -108,7 +75,7 @@ test_that("Inputs classes are correct", {
   # Outcomes
   expect_error(
     create_analysis_obj(
-      data_matrix = mm,
+      data_matrix = example_matrix,
       covariates = ac,
       outcome = exponential_prior(.001),
       treatment = td,
@@ -120,7 +87,7 @@ test_that("Inputs classes are correct", {
   # Treatment
   expect_error(
     create_analysis_obj(
-      data_matrix = mm,
+      data_matrix = example_matrix,
       covariates = ac,
       outcome = esd,
       treatment = "trt",
@@ -132,7 +99,7 @@ test_that("Inputs classes are correct", {
   # Borrowing
   expect_error(
     create_analysis_obj(
-      data_matrix = mm,
+      data_matrix = example_matrix,
       covariates = ac,
       outcome = esd,
       treatment = td,
@@ -144,13 +111,13 @@ test_that("Inputs classes are correct", {
 
 test_that("Matrix should have no missing data", {
   # Matrix should have no missing data
-  mm2 <- rbind(
-    mm,
+  example_matrix2 <- rbind(
+    example_matrix,
     matrix(c(NA, 0, 1, 1, 2.2, 0, 1), ncol = 7)
   )
   expect_error(
     create_analysis_obj(
-      data_matrix = mm2,
+      data_matrix = example_matrix2,
       covariates = ac,
       outcome = esd,
       treatment = td,
@@ -163,7 +130,7 @@ test_that("Matrix should have no missing data", {
 test_that("Columns in analysis_obj should be in matrix", {
   expect_error(
     create_analysis_obj(
-      data_matrix = mm,
+      data_matrix = example_matrix,
       covariates = add_covariates(c("cov3", "cov2"),
         priors = normal_prior(0, 1000)
       ),
@@ -176,7 +143,7 @@ test_that("Columns in analysis_obj should be in matrix", {
 
   expect_error(
     create_analysis_obj(
-      data_matrix = mm,
+      data_matrix = example_matrix,
       covariates = ac,
       outcome = exp_surv_dist("time", "cens"),
       treatment = td,
@@ -187,7 +154,7 @@ test_that("Columns in analysis_obj should be in matrix", {
 
   expect_error(
     create_analysis_obj(
-      data_matrix = mm,
+      data_matrix = example_matrix,
       covariates = ac,
       outcome = logistic_bin_outcome("response"),
       treatment = td,
@@ -198,7 +165,7 @@ test_that("Columns in analysis_obj should be in matrix", {
 
   expect_error(
     create_analysis_obj(
-      data_matrix = mm,
+      data_matrix = example_matrix,
       covariates = ac,
       outcome = esd,
       treatment = treatment_details(
@@ -212,7 +179,7 @@ test_that("Columns in analysis_obj should be in matrix", {
 
   expect_error(
     create_analysis_obj(
-      data_matrix = mm,
+      data_matrix = example_matrix,
       covariates = ac,
       outcome = esd,
       treatment = td,
@@ -241,7 +208,7 @@ for (bd in 1:3) {
       ), {
         expect_class(
           create_analysis_obj(
-            data_matrix = mm,
+            data_matrix = example_matrix,
             covariates = covariates_list[[cc]],
             outcome = outcome_list[[oc]],
             treatment = td,
@@ -258,7 +225,7 @@ for (bd in 1:3) {
 
 test_that("ready_to_sample flag is set", {
   result <- create_analysis_obj(
-    data_matrix = mm,
+    data_matrix = example_matrix,
     covariates = ac,
     outcome = esd,
     treatment = td,
@@ -269,7 +236,7 @@ test_that("ready_to_sample flag is set", {
 
 test_that("get_vars works for Analysis", {
   analysis <- create_analysis_obj(
-    data_matrix = mm,
+    data_matrix = example_matrix,
     covariates = ac,
     outcome = esd,
     treatment = td,
@@ -286,3 +253,11 @@ test_that("get_vars works for Analysis", {
     c(time_var = "time", cens_var = "cnsr", ext_flag_col = "ext", trt_flag_col = "trt")
   )
 })
+
+rm(
+  borrowing_list, outcome_list, covariates_list,
+  ac, ac2,
+  bd_fb, bd_nb, bd_db,
+  td, esd, wpsd, lbo,
+  bd, cc, oc
+)
