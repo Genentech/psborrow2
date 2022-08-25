@@ -9,22 +9,13 @@
 #' Stan data {} block.
 #'
 #' @examples
-#' dat <- survival::diabetic
-#' dat$ext <- dat$trt == 0 & dat$id > 1000
-#' data_mat <- create_data_matrix(
-#'   dat,
-#'   outcome = c("time", "status"),
-#'   trt_flag_col = "trt",
-#'   ext_flag_col = "ext"
-#' )
-#'
 #' anls_obj <- psborrow2:::.analysis_obj(
-#'   data_matrix = data_mat,
-#'   outcome = exp_surv_dist("time", "status"),
+#'   data_matrix = example_matrix,
+#'   outcome = exp_surv_dist("time", "cnsr"),
 #'   borrowing = borrowing_details(
 #'     "BDB",
 #'     normal_prior(0, 100),
-#'     "extTRUE",
+#'     "ext",
 #'     exponential_prior(0.001)
 #'   ),
 #'   treatment = treatment_details("trt", normal_prior(0, 100))
