@@ -77,22 +77,13 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/survival/man/diabetic.html" class="external-link">diabetic</a></span></span>
-<span class="r-in"><span class="va">dat</span><span class="op">$</span><span class="va">ext</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">trt</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">dat</span><span class="op">$</span><span class="va">id</span> <span class="op">&gt;</span> <span class="fl">1000</span></span>
-<span class="r-in"><span class="va">data_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_data_matrix.html">create_data_matrix</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">dat</span>,</span>
-<span class="r-in">  outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"status"</span><span class="op">)</span>,</span>
-<span class="r-in">  trt_flag_col <span class="op">=</span> <span class="st">"trt"</span>,</span>
-<span class="r-in">  ext_flag_col <span class="op">=</span> <span class="st">"ext"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">anls_obj</span> <span class="op">&lt;-</span> <span class="fu">psborrow2</span><span class="fu">:::</span><span class="fu"><a href="Analysis-class.html">.analysis_obj</a></span><span class="op">(</span></span>
-<span class="r-in">  data_matrix <span class="op">=</span> <span class="va">data_mat</span>,</span>
-<span class="r-in">  outcome <span class="op">=</span> <span class="fu"><a href="exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"status"</span><span class="op">)</span>,</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">anls_obj</span> <span class="op">&lt;-</span> <span class="fu">psborrow2</span><span class="fu">:::</span><span class="fu"><a href="Analysis-class.html">.analysis_obj</a></span><span class="op">(</span></span>
+<span class="r-in">  data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span>
+<span class="r-in">  outcome <span class="op">=</span> <span class="fu"><a href="exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span><span class="op">)</span>,</span>
 <span class="r-in">  borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span></span>
 <span class="r-in">    <span class="st">"Full borrowing"</span>,</span>
 <span class="r-in">    <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>,</span>
-<span class="r-in">    <span class="st">"extTRUE"</span></span>
+<span class="r-in">    <span class="st">"ext"</span></span>
 <span class="r-in">  <span class="op">)</span>,</span>
 <span class="r-in">  treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
