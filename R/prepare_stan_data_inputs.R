@@ -33,45 +33,28 @@
 #' anls_obj@model_and_data <- list(
 #'   data_in = psborrow2:::prepare_stan_data_inputs(anls_obj)
 #' )
-#' #
+#'
 prepare_stan_data_inputs <- function(analysis_obj) {
-  # Prepare data
   ## Common inputs
   data_in <- list(
     N = NROW(analysis_obj@data_matrix),
-    trt = analysis_obj@data_matrix[
-      , analysis_obj@treatment@trt_flag_col
-    ]
+    trt = analysis_obj@data_matrix[, analysis_obj@treatment@trt_flag_col]
   )
 
   ## Outcome-specific additions
   if (is(analysis_obj@outcome, "TimeToEvent")) {
-    data_in[["time"]] <- analysis_obj@data_matrix[
-      , analysis_obj@outcome@time_var
-    ]
-    data_in[["cens"]] <- analysis_obj@data_matrix[
-      , analysis_obj@outcome@cens_var
-    ]
+    data_in[["time"]] <- analysis_obj@data_matrix[, analysis_obj@outcome@time_var]
+    data_in[["cens"]] <- analysis_obj@data_matrix[, analysis_obj@outcome@cens_var]
   } else if (is(analysis_obj@outcome, "BinaryOutcome")) {
-    data_in[["y"]] <- analysis_obj@data_matrix[
-      , analysis_obj@outcome@binary_var
-    ]
+    data_in[["y"]] <- analysis_obj@data_matrix[, analysis_obj@outcome@binary_var]
   }
 
   ## BDB additions
   if (analysis_obj@borrowing@method == "BDB") {
-    data_in[["Z"]] <- matrix(
-      c(
-        1 - analysis_obj@data_matrix[
-          , analysis_obj@borrowing@ext_flag_col
-        ], # First col is ext = 0
-        analysis_obj@data_matrix[
-          , analysis_obj@borrowing@ext_flag_col
-        ] # Second col is ext = 1
-      ),
-      ncol = 2,
-      byrow = FALSE
-    )
+    data_in[["Z"]] <- cbind(
+      1 - analysis_obj@data_matrix[, analysis_obj@borrowing@ext_flag_col],
+      analysis_obj@data_matrix[, analysis_obj@borrowing@ext_flag_col]
+    ) # Column 1 is the indicator for internal, column 2 is the external indicator.
   }
 
   ## Covariate additions

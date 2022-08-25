@@ -42,5 +42,5 @@ anls_obj <- psborrow2:::.analysis_obj(
 anls_obj@model_and_data <- list(
   data_in = psborrow2:::prepare_stan_data_inputs(anls_obj)
 )
-#
+
 }
