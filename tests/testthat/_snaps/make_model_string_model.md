@@ -72,7 +72,7 @@
       }
       }
 
-# make_model_string_model works with binary outcome and BDB  and covariates
+# make_model_string_model works with binary outcome and BDB and covariates
 
     Code
       result
