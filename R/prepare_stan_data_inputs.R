@@ -2,11 +2,11 @@
 #'
 #' Create a list of data in the correct format for Stan
 #'
-#' @param analysis_obj `Analysis`. Object of class `Analysis` created by
+#' @param analysis_obj `Analysis`. Object of class [`Analysis`][Analysis-class] created by
 #' `psborrow2:::.analysis_obj()`.
 #'
-#' @return named list of data inputs that correspond to items in the
-#' Stan data {} block
+#' @return Named list of data inputs that correspond to items in the
+#' Stan data {} block.
 #'
 #' @examples
 #' dat <- survival::diabetic
@@ -54,7 +54,7 @@ prepare_stan_data_inputs <- function(analysis_obj) {
     data_in[["Z"]] <- cbind(
       1 - analysis_obj@data_matrix[, analysis_obj@borrowing@ext_flag_col],
       analysis_obj@data_matrix[, analysis_obj@borrowing@ext_flag_col]
-    ) # Column 1 is the indicator for internal, column 2 is the external indicator.
+    ) # Column 1 is the indicator for internal. Column 2 is the external indicator.
   }
 
   ## Covariate additions

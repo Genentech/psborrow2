@@ -7,12 +7,12 @@
 prepare_stan_data_inputs(analysis_obj)
 }
 \arguments{
-\item{analysis_obj}{\code{Analysis}. Object of class \code{Analysis} created by
+\item{analysis_obj}{\code{Analysis}. Object of class \code{\link[=Analysis-class]{Analysis}} created by
 \code{psborrow2:::.analysis_obj()}.}
 }
 \value{
-named list of data inputs that correspond to items in the
-Stan data {} block
+Named list of data inputs that correspond to items in the
+Stan data {} block.
 }
 \description{
 Create a list of data in the correct format for Stan
