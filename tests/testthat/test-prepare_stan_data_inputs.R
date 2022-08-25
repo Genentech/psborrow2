@@ -76,3 +76,45 @@ test_that("prepare_stan_data_inputs works with binary outcome and BDB and covari
   expect_list(result, types = "numeric", len = 6)
   expect_equal(names(result), c("N", "trt", "y", "Z", "K", "X"))
 })
+
+test_that("prepare_stan_data_inputs returns correct matrix dimensions for X", {
+  object1 <- psborrow2:::.analysis_obj(
+    data_matrix = example_matrix,
+    covariates = add_covariates(
+      c("cov1"),
+      normal_prior(0, 1000)
+    ),
+    outcome = logistic_bin_outcome("cnsr"),
+    borrowing = borrowing_details(
+      "BDB",
+      normal_prior(0, 100),
+      "ext",
+      exponential_prior(0.001)
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 1000))
+  )
+
+  result1 <- psborrow2:::prepare_stan_data_inputs(object1)
+  expect_matrix(result1$X)
+  expect_equal(dim(result1$X), c(NROW(example_matrix), 1))
+
+  object2 <- psborrow2:::.analysis_obj(
+    data_matrix = example_matrix,
+    covariates = add_covariates(
+      c("cov1", "cov2"),
+      normal_prior(0, 1000)
+    ),
+    outcome = logistic_bin_outcome("cnsr"),
+    borrowing = borrowing_details(
+      "BDB",
+      normal_prior(0, 100),
+      "ext",
+      exponential_prior(0.001)
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 1000))
+  )
+
+  result2 <- psborrow2:::prepare_stan_data_inputs(object2)
+  expect_matrix(result2$X)
+  expect_equal(dim(result2$X), c(NROW(example_matrix), 2))
+})
