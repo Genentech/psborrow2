@@ -82,6 +82,7 @@ Collate:
     'make_model_string_transf_params.R'
     'package.R'
     'poisson_prior.R'
+    'prepare_stan_data_inputs.R'
     'treatment_details.R'
     'trim_data_matrix.R'
     'uniform_prior.R'

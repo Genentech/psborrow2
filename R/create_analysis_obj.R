@@ -123,5 +123,12 @@ create_analysis_obj <- function(data_matrix,
     message("\r", "Stan program compiled successfully", appendLF = FALSE)
   }
 
+  # Prepare data inputs
+  analysis_obj@model_and_data[["data_in"]] <- prepare_stan_data_inputs(analysis_obj)
+  analysis_obj@ready_to_sample <- TRUE
+  if (!quiet) {
+    message("\r", "Ready to go! Now call `mcmc_sample()`", appendLF = FALSE)
+  }
+
   return(analysis_obj)
 }
