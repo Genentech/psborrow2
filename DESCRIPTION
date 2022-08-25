@@ -43,6 +43,7 @@ Imports:
    graphics
 Suggests:
    survival,
+   flexsurv,
    testthat (>= 3.0),
    vdiffr,
    xml2
@@ -78,6 +79,7 @@ Collate:
     'make_model_string_model.R'
     'make_model_string_parameters.R'
     'make_model_string_transf_params.R'
+    'mcmc_sample.R'
     'package.R'
     'poisson_prior.R'
     'treatment_details.R'

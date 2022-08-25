@@ -18,8 +18,11 @@ cmdstan
 cmdstanr
 commensurability
 et
+https
 hyperprior
 hyperpriors
+mc
 poisson
 psborrow
 stan
+warmup
