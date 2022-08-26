@@ -51,9 +51,7 @@ prepare_stan_data_inputs <- function(analysis_obj) {
   ## Covariate additions
   if (!is.null(analysis_obj@covariates)) {
     data_in[["K"]] <- NROW(analysis_obj@covariates@covariates)
-    data_in[["X"]] <- analysis_obj@data_matrix[
-      , analysis_obj@covariates@covariates
-    ]
+    data_in[["X"]] <- analysis_obj@data_matrix[, analysis_obj@covariates@covariates, drop = FALSE]
   }
 
   return(data_in)
