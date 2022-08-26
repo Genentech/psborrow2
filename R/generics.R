@@ -34,3 +34,18 @@ if (!isGeneric("plot")) setGeneric("plot", function(x, y, ...) standardGeneric("
 #' @export
 #'
 setGeneric("get_vars", function(object) standardGeneric("get_vars"))
+
+#' Sample from Stan model
+#'
+#' Method to sample from compiled Stan model and
+#' return a `CmdStanMCMC` object with draws.
+#'
+#' @param x object to sample, such as `Analysis` (created with [create_analysis_obj()]) or `Simulation`.
+#' @param ... additional arguments passed to the $sample() method of a
+#' `cmdstanr` Stan model.
+#' See https://mc-stan.org/cmdstanr/reference/model-method-sample.html
+#'
+#' @rdname mcmc_sample
+#'
+#' @export
+setGeneric("mcmc_sample", function(x, ...) standardGeneric("mcmc_sample"))
