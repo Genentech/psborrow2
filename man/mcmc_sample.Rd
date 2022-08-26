@@ -10,7 +10,14 @@ mcmc_sample(x, ...)
 
 \method{mcmc_sample}{default}(x, ...)
 
-\method{mcmc_sample}{`Analysis`}(x, iter_warmup = 1000L, iter_sampling = 10000L, chains = 4L, ...)
+\method{mcmc_sample}{`Analysis`}(
+  x,
+  iter_warmup = 1000L,
+  iter_sampling = 10000L,
+  chains = 4L,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class \code{Analysis} created by
@@ -27,6 +34,9 @@ The default is 1000.}
 The default is 10000.}
 
 \item{chains}{The number of Markov chains to run. The default is 4.}
+
+\item{verbose}{logical. Whether to print sampler updates (\code{TRUE}) or not
+(\code{FALSE})}
 }
 \value{
 An object of class \code{CmdStanMCMC}

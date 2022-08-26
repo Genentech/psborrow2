@@ -29,14 +29,17 @@ mcmc_sample <- function(x, ...) {
 #' @export
 mcmc_sample.default <- function(x, ...) {
   if (length(class(x)) > 1) {
-    stop("\nObjects of class `", paste0(class(x), collapse = "` / `"), "` not supported by `mcmc_sample()`.\n",
-         "For analyses on a single dataset, pass an object of class `Analysis` created by `create_analysis_obj()`.\n",
-         "For simulation analyses, pass an object of class `Simulation` created by `create_simulation_obj()`."
+    stop(
+      "\nObjects of class `", paste0(class(x), collapse = "` / `"), "` not supported by `mcmc_sample()`.\n",
+      "For analyses on a single dataset, pass an object of class `Analysis` created by `create_analysis_obj()`.\n",
+      "For simulation analyses, pass an object of class `Simulation` created by `create_simulation_obj()`."
     )
   } else if (length(class(x)) == 1) {
-    stop(paste0("\nObjects of class `", class(x), "` not supported by `mcmc_sample()`.\n",
-         "For analyses on a single dataset, pass an object of class `Analysis` created by `create_analysis_obj()`.\n",
-         "For simulation analyses, pass an object of class `Simulation` created by `create_simulation_obj()`."))
+    stop(paste0(
+      "\nObjects of class `", class(x), "` not supported by `mcmc_sample()`.\n",
+      "For analyses on a single dataset, pass an object of class `Analysis` created by `create_analysis_obj()`.\n",
+      "For simulation analyses, pass an object of class `Simulation` created by `create_simulation_obj()`."
+    ))
   }
 }
 
@@ -49,6 +52,8 @@ mcmc_sample.default <- function(x, ...) {
 #' @param iter_sampling The number of post-warmup iterations to run per chain.
 #' The default is 10000.
 #' @param chains The number of Markov chains to run. The default is 4.
+#' @param verbose logical. Whether to print sampler updates (`TRUE`) or not
+#' (`FALSE`)
 #' @param ... additional arguments passed to the $sample() method of a
 #' cmdstanr Stan model.
 #' See https://mc-stan.org/cmdstanr/reference/model-method-sample.html
@@ -91,7 +96,7 @@ mcmc_sample.Analysis <- function(x,
                                  chains = 4L,
                                  verbose = FALSE,
                                  ...) {
-  if(verbose) {
+  if (verbose) {
     x@model_and_data$stan_model$sample(
       data = x@model_and_data$data_in,
       iter_warmup = iter_warmup,
