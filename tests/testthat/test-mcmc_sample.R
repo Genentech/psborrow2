@@ -631,3 +631,258 @@ test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist,
     )
   )
 })
+
+# Exponential models, BDB conservative----
+test_that("mcmc_sample.Analysis() works for exponential BDB,
+          conservative borrowing", {
+  exp_bdb_conservative <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = exp_surv_dist(time_var = "time", cens_var = "cnsr"),
+    borrowing = borrowing_details("BDB",
+      normal_prior(0, 100000),
+      ext_flag_col = "ext",
+      tau_prior = gamma_prior(0.001, 0.001)
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 100000))
+  ) %>%
+    mcmc_sample(
+      iter_warmup = 1000,
+      iter_sampling = 10000,
+      chains = 1
+    )
+
+  expect_true(
+    dplyr::near(exp_bdb_conservative$summary("HR_trt")[, "median"][[1]],
+      0.57,
+      tol = .02
+    )
+  )
+
+  expect_true(
+    dplyr::near(exp_bdb_conservative$summary("HR_trt")[, "q5"][[1]],
+      0.37,
+      tol = .02
+    )
+  )
+
+  expect_true(
+    dplyr::near(exp_bdb_conservative$summary("HR_trt")[, "q95"][[1]],
+      0.83,
+      tol = .02
+    )
+  )
+})
+
+# Exponential models, BDB aggressive----
+test_that("mcmc_sample.Analysis() works for exponential BDB,
+          aggressive borrowing", {
+  exp_bdb_aggressive <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = exp_surv_dist(time_var = "time", cens_var = "cnsr"),
+    borrowing = borrowing_details("BDB",
+      normal_prior(0, 100000),
+      ext_flag_col = "ext",
+      tau_prior = gamma_prior(1, 0.001)
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 100000))
+  ) %>%
+    mcmc_sample(
+      iter_warmup = 1000,
+      iter_sampling = 10000,
+      chains = 1
+    )
+
+  expect_true(
+    dplyr::near(exp_bdb_aggressive$summary("HR_trt")[, "median"][[1]],
+      0.51,
+      tol = .02
+    )
+  )
+
+  expect_true(
+    dplyr::near(exp_bdb_aggressive$summary("HR_trt")[, "q5"][[1]],
+      0.34,
+      tol = .02
+    )
+  )
+
+  expect_true(
+    dplyr::near(exp_bdb_aggressive$summary("HR_trt")[, "q95"][[1]],
+      0.74,
+      tol = .02
+    )
+  )
+})
+
+# Weibull models, BDB conservative----
+test_that("mcmc_sample.Analysis() works for Weibull BDB,
+          conservative borrowing", {
+  weib_bdb_conservative <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = weib_ph_surv_dist(
+      time_var = "time",
+      cens_var = "cnsr",
+      normal_prior(0, 100000)
+    ),
+    borrowing = borrowing_details("BDB",
+      normal_prior(0, 100000),
+      ext_flag_col = "ext",
+      tau_prior = gamma_prior(0.001, 0.001)
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 100000))
+  ) %>%
+    mcmc_sample(
+      iter_warmup = 1000,
+      iter_sampling = 10000,
+      chains = 1
+    )
+
+  expect_true(
+    dplyr::near(weib_bdb_conservative$summary("HR_trt")[, "median"][[1]],
+      0.56,
+      tol = .02
+    )
+  )
+
+  expect_true(
+    dplyr::near(weib_bdb_conservative$summary("HR_trt")[, "q5"][[1]],
+      0.36,
+      tol = .02
+    )
+  )
+
+  expect_true(
+    dplyr::near(weib_bdb_conservative$summary("HR_trt")[, "q95"][[1]],
+      0.83,
+      tol = .02
+    )
+  )
+})
+
+# Weibull models, BDB aggressive----
+test_that("mcmc_sample.Analysis() works for Weibull BDB,
+          aggressive borrowing", {
+  weib_bdb_aggressive <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = weib_ph_surv_dist(
+      time_var = "time",
+      cens_var = "cnsr",
+      shape_prior = normal_prior(0, 100000)
+    ),
+    borrowing = borrowing_details("BDB",
+      normal_prior(0, 100000),
+      ext_flag_col = "ext",
+      tau_prior = gamma_prior(1, 0.001)
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 100000))
+  ) %>%
+    mcmc_sample(
+      iter_warmup = 1000,
+      iter_sampling = 10000,
+      chains = 1
+    )
+
+  expect_true(
+    dplyr::near(weib_bdb_aggressive$summary("HR_trt")[, "median"][[1]],
+      0.51,
+      tol = .02
+    )
+  )
+
+  expect_true(
+    dplyr::near(weib_bdb_aggressive$summary("HR_trt")[, "q5"][[1]],
+      0.32,
+      tol = .02
+    )
+  )
+
+  expect_true(
+    dplyr::near(weib_bdb_aggressive$summary("HR_trt")[, "q95"][[1]],
+      0.74,
+      tol = .02
+    )
+  )
+})
+
+
+# Logistic regression models, BDB conservative----
+test_that("mcmc_sample.Analysis() works for logistic regression BDB,
+          conservative borrowing", {
+  bin_bdb_conservative <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = logistic_bin_outcome("resp"),
+    borrowing = borrowing_details("BDB",
+      normal_prior(0, 100000),
+      ext_flag_col = "ext",
+      tau_prior = gamma_prior(0.001, 0.001)
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 100000))
+  ) %>%
+    mcmc_sample(
+      iter_warmup = 1000,
+      iter_sampling = 10000,
+      chains = 1
+    )
+
+  expect_true(
+    dplyr::near(bin_bdb_conservative$summary("OR_trt")[, "median"][[1]],
+      1.73,
+      tol = .15
+    )
+  )
+
+  expect_true(
+    dplyr::near(bin_bdb_conservative$summary("OR_trt")[, "q5"][[1]],
+      1.20,
+      tol = .15
+    )
+  )
+
+  expect_true(
+    dplyr::near(bin_bdb_conservative$summary("OR_trt")[, "q95"][[1]],
+      2.51,
+      tol = .15
+    )
+  )
+})
+
+# Logistic regression models, BDB aggressive----
+test_that("mcmc_sample.Analysis() works for logistic regression BDB,
+          aggressive borrowing", {
+  bin_bdb_aggressive <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = logistic_bin_outcome("resp"),
+    borrowing = borrowing_details("BDB",
+      normal_prior(0, 100000),
+      ext_flag_col = "ext",
+      tau_prior = gamma_prior(1, 0.001)
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 100000))
+  ) %>%
+    mcmc_sample(
+      iter_warmup = 1000,
+      iter_sampling = 10000,
+      chains = 1
+    )
+
+  expect_true(
+    dplyr::near(bin_bdb_aggressive$summary("OR_trt")[, "median"][[1]],
+      1.62,
+      tol = .15
+    )
+  )
+
+  expect_true(
+    dplyr::near(bin_bdb_aggressive$summary("OR_trt")[, "q5"][[1]],
+      1.17,
+      tol = .15
+    )
+  )
+
+  expect_true(
+    dplyr::near(bin_bdb_aggressive$summary("OR_trt")[, "q95"][[1]],
+      2.29,
+      tol = .15
+    )
+  )
+})
