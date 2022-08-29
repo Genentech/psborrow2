@@ -36,16 +36,18 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Config/testthat/edition: 3
 Imports:
-   cmdstanr,
-   checkmate,
-   glue,
-   methods,
-   graphics
+    cmdstanr,
+    checkmate,
+    glue,
+    methods,
+    graphics
 Suggests:
     survival,
+    flexsurv,
     testthat (>= 3.0),
     usethis (>= 2.1.5),
     vdiffr,
+    tibble,
     xml2
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
