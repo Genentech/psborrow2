@@ -11,7 +11,7 @@
 #' [`borrowing_details()`].
 #' @param treatment `Treatment`. Object of class [`Treatment`][Treatment-class] as output by
 #' [`treatment_details()`].
-#' @param quiet logical. Whether to suppress message (`TRUE`) or not (`FALSE`,
+#' @param quiet logical. Whether to suppress messages (`TRUE`) or not (`FALSE`,
 #' the default)
 #'
 #' @return Object of class [`Analysis`][Analysis-class].
@@ -75,7 +75,25 @@ create_analysis_obj <- function(data_matrix,
   check_data_matrix_has_columns(analysis_obj)
 
   if (!quiet) {
-    message("\r", "Inputs look good", appendLF = FALSE)
+    message("\r",
+      "Inputs look good.",
+      appendLF = TRUE
+    )
+
+
+    if (analysis_obj@borrowing@method == "Full borrowing") {
+      message("\r",
+        glue::glue("NOTE: dropping column `{analysis_obj@borrowing@ext_flag_col}` for full borrowing."),
+        appendLF = TRUE
+      )
+    }
+
+    if (analysis_obj@borrowing@method == "No borrowing") {
+      message("\r",
+        glue::glue("NOTE: excluding `{analysis_obj@borrowing@ext_flag_col}` == `1`/`TRUE` for no borrowing."),
+        appendLF = TRUE
+      )
+    }
   }
 
   # Trim model matrix
@@ -106,10 +124,6 @@ create_analysis_obj <- function(data_matrix,
   analysis_obj@model_string <- stan_model_string
 
   # Compile model
-  if (!quiet) {
-    message("\r", "Compiling Stan model...", appendLF = FALSE)
-  }
-
   stan_file <- write_stan_file(analysis_obj@model_string)
   if (!quiet) {
     analysis_obj@model_and_data <- list(stan_model = cmdstan_model(stan_file))
@@ -120,14 +134,20 @@ create_analysis_obj <- function(data_matrix,
   }
 
   if (!quiet) {
-    message("\r", "Stan program compiled successfully", appendLF = FALSE)
+    message("\r",
+      "Stan program compiled successfully!",
+      appendLF = TRUE
+    )
   }
 
   # Prepare data inputs
   analysis_obj@model_and_data[["data_in"]] <- prepare_stan_data_inputs(analysis_obj)
   analysis_obj@ready_to_sample <- TRUE
   if (!quiet) {
-    message("\r", "Ready to go! Now call `mcmc_sample()`", appendLF = FALSE)
+    message("\r",
+      "Ready to go! Now call `mcmc_sample()`.",
+      appendLF = TRUE
+    )
   }
 
   return(analysis_obj)

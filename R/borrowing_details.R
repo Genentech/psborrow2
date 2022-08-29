@@ -106,14 +106,6 @@ borrowing_details <- function(method,
     assert_class(tau_prior, "Prior")
   }
 
-  if (method == "Full borrowing") {
-    message("Will ignore ext_flag_col for full borrowing")
-  }
-
-  if (method == "No borrowing") {
-    message("Will filter data matrix to exclude external control patients")
-  }
-
   .borrowing_class(
     method = method,
     ext_flag_col = ext_flag_col,
