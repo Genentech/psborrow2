@@ -11,6 +11,28 @@ test_that("mcmc_sample.default() default method throws error", {
   )
 })
 
+test_that("mcmc_sample handles Analysis objects not ready to sample", {
+  object <- psborrow2:::.analysis_obj(
+    data_matrix = example_matrix,
+    covariates = add_covariates(c("cov1", "cov2"), normal_prior(0, 1000)),
+    outcome = exp_surv_dist(
+      time_var = "time",
+      cens_var = "cnsr"
+    ),
+    treatment = treatment_details(
+      "trt",
+      normal_prior(0, 1000)
+    ),
+    borrowing = borrowing_details(
+      "Full borrowing",
+      ext_flag_col = "ext",
+      baseline_prior = normal_prior(0, 1000)
+    )
+  )
+  expect_error(mcmc_sample(object), "Cannot sample object.")
+})
+
+
 # Exponential models, no BDB ----
 test_that("mcmc_sample for Analysis works for full borrowing, exponential dist", {
   skip_on_cran()
@@ -216,16 +238,6 @@ test_that("mcmc_sample for Analysis works for no borrowing, exponential dist, tw
 })
 
 # Weibull models, no BDB ----
-custom_weibull_ph <- list(
-  name = "weibullPH",
-  pars = c("shape", "scale"), location = "scale",
-  transforms = c(log, log),
-  inv.transforms = c(exp, exp),
-  inits = function(t) {
-    c(1, 1)
-  }
-)
-
 test_that("mcmc_sample for Analysis works for full borrowing, Weibull dist", {
   skip_on_cran()
   skip_on_ci()
@@ -648,14 +660,15 @@ test_that("mcmc_sample for Analysis works for exponential BDB, conservative borr
       tau_prior = gamma_prior(0.001, 0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
-  ) %>%
-    mcmc_sample(
-      iter_warmup = 1000,
-      iter_sampling = 10000,
-      chains = 1
-    )
+  )
+  result <- mcmc_sample(
+    exp_bdb_conservative,
+    iter_warmup = 1000,
+    iter_sampling = 10000,
+    chains = 1
+  )
 
-  result_summary <- exp_bdb_conservative$summary("HR_trt")
+  result_summary <- result$summary("HR_trt")
   expect_equal(result_summary[["median"]], 0.57, tolerance = .05)
   expect_equal(result_summary[["q5"]], 0.37, tolerance = .05)
   expect_equal(result_summary[["q95"]], 0.83, tolerance = .05)
@@ -674,14 +687,15 @@ test_that("mcmc_sample for Analysis works for exponential BDB, aggressive borrow
       tau_prior = gamma_prior(1, 0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
-  ) %>%
-    mcmc_sample(
-      iter_warmup = 1000,
-      iter_sampling = 10000,
-      chains = 1
-    )
+  )
+  result <- mcmc_sample(
+    exp_bdb_aggressive,
+    iter_warmup = 1000,
+    iter_sampling = 10000,
+    chains = 1
+  )
 
-  result_summary <- exp_bdb_aggressive$summary("HR_trt")
+  result_summary <- result$summary("HR_trt")
   expect_equal(result_summary[["median"]], 0.51, tolerance = .05)
   expect_equal(result_summary[["q5"]], 0.34, tolerance = .05)
   expect_equal(result_summary[["q95"]], 0.74, tolerance = .05)
@@ -704,14 +718,15 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, conservative borrowin
       tau_prior = gamma_prior(0.001, 0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
-  ) %>%
-    mcmc_sample(
-      iter_warmup = 1000,
-      iter_sampling = 10000,
-      chains = 1
-    )
+  )
+  result <- mcmc_sample(
+    weib_bdb_conservative,
+    iter_warmup = 1000,
+    iter_sampling = 10000,
+    chains = 1
+  )
 
-  result_summary <- weib_bdb_conservative$summary("HR_trt")
+  result_summary <- result$summary("HR_trt")
   expect_equal(result_summary[["median"]], 0.56, tolerance = .05)
   expect_equal(result_summary[["q5"]], 0.36, tolerance = .05)
   expect_equal(result_summary[["q95"]], 0.83, tolerance = .05)
@@ -734,14 +749,15 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, aggressive borrowing"
       tau_prior = gamma_prior(1, 0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
-  ) %>%
-    mcmc_sample(
-      iter_warmup = 1000,
-      iter_sampling = 10000,
-      chains = 1
-    )
+  )
+  result <- mcmc_sample(
+    weib_bdb_aggressive,
+    iter_warmup = 1000,
+    iter_sampling = 10000,
+    chains = 1
+  )
 
-  result_summary <- weib_bdb_aggressive$summary("HR_trt")
+  result_summary <- result$summary("HR_trt")
   expect_equal(result_summary[["median"]], 0.51, tolerance = .05)
   expect_equal(result_summary[["q5"]], 0.32, tolerance = .05)
   expect_equal(result_summary[["q95"]], 0.74, tolerance = .05)
@@ -761,14 +777,15 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, conservat
       tau_prior = gamma_prior(0.001, 0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
-  ) %>%
-    mcmc_sample(
-      iter_warmup = 1000,
-      iter_sampling = 10000,
-      chains = 1
-    )
+  )
+  result <- mcmc_sample(
+    bin_bdb_conservative,
+    iter_warmup = 1000,
+    iter_sampling = 10000,
+    chains = 1
+  )
 
-  result_summary <- bin_bdb_conservative$summary("OR_trt")
+  result_summary <- result$summary("OR_trt")
   expect_equal(result_summary[["median"]], 1.73, tolerance = .05)
   expect_equal(result_summary[["q5"]], 1.20, tolerance = .05)
   expect_equal(result_summary[["q95"]], 2.51, tolerance = .05)
@@ -787,14 +804,15 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressiv
       tau_prior = gamma_prior(1, 0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
-  ) %>%
-    mcmc_sample(
-      iter_warmup = 1000,
-      iter_sampling = 10000,
-      chains = 1
-    )
+  )
+  result <- mcmc_sample(
+    bin_bdb_aggressive,
+    iter_warmup = 1000,
+    iter_sampling = 10000,
+    chains = 1
+  )
 
-  result_summary <- bin_bdb_aggressive$summary("OR_trt")
+  result_summary <- result$summary("OR_trt")
   expect_equal(result_summary[["median"]], 1.62, tolerance = .05)
   expect_equal(result_summary[["q5"]], 1.17, tolerance = .05)
   expect_equal(result_summary[["q95"]], 2.29, tolerance = .05)

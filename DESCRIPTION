@@ -47,7 +47,6 @@ Suggests:
     testthat (>= 3.0),
     usethis (>= 2.1.5),
     vdiffr,
-    dplyr,
     tibble,
     xml2
 Remotes:

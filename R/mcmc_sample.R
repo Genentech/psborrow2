@@ -61,6 +61,8 @@ setMethod(
                         chains = 4L,
                         verbose = FALSE,
                         ...) {
+    if (!isTRUE(x@ready_to_sample)) stop("Cannot sample object. Create object using `create_analysis_obj()`")
+
     if (verbose) {
       x@model_and_data$stan_model$sample(
         data = x@model_and_data$data_in,
