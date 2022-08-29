@@ -13,6 +13,8 @@ test_that("mcmc_sample.default() default method throws error", {
 
 # Exponential models, no BDB ----
 test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist", {
+  skip_on_cran()
+  skip_on_ci()
   full_exp <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt,
     data = as.data.frame(example_matrix),
@@ -44,6 +46,8 @@ test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist", {
 })
 
 test_that("mcmc_sample.Analysis() works for no borrowing, exponential dist", {
+  skip_on_cran()
+  skip_on_ci()
   no_exp <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
@@ -77,6 +81,8 @@ test_that("mcmc_sample.Analysis() works for no borrowing, exponential dist", {
 
 test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist,
           one covariate", {
+  skip_on_cran()
+  skip_on_ci()
   full_exp_c1 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1,
     data = as.data.frame(example_matrix),
@@ -111,6 +117,8 @@ test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist,
 
 test_that("mcmc_sample.Analysis() works for no borrowing, exponential dist,
           one covariate", {
+  skip_on_cran()
+  skip_on_ci()
   no_exp_c1 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
@@ -146,6 +154,8 @@ test_that("mcmc_sample.Analysis() works for no borrowing, exponential dist,
 
 test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist,
           two covariates", {
+  skip_on_cran()
+  skip_on_ci()
   full_exp_c2 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix),
@@ -183,6 +193,8 @@ test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist,
 
 test_that("mcmc_sample.Analysis() works for no borrowing, exponential dist,
           two covariates", {
+  skip_on_cran()
+  skip_on_ci()
   no_exp_c2 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
@@ -229,6 +241,8 @@ custom_weibull_ph <- list(
 )
 
 test_that("mcmc_sample.Analysis() works for full borrowing, Weibull dist", {
+  skip_on_cran()
+  skip_on_ci()
   full_weib <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt,
     data = as.data.frame(example_matrix),
@@ -260,6 +274,8 @@ test_that("mcmc_sample.Analysis() works for full borrowing, Weibull dist", {
 })
 
 test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist", {
+  skip_on_cran()
+  skip_on_ci()
   no_weib <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
@@ -292,6 +308,8 @@ test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist", {
 
 test_that("mcmc_sample.Analysis() works for full borrowing, weibull dist,
           one covariate", {
+  skip_on_cran()
+  skip_on_ci()
   full_weib_c1 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1,
     data = as.data.frame(example_matrix),
@@ -325,6 +343,8 @@ test_that("mcmc_sample.Analysis() works for full borrowing, weibull dist,
 
 test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist,
           one covariate", {
+  skip_on_cran()
+  skip_on_ci()
   no_weib_c1 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
@@ -359,6 +379,8 @@ test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist,
 
 test_that("mcmc_sample.Analysis() works for full borrowing, Weibull dist,
           two covariates", {
+  skip_on_cran()
+  skip_on_ci()
   full_weib_c2 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix),
@@ -396,6 +418,8 @@ test_that("mcmc_sample.Analysis() works for full borrowing, Weibull dist,
 
 test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist,
           two covariates", {
+  skip_on_cran()
+  skip_on_ci()
   no_weib_c2 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
@@ -432,6 +456,8 @@ test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist,
 
 # Logistic regression models, no BDB ----
 test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist", {
+  skip_on_cran()
+  skip_on_ci()
   full_bin <- exp(coef(glm(
     resp ~ trt,
     data = as.data.frame(example_matrix),
@@ -463,6 +489,8 @@ test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist", {
 })
 
 test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist", {
+  skip_on_cran()
+  skip_on_ci()
   no_bin <- exp(coef(glm(
     resp ~ trt,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
@@ -495,6 +523,8 @@ test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist", {
 
 test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist,
           one covariate", {
+  skip_on_cran()
+  skip_on_ci()
   full_bin_c1 <- exp(coef(glm(
     resp ~ trt + cov1,
     data = as.data.frame(example_matrix),
@@ -528,6 +558,8 @@ test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist,
 
 test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist,
           one covariate", {
+  skip_on_cran()
+  skip_on_ci()
   no_bin_c1 <- exp(coef(glm(
     resp ~ trt + cov1,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
@@ -561,6 +593,8 @@ test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist,
 
 test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist,
           two covariates", {
+  skip_on_cran()
+  skip_on_ci()
   full_bin_c2 <- exp(coef(glm(
     resp ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix),
@@ -598,6 +632,8 @@ test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist,
 
 test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist,
           two covariates", {
+  skip_on_cran()
+  skip_on_ci()
   no_bin_c2 <- exp(coef(glm(
     resp ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
@@ -635,6 +671,8 @@ test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist,
 # Exponential models, BDB conservative----
 test_that("mcmc_sample.Analysis() works for exponential BDB,
           conservative borrowing", {
+  skip_on_cran()
+  skip_on_ci()
   exp_bdb_conservative <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = exp_surv_dist(time_var = "time", cens_var = "cnsr"),
@@ -676,6 +714,8 @@ test_that("mcmc_sample.Analysis() works for exponential BDB,
 # Exponential models, BDB aggressive----
 test_that("mcmc_sample.Analysis() works for exponential BDB,
           aggressive borrowing", {
+  skip_on_cran()
+  skip_on_ci()
   exp_bdb_aggressive <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = exp_surv_dist(time_var = "time", cens_var = "cnsr"),
@@ -717,6 +757,8 @@ test_that("mcmc_sample.Analysis() works for exponential BDB,
 # Weibull models, BDB conservative----
 test_that("mcmc_sample.Analysis() works for Weibull BDB,
           conservative borrowing", {
+  skip_on_cran()
+  skip_on_ci()
   weib_bdb_conservative <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = weib_ph_surv_dist(
@@ -762,6 +804,8 @@ test_that("mcmc_sample.Analysis() works for Weibull BDB,
 # Weibull models, BDB aggressive----
 test_that("mcmc_sample.Analysis() works for Weibull BDB,
           aggressive borrowing", {
+  skip_on_cran()
+  skip_on_ci()
   weib_bdb_aggressive <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = weib_ph_surv_dist(
@@ -808,6 +852,8 @@ test_that("mcmc_sample.Analysis() works for Weibull BDB,
 # Logistic regression models, BDB conservative----
 test_that("mcmc_sample.Analysis() works for logistic regression BDB,
           conservative borrowing", {
+  skip_on_cran()
+  skip_on_ci()
   bin_bdb_conservative <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = logistic_bin_outcome("resp"),
@@ -849,6 +895,8 @@ test_that("mcmc_sample.Analysis() works for logistic regression BDB,
 # Logistic regression models, BDB aggressive----
 test_that("mcmc_sample.Analysis() works for logistic regression BDB,
           aggressive borrowing", {
+  skip_on_cran()
+  skip_on_ci()
   bin_bdb_aggressive <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = logistic_bin_outcome("resp"),
