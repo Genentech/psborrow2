@@ -36,7 +36,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, exponential dist",
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(full_exp_bayes, "CmdStanMCMC")
   expect_equal(full_exp_bayes$summary("HR_trt", "median")[[2]], full_exp, tolerance = 0.05)
 })
 
@@ -64,7 +64,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, exponential dist", {
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(no_exp_bayes, "CmdStanMCMC")
   expect_equal(
     no_exp_bayes$summary("HR_trt", "median")[[2]],
     no_exp,
@@ -98,7 +98,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, exponential dist, 
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(full_exp_bayes_c1, "CmdStanMCMC")
   expect_equal(
     full_exp_bayes_c1$summary("HR_trt", "median")[[2]],
     full_exp_c1,
@@ -132,7 +132,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, exponential dist, on
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(no_exp_bayes_c1, "CmdStanMCMC")
   expect_equal(
     no_exp_bayes_c1$summary("HR_trt", "median")[[2]],
     no_exp_c1,
@@ -170,7 +170,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, exponential dist, 
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(full_exp_bayes_c2, "CmdStanMCMC")
   expect_equal(
     full_exp_bayes_c2$summary("HR_trt", "median")[[2]],
     full_exp_c2,
@@ -207,7 +207,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, exponential dist, tw
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(no_exp_bayes_c2, "CmdStanMCMC")
   expect_equal(
     no_exp_bayes_c2$summary("HR_trt", "median")[[2]],
     no_exp_c2,
@@ -250,7 +250,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, Weibull dist", {
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(full_weib_bayes, "CmdStanMCMC")
   expect_equal(
     full_weib_bayes$summary("HR_trt", "median")[[2]],
     full_weib,
@@ -282,7 +282,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist", {
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(no_weib_bayes, "CmdStanMCMC")
   expect_equal(
     no_weib_bayes$summary("HR_trt", "median")[[2]],
     no_weib,
@@ -315,7 +315,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, weibull dist, one 
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(full_weib_bayes_c1, "CmdStanMCMC")
   expect_equal(
     full_weib_bayes_c1$summary("HR_trt", "median")[[2]],
     full_weib_c1,
@@ -348,7 +348,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist, one co
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(no_weib_bayes_c1, "CmdStanMCMC")
   expect_equal(
     no_weib_bayes_c1$summary("HR_trt", "median")[[2]],
     no_weib_c1,
@@ -385,7 +385,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, Weibull dist, two 
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(full_weib_bayes_c2, "CmdStanMCMC")
   expect_equal(
     full_weib_bayes_c2$summary("HR_trt", "median")[[2]],
     full_weib_c2,
@@ -422,7 +422,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist, two co
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(no_weib_bayes_c2, "CmdStanMCMC")
   expect_equal(
     no_weib_bayes_c2$summary("HR_trt", "median")[[2]],
     no_weib_c2,
@@ -455,7 +455,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, binomial dist", {
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(full_bin_bayes, "CmdStanMCMC")
   expect_equal(
     full_bin_bayes$summary("OR_trt", "median")[[2]],
     full_bin,
@@ -487,7 +487,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, binomial dist", {
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(no_bin_bayes, "CmdStanMCMC")
   expect_equal(
     no_bin_bayes$summary("OR_trt", "median")[[2]],
     no_bin,
@@ -520,7 +520,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, binomial dist, one
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(full_bin_bayes_c1, "CmdStanMCMC")
   expect_equal(
     full_bin_bayes_c1$summary("OR_trt", "median")[[2]],
     full_bin_c1,
@@ -554,7 +554,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, binomial dist,
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(no_bin_bayes_c1, "CmdStanMCMC")
   expect_equal(
     no_bin_bayes_c1$summary("OR_trt", "median")[[2]],
     no_bin_c1,
@@ -590,7 +590,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, binomial dist, two
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(full_bin_bayes_c2, "CmdStanMCMC")
   expect_equal(
     full_bin_bayes_c2$summary("OR_trt", "median")[[2]],
     full_bin_c2,
@@ -627,7 +627,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, binomial dist, two c
     iter_sampling = 10000,
     chains = 1
   )
-
+  expect_r6(no_bin_bayes_c2, "CmdStanMCMC")
   expect_equal(
     no_bin_bayes_c2$summary("OR_trt", "median")[[2]],
     no_bin_c2,
