@@ -12,14 +12,14 @@ test_that("mcmc_sample.default() default method throws error", {
 })
 
 # Exponential models, no BDB ----
-test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist", {
+test_that("mcmc_sample for Analysis works for full borrowing, exponential dist", {
   skip_on_cran()
   skip_on_ci()
   full_exp <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt,
     data = as.data.frame(example_matrix),
     dist = "exponential"
-  ))["trt"])
+  ))[["trt"]])
 
   full_exp_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -37,22 +37,17 @@ test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist", {
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(full_exp_bayes$summary("HR_trt")[, "median"][[1]],
-      full_exp,
-      tol = .02
-    )
-  )
+  expect_equal(full_exp_bayes$summary("HR_trt", "median")[[2]], full_exp, tolerance = 0.05)
 })
 
-test_that("mcmc_sample.Analysis() works for no borrowing, exponential dist", {
+test_that("mcmc_sample for Analysis works for no borrowing, exponential dist", {
   skip_on_cran()
   skip_on_ci()
   no_exp <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
     dist = "exponential"
-  ))["trt"])
+  ))[["trt"]])
 
   no_exp_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -70,24 +65,22 @@ test_that("mcmc_sample.Analysis() works for no borrowing, exponential dist", {
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(no_exp_bayes$summary("HR_trt")[, "median"][[1]],
-      no_exp,
-      tol = .02
-    )
+  expect_equal(
+    no_exp_bayes$summary("HR_trt", "median")[[2]],
+    no_exp,
+    tolerance = .05
   )
 })
 
 
-test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist,
-          one covariate", {
+test_that("mcmc_sample for Analysis works for full borrowing, exponential dist, one covariate", {
   skip_on_cran()
   skip_on_ci()
   full_exp_c1 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1,
     data = as.data.frame(example_matrix),
     dist = "exponential"
-  ))["trt"])
+  ))[["trt"]])
 
   full_exp_bayes_c1_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -106,24 +99,22 @@ test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(full_exp_bayes_c1$summary("HR_trt")[, "median"][[1]],
-      full_exp_c1,
-      tol = .02
-    )
+  expect_equal(
+    full_exp_bayes_c1$summary("HR_trt", "median")[[2]],
+    full_exp_c1,
+    tolerance = .05
   )
 })
 
 
-test_that("mcmc_sample.Analysis() works for no borrowing, exponential dist,
-          one covariate", {
+test_that("mcmc_sample for Analysis works for no borrowing, exponential dist, one covariate", {
   skip_on_cran()
   skip_on_ci()
   no_exp_c1 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
     dist = "exponential"
-  ))["trt"])
+  ))[["trt"]])
 
   no_exp_bayes_c1_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -142,25 +133,23 @@ test_that("mcmc_sample.Analysis() works for no borrowing, exponential dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(no_exp_bayes_c1$summary("HR_trt")[, "median"][[1]],
-      no_exp_c1,
-      tol = .02
-    )
+  expect_equal(
+    no_exp_bayes_c1$summary("HR_trt", "median")[[2]],
+    no_exp_c1,
+    tolerance = .05
   )
 })
 
 
 
-test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist,
-          two covariates", {
+test_that("mcmc_sample for Analysis works for full borrowing, exponential dist, two covariates", {
   skip_on_cran()
   skip_on_ci()
   full_exp_c2 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix),
     dist = "exponential"
-  ))["trt"])
+  ))[["trt"]])
 
   full_exp_bayes_c2_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -182,24 +171,22 @@ test_that("mcmc_sample.Analysis() works for full borrowing, exponential dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(full_exp_bayes_c2$summary("HR_trt")[, "median"][[1]],
-      full_exp_c2,
-      tol = .02
-    )
+  expect_equal(
+    full_exp_bayes_c2$summary("HR_trt", "median")[[2]],
+    full_exp_c2,
+    tolerance = .05
   )
 })
 
 
-test_that("mcmc_sample.Analysis() works for no borrowing, exponential dist,
-          two covariates", {
+test_that("mcmc_sample for Analysis works for no borrowing, exponential dist, two covariates", {
   skip_on_cran()
   skip_on_ci()
   no_exp_c2 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
     dist = "exponential"
-  ))["trt"])
+  ))[["trt"]])
 
   no_exp_bayes_c2_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -221,11 +208,10 @@ test_that("mcmc_sample.Analysis() works for no borrowing, exponential dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(no_exp_bayes_c2$summary("HR_trt")[, "median"][[1]],
-      no_exp_c2,
-      tol = .02
-    )
+  expect_equal(
+    no_exp_bayes_c2$summary("HR_trt", "median")[[2]],
+    no_exp_c2,
+    tolerance = .05
   )
 })
 
@@ -240,14 +226,14 @@ custom_weibull_ph <- list(
   }
 )
 
-test_that("mcmc_sample.Analysis() works for full borrowing, Weibull dist", {
+test_that("mcmc_sample for Analysis works for full borrowing, Weibull dist", {
   skip_on_cran()
   skip_on_ci()
   full_weib <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt,
     data = as.data.frame(example_matrix),
     dist = "weibullPH"
-  ))["trt"])
+  ))[["trt"]])
 
   full_weib_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -265,22 +251,21 @@ test_that("mcmc_sample.Analysis() works for full borrowing, Weibull dist", {
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(full_weib_bayes$summary("HR_trt")[, "median"][[1]],
-      full_weib,
-      tol = .02
-    )
+  expect_equal(
+    full_weib_bayes$summary("HR_trt", "median")[[2]],
+    full_weib,
+    tolerance = .05
   )
 })
 
-test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist", {
+test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist", {
   skip_on_cran()
   skip_on_ci()
   no_weib <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
     dist = "weibullPH"
-  ))["trt"])
+  ))[["trt"]])
 
   no_weib_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -298,23 +283,21 @@ test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist", {
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(no_weib_bayes$summary("HR_trt")[, "median"][[1]],
-      no_weib,
-      tol = .02
-    )
+  expect_equal(
+    no_weib_bayes$summary("HR_trt", "median")[[2]],
+    no_weib,
+    tolerance = .05
   )
 })
 
-test_that("mcmc_sample.Analysis() works for full borrowing, weibull dist,
-          one covariate", {
+test_that("mcmc_sample for Analysis works for full borrowing, weibull dist, one covariate", {
   skip_on_cran()
   skip_on_ci()
   full_weib_c1 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1,
     data = as.data.frame(example_matrix),
     dist = "weibullPH"
-  ))["trt"])
+  ))[["trt"]])
 
   full_weib_bayes_c1_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -333,23 +316,21 @@ test_that("mcmc_sample.Analysis() works for full borrowing, weibull dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(full_weib_bayes_c1$summary("HR_trt")[, "median"][[1]],
-      full_weib_c1,
-      tol = .02
-    )
+  expect_equal(
+    full_weib_bayes_c1$summary("HR_trt", "median")[[2]],
+    full_weib_c1,
+    tolerance = .05
   )
 })
 
-test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist,
-          one covariate", {
+test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist, one covariate", {
   skip_on_cran()
   skip_on_ci()
   no_weib_c1 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
     dist = "WeibullPH"
-  ))["trt"])
+  ))[["trt"]])
 
   no_weib_bayes_c1_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -368,24 +349,22 @@ test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(no_weib_bayes_c1$summary("HR_trt")[, "median"][[1]],
-      no_weib_c1,
-      tol = .02
-    )
+  expect_equal(
+    no_weib_bayes_c1$summary("HR_trt", "median")[[2]],
+    no_weib_c1,
+    tolerance = .05
   )
 })
 
 
-test_that("mcmc_sample.Analysis() works for full borrowing, Weibull dist,
-          two covariates", {
+test_that("mcmc_sample for Analysis works for full borrowing, Weibull dist, two covariates", {
   skip_on_cran()
   skip_on_ci()
   full_weib_c2 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix),
     dist = "WeibullPH"
-  ))["trt"])
+  ))[["trt"]])
 
   full_weib_bayes_c2_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -407,24 +386,22 @@ test_that("mcmc_sample.Analysis() works for full borrowing, Weibull dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(full_weib_bayes_c2$summary("HR_trt")[, "median"][[1]],
-      full_weib_c2,
-      tol = .02
-    )
+  expect_equal(
+    full_weib_bayes_c2$summary("HR_trt", "median")[[2]],
+    full_weib_c2,
+    tolerance = .05
   )
 })
 
 
-test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist,
-          two covariates", {
+test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist, two covariates", {
   skip_on_cran()
   skip_on_ci()
   no_weib_c2 <- exp(coef(flexsurv::flexsurvreg(
     survival::Surv(time, 1 - cnsr) ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
     dist = "WeibullPH"
-  ))["trt"])
+  ))[["trt"]])
 
   no_weib_bayes_c2_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -446,23 +423,22 @@ test_that("mcmc_sample.Analysis() works for no borrowing, Weibull dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(no_weib_bayes_c2$summary("HR_trt")[, "median"][[1]],
-      no_weib_c2,
-      tol = .02
-    )
+  expect_equal(
+    no_weib_bayes_c2$summary("HR_trt", "median")[[2]],
+    no_weib_c2,
+    tolerance = .05
   )
 })
 
 # Logistic regression models, no BDB ----
-test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist", {
+test_that("mcmc_sample for Analysis works for full borrowing, binomial dist", {
   skip_on_cran()
   skip_on_ci()
   full_bin <- exp(coef(glm(
     resp ~ trt,
     data = as.data.frame(example_matrix),
     family = binomial(link = "logit")
-  ))["trt"])
+  ))[["trt"]])
 
   full_bin_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -480,22 +456,21 @@ test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist", {
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(full_bin_bayes$summary("OR_trt")[, "median"][[1]],
-      full_bin,
-      tol = .02
-    )
+  expect_equal(
+    full_bin_bayes$summary("OR_trt", "median")[[2]],
+    full_bin,
+    tolerance = .05
   )
 })
 
-test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist", {
+test_that("mcmc_sample for Analysis works for no borrowing, binomial dist", {
   skip_on_cran()
   skip_on_ci()
   no_bin <- exp(coef(glm(
     resp ~ trt,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
     family = binomial(link = "logit")
-  ))["trt"])
+  ))[["trt"]])
 
   no_bin_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -513,23 +488,21 @@ test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist", {
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(no_bin_bayes$summary("OR_trt")[, "median"][[1]],
-      no_bin,
-      tol = .15
-    )
+  expect_equal(
+    no_bin_bayes$summary("OR_trt", "median")[[2]],
+    no_bin,
+    tolerance = .05
   )
 })
 
-test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist,
-          one covariate", {
+test_that("mcmc_sample for Analysis works for full borrowing, binomial dist, one covariate", {
   skip_on_cran()
   skip_on_ci()
   full_bin_c1 <- exp(coef(glm(
     resp ~ trt + cov1,
     data = as.data.frame(example_matrix),
     family = binomial(link = "logit")
-  ))["trt"])
+  ))[["trt"]])
 
   full_bin_bayes_c1_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -548,15 +521,14 @@ test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(full_bin_bayes_c1$summary("OR_trt")[, "median"][[1]],
-      full_bin_c1,
-      tol = .15
-    )
+  expect_equal(
+    full_bin_bayes_c1$summary("OR_trt", "median")[[2]],
+    full_bin_c1,
+    tolerance = .05
   )
 })
 
-test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist,
+test_that("mcmc_sample for Analysis works for no borrowing, binomial dist,
           one covariate", {
   skip_on_cran()
   skip_on_ci()
@@ -564,7 +536,7 @@ test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist,
     resp ~ trt + cov1,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
     family = binomial(link = "logit")
-  ))["trt"])
+  ))[["trt"]])
 
   no_bin_bayes_c1_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -583,23 +555,21 @@ test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(no_bin_bayes_c1$summary("OR_trt")[, "median"][[1]],
-      no_bin_c1,
-      tol = .15
-    )
+  expect_equal(
+    no_bin_bayes_c1$summary("OR_trt", "median")[[2]],
+    no_bin_c1,
+    tolerance = 0.05
   )
 })
 
-test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist,
-          two covariates", {
+test_that("mcmc_sample for Analysis works for full borrowing, binomial dist, two covariates", {
   skip_on_cran()
   skip_on_ci()
   full_bin_c2 <- exp(coef(glm(
     resp ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix),
     family = binomial(link = "logit")
-  ))["trt"])
+  ))[["trt"]])
 
   full_bin_bayes_c2_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -621,24 +591,22 @@ test_that("mcmc_sample.Analysis() works for full borrowing, binomial dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(full_bin_bayes_c2$summary("OR_trt")[, "median"][[1]],
-      full_bin_c2,
-      tol = .15
-    )
+  expect_equal(
+    full_bin_bayes_c2$summary("OR_trt", "median")[[2]],
+    full_bin_c2,
+    tolerance = .05
   )
 })
 
 
-test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist,
-          two covariates", {
+test_that("mcmc_sample for Analysis works for no borrowing, binomial dist, two covariates", {
   skip_on_cran()
   skip_on_ci()
   no_bin_c2 <- exp(coef(glm(
     resp ~ trt + cov1 + cov2,
     data = as.data.frame(example_matrix[example_matrix[, "ext"] == 0, ]),
     family = binomial(link = "logit")
-  ))["trt"])
+  ))[["trt"]])
 
   no_bin_bayes_c2_ao <- create_analysis_obj(
     data_matrix = example_matrix,
@@ -660,17 +628,15 @@ test_that("mcmc_sample.Analysis() works for no borrowing, binomial dist,
     chains = 1
   )
 
-  expect_true(
-    dplyr::near(no_bin_bayes_c2$summary("OR_trt")[, "median"][[1]],
-      no_bin_c2,
-      tol = .15
-    )
+  expect_equal(
+    no_bin_bayes_c2$summary("OR_trt", "median")[[2]],
+    no_bin_c2,
+    tolerance = 0.05
   )
 })
 
 # Exponential models, BDB conservative----
-test_that("mcmc_sample.Analysis() works for exponential BDB,
-          conservative borrowing", {
+test_that("mcmc_sample for Analysis works for exponential BDB, conservative borrowing", {
   skip_on_cran()
   skip_on_ci()
   exp_bdb_conservative <- create_analysis_obj(
@@ -689,31 +655,14 @@ test_that("mcmc_sample.Analysis() works for exponential BDB,
       chains = 1
     )
 
-  expect_true(
-    dplyr::near(exp_bdb_conservative$summary("HR_trt")[, "median"][[1]],
-      0.57,
-      tol = .02
-    )
-  )
-
-  expect_true(
-    dplyr::near(exp_bdb_conservative$summary("HR_trt")[, "q5"][[1]],
-      0.37,
-      tol = .02
-    )
-  )
-
-  expect_true(
-    dplyr::near(exp_bdb_conservative$summary("HR_trt")[, "q95"][[1]],
-      0.83,
-      tol = .02
-    )
-  )
+  result_summary <- exp_bdb_conservative$summary("HR_trt")
+  expect_equal(result_summary[["median"]], 0.57, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 0.37, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 0.83, tolerance = .05)
 })
 
 # Exponential models, BDB aggressive----
-test_that("mcmc_sample.Analysis() works for exponential BDB,
-          aggressive borrowing", {
+test_that("mcmc_sample for Analysis works for exponential BDB, aggressive borrowing", {
   skip_on_cran()
   skip_on_ci()
   exp_bdb_aggressive <- create_analysis_obj(
@@ -732,31 +681,14 @@ test_that("mcmc_sample.Analysis() works for exponential BDB,
       chains = 1
     )
 
-  expect_true(
-    dplyr::near(exp_bdb_aggressive$summary("HR_trt")[, "median"][[1]],
-      0.51,
-      tol = .02
-    )
-  )
-
-  expect_true(
-    dplyr::near(exp_bdb_aggressive$summary("HR_trt")[, "q5"][[1]],
-      0.34,
-      tol = .02
-    )
-  )
-
-  expect_true(
-    dplyr::near(exp_bdb_aggressive$summary("HR_trt")[, "q95"][[1]],
-      0.74,
-      tol = .02
-    )
-  )
+  result_summary <- exp_bdb_aggressive$summary("HR_trt")
+  expect_equal(result_summary[["median"]], 0.51, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 0.34, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 0.74, tolerance = .05)
 })
 
 # Weibull models, BDB conservative----
-test_that("mcmc_sample.Analysis() works for Weibull BDB,
-          conservative borrowing", {
+test_that("mcmc_sample for Analysis works for Weibull BDB, conservative borrowing", {
   skip_on_cran()
   skip_on_ci()
   weib_bdb_conservative <- create_analysis_obj(
@@ -779,31 +711,14 @@ test_that("mcmc_sample.Analysis() works for Weibull BDB,
       chains = 1
     )
 
-  expect_true(
-    dplyr::near(weib_bdb_conservative$summary("HR_trt")[, "median"][[1]],
-      0.56,
-      tol = .02
-    )
-  )
-
-  expect_true(
-    dplyr::near(weib_bdb_conservative$summary("HR_trt")[, "q5"][[1]],
-      0.36,
-      tol = .02
-    )
-  )
-
-  expect_true(
-    dplyr::near(weib_bdb_conservative$summary("HR_trt")[, "q95"][[1]],
-      0.83,
-      tol = .02
-    )
-  )
+  result_summary <- weib_bdb_conservative$summary("HR_trt")
+  expect_equal(result_summary[["median"]], 0.56, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 0.36, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 0.83, tolerance = .05)
 })
 
 # Weibull models, BDB aggressive----
-test_that("mcmc_sample.Analysis() works for Weibull BDB,
-          aggressive borrowing", {
+test_that("mcmc_sample for Analysis works for Weibull BDB, aggressive borrowing", {
   skip_on_cran()
   skip_on_ci()
   weib_bdb_aggressive <- create_analysis_obj(
@@ -826,32 +741,15 @@ test_that("mcmc_sample.Analysis() works for Weibull BDB,
       chains = 1
     )
 
-  expect_true(
-    dplyr::near(weib_bdb_aggressive$summary("HR_trt")[, "median"][[1]],
-      0.51,
-      tol = .02
-    )
-  )
-
-  expect_true(
-    dplyr::near(weib_bdb_aggressive$summary("HR_trt")[, "q5"][[1]],
-      0.32,
-      tol = .02
-    )
-  )
-
-  expect_true(
-    dplyr::near(weib_bdb_aggressive$summary("HR_trt")[, "q95"][[1]],
-      0.74,
-      tol = .02
-    )
-  )
+  result_summary <- weib_bdb_aggressive$summary("HR_trt")
+  expect_equal(result_summary[["median"]], 0.51, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 0.32, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 0.74, tolerance = .05)
 })
 
 
 # Logistic regression models, BDB conservative----
-test_that("mcmc_sample.Analysis() works for logistic regression BDB,
-          conservative borrowing", {
+test_that("mcmc_sample for Analysis works for logistic regression BDB, conservative borrowing", {
   skip_on_cran()
   skip_on_ci()
   bin_bdb_conservative <- create_analysis_obj(
@@ -870,31 +768,14 @@ test_that("mcmc_sample.Analysis() works for logistic regression BDB,
       chains = 1
     )
 
-  expect_true(
-    dplyr::near(bin_bdb_conservative$summary("OR_trt")[, "median"][[1]],
-      1.73,
-      tol = .15
-    )
-  )
-
-  expect_true(
-    dplyr::near(bin_bdb_conservative$summary("OR_trt")[, "q5"][[1]],
-      1.20,
-      tol = .15
-    )
-  )
-
-  expect_true(
-    dplyr::near(bin_bdb_conservative$summary("OR_trt")[, "q95"][[1]],
-      2.51,
-      tol = .15
-    )
-  )
+  result_summary <- bin_bdb_conservative$summary("OR_trt")
+  expect_equal(result_summary[["median"]], 1.73, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 1.20, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 2.51, tolerance = .05)
 })
 
 # Logistic regression models, BDB aggressive----
-test_that("mcmc_sample.Analysis() works for logistic regression BDB,
-          aggressive borrowing", {
+test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressive borrowing", {
   skip_on_cran()
   skip_on_ci()
   bin_bdb_aggressive <- create_analysis_obj(
@@ -913,24 +794,8 @@ test_that("mcmc_sample.Analysis() works for logistic regression BDB,
       chains = 1
     )
 
-  expect_true(
-    dplyr::near(bin_bdb_aggressive$summary("OR_trt")[, "median"][[1]],
-      1.62,
-      tol = .15
-    )
-  )
-
-  expect_true(
-    dplyr::near(bin_bdb_aggressive$summary("OR_trt")[, "q5"][[1]],
-      1.17,
-      tol = .15
-    )
-  )
-
-  expect_true(
-    dplyr::near(bin_bdb_aggressive$summary("OR_trt")[, "q95"][[1]],
-      2.29,
-      tol = .15
-    )
-  )
+  result_summary <- bin_bdb_aggressive$summary("OR_trt")
+  expect_equal(result_summary[["median"]], 1.62, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 1.17, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 2.29, tolerance = .05)
 })
