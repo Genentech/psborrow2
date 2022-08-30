@@ -64,3 +64,46 @@ plot_pmf <- function(x, y, ..., col = "grey", add = FALSE, xlim) {
 h_glue <- function(...) {
   glue::glue(..., .open = "{{", .close = "}}", .envir = parent.frame())
 }
+
+
+#' Rename Covariates in `draws` Object
+#'
+#' @param analysis `Analysis` as created by [`create_analysis_obj()`].
+#' @param draws `draws` created from sampled analysis object. See example.
+#'
+#' @return A `draws`[[posterior::draws]] object with covariate names.
+#' @export
+#'
+#' @examples
+#' analysis_object <- create_analysis_obj(
+#'   data_matrix = example_matrix,
+#'   covariates = add_covariates(
+#'     covariates = c("cov1", "cov2"),
+#'     priors = normal_prior(0, 1000)
+#'   ),
+#'   outcome = exp_surv_dist(
+#'     "time",
+#'     "cnsr"
+#'   ),
+#'   borrowing = borrowing_details(
+#'     "BDB",
+#'     "ext",
+#'     exponential_prior(.001),
+#'     baseline_prior = normal_prior(0, 1000)
+#'   ),
+#'   treatment = treatment_details(
+#'     "trt",
+#'     normal_prior(0, 1000)
+#'   )
+#' )
+#' samples <- mcmc_sample(analysis_object)
+#' draws <- samples$draws()
+#' renamed_draws <- rename_draws_covariates(draws, analysis_object)
+#' summary(renamed_draws)
+rename_draws_covariates <- function(draws, analysis) {
+  assert_class(draws, "draws")
+  assert_class(analysis, "Analysis")
+  covariates <- paste0("b_", get_vars(analysis@covariates))
+  names <- setNames(paste0("beta[", seq_along(covariates), "]"), covariates)
+  do.call(posterior::rename_variables, args = c(list(.x = draws), as.list(names)))
+}

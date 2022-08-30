@@ -40,7 +40,8 @@ Imports:
     checkmate,
     glue,
     methods,
-    graphics
+    graphics,
+    posterior
 Suggests:
     survival,
     flexsurv,
