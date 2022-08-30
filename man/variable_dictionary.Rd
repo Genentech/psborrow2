@@ -4,10 +4,10 @@
 \alias{variable_dictionary}
 \title{Create Variable Dictionary}
 \usage{
-variable_dictionary(x)
+variable_dictionary(analysis_obj)
 }
 \arguments{
-\item{x}{\code{Analysis}. Object to describe variable names.}
+\item{analysis_obj}{\code{Analysis}. Object to describe variable names.}
 }
 \value{
 A \code{data.frame} with the names of Stan variables and the descriptions.

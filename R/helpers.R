@@ -111,18 +111,18 @@ rename_draws_covariates <- function(draws, analysis) {
 
 #' Create Variable Dictionary
 #'
-#' @param x `Analysis`. Object to describe variable names.
+#' @param analysis_obj `Analysis`. Object to describe variable names.
 #'
 #' @return A `data.frame` with the names of Stan variables and the descriptions.
 #' @export
-variable_dictionary <- function(x) {
-  assert_class(x, "Analysis")
-  is_tte <- isTRUE(inherits(x@outcome, "TimeToEvent"))
-  is_bdb <- isTRUE(x@borrowing@method == "BDB")
-  has_covs <- !is.null(x@covariates)
+variable_dictionary <- function(analysis_obj) {
+  assert_class(analysis_obj, "Analysis")
+  is_tte <- isTRUE(inherits(analysis_obj@outcome, "TimeToEvent"))
+  is_bdb <- isTRUE(analysis_obj@borrowing@method == "BDB")
+  has_covs <- !is.null(analysis_obj@covariates)
 
   covariates <- if (has_covs) {
-    covs <- get_vars(x@covariates)
+    covs <- get_vars(analysis_obj@covariates)
     stats::setNames(h_glue("beta[{{seq_along(covs)}}]"), covs)
   } else {
     NULL
