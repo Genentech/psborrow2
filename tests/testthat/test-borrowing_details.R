@@ -67,27 +67,6 @@ test_that("borrowing_details gives expected errors", {
   expect_error(borrowing_details("BDB"), "missing, with no default")
 })
 
-
-test_that("borrowing_details gives expected messages", {
-  expect_message(
-    borrowing_details(
-      method = "No borrowing",
-      baseline_prior = normal_prior(0, 1),
-      "ext"
-    ),
-    "Will filter"
-  )
-
-  expect_message(
-    borrowing_details(
-      method = "Full borrowing",
-      baseline_prior = normal_prior(0, 1),
-      "ext"
-    ),
-    "Will ignore"
-  )
-})
-
 test_that("get_vars works for borrowing_details", {
   expect_identical(
     get_vars(borrowing_details(

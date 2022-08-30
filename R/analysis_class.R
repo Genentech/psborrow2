@@ -52,7 +52,7 @@ setMethod(
   definition = function(object) {
     if (object@ready_to_sample == TRUE) {
       cat(
-        "Analysis object (compiled and ready to sample)",
+        "Analysis object (compiled and ready to sample).\n",
         "Call mcmc_sample() next."
       )
     } else {
