@@ -77,7 +77,7 @@ test_that("variable_dictionary works as expected for logistic and BDB", {
     data.frame(
       Stan_variable = c("tau", "alpha[1]", "alpha[2]", "beta[1]", "beta[2]", "beta_trt", "exp_trt"),
       Description = c(
-        "commensurability parameter", "intercept_internal", "intercept_external",
+        "commensurability parameter", "intercept, internal", "intercept, external",
         "cov1", "cov2", "treatment log OR", "treatment OR"
       )
     )
@@ -100,7 +100,28 @@ test_that("variable_dictionary works as expected for exponential and no borrowin
     result,
     data.frame(
       Stan_variable = c("alpha", "beta_trt", "exp_trt"),
-      Description = c("baseline", "treatment log HR", "treatment HR")
+      Description = c("baseline log hazard rate", "treatment log HR", "treatment HR")
+    )
+  )
+})
+
+test_that("variable_dictionary includes shape parameter for Weibull PH", {
+  object <- psborrow2:::.analysis_obj(
+    data_matrix = example_matrix,
+    outcome = weib_ph_surv_dist("time", "cnsr", normal_prior(0, 1000)),
+    borrowing = borrowing_details(
+      "Full borrowing",
+      normal_prior(0, 100),
+      "ext"
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 1000))
+  )
+  result <- variable_dictionary(object)
+  expect_equal(
+    result,
+    data.frame(
+      Stan_variable = c("alpha", "beta_trt", "exp_trt", "shape_weibull"),
+      Description = c("baseline log hazard rate", "treatment log HR", "treatment HR", "Weibull shape parameter")
     )
   )
 })

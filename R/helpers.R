@@ -119,6 +119,7 @@ variable_dictionary <- function(analysis_obj) {
   assert_class(analysis_obj, "Analysis")
   is_tte <- isTRUE(inherits(analysis_obj@outcome, "TimeToEvent"))
   is_bdb <- isTRUE(analysis_obj@borrowing@method == "BDB")
+  is_weib <- is_tte && isTRUE(inherits(analysis_obj@outcome, "WeibullPHSurvDist"))
   has_covs <- !is.null(analysis_obj@covariates)
 
   covariates <- if (has_covs) {
@@ -131,21 +132,27 @@ variable_dictionary <- function(analysis_obj) {
   if (is_tte) {
     beta_trt <- c("treatment log HR" = "beta_trt")
     exp_trt <- c("treatment HR" = "exp_trt")
-    alpha_type <- "baseline"
+    alpha_type <- "baseline log hazard rate"
+    if (is_weib) {
+      addl_params <- c("Weibull shape parameter" = "shape_weibull")
+    } else {
+      addl_params <- NULL
+    }
   } else {
     beta_trt <- c("treatment log OR" = "beta_trt")
     exp_trt <- c("treatment OR" = "exp_trt")
     alpha_type <- "intercept"
+    addl_params <- NULL
   }
 
   if (is_bdb) {
-    alpha <- stats::setNames(c("alpha[1]", "alpha[2]"), paste0(alpha_type, c("_internal", "_external")))
+    alpha <- stats::setNames(c("alpha[1]", "alpha[2]"), paste0(alpha_type, c(", internal", ", external")))
     tau <- c("commensurability parameter" = "tau")
   } else {
     alpha <- setNames("alpha", alpha_type)
     tau <- NULL
   }
 
-  vars <- c(tau, alpha, covariates, beta_trt, exp_trt)
+  vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addl_params)
   data.frame(Stan_variable = unname(vars), Description = names(vars))
 }
