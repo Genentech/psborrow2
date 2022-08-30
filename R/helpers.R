@@ -104,6 +104,48 @@ rename_draws_covariates <- function(draws, analysis) {
   assert_class(draws, "draws")
   assert_class(analysis, "Analysis")
   covariates <- paste0("b_", get_vars(analysis@covariates))
-  names <- setNames(paste0("beta[", seq_along(covariates), "]"), covariates)
+  names <- stats::setNames(paste0("beta[", seq_along(covariates), "]"), covariates)
   do.call(posterior::rename_variables, args = c(list(.x = draws), as.list(names)))
+}
+
+
+#' Create Variable Dictionary
+#'
+#' @param x `Analysis`. Object to describe variable names.
+#'
+#' @return A `data.frame` with the names of Stan variables and the descriptions.
+#' @export
+variable_dictionary <- function(x) {
+  assert_class(x, "Analysis")
+  is_tte <- isTRUE(inherits(x@outcome, "TimeToEvent"))
+  is_bdb <- isTRUE(x@borrowing@method == "BDB")
+  has_covs <- !is.null(x@covariates)
+
+  covariates <- if (has_covs) {
+    covs <- get_vars(x@covariates)
+    stats::setNames(h_glue("beta[{{seq_along(covs)}}]"), covs)
+  } else {
+    NULL
+  }
+
+  if (is_tte) {
+    beta_trt <- c("treatment log HR" = "beta_trt")
+    exp_trt <- c("treatment HR" = "exp_trt")
+    alpha_type <- "baseline"
+  } else {
+    beta_trt <- c("treatment log OR" = "beta_trt")
+    exp_trt <- c("treatment OR" = "exp_trt")
+    alpha_type <- "intercept"
+  }
+
+  if (is_bdb) {
+    alpha <- stats::setNames(c("alpha[1]", "alpha[2]"), paste0(alpha_type, c("_internal", "_external")))
+    tau <- c("commensurability parameter" = "tau")
+  } else {
+    alpha <- setNames("alpha", alpha_type)
+    tau <- NULL
+  }
+
+  vars <- c(tau, alpha, covariates, beta_trt, exp_trt)
+  data.frame(Stan_variable = unname(vars), Description = names(vars))
 }
