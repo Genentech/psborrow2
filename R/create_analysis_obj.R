@@ -54,6 +54,7 @@ create_analysis_obj <- function(data_matrix,
   assert_class(outcome, "Outcome")
   assert_class(borrowing, "Borrowing")
   assert_class(treatment, "Treatment")
+  assert_flag(quiet)
 
   ## For now, require all fields (even if not used by model) to be non-missing
   if (any(!complete.cases(data_matrix))) {
@@ -75,17 +76,17 @@ create_analysis_obj <- function(data_matrix,
   check_data_matrix_has_columns(analysis_obj)
 
   if (!quiet) {
-    message("\r", "Inputs look good.")
+    message("Inputs look good.")
 
     if (analysis_obj@borrowing@method == "Full borrowing") {
       message(
-        h_glue("\r", "NOTE: dropping column `{{analysis_obj@borrowing@ext_flag_col}}` for full borrowing.")
+        h_glue("NOTE: dropping column `{{analysis_obj@borrowing@ext_flag_col}}` for full borrowing.")
       )
     }
 
     if (analysis_obj@borrowing@method == "No borrowing") {
       message(
-        h_glue("\r", "NOTE: excluding `{{analysis_obj@borrowing@ext_flag_col}}` == `1`/`TRUE` for no borrowing.")
+        h_glue("NOTE: excluding `{{analysis_obj@borrowing@ext_flag_col}}` == `1`/`TRUE` for no borrowing.")
       )
     }
   }
@@ -128,20 +129,14 @@ create_analysis_obj <- function(data_matrix,
   }
 
   if (!quiet) {
-    message("\r",
-      "Stan program compiled successfully!",
-      appendLF = TRUE
-    )
+    message("Stan program compiled successfully!")
   }
 
   # Prepare data inputs
   analysis_obj@model_and_data[["data_in"]] <- prepare_stan_data_inputs(analysis_obj)
   analysis_obj@ready_to_sample <- TRUE
   if (!quiet) {
-    message("\r",
-      "Ready to go! Now call `mcmc_sample()`.",
-      appendLF = TRUE
-    )
+    message("Ready to go! Now call `mcmc_sample()`.")
   }
 
   return(analysis_obj)
