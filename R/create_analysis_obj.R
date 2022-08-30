@@ -79,13 +79,13 @@ create_analysis_obj <- function(data_matrix,
 
     if (analysis_obj@borrowing@method == "Full borrowing") {
       message(
-        h_glue("\rNOTE: dropping column `{{analysis_obj@borrowing@ext_flag_col}}` for full borrowing.")
+        h_glue("\r", "NOTE: dropping column `{{analysis_obj@borrowing@ext_flag_col}}` for full borrowing.")
       )
     }
 
     if (analysis_obj@borrowing@method == "No borrowing") {
       message(
-        h_glue("\rNOTE: excluding `{{analysis_obj@borrowing@ext_flag_col}}` == `1`/`TRUE` for no borrowing.")
+        h_glue("\r", "NOTE: excluding `{{analysis_obj@borrowing@ext_flag_col}}` == `1`/`TRUE` for no borrowing.")
       )
     }
   }
