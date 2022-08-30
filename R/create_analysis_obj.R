@@ -75,23 +75,17 @@ create_analysis_obj <- function(data_matrix,
   check_data_matrix_has_columns(analysis_obj)
 
   if (!quiet) {
-    message("\r",
-      "Inputs look good.",
-      appendLF = TRUE
-    )
-
+    message("\r", "Inputs look good.")
 
     if (analysis_obj@borrowing@method == "Full borrowing") {
-      message("\r",
-        glue::glue("NOTE: dropping column `{analysis_obj@borrowing@ext_flag_col}` for full borrowing."),
-        appendLF = TRUE
+      message(
+        h_glue("\rNOTE: dropping column `{{analysis_obj@borrowing@ext_flag_col}}` for full borrowing.")
       )
     }
 
     if (analysis_obj@borrowing@method == "No borrowing") {
-      message("\r",
-        glue::glue("NOTE: excluding `{analysis_obj@borrowing@ext_flag_col}` == `1`/`TRUE` for no borrowing."),
-        appendLF = TRUE
+      message(
+        h_glue("\rNOTE: excluding `{{analysis_obj@borrowing@ext_flag_col}}` == `1`/`TRUE` for no borrowing.")
       )
     }
   }
