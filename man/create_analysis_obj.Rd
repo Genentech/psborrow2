@@ -30,7 +30,7 @@ the function \code{\link[=add_covariates]{add_covariates()}}.}
 \item{treatment}{\code{Treatment}. Object of class \code{\link[=Treatment-class]{Treatment}} as output by
 \code{\link[=treatment_details]{treatment_details()}}.}
 
-\item{quiet}{logical. Whether to suppress message (\code{TRUE}) or not (\code{FALSE},
+\item{quiet}{logical. Whether to suppress messages (\code{TRUE}) or not (\code{FALSE},
 the default)}
 }
 \value{
