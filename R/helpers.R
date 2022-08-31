@@ -103,9 +103,9 @@ h_glue <- function(...) {
 rename_draws_covariates <- function(draws, analysis) {
   assert_class(draws, "draws")
   assert_class(analysis, "Analysis")
-  covariates <- paste0("b_", get_vars(analysis@covariates))
-  names <- stats::setNames(paste0("beta[", seq_along(covariates), "]"), covariates)
-  do.call(posterior::rename_variables, args = c(list(.x = draws), as.list(names)))
+  names <- variable_dictionary(analysis)
+  names_list <- setNames(as.list(names$Stan_variable), names$Description)
+  do.call(posterior::rename_variables, args = c(list(.x = draws), names_list))
 }
 
 
@@ -140,7 +140,7 @@ variable_dictionary <- function(analysis_obj) {
     }
   } else {
     beta_trt <- c("treatment log OR" = "beta_trt")
-    exp_trt <- c("treatment OR" = "exp_trt")
+    exp_trt <- c("treatment OR" = "OR_trt")
     alpha_type <- "intercept"
     addl_params <- NULL
   }

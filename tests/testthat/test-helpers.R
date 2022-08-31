@@ -51,7 +51,10 @@ test_that("rename_draws_covariates works as expected", {
   expect_class(result, "draws")
   expect_equal(
     dimnames(result)$variable,
-    c("lp__", "beta_trt", "tau", "alpha[1]", "alpha[2]", "b_cov1", "b_cov2", "OR_trt")
+    c(
+      "lp__", "treatment log OR", "commensurability parameter", "intercept, internal", "intercept, external",
+      "cov1", "cov2", "treatment OR"
+    )
   )
 })
 
@@ -75,7 +78,7 @@ test_that("variable_dictionary works as expected for logistic and BDB", {
   expect_equal(
     result,
     data.frame(
-      Stan_variable = c("tau", "alpha[1]", "alpha[2]", "beta[1]", "beta[2]", "beta_trt", "exp_trt"),
+      Stan_variable = c("tau", "alpha[1]", "alpha[2]", "beta[1]", "beta[2]", "beta_trt", "OR_trt"),
       Description = c(
         "commensurability parameter", "intercept, internal", "intercept, external",
         "cov1", "cov2", "treatment log OR", "treatment OR"
