@@ -48,7 +48,9 @@ Suggests:
     usethis (>= 2.1.5),
     vdiffr,
     tibble,
-    xml2
+    xml2,
+    knitr,
+    rmarkdown
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
 Language: en-US
@@ -91,3 +93,4 @@ Collate:
     'uniform_prior.R'
     'weib_ph_surv_dist.R'
 LazyData: true
+VignetteBuilder: knitr

@@ -28,3 +28,6 @@ vignettes/*.md
 vignettes/*.R
 coverage.*
 .vscode/
+/doc/
+/Meta/
+inst/doc
