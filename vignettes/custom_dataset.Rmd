@@ -63,11 +63,9 @@ create_analysis_obj(
 )
 ```
 
-# Prepare data for `data_matrix`
+# `data_matrix`
 
 ## Required elements
-
-### All matrices
 
 `data_matrix` is where we input the one-row-per-patient data matrix for our 
 analysis. There are two columns required for all analyses:
@@ -110,10 +108,10 @@ Let's look at the first few rows of the example matrix:
 head(example_matrix)
 ```
 
-# Specify outcomes
+# `outcome`
 
-`psborrow2` supports three outcomes, each of which has its own function
-that is passed to the argument `outcome` in `create_analysis_obj()`.
+`psborrow2` supports three outcomes, each of which is created via its own
+function:
 
 * Time to event with exponential distribution (constant hazard), created with
 `exp_surv_dist()`
@@ -123,22 +121,82 @@ formulation, created with `weib_ph_surv_dist()`
 created with `logistic_bin_outcome()`
 
 For our example, let's conduct a time-to-event analysis using the exponential
-distribution. We will specify a couple of arguments
-to `weib_ph_surv_dist()`:
-
-* `time_var`, the name of the column in our example matrix that represents 
-time to event or censorship. In our case it is 'time'.
-* `cens_var`, the name of the column in our example matrix that represents 
-censorship flag. In our case it is 'cnsr'.
-
-*Note:* The Weibull proportional hazards distribution has ancillary parameters
-that must also be specified.
+distribution. 
 
 ```{r}
-exp_outcome <- exp_surv_dist(time_var = "time",
-                             cens_var = "cnsr")
+exp_surv_dist(time_var = "time", 
+              cens_var = "cnsr")
 ```
 
+# `borrowing`
+
+`psborrow2` support three different borrowing methods which are specified in
+the `method` argument of `borrowing_details()`.
+
+* No borrowing, this is the internal trial comparison without any external
+data
+* Full borrowing, this is pooling of the external and internal control arms
+* BDB, Bayesian dynamic borrowing
+
+In addition, we need to specify a prior distribution for 
+the baseline event rate, `baseline_prior`. In this case, `baseline_prior` is 
+a log hazard outcome rate (for binary endpoints, this field represents the log
+odds). The column name for the external control column flag in our matrix 
+is also required and passed to `ext_flag_col`. Finally, for BDB only,
+the prior distribution on the commensurability parameter is specified.
 
 
+*Note*: (Prior distributions are outlined in a separate vignette,
+`vignette('prior distributions', package = 'psborrow2')`)
+
+```{r}
+borrowing_details(method = "BDB",
+                  baseline_prior = normal_prior(0, 1000), 
+                  ext_flag_col = "ext",
+                  tau_prior = gamma_prior(0.001, 0.001))
+```
+
+# `treatment`
+
+Finally, treatment details are outlined in `treatment_details()`. Here, we first
+specify the column for the treatment flag in `trt_flag_col`. In addition, we
+need to specify the prior on the effect estimate, `trt_prior`:
+
+```{r}
+treatment_details(trt_flag_col = "trt",
+                  trt_prior = normal_prior(0, 1000))
+```
+
+# Creating an analysis object
+
+Now that we have though through each of the inputs to `create_analysis_obj()`,
+let's create an analysis object:
+
+```{r}
+anls_obj <- create_analysis_obj(
+  data_matrix = example_matrix,
+  outcome = exp_surv_dist(time_var = "time", 
+                          cens_var = "cnsr"),
+  borrowing = borrowing_details(method = "BDB",
+                  baseline_prior = normal_prior(0, 1000), 
+                  ext_flag_col = "ext",
+                  tau_prior = gamma_prior(0.001, 0.001)),
+  treatment = treatment_details(trt_flag_col = "trt",
+                  trt_prior = normal_prior(0, 1000))
+)
+```
+
+# Sample from analysis object
+
+Now that our Stan model is compiled, we can take draws from the posterior 
+distribution using the function `mcmc_sample()`.
+
+```{r}
+res <- mcmc_sample(anls_obj,
+                   iter_warmup = 1000,
+                   iter_sampling = 10000, 
+                   chains = 1)
+
+res
+```
 
