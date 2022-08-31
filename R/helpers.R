@@ -131,7 +131,7 @@ variable_dictionary <- function(analysis_obj) {
 
   if (is_tte) {
     beta_trt <- c("treatment log HR" = "beta_trt")
-    exp_trt <- c("treatment HR" = "exp_trt")
+    exp_trt <- c("treatment HR" = "HR_trt")
     alpha_type <- "baseline log hazard rate"
     if (is_weib) {
       addl_params <- c("Weibull shape parameter" = "shape_weibull")
