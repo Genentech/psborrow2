@@ -1,7 +1,7 @@
 ---
 title: "Getting started with `psborrow2`"
 author: "Matt Secrest and Isaac Gravestock"
-output:   
+output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 2
@@ -21,40 +21,40 @@ knitr::opts_chunk$set(
 In this article, you'll learn about the scope of `psborrow2` and where to find
 additional information on how to implement analyses in `psborrow2`.
 
-## Hybrid control studies
+## Introduction
 
-While the randomized controlled trial (RCT) comparing experimental and control 
-arms remains the gold standard for evaluating the efficacy of a novel therapy, 
-one may want to leverage relevant existing external control data to inform the 
-study outcome. External control data can help increase study power and thereby 
+While the randomized controlled trial (RCT) comparing experimental and control
+arms remains the gold standard for evaluating the efficacy of a novel therapy,
+one may want to leverage relevant existing external control data to inform the
+study outcome. External control data can help increase study power and thereby
 shorten trial duration or reduce the number of subjects needed. However,
-analysis of external control data can also introduce bias. One method for 
+analysis of external control data can also introduce bias. One method for
 incorporating external control data to mitigate bias is **Bayesian dynamic
-borrowing (BDB)**, in which external control data is borrowed to the extent 
-that the external and RCT control arms have similar outcomes. 
+borrowing (BDB)**, in which external control data is borrowed to the extent
+that the external and RCT control arms have similar outcomes.
 [Viele et. al. 2014](https://doi.org/10.1002/pst.1589)
 
 Implementing BDB is computationally involved and requires Markov chain Monte
 Carlo (MCMC) sampling methods, which in turn may require knowledge
-of MCMC sampling software. To overcome these technical barriers and 
+of MCMC sampling software. To overcome these technical barriers and
 we developed `psborrow2` using `cmdstanr`, an R package which facilitates
 the use of the MCMC sampling program Stan (via CMD Stan).
 
 `psborrow2` has two main goals:
 
-1. to provide a user-friendly interface for applying BDB on study results that 
+1. to provide a user-friendly interface for applying BDB on study results that
 handles the MCMC sampling on behalf of the user.
 
-2. to facilitate simulation studies that compare different borrowing parameters 
-(e.g. full borrowing, no borrowing, BDB) and other trial and BDB 
+2. to facilitate simulation studies that compare different borrowing parameters
+(e.g. full borrowing, no borrowing, BDB) and other trial and BDB
 characteristics in a unified way
 
-Right now, `psborrow2` supports time-to-event endpoints as well as 
+Right now, `psborrow2` supports time-to-event endpoints as well as
 binary endpoints.
 
 ## Analyze your own data
 
-`psborrow2` can implement BDB in a scenario wherein a two-arm RCT is 
+`psborrow2` can implement BDB in a scenario wherein a two-arm RCT is
 supplemented with external data on the control arm. Three arms are required to
 implement BDB in `psborrow2`. They are:
 
@@ -68,19 +68,19 @@ Such scenarios are common in drug development because the comparator arm for
 a novel therapy is often the standard of care, for which data exists from
 electronic health care records or from previous phase III registrational trials.
 
-Refer to the "custom dataset" vignette for more information on 
-how to implement BDB analyses on your own data: 
+Refer to the "custom dataset" vignette for more information on
+how to implement BDB analyses on your own data:
 `vignette('custom dataset', package = 'psborrow2')`
 
 ## Conduct a simulation study
 
-Refer to the "simulation study" vignette for more information on 
+Refer to the "simulation study" vignette for more information on
 how to create a simulation study involving BDB and other innovative trial
 designs: `vignette('simulation study', package = 'psborrow2')`
 
 ## Additional information
-`psborrow2` is the predecessor to 
-[`psborrow`](https://cran.r-project.org/web/packages/psborrow/index.html). 
+`psborrow2` is the predecessor to
+[`psborrow`](https://cran.r-project.org/web/packages/psborrow/index.html).
 While the core functionality has been replicated in `psborrow2`, we cite it here
 for posterity.
 

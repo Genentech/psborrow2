@@ -1,7 +1,7 @@
 ---
 title: "Conduct a hybrid control analysis on a custom dataset using BDB"
 author: "Matt Secrest and Isaac Gravestock"
-output:   
+output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 2
@@ -11,46 +11,46 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r knitr, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-In this article, you'll learn how to conduct Bayesian dynamic borrowing (BDB) 
+In this article, you'll learn how to conduct Bayesian dynamic borrowing (BDB)
 analyses on a custom dataset using `psborrow2`.
 
-# Load dependancies and setup Stan
+# Load dependencies and setup Stan
 
 We'll start by loading dependencies. `psborrow2` relies on the package
 `cmdstanr`, so we load [`cmdstanr`](https://mc-stan.org/cmdstanr/index.html)
 as well.
 
-```{r dependancies, message = FALSE}
+```{r dependencies, message = FALSE}
 library(psborrow2)
 library(cmdstanr)
 ```
 
-*Note*: As explained in the 
-[`cmstanr` vignettes](https://mc-stan.org/cmdstanr/articles/cmdstanr.html), 
+*Note*: As explained in the
+[`cmstanr` vignettes](https://mc-stan.org/cmdstanr/articles/cmdstanr.html),
 installing `cmdstanr` does not install the underlying CMD Stan program we need.
 To install this, we will call the `cmdstanr` function `install_cmdstan()`:
 
-```{r install_cmdstan-1, include = FALSE}
+```{r install-cmdstan-1, include = FALSE}
 if (!dir.exists(cmdstan_default_path())) {
   install_cmdstan()
 }
 ```
 
-```{r install_cmdstan-2, eval=FALSE}
+```{r install-cmdstan-2, eval=FALSE}
 install_cmdstan(cores = 2)
 ```
 
-# The end goal
+# Overview of create_analysis_obj() {.tabset}
 For an analysis on custom data in `psborrow2`, our goal is to create an object
 of class `Analysis` which contains all the information we need to build a model
-and compile an MCMC sampler using Stan. To create an `Analysis` object, 
+and compile an MCMC sampler using Stan. To create an `Analysis` object,
 we need to call the function `create_analysis_obj()`. Let's look at the four
 required arguments to this function and evaluate them one at a time.
 
@@ -63,31 +63,31 @@ create_analysis_obj(
 )
 ```
 
-# `data_matrix`
+## data_matrix {.tabset}
 
-## Required elements
+### Required elements
 
-`data_matrix` is where we input the one-row-per-patient data matrix for our 
+`data_matrix` is where we input the one-row-per-patient data matrix for our
 analysis. There are two columns required for all analyses:
 
 * A flag denoting receipt of the experimental intervention (`1`) or not (`0`)
-* A flag denoting whether the patient was part of the external data source 
+* A flag denoting whether the patient was part of the external data source
 (`1`) or the internal trial (`0`).
 
-`psborrow2` supports time-to-event endpoints as well as binary endpoints. 
+`psborrow2` supports time-to-event endpoints as well as binary endpoints.
 
-### Time to event
+#### Time to event
 If the outcome is time-to-event, then two additional columns are needed:
 
 * The duration of follow-up for each patient
 * A flag denoting the patient was censored (`1`) or not (`0`)
 
-### Binary endpoints
+#### Binary endpoints
 If the outcome is binary, one additional column is needed
 
 * A flag denoting a patient had the event of interest (`1`) or not (`0`)
 
-### Covariates
+#### Covariates
 
 Covariates may also be included in BDB analyses. These should be included
 in the data matrix if the plan is to adjust for them.
@@ -97,18 +97,18 @@ in the data matrix if the plan is to adjust for them.
 
 ## Example data
 
-We will be using an example dataset stored in `psborrow2` 
-(`psborrow2::example_matrix`). Data frames and tibbles may be 
-cast to matrices easily with the `psborrow2` helper function 
+We will be using an example dataset stored in `psborrow2`
+(`psborrow2::example_matrix`). Data frames and tibbles may be
+cast to matrices easily with the `psborrow2` helper function
 `create_data_matrix()`.
 
 Let's look at the first few rows of the example matrix:
 
-```{r}
+```{r example-matrix}
 head(example_matrix)
 ```
 
-# `outcome`
+## outcome
 
 `psborrow2` supports three outcomes, each of which is created via its own
 function:
@@ -117,18 +117,20 @@ function:
 `exp_surv_dist()`
 * Time to event with Weibull distribution and proportional hazards
 formulation, created with `weib_ph_surv_dist()`
-* Binary endpoints with a bernoulli distribution (logistic regression), 
+* Binary endpoints with a bernoulli distribution (logistic regression),
 created with `logistic_bin_outcome()`
 
 For our example, let's conduct a time-to-event analysis using the exponential
-distribution. 
+distribution.
 
-```{r}
-exp_surv_dist(time_var = "time", 
-              cens_var = "cnsr")
+```{r exp-surv-dist}
+exp_surv_dist(
+  time_var = "time",
+  cens_var = "cnsr"
+)
 ```
 
-# `borrowing`
+## borrowing
 
 `psborrow2` support three different borrowing methods which are specified in
 the `method` argument of `borrowing_details()`.
@@ -138,10 +140,10 @@ data
 * Full borrowing, this is pooling of the external and internal control arms
 * BDB, Bayesian dynamic borrowing
 
-In addition, we need to specify a prior distribution for 
-the baseline event rate, `baseline_prior`. In this case, `baseline_prior` is 
+In addition, we need to specify a prior distribution for
+the baseline event rate, `baseline_prior`. In this case, `baseline_prior` is
 a log hazard outcome rate (for binary endpoints, this field represents the log
-odds). The column name for the external control column flag in our matrix 
+odds). The column name for the external control column flag in our matrix
 is also required and passed to `ext_flag_col`. Finally, for BDB only,
 the prior distribution on the commensurability parameter is specified.
 
@@ -149,22 +151,26 @@ the prior distribution on the commensurability parameter is specified.
 *Note*: (Prior distributions are outlined in a separate vignette,
 `vignette('prior distributions', package = 'psborrow2')`)
 
-```{r}
-borrowing_details(method = "BDB",
-                  baseline_prior = normal_prior(0, 1000), 
-                  ext_flag_col = "ext",
-                  tau_prior = gamma_prior(0.001, 0.001))
+```{r borrowing-details}
+borrowing_details(
+  method = "BDB",
+  baseline_prior = normal_prior(0, 1000),
+  ext_flag_col = "ext",
+  tau_prior = gamma_prior(0.001, 0.001)
+)
 ```
 
-# `treatment`
+## treatment
 
 Finally, treatment details are outlined in `treatment_details()`. Here, we first
 specify the column for the treatment flag in `trt_flag_col`. In addition, we
 need to specify the prior on the effect estimate, `trt_prior`:
 
-```{r}
-treatment_details(trt_flag_col = "trt",
-                  trt_prior = normal_prior(0, 1000))
+```{r treatment-details}
+treatment_details(
+  trt_flag_col = "trt",
+  trt_prior = normal_prior(0, 1000)
+)
 ```
 
 # Creating an analysis object
@@ -172,31 +178,83 @@ treatment_details(trt_flag_col = "trt",
 Now that we have though through each of the inputs to `create_analysis_obj()`,
 let's create an analysis object:
 
-```{r}
+```{r anls-obj}
 anls_obj <- create_analysis_obj(
   data_matrix = example_matrix,
-  outcome = exp_surv_dist(time_var = "time", 
-                          cens_var = "cnsr"),
-  borrowing = borrowing_details(method = "BDB",
-                  baseline_prior = normal_prior(0, 1000), 
-                  ext_flag_col = "ext",
-                  tau_prior = gamma_prior(0.001, 0.001)),
-  treatment = treatment_details(trt_flag_col = "trt",
-                  trt_prior = normal_prior(0, 1000))
+  outcome = exp_surv_dist(
+    time_var = "time",
+    cens_var = "cnsr"
+  ),
+  borrowing = borrowing_details(
+    method = "BDB",
+    baseline_prior = normal_prior(0, 1000),
+    ext_flag_col = "ext",
+    tau_prior = gamma_prior(0.001, 0.001)
+  ),
+  treatment = treatment_details(
+    trt_flag_col = "trt",
+    trt_prior = normal_prior(0, 1000)
+  )
 )
 ```
 
-# Sample from analysis object
+# Sampling from analysis object
 
-Now that our Stan model is compiled, we can take draws from the posterior 
-distribution using the function `mcmc_sample()`.
+Now that our Stan model is compiled, we can take draws from the posterior
+distribution using the function `mcmc_sample()`. This function takes as input
+our `Analysis` object and any arguments (other than data) that are passed
+to [`CmdStanModel` objects]
+(https://mc-stan.org/cmdstanr/reference/model-method-sample.html).
 
-```{r}
+```{r res}
 res <- mcmc_sample(anls_obj,
-                   iter_warmup = 1000,
-                   iter_sampling = 10000, 
-                   chains = 1)
-
-res
+  iter_warmup = 2000,
+  iter_sampling = 50000,
+  chains = 4,
+  seed = 112233
+)
 ```
 
+As a `CmdStanMCMC` object, `res`, has several methods which are outlined on
+the
+[`cmdstanr` website](https://mc-stan.org/cmdstanr/reference/CmdStanModel.html).
+
+## Summary
+
+We can see a summary of the posterior distribution samples with `res$summary()`
+
+```{r res-summary}
+res$summary()
+```
+
+The summary includes summary information for several parameter estimates
+from our BDB model.
+
+## Draws objects
+
+We can also capture the draws with `res$draws()`. This allows us to leverage
+packages such as `posterior` and `bayesplot` to visualize our results.
+
+```{r draws}
+draws <- res$draws()
+print(draws)
+```
+
+```{r mcmc-hist, fig.align = 'center', fig.dim = c(5,3), dpi = 120}
+library(bayesplot)
+color_scheme_set("green")
+mcmc_hist(draws, "HR_trt")
+```
+
+
+```{r mcmc-trace, fig.align = 'center', fig.dim = c(5,3), dpi = 120}
+mcmc_trace(draws, "HR_trt")
+```
+
+
+
+```{r mcse-mean}
+library(posterior)
+mu <- extract_variable_matrix(draws, "HR_trt")
+mcse_mean(x = mu)
+```
