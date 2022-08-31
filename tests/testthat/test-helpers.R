@@ -102,7 +102,7 @@ test_that("variable_dictionary works as expected for exponential and no borrowin
   expect_equal(
     result,
     data.frame(
-      Stan_variable = c("alpha", "beta_trt", "exp_trt"),
+      Stan_variable = c("alpha", "beta_trt", "HR_trt"),
       Description = c("baseline log hazard rate", "treatment log HR", "treatment HR")
     )
   )
@@ -123,7 +123,7 @@ test_that("variable_dictionary includes shape parameter for Weibull PH", {
   expect_equal(
     result,
     data.frame(
-      Stan_variable = c("alpha", "beta_trt", "exp_trt", "shape_weibull"),
+      Stan_variable = c("alpha", "beta_trt", "HR_trt", "shape_weibull"),
       Description = c("baseline log hazard rate", "treatment log HR", "treatment HR", "Weibull shape parameter")
     )
   )
