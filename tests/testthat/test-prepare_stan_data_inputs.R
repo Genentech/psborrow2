@@ -33,7 +33,7 @@ test_that("prepare_stan_data_inputs works with exponential survival and BDB", {
   expect_equal(names(result), c("N", "trt", "time", "cens", "Z"))
 })
 
-test_that("prepare_stan_data_inputs works with weibull survival and BDB  and covariates", {
+test_that("prepare_stan_data_inputs works with weibull survival and BDB and covariates", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates(
@@ -51,8 +51,8 @@ test_that("prepare_stan_data_inputs works with weibull survival and BDB  and cov
   )
 
   result <- psborrow2:::prepare_stan_data_inputs(object)
-  expect_list(result, types = "numeric", len = 7)
-  expect_equal(names(result), c("N", "trt", "time", "cens", "Z", "K", "X"))
+  expect_list(result, types = "numeric", len = 9)
+  expect_equal(names(result), c("N", "trt", "time", "cens", "Z", "K", "X", "L_beta", "U_beta"))
 })
 
 test_that("prepare_stan_data_inputs works with binary outcome and BDB and covariates", {
@@ -73,8 +73,8 @@ test_that("prepare_stan_data_inputs works with binary outcome and BDB and covari
   )
 
   result <- psborrow2:::prepare_stan_data_inputs(object)
-  expect_list(result, types = "numeric", len = 6)
-  expect_equal(names(result), c("N", "trt", "y", "Z", "K", "X"))
+  expect_list(result, types = "numeric", len = 8)
+  expect_equal(names(result), c("N", "trt", "y", "Z", "K", "X", "L_beta", "U_beta"))
 })
 
 test_that("prepare_stan_data_inputs returns correct matrix dimensions for X", {
