@@ -64,3 +64,48 @@ plot_pmf <- function(x, y, ..., col = "grey", add = FALSE, xlim) {
 h_glue <- function(...) {
   glue::glue(..., .open = "{{", .close = "}}", .envir = parent.frame())
 }
+
+
+
+
+#' Get constraints from a list of Priors
+#'
+#' @param prior_list A list of `Prior` objects
+#'
+#' @return A `matrix` with columns "lower" and "upper".
+#' @export
+#'
+#' @examples
+#' get_constraints(list(
+#'   normal_prior(0, 10),
+#'   beta_prior(0.3, 0.3),
+#'   gamma_prior(30, 1)
+#' ))
+#'
+get_constraints <- function(prior_list) {
+  cons_list <- lapply(prior_list, function(p) parse_constraint(p@constraint))
+  assert_numeric(lengths(cons_list), len = length(prior_list), lower = 2, upper = 2)
+  matrix(
+    unlist(cons_list),
+    ncol = 2,
+    byrow = TRUE,
+    dimnames = list(NULL, c("lower", "upper"))
+  )
+}
+
+
+parse_constraint <- function(s) {
+  assert_character(s)
+  s <- gsub("[<>[:space:]]", "", s)
+  s_list <- strsplit(s, ",")[[1]]
+
+  lower <- as.numeric(
+    gsub("lower[[:space:]]*=[[:space:]]*", "", s_list[grepl("lower", s_list)])
+  )
+
+  upper <- as.numeric(
+    gsub("upper[[:space:]]*=[[:space:]]*", "", s_list[grepl("upper", s_list)])
+  )
+
+  list(lower = max(lower, -Inf, na.rm = TRUE), upper = min(upper, Inf, na.rm = TRUE))
+}
