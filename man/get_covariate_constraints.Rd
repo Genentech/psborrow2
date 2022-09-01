@@ -7,7 +7,7 @@
 get_covariate_constraints(cov_obj)
 }
 \arguments{
-\item{covariates}{A \code{Covariates} object}
+\item{cov_obj}{A \code{Covariates} object.}
 }
 \value{
 A \code{matrix} with columns "lower" and "upper" with rows for each \code{Prior}.
@@ -16,7 +16,7 @@ A \code{matrix} with columns "lower" and "upper" with rows for each \code{Prior}
 Get constraints from a list of \code{Prior}s
 }
 \examples{
-get_covariate_constraints(
+psborrow2:::get_covariate_constraints(
   add_covariates(
     c("cov1", "cov2", "cov3"),
     list(

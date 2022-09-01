@@ -16,7 +16,7 @@ A list with upper and lower bounds. Any unspecified bounds are set to \code{-Inf
 Extract Upper and Lower Bounds from Constraint String
 }
 \examples{
-parse_constraint("<lower=0>")
-parse_constraint("<lower=0, upper=1>")
-parse_constraint("")
+psborrow2:::parse_constraint("<lower=0>")
+psborrow2:::parse_constraint("<lower=0, upper=1>")
+psborrow2:::parse_constraint("")
 }

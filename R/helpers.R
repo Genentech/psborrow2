@@ -66,15 +66,13 @@ h_glue <- function(...) {
 }
 
 
-
-
 #' Get constraints from a list of `Prior`s
 #'
-#' @param covariates A `Covariates` object
+#' @param cov_obj A `Covariates` object.
 #'
 #' @return A `matrix` with columns "lower" and "upper" with rows for each `Prior`.
 #' @examples
-#' get_covariate_constraints(
+#' psborrow2:::get_covariate_constraints(
 #'   add_covariates(
 #'     c("cov1", "cov2", "cov3"),
 #'     list(
@@ -104,9 +102,9 @@ get_covariate_constraints <- function(cov_obj) {
 #' @return
 #' A list with upper and lower bounds. Any unspecified bounds are set to `-Inf` or `Inf`.
 #' @examples
-#' parse_constraint("<lower=0>")
-#' parse_constraint("<lower=0, upper=1>")
-#' parse_constraint("")
+#' psborrow2:::parse_constraint("<lower=0>")
+#' psborrow2:::parse_constraint("<lower=0, upper=1>")
+#' psborrow2:::parse_constraint("")
 parse_constraint <- function(s) {
   assert_character(s)
   s <- gsub("[<>[:space:]]", "", s)
