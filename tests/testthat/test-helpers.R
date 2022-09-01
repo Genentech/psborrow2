@@ -51,7 +51,7 @@ test_that("parse_constraint works as expected with single prior", {
       nrow = 3,
       byrow = TRUE,
       dimnames = list(NULL, c("lower", "upper"))
-          )
+    )
   )
 })
 
