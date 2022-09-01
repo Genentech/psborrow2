@@ -13,13 +13,17 @@
 #' y <- dnorm(x)
 #' plot_pdf(x, y)
 plot_pdf <- function(x, y, ...) {
-  plot(x,
-    y,
+  pars_list <- list(
+    x = x,
+    y = y,
     type = "l",
     ylim = c(0, max(y[is.finite(y)])),
     ylab = "density",
-    ...
+    xlab = ""
   )
+  for (i in ...names()) pars_list[[i]] <- list(...)[[i]]
+
+  do.call(plot, pars_list)
 }
 
 #' Plot Probability Mass Function Values
@@ -29,7 +33,6 @@ plot_pdf <- function(x, y, ...) {
 #' @param ... passed to [plot()] and [rect()]
 #' @param col Fill color of bars.
 #' @param add Add bars to existing plot.
-#' @param xlim Limits of x axis.
 #'
 #' Plots the probability values as a barplot.
 #'
@@ -39,11 +42,22 @@ plot_pdf <- function(x, y, ...) {
 #' x <- seq(0, 5)
 #' y <- dpois(x, lambda = 2)
 #' plot_pmf(x, y)
-plot_pmf <- function(x, y, ..., col = "grey", add = FALSE, xlim) {
+plot_pmf <- function(x, y, ..., col = "grey", add = FALSE) {
   if (isFALSE(add)) {
-    xlim <- range(x) + c(-0.5, 0.5)
-    ylim <- c(0, max(y))
-    plot(x, y, type = "n", xaxt = "n", xlab = "", ylab = "", ..., xlim = xlim, ylim = ylim)
+    pars_list <- list(
+      xlim = range(x) + c(-0.5, 0.5),
+      ylim = c(0, max(y)),
+      type = "n",
+      xaxt = "n",
+      xlab = "",
+      ylab = "",
+      x = x,
+      y = y
+    )
+
+    for (i in ...names()) pars_list[[i]] <- list(...)[[i]]
+
+    do.call(plot, pars_list)
     graphics::axis(side = 1, at = x, col.ticks = NA)
   }
   graphics::rect(x - 0.5, 0, x + 0.5, y, col = rep(col, length(y)), ...)
