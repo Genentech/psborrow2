@@ -32,7 +32,7 @@ analysis of external control data can also introduce bias. One method for
 incorporating external control data to mitigate bias is **Bayesian dynamic
 borrowing (BDB)**, in which external control data is borrowed to the extent
 that the external and RCT control arms have similar outcomes (
-[Viele et. al. 2014](https://doi.org/10.1002/pst.1589)).
+(Viele et. al. 2014).
 
 Implementing BDB is computationally involved and requires Markov chain Monte
 Carlo (MCMC) sampling methods, which in turn may require knowledge
