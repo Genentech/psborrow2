@@ -1,6 +1,6 @@
 #' @import checkmate
 #' @import cmdstanr
-#' @importFrom stats formula model.matrix
+#' @importFrom stats formula model.matrix setNames
 #' @importFrom methods new is show callNextMethod
 #' @importFrom graphics plot par lines axis rect
 NULL

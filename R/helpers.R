@@ -64,3 +64,95 @@ plot_pmf <- function(x, y, ..., col = "grey", add = FALSE, xlim) {
 h_glue <- function(...) {
   glue::glue(..., .open = "{{", .close = "}}", .envir = parent.frame())
 }
+
+
+#' Rename Covariates in `draws` Object
+#'
+#' @param analysis `Analysis` as created by [`create_analysis_obj()`].
+#' @param draws `draws` created from sampled analysis object. See example.
+#'
+#' @return A `draws`[[posterior::draws]] object with covariate names.
+#' @export
+#'
+#' @examples
+#' analysis_object <- create_analysis_obj(
+#'   data_matrix = example_matrix,
+#'   covariates = add_covariates(
+#'     covariates = c("cov1", "cov2"),
+#'     priors = normal_prior(0, 1000)
+#'   ),
+#'   outcome = exp_surv_dist(
+#'     "time",
+#'     "cnsr"
+#'   ),
+#'   borrowing = borrowing_details(
+#'     "BDB",
+#'     "ext",
+#'     exponential_prior(.001),
+#'     baseline_prior = normal_prior(0, 1000)
+#'   ),
+#'   treatment = treatment_details(
+#'     "trt",
+#'     normal_prior(0, 1000)
+#'   )
+#' )
+#' samples <- mcmc_sample(analysis_object)
+#' draws <- samples$draws()
+#' renamed_draws <- rename_draws_covariates(draws, analysis_object)
+#' summary(renamed_draws)
+rename_draws_covariates <- function(draws, analysis) {
+  assert_class(draws, "draws")
+  assert_class(analysis, "Analysis")
+  names <- variable_dictionary(analysis)
+  names_list <- setNames(as.list(names$Stan_variable), names$Description)
+  do.call(posterior::rename_variables, args = c(list(.x = draws), names_list))
+}
+
+
+#' Create Variable Dictionary
+#'
+#' @param analysis_obj `Analysis`. Object to describe variable names.
+#'
+#' @return A `data.frame` with the names of Stan variables and the descriptions.
+#' @export
+variable_dictionary <- function(analysis_obj) {
+  assert_class(analysis_obj, "Analysis")
+  is_tte <- isTRUE(inherits(analysis_obj@outcome, "TimeToEvent"))
+  is_bdb <- isTRUE(analysis_obj@borrowing@method == "BDB")
+  is_weib <- is_tte && isTRUE(inherits(analysis_obj@outcome, "WeibullPHSurvDist"))
+  has_covs <- !is.null(analysis_obj@covariates)
+
+  covariates <- if (has_covs) {
+    covs <- get_vars(analysis_obj@covariates)
+    stats::setNames(h_glue("beta[{{seq_along(covs)}}]"), covs)
+  } else {
+    NULL
+  }
+
+  if (is_tte) {
+    beta_trt <- c("treatment log HR" = "beta_trt")
+    exp_trt <- c("treatment HR" = "HR_trt")
+    alpha_type <- "baseline log hazard rate"
+    if (is_weib) {
+      addl_params <- c("Weibull shape parameter" = "shape_weibull")
+    } else {
+      addl_params <- NULL
+    }
+  } else {
+    beta_trt <- c("treatment log OR" = "beta_trt")
+    exp_trt <- c("treatment OR" = "OR_trt")
+    alpha_type <- "intercept"
+    addl_params <- NULL
+  }
+
+  if (is_bdb) {
+    alpha <- stats::setNames(c("alpha[1]", "alpha[2]"), paste0(alpha_type, c(", internal", ", external")))
+    tau <- c("commensurability parameter" = "tau")
+  } else {
+    alpha <- setNames("alpha", alpha_type)
+    tau <- NULL
+  }
+
+  vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addl_params)
+  data.frame(Stan_variable = unname(vars), Description = names(vars))
+}
