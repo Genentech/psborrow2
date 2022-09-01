@@ -6,7 +6,7 @@ output:
     toc: true
     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{psborrow2}
+  %\VignetteIndexEntry{1. Getting start with psborrow2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,7 +14,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#"
 )
 ```
 
@@ -31,8 +31,8 @@ shorten trial duration or reduce the number of subjects needed. However,
 analysis of external control data can also introduce bias. One method for
 incorporating external control data to mitigate bias is **Bayesian dynamic
 borrowing (BDB)**, in which external control data is borrowed to the extent
-that the external and RCT control arms have similar outcomes.
-[Viele et. al. 2014](https://doi.org/10.1002/pst.1589)
+that the external and RCT control arms have similar outcomes (
+[Viele et. al. 2014](https://doi.org/10.1002/pst.1589)).
 
 Implementing BDB is computationally involved and requires Markov chain Monte
 Carlo (MCMC) sampling methods, which in turn may require knowledge
@@ -62,7 +62,7 @@ implement BDB in `psborrow2`. They are:
 * The external control arm using observational data or experimental data
 from another trial with the same intervention/treatment and population
 as the internal control arm
-* The internal experimental arm
+* The internal experimental arm from within the RCT
 
 Such scenarios are common in drug development because the comparator arm for
 a novel therapy is often the standard of care, for which data exists from
@@ -70,18 +70,19 @@ electronic health care records or from previous phase III registrational trials.
 
 Refer to the "custom dataset" vignette for more information on
 how to implement BDB analyses on your own data:
-`vignette('custom dataset', package = 'psborrow2')`
+`vignette('2_custom_dataset', package = 'psborrow2')`
 
 ## Conduct a simulation study
 
 Refer to the "simulation study" vignette for more information on
 how to create a simulation study involving BDB and other innovative trial
-designs: `vignette('simulation study', package = 'psborrow2')`
+designs: `vignette('4_simulation_study', package = 'psborrow2')`
 
 ## Additional information
 `psborrow2` is the predecessor to
 [`psborrow`](https://cran.r-project.org/web/packages/psborrow/index.html).
-While the core functionality has been replicated in `psborrow2`, we cite it here
+While the core functionality has been replicated in `psborrow2` such that there
+is no longer any reason to prefer `psborrow`, we cite it here
 for posterity.
 
 ## References

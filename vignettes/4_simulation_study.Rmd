@@ -1,12 +1,12 @@
 ---
 title: "Conduct a simulation study"
 author: "Matt Secrest and Isaac Gravestock"
-output:   
+output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{simulation study}
+  %\VignetteIndexEntry{4. Conduct a simulation study}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,7 +14,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#"
 )
 ```
 
