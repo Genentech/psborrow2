@@ -1,1 +1,2 @@
+# prints hi
 print("hi")
