@@ -45,11 +45,7 @@ program we need. To install CMD Stan, we will call the `cmdstanr` function
 `install_cmdstan()`:
 
 ```{r install-cmdstan-1, include = FALSE}
-if (!dir.exists(cmdstanr::cmdstan_default_path())) {
-  install_cmdstan()
-} else {
-  cmdstanr::set_cmdstan_path(path = cmdstanr::cmdstan_default_path())
-}
+cmdstanr::set_cmdstan_path(path = cmdstanr::cmdstan_default_path())
 ```
 
 ```{r install-cmdstan-2, eval=FALSE}
