@@ -1,0 +1,9 @@
+pandoc: '2.18'
+pkgdown: 2.0.6
+pkgdown_sha: ~
+articles: {}
+last_built: 2022-09-02T17:03Z
+urls:
+  reference: improved-waffle-bf365a9a.pages.github.io/develop/reference
+  article: improved-waffle-bf365a9a.pages.github.io/develop/articles
+
