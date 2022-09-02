@@ -65,7 +65,7 @@ jobs:
           path: ~/.staged.dependencies
 
       - name: Run Staged dependencies 🎦
-        uses: insightsengineering/staged-dependencies-action@1d3d7b1374162e6bbcc50efed164d4b48f4f7e9e
+        uses: insightsengineering/staged-dependencies-action@v1
         with:
           run-system-dependencies: ${{ inputs.install-system-dependencies }}
           path: ${{ github.event.repository.name }}
