@@ -23,11 +23,12 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/audit.yaml@main
   r-cmd:
     name: R CMD Check 🧬
-    uses: insightsengineering/r.pkg.template/.github/workflows/build-check-install.yaml@main
+    uses: insightsengineering/r.pkg.template/.github/workflows/build-check-install.yaml@dotenv
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    env:
-      CMDSTAN_PATH: ~/.cmdstan
+    with:
+      additional-env-vars: |
+        CMDSTAN_PATH=~/.cmdstan
   coverage:
     name: Coverage 📔 
     uses: insightsengineering/r.pkg.template/.github/workflows/test-coverage.yaml@main
