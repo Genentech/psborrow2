@@ -28,6 +28,7 @@ jobs:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
       additional-env-vars: |
+        CMDSTAN=~/.cmdstan
         CMDSTAN_PATH=~/.cmdstan
   coverage:
     name: Coverage 📔 
