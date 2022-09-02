@@ -74,6 +74,8 @@ jobs:
         uses: insightsengineering/staged-dependencies-action@v1
         with:
           run-system-dependencies: ${{ inputs.install-system-dependencies }}
+          path: ${{ github.event.repository.name }}
+          enable-check: ${{ inputs.enable-staged-dependencies-check }}
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
           SD_REPO_PATH: ${{ github.event.repository.name }}
