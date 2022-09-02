@@ -44,6 +44,12 @@ installing the `cmdstanr` R package does not install the underlying CMD Stan
 program we need. To install CMD Stan, we will call the `cmdstanr` function
 `install_cmdstan()`:
 
+```{r install-cmdstan-1, include = FALSE}
+if (!dir.exists(cmdstanr::cmdstan_default_path())) {
+  install_cmdstan()
+}
+```
+
 ```{r install-cmdstan, eval=FALSE}
 install_cmdstan(cores = 2)
 ```
