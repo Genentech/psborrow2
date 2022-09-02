@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#"
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 In this article, you'll learn about the scope of `psborrow2` and where to find

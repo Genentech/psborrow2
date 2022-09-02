@@ -51,7 +51,8 @@ Suggests:
     tibble,
     xml2,
     knitr,
-    rmarkdown
+    rmarkdown,
+    bayesplot
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
 Language: en-US

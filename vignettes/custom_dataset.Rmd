@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
   dpi = 120,
   comment = "#"
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 In this article, you'll learn how to conduct Bayesian dynamic borrowing (BDB)
