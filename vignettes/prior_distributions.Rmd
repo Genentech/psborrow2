@@ -89,10 +89,10 @@ will lead to more borrowing in a BDB analysis):
 
 ```{r}
 conservative_tau <- gamma_prior(0.001, 0.001)
-plot(conservative_tau, xlim = c(0, 1000))
+plot(conservative_tau, xlim = c(0, 2000), ylim = c(0, 1e-03))
 ```
 
 ```{r}
 aggressive_tau <- gamma_prior(1, 0.001)
-plot(aggressive_tau, xlim = c(0, 1000))
+plot(aggressive_tau, xlim = c(0, 2000), ylim = c(0, 1e-03))
 ```
