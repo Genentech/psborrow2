@@ -53,7 +53,7 @@ jobs:
 
       - name: Generate man pages 📄
         run: |
-          stop("getwd: ", getwd(), "\n dir: ",dir())
+          stop("getwd: ", getwd(), "\n dir: ",dir("psborrow2"))
           setwd("${{ github.event.repository.name }}")
           logfile <- "roxygen_${{ github.event.repository.name }}.log"
           con <- file(logfile)
