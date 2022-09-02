@@ -179,7 +179,7 @@ will lead to more borrowing. We'll choose an uninformative gamma prior
 in this example.
 
 ***Note***: Prior distributions are outlined in greater detail in a separate
-vignette, `vignette('3_prior_distributions', package = 'psborrow2')`
+vignette, `vignette('prior_distributions', package = 'psborrow2')`
 
 ```{r borrowing-details}
 borrowing <- borrowing_details(
