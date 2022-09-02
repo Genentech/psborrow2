@@ -25,6 +25,21 @@ on:
         required: false
         default: false
         type: boolean
+      enable-staged-dependencies-check:
+        description: Enable staged dependencies YAML check
+        required: false
+        default: false
+        type: boolean
+      auto-update:
+        description: If man pages are not up-to-date, they will be automatically updated and committed back to the branch.
+        required: false
+        default: false
+        type: boolean
+    secrets:
+      REPO_GITHUB_TOKEN:
+        description: |
+          Github token with read access to repositories, required for staged.dependencies installation
+        required: false
 
 concurrency:
   group: roxygen-${{ github.event.pull_request.number || github.ref }}
@@ -50,10 +65,25 @@ jobs:
         with:
           ref: ${{ steps.branch-name.outputs.head_ref_branch }}
           path: ${{ github.event.repository.name }}
+          fetch-depth: 0
+
+      - name: Restore SD cache 💰
+        uses: actions/cache@v3
+        with:
+          key: sd-${{ runner.os }}-${{ github.event.repository.name }}
+          path: ~/.staged.dependencies
+
+      - name: Run Staged dependencies 🎦
+        uses: insightsengineering/staged-dependencies-action@v1
+        env:
+          GITHUB_PAT: ${{ secrets.REPO_GITHUB_TOKEN }}
+        with:
+          path: ${{ github.event.repository.name }}
+          enable-check: ${{ inputs.enable-staged-dependencies-check }}
+          run-system-dependencies: ${{ inputs.install-system-dependencies }}
 
       - name: Generate man pages 📄
         run: |
-          stop("getwd: ", getwd(), "\n dir: ",dir("psborrow2"))
           setwd("${{ github.event.repository.name }}")
           logfile <- "roxygen_${{ github.event.repository.name }}.log"
           con <- file(logfile)
@@ -80,20 +110,32 @@ jobs:
       - name: Roxygen check 🅾
         run: |
           cd ${{ github.event.repository.name }}
-          git status -s
-          if [[ -n `git status -s | grep man` ]]
+          if [[ -n `git status -s | grep -E "man|DESCRIPTION"` ]]
           then {
             ROXYGEN_VERSION="$(Rscript -e 'packageVersion("roxygen2")' | awk '{print $NF}')"
             echo "🙈 Manuals are not up-to-date with roxygen comments!"
             echo "🔀 The following differences were noted:"
-            git diff man/*
-            echo -e "\n💻 Please rerun the following command on your workstation and push your changes"
-            echo "--------------------------------------------------------------------"
-            echo "roxygen2::roxygenize('.', roclets = c('rd', 'collate', 'namespace'))"
-            echo "--------------------------------------------------------------------"
-            echo "ℹ roxygen2 version that was used in this workflow: $ROXYGEN_VERSION"
-            echo "🙏 Please ensure that the 'RoxygenNote' field in the DESCRIPTION file matches this version"
-            exit 1
+            git diff man/* DESCRIPTION
+            if [ "${{ inputs.auto-update }}" == "true" ]
+            then {
+              echo "Regenerating man pages via auto-update"
+              git config --global user.name "github-actions"
+              git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+              git add man/* DESCRIPTION
+              git commit -m "[skip actions] Roxygen Man Pages Auto Update"
+              git pull origin ${GITHUB_HEAD_REF}
+              git push -v origin ${GITHUB_HEAD_REF}
+            }
+            else {
+              echo -e "\n💻 Please rerun the following command on your workstation and push your changes"
+              echo "--------------------------------------------------------------------"
+              echo "roxygen2::roxygenize('.', roclets = c('rd', 'collate', 'namespace'))"
+              echo "--------------------------------------------------------------------"
+              echo "ℹ roxygen2 version that was used in this workflow: $ROXYGEN_VERSION"
+              echo "🙏 Please ensure that the 'RoxygenNote' field in the DESCRIPTION file matches this version"
+              exit 1
+            }
+            fi
           } else {
             echo "💚 Manuals are up-to-date with roxygen comments"
           }
