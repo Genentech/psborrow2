@@ -1,0 +1,108 @@
+---
+name: Check 🛠
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - main
+      - pre-release
+      - develop
+  push:
+    branches:
+      - main
+      - pre-release
+      - develop
+  workflow_dispatch:
+
+jobs:
+  audit:
+    name: Audit Dependencies 🕵️‍♂️
+    uses: insightsengineering/r.pkg.template/.github/workflows/audit.yaml@main
+  r-cmd:
+    name: R CMD Check 🧬
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - image: ghcr.io/insightsengineering/rstudio_4.1.2_bioc_3.14
+            tag: latest
+    steps:
+      - name: Set environment vars for cmdstan
+        run: |
+          echo "CMDSTAN_PATH=${HOME}/.cmdstan" >> $GITHUB_ENV
+          echo "CMDSTAN_VERSION=2.29.2" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Cache cmdstan installation
+        uses: actions/cache@v3
+        id: cache-cmdstan
+        with:
+          path: ${{ env.CMDSTAN_PATH }}
+          key: ${{ runner.os }}-cmdstan-${{ env.CMDSTAN_VERSION }}
+          restore-keys: ${{ runner.os }}-cmdstan-
+
+      - name: Install cmdstan
+        if: steps.cache-cmdstan.outputs.cache-hit != 'true'
+        run: |
+          install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
+          version <- Sys.getenv("CMDSTAN_VERSION")
+          url <- sprintf("https://github.com/stan-dev/cmdstan/releases/download/v%s/cmdstan-%s.tar.gz", version, version)
+          cmdstanr::install_cmdstan(cores = 2, release_url = url)
+        shell: Rscript {0}
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: insightsengineering/r.pkg.template/.github/workflows/build-check-install.yaml@main
+        secrets:
+          REPO_GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
+  coverage:
+    if: github.event_name == 'pull_request'
+    name: Coverage 📔 
+    uses: insightsengineering/r.pkg.template/.github/workflows/test-coverage.yaml@main
+    secrets:
+      REPO_GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
+  linter:
+    if: github.event_name == 'pull_request'
+    name: SuperLinter 🦸‍♀️/home/users/beera2/code/Genentech/psborrow2/.github/workflows_old
+    uses: insightsengineering/r.pkg.template/.github/workflows/linter.yaml@main
+  roxygen:
+    name: Roxygen 🅾
+    uses: insightsengineering/r.pkg.template/.github/workflows/roxygen.yaml@main
+    secrets:
+      REPO_GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
+    with:
+      auto-update: true
+  gitleaks:
+    name: gitleaks 💧
+    uses: insightsengineering/r.pkg.template/.github/workflows/gitleaks.yaml@main
+  spelling:
+    if: github.event_name == 'pull_request'
+    name: Spell Check 🆎
+    uses: insightsengineering/r.pkg.template/.github/workflows/spelling.yaml@main
+  links:
+    if: github.event_name == 'pull_request'
+    name: Check URLs 🌐
+    uses: insightsengineering/r.pkg.template/.github/workflows/links.yaml@main
+  vbump:
+    name: Version Bump 🤜🤛
+    if: github.event_name == 'push'
+    uses: insightsengineering/r.pkg.template/.github/workflows/version-bump.yaml@main
+    secrets:
+      REPO_GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
+  version:
+    name: Version Check 🏁
+    uses: insightsengineering/r.pkg.template/.github/workflows/version.yaml@main
+  licenses:
+    name: License Check 🃏
+    uses: insightsengineering/r.pkg.template/.github/workflows/licenses.yaml@main
+  style:
+    if: github.event_name == 'pull_request'
+    name: Style Check 👗
+    uses: insightsengineering/r.pkg.template/.github/workflows/style.yaml@main
+    with:
+      auto-update: true
