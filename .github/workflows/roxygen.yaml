@@ -50,16 +50,26 @@ jobs:
         id: branch-name
         uses: tj-actions/branch-names@v5
 
+
       - name: Checkout repo 🛎
         uses: actions/checkout@v3
         with:
           ref: ${{ steps.branch-name.outputs.head_ref_branch }}
           path: ${{ github.event.repository.name }}
+          fetch-depth: 0
+
+      - name: Restore SD cache 💰
+        uses: actions/cache@v3
+        with:
+          key: sd-${{ runner.os }}-${{ github.event.repository.name }}
+          path: ~/.staged.dependencies
 
       - name: Run Staged dependencies 🎦
         uses: insightsengineering/staged-dependencies-action@v1
         with:
           run-system-dependencies: ${{ inputs.install-system-dependencies }}
+          path: ${{ github.event.repository.name }}
+          enable-check: ${{ inputs.enable-staged-dependencies-check }}
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
           SD_REPO_PATH: ${{ github.event.repository.name }}
