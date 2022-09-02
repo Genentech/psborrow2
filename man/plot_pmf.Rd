@@ -4,7 +4,7 @@
 \alias{plot_pmf}
 \title{Plot Probability Mass Function Values}
 \usage{
-plot_pmf(x, y, ..., col = "grey", add = FALSE, xlim)
+plot_pmf(x, y, ..., col = "grey", add = FALSE)
 }
 \arguments{
 \item{x}{values}
@@ -15,9 +15,7 @@ plot_pmf(x, y, ..., col = "grey", add = FALSE, xlim)
 
 \item{col}{Fill color of bars.}
 
-\item{add}{Add bars to existing plot.}
-
-\item{xlim}{Limits of x axis.
+\item{add}{Add bars to existing plot.
 
 Plots the probability values as a barplot.}
 }
