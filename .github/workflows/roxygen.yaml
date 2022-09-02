@@ -28,7 +28,7 @@ on:
       enable-staged-dependencies-check:
         description: Enable staged dependencies YAML check
         required: false
-        default: false
+        default: true
         type: boolean
 
 concurrency:
