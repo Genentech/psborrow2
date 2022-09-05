@@ -22,24 +22,13 @@
 #' psborrow2:::make_model_string_transf_param(anls_obj)
 #'
 make_model_string_transf_param <- function(analysis_obj) {
-  ## Transformed parameters string
-  transformed_parameters_string <- h_glue("
-    transformed parameters {")
-
-  ## Exponentiate effect estimate
   if (is(analysis_obj@outcome, "TimeToEvent")) {
-    transformed_parameters_string <- h_glue("
-      {{transformed_parameters_string}}
-      real HR_trt = exp(beta_trt);")
+    transformed_parameters_string <- h_glue("real HR_trt = exp(beta_trt);")
   } else if (is(analysis_obj@outcome, "BinaryOutcome")) {
-    transformed_parameters_string <- h_glue("
-      {{transformed_parameters_string}}
-      real OR_trt = exp(beta_trt);")
+    transformed_parameters_string <- h_glue("real OR_trt = exp(beta_trt);")
   }
 
-  ### Close block
-  transformed_parameters_string <- h_glue("{{transformed_parameters_string}} }")
-
-  # Return
-  return(transformed_parameters_string)
+  h_glue("transformed parameters {
+    {{transformed_parameters_string}}
+  }")
 }

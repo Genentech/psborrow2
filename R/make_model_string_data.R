@@ -22,46 +22,29 @@
 #' psborrow2:::make_model_string_data(anls_obj)
 #'
 make_model_string_data <- function(analysis_obj) {
-  ## Data string
-  data_string <- h_glue("data {")
-
-  ## Data shared by all TTE
-  if (is(analysis_obj@outcome, "TimeToEvent")) {
-    data_string <- h_glue("
-      {{data_string}}
-      int<lower=0> N;
-      vector[N] time;
-      vector[N] cens;
-      vector[N] trt;")
+  outcome_string <- if (is(analysis_obj@outcome, "TimeToEvent")) {
+    h_glue("vector[N] time;
+     vector[N] cens;")
+  } else if (is(analysis_obj@outcome, "BinaryOutcome")) {
+    "array[N] int y;"
   }
 
-  ### Data shared by all binary endpoints
-  if (is(analysis_obj@outcome, "BinaryOutcome")) {
-    data_string <- h_glue("
-      {{data_string}}
-      int<lower=0> N;
-      array[N] int y;
-      vector[N] trt;")
-  }
+  borrowing_string <- ifelse(analysis_obj@borrowing@method == "BDB", "matrix[N,2] Z;", "")
 
-  ### Add external control flag for BDB
-  if (analysis_obj@borrowing@method == "BDB") {
-    data_string <- h_glue("
-      {{data_string}}
-      matrix[N,2] Z;")
-  }
+  covariate_string <- ifelse(
+    !is.null(analysis_obj@covariates),
+    h_glue("int<lower=0> K;
+     matrix[N, K] X;"),
+    ""
+  )
 
-  ### Add covariates for when these are specified
-  if (!is.null(analysis_obj@covariates)) {
-    data_string <- h_glue("
-      {{data_string}}
-      int<lower=0> K;
-      matrix[N, K] X;")
-  }
+  data_string <- h_glue("data {
+    int<lower=0> N;
+    vector[N] trt;
+    {{outcome_string}}
+    {{borrowing_string}}
+    {{covariate_string}}
+  }")
 
-  ### Close block
-  data_string <- h_glue("{{data_string}} }")
-
-  ## Return
   return(data_string)
 }
