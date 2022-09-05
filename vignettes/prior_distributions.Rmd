@@ -96,4 +96,5 @@ plot(conservative_tau, xlim = c(0, 2000), ylim = c(0, 1e-03))
 ```{r}
 aggressive_tau <- gamma_prior(1, 0.001)
 plot(aggressive_tau, xlim = c(0, 2000), ylim = c(0, 1e-03))
+plot(conservative_tau, xlim = c(0, 2000), col = "red", add = TRUE)
 ```
