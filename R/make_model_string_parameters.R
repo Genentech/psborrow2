@@ -33,8 +33,8 @@ make_model_string_parameters <- function(analysis_obj) {
   if (analysis_obj@borrowing@method == "BDB") {
     parameters_string <- h_glue("
       {{parameters_string}}
-      real <lower=0> tau;
-      vector[2] alpha;",
+      real {{tau_constraint}} tau;
+      vector{{alpha_constraint}}[2] alpha;",
       alpha_constraint = analysis_obj@borrowing@baseline_prior@constraint,
       tau_constraint = analysis_obj@borrowing@tau_prior@constraint
     )
