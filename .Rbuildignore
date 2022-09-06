@@ -19,3 +19,5 @@ coverage.*
 ^codemeta\.json$
 devel
 ^data-raw$
+^doc$
+^Meta$

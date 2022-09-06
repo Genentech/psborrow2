@@ -17,16 +17,13 @@ jobs:
     with:
       skip-r-cmd-check: true
       skip-r-cmd-install: true
+      additional-env-vars: |
+        CMDSTAN=/root/.cmdstan
+        CMDSTAN_PATH=/root/.cmdstan
   docs:
     name: Pkgdown Docs 📚
     needs: release
     uses: insightsengineering/r.pkg.template/.github/workflows/pkgdown.yaml@main
-    secrets:
-      REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  validation:
-    name: R Package Validation report 📃
-    needs: release
-    uses: insightsengineering/r.pkg.template/.github/workflows/validation.yaml@main
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   release:

@@ -28,7 +28,6 @@ jobs:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
       additional-env-vars: |
-        # This is where STAN is on the Docker image
         CMDSTAN=/root/.cmdstan
         CMDSTAN_PATH=/root/.cmdstan
   coverage:
@@ -36,6 +35,10 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/test-coverage.yaml@main
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      additional-env-vars: |
+        CMDSTAN=/root/.cmdstan
+        CMDSTAN_PATH=/root/.cmdstan
   linter:
     if: github.event_name == 'pull_request'
     name: SuperLinter 🦸‍♀️
