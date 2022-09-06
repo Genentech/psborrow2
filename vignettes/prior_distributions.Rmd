@@ -24,7 +24,7 @@ library(psborrow2)
 ```
 
 
-In this article, you'll learn how to specify prior distributions in `psborrow2`.
+In this vignette, you'll learn how to specify prior distributions in `psborrow2`.
 
 # Specifying prior distributions
 Because `psborrow2` creates fully-parametrized Bayesian models,

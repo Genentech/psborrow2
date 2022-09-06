@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
-In this article, you'll learn how to conduct Bayesian dynamic borrowing (BDB)
+In this vignette, you'll learn how to conduct Bayesian dynamic borrowing (BDB)
 analyses on data using `psborrow2`.
 
 # Load dependencies and setup CMD Stan
@@ -50,8 +50,8 @@ install_cmdstan(cores = 2)
 ```
 
 # Creating an analysis object {.tabset}
-For an analysis on data in `psborrow2`, our goal is to create an object
-of class `Analysis` which contains all the information we need to build a model
+For an analysis on data in `psborrow2`, we need to create an object
+of class `Analysis` which contains all the information needed to build a model
 and compile an MCMC sampler using Stan. To create an `Analysis` object,
 we need to call the function `create_analysis_obj()`. Let's look at the four
 required arguments to this function and evaluate them one at a time.
@@ -100,8 +100,8 @@ in the data matrix if the plan is to adjust for them.
 
 We will be using an example dataset stored in `psborrow2`
 (`psborrow2::example_matrix`). If you are starting from a data frame or tibble,
-you can cast to a matrix easily with the `psborrow2` helper function
-`create_data_matrix()`, though we don't show that here.
+you can easily create a suitable matrix with the `psborrow2` helper function
+[`create_data_matrix()`].
 
 Let's look at the first few rows of the example matrix:
 
@@ -113,16 +113,15 @@ The column definitions are below:
 
 * `ext`, 0/1, flag for external controls
 * `trt`, 0/1, flag for treatment arm
-* `cov1`, 0/1, baseline covariate
-* `cov2`, 0/1, baseline covariate
+* `cov1`, 0/1, a baseline covariate
+* `cov2`, 0/1, a baseline covariate
 * `time`, 0/1, numeric >0, survival time
 * `cnsr`, 0/1, censoring indicator
 * `resp`, 0/1, indicator for binary response outcome
 
 ## 2. outcome
 
-`psborrow2` currently supports three outcomes, each of which is created via its
-own constructor:
+`psborrow2` currently supports three outcomes:
 
 * Time to event with exponential distribution (constant hazard), created with
 `exp_surv_dist()`
@@ -154,7 +153,7 @@ data
 
 In addition to specifying the method, we need to specify a prior distribution
 for the baseline event rate, `baseline_prior`. In this case, `baseline_prior` is
-a log hazard rate (for binary endpoints, this field represents the log
+a log hazard rate (for binary endpoints, this represents the log
 odds). Let's assume we have no prior knowledge on this event rate, so we'll
 specify an uninformative prior: `normal_prior(0, 1000)`.
 
@@ -259,7 +258,7 @@ variable_dictionary(anls_obj)
 
 We can also capture all of the draws with the function `res$draws()`, which
 returns an object of class `draws`. `draws` objects are
-common in many MCMC sampling softwares and allow us to leverage
+common in many MCMC sampling software packages and allow us to leverage
 packages such as `posterior` and `bayesplot`.
 
 ```{r draws}
