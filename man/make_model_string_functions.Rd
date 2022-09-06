@@ -19,10 +19,9 @@ Create the Stan string encompassed by functions \code{{}}
 \examples{
 anls_obj <- psborrow2:::.analysis_obj(
   data_matrix = example_matrix,
-  outcome = exp_surv_dist("time", "cnsr"),
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
   borrowing = borrowing_details(
     "Full borrowing",
-    normal_prior(0, 100),
     "ext"
   ),
   treatment = treatment_details("trt", normal_prior(0, 100))

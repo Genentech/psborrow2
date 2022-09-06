@@ -14,17 +14,14 @@ ac2 <- add_covariates(
 
 bd_fb <- borrowing_details(
   method = "Full borrowing",
-  baseline_prior = normal_prior(0, 1000),
   ext_flag_col = "ext"
 )
 bd_nb <- borrowing_details(
   method = "No borrowing",
-  baseline_prior = normal_prior(0, 1000),
   ext_flag_col = "ext"
 )
 bd_db <- borrowing_details(
   method = "BDB",
-  baseline_prior = normal_prior(0, 1000),
   ext_flag_col = "ext",
   tau_prior = exponential_prior(0.0001)
 )
@@ -36,15 +33,18 @@ td <- treatment_details(
 
 esd <- exp_surv_dist(
   time_var = "time",
-  cens_var = "cnsr"
+  cens_var = "cnsr",
+  baseline_prior = normal_prior(0, 1000)
 )
 wpsd <- weib_ph_surv_dist(
   time_var = "time",
   cens_var = "cnsr",
-  shape_prior = normal_prior(0, 1000)
+  shape_prior = normal_prior(0, 1000),
+  baseline_prior = normal_prior(0, 1000)
 )
 lbo <- logistic_bin_outcome(
-  binary_var = "resp"
+  binary_var = "resp",
+  baseline_prior = normal_prior(0, 1000)
 )
 
 test_that("Inputs classes are correct", {
@@ -145,7 +145,7 @@ test_that("Columns in analysis_obj should be in matrix", {
     create_analysis_obj(
       data_matrix = example_matrix,
       covariates = ac,
-      outcome = exp_surv_dist("time", "cens"),
+      outcome = exp_surv_dist("time", "cens", normal_prior(0, 1000)),
       treatment = td,
       borrowing = bd_fb
     ),
@@ -156,7 +156,7 @@ test_that("Columns in analysis_obj should be in matrix", {
     create_analysis_obj(
       data_matrix = example_matrix,
       covariates = ac,
-      outcome = logistic_bin_outcome("response"),
+      outcome = logistic_bin_outcome("response", normal_prior(0, 1000)),
       treatment = td,
       borrowing = bd_fb
     ),
@@ -185,7 +185,6 @@ test_that("Columns in analysis_obj should be in matrix", {
       treatment = td,
       borrowing = borrowing_details(
         method = "BDB",
-        baseline_prior = normal_prior(0, 100),
         ext_flag_col = "tira",
         tau_prior = gamma_prior(.001, .001)
       )

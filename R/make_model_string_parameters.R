@@ -10,10 +10,9 @@
 #' @examples
 #' anls_obj <- psborrow2:::.analysis_obj(
 #'   data_matrix = example_matrix,
-#'   outcome = exp_surv_dist("time", "cnsr"),
+#'   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
 #'   borrowing = borrowing_details(
 #'     "Full borrowing",
-#'     normal_prior(0, 100),
 #'     "ext"
 #'   ),
 #'   treatment = treatment_details("trt", normal_prior(0, 100))
@@ -35,7 +34,7 @@ make_model_string_parameters <- function(analysis_obj) {
       {{parameters_string}}
       real {{tau_constraint}} tau;
       vector{{alpha_constraint}}[2] alpha;",
-      alpha_constraint = analysis_obj@borrowing@baseline_prior@constraint,
+      alpha_constraint = analysis_obj@outcome@baseline_prior@constraint,
       tau_constraint = analysis_obj@borrowing@tau_prior@constraint
     )
   }
@@ -45,7 +44,7 @@ make_model_string_parameters <- function(analysis_obj) {
     parameters_string <- h_glue("
       {{parameters_string}}
       real{{constraint}} alpha;",
-      constraint = analysis_obj@borrowing@baseline_prior@constraint
+      constraint = analysis_obj@outcome@baseline_prior@constraint
     )
   }
 

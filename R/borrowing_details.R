@@ -6,9 +6,6 @@
 #' @param method character. The type of borrowing to perform. It
 #' must be one of: `'BDB'`, `'Full borrowing'`, or `'No borrowing'`. See _Details_ for
 #' more information.
-#' @param baseline_prior Object of class `Prior`
-#' specifying prior distribution for the baseline outcome.
-#' See `Details` for more information.
 #' @param ext_flag_col character. The name of the column in
 #' the data matrix that corresponds to the external control flag (`1`/`0` or
 #' `TRUE`/`FALSE`). This identifies a patient as belonging to the external
@@ -38,17 +35,6 @@
 #' Though the ultimate model specification is the same for 'Full borrowing'
 #' and 'No borrowing', both are available as options to facilitate comparison
 #' between methods.
-#'
-#' ## Baseline Prior
-#'
-#' The `baseline_prior` argument specifies the prior distribution for the
-#' baseline log hazard rate or log odds, depending on the outcome type. The
-#' interpretation of the `baseline_prior` differs slightly between methods:
-#' - \emph{'BDB'}: the `baseline_prior` for Bayesian Dynamic Borrowing refers
-#' to the log hazard rate or log odds of the external control arm.
-#' - \emph{'Full borrowing'} or \emph{'No borrowing'}: the `baseline_prior` for
-#' these borrowing methods refers to the log hazard rate or log odds for the
-#' internal control arm.
 #'
 #' ## External Control
 #'
@@ -87,18 +73,15 @@
 #' @examples
 #' sb <- borrowing_details(
 #'   method = "BDB",
-#'   baseline_prior = normal_prior(0, 1000),
 #'   ext_flag_col = "ext",
 #'   tau_prior = gamma_prior(0.001, 0.001)
 #' )
 #'
 borrowing_details <- function(method,
-                              baseline_prior,
                               ext_flag_col,
                               tau_prior = NULL) {
   # Additional checks and neater errors than in class definition
   assert_choice(method, c("Full borrowing", "No borrowing", "BDB"))
-  assert_class(baseline_prior, "Prior")
   assert_string(ext_flag_col)
 
   if (method == "BDB") {
@@ -109,7 +92,6 @@ borrowing_details <- function(method,
   .borrowing_class(
     method = method,
     ext_flag_col = ext_flag_col,
-    tau_prior = tau_prior,
-    baseline_prior = baseline_prior
+    tau_prior = tau_prior
   )
 }

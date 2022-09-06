@@ -29,6 +29,9 @@ to interpolate into stan model.}
 Empty for \code{LogisticBinaryOutcome}.}
 
 \item{\code{binary_var}}{character. Variable used for outcome in \code{LogisticBinaryOutcome} objects.}
+
+\item{\code{baseline_prior}}{\code{Prior}. Object of class \code{Prior}
+specifying prior distribution for the baseline outcome.}
 }}
 
 \seealso{

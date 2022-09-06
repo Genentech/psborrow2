@@ -27,13 +27,13 @@ anls <- psborrow2:::.analysis_obj(
   ),
   outcome = exp_surv_dist(
     "time",
-    "cnsr"
+    "cnsr",
+    baseline_prior = normal_prior(0, 1000)
   ),
   borrowing = borrowing_details(
     "BDB",
     "ext",
-    exponential_prior(.001),
-    baseline_prior = normal_prior(0, 1000)
+    exponential_prior(.001)
   ),
   treatment = treatment_details(
     "trt",
