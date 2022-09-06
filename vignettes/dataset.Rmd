@@ -1,0 +1,320 @@
+---
+title: "Conduct a hybrid control analysis on a dataset using BDB"
+author: "Matt Secrest and Isaac Gravestock"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{2. Conduct a hybrid control analysis on a dataset using BDB}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r knitr, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.align = "center",
+  fig.width = 5,
+  fig.height = 3,
+  dpi = 120,
+  comment = "#"
+)
+options(rmarkdown.html_vignette.check_title = FALSE)
+```
+
+In this vignette, you'll learn how to conduct Bayesian dynamic borrowing (BDB)
+analyses on data using `psborrow2`.
+
+# Load dependencies and setup CMD Stan
+
+We'll start by loading dependencies. `psborrow2` relies on the package
+[`cmdstanr`](https://mc-stan.org/cmdstanr/index.html),
+so we'll load [`cmdstanr`](https://mc-stan.org/cmdstanr/index.html)
+as well.
+
+```{r dependencies, message = FALSE}
+library(psborrow2)
+library(cmdstanr)
+```
+
+As explained in the
+[`cmstanr` vignette](https://mc-stan.org/cmdstanr/articles/cmdstanr.html),
+installing the `cmdstanr` R package does not install the underlying CMD Stan
+program we need. To install CMD Stan, we will call the `cmdstanr` function
+`install_cmdstan()`:
+
+```{r install-cmdstan-2, eval=FALSE}
+set_cmdstan_path(path = "/root/.cmdstan")
+install_cmdstan(cores = 2)
+```
+
+# Creating an analysis object {.tabset}
+For an analysis on data in `psborrow2`, we need to create an object
+of class `Analysis` which contains all the information needed to build a model
+and compile an MCMC sampler using Stan. To create an `Analysis` object,
+we need to call the function `create_analysis_obj()`. Let's look at the four
+required arguments to this function and evaluate them one at a time.
+
+```
+create_analysis_obj(
+  data_matrix,
+  outcome,
+  borrowing,
+  treatment
+)
+```
+
+## 1. data_matrix {.tabset}
+
+### Required elements
+
+`data_matrix` is where we input the one-row-per-patient data matrix for our
+analysis. There are two columns required for all analyses:
+
+* A flag denoting receipt of the experimental intervention (`1`) or not (`0`)
+* A flag denoting whether the patient was part of the external data source
+(`1`) or the internal trial (`0`).
+
+#### Time to event
+If the outcome is time-to-event, then two additional columns are needed:
+
+* The duration of follow-up for each patient
+* A flag denoting the patient was censored (`1`) or not (`0`)
+
+#### Binary endpoints
+If the outcome is binary, one additional column is needed
+
+* A flag denoting a patient had the event of interest (`1`) or not (`0`)
+
+#### Covariates
+
+Covariates may also be included in BDB analyses. These should be included
+in the data matrix if the plan is to adjust for them.
+
+***Note*** R data frames are not allowed, only matrices.
+
+***Note*** No missing data is currently allowed, all values must be non-missing.
+
+### Example data
+
+We will be using an example dataset stored in `psborrow2`
+(`psborrow2::example_matrix`). If you are starting from a data frame or tibble,
+you can easily create a suitable matrix with the `psborrow2` helper function
+[`create_data_matrix()`].
+
+Let's look at the first few rows of the example matrix:
+
+```{r example-matrix}
+head(example_matrix)
+```
+
+The column definitions are below:
+
+* `ext`, 0/1, flag for external controls
+* `trt`, 0/1, flag for treatment arm
+* `cov1`, 0/1, a baseline covariate
+* `cov2`, 0/1, a baseline covariate
+* `time`, 0/1, numeric >0, survival time
+* `cnsr`, 0/1, censoring indicator
+* `resp`, 0/1, indicator for binary response outcome
+
+## 2. outcome
+
+`psborrow2` currently supports three outcomes:
+
+* Time to event with exponential distribution (constant hazard), created with
+`exp_surv_dist()`
+* Time to event with Weibull distribution and proportional hazards
+parametrization, created with `weib_ph_surv_dist()`
+* Binary endpoints with a bernoulli distribution (logistic regression),
+created with `logistic_bin_outcome()`
+
+For our example, let's conduct a time-to-event analysis using the exponential
+distribution.
+
+```{r exp-surv-dist}
+outcome <- exp_surv_dist(
+  time_var = "time",
+  cens_var = "cnsr"
+)
+outcome
+```
+
+## 3. borrowing
+
+`psborrow2` support three different borrowing methods which are specified in
+the `method` argument of `borrowing_details()`.
+
+* "No borrowing", this is the internal trial comparison without any external
+data
+* "Full borrowing", this is pooling of the external and internal control arms
+* "BDB", Bayesian dynamic borrowing
+
+In addition to specifying the method, we need to specify a prior distribution
+for the baseline event rate, `baseline_prior`. In this case, `baseline_prior` is
+a log hazard rate (for binary endpoints, this represents the log
+odds). Let's assume we have no prior knowledge on this event rate, so we'll
+specify an uninformative prior: `normal_prior(0, 1000)`.
+
+The column name for the external control column flag in our matrix
+is also required and passed to `ext_flag_col`.
+
+Finally, for BDB only,
+the hyperprior distribution on the commensurability parameter must be specified.
+This hyperprior determines (along with the comparability of the outcomes
+between internal and external controls) how much borrowing of the external
+control group will be performed. Example hyperpriors include largely
+uninformative inverse gamma distributions
+e.g., `gamma_prior(alpha = .001, beta = .001)` as well as more
+informative distributions e.g., `gamma_prior(alpha = 1, beta = .001`),
+though any distribution $x \in (0, \infty)$ can be used. Distributions
+with more density at higher values of $x$ (i.e., higher precision)
+will lead to more borrowing. We'll choose an uninformative gamma prior
+in this example.
+
+***Note***: Prior distributions are outlined in greater detail in a separate
+vignette, `vignette('prior_distributions', package = 'psborrow2')`
+
+```{r borrowing-details}
+borrowing <- borrowing_details(
+  method = "BDB",
+  baseline_prior = normal_prior(0, 1000),
+  ext_flag_col = "ext",
+  tau_prior = gamma_prior(0.001, 0.001)
+)
+borrowing
+```
+
+## 3. treatment
+
+Finally, treatment details are outlined in `treatment_details()`. Here, we first
+specify the column for the treatment flag in `trt_flag_col`. In addition, we
+need to specify the prior on the effect estimate, `trt_prior`. We'll use
+another uninformative normal distribution for the prior on the treatment effect:
+
+```{r treatment-details}
+treatment <- treatment_details(
+  trt_flag_col = "trt",
+  trt_prior = normal_prior(0, 1000)
+)
+treatment
+```
+
+## Application
+
+Now that we have thought through each of the inputs to `create_analysis_obj()`,
+let's create an analysis object:
+
+```{r anls-obj}
+anls_obj <- create_analysis_obj(
+  data_matrix = example_matrix,
+  outcome = outcome,
+  borrowing = borrowing,
+  treatment = treatment
+)
+```
+
+The Stan model compiled successfully and informed us that we are
+ready to begin sampling.
+
+# Sampling from an analysis object
+
+We can take draws from the posterior
+distribution using the function `mcmc_sample()`. This function takes as input
+our `Analysis` object and any arguments (other than the `data` argument)
+that are passed to
+[`CmdStanModel` objects](https://mc-stan.org/cmdstanr/reference/model-method-sample.html).
+
+```{r res}
+res <- mcmc_sample(anls_obj,
+  iter_warmup = 2000,
+  iter_sampling = 50000,
+  chains = 4,
+  seed = 112233
+)
+```
+
+# Summarizing results{.tabset}
+
+As a `CmdStanMCMC` object, `res` has several methods which are outlined on
+the
+[`cmdstanr` website](https://mc-stan.org/cmdstanr/reference/CmdStanModel.html).
+For instance, we can see a see a summary of the posterior distribution samples
+with `res$summary()`:
+
+```{r res-summary}
+res$summary()
+```
+
+The summary includes information for several parameter estimates
+from our BDB model. Because it may not be immediately clear what the parameters
+from the Stan model refer to, `psborrow2` has a function which returns a
+variable dictionary from the analysis object to help interpret these parameters:
+
+```{r data-dict}
+variable_dictionary(anls_obj)
+```
+
+We can also capture all of the draws with the function `res$draws()`, which
+returns an object of class `draws`. `draws` objects are
+common in many MCMC sampling software packages and allow us to leverage
+packages such as `posterior` and `bayesplot`.
+
+```{r draws}
+draws <- res$draws()
+print(draws)
+```
+
+***Note*** `psborrow2` also has a function to rename variables in `draws`
+objects to be more interpretable, which could be called with e.g.,
+`draws <- rename_draws_covariates(draws)`.
+
+## bayesplot
+
+With `draws` objects and `bayesplot`, we can create many useful visual summary
+plots. We can visualize the marginal posterior distribution of a
+variable we are interested in by plotting histograms of the draws with the
+function `mcmc_hist()`. Let's do that for the Hazard ratio for the treatment
+effect and for our commensurability parameter, tau.
+
+```{r mcmc-hist, message = FALSE}
+library(bayesplot)
+mcmc_hist(draws, c("HR_trt", "tau"))
+```
+
+We can see other plots that help us understand and diagnose problems with
+the MCMC sampler, such as trace and rank plots:
+
+```{r mcmc-trace, fig.width=6, fig.height=3.6, dpi = 100}
+color_scheme_set("mix-blue-pink")
+mcmc_trace(draws,
+  pars = c("HR_trt", "tau"),
+  n_warmup = 1000
+)
+```
+
+Many other functions are outlined in the
+[`bayesplot` vignettes](https://mc-stan.org/bayesplot/)
+
+## posterior
+
+`draws` objects are also supported by the `posterior` package,
+which provides many other tools for analyzing MCMC draw data. For instance, we
+can use `posterior` to derive 80% credible intervals for all parameters:
+
+```{r posterior-summ, message = FALSE}
+library(posterior)
+summarize_draws(draws, ~ quantile(.x, probs = c(0.1, 0.9)))
+```
+
+Another useful application of `posterior` is the evaluation of Monte Carlo
+standard error for quantiles of a variable of interest:
+
+```{r mcse-mean}
+vm <- extract_variable_matrix(draws, "HR_trt")
+mcse_quantile(x = vm, probs = c(0.1, 0.5, 0.9))
+```
+
+`posterior` contains many other helpful functions, as outlined on their
+[vignettes](https://cran.r-project.org/web/packages/posterior/vignettes/posterior.html).
