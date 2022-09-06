@@ -34,7 +34,10 @@ make_model_string_data <- function(analysis_obj) {
   covariate_string <- ifelse(
     !is.null(analysis_obj@covariates),
     h_glue("int<lower=0> K;
-     matrix[N, K] X;"),
+     matrix[N, K] X;
+     vector[K] L_beta;
+     vector[K] U_beta;
+     "),
     ""
   )
 

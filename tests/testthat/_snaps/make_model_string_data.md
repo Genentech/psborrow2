@@ -33,7 +33,9 @@
       vector[N] trt;
       matrix[N,2] Z;
       int<lower=0> K;
-      matrix[N, K] X; }
+      matrix[N, K] X;
+      vector[K] L_beta;
+      vector[K] U_beta; }
 
 # make_model_string_data works with binary outcome and BDB and covariates
 
@@ -46,5 +48,7 @@
       vector[N] trt;
       matrix[N,2] Z;
       int<lower=0> K;
-      matrix[N, K] X; }
+      matrix[N, K] X;
+      vector[K] L_beta;
+      vector[K] U_beta; }
 

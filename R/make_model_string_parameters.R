@@ -64,7 +64,7 @@ make_model_string_parameters <- function(analysis_obj) {
   if (!is.null(analysis_obj@covariates)) {
     parameters_string <- h_glue("
       {{parameters_string}}
-      vector[K] beta ;")
+      vector<lower=L_beta, upper=U_beta>[K] beta ;")
   }
 
   ### Close block
