@@ -19,6 +19,26 @@ knitr::opts_chunk$set(
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
+
+In this vignette, you'll learn how to use `psborrow2` to create a
+simulation study which will help inform trial design. Let's start by
+loading `psborrow2`:
+
 ```{r setup}
 library(psborrow2)
+```
+
+
+## Simulate covariates
+
+We will then start by specifying the sample size for internal control,
+external control, and internal treatment arms to be 200, 400, and 180,
+respectively, using the function `sim_samplesize()`.
+
+```{r}
+ss <- sim_samplesize(
+  n_internal_control = 200,
+  n_external_control = 400,
+  n_internal_experimental = 180
+)
 ```
