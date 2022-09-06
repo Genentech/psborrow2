@@ -56,7 +56,9 @@ make_model_string_data <- function(analysis_obj) {
     data_string <- h_glue("
       {{data_string}}
       int<lower=0> K;
-      matrix[N, K] X;")
+      matrix[N, K] X;
+      vector[K] L_beta;
+      vector[K] U_beta;")
   }
 
   ### Close block

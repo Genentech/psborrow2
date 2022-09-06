@@ -80,6 +80,61 @@ h_glue <- function(...) {
 }
 
 
+#' Get constraints from a list of `Prior`s
+#'
+#' @param cov_obj A `Covariates` object.
+#'
+#' @return A `matrix` with columns "lower" and "upper" with rows for each `Prior`.
+#' @examples
+#' psborrow2:::get_covariate_constraints(
+#'   add_covariates(
+#'     c("cov1", "cov2", "cov3"),
+#'     list(
+#'       normal_prior(0, 10),
+#'       beta_prior(0.3, 0.3),
+#'       gamma_prior(30, 1)
+#'     )
+#'   )
+#' )
+#'
+get_covariate_constraints <- function(cov_obj) {
+  n_covs <- length(cov_obj@covariates)
+  if (is(cov_obj@priors, "Prior")) {
+    cons <- rep(parse_constraint(cov_obj@priors@constraint), each = n_covs)
+    cons <- matrix(cons, ncol = 2, dimnames = list(NULL, c("lower", "upper")))
+  } else {
+    cons <- t(vapply(cov_obj@priors, function(p) parse_constraint(p@constraint), numeric(2L)))
+  }
+  assert_numeric(cons, any.missing = FALSE, len = 2 * n_covs)
+  cons
+}
+
+#' Extract Upper and Lower Bounds from Constraint String
+#'
+#' @param s Character. Constraint string, of the form `"<lower = 0, upper = 1>"`.
+#'
+#' @return
+#' A list with upper and lower bounds. Any unspecified bounds are set to `-Inf` or `Inf`.
+#' @examples
+#' psborrow2:::parse_constraint("<lower=0>")
+#' psborrow2:::parse_constraint("<lower=0, upper=1>")
+#' psborrow2:::parse_constraint("")
+parse_constraint <- function(s) {
+  assert_character(s)
+  s <- gsub("[<>[:space:]]", "", s)
+  s_list <- strsplit(s, ",")[[1]]
+
+  lower <- as.numeric(
+    gsub("lower[[:space:]]*=[[:space:]]*", "", s_list[grepl("lower", s_list)])
+  )
+
+  upper <- as.numeric(
+    gsub("upper[[:space:]]*=[[:space:]]*", "", s_list[grepl("upper", s_list)])
+  )
+
+  c(lower = max(lower, -Inf, na.rm = TRUE), upper = min(upper, Inf, na.rm = TRUE))
+}
+
 #' Rename Covariates in `draws` Object
 #'
 #' @param analysis `Analysis` as created by [`create_analysis_obj()`].

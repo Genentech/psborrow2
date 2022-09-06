@@ -27,7 +27,7 @@
       real <lower=0> tau;
       vector[2] alpha;
       real shape_weibull;
-      vector[K] beta ; }
+      vector<lower=L_beta, upper=U_beta>[K] beta ; }
 
 # make_model_string_parameters works with binary outcome and BDB
 
@@ -38,5 +38,5 @@
       real beta_trt;
       real <lower=0> tau;
       vector[2] alpha;
-      vector[K] beta ; }
+      vector<lower=L_beta, upper=U_beta>[K] beta ; }
 

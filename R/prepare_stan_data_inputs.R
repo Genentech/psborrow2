@@ -52,6 +52,9 @@ prepare_stan_data_inputs <- function(analysis_obj) {
   if (!is.null(analysis_obj@covariates)) {
     data_in[["K"]] <- NROW(analysis_obj@covariates@covariates)
     data_in[["X"]] <- analysis_obj@data_matrix[, analysis_obj@covariates@covariates, drop = FALSE]
+    beta_constraints <- get_covariate_constraints(analysis_obj@covariates)
+    data_in[["L_beta"]] <- beta_constraints[, "lower"]
+    data_in[["U_beta"]] <- beta_constraints[, "upper"]
   }
 
   return(data_in)
