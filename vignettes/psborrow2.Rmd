@@ -69,9 +69,9 @@ Such scenarios are common in drug development because the comparator arm for
 a novel therapy is often the standard of care, for which data exists from
 electronic health care records or from previous phase III registrational trials.
 
-Refer to the "custom dataset" vignette for more information on
+Refer to the "dataset" vignette for more information on
 how to implement BDB analyses on your own data:
-`vignette('custom_dataset', package = 'psborrow2')`
+`vignette('dataset', package = 'psborrow2')`
 
 ## Conduct a simulation study
 

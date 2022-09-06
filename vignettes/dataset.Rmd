@@ -1,12 +1,12 @@
 ---
-title: "Conduct a hybrid control analysis on a custom dataset using BDB"
+title: "Conduct a hybrid control analysis on a dataset using BDB"
 author: "Matt Secrest and Isaac Gravestock"
 output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{2. Conduct a hybrid control analysis on a custom dataset using BDB}
+  %\VignetteIndexEntry{2. Conduct a hybrid control analysis on a dataset using BDB}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -24,7 +24,7 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 In this article, you'll learn how to conduct Bayesian dynamic borrowing (BDB)
-analyses on custom data using `psborrow2`.
+analyses on data using `psborrow2`.
 
 # Load dependencies and setup CMD Stan
 
@@ -50,7 +50,7 @@ install_cmdstan(cores = 2)
 ```
 
 # Creating an analysis object {.tabset}
-For an analysis on custom data in `psborrow2`, our goal is to create an object
+For an analysis on data in `psborrow2`, our goal is to create an object
 of class `Analysis` which contains all the information we need to build a model
 and compile an MCMC sampler using Stan. To create an `Analysis` object,
 we need to call the function `create_analysis_obj()`. Let's look at the four
