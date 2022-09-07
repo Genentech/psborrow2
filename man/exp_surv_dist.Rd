@@ -4,12 +4,16 @@
 \alias{exp_surv_dist}
 \title{Exponential survival distribution}
 \usage{
-exp_surv_dist(time_var, cens_var)
+exp_surv_dist(time_var, cens_var, baseline_prior)
 }
 \arguments{
 \item{time_var}{character. Name of time variable column in model matrix}
 
 \item{cens_var}{character. Name of the censorship variable flag in model matrix}
+
+\item{baseline_prior}{\code{Prior}. Object of class \code{Prior}
+specifying prior distribution for the baseline outcome.
+See \code{Details} for more information.}
 }
 \value{
 Object of class \code{\link[=ExponentialSurvDist-class]{ExponentialSurvDist}}.
@@ -17,8 +21,27 @@ Object of class \code{\link[=ExponentialSurvDist-class]{ExponentialSurvDist}}.
 \description{
 Exponential survival distribution
 }
+\details{
+\subsection{Baseline Prior}{
+
+The \code{baseline_prior} argument specifies the prior distribution for the
+baseline log hazard rate. The interpretation of the \code{baseline_prior} differs
+slightly between methods selected in \code{borrowing_details()}:
+\itemize{
+\item \emph{'BDB'}: the \code{baseline_prior} for Bayesian Dynamic Borrowing refers
+to the log hazard rate of the external control arm.
+\item \emph{'Full borrowing'} or \emph{'No borrowing'}: the \code{baseline_prior} for
+these borrowing methods refers to the log hazard rate for the
+internal control arm.
+}
+}
+}
 \examples{
-es <- exp_surv_dist(time_var = "time", cens_var = "cens")
+es <- exp_surv_dist(
+  time_var = "time",
+  cens_var = "cens",
+  baseline_prior = normal_prior(0, 1000)
+)
 }
 \seealso{
 Other outcome models: 

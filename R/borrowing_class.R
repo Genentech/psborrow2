@@ -10,9 +10,6 @@ setClassUnion("PriorOrNULL", c("Prior", "NULL"))
 #' @slot method character. The type of borrowing to perform. It
 #' must be one of: `'BDB'`, `'Full borrowing'`, or `'No borrowing'`. See `?borrowing_details` for
 #' more information.
-#' @slot baseline_prior `Prior`. Object of class `Prior`
-#' specifying prior distribution for the baseline outcome. See `?borrowing_details` for
-#' more information.
 #' @slot ext_flag_col character. The name of the column in
 #' the data matrix that corresponds to the external control flag (`1`/`0` or
 #' `TRUE`/`FALSE`). This identifies a patient as belonging to the external
@@ -24,14 +21,12 @@ setClassUnion("PriorOrNULL", c("Prior", "NULL"))
   slots = c(
     method = "character",
     ext_flag_col = "character",
-    tau_prior = "PriorOrNULL",
-    baseline_prior = "Prior"
+    tau_prior = "PriorOrNULL"
   ),
   prototype = c(
     method = "No borrowing",
     ext_flag_col = NULL,
-    tau_prior = NULL,
-    baseline_prior = NULL
+    tau_prior = NULL
   ),
   validity = function(object) {
     assert_choice(object@method, c("Full borrowing", "No borrowing", "BDB"))

@@ -4,11 +4,7 @@
 \alias{weib_ph_surv_dist}
 \title{Weibull survival distribution (proportional hazards formulation)}
 \usage{
-weib_ph_surv_dist(
-  time_var,
-  cens_var,
-  shape_prior = exponential_prior(beta = 1e-04)
-)
+weib_ph_surv_dist(time_var, cens_var, shape_prior, baseline_prior)
 }
 \arguments{
 \item{time_var}{character. Name of time variable column in model matrix}
@@ -17,6 +13,10 @@ weib_ph_surv_dist(
 
 \item{shape_prior}{\code{Prior} class object for the Weibull shape
 parameter. Default is \code{exponential_prior(beta = 0.0001)}.}
+
+\item{baseline_prior}{\code{Prior}. Object of class \code{Prior}
+specifying prior distribution for the baseline outcome.
+See \code{Details} for more information.}
 }
 \value{
 Object of class \code{\link[=WeibullPHSurvDist-class]{WeibullPHSurvDist}}.
@@ -24,8 +24,28 @@ Object of class \code{\link[=WeibullPHSurvDist-class]{WeibullPHSurvDist}}.
 \description{
 Weibull survival distribution (proportional hazards formulation)
 }
+\details{
+\subsection{Baseline Prior}{
+
+The \code{baseline_prior} argument specifies the prior distribution for the
+baseline log hazard rate. The interpretation of the \code{baseline_prior} differs
+slightly between methods selected in \code{borrowing_details()}:
+\itemize{
+\item \emph{'BDB'}: the \code{baseline_prior} for Bayesian Dynamic Borrowing refers
+to the log hazard rate of the external control arm.
+\item \emph{'Full borrowing'} or \emph{'No borrowing'}: the \code{baseline_prior} for
+these borrowing methods refers to the log hazard rate for the
+internal control arm.
+}
+}
+}
 \examples{
-ws <- weib_ph_surv_dist(time_var = "time", cens_var = "cens", shape_prior = exponential_prior(1))
+ws <- weib_ph_surv_dist(
+  time_var = "time",
+  cens_var = "cens",
+  shape_prior = exponential_prior(1),
+  baseline_prior = normal_prior(0, 1000)
+)
 }
 \seealso{
 Other outcome models: 

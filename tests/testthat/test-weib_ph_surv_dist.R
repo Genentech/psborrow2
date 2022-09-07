@@ -1,6 +1,11 @@
 test_that("Weibull survival distributions are rendering correctly", {
   # Make Weibull survival distribution
-  surv_dist <- weib_ph_surv_dist(time_var = "time", cens_var = "cens")
+  surv_dist <- weib_ph_surv_dist(
+    time_var = "time",
+    cens_var = "cens",
+    normal_prior(0, 1000),
+    normal_prior(0, 1000)
+  )
 
   # Expect correct class
   expect_class(surv_dist, "WeibullPHSurvDist")
@@ -15,7 +20,12 @@ test_that("Weibull survival distributions are rendering correctly", {
 
 test_that("get_vars works for WeibullPHSurvDist", {
   expect_identical(
-    get_vars(weib_ph_surv_dist(time_var = "TIME", cens_var = "CENS")),
+    get_vars(weib_ph_surv_dist(
+      time_var = "TIME",
+      cens_var = "CENS",
+      normal_prior(0, 1000),
+      normal_prior(0, 1000)
+    )),
     c(time_var = "TIME", cens_var = "CENS")
   )
 })

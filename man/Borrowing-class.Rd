@@ -17,10 +17,6 @@ A class for defining borrowing details. Objects of class
 must be one of: \code{'BDB'}, \code{'Full borrowing'}, or \code{'No borrowing'}. See \code{?borrowing_details} for
 more information.}
 
-\item{\code{baseline_prior}}{\code{Prior}. Object of class \code{Prior}
-specifying prior distribution for the baseline outcome. See \code{?borrowing_details} for
-more information.}
-
 \item{\code{ext_flag_col}}{character. The name of the column in
 the data matrix that corresponds to the external control flag (\code{1}/\code{0} or
 \code{TRUE}/\code{FALSE}). This identifies a patient as belonging to the external

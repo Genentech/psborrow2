@@ -1,10 +1,9 @@
 test_that("make_model_string_transf_param works with exponential survival and full borrowing", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = exp_surv_dist("time", "cnsr"),
+    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
     borrowing = borrowing_details(
       "Full borrowing",
-      normal_prior(0, 100),
       "ext"
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
@@ -20,10 +19,9 @@ test_that("make_model_string_transf_param works with exponential survival and fu
 test_that("make_model_string_transf_param works with exponential survival and BDB", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = exp_surv_dist("time", "cnsr"),
+    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
     borrowing = borrowing_details(
       "BDB",
-      normal_prior(0, 100),
       "ext",
       exponential_prior(0.001)
     ),
@@ -44,10 +42,14 @@ test_that("make_model_string_transf_param works with weibull survival and BDB an
       c("cov1", "cov2"),
       normal_prior(0, 1000)
     ),
-    outcome = weib_ph_surv_dist("time", "cnsr", normal_prior(0, 1000)),
+    outcome = weib_ph_surv_dist(
+      "time",
+      "cnsr",
+      normal_prior(0, 1000),
+      normal_prior(0, 100)
+    ),
     borrowing = borrowing_details(
       "BDB",
-      normal_prior(0, 100),
       "ext",
       exponential_prior(0.001)
     ),
@@ -68,10 +70,9 @@ test_that("make_model_string_transf_param works with binary outcome and BDB  and
       c("cov1", "cov2"),
       normal_prior(0, 1000)
     ),
-    outcome = logistic_bin_outcome("cnsr"),
+    outcome = logistic_bin_outcome("cnsr", normal_prior(0, 100)),
     borrowing = borrowing_details(
       "BDB",
-      normal_prior(0, 100),
       "ext",
       exponential_prior(0.001)
     ),

@@ -15,6 +15,8 @@
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' Empty for `LogisticBinaryOutcome`.
 #' @slot binary_var character. Variable used for outcome in `LogisticBinaryOutcome` objects.
+#' @slot baseline_prior `Prior`. Object of class `Prior`
+#' specifying prior distribution for the baseline outcome.
 #' @include outcome_class.R
 #' @family outcome
 .logistic_bin_outcome <- setClass(
@@ -37,14 +39,37 @@
 #'
 #' @param binary_var character. Name of binary (1/0 or TRUE/FALSE) outcome variable in the
 #' model matrix
+#' @param baseline_prior `Prior`. Object of class `Prior`
+#' specifying prior distribution for the baseline outcome.
+#' See `Details` for more information.
+#'
+#' @details
+#' ## Baseline Prior
+#'
+#' The `baseline_prior` argument specifies the prior distribution for the
+#' baseline log odds. The interpretation of the `baseline_prior` differs
+#' slightly between methods selected in `borrowing_details()`:
+#' - \emph{'BDB'}: the `baseline_prior` for Bayesian Dynamic Borrowing refers
+#' to the log odds of the external control arm.
+#' - \emph{'Full borrowing'} or \emph{'No borrowing'}: the `baseline_prior` for
+#' these borrowing methods refers to the log odds for the
+#' internal control arm.
 #'
 #' @return Object of class [`LogisticBinaryOutcome`][LogisticBinaryOutcome-class].
 #' @export
 #' @family outcome models
 #'
 #' @examples
-#' lg <- logistic_bin_outcome(binary_var = "response")
-logistic_bin_outcome <- function(binary_var) {
+#' lg <- logistic_bin_outcome(
+#'   binary_var = "response",
+#'   baseline_prior = normal_prior(0, 1000)
+#' )
+logistic_bin_outcome <- function(binary_var,
+                                 baseline_prior) {
   assert_string(binary_var)
-  .logistic_bin_outcome(binary_var = binary_var)
+  assert_class(baseline_prior, "Prior")
+  .logistic_bin_outcome(
+    binary_var = binary_var,
+    baseline_prior = baseline_prior
+  )
 }

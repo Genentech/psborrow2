@@ -4,16 +4,12 @@
 \alias{borrowing_details}
 \title{Specify Borrowing Model}
 \usage{
-borrowing_details(method, baseline_prior, ext_flag_col, tau_prior = NULL)
+borrowing_details(method, ext_flag_col, tau_prior = NULL)
 }
 \arguments{
 \item{method}{character. The type of borrowing to perform. It
 must be one of: \code{'BDB'}, \code{'Full borrowing'}, or \code{'No borrowing'}. See \emph{Details} for
 more information.}
-
-\item{baseline_prior}{Object of class \code{Prior}
-specifying prior distribution for the baseline outcome.
-See \code{Details} for more information.}
 
 \item{ext_flag_col}{character. The name of the column in
 the data matrix that corresponds to the external control flag (\code{1}/\code{0} or
@@ -55,20 +51,6 @@ and 'No borrowing', both are available as options to facilitate comparison
 between methods.
 }
 
-\subsection{Baseline Prior}{
-
-The \code{baseline_prior} argument specifies the prior distribution for the
-baseline log hazard rate or log odds, depending on the outcome type. The
-interpretation of the \code{baseline_prior} differs slightly between methods:
-\itemize{
-\item \emph{'BDB'}: the \code{baseline_prior} for Bayesian Dynamic Borrowing refers
-to the log hazard rate or log odds of the external control arm.
-\item \emph{'Full borrowing'} or \emph{'No borrowing'}: the \code{baseline_prior} for
-these borrowing methods refers to the log hazard rate or log odds for the
-internal control arm.
-}
-}
-
 \subsection{External Control}{
 
 The \code{ext_flag_col} argument refers to the column in the data matrix that
@@ -97,7 +79,6 @@ will lead to more borrowing.
 \examples{
 sb <- borrowing_details(
   method = "BDB",
-  baseline_prior = normal_prior(0, 1000),
   ext_flag_col = "ext",
   tau_prior = gamma_prior(0.001, 0.001)
 )
