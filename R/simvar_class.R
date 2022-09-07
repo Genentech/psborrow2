@@ -47,6 +47,15 @@ cont_var <- function(mu_internal,
   )
 }
 
+setMethod(
+  f = "show",
+  signature = "SimVarCont",
+  definition = function(object) {
+    cat("Continuous variable\n")
+    cat(glue::glue("internal mean: {object@mu_internal}, external mean: {object@mu_external}"))
+  }
+)
+
 #' `SimVarBin` class
 #'
 #' A constructor for making objects of class `SimVarBin`.
@@ -94,3 +103,12 @@ bin_var <- function(prob_internal,
     prob_external = prob_external
   )
 }
+
+setMethod(
+  f = "show",
+  signature = "SimVarBin",
+  definition = function(object) {
+    cat("Binary variable\n")
+    cat(glue::glue("internal probability: {object@prob_internal}, external probability: {object@prob_external}"))
+  }
+)

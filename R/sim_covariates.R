@@ -3,80 +3,120 @@
 #' A class for specifying covariate distributions and covariance for
 #' simulation studies.
 #'
-#' @slot n_internal_control integer. Number of patients to be simulated in the
-#' internal control arm.
-#' @slot n_external_control integer. Number of patients to be simulated in the
-#' external control arm.
-#' @slot n_internal_experimental integer. Number of patients to be simulated
-#' in the internal experimental arm.
-#' @slot mat matrix. Matrix with two columns, `ext` (flag for being from
-#' external data source) and `trt` (flag for receiving experimental
-#' treatment)
-.sim_samplesize <- setClass(
-  "SampleSize",
+#' @slot covariates list. List of covariate mean values or probabilities as
+#' generated through `bin_var()` (class `SimVarBin` or `cont_var()`
+#' (class `SimVarCont`).
+#' @slot covariance_internal matrix. Covariance matrix before binarization
+#' for internal patients.
+#' @slot covariance_external matrix. Covariance matrix before binarization
+#' for external patients.
+#'
+.sim_covariates <- setClass(
+  "SimCovariate",
   slots = c(
-    n_internal_control = "numeric",
-    n_external_control = "numeric",
-    n_internal_experimental = "numeric",
-    mat = "matrix"
+    covariates = "list",
+    covariance_internal = "matrix",
+    covariance_external = "matrix"
   ),
   validity = function(object) {
-    if (object@n_internal_control <= 0) {
-      return("n_internal_control must be >0")
+
+    # Covariates are named
+    if (is.null(names(object@covariates)) |
+        any(names(object@covariates) == "")) {
+      return("All covariates must be named")
     }
-    if (object@n_external_control <= 0) {
-      return("n_external_control must be >0")
+    if (!all(sapply(object@covariates, is, "SimVar"))) {
+      return("`covariates` must all be of class `SimVar` (use `bin_var()` or `cont_var()`)")
     }
-    if (object@n_internal_experimental <= 0) {
-      return("n_external_experimental must be >0")
+    if (length(unique(names(object@covariates))) != length(names(object@covariates))) {
+      return("named arguments to list for argument `covariates` must all be different")
     }
+
+    # Covariance matrices are square, symmetric, correct length
+    if (!all(dim(object@covariance_internal) == rep(length(object@covariates), 2)) ||
+        !all(dim(object@covariance_external) == rep(length(object@covariates), 2)) ||
+        !isSymmetric(object@covariance_internal) ||
+        !isSymmetric(object@covariance_external)) {
+      return(paste0("Covariance matrices must be symmetric square matrices width ",
+                  "height and width equal to the number of covariates (",
+                  length(object@covariates), ")."))
+    }
+
+    # Matrices are semi definite
+    if (!matrixcalc::is.positive.semi.definite(object@covariance_internal) ||
+        !matrixcalc::is.positive.semi.definite(object@covariance_external)) {
+      return(paste0("Covariance matrices must be semi positive definite. ",
+                  "Try using a different matrix or finding the nearest ",
+                  "positive definite matrix (e.g., with `Matrix::nearPD()`"))
+    }
+
   }
+
 )
 
-#' Set simulation study parameters for sample size
+#' Specify covariates for simulation study
 #'
-#' @param n_internal_control integer. Number of patients to be simulated in the
-#' internal control arm.
-#' @param n_external_control integer. Number of patients to be simulated in the
-#' external control arm.
-#' @param n_internal_experimental integer. Number of patients to be simulated
-#' in the internal experimental arm.
+#' Provide details on the desired covariate distributions and covariance for
+#' for a simulation study.
 #'
-#' @return Object of class `SampleSize`
+#' @param covariates list. Named list of covariate mean values or probabilities as
+#' generated through `bin_var()` (class `SimVarBin` or `cont_var()`
+#' (class `SimVarCont`). See `details` for more information.
+#' @param covariance_internal matrix. Covariance matrix before binarization
+#' for internal patients.
+#' @param covariance_external matrix. Covariance matrix before binarization
+#' for external patients.
+#'
+#' @return Object of class `SimCovariate`
+#'
+#' @details
+#' This function is intended to specify the number of covariates and
+#' relationships between them for the purposes of designing a simulation
+#' study in `psborrow2`. Because the outcome model does not necessarily
+#' need to adjust for covariates, this function is not necessary in
+#' `create_simulation_obj()`. The relationship between the treatment
+#' and the outcome is specified elsewhere (i.e, in `sim_survival()` or
+#' `sim_binary_event()`).
+#'
+#' We need a few things to
+#'
 #' @export
 #' @family simulation
 #' @examples
-#' ss <- sim_samplesize(200, 200, 500)
-sim_samplesize <- function(n_internal_control,
-                           n_external_control,
-                           n_internal_experimental) {
-  assert_int(n_internal_control)
-  assert_int(n_external_control)
-  assert_int(n_internal_experimental)
+#'
+#' set.seed(123)
+#' covmat <- matrix(rWishart(1, 2, diag(2)), ncol = 2)
+#'
+#' covset1 <- sim_covariates(
+#'    covariates = list(cov1 = bin_var(0.5, 0.5),
+#'                      cov2 = cont_var(100, 130)),
+#'    covariance_internal = covmat,
+#'    covariance_external = covmat
+#')
+sim_covariates <- function(covariates,
+                           covariance_internal,
+                           covariance_external) {
+  # Check input classes
+  assert_list(covariates)
+  assert_matrix(covariance_internal)
+  assert_matrix(covariance_external)
 
-  sim_samplesize_obj <- .sim_samplesize(
-    n_internal_control = n_internal_control,
-    n_external_control = n_external_control,
-    n_internal_experimental = n_internal_experimental
+  # Construct object
+  sim_covariates_obj <- .sim_covariates(
+    covariates = covariates,
+    covariance_internal = covariance_internal,
+    covariance_external = covariance_external
   )
 
-  ext <- rep(c(0L, 1L, 0L), times = c(n_internal_control, n_external_control, n_internal_experimental))
-  trt <- rep(c(0L, 0L, 1L), times = c(n_internal_control, n_external_control, n_internal_experimental))
-  sim_samplesize_obj@mat <- cbind(ext, trt)
-
-  return(sim_samplesize_obj)
+  # Return
+  return(sim_covariates_obj)
 }
 
 # show ----
 setMethod(
   f = "show",
-  signature = "SampleSize",
+  signature = "SimCovariate",
   definition = function(object) {
-    cat("SampleSize Object\n")
-    cat(glue::glue("{object@n_internal_control} internal control patients"))
-    cat("\n")
-    cat(glue::glue("{object@n_external_control} external control patients"))
-    cat("\n")
-    cat(glue::glue("{object@n_internal_experimental} external treated patients"))
+    cat("SimCovariate Object\n")
   }
 )
