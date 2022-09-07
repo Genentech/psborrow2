@@ -69,14 +69,22 @@ plot_pmf <- function(x, y, ..., col = "grey", add = FALSE) {
 #' to simplify gluing Stan code.
 #'
 #' @param ... Arguments passed to [glue::glue()]
+#' @param collapse logical. Collapse result of glue() with [`glue_collapse()`][glue::glue_collapse()]?
+#' @param collapse_sep string. A character string to separate the original strings in the collapsed string.
 #'
-#' @return A string.
+#' @return A character (of class `glue`).
 #' @noRd
 #' @examples
 #' name <- "Tom"
 #' psborrow2:::h_glue("hello, my name is {{name}}.")
-h_glue <- function(...) {
-  glue::glue(..., .open = "{{", .close = "}}", .envir = parent.frame())
+#' name <- c("Tom", "Fred")
+#' psborrow2:::h_glue("hello, my name is {{name}}.", collapse = TRUE)
+h_glue <- function(..., collapse = FALSE, collapse_sep = "\n") {
+  result <- glue::glue(..., .open = "{{", .close = "}}", .envir = parent.frame())
+  if (isTRUE(collapse)) {
+    result <- glue::glue_collapse(result, sep = collapse_sep)
+  }
+  result
 }
 
 
@@ -224,4 +232,28 @@ variable_dictionary <- function(analysis_obj) {
 
   vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addl_params)
   data.frame(Stan_variable = unname(vars), Description = names(vars))
+}
+
+
+
+#' Get Stan code for a `Prior`
+#'
+#' @param object `Prior` or list of `Prior` objects.
+#'
+#' @return A string containing the Stan code sampling from specified distribution.
+#'
+#' @examples
+#' get_prior_string(normal_prior(0, 100))
+get_prior_string <- function(object) {
+  assert_multi_class(object, c("Prior", "list"))
+  if (is(object, "list")) {
+    assert_list(object, types = "Prior")
+    vapply(
+      object,
+      function(object) h_glue(object@stan_code),
+      character(1L)
+    )
+  } else {
+    h_glue(object@stan_code)
+  }
 }
