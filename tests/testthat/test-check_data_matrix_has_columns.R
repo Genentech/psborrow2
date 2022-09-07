@@ -4,7 +4,8 @@ test_that("check_data_matrix() catches errors", {
     covariates = add_covariates(c("cov1", "cov2"), normal_prior(0, 1000)),
     outcome = exp_surv_dist(
       time_var = "time",
-      cens_var = "cnsr"
+      cens_var = "cnsr",
+      normal_prior(0, 1000)
     ),
     treatment = treatment_details(
       "trt",
@@ -12,8 +13,7 @@ test_that("check_data_matrix() catches errors", {
     ),
     borrowing = borrowing_details(
       "Full borrowing",
-      ext_flag_col = "ext",
-      baseline_prior = normal_prior(0, 1000)
+      ext_flag_col = "ext"
     )
   )
 
@@ -34,7 +34,11 @@ test_that("check_data_matrix() catches errors", {
   )
 
   anls_broken <- anls_full
-  anls_broken@outcome <- exp_surv_dist(time_var = "time_months", cens_var = "non_dead")
+  anls_broken@outcome <- exp_surv_dist(
+    time_var = "time_months",
+    cens_var = "non_dead",
+    baseline_prior = normal_prior(0, 1000)
+  )
   expect_error(
     psborrow2:::check_data_matrix_has_columns(anls_broken),
     "The following specified variables were not found in `data_matrix`:\n  time_var: time_months\n  cens_var: non_dead"

@@ -22,6 +22,9 @@ to interpolate into stan model.}
 \item{\code{param_priors}}{list. Named list of prior distributions on the ancillary parameters in the model.}
 
 \item{\code{binary_var}}{character. Variable used for outcome in \code{BinaryOutcome} objects.}
+
+\item{\code{baseline_prior}}{\code{Prior}. Object of class \code{Prior}
+specifying prior distribution for the baseline outcome.}
 }}
 
 \seealso{

@@ -4,11 +4,15 @@
 \alias{logistic_bin_outcome}
 \title{Bernoulli distribution with logit parametrization}
 \usage{
-logistic_bin_outcome(binary_var)
+logistic_bin_outcome(binary_var, baseline_prior)
 }
 \arguments{
 \item{binary_var}{character. Name of binary (1/0 or TRUE/FALSE) outcome variable in the
 model matrix}
+
+\item{baseline_prior}{\code{Prior}. Object of class \code{Prior}
+specifying prior distribution for the baseline outcome.
+See \code{Details} for more information.}
 }
 \value{
 Object of class \code{\link[=LogisticBinaryOutcome-class]{LogisticBinaryOutcome}}.
@@ -16,8 +20,26 @@ Object of class \code{\link[=LogisticBinaryOutcome-class]{LogisticBinaryOutcome}
 \description{
 Bernoulli distribution with logit parametrization
 }
+\details{
+\subsection{Baseline Prior}{
+
+The \code{baseline_prior} argument specifies the prior distribution for the
+baseline log odds. The interpretation of the \code{baseline_prior} differs
+slightly between methods selected in \code{borrowing_details()}:
+\itemize{
+\item \emph{'BDB'}: the \code{baseline_prior} for Bayesian Dynamic Borrowing refers
+to the log odds of the external control arm.
+\item \emph{'Full borrowing'} or \emph{'No borrowing'}: the \code{baseline_prior} for
+these borrowing methods refers to the log odds for the
+internal control arm.
+}
+}
+}
 \examples{
-lg <- logistic_bin_outcome(binary_var = "response")
+lg <- logistic_bin_outcome(
+  binary_var = "response",
+  baseline_prior = normal_prior(0, 1000)
+)
 }
 \seealso{
 Other outcome models: 

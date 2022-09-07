@@ -62,10 +62,9 @@ test_that("rename_draws_covariates works as expected", {
       c("cov1", "cov2"),
       normal_prior(0, 1000)
     ),
-    outcome = logistic_bin_outcome("cnsr"),
+    outcome = logistic_bin_outcome("cnsr", normal_prior(0, 1000)),
     borrowing = borrowing_details(
       "BDB",
-      normal_prior(0, 100),
       "ext",
       exponential_prior(0.001)
     ),
@@ -114,10 +113,9 @@ test_that("variable_dictionary works as expected for logistic and BDB", {
       c("cov1", "cov2"),
       normal_prior(0, 1000)
     ),
-    outcome = logistic_bin_outcome("cnsr"),
+    outcome = logistic_bin_outcome("cnsr", normal_prior(0, 1000)),
     borrowing = borrowing_details(
       "BDB",
-      normal_prior(0, 100),
       "ext",
       exponential_prior(0.001)
     ),
@@ -139,10 +137,9 @@ test_that("variable_dictionary works as expected for logistic and BDB", {
 test_that("variable_dictionary works as expected for exponential and no borrowing", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = exp_surv_dist("time", "cnsr"),
+    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 1000)),
     borrowing = borrowing_details(
       "Full borrowing",
-      normal_prior(0, 100),
       "ext"
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
@@ -160,10 +157,14 @@ test_that("variable_dictionary works as expected for exponential and no borrowin
 test_that("variable_dictionary includes shape parameter for Weibull PH", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = weib_ph_surv_dist("time", "cnsr", normal_prior(0, 1000)),
+    outcome = weib_ph_surv_dist(
+      "time",
+      "cnsr",
+      normal_prior(0, 1000),
+      normal_prior(0, 1000)
+    ),
     borrowing = borrowing_details(
       "Full borrowing",
-      normal_prior(0, 100),
       "ext"
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))

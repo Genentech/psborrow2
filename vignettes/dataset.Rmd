@@ -136,7 +136,8 @@ distribution.
 ```{r exp-surv-dist}
 outcome <- exp_surv_dist(
   time_var = "time",
-  cens_var = "cnsr"
+  cens_var = "cnsr",
+  baseline_prior = normal_prior(0, 1000)
 )
 outcome
 ```
@@ -179,7 +180,6 @@ vignette, `vignette('prior_distributions', package = 'psborrow2')`
 ```{r borrowing-details}
 borrowing <- borrowing_details(
   method = "BDB",
-  baseline_prior = normal_prior(0, 1000),
   ext_flag_col = "ext",
   tau_prior = gamma_prior(0.001, 0.001)
 )

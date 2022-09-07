@@ -10,10 +10,9 @@
 #' @examples
 #' anls_obj <- psborrow2:::.analysis_obj(
 #'   data_matrix = example_matrix,
-#'   outcome = exp_surv_dist("time", "cnsr"),
+#'   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
 #'   borrowing = borrowing_details(
 #'     "Full borrowing",
-#'     normal_prior(0, 100),
 #'     "ext"
 #'   ),
 #'   treatment = treatment_details("trt", normal_prior(0, 100))
@@ -99,8 +98,8 @@ make_model_string_model <- function(analysis_obj) {
     tau_prior <- h_glue(analysis_obj@borrowing@tau_prior@stan_code, object = analysis_obj@borrowing@tau_prior)
 
     alpha_2_prior <- h_glue(
-      analysis_obj@borrowing@baseline_prior@stan_code,
-      object = analysis_obj@borrowing@baseline_prior
+      analysis_obj@outcome@baseline_prior@stan_code,
+      object = analysis_obj@outcome@baseline_prior
     )
 
     model_string <- h_glue("
@@ -115,8 +114,8 @@ make_model_string_model <- function(analysis_obj) {
   ### Add in alphas if method is not BDB
   if (analysis_obj@borrowing@method != "BDB") {
     alpha_prior <- h_glue(
-      analysis_obj@borrowing@baseline_prior@stan_code,
-      object = analysis_obj@borrowing@baseline_prior
+      analysis_obj@outcome@baseline_prior@stan_code,
+      object = analysis_obj@outcome@baseline_prior
     )
 
     model_string <- h_glue("

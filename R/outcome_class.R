@@ -15,6 +15,8 @@ setClass(
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' @slot time_var character. Variable used for time in `TimeToEvent` objects.
 #' @slot cens_var character. Variable used for censoring in `TimeToEvent` objects.
+#' @slot baseline_prior `Prior`. Object of class `Prior`
+#' specifying prior distribution for the baseline outcome.
 #' @family outcome
 setClass(
   "TimeToEvent",
@@ -25,13 +27,15 @@ setClass(
     n_param = "integer",
     param_priors = "list",
     time_var = "character",
-    cens_var = "character"
+    cens_var = "character",
+    baseline_prior = "Prior"
   ),
   prototype = list(
     n_param = 0L,
     function_stan_code = "",
     param_stan_code = "",
-    likelihood_stan_code = ""
+    likelihood_stan_code = "",
+    baseline_prior = NULL
   ),
   contains = "Outcome"
 )
@@ -44,6 +48,8 @@ setClass(
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate.
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' @slot binary_var character. Variable used for outcome in `BinaryOutcome` objects.
+#' @slot baseline_prior `Prior`. Object of class `Prior`
+#' specifying prior distribution for the baseline outcome.
 #' @family outcome
 setClass(
   "BinaryOutcome",
@@ -53,13 +59,15 @@ setClass(
     likelihood_stan_code = "character",
     n_param = "integer",
     param_priors = "list",
-    binary_var = "character"
+    binary_var = "character",
+    baseline_prior = "Prior"
   ),
   prototype = list(
     n_param = 0L,
     function_stan_code = "",
     param_stan_code = "",
-    likelihood_stan_code = ""
+    likelihood_stan_code = "",
+    baseline_prior = NULL
   ),
   contains = "Outcome"
 )
