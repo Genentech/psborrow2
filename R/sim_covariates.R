@@ -19,10 +19,9 @@
     covariance_external = "matrix"
   ),
   validity = function(object) {
-
     # Covariates are named
     if (is.null(names(object@covariates)) |
-        any(names(object@covariates) == "")) {
+      any(names(object@covariates) == "")) {
       return("All covariates must be named")
     }
     if (!all(sapply(object@covariates, is, "SimVar"))) {
@@ -34,24 +33,26 @@
 
     # Covariance matrices are square, symmetric, correct length
     if (!all(dim(object@covariance_internal) == rep(length(object@covariates), 2)) ||
-        !all(dim(object@covariance_external) == rep(length(object@covariates), 2)) ||
-        !isSymmetric(object@covariance_internal) ||
-        !isSymmetric(object@covariance_external)) {
-      return(paste0("Covariance matrices must be symmetric square matrices width ",
-                  "height and width equal to the number of covariates (",
-                  length(object@covariates), ")."))
+      !all(dim(object@covariance_external) == rep(length(object@covariates), 2)) ||
+      !isSymmetric(object@covariance_internal) ||
+      !isSymmetric(object@covariance_external)) {
+      return(paste0(
+        "Covariance matrices must be symmetric square matrices width ",
+        "height and width equal to the number of covariates (",
+        length(object@covariates), ")."
+      ))
     }
 
     # Matrices are semi definite
     if (!matrixcalc::is.positive.semi.definite(object@covariance_internal) ||
-        !matrixcalc::is.positive.semi.definite(object@covariance_external)) {
-      return(paste0("Covariance matrices must be semi positive definite. ",
-                  "Try using a different matrix or finding the nearest ",
-                  "positive definite matrix (e.g., with `Matrix::nearPD()`"))
+      !matrixcalc::is.positive.semi.definite(object@covariance_external)) {
+      return(paste0(
+        "Covariance matrices must be semi positive definite. ",
+        "Try using a different matrix or finding the nearest ",
+        "positive definite matrix (e.g., with `Matrix::nearPD()`"
+      ))
     }
-
   }
-
 )
 
 #' Specify covariates for simulation study
@@ -88,11 +89,13 @@
 #' covmat <- matrix(rWishart(1, 2, diag(2)), ncol = 2)
 #'
 #' covset1 <- sim_covariates(
-#'    covariates = list(cov1 = bin_var(0.5, 0.5),
-#'                      cov2 = cont_var(100, 130)),
-#'    covariance_internal = covmat,
-#'    covariance_external = covmat
-#')
+#'   covariates = list(
+#'     cov1 = bin_var(0.5, 0.5),
+#'     cov2 = cont_var(100, 130)
+#'   ),
+#'   covariance_internal = covmat,
+#'   covariance_external = covmat
+#' )
 sim_covariates <- function(covariates,
                            covariance_internal,
                            covariance_external) {

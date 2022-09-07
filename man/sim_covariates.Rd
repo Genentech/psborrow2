@@ -38,13 +38,15 @@ We need a few things to
 \examples{
 
 set.seed(123)
-covmat <- rWishart(1, 2, diag(2))
+covmat <- matrix(rWishart(1, 2, diag(2)), ncol = 2)
 
 covset1 <- sim_covariates(
-   covariates = list(cov1 = bin_var(0.5, 0.5),
-                     cov2 = cont_var(100, 130)),
-   covariance_internal = covmat,
-   covariance_external = covmat
+  covariates = list(
+    cov1 = bin_var(0.5, 0.5),
+    cov2 = cont_var(100, 130)
+  ),
+  covariance_internal = covmat,
+  covariance_external = covmat
 )
 }
 \seealso{
