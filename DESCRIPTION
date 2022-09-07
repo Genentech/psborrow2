@@ -52,7 +52,8 @@ Suggests:
     xml2,
     knitr,
     rmarkdown,
-    bayesplot
+    bayesplot,
+    matrixcalc
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
 Language: en-US
@@ -90,7 +91,9 @@ Collate:
     'package.R'
     'poisson_prior.R'
     'prepare_stan_data_inputs.R'
+    'sim_covariates.R'
     'sim_samplesize.R'
+    'simvar_class.R'
     'treatment_details.R'
     'trim_data_matrix.R'
     'uniform_prior.R'

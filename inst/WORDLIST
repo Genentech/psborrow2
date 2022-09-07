@@ -16,6 +16,9 @@ Viele
 al
 bayesplot
 bernoulli
+binarization
+binarizing
+bmatrix
 cauchy
 cmdstan
 cmdstanr
@@ -34,7 +37,7 @@ poisson
 psborrow
 pst
 registrational
-softwares
+simvar
 stan
 tabset
 tibble
