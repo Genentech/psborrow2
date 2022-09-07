@@ -4,13 +4,15 @@
       result
     Output
       model {
-      vector[N] lp;
-      vector[N] elp;
-      beta_trt ~ normal(0, 1000); 
-      lp = alpha + trt * beta_trt ;
+        vector[N] lp;
+        vector[N] elp;
+        beta_trt ~ normal(0, 1000);
+        lp = alpha + trt * beta_trt ;
       elp = exp(lp);
-      alpha ~ normal(0, 100) ;
-      for (i in 1:N) {
+        
+        
+        alpha ~ normal(0, 100) ;
+        for (i in 1:N) {
          if (cens[i] == 1) {
             target += exponential_lccdf(time[i] | elp[i] );
          } else {
@@ -25,17 +27,19 @@
       result
     Output
       model {
-      vector[N] lp;
-      vector[N] elp;
-      beta_trt ~ normal(0, 1000); 
-      lp = Z * alpha + trt * beta_trt;
+        vector[N] lp;
+        vector[N] elp;
+        beta_trt ~ normal(0, 1000);
+        lp = Z * alpha + trt * beta_trt;
       elp = exp(lp) ;
-      tau ~ exponential(0.001) ;
+        
+        
+        tau ~ exponential(0.001) ;
       real sigma;
       sigma = 1 / tau;
       alpha[2] ~ normal(0, 100) ;
       alpha[1] ~ normal(alpha[2], sqrt(sigma)) ;
-      for (i in 1:N) {
+        for (i in 1:N) {
          if (cens[i] == 1) {
             target += exponential_lccdf(time[i] | elp[i] );
          } else {
@@ -50,20 +54,20 @@
       result
     Output
       model {
-      vector[N] lp;
-      vector[N] elp;
-      beta_trt ~ normal(0, 1000); 
-      lp = X * beta + Z * alpha + trt * beta_trt;
-      elp = exp(lp) ;
-      shape_weibull ~ normal(0, 1000) ;
-      beta[1] ~ normal(0, 1000) ;
+        vector[N] lp;
+        vector[N] elp;
+        beta_trt ~ normal(0, 1000);
+          lp = X * beta + Z * alpha + trt * beta_trt;
+        elp = exp(lp) ;
+        shape_weibull ~ normal(0, 1000) ;
+        beta[1] ~ normal(0, 1000) ;
       beta[2] ~ normal(0, 1000) ;
-      tau ~ exponential(0.001) ;
+        tau ~ exponential(0.001) ;
       real sigma;
       sigma = 1 / tau;
       alpha[2] ~ normal(0, 100) ;
       alpha[1] ~ normal(alpha[2], sqrt(sigma)) ;
-      for (i in 1:N) {
+        for (i in 1:N) {
          if (cens[i] == 1) {
             target += weibull_ph_lccdf(time[i] | shape_weibull, elp[i] );
          } else {
@@ -78,19 +82,20 @@
       result
     Output
       model {
-      vector[N] lp;
-      vector[N] elp;
-      beta_trt ~ normal(0, 1000); 
-      lp = X * beta + Z * alpha + trt * beta_trt;
-      elp = exp(lp) ;
-      beta[1] ~ normal(0, 1000) ;
+        vector[N] lp;
+        vector[N] elp;
+        beta_trt ~ normal(0, 1000);
+          lp = X * beta + Z * alpha + trt * beta_trt;
+        elp = exp(lp) ;
+        
+        beta[1] ~ normal(0, 1000) ;
       beta[2] ~ normal(0, 1000) ;
-      tau ~ exponential(0.001) ;
+        tau ~ exponential(0.001) ;
       real sigma;
       sigma = 1 / tau;
       alpha[2] ~ normal(0, 100) ;
       alpha[1] ~ normal(alpha[2], sqrt(sigma)) ;
-      for (i in 1:N) {
+        for (i in 1:N) {
          target += bernoulli_logit_lupmf(y[i] | lp[i]);
       }
       }

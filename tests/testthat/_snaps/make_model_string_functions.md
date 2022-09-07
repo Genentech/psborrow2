@@ -4,7 +4,7 @@
       result
     Output
       functions {
-      
+        
       }
 
 # make_model_string_functions works with exponential survival and BDB
@@ -13,7 +13,7 @@
       result
     Output
       functions {
-      
+        
       }
 
 # make_model_string_functions works with weibull survival and BDB and covariates
@@ -22,7 +22,7 @@
       result
     Output
       functions {
-       real weibull_ph_lpdf(real y, real alpha, real lambda) {
+         real weibull_ph_lpdf(real y, real alpha, real lambda) {
            real lprob = log(alpha) + log(lambda) + (alpha - 1) * log(y) - lambda * (y^alpha);
            return lprob;
        }
@@ -44,6 +44,6 @@
       result
     Output
       functions {
-      
+        
       }
 
