@@ -4,16 +4,40 @@
 \alias{bin_var}
 \title{Create binary covariate}
 \usage{
-bin_var(prob_internal, prob_external)
+bin_var(
+  prob_internal,
+  prob_external,
+  mu_internal_before_bin = 0,
+  mu_external_before_bin = 0
+)
 }
 \arguments{
 \item{prob_internal}{numeric. Proportion for the internal arms.}
 
 \item{prob_external}{numeric. Proportion for the external arm.}
+
+\item{mu_internal_before_bin}{numeric. Mean value of the covariate before binarization
+for the internal arms. The default is 0. See \code{details} for more information.}
+
+\item{mu_external_before_bin}{numeric. Mean value of the covariate before binarization
+for the external arm. The default is 0. See \code{details} for more information.}
 }
 \description{
 Create an object of class \code{SimVarBin} to hold proportions of binary
 variables specified in a simulation study.
+}
+\details{
+This function contains information necessary to create binary covariates
+as part of a simulation study. The binary covariates are created
+by binarizing multivariate normal distributions to achieve
+the probabilities specified in \code{prob_internal} and \code{prob_external}. The
+user may choose to change the default mean value of each variable
+prior to binarization by specifying \code{mu_internal_before_bin} or
+\code{mu_external_before_bin} to ensure the correct scales are used in the
+covariance matrix, though the ultimate proportions will depend on
+\code{prob_internal} and \code{prob_external}. The default values for
+\code{mu_internal_before_bin} and \code{mu_external_before_bin} are \code{0}, and
+it is not recommended to change these without good reason.
 }
 \examples{
 cv1 <- bin_var(0.50, 0.80)

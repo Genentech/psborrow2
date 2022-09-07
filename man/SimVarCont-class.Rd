@@ -16,6 +16,12 @@ of continuous variables specified in a simulation study.
 \item{\code{mu_internal}}{numeric. Mean covariate value for the internal arms.}
 
 \item{\code{mu_external}}{numeric. Mean covariate value for the external arm.}
+
+\item{\code{printval_int}}{numeric. Value to print to summarize internal arms.}
+
+\item{\code{printval_ext}}{numeric. Value to print to summarize external arm.}
+
+\item{\code{type_string}}{character. 'continuous'}
 }}
 
 \seealso{

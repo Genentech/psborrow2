@@ -16,6 +16,18 @@ binary variables specified in a simulation study.
 \item{\code{prob_internal}}{numeric. Proportion for the internal arms.}
 
 \item{\code{prob_external}}{numeric. Proportion for the external arm.}
+
+\item{\code{mu_internal_before_bin}}{numeric. Mean value of covariate before binarization for
+the internal arms.}
+
+\item{\code{mu_external_before_bin}}{numeric. Mean value of covariate before binarization for
+the external arm.}
+
+\item{\code{printval_int}}{numeric. Value to print to summarize internal arms.}
+
+\item{\code{printval_ext}}{numeric. Value to print to summarize external arm.}
+
+\item{\code{type_string}}{character. 'binary'}
 }}
 
 \seealso{

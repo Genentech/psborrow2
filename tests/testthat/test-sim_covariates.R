@@ -16,7 +16,7 @@ mat_custom <- matrix(
 mat_custom2 <- mat_custom * 2
 
 # Objects are created successfully----
-test_that("SimCovariate objects created correctly", {
+test_that("SimCovariates objects created correctly", {
   expect_class(
     sim_covariates(
       covariates = list(
@@ -27,7 +27,7 @@ test_that("SimCovariate objects created correctly", {
       covariance_internal = mat3_1,
       covariance_external = mat3_2
     ),
-    "SimCovariate"
+    "SimCovariates"
   )
 
   expect_class(
@@ -45,10 +45,9 @@ test_that("SimCovariate objects created correctly", {
       covariance_internal = mat8_1,
       covariance_external = mat8_2
     ),
-    "SimCovariate"
+    "SimCovariates"
   )
 })
-
 
 test_that("Invalid sim_covariate() covariates inputs are caught", {
   # Unnamed covariate list

@@ -12,7 +12,7 @@
 #' for external patients.
 #'
 .sim_covariates <- setClass(
-  "SimCovariate",
+  "SimCovariates",
   slots = c(
     covariates = "list",
     covariance_internal = "matrix",
@@ -68,7 +68,7 @@
 #' @param covariance_external matrix. Covariance matrix before binarization
 #' for external patients.
 #'
-#' @return Object of class `SimCovariate`
+#' @return Object of class `SimCovariates`
 #'
 #' @details
 #' This function is intended to specify the number of covariates and
@@ -115,11 +115,56 @@ sim_covariates <- function(covariates,
   return(sim_covariates_obj)
 }
 
+#' Summarize the number of continuous and binary covariates
+#' in a `SimCovariates` object created by `sim_covariates()`
+#'
+#' @param sim_covariate_obj `SimCovariates`. Object returned by
+#' `sim_covariates()`.
+#'
+#' @return data.frame showing covariate names and types as well as
+#' counts of binary and continuous covariates.
+#'
+sim_covariates_summ <- function(sim_covariates_obj) {
+
+  assert_class(sim_covariates_obj, "SimCovariates")
+
+  out_df <- data.frame(name = NULL, type = NULL, int = NULL, ext = NULL)
+  cat_count <- 0
+  bin_count <- 0
+  for (i in seq_along(sim_covariate_obj@covariates)) {
+    nm <- names(sim_covariate_obj@covariates)[i]
+    type <- sim_covariate_obj@covariates[[i]]@type_string
+    int <- sim_covariate_obj@covariates[[i]]@printval_int
+    ext <- sim_covariate_obj@covariates[[i]]@printval_ext
+    if (is(sim_covariate_obj@covariates[[i]], 'SimVarBin')) {
+      cat_count <- cat_count + 1
+    } else if (is(sim_covariate_obj@covariates[[i]], 'SimVarCont')) {
+      bin_count <- bin_count + 1
+    }
+
+    out_df <- rbind(
+      out_df,
+      data.frame(name = nm,
+                 type = type,
+                 int = int,
+                 ext = ext)
+    )
+  }
+
+  attributes(out_df)$n_cat <- cat_count
+  attributes(out_df)$n_bin <- bin_count
+
+  return(out_df)
+
+}
+
+
 # show ----
 setMethod(
   f = "show",
-  signature = "SimCovariate",
+  signature = "SimCovariates",
   definition = function(object) {
-    cat("SimCovariate Object\n")
+    cat("SimCovariates Object\n")
+
   }
 )

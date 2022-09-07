@@ -18,7 +18,7 @@ for internal patients.}
 for external patients.}
 }
 \value{
-Object of class \code{SimCovariate}
+Object of class \code{SimCovariates}
 }
 \description{
 Provide details on the desired covariate distributions and covariance for
