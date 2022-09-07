@@ -34,8 +34,8 @@ set of study parameters, and will show how to combine and compare
 different iterations of study parameters later.
 
 To execute a simulation study with a single set of study parameters,
-we need to build an object of class `Simulation` using the function 
-`create_simulation_obj()`. Let's look at the arguments to 
+we need to build an object of class `Simulation` using the function
+`create_simulation_obj()`. Let's look at the arguments to
 `create_simulation_obj()` and consider them one-by-one below:
 
 ```
@@ -48,8 +48,8 @@ create_simulation_obj(
 
 ## sample_size
 
-The input to `sample_size` is an object of class `SimSampleSize` created by 
-the constructor `sim_samplesize()` which contains information on the sample size 
+The input to `sample_size` is an object of class `SimSampleSize` created by
+the constructor `sim_samplesize()` which contains information on the sample size
 for internal control, external control, and internal treatment arms.
 We will choose these to be 200, 400, and 180, respectively.
 
@@ -65,11 +65,11 @@ ss
 ## covariates
 
 The argument `covariates` takes an object of class `SimCovariates` created by
-the constructor `sim_covariates()`. Let's create two binary covariates ($x_1$ 
+the constructor `sim_covariates()`. Let's create two binary covariates ($x_1$
 and $x_2$) and one continuous covariate ($x_3$) from a multivariate
-normal distribution according to a covariance matrix we design. 
-We show the multivariate normal distribution for the internal arms below and 
-assume they are equal between internal and external arms, though users may 
+normal distribution according to a covariance matrix we design.
+We show the multivariate normal distribution for the internal arms below and
+assume they are equal between internal and external arms, though users may
 specify separate matrices if they prefer.
 
 ***Note*** the covariance matrix refers to the covariance before binarization
@@ -78,9 +78,9 @@ of the binary variables. The true covariance may differ after sampling.
 $$\begin{aligned}
 \begin{bmatrix}
 x_1\\x_2\\x_3\\
-\end{bmatrix} 
+\end{bmatrix}
 &\sim N \left( \begin{bmatrix} 0\\ 0 \\0.5 \end{bmatrix},
-\begin{bmatrix} 
+\begin{bmatrix}
 1 & 0.5 & 0.7\\
 0.5 & 1.2 & 0.9\\
 0.7 & 0.9 & 1\\
@@ -92,9 +92,11 @@ reference:
 
 ```{r}
 cov_mat <- matrix(
-  c(1, .5, .7,
-    .5, 1.2, .9, 
-    .7, .9, 1),
+  c(
+    1.0, 0.5, 0.7,
+    0.5, 1.2, 0.9,
+    0.7, 0.9, 1.0
+  ),
   ncol = 3,
   byrow = TRUE
 )
@@ -102,8 +104,8 @@ cov_mat
 ```
 
 $x_1$ and $x_2$ are further converted to binary variables $x_1$ and $x_2$ using
-quantiles of the normal distribution calculated from the probability specified 
-by `prob_internal` for the internal trial and by `prob_external` for 
+quantiles of the normal distribution calculated from the probability specified
+by `prob_internal` for the internal trial and by `prob_external` for
 the external data. We specify probabilities for each binary covariate
 below:
 
@@ -116,17 +118,23 @@ $$
 \end{aligned}
 $$
 
-Let's see what these parameters look like in a function call to 
+Let's see what these parameters look like in a function call to
 `sim_covariates()`.
-```{r}
+```{r message=FALSE}
 covset <- sim_covariates(
   covariates = list(
-    x_1 = bin_var(prob_internal = 0.45,
-                  prob_external = 0.65),
-    x_2 = bin_var(prob_internal = 0.55,
-                  prob_external = 0.55),
-    x_3 = cont_var(mu_internal = 0.5,
-                   mu_external = 0.5)
+    x_1 = bin_var(
+      prob_internal = 0.45,
+      prob_external = 0.65
+    ),
+    x_2 = bin_var(
+      prob_internal = 0.55,
+      prob_external = 0.55
+    ),
+    x_3 = cont_var(
+      mu_internal = 0.5,
+      mu_external = 0.5
+    )
   ),
   covariance_internal = cov_mat,
   covariance_external = cov_mat

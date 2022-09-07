@@ -8,7 +8,7 @@ in a \code{SimCovariates} object created by \code{sim_covariates()}}
 sim_covariates_summ(sim_covariates_obj)
 }
 \arguments{
-\item{sim_covariate_obj}{\code{SimCovariates}. Object returned by
+\item{sim_covariates_obj}{\code{SimCovariates}. Object returned by
 \code{sim_covariates()}.}
 }
 \value{

@@ -118,36 +118,37 @@ sim_covariates <- function(covariates,
 #' Summarize the number of continuous and binary covariates
 #' in a `SimCovariates` object created by `sim_covariates()`
 #'
-#' @param sim_covariate_obj `SimCovariates`. Object returned by
+#' @param sim_covariates_obj `SimCovariates`. Object returned by
 #' `sim_covariates()`.
 #'
 #' @return data.frame showing covariate names and types as well as
 #' counts of binary and continuous covariates.
 #'
 sim_covariates_summ <- function(sim_covariates_obj) {
-
   assert_class(sim_covariates_obj, "SimCovariates")
 
   out_df <- data.frame(name = NULL, type = NULL, int = NULL, ext = NULL)
   cat_count <- 0
   bin_count <- 0
-  for (i in seq_along(sim_covariate_obj@covariates)) {
-    nm <- names(sim_covariate_obj@covariates)[i]
-    type <- sim_covariate_obj@covariates[[i]]@type_string
-    int <- sim_covariate_obj@covariates[[i]]@printval_int
-    ext <- sim_covariate_obj@covariates[[i]]@printval_ext
-    if (is(sim_covariate_obj@covariates[[i]], 'SimVarBin')) {
+  for (i in seq_along(sim_covariates_obj@covariates)) {
+    nm <- names(sim_covariates_obj@covariates)[i]
+    type <- sim_covariates_obj@covariates[[i]]@type_string
+    int <- sim_covariates_obj@covariates[[i]]@printval_int
+    ext <- sim_covariates_obj@covariates[[i]]@printval_ext
+    if (is(sim_covariates_obj@covariates[[i]], "SimVarBin")) {
       cat_count <- cat_count + 1
-    } else if (is(sim_covariate_obj@covariates[[i]], 'SimVarCont')) {
+    } else if (is(sim_covariates_obj@covariates[[i]], "SimVarCont")) {
       bin_count <- bin_count + 1
     }
 
     out_df <- rbind(
       out_df,
-      data.frame(name = nm,
-                 type = type,
-                 int = int,
-                 ext = ext)
+      data.frame(
+        name = nm,
+        type = type,
+        int = int,
+        ext = ext
+      )
     )
   }
 
@@ -155,16 +156,20 @@ sim_covariates_summ <- function(sim_covariates_obj) {
   attributes(out_df)$n_bin <- bin_count
 
   return(out_df)
-
 }
-
 
 # show ----
 setMethod(
   f = "show",
   signature = "SimCovariates",
   definition = function(object) {
-    cat("SimCovariates Object\n")
+    summ <- sim_covariates_summ(object)
 
+    cat("SimCovariates Object\n")
+    cat("\n")
+    cat(paste0(attributes(summ)$n_cat), " categorical covariate(s)\n")
+    cat(paste0(attributes(summ)$n_bin), " binary covariate(s)\n")
+    cat("\n")
+    print(summ)
   }
 )

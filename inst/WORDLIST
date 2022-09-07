@@ -17,6 +17,8 @@ al
 bayesplot
 bernoulli
 binarization
+binarizing
+bmatrix
 cauchy
 cmdstan
 cmdstanr

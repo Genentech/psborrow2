@@ -225,4 +225,3 @@ variable_dictionary <- function(analysis_obj) {
   vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addl_params)
   data.frame(Stan_variable = unname(vars), Description = names(vars))
 }
-
