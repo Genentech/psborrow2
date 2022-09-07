@@ -63,47 +63,9 @@ sim_samplesize <- function(n_internal_control,
     n_internal_experimental = n_internal_experimental
   )
 
-  mat_int_cont <- matrix(
-    c(
-      rep(0L, n_internal_control),
-      rep(0L, n_internal_control)
-    ),
-    ncol = 2,
-    dimnames = list(
-      NULL,
-      c("ext", "trt")
-    )
-  )
-
-  mat_ext_cont <- matrix(
-    c(
-      rep(1L, n_external_control),
-      rep(0L, n_external_control)
-    ),
-    ncol = 2,
-    dimnames = list(
-      NULL,
-      c("ext", "trt")
-    )
-  )
-
-  mat_int_exp <- matrix(
-    c(
-      rep(0L, n_internal_experimental),
-      rep(1L, n_internal_experimental)
-    ),
-    ncol = 2,
-    dimnames = list(
-      NULL,
-      c("ext", "trt")
-    )
-  )
-
-  sim_samplesize_obj@mat <- rbind(
-    mat_int_cont,
-    mat_ext_cont,
-    mat_int_exp
-  )
+ext <- rep(c(0L, 1L, 0L), times = c(n_internal_control, n_external_control, n_internal_experimental))
+trt <-  rep(c(0L, 0L, 1L), times = c(n_internal_control, n_external_control, n_internal_experimental))
+sim_samplesize_obj@mat <- cbind(ext, trt)
 
   return(sim_samplesize_obj)
 }
