@@ -31,6 +31,9 @@ Empty for \code{ExponentialSurvDist}.}
 \item{\code{time_var}}{character. Variable used for time in \code{TimeToEvent} objects.}
 
 \item{\code{cens_var}}{character. Variable used for censoring in \code{TimeToEvent} objects.}
+
+\item{\code{baseline_prior}}{\code{Prior}. Object of class \code{Prior}
+specifying prior distribution for the baseline outcome.}
 }}
 
 \seealso{

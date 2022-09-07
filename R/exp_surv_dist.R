@@ -16,6 +16,8 @@
 #' Empty for `ExponentialSurvDist`.
 #' @slot time_var character. Variable used for time in `TimeToEvent` objects.
 #' @slot cens_var character. Variable used for censoring in `TimeToEvent` objects.
+#' @slot baseline_prior `Prior`. Object of class `Prior`
+#' specifying prior distribution for the baseline outcome.
 #' @include outcome_class.R
 #' @family outcome
 .exp_surv_dist <- setClass(
@@ -42,15 +44,38 @@
 #'
 #' @param time_var character. Name of time variable column in model matrix
 #' @param cens_var character. Name of the censorship variable flag in model matrix
+#' @param baseline_prior `Prior`. Object of class `Prior`
+#' specifying prior distribution for the baseline outcome.
+#' See `Details` for more information.
 #'
+#' @details
+#' ## Baseline Prior
+#'
+#' The `baseline_prior` argument specifies the prior distribution for the
+#' baseline log hazard rate. The interpretation of the `baseline_prior` differs
+#' slightly between methods selected in `borrowing_details()`:
+#' - \emph{'BDB'}: the `baseline_prior` for Bayesian Dynamic Borrowing refers
+#' to the log hazard rate of the external control arm.
+#' - \emph{'Full borrowing'} or \emph{'No borrowing'}: the `baseline_prior` for
+#' these borrowing methods refers to the log hazard rate for the
+#' internal control arm.
 #' @return Object of class [`ExponentialSurvDist`][ExponentialSurvDist-class].
 #' @export
 #' @family outcome models
 #'
 #' @examples
-#' es <- exp_surv_dist(time_var = "time", cens_var = "cens")
-exp_surv_dist <- function(time_var, cens_var) {
+#' es <- exp_surv_dist(
+#'   time_var = "time",
+#'   cens_var = "cens",
+#'   baseline_prior = normal_prior(0, 1000)
+#' )
+exp_surv_dist <- function(time_var, cens_var, baseline_prior) {
   assert_string(time_var)
   assert_string(cens_var)
-  .exp_surv_dist(time_var = time_var, cens_var = cens_var)
+  assert_class(baseline_prior, "Prior")
+  .exp_surv_dist(
+    time_var = time_var,
+    cens_var = cens_var,
+    baseline_prior = baseline_prior
+  )
 }
