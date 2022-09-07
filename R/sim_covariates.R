@@ -61,7 +61,7 @@ sim_samplesize <- function(n_internal_control,
   )
 
   ext <- rep(c(0L, 1L, 0L), times = c(n_internal_control, n_external_control, n_internal_experimental))
-  trt <-  rep(c(0L, 0L, 1L), times = c(n_internal_control, n_external_control, n_internal_experimental))
+  trt <- rep(c(0L, 0L, 1L), times = c(n_internal_control, n_external_control, n_internal_experimental))
   sim_samplesize_obj@mat <- cbind(ext, trt)
 
   return(sim_samplesize_obj)
