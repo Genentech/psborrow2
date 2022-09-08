@@ -17,7 +17,7 @@ external control arm.}
 in the internal experimental arm.}
 }
 \value{
-Object of class \code{SampleSize}
+Object of class \code{SimSampleSize}
 }
 \description{
 Set simulation study parameters for sample size
