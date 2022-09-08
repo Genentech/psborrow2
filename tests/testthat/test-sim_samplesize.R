@@ -31,7 +31,7 @@ test_that("sim_samplesize() is producing the correct counts", {
   nie_in <- 103
 
   samplesize <- sim_samplesize(nic_in, nec_in, nie_in)
-  expect_class(samplesize, "SampleSize")
+  expect_class(samplesize, "SimSampleSize")
 
   nic_out <- sum(samplesize@mat[, "trt"] == 0 & samplesize@mat[, "ext"] == 0)
   nec_out <- sum(samplesize@mat[, "trt"] == 0 & samplesize@mat[, "ext"] == 1)

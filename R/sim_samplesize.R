@@ -1,4 +1,4 @@
-#' `SampleSize` Class
+#' `SimSampleSize` Class
 #'
 #' A class for creating matrices for simulation studies
 #' containing flags specifying whether the patient is from the concurrent
@@ -16,7 +16,7 @@
 #' external data source) and `trt` (flag for receiving experimental
 #' treatment)
 .sim_samplesize <- setClass(
-  "SampleSize",
+  "SimSampleSize",
   slots = c(
     n_internal_control = "numeric",
     n_external_control = "numeric",
@@ -45,7 +45,7 @@
 #' @param n_internal_experimental integer. Number of patients to be simulated
 #' in the internal experimental arm.
 #'
-#' @return Object of class `SampleSize`
+#' @return Object of class `SimSampleSize`
 #' @export
 #' @family simulation
 #' @examples
@@ -73,9 +73,9 @@ sim_samplesize <- function(n_internal_control,
 # show ----
 setMethod(
   f = "show",
-  signature = "SampleSize",
+  signature = "SimSampleSize",
   definition = function(object) {
-    cat("SampleSize Object\n")
+    cat("SimSampleSize Object\n")
     cat(glue::glue("{object@n_internal_control} internal control patients"))
     cat("\n")
     cat(glue::glue("{object@n_external_control} external control patients"))
