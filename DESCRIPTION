@@ -31,12 +31,12 @@ Description: An R package for complex, innovative trial designs using
 License: Apache License (>= 2)
 Encoding: UTF-8
 Depends:
-    R (>= 3.5.0)
+    R (>= 3.5.0),
+    cmdstanr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Config/testthat/edition: 3
 Imports:
-    cmdstanr,
     checkmate,
     glue,
     methods,
