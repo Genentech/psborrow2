@@ -66,7 +66,7 @@
 #' @param covariance_internal matrix. Covariance matrix before binarization
 #' for internal patients.
 #' @param covariance_external matrix. Covariance matrix before binarization
-#' for external patients.
+#' for external patients. Defaults to the internal covariance.
 #'
 #' @return Object of class `SimCovariates`
 #'
@@ -93,12 +93,11 @@
 #'     cov1 = bin_var(0.5, 0.5),
 #'     cov2 = cont_var(100, 130)
 #'   ),
-#'   covariance_internal = covmat,
-#'   covariance_external = covmat
+#'   covariance_internal = covmat
 #' )
 sim_covariates <- function(covariates,
                            covariance_internal,
-                           covariance_external) {
+                           covariance_external = covariance_internal) {
   # Check input classes
   assert_list(covariates)
   assert_matrix(covariance_internal)
@@ -127,33 +126,17 @@ sim_covariates <- function(covariates,
 sim_covariates_summ <- function(sim_covariates_obj) {
   assert_class(sim_covariates_obj, "SimCovariates")
 
-  out_df <- data.frame(name = NULL, type = NULL, int = NULL, ext = NULL)
-  cat_count <- 0
-  bin_count <- 0
-  for (i in seq_along(sim_covariates_obj@covariates)) {
-    nm <- names(sim_covariates_obj@covariates)[i]
-    type <- sim_covariates_obj@covariates[[i]]@type_string
-    int <- sim_covariates_obj@covariates[[i]]@printval_int
-    ext <- sim_covariates_obj@covariates[[i]]@printval_ext
-    if (is(sim_covariates_obj@covariates[[i]], "SimVarBin")) {
-      cat_count <- cat_count + 1
-    } else if (is(sim_covariates_obj@covariates[[i]], "SimVarCont")) {
-      bin_count <- bin_count + 1
-    }
-
-    out_df <- rbind(
-      out_df,
-      data.frame(
-        name = nm,
-        type = type,
-        int = int,
-        ext = ext
-      )
+  df_list <- lapply(sim_covariates_obj@covariates, function(cov_i) {
+    data.frame(
+      type = cov_i@type_string,
+      int = cov_i@printval_int,
+      ext = cov_i@printval_ext
     )
-  }
-
-  attributes(out_df)$n_cat <- cat_count
-  attributes(out_df)$n_bin <- bin_count
+  })
+  out_df <- cbind(name = names(df_list), do.call(rbind, df_list))
+  rownames(out_df) <- NULL
+  attributes(out_df)$n_cat <- sum(vapply(sim_covariates_obj@covariates, is, class2 = "SimVarCont", logical(1)))
+  attributes(out_df)$n_bin <- sum(vapply(sim_covariates_obj@covariates, is, class2 = "SimVarBin", logical(1)))
 
   return(out_df)
 }

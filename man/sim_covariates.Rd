@@ -4,7 +4,11 @@
 \alias{sim_covariates}
 \title{Specify covariates for simulation study}
 \usage{
-sim_covariates(covariates, covariance_internal, covariance_external)
+sim_covariates(
+  covariates,
+  covariance_internal,
+  covariance_external = covariance_internal
+)
 }
 \arguments{
 \item{covariates}{list. Named list of covariate mean values or probabilities as
@@ -15,7 +19,7 @@ generated through \code{bin_var()} (class \code{SimVarBin} or \code{cont_var()}
 for internal patients.}
 
 \item{covariance_external}{matrix. Covariance matrix before binarization
-for external patients.}
+for external patients. Defaults to the internal covariance.}
 }
 \value{
 Object of class \code{SimCovariates}
@@ -45,8 +49,7 @@ covset1 <- sim_covariates(
     cov1 = bin_var(0.5, 0.5),
     cov2 = cont_var(100, 130)
   ),
-  covariance_internal = covmat,
-  covariance_external = covmat
+  covariance_internal = covmat
 )
 }
 \seealso{
