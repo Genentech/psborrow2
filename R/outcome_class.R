@@ -77,7 +77,20 @@ setMethod(
   f = "show",
   signature = "Outcome",
   definition = function(object) {
-    cat("Outcome object with class ", class(object)[1])
+    cat("Outcome object with class", class(object)[1], "\n\n")
+    cat("Outcome variables:\n")
+    print(get_vars(object))
+    cat("\n")
+    cat("Baseline prior:\n")
+    show(object@baseline_prior)
+
+    if (!is.null(object@param_priors)) {
+      cat("\n")
+      for (i in names(object@param_priors)) {
+        cat(i, "prior:\n")
+        show(object@param_priors[[i]])
+      }
+    }
   }
 )
 
