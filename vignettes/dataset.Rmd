@@ -26,7 +26,7 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 In this vignette, you'll learn how to conduct Bayesian dynamic borrowing (BDB)
-analyses on data using `psborrow2`.
+analyses using `psborrow2`.
 
 # Before you start
 
@@ -55,11 +55,11 @@ library(psborrow2)
 ```
 
 # Creating an analysis object {.tabset}
-For an analysis on data in `psborrow2`, we need to create an object
+For a BDB analysis in `psborrow2`, we need to create an object
 of class `Analysis` which contains all the information needed to build a model
 and compile an MCMC sampler using Stan. To create an `Analysis` object,
-we need to call the function `create_analysis_obj()`. Let's look at the four
-required arguments to this function and evaluate them one at a time.
+we will call the function `create_analysis_obj()`. Let's look at the four
+required arguments to this function and evaluate them one-at-a-time.
 
 ```
 create_analysis_obj(
@@ -80,30 +80,30 @@ will be specified in the outcome, treatment, and borrowing sections.
 
 There are two columns required for all analyses:
 
-* A flag denoting receipt of the experimental intervention (`1`) or not (`0`).
+* A flag denoting receipt of the experimental intervention (`1`) or not (`0`)
 * A flag denoting whether the patient was part of the external data source
-(`1`) or the internal trial (`0`).
+(`1`) or the internal trial (`0`)
 
 #### Time-to-event
 
 If the outcome is time-to-event, then two additional columns are needed:
 
-* The duration of follow-up for each patient.
-* A flag denoting whether the patient was censored (`1`) or not (`0`).
+* The duration of follow-up for each patient
+* A flag denoting whether the patient was censored (`1`) or not (`0`)
 
 #### Binary endpoints
 
 If the outcome is binary, one additional column is needed:
 
-* A flag denoting whether a patient had the event of interest (`1`) or not (`0`).
+* A flag denoting whether a patient had the event of interest (`1`) or not (`0`)
 
 #### Covariates
 
 Covariates may also be included in BDB analyses. These should be included
 in the data matrix if the plan is to adjust for them.
 
-***Note*** Only `numeric` matrices can be are supported. See the [Example data] for creating such a matrix
-`from a data.frame`
+***Note*** Only `numeric` matrices are supported. See [Example data] for creating such a matrix
+from a `data.frame`.
 
 ***Note*** No missing data is currently allowed, all values must be non-missing.
 
@@ -112,9 +112,11 @@ in the data matrix if the plan is to adjust for them.
 We will be using an example dataset stored in `psborrow2`
 (`example_matrix`). If you are starting from a data frame or tibble,
 you can easily create a suitable matrix with the `psborrow2` helper function
-[`create_data_matrix()`].
+`create_data_matrix()`.
 
+#### Creating a data matrix with `create_data_matrix()`
 ```{r, eval = require(survival)}
+# Start with data.frame
 diabetic_df <- survival::diabetic
 
 # For demonstration purposes, let some patients be external controls
@@ -134,7 +136,7 @@ diabetes_matrix <- create_data_matrix(
 head(diabetes_matrix)
 ```
 
-
+#### `psborrow2` example matrix
 Let's look at the first few rows of the example matrix:
 
 ```{r example-matrix}
@@ -156,11 +158,18 @@ The column definitions are below:
 `psborrow2` currently supports three outcomes:
 
 * Time-to-event with exponential distribution (constant hazard), created with
-`exp_surv_dist()`.
+`exp_surv_dist()`
 * Time-to-event with Weibull distribution and proportional hazards
-parametrization, created with `weib_ph_surv_dist()`.
+parametrization, created with `weib_ph_surv_dist()`
 * Binary endpoints with a Bernoulli distribution and using logistic regression,
-created with `logistic_bin_outcome()`.
+created with `logistic_bin_outcome()`
+
+After we select which outcome and distribution we want,
+we need to specify a prior distribution for the baseline event rate,
+`baseline_prior`. In this case, `baseline_prior` is
+a log hazard rate (for binary endpoints this represents the log
+odds instead). Let's assume we have no prior knowledge on this event rate,
+so we'll specify an uninformative prior: `normal_prior(0, 1000)`.
 
 For our example, let's conduct a time-to-event analysis using the exponential
 distribution.
@@ -181,22 +190,16 @@ the `method` argument of `borrowing_details()` (see the code example below
 how to call it):
 
 * "No borrowing": This is the internal trial comparison without any external
-data.
-* "Full borrowing": This is pooling of the external and internal control arms.
-* "BDB": Bayesian dynamic borrowing.
-
-In addition to specifying the method, we need to specify a prior distribution
-for the baseline event rate, `baseline_prior`. In this case, `baseline_prior` is
-a log hazard rate (for binary endpoints this represents the log
-odds instead). Let's assume we have no prior knowledge on this event rate, so we'll
-specify an uninformative prior: `normal_prior(0, 1000)`.
+data
+* "Full borrowing": This is pooling of the external and internal control arms
+* "BDB": Bayesian dynamic borrowing
 
 The column name for the external control column flag in our matrix
 is also required and passed to `ext_flag_col`.
 
-Finally, for BDB only,
-the hyperprior distribution on the commensurability parameter must be specified.
-This hyperprior determines (along with the comparability of the outcomes
+Finally, for BDB only, the hyperprior distribution on the commensurability
+parameter must be specified. This hyperprior determines
+(along with the comparability of the outcomes
 between internal and external controls) how much borrowing of the external
 control group will be performed. Example hyperpriors include largely
 uninformative inverse gamma distributions
@@ -258,7 +261,7 @@ distribution using the function `mcmc_sample()`. This function takes as input
 our `Analysis` object and any arguments (other than the `data` argument)
 that are passed to
 [`CmdStanModel` objects](https://mc-stan.org/cmdstanr/reference/model-method-sample.html).
-Note that depending on your computer running this will take a few minutes.
+Note that running this may take a few minutes.
 
 ```{r res}
 results <- mcmc_sample(anls_obj,
@@ -300,16 +303,15 @@ draws <- results$draws()
 print(draws)
 ```
 
-***Note*** `psborrow2` also has a function to rename variables in `draws`
-objects to be more interpretable, `rename_draws_covariates()`, which uses
-the `variable_dictionary` labels.
+`psborrow2` also has a function to rename variables in `draws`
+objects to be more interpretable, `rename_draws_covariates()`. This function
+uses the `variable_dictionary` labels. Let's use it here to make the results
+easier to interpret:
 
 ```{r rename-draws}
 draws <- rename_draws_covariates(draws, anls_obj)
 summary(draws)
 ```
-
-Alternatively, you can use [posterior::rename_variables()] to specify your own names.
 
 ## Using `bayesplot`
 
