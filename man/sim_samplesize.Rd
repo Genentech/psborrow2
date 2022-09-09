@@ -25,4 +25,8 @@ Set simulation study parameters for sample size
 \examples{
 ss <- sim_samplesize(200, 200, 500)
 }
+\seealso{
+Other simulation: 
+\code{\link{sim_covariates}()}
+}
 \concept{simulation}
