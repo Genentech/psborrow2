@@ -9,7 +9,7 @@ vignette: >
   %\VignetteIndexEntry{2. Conduct a hybrid control analysis on a dataset using BDB}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -28,27 +28,30 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 In this vignette, you'll learn how to conduct Bayesian dynamic borrowing (BDB)
 analyses on data using `psborrow2`.
 
-# Load dependencies and setup CMD Stan
+# Before you start
 
-We'll start by loading dependencies. `psborrow2` relies on the package
-[`cmdstanr`](https://mc-stan.org/cmdstanr/index.html),
-so we'll load [`cmdstanr`](https://mc-stan.org/cmdstanr/index.html)
-as well.
+The `psborrows2` package relies on [`Stan`](https://mc-stan.org/) for model fitting,
+specifically via the [`CmdStan`](https://mc-stan.org/users/interfaces/cmdstan.html)
+and [`cmdstanr`](https://mc-stan.org/cmdstanr/) tools.
 
-```{r dependencies, message = FALSE}
-library(psborrow2)
+If you haven't used `CmdStan` before you'll need to install the R package
+and the external program. More information can be found in the
+[`cmdstanr` vignette](https://mc-stan.org/cmdstanr/articles/cmdstanr.html).
+
+The short version is:
+```{r install-cmdstan-2, eval=FALSE}
+# Install the cmdstanr package
+install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
 library(cmdstanr)
+
+# Install the external CmdStan program
+check_cmdstan_toolchain()
+install_cmdstan(cores = 2)
 ```
 
-As explained in the
-[`cmdstanr` vignette](https://mc-stan.org/cmdstanr/articles/cmdstanr.html),
-installing the `cmdstanr` R package does not install the underlying CMD Stan
-program we need. To install CMD Stan, we will call the `cmdstanr` function
-`install_cmdstan()`:
-
-```{r install-cmdstan-2, eval=FALSE}
-set_cmdstan_path(path = "/root/.cmdstan")
-install_cmdstan(cores = 2)
+Now you're ready to start with `psborrow2`.
+```{r dependencies, message = FALSE}
+library(psborrow2)
 ```
 
 # Creating an analysis object {.tabset}
@@ -71,8 +74,11 @@ create_analysis_obj(
 
 ### Required elements
 
-`data_matrix` is where we input the one-row-per-patient data matrix for our
-analysis. There are two columns required for all analyses:
+`data_matrix` is where we input the one-row-per-patient `numeric` matrix for our
+analysis. The column names of the matrix are not fixed, so the names of columns
+will be specified in the outcome, treatment, and borrowing sections.
+
+There are two columns required for all analyses:
 
 * A flag denoting receipt of the experimental intervention (`1`) or not (`0`).
 * A flag denoting whether the patient was part of the external data source
@@ -96,7 +102,8 @@ If the outcome is binary, one additional column is needed:
 Covariates may also be included in BDB analyses. These should be included
 in the data matrix if the plan is to adjust for them.
 
-***Note*** R data frames are not allowed, only matrices.
+***Note*** Only `numeric` matrices can be are supported. See the [Example data] for creating such a matrix
+`from a data.frame`
 
 ***Note*** No missing data is currently allowed, all values must be non-missing.
 
@@ -106,6 +113,27 @@ We will be using an example dataset stored in `psborrow2`
 (`example_matrix`). If you are starting from a data frame or tibble,
 you can easily create a suitable matrix with the `psborrow2` helper function
 [`create_data_matrix()`].
+
+```{r, eval = require(survival)}
+diabetic_df <- survival::diabetic
+
+# For demonstration purposes, let some patients be external controls
+diabetic_df$external <- ifelse(diabetic_df$trt == 0 & diabetic_df$id > 1000, 1, 0)
+
+# Create the censor flag
+diabetic_df$cens <- ifelse(diabetic_df$status == 0, 1, 0)
+
+diabetes_matrix <- create_data_matrix(
+  diabetic_df,
+  outcome = c("time", "cens"),
+  trt_flag_col = "trt",
+  ext_flag_col = "external",
+  covariates = ~ age + laser + risk
+)
+
+head(diabetes_matrix)
+```
+
 
 Let's look at the first few rows of the example matrix:
 
@@ -273,8 +301,15 @@ print(draws)
 ```
 
 ***Note*** `psborrow2` also has a function to rename variables in `draws`
-objects to be more interpretable, which could be called with e.g.,
-`draws <- rename_draws_covariates(draws)`.
+objects to be more interpretable, `rename_draws_covariates()`, which uses
+the `variable_dictionary` labels.
+
+```{r rename-draws}
+draws <- rename_draws_covariates(draws, anls_obj)
+summary(draws)
+```
+
+Alternatively, you can use [posterior::rename_variables()] to specify your own names.
 
 ## Using `bayesplot`
 
@@ -286,7 +321,7 @@ effect and for our commensurability parameter, tau.
 
 ```{r mcmc-hist, message = FALSE}
 library(bayesplot)
-mcmc_hist(draws, c("HR_trt", "tau"))
+mcmc_hist(draws, c("treatment HR", "commensurability parameter"))
 ```
 
 We can see other plots that help us understand and diagnose problems with
@@ -294,8 +329,10 @@ the MCMC sampler, such as trace and rank plots:
 
 ```{r mcmc-trace, fig.width=6, fig.height=3.6, dpi = 100}
 color_scheme_set("mix-blue-pink")
-mcmc_trace(draws,
-  pars = c("HR_trt", "tau"),
+
+mcmc_trace(
+  draws[1:5000, 1:2, ], # Using a subset of draws only
+  pars = c("treatment HR", "commensurability parameter"),
   n_warmup = 1000
 )
 ```
@@ -319,7 +356,7 @@ Another useful application of the `posterior` package is the evaluation of the M
 standard error for quantiles of a variable of interest:
 
 ```{r mcse-mean}
-vm <- extract_variable_matrix(draws, "HR_trt")
+vm <- extract_variable_matrix(draws, "treatment HR")
 mcse_quantile(x = vm, probs = c(0.1, 0.5, 0.9))
 ```
 
