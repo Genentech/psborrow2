@@ -30,10 +30,10 @@ setMethod(
   f = "show",
   signature = "Treatment",
   definition = function(object) {
-    cat(
-      "Treatment class with experimental treatment flag ",
-      "column of `", object@trt_flag_col, "`"
-    )
+    cat("Treatment object\n\n")
+    cat("Treatment flag column:", object@trt_flag_col, "\n\n")
+    cat("Treatment effect prior:\n")
+    show(object@trt_prior)
   }
 )
 
