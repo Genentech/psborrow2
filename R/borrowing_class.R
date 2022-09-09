@@ -43,10 +43,12 @@ setMethod(
   f = "show",
   signature = "Borrowing",
   definition = function(object) {
-    cat(
-      "Borrowing class: ",
-      object@method
-    )
+    cat("Borrowing object using", object@method, "\n\n")
+    cat("External control flag:", object@ext_flag_col, "\n\n")
+    if (!is.null(object@tau_prior)) {
+      cat("Commensurability parameter prior:\n")
+      show(object@tau_prior)
+    }
   }
 )
 
