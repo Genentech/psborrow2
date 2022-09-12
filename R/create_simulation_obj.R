@@ -26,7 +26,6 @@ setClassUnion('SimCovariateListOrNULL', c("SimCovariateList", "NULL"))
             borrowing_list = "SimBorrowList",
             cov_list = "SimCovariateListOrNULL",
             trt_list = "SimTreatmentList",
-            analysis_list = "SimAnalysisList",
             guide = "data.frame")
 )
 
@@ -47,6 +46,20 @@ create_simulation_obj <- function(
   )
 
   # Crude way of getting all analysis objects
-  guide <-
+  guide <- data.frame(data_id = 1:NROW(sim_obj@data_list@data_list))
+  guide <- cbind(guide, sim_obj@data_list@guide)
+  guide <- merge(guide, sim_obj@outcome_list@guide)
+  guide <- merge(guide, sim_obj@borrowing_list@guide)
+  if(!is.null(sim_obj@cov_list)) {
+    guide <- merge(guide, sim_obj@cov_list@guide)
+  }
+  guide <- merge(guide, sim_obj@trt_list@guide)
+  sim_obj@guide <- guide
+  return(sim_obj)
+
+  # Print n simulations
+  cat("Okay, ready to build models and sample")
+
+  # Pring some warnings about how long things will take.
 
 }
