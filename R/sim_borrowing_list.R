@@ -1,21 +1,19 @@
-.sim_borrowing_class <- setClass(
-  "SimBorrowClass",
-  slots = c(guide = "data.frame",
-            data_list = "list"
-  ),
+.sim_borrowing_list <- setClass(
+  "SimBorrowList",
+  slots = c(borrow_list = "list"),
   validity = function(object) {
-    if (NROW(object@guide) != NROW(object@data_list)) {
-      return("`guide` and `data_list` must be same length")
+    if (!all(vapply(object@borrow_list,
+                   function(b) is(b, "Borrowing"),
+                   FUN.VALUE = logical(1)))) {
+      return("`borrow_list` must be a list of `Borrowing` objects.")
     }
   }
 )
 
-sim_orrowing_class <- function(guide,
-                               data_list){
+sim_borrowing_list <- function(borrow_list){
 
-  .sim_data_list(
-    guide = guide,
-    data_list = data_list
+  .sim_borrowing_class(
+    borrow_list = borrow_list
   )
 
 }
