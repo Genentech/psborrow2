@@ -26,7 +26,8 @@ setClassUnion('SimCovariateListOrNULL', c("SimCovariateList", "NULL"))
             borrowing_list = "SimBorrowList",
             cov_list = "SimCovariateListOrNULL",
             trt_list = "SimTreatmentList",
-            analysis_list = "SimAnalysisList")
+            analysis_list = "SimAnalysisList",
+            guide = "data.frame")
 )
 
 create_simulation_obj <- function(
@@ -46,5 +47,6 @@ create_simulation_obj <- function(
   )
 
   # Crude way of getting all analysis objects
+  guide <-
 
 }
