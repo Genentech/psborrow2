@@ -88,7 +88,10 @@ sim_list_of_matrices <- function(hr_ors,
     }
   }
 
-  mat_list
+  list(
+    mat_list = mat_list,
+    guide = combos
+  )
 }
 
 ml1 <- sim_list_of_matrices(
