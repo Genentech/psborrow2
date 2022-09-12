@@ -13,7 +13,7 @@
 
 sim_borrowing_list <- function(borrow_list){
 
-  borrow <- .sim_borrowing_class(
+  borrow <- .sim_borrowing_list(
     borrow_list = borrow_list
   )
 
