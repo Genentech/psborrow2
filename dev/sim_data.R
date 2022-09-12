@@ -32,6 +32,8 @@ sim_single_matrix <- function(n = 600,
     maxt = 5
   )
 
+  dat$censor <- 1 - dat$status
+
   # Merge the simulated event times onto covariate data frame
   dat <- merge(cov, dat)
 
