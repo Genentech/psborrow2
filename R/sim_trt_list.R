@@ -1,6 +1,7 @@
 .sim_trt_list <- setClass(
   "SimTreatmentList",
-  slots = c(trt_list = "list"),
+  slots = c(trt_list = "list",
+            guide = "data.frame"),
   validity = function(object) {
     if (!all(vapply(object@trt_list,
                     function(b) is(b, "Treatment"),

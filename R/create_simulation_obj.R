@@ -17,12 +17,14 @@ NULL
   }
 )
 
+setClassUnion('SimCovariateListOrNULL', c("SimCovariateList", "NULL"))
+
 .create_simulation_obj <- setClass(
   "Simulation",
   slots = c(data_list = "SimDataList",
             outcome_list = "SimOutcomeList",
             borrowing_list = "SimBorrowList",
-            cov_list = "SimCovariateList",
+            cov_list = "SimCovariateListOrNULL",
             trt_list = "SimTreatmentList",
             analysis_list = "SimAnalysisList")
 )

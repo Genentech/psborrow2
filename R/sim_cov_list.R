@@ -3,7 +3,7 @@
   slots = c(covariate_list = "list",
             guide = "data.frame"),
   validity = function(object) {
-    if (!all(vapply(object@outcome_list,
+    if (!all(vapply(object@covariate_list,
                     function(b) is(b, "Covariates"),
                     FUN.VALUE = logical(1)))) {
       return("`covariate_list` must be a list of `Covariate` objects.")
