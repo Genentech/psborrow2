@@ -43,8 +43,6 @@ create_simulation_obj <- function(
     trt_list = trt_list
   )
 
-
-  sim_obj
-
+  # Crude way of getting all analysis objects
 
 }

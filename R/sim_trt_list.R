@@ -10,10 +10,18 @@
   }
 )
 
-sim_trt_list <- function(covariate_list){
+sim_trt_list <- function(trt_list){
 
-  .sim_trt_list(
+  trt <- .sim_trt_list(
     trt_list = trt_list
   )
+
+  # Come up with nice print method at the covariate class level
+  trt@guide <- data.frame(
+    treatment_scenario = rep(1:NROW(trt_list))
+  )
+
+  trt
+
 
 }
