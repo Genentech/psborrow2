@@ -80,9 +80,10 @@ sim_list_of_matrices <- function(hr_ors,
       cat(
         "\r", "Made ", counter, " of ", total, " -- ",
         format(round(100 * counter / total, 2), nsmall = 2),
-        "%", " (", format(round(remain, 1), nsmall = 1), "minutes left )"
+        "%", " (", format(round(remain, 1), nsmall = 1), " minutes left ) ",
+        "|", rep("-", floor(50 * counter / total)), rep(" ", 50 - floor(50 * counter / total)), "|",
+        sep = ""
       )
-
       counter <- counter + 1
     }
   }
