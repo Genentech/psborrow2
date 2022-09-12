@@ -55,11 +55,11 @@ create_simulation_obj <- function(
   }
   guide <- merge(guide, sim_obj@trt_list@guide)
   sim_obj@guide <- guide
-  return(sim_obj)
 
   # Print n simulations
-  cat("Okay, ready to build models and sample")
+  cat("Okay, ready to build models and sample. `inspect_guide()` to see
+  what simulations will be performed")
 
   # Pring some warnings about how long things will take.
-
+  return(sim_obj)
 }
