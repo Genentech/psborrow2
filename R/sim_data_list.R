@@ -24,8 +24,32 @@
     drift = "character"
   ),
   validity = function(object) {
+    # Format is list of lists
+    if (!all(vapply(object@data_list, function(item) is(item, "list"), FUN.VALUE = logical(1)))) {
+      return("`data_list` must be a list of lists")
+    }
+
+    # At lowest level there are matrices
+    if (!all(vapply(object@data_list, function(item) {
+      all(vapply(item, function(mat) {
+        is(mat, "matrix")
+      }, FUN.VALUE = logical(1)))
+    }, FUN.VALUE = logical(1)))) {
+      return("`data_list` lowest items must be matrices")
+    }
+
+    # Guide and data are same length
     if (NROW(object@guide) != NROW(object@data_list)) {
       return("`guide` and `data_list` must be same length")
+    }
+
+    # Effect and drift are columns in guide
+    if (!object@effect %in% colnames(object@guide)) {
+      return("`effect` must be a column in `guide`")
+    }
+
+    if (!object@drift %in% colnames(object@guide)) {
+      return("`drift` must be a column in `guide`")
     }
   }
 )
@@ -43,7 +67,10 @@
 #' that differ at the highest level of `data_list`. See `details.`
 #' @param effect character. The column in each matrix within `data_list` that
 #' corresponds to the true effect estimate (hazard ratio or odds ratio).
-#' @param drift character.
+#' @param drift character. The column in each matrix within `data_list` that
+#' corresponds to the true drift effect estimate (hazard ratio or odds ratio).
+#' A drift >1 means the external arm experiences greater effects.
+#'
 #'
 #' @details
 #'

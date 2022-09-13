@@ -18,7 +18,9 @@ that differ at the highest level of \code{data_list}. See \code{details.}}
 \item{effect}{character. The column in each matrix within \code{data_list} that
 corresponds to the true effect estimate (hazard ratio or odds ratio).}
 
-\item{drift}{character.}
+\item{drift}{character. The column in each matrix within \code{data_list} that
+corresponds to the true drift effect estimate (hazard ratio or odds ratio).
+A drift >1 means the external arm experiences greater effects.}
 }
 \description{
 A class for defining generated data for use as part of a
