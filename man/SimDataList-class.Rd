@@ -21,10 +21,10 @@ parameters.}
 \item{\code{guide}}{data.frame. \code{guide} contains information on the parameters
 that differ at the highest level of \code{data_list}.}
 
-\item{\code{effect}}{character. The column in each matrix within \code{data_list} that
-corresponds to the true effect estimate (hazard ratio or odds ratio).}
+\item{\code{effect}}{character. The column in \code{guide} that
+corresponds to the true treatment effect estimate (hazard ratio or odds ratio).}
 
-\item{\code{drift}}{character. The column in each matrix within \code{data_list} that
+\item{\code{drift}}{character. The column in \code{guide} that
 corresponds to the drift between external and internal control arms. A
 drift >1 means the external arm experiences greater effects.}
 }}

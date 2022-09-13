@@ -53,7 +53,8 @@ Suggests:
     knitr,
     rmarkdown,
     bayesplot,
-    matrixcalc
+    matrixcalc,
+    simsurv
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
 Language: en-US

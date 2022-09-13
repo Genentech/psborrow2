@@ -23,128 +23,151 @@ In this vignette, you'll learn how to use `psborrow2` to create a
 simulation study with the goal of informing trial design. Let's start by
 loading `psborrow2`:
 
-```{r setup}
+```{r setup, message = FALSE}
 library(psborrow2)
 ```
 
-# Executing a single simulation
+# Bringing your own simulated data
 
-We'll start by showing how to conduct a simulation study with a single
-set of study parameters, and will show how to combine and compare
-different iterations of study parameters later.
-
-To execute a simulation study with a single set of study parameters,
+We'll start by showing how to conduct a simulation study when you bring your
+own simulated data. To execute a simulation study with your own data,
 we need to build an object of class `Simulation` using the function
 `create_simulation_obj()`. Let's look at the arguments to
 `create_simulation_obj()` and consider them one-by-one below:
 
 ```
 create_simulation_obj(
-  sample_size,
-  covariates
+  sim_data_list,
+  sim_outcome_list,
+  sim_borrowing_list,
+  sim_cov_list,
+  sim_trt_list
 )
 
 ```
 
-## sample_size
+## `sim_data_list()`
 
-The input to `sample_size` is an object of class `SimSampleSize` created by
-the constructor `sim_samplesize()` which contains information on the sample size
-for internal control, external control, and internal treatment arms.
-We will choose these to be 200, 400, and 180, respectively.
+`sim_data_list()` is where you input the data you will be using for the
+simulation study. Let's simulate some data together for the sake of example.
+We'll use the `simsurv` package to generate survival data under two
+scenarios: a true hazard ratio (HR) for the treatment effect of 0.6 and a true
+HR of 0.8.
+
+### `data_list`
+
+Looking at the arguments to `sim_data_list()`, the first argument, `data_list`
+requires a list of lists of matrices. Each list of matrices should represent
+a different data generation scenario, such as our difference true HR.
+Therefore, let's create an object `data_list` that is length two:
+one list for a HR of 0.6, and one for a HR of 0.8. Within
+these lists, we can provide any number of matrices, but we'll only do
+two for the sake of ease.
 
 ```{r}
-ss <- sim_samplesize(
-  n_internal_control = 200,
-  n_external_control = 400,
-  n_internal_experimental = 180
+library(simsurv)
+library(survival)
+
+# Simulate a single matrix
+sim_single_matrix <- function(true_hr = 0.6,
+                              drift_hr = 1.0,
+                              n = 600) {
+  # Create a data frame with the subject IDs and treatment covariate
+  cov <- data.frame(
+    id = 1:n,
+    trt = rbinom(n, 1, 0.5)
+  )
+  cov$ext <- ifelse(cov$trt == 1L, 0L, rbinom(sum(cov$trt), 1, 0.5))
+
+  # Simulate the event times
+  dat <- simsurv(
+    lambdas = 0.1,
+    gammas = 1.5,
+    betas = c(
+      trt = log(true_hr),
+      ext = log(drift_hr)
+    ),
+    x = cov,
+    maxt = 5
+  )
+
+  dat$censor <- 1 - dat$status
+
+  # Merge the simulated event times onto covariate data frame
+  dat <- merge(cov, dat)
+
+  as.matrix(dat)
+}
+
+# Set seed
+set.seed(112233)
+
+# Create data list
+data_list <- list(
+  list(sim_single_matrix(true_hr = 0.6), sim_single_matrix(true_hr = 0.6)),
+  list(sim_single_matrix(true_hr = 0.8), sim_single_matrix(true_hr = 0.8))
 )
-ss
 ```
 
-## covariates
-
-The argument `covariates` takes an object of class `SimCovariates` created by
-the constructor `sim_covariates()`. Let's create two binary covariates ($x_1$
-and $x_2$) and one continuous covariate ($x_3$) from a multivariate
-normal distribution according to a covariance matrix we design.
-We show the multivariate normal distribution for the internal arms below and
-assume they are equal between internal and external arms, though users may
-specify separate matrices if they prefer.
-
-***Note*** the covariance matrix refers to the covariance before binarization
-of the binary variables. The true covariance may differ after sampling.
-
-$$\begin{aligned}
-\begin{bmatrix}
-x_1\\x_2\\x_3\\
-\end{bmatrix}
-&\sim N \left( \begin{bmatrix} 0\\ 0 \\0.5 \end{bmatrix},
-\begin{bmatrix}
-1 & 0.5 & 0.7\\
-0.5 & 1.2 & 0.9\\
-0.7 & 0.9 & 1\\
-\end{bmatrix} \right)
-\end{aligned}$$
-
-Before we go any further, let's codify our covariance matrix in `R` for future
-reference:
+As you can see, `data_list` is a list of list of matrices, the correct format
+for inputting into `sim_data_list()`:
 
 ```{r}
-cov_mat <- matrix(
-  c(
-    1.0, 0.5, 0.7,
-    0.5, 1.2, 0.9,
-    0.7, 0.9, 1.0
-  ),
-  ncol = 3,
-  byrow = TRUE
-)
-cov_mat
+str(data_list)
 ```
 
-$x_1$ and $x_2$ are further converted to binary variables $x_1$ and $x_2$ using
-quantiles of the normal distribution calculated from the probability specified
-by `prob_internal` for the internal trial and by `prob_external` for
-the external data. We specify probabilities for each binary covariate
-below:
+At the lowest level are matrices of simulated data:
+```{r}
+head(data_list[[1]][[1]])
+```
 
-$$
-\begin{aligned}
-  \text{internal: Pr} (X_1 = 1) &= 0.45 \\
-  \text{Pr}(X_2 = 1) &= 0.55\\
-  \text{external: Pr} (X_1 = 1) &= 0.65\\
-  \text{Pr}(X_2 = 1) &= 0.55\\
-\end{aligned}
-$$
+### `guide`
+In order to summarize the results from the different parameters in
+your simulation study, `psborrow2` needs to know how the simulation parameters
+differ. That is the purpose of the argument `guide`, which is a data.frame
+that distinguishes the simulation study parameters. Two columns are required
+in `guide`, though many more can be provided. The two required columns are:
 
-Let's see what these parameters look like in a function call to
-`sim_covariates()`.
-```{r message=FALSE}
-covset <- sim_covariates(
-  covariates = list(
-    x_1 = bin_var(
-      prob_internal = 0.45,
-      prob_external = 0.65
-    ),
-    x_2 = bin_var(
-      prob_internal = 0.55,
-      prob_external = 0.55
-    ),
-    x_3 = cont_var(
-      mu_internal = 0.5,
-      mu_external = 0.5
-    )
-  ),
-  covariance_internal = cov_mat,
-  covariance_external = cov_mat
+* The true treatment effect (in our case a HR)
+* The true drift effect (in our case a HR). Drift effects >1 will mean
+that the external control arm experiences greater hazard than the internal
+control arm.
+
+In our study, the drift HR was 1.0. We varied the true HR so that it took
+two values: 0.6 and 0.8. Our guide should therefore be two rows to represent
+the two scenarios:
+
+```{r}
+guide <- data.frame(
+  trueHR = c(0.6, 0.8),
+  driftHR = c(1.0, 1.0)
 )
-covset
+
+guide
 ```
 
 
-# Combining simulations with different parameters
+***Note*** the order is extremely important in `guide` and should correspond
+exactly to the order in your simulated data. For us, the scenario with
+a true HR of 0.6 was the first list element in our `data_list` and should
+therefore be the first row of `guide`.
 
-Now that we've seen how to conduct a simulation study with a single set of
-study parameters, let's explore how to combine and compare results
-from simulations with different study parameters.
+### `effect` and `drift`
+
+The last two inputs to `sim_data_list()`, `effect` and `drift`
+are the column names in `guide` that correspond to the true treatment effect
+and true drift effect, respectively. For our study, these are `"trueHR"`
+and `"driftHR"`, respectively.
+
+Putting it all together, we can create an object of class `SimDataList`:
+
+```{r}
+sdl <- sim_data_list(
+  data_list,
+  guide,
+  "trueHR",
+  "driftHR"
+)
+
+sdl
+```

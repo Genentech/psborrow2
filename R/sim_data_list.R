@@ -10,9 +10,9 @@
 #' parameters.
 #' @slot guide data.frame. `guide` contains information on the parameters
 #' that differ at the highest level of `data_list`.
-#' @slot effect character. The column in each matrix within `data_list` that
-#' corresponds to the true effect estimate (hazard ratio or odds ratio).
-#' @slot drift character. The column in each matrix within `data_list` that
+#' @slot effect character. The column in `guide` that
+#' corresponds to the true treatment effect estimate (hazard ratio or odds ratio).
+#' @slot drift character. The column in `guide` that
 #' corresponds to the drift between external and internal control arms. A
 #' drift >1 means the external arm experiences greater effects.
 .sim_data_list <- setClass(
@@ -65,9 +65,9 @@
 #' parameters. See `details`.
 #' @param guide data.frame. `guide` contains information on the parameters
 #' that differ at the highest level of `data_list`. See `details.`
-#' @param effect character. The column in each matrix within `data_list` that
-#' corresponds to the true effect estimate (hazard ratio or odds ratio).
-#' @param drift character. The column in each matrix within `data_list` that
+#' @param effect character. The column in `guide` that
+#' corresponds to the true treatment effect estimate (hazard ratio or odds ratio).
+#' @param drift character. The column in `guide` that
 #' corresponds to the true drift effect estimate (hazard ratio or odds ratio).
 #' A drift >1 means the external arm experiences greater effects.
 #'
@@ -157,3 +157,15 @@ sim_data_list <- function(data_list,
     drift = drift
   )
 }
+
+# show ----
+setMethod(
+  f = "show",
+  signature = "SimDataList",
+  definition = function(object) {
+    cat("SimDataList object with ", NROW(object@data_list), " different scenarios\n")
+    if (NROW(object@data_list) <= 10) {
+      print(object@guide)
+    }
+  }
+)
