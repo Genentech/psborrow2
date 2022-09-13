@@ -92,6 +92,7 @@ Collate:
     'poisson_prior.R'
     'prepare_stan_data_inputs.R'
     'sim_covariates.R'
+    'sim_data_list.R'
     'sim_samplesize.R'
     'simvar_class.R'
     'treatment_details.R'
