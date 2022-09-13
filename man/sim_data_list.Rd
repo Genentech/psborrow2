@@ -84,8 +84,6 @@ add_binary_endpoint <- function(odds_ratio,
   cbind(base_matrix, matrix(bin_endpoint, ncol = 1, dimnames = list(NULL, "ep")))
 }
 
-set.seed(123)
-
 data_list <- list(
   list(add_binary_endpoint(1.5), add_binary_endpoint(1.5)),
   list(add_binary_endpoint(2.5), add_binary_endpoint(2.5))
@@ -93,7 +91,7 @@ data_list <- list(
 
 guide <- data.frame(
   trueOR = c(1.5, 2.5),
-  driftOR = c(1, 1)
+  driftOR = c(1.0, 1.0)
 )
 
 sdl <- sim_data_list(
