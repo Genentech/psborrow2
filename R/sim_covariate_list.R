@@ -9,7 +9,7 @@
 #'
 #' @include covariate_class.R
 #' @include add_covariates.R
-#' @include analysis_class.R \
+#' @include analysis_class.R
 .sim_covariate_list <- setClass(
   "SimCovariateList",
   slots = c(
@@ -18,8 +18,8 @@
   ),
   validity = function(object) {
     if (!all(vapply(object@covariate_list,
-                    function(item) is(item, "CovariatesOrNULL"),
-                    FUN.VALUE = logical(1)
+      function(item) is(item, "CovariatesOrNULL"),
+      FUN.VALUE = logical(1)
     ))) {
       return("`covariate_list` must be a list of `Covariate` objects (or `NULL`)")
     }
@@ -55,7 +55,7 @@
 #' covariates <- sim_covariate_list(
 #'   list(
 #'     "No adjustment" = NULL,
-#'     "Covariates 1 and 2" = add_covariates(c("cov1","cov2"), normal_prior(0, 1000))
+#'     "Covariates 1 and 2" = add_covariates(c("cov1", "cov2"), normal_prior(0, 1000))
 #'   )
 #' )
 #'

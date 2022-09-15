@@ -4,7 +4,7 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_covariate_list(
       add_covariates(
-        c('cov1','cov2'),
+        c("cov1", "cov2"),
         normal_prior(0, 1000)
       )
     ),
@@ -14,124 +14,105 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_covariate_list(
       list(
-        scenario_one = "Full borrowing"
+        scenario_one = c("cov1", "cov2")
       )
     ),
-    "must be a list of `Borrowing` objects"
+    "must be a list of `Covariate` objects \\(or `NULL`\\)"
   )
 
   # Borrowing list must be named
   expect_error(
     sim_covariate_list(
       list(
-        borrowing_details(
-          method = "BDB",
-          ext_flag_col = "ext",
-          tau_prior = exponential_prior(0.001)
+        add_covariates(
+          c("cov1", "cov2"),
+          normal_prior(0, 1000)
         )
       )
     ),
-    "`borrowing_list` must be named"
+    "`covariate_list` must be named"
   )
 
   # All items must be named
   expect_error(
     sim_covariate_list(
       list(
-        bdb = borrowing_details(
-          method = "BDB",
-          ext_flag_col = "ext",
-          tau_prior = exponential_prior(0.001)
-        ),
-        borrowing_details(
-          method = "Full borrowing",
-          "ext"
+        no_adjustment = NULL,
+        add_covariates(
+          c("cov1", "cov2"),
+          normal_prior(0, 1000)
         )
       )
     ),
-    "All items in `borrowing_list` must be named"
+    "All items in `covariate_list` must be named"
   )
 
   # Names must be unique
   expect_error(
     sim_covariate_list(
       list(
-        scenario_1 = borrowing_details(
-          method = "BDB",
-          ext_flag_col = "ext",
-          tau_prior = exponential_prior(0.001)
-        ),
-        scenario_1 = borrowing_details(
-          method = "Full borrowing",
-          "ext"
+        scenario_1 = NULL,
+        scenario_1 = add_covariates(
+          c("cov1", "cov2"),
+          normal_prior(0, 1000)
         )
       )
     ),
-    "All names supplied to `borrowing_list` must be unique"
+    "All names supplied to `covariate_list` must be unique"
   )
 })
 
-test_that("Correct inputs successfully produce `SimBorrowingList`", {
+test_that("Correct inputs successfully produce `SimCovariateList`", {
   expect_class(
     sim_covariate_list(
       list(
-        "BDB" = borrowing_details(
-          method = "BDB",
-          ext_flag_col = "ext",
-          tau_prior = exponential_prior(0.001)
-        ),
-        "Full borrowing" = borrowing_details(
-          method = "Full borrowing",
-          "ext"
+        "No adjustment" = NULL,
+        "Full adjustment" = add_covariates(
+          c("cov1", "cov2"),
+          normal_prior(0, 1000)
         )
       )
     ),
-    "SimBorrowingList"
+    "SimCovariateList"
   )
 })
 
-
-test_that("Borrowing `guide` is produced correctly", {
-  borrowing_obj1 <- sim_covariate_list(
+test_that("Covariate `guide` is produced correctly", {
+  covariate_obj1 <- sim_covariate_list(
     list(
-      "BDB" = borrowing_details(
-        method = "BDB",
-        ext_flag_col = "ext",
-        tau_prior = exponential_prior(0.001)
-      ),
-      "Full borrowing" = borrowing_details(
-        method = "Full borrowing",
-        "ext"
+      "No adjustment" = NULL,
+      "Full adjustment" = add_covariates(
+        c("cov1", "cov2"),
+        normal_prior(0, 1000)
       )
     )
   )
 
   expect_equal(
-    borrowing_obj1@guide$borrowing_scenario,
-    c("BDB", "Full borrowing")
+    covariate_obj1@guide$covariate_scenario,
+    c("No adjustment", "Full adjustment")
   )
-  expect_class(borrowing_obj1@guide, "data.frame")
-  expect_equal(colnames(borrowing_obj1@guide), "borrowing_scenario")
+  expect_class(covariate_obj1@guide, "data.frame")
+  expect_equal(colnames(covariate_obj1@guide), "covariate_scenario")
 
-  borrowing_obj2 <- sim_covariate_list(
+  covariate_obj2 <- sim_covariate_list(
     list(
-      "BDB" = borrowing_details(
-        method = "BDB",
-        ext_flag_col = "ext",
-        tau_prior = exponential_prior(0.001)
+      "No adjustment" = NULL,
+      "Cov1 and cov2" = add_covariates(
+        c("cov1", "cov2"),
+        normal_prior(0, 1000)
       ),
-      "Full borrowing" = borrowing_details(
-        method = "Full borrowing",
-        "ext"
-      ),
-      "No borrowing" = borrowing_details(method = "No borrowing", "ext")
+      "Cov1 only" = add_covariates(
+        c("cov1"),
+        normal_prior(0, 1000)
+      )
     )
   )
 
   expect_equal(
-    borrowing_obj2@guide$borrowing_scenario,
-    c("BDB", "Full borrowing", "No borrowing")
+    covariate_obj2@guide$covariate_scenario,
+    c("No adjustment", "Cov1 and cov2", "Cov1 only")
   )
-  expect_class(borrowing_obj2@guide, "data.frame")
-  expect_equal(colnames(borrowing_obj2@guide), "borrowing_scenario")
+  expect_class(covariate_obj2@guide, "data.frame")
+  expect_equal(colnames(covariate_obj2@guide), "covariate_scenario")
 })

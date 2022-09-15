@@ -40,7 +40,7 @@ create_simulation_obj(
   sim_data_list,
   sim_outcome_list,
   sim_borrowing_list,
-  sim_cov_list,
+  sim_covariate_list,
   sim_trt_list
 )
 
@@ -171,3 +171,9 @@ sdl <- sim_data_list(
 
 sdl
 ```
+
+## `sim_covariate_list()`
+
+`sim_covariate_list()` is where you input details on which covariates to
+adjust for in your simulation study outcome models. Note that we did not
+simulate any covariates, so we will leave this argument empty.
