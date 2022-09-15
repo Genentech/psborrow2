@@ -29,3 +29,4 @@ covariates <- sim_covariate_list(
 )
 
 }
+\concept{simulation classes}

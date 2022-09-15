@@ -48,6 +48,8 @@
 #' as part of a simulation study. It is often of interest to compare several adjustment methods to
 #' no adjustment. To specify no adjustment, pass `NULL` as a list item to `covariate_list`.
 #'
+#' @family simulation classes
+#'
 #' @export
 #'
 #' @examples
