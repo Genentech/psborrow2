@@ -44,6 +44,8 @@
 #' @param outcome_list named list of objects of class `Outcome` created
 #' by `outcome_details()`.
 #'
+#' @family simulation classes
+#'
 #' @export
 #'
 #' @examples

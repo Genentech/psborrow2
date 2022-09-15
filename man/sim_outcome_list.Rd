@@ -23,3 +23,4 @@ outcome_scenarios <- sim_outcome_list(
 )
 
 }
+\concept{simulation classes}
