@@ -56,7 +56,7 @@
 
 #' Input generated data for a simulation study
 #'
-#' A function for defining generated data for use as part of a
+#' A class for defining generated data for use as part of a
 #' simulation study.
 #'
 #' @param data_list list of lists of matrices. The lists at the highest
@@ -163,7 +163,7 @@ setMethod(
   f = "show",
   signature = "SimDataList",
   definition = function(object) {
-    cat("SimDataList object with ", NROW(object@data_list), " different scenario(s)\n")
+    cat("SimDataList object with ", NROW(object@data_list), " different scenarios\n")
     if (NROW(object@data_list) <= 10) {
       print(object@guide)
     }
