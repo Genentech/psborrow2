@@ -26,3 +26,4 @@ borrow_scenarios <- sim_borrowing_list(
 )
 
 }
+\concept{simulation classes}

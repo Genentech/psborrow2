@@ -45,6 +45,8 @@
 #'
 #' @export
 #'
+#' @family simulation classes
+#'
 #' @examples
 #'
 #' borrow_scenarios <- sim_borrowing_list(
