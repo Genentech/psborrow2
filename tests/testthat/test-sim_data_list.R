@@ -102,6 +102,7 @@ test_that("Incorrect inputs lead to errors", {
   )
 })
 
+
 test_that("Correct inputs successfully produce `SimDataList`", {
   expect_class(
     sim_data_list(
