@@ -94,11 +94,12 @@ Collate:
     'prepare_stan_data_inputs.R'
     'sim_covariates.R'
     'sim_data_list.R'
+    'weib_ph_surv_dist.R'
+    'sim_outcome_list.R'
     'sim_samplesize.R'
     'simvar_class.R'
     'treatment_details.R'
     'trim_data_matrix.R'
     'uniform_prior.R'
-    'weib_ph_surv_dist.R'
 LazyData: true
 VignetteBuilder: knitr

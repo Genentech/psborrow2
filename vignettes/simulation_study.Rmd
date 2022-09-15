@@ -171,3 +171,38 @@ sdl <- sim_data_list(
 
 sdl
 ```
+
+
+## `sim_outcome_list()`
+
+`sim_outcome_list()` is where you input outcome details, for instance
+the type of outcome and prior distributions on the baseline outcome
+rate as well as any ancillary parameters. In `psborrow2` currently, there
+are three outcome types supported:
+
+* Exponential survival distribution (`exp_surv_dist()`)
+* Weibull proportional hazards survival distribution (`weib_ph_surv_dist()`)
+* Bernoulli distribution with a logistic link (logistic regression,
+`logistic_bin_outcome()`)
+
+For our example, let's compare Weibull and exponential survival
+distributions.
+
+```{r}
+sol <- sim_outcome_list(
+  list(
+    "Exponential" = exp_surv_dist(
+      time_var = "eventtime",
+      cens_var = "censor",
+      baseline_prior = normal_prior(0, 1000)
+    ),
+    "Weibull" = weib_ph_surv_dist(
+      time_var = "eventtime",
+      cens_var = "censor",
+      shape_prior = normal_prior(0, 1000),
+      baseline_prior = normal_prior(0, 1000)
+    )
+  )
+)
+sol
+```
