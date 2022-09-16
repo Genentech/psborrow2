@@ -29,4 +29,9 @@ covariates <- sim_covariate_list(
 )
 
 }
+\seealso{
+Other simulation classes: 
+\code{\link{sim_borrowing_list}()},
+\code{\link{sim_outcome_list}()}
+}
 \concept{simulation classes}
