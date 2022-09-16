@@ -23,7 +23,7 @@ corresponds to the true drift effect estimate (hazard ratio or odds ratio).
 A drift >1 means the external arm experiences greater effects.}
 }
 \description{
-A class for defining generated data for use as part of a
+A function for defining generated data for use as part of a
 simulation study.
 }
 \details{
@@ -103,3 +103,4 @@ sdl <- sim_data_list(
   drift = "driftOR"
 )
 }
+\concept{simulation classes}
