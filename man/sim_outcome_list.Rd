@@ -23,4 +23,8 @@ outcome_scenarios <- sim_outcome_list(
 )
 
 }
+\seealso{
+Other simulation classes: 
+\code{\link{sim_borrowing_list}()}
+}
 \concept{simulation classes}
