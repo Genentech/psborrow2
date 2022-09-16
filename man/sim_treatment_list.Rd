@@ -23,3 +23,4 @@ treatment_scenarios <- sim_treatment_list(
 )
 
 }
+\concept{simulation classes}

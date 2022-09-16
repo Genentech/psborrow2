@@ -42,7 +42,7 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_treatment_list(
       list(
-        scenario_1 =  treatment_details("trt", normal_prior(0, 1000)),
+        scenario_1 = treatment_details("trt", normal_prior(0, 1000)),
         scenario_1 = treatment_details("trt", normal_prior(-50, 20))
       )
     ),

@@ -17,8 +17,8 @@
   ),
   validity = function(object) {
     if (!all(vapply(object@treatment_list,
-                    function(item) is(item, "Treatment"),
-                    FUN.VALUE = logical(1)
+      function(item) is(item, "Treatment"),
+      FUN.VALUE = logical(1)
     ))) {
       return("`treatment_list` must be a list of `Treatment` objects.")
     }
@@ -41,6 +41,8 @@
 #'
 #' @param treatment_list named list of objects of class `Treatment` created
 #' by `treatment_details()`.
+#'
+#' @family simulation classes
 #'
 #' @export
 #'
