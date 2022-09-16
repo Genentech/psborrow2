@@ -40,7 +40,7 @@ create_simulation_obj(
   sim_data_list,
   sim_outcome_list,
   sim_borrowing_list,
-  sim_cov_list,
+  sim_covariate_list,
   sim_trt_list
 )
 
@@ -146,7 +146,6 @@ guide <- data.frame(
 guide
 ```
 
-
 ***Note*** the order is extremely important in `guide` and should correspond
 exactly to the order in your simulated data. For us, the scenario with
 a true HR of 0.6 was the first list element in our `data_list` and should
@@ -171,6 +170,7 @@ sdl <- sim_data_list(
 
 sdl
 ```
+
 
 ## `sim_outcome_list()`
 
@@ -234,3 +234,9 @@ sbl <- sim_borrowing_list(
 )
 sbl
 ```
+
+## `sim_covariate_list()`
+
+`sim_covariate_list()` is where you input details on which covariates to
+adjust for in your simulation study outcome models. Note that we did not
+simulate any covariates, so we will leave this argument empty.

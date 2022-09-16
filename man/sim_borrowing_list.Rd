@@ -28,6 +28,7 @@ borrow_scenarios <- sim_borrowing_list(
 }
 \seealso{
 Other simulation classes: 
+\code{\link{sim_covariate_list}()},
 \code{\link{sim_outcome_list}()}
 }
 \concept{simulation classes}
