@@ -171,3 +171,32 @@ sdl <- sim_data_list(
 
 sdl
 ```
+
+## `sim_borrowing_list()`
+
+`sim_borrowing_list()` is where you input borrowing details, including
+the type of borrowing from among:
+
+* No borrowing
+* Full borrowing
+* BDB
+
+In addition, the prior on the commensurability parameter may also be
+varied. For our example, let's compare four scenarios:
+
+* No borrowing
+* Full borrowing
+* BDB, conservative prior
+* BDB, aggressive prior
+
+```{r}
+sbl <- sim_borrowing_list(
+  list(
+    "No borrowing" = borrowing_details("No borrowing", "ext"),
+    "Full borrowing" = borrowing_details("Full borrowing", "ext"),
+    "BDB, conservative prior" = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
+    "BDB, aggressive prior" = borrowing_details("BDB", "ext", gamma_prior(1.000, 0.001))
+  )
+)
+sbl
+```
