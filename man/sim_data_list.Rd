@@ -103,4 +103,11 @@ sdl <- sim_data_list(
   drift = "driftOR"
 )
 }
+\seealso{
+Other simulation classes: 
+\code{\link{sim_borrowing_list}()},
+\code{\link{sim_covariate_list}()},
+\code{\link{sim_outcome_list}()},
+\code{\link{sim_treatment_list}()}
+}
 \concept{simulation classes}
