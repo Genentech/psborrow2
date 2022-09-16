@@ -56,7 +56,7 @@
 
 #' Input generated data for a simulation study
 #'
-#' A class for defining generated data for use as part of a
+#' A function for defining generated data for use as part of a
 #' simulation study.
 #'
 #' @param data_list list of lists of matrices. The lists at the highest
@@ -103,6 +103,8 @@
 #' The `guide` should be a data.frame with one row per scenario. As a
 #' consquence of this, the length of the list should equal the number of rows
 #' in the guide. See `examples`.
+#'
+#' @family simulation classes
 #'
 #' @examples
 #' base_mat <- matrix(

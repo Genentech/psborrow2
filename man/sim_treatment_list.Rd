@@ -23,4 +23,11 @@ treatment_scenarios <- sim_treatment_list(
 )
 
 }
+\seealso{
+Other simulation classes: 
+\code{\link{sim_borrowing_list}()},
+\code{\link{sim_covariate_list}()},
+\code{\link{sim_data_list}()},
+\code{\link{sim_outcome_list}()}
+}
 \concept{simulation classes}

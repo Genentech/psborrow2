@@ -40,7 +40,7 @@ create_simulation_obj(
   sim_data_list,
   sim_outcome_list,
   sim_borrowing_list,
-  sim_cov_list,
+  sim_covariate_list,
   sim_trt_list
 )
 
@@ -146,7 +146,6 @@ guide <- data.frame(
 guide
 ```
 
-
 ***Note*** the order is extremely important in `guide` and should correspond
 exactly to the order in your simulated data. For us, the scenario with
 a true HR of 0.6 was the first list element in our `data_list` and should
@@ -171,6 +170,75 @@ sdl <- sim_data_list(
 
 sdl
 ```
+
+## `sim_outcome_list()`
+
+`sim_outcome_list()` is where you input outcome details, for instance
+the type of outcome and prior distributions on the baseline outcome
+rate as well as any ancillary parameters. In `psborrow2` currently, there
+are three outcome types supported:
+
+* Exponential survival distribution (`exp_surv_dist()`)
+* Weibull proportional hazards survival distribution (`weib_ph_surv_dist()`)
+* Bernoulli distribution with a logistic link (logistic regression,
+`logistic_bin_outcome()`)
+
+For our example, let's compare Weibull and exponential survival
+distributions.
+
+```{r}
+sol <- sim_outcome_list(
+  list(
+    "Exponential" = exp_surv_dist(
+      time_var = "eventtime",
+      cens_var = "censor",
+      baseline_prior = normal_prior(0, 1000)
+    ),
+    "Weibull" = weib_ph_surv_dist(
+      time_var = "eventtime",
+      cens_var = "censor",
+      shape_prior = normal_prior(0, 1000),
+      baseline_prior = normal_prior(0, 1000)
+    )
+  )
+)
+sol
+```
+
+## `sim_borrowing_list()`
+
+`sim_borrowing_list()` is where you input borrowing details, including
+the type of borrowing from among:
+
+* No borrowing
+* Full borrowing
+* BDB
+
+In addition, the prior on the commensurability parameter may also be
+varied. For our example, let's compare four scenarios:
+
+* No borrowing
+* Full borrowing
+* BDB, conservative prior
+* BDB, aggressive prior
+
+```{r}
+sbl <- sim_borrowing_list(
+  list(
+    "No borrowing" = borrowing_details("No borrowing", "ext"),
+    "Full borrowing" = borrowing_details("Full borrowing", "ext"),
+    "BDB, conservative prior" = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
+    "BDB, aggressive prior" = borrowing_details("BDB", "ext", gamma_prior(1.000, 0.001))
+  )
+)
+sbl
+```
+
+## `sim_covariate_list()`
+
+`sim_covariate_list()` is where you input details on which covariates to
+adjust for in your simulation study outcome models. Note that we did not
+simulate any covariates, so we will leave this argument empty.
 
 
 ## `sim_treatment_list()`

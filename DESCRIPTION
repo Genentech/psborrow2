@@ -92,14 +92,17 @@ Collate:
     'package.R'
     'poisson_prior.R'
     'prepare_stan_data_inputs.R'
+    'sim_borrowing_list.R'
+    'sim_covariate_list.R'
     'sim_covariates.R'
     'sim_data_list.R'
+    'weib_ph_surv_dist.R'
+    'sim_outcome_list.R'
     'sim_samplesize.R'
     'treatment_details.R'
     'sim_treatment_list.R'
     'simvar_class.R'
     'trim_data_matrix.R'
     'uniform_prior.R'
-    'weib_ph_surv_dist.R'
 LazyData: true
 VignetteBuilder: knitr
