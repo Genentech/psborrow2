@@ -171,3 +171,17 @@ sdl <- sim_data_list(
 
 sdl
 ```
+
+
+## `sim_treatment_list()`
+
+`sim_treatment_list()` is where you input the treatment details for a simulation study. Of most
+importance in this field is specifying the prior distribution for the treatment effect. Let's
+keep an uninformative prior in this example:
+
+```{r}
+stl <- sim_treatment_list(
+  list("Standard" = treatment_details("trt", normal_prior(0, 1000)))
+)
+stl
+```
