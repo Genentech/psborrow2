@@ -19,6 +19,8 @@ setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
 #' with `sim_treatment_list()`.
 #' @slot guide data.frame. Data.frame containing information on all
 #' combinations evaluated.
+#' @slot n_combos integer. Number of combinations of parameters to be evaluated.
+#' @slot n_analyses integer. Number of analyses (combos x datasets to be performed).
 #' @include sim_data_list.R
 #' @include sim_covariate_list.R
 #' @include sim_borrowing_list.R
@@ -32,7 +34,13 @@ setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
     borrowing_list = "SimBorrowingList",
     covariate_list = "SimCovariateListOrNULL",
     treatment_list = "SimTreatmentList",
-    guide = "data.frame"
+    guide = "data.frame",
+    n_combos = "integer",
+    n_analyses = "integer"
+  ),
+  prototype = list(
+    n_combos = 0L,
+    n_analyses = 0L
   )
 )
 
@@ -41,7 +49,27 @@ setMethod(
   f = "show",
   signature = "Simulation",
   definition = function(object) {
-    cat("Simulation object")
+    if (object@n_combos > 20 | object@n_analyses > 100) {
+      cat(
+        "Simulation object with ",
+        object@n_combos,
+        " combinations and ",
+        object@n_analyses,
+        " analyses ready to sample. ",
+        "This is a lot of combinations/analyses! Consider breaking the ",
+        "study into different simulation objects. Or if you ",
+        "prefer to use these combinations, call `mcmc_sample()` next."
+      )
+    } else {
+      cat(
+        "Simulation object with ",
+        object@n_combos,
+        " combinations and ",
+        object@n_analyses,
+        " analyses ready to sample. ",
+        "Next, call `mcmc_sample()`!"
+      )
+    }
   }
 )
 
@@ -52,8 +80,7 @@ setMethod(
   f = "get_vars",
   signature = "Simulation",
   definition = function(object) {
-
-    cov_cols <- if(!is.null(object@covariate_list)) {
+    cov_cols <- if (!is.null(object@covariate_list)) {
       unlist(lapply(object@covariate_list@covariate_list, get_vars))
     } else {
       NULL

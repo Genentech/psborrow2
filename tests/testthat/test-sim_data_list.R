@@ -100,6 +100,20 @@ test_that("Incorrect inputs lead to errors", {
     ),
     "must be a column"
   )
+
+  expect_error(
+    sim_data_list(
+      data_list,
+      data.frame(
+        trueOR = c(1.5, 2.5),
+        driftOR = c(1.0, 1.0),
+        n_datasets_per_param = c(2L, 2L)
+      ),
+      "trueOR",
+      "driftOR"
+    ),
+    "'n_datasets_per_param' is a protected column name in `guide`"
+  )
 })
 
 
@@ -115,5 +129,20 @@ test_that("Correct inputs successfully produce `SimDataList`", {
       "driftOR"
     ),
     "SimDataList"
+  )
+})
+
+test_that("N datasets per param is correct", {
+  expect_equal(
+    sim_data_list(
+      data_list,
+      data.frame(
+        trueOR = c(1.5, 2.5),
+        driftOR = c(1.0, 1.0)
+      ),
+      "trueOR",
+      "driftOR"
+    )@guide$n_datasets_per_param,
+    c(2, 2)
   )
 })

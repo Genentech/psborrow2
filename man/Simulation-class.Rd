@@ -27,5 +27,12 @@ with \code{sim_covariate_list()}.}
 
 \item{\code{treatment_list}}{\code{SimTreatmentList}. List of treatment objects created
 with \code{sim_treatment_list()}.}
+
+\item{\code{guide}}{data.frame. Data.frame containing information on all
+combinations evaluated.}
+
+\item{\code{n_combos}}{integer. Number of combinations of parameters to be evaluated.}
+
+\item{\code{n_analyses}}{integer. Number of analyses (combos x datasets to be performed).}
 }}
 

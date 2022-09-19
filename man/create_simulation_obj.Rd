@@ -77,9 +77,15 @@ sdl <- sim_data_list(
 )
 
 sim_object <- create_simulation_obj(
-   data_list = sdl,
-   outcome_list = sim_outcome_list(list(standard = logistic_bin_outcome("ep", normal_prior(0, 1000)))),
-   borrowing_list = sim_borrowing_list(list(standard = borrowing_details("BDB", "ext", exponential_prior(0.0001)))),
-   treatment_list = sim_treatment_list(list(standard = treatment_details("trt", normal_prior(0, 1000))))
-   )
+  data_list = sdl,
+  outcome_list = sim_outcome_list(list(
+    standard = logistic_bin_outcome("ep", normal_prior(0, 1000))
+  )),
+  borrowing_list = sim_borrowing_list(list(
+    standard = borrowing_details("BDB", "ext", exponential_prior(0.0001))
+  )),
+  treatment_list = sim_treatment_list(list(
+    standard = treatment_details("trt", normal_prior(0, 1000))
+  ))
+)
 }

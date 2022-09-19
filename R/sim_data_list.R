@@ -51,6 +51,11 @@
     if (!object@drift %in% colnames(object@guide)) {
       return("`drift` must be a column in `guide`")
     }
+
+    # n_datasets_per_list is protected
+    if ("n_datasets_per_param" %in% colnames(object@guide)) {
+      return("'n_datasets_per_param' is a protected column name in `guide`.")
+    }
   }
 )
 
@@ -152,12 +157,20 @@ sim_data_list <- function(data_list,
                           guide,
                           effect,
                           drift) {
-  .sim_data_list(
+  sim_data_list <- .sim_data_list(
     data_list = data_list,
     guide = guide,
     effect = effect,
     drift = drift
   )
+
+  sim_data_list@guide$n_datasets_per_param <- vapply(
+    sim_data_list@data_list,
+    NROW,
+    FUN.VALUE = integer(1)
+  )
+
+  return(sim_data_list)
 }
 
 # show ----

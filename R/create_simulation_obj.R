@@ -58,11 +58,17 @@
 #' )
 #'
 #' sim_object <- create_simulation_obj(
-#'    data_list = sdl,
-#'    outcome_list = sim_outcome_list(list(standard = logistic_bin_outcome("ep", normal_prior(0, 1000)))),
-#'    borrowing_list = sim_borrowing_list(list(standard = borrowing_details("BDB", "ext", exponential_prior(0.0001)))),
-#'    treatment_list = sim_treatment_list(list(standard = treatment_details("trt", normal_prior(0, 1000))))
-#'    )
+#'   data_list = sdl,
+#'   outcome_list = sim_outcome_list(list(
+#'     standard = logistic_bin_outcome("ep", normal_prior(0, 1000))
+#'   )),
+#'   borrowing_list = sim_borrowing_list(list(
+#'     standard = borrowing_details("BDB", "ext", exponential_prior(0.0001))
+#'   )),
+#'   treatment_list = sim_treatment_list(list(
+#'     standard = treatment_details("trt", normal_prior(0, 1000))
+#'   ))
+#' )
 #' @export
 create_simulation_obj <- function(data_list,
                                   covariate_list = NULL,
@@ -76,10 +82,15 @@ create_simulation_obj <- function(data_list,
   assert_class(borrowing_list, "SimBorrowingList")
   assert_class(treatment_list, "SimTreatmentList")
 
+  # Create empty covariate list if NULL
+  if (is.null(covariate_list)) {
+    covariate_list <- sim_covariate_list(covariate_list = list(`No adjustment` = NULL))
+  }
+
   # Create object
   simulation_obj <- .simulation_obj(
     data_list = data_list,
-    covariate_list =  covariate_list,
+    covariate_list = covariate_list,
     outcome_list = outcome_list,
     borrowing_list = borrowing_list,
     treatment_list = treatment_list
@@ -89,35 +100,53 @@ create_simulation_obj <- function(data_list,
   ## Data matrices all have external flags, treatment flags, and covariates
   search_cols <- get_vars(simulation_obj)
 
-  for (i in 1:NROW(simulation_obj@data_list@data_list)) {
-    for (j in 1:NROW(simulation_obj@data_list@data_list[[i]])) {
+  for (i in seq_len(simulation_obj@data_list@data_list)) {
+    for (j in seq_len(simulation_obj@data_list@data_list[[i]])) {
       if (!all(search_cols %in% colnames(simulation_obj@data_list@data_list[[i]][[j]]))) {
         which_not_in <- search_cols[which(!search_cols %in% colnames(simulation_obj@data_list@data_list[[i]][[j]]))]
-        stop("The following columns were specified in the simulation but are missing in some simulated data matrices: '",
-             paste0(which_not_in, collapse = "', '"),
-             "'")
+        stop(
+          "The following columns were specified in the simulation but ",
+          "are missing in some simulated data matrices: '",
+          paste0(which_not_in, collapse = "', '"),
+          "'"
+        )
       }
     }
   }
 
   ## Data matrices do not contain missing data
-  for (i in 1:NROW(simulation_obj@data_list@data_list)) {
-    for (j in 1:NROW(simulation_obj@data_list@data_list[[i]])) {
-      mat_subset <- simulation_obj@data_list@data_list[[i]][[j]][,search_cols]
+  for (i in seq_len(simulation_obj@data_list@data_list)) {
+    for (j in seq_len(simulation_obj@data_list@data_list[[i]])) {
+      mat_subset <- simulation_obj@data_list@data_list[[i]][[j]][, search_cols]
       if (!all(complete.cases(mat_subset))) {
-        stop("Missing data detected in >1 matrix in `data_list`. ",
-             "Could be one of the following columns: '",
-             paste0(search_cols, collapse = "', '"),
-             "'. ",
-             "Error found in simulation_obj@data_list@data_list[[",i,"]][[",j,"]]"
+        stop(
+          "Missing data detected in >1 matrix in `data_list`. ",
+          "Could be one of the following columns: '",
+          paste0(search_cols, collapse = "', '"),
+          "'. ",
+          "Error found in simulation_obj@data_list@data_list[[", i, "]][[", j, "]]"
         )
       }
     }
   }
 
   # Create guide
+  simulation_obj@guide <- merge(
+    simulation_obj@data_list@guide,
+    merge(
+      simulation_obj@outcome_list@guide,
+      merge(
+        simulation_obj@borrowing_list@guide,
+        merge(
+          simulation_obj@covariate_list@guide,
+          simulation_obj@treatment_list@guide
+        )
+      )
+    )
+  )
+  simulation_obj@n_combos <- NROW(simulation_obj@guide)
+  simulation_obj@n_analyses <- sum(simulation_obj@guide$n_datasets_per_param)
 
   # Return simulation object
   return(simulation_obj)
-
 }
