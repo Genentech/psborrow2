@@ -17,6 +17,8 @@ setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
 #' with `sim_covariate_list()`.
 #' @slot treatment_list `SimTreatmentList`. List of treatment objects created
 #' with `sim_treatment_list()`.
+#' @slot guide data.frame. Data.frame containing information on all
+#' combinations evaluated.
 #' @include sim_data_list.R
 #' @include sim_covariate_list.R
 #' @include sim_borrowing_list.R
@@ -29,7 +31,8 @@ setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
     outcome_list = "SimOutcomeList",
     borrowing_list = "SimBorrowingList",
     covariate_list = "SimCovariateListOrNULL",
-    treatment_list = "SimTreatmentList"
+    treatment_list = "SimTreatmentList",
+    guide = "data.frame"
   )
 )
 
@@ -39,5 +42,33 @@ setMethod(
   signature = "Simulation",
   definition = function(object) {
     cat("Simulation object")
+  }
+)
+
+# get_vars ----
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "Simulation",
+  definition = function(object) {
+
+    cov_cols <- if(!is.null(object@covariate_list)) {
+      unlist(lapply(object@covariate_list@covariate_list, get_vars))
+    } else {
+      NULL
+    }
+    names(cov_cols) <- NULL
+
+    ext_cols <- unique(vapply(object@borrowing_list@borrowing_list, get_vars, character(1)))
+    trt_cols <- unique(vapply(object@treatment_list@treatment_list, get_vars, character(1)))
+    out_cols <- unique(unlist(lapply(object@outcome_list@outcome_list, get_vars)))
+
+    c(
+      cov_cols,
+      ext_cols,
+      trt_cols,
+      out_cols
+    )
   }
 )

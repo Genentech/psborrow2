@@ -167,3 +167,23 @@ test_that("`create_simulation_obj()` catches incorrect column names", {
     "missing in some simulated data matrices: 'wrong_trt'"
   )
 })
+
+
+test_that("`create_simulation_obj()` catches missing data", {
+
+  data_list_missing <- data_list
+  data_list_missing[[2]][[1]][22, 'eventtime'] <- NA_real_
+
+  expect_error(
+    create_simulation_obj(data_list = sim_data_list(data_list_missing,
+                                                    data.frame(true_hr = c(0.6, 0.8), drift_hr = c(1.0, 1.0)),
+                                                    effect = "true_hr",
+                                                    drift = "drift_hr"),
+                          covariate_list = valid_covariate_list,
+                          outcome_list = valid_outcome_list,
+                          borrowing_list = valid_borrowing_list,
+                          treatment_list = valid_treatment_list),
+    "Missing data detected in >1 matrix in `data_list`"
+  )
+
+})

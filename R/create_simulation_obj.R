@@ -87,18 +87,7 @@ create_simulation_obj <- function(data_list,
 
   # Check that inputs are consistent with each other
   ## Data matrices all have external flags, treatment flags, and covariates
-  cov_cols <- if(!is.null(simulation_obj@covariate_list)) {
-    unlist(lapply(simulation_obj@covariate_list@covariate_list, get_vars))
-  } else {
-    NULL
-  }
-  names(cov_cols) <- NULL
-
-  ext_cols <- unique(vapply(simulation_obj@borrowing_list@borrowing_list, get_vars, character(1)))
-  trt_cols <- unique(vapply(simulation_obj@treatment_list@treatment_list, get_vars, character(1)))
-  out_cols <- unique(unlist(lapply(simulation_obj@outcome_list@outcome_list, get_vars)))
-
-  search_cols <- c(cov_cols, ext_cols, trt_cols, out_cols)
+  search_cols <- get_vars(simulation_obj)
 
   for (i in 1:NROW(simulation_obj@data_list@data_list)) {
     for (j in 1:NROW(simulation_obj@data_list@data_list[[i]])) {
@@ -111,6 +100,22 @@ create_simulation_obj <- function(data_list,
     }
   }
 
+  ## Data matrices do not contain missing data
+  for (i in 1:NROW(simulation_obj@data_list@data_list)) {
+    for (j in 1:NROW(simulation_obj@data_list@data_list[[i]])) {
+      mat_subset <- simulation_obj@data_list@data_list[[i]][[j]][,search_cols]
+      if (!all(complete.cases(mat_subset))) {
+        stop("Missing data detected in >1 matrix in `data_list`. ",
+             "Could be one of the following columns: '",
+             paste0(search_cols, collapse = "', '"),
+             "'. ",
+             "Error found in simulation_obj@data_list@data_list[[",i,"]][[",j,"]]"
+        )
+      }
+    }
+  }
+
+  # Create guide
 
   # Return simulation object
   return(simulation_obj)
