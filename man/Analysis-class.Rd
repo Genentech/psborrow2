@@ -8,7 +8,7 @@
 \description{
 A class for defining Analysis details. Objects of class
 \code{Analysis} should not be created directly but by the constructor
-\code{analysis_details()}.
+\code{create_analysis_obj()}.
 }
 \section{Slots}{
 
