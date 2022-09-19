@@ -100,8 +100,8 @@ create_simulation_obj <- function(data_list,
   ## Data matrices all have external flags, treatment flags, and covariates
   search_cols <- get_vars(simulation_obj)
 
-  for (i in seq_len(simulation_obj@data_list@data_list)) {
-    for (j in seq_len(simulation_obj@data_list@data_list[[i]])) {
+  for (i in seq_along(simulation_obj@data_list@data_list)) {
+    for (j in seq_along(simulation_obj@data_list@data_list[[i]])) {
       if (!all(search_cols %in% colnames(simulation_obj@data_list@data_list[[i]][[j]]))) {
         which_not_in <- search_cols[which(!search_cols %in% colnames(simulation_obj@data_list@data_list[[i]][[j]]))]
         stop(
@@ -115,8 +115,8 @@ create_simulation_obj <- function(data_list,
   }
 
   ## Data matrices do not contain missing data
-  for (i in seq_len(simulation_obj@data_list@data_list)) {
-    for (j in seq_len(simulation_obj@data_list@data_list[[i]])) {
+  for (i in seq_along(simulation_obj@data_list@data_list)) {
+    for (j in seq_along(simulation_obj@data_list@data_list[[i]])) {
       mat_subset <- simulation_obj@data_list@data_list[[i]][[j]][, search_cols]
       if (!all(complete.cases(mat_subset))) {
         stop(
