@@ -8,7 +8,7 @@ prepare_stan_data_inputs(analysis_obj)
 }
 \arguments{
 \item{analysis_obj}{\code{Analysis}. Object of class \code{\link[=Analysis-class]{Analysis}} created by
-\code{psborrow2:::.analysis_obj()}.}
+\code{create_analysis_obj()}.}
 }
 \value{
 Named list of data inputs that correspond to items in the
@@ -18,7 +18,7 @@ Stan data {} block.
 Create a list of data in the correct format for Stan
 }
 \examples{
-anls_obj <- psborrow2:::.analysis_obj(
+anls_obj <- analysis_obj(
   data_matrix = example_matrix,
   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
   borrowing = borrowing_details(
@@ -29,8 +29,6 @@ anls_obj <- psborrow2:::.analysis_obj(
   treatment = treatment_details("trt", normal_prior(0, 100))
 )
 
-anls_obj@model_and_data <- list(
-  data_in = psborrow2:::prepare_stan_data_inputs(anls_obj)
-)
+data_in <- psborrow2:::prepare_stan_data_inputs(anls_obj)
 
 }

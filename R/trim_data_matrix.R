@@ -1,16 +1,16 @@
 #' Trim model matrix to just include relevant columns
 #'
-#' take an `Analysis` object's `data_matrix` and remove
+#' Take an `Analysis` object's `data_matrix` and remove
 #' everything unnecessary in preparation of making input data for Stan
 #'
 #' @param analysis_obj `Analysis`. An object of class `Analysis`
 #' as created through `.create_analysis_obj()`.
 #'
-#' @return An object of class `Analysis`
+#' @return Trimmed data matrix
 #'
 #' @examples
 #'
-#' anls <- psborrow2:::.analysis_obj(
+#' anls <- create_analysis_obj(
 #'   data_matrix = example_matrix,
 #'   covariates = add_covariates(
 #'     covariates = c("cov1", "cov2"),
@@ -33,7 +33,7 @@
 #'   ready_to_sample = FALSE
 #' )
 #'
-#' anls <- psborrow2:::trim_data_matrix(anls)
+#' trimmed_mat <- psborrow2:::trim_data_matrix(anls)
 #'
 trim_data_matrix <- function(analysis_obj) {
   required_rows <- if (analysis_obj@borrowing@method == "No borrowing") {
@@ -48,7 +48,5 @@ trim_data_matrix <- function(analysis_obj) {
     get_vars(analysis_obj)
   }
 
-  analysis_obj@data_matrix <- analysis_obj@data_matrix[required_rows, required_cols]
-
-  return(analysis_obj)
+  return(analysis_obj@data_matrix[required_rows, required_cols])
 }

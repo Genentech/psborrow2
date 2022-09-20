@@ -64,8 +64,8 @@ setMethod(
     if (!isTRUE(x@ready_to_sample)) stop("Cannot sample object. Create object using `create_analysis_obj()`")
 
     if (verbose) {
-      x@model_and_data$stan_model$sample(
-        data = x@model_and_data$data_in,
+      x@model$sample(
+        data = prepare_stan_data_inputs(x),
         iter_warmup = iter_warmup,
         iter_sampling = iter_sampling,
         chains = chains,
@@ -73,8 +73,8 @@ setMethod(
       )
     } else {
       suppressMessages(
-        x@model_and_data$stan_model$sample(
-          data = x@model_and_data$data_in,
+        x@model$sample(
+          data = prepare_stan_data_inputs(x),
           iter_warmup = iter_warmup,
           iter_sampling = iter_sampling,
           chains = chains,
