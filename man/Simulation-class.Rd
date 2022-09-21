@@ -34,5 +34,7 @@ combinations evaluated.}
 \item{\code{n_combos}}{integer. Number of combinations of parameters to be evaluated.}
 
 \item{\code{n_analyses}}{integer. Number of analyses (combos x datasets to be performed).}
+
+\item{\code{`analysis_obj_list`}}{list. List of analysis objects indexed according to \code{guide}.}
 }}
 

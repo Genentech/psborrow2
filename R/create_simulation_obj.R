@@ -11,7 +11,8 @@
 #' or `NULL` (no covariate adjustment).
 #' @param treatment_list `SimTreatmentList` or `Treatment`. List of `Treatment` objects created
 #' with `sim_treatment_list()` or a single `Treatment` object created by `treatment_details()`.
-#'
+#' @param quiet logical. Whether to print messages (`quiet = FALSE`) or not
+#' (`quiet = TRUE`, the default)
 #' @return Object of class [`Simulation`][Simulation-class].
 #'
 #' @include simulation_class.R
@@ -48,14 +49,16 @@
 #'
 #' guide <- data.frame(
 #'   trueOR = c(1.5, 2.5),
-#'   driftOR = c(1.0, 1.0)
+#'   driftOR = c(1.0, 1.0),
+#'   index = 1:2
 #' )
 #'
 #' sdl <- sim_data_list(
 #'   data_list = data_list,
 #'   guide = guide,
 #'   effect = "trueOR",
-#'   drift = "driftOR"
+#'   drift = "driftOR",
+#'   index = "index"
 #' )
 #'
 #' sim_object <- create_simulation_obj(
@@ -72,7 +75,8 @@ create_simulation_obj <- function(data_list,
                                   covariate_list = NULL,
                                   outcome_list,
                                   borrowing_list,
-                                  treatment_list) {
+                                  treatment_list,
+                                  quiet = TRUE) {
   # Check inputs
   assert_class(data_list, "SimDataList")
   assert_multi_class(covariate_list, c("SimCovariateList", "Covariates", "NULL"))
@@ -155,6 +159,11 @@ create_simulation_obj <- function(data_list,
   )
   simulation_obj@n_combos <- NROW(simulation_obj@guide)
   simulation_obj@n_analyses <- sum(simulation_obj@guide$n_datasets_per_param)
+
+  # Create analysis objects
+  simulation_obj@analysis_obj_list <- make_analysis_object_list(simulation_obj,
+    quiet = quiet
+  )
 
   # Return simulation object
   return(simulation_obj)

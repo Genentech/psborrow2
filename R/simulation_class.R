@@ -21,6 +21,7 @@ setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
 #' combinations evaluated.
 #' @slot n_combos integer. Number of combinations of parameters to be evaluated.
 #' @slot n_analyses integer. Number of analyses (combos x datasets to be performed).
+#' @slot `analysis_obj_list` list. List of analysis objects indexed according to `guide`.
 #' @include sim_data_list.R
 #' @include sim_covariate_list.R
 #' @include sim_borrowing_list.R
@@ -36,7 +37,8 @@ setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
     treatment_list = "SimTreatmentList",
     guide = "data.frame",
     n_combos = "integer",
-    n_analyses = "integer"
+    n_analyses = "integer",
+    analysis_obj_list = "list"
   ),
   prototype = list(
     n_combos = 0L,
@@ -84,7 +86,6 @@ setMethod(
     ext_cols <- get_vars(object@borrowing_list)
     trt_cols <- get_vars(object@treatment_list)
     out_cols <- get_vars(object@outcome_list)
-
     c(cov_cols, ext_cols, trt_cols, out_cols)
   }
 )

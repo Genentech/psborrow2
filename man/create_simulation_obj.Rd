@@ -9,7 +9,8 @@ create_simulation_obj(
   covariate_list = NULL,
   outcome_list,
   borrowing_list,
-  treatment_list
+  treatment_list,
+  quiet = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ with \code{sim_borrowing_list()}, or a single \code{Borrowing} object created by
 
 \item{treatment_list}{\code{SimTreatmentList} or \code{Treatment}. List of \code{Treatment} objects created
 with \code{sim_treatment_list()} or a single \code{Treatment} object created by \code{treatment_details()}.}
+
+\item{quiet}{logical. Whether to print messages (\code{quiet = FALSE}) or not
+(\code{quiet = TRUE}, the default)}
 }
 \value{
 Object of class \code{\link[=Simulation-class]{Simulation}}.
@@ -67,14 +71,16 @@ data_list <- list(
 
 guide <- data.frame(
   trueOR = c(1.5, 2.5),
-  driftOR = c(1.0, 1.0)
+  driftOR = c(1.0, 1.0),
+  index = 1:2
 )
 
 sdl <- sim_data_list(
   data_list = data_list,
   guide = guide,
   effect = "trueOR",
-  drift = "driftOR"
+  drift = "driftOR",
+  index = "index"
 )
 
 sim_object <- create_simulation_obj(

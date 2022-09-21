@@ -92,6 +92,7 @@ Collate:
     'data.R'
     'gamma_prior.R'
     'helpers.R'
+    'make_analysis_object_list.R'
     'make_model_string_data.R'
     'make_model_string_functions.R'
     'make_model_string_model.R'

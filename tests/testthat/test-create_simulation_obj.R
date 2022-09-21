@@ -38,9 +38,10 @@ data_list <- list(
 )
 valid_data_list <- sim_data_list(
   data_list,
-  data.frame(true_hr = c(0.6, 0.8), drift_hr = c(1.0, 1.0)),
+  data.frame(true_hr = c(0.6, 0.8), drift_hr = c(1.0, 1.0), index = 1:2),
   effect = "true_hr",
-  drift = "drift_hr"
+  drift = "drift_hr",
+  index = "index"
 )
 
 # Valid borrowing list
@@ -268,9 +269,10 @@ test_that("`create_simulation_obj()` catches missing data", {
   expect_error(
     create_simulation_obj(
       data_list = sim_data_list(data_list_missing,
-        data.frame(true_hr = c(0.6, 0.8), drift_hr = c(1.0, 1.0)),
+        data.frame(true_hr = c(0.6, 0.8), drift_hr = c(1.0, 1.0), index = 1:2),
         effect = "true_hr",
-        drift = "drift_hr"
+        drift = "drift_hr",
+        index = "index"
       ),
       covariate_list = valid_covariate_list,
       outcome_list = valid_outcome_list,
@@ -318,4 +320,61 @@ test_that("`create_simulation_obj()` correctly gets number of combinations", {
   expect_equal(valid_simulation_obj16@n_combos, 16)
   expect_equal(sum(valid_simulation_obj16@guide$n_datasets_per_param), 32)
   expect_equal(valid_simulation_obj16@n_analyses, 32)
+})
+
+test_that("`create_simulation_obj()` correctly creates analysis objects", {
+  valid_simulation_obj <- create_simulation_obj(
+    data_list = valid_data_list,
+    covariate_list = valid_covariate_list,
+    outcome_list = valid_outcome_list,
+    borrowing_list = valid_borrowing_list,
+    treatment_list = valid_treatment_list
+  )
+
+  expect_true(
+    all(
+      vapply(
+        valid_simulation_obj@analysis_obj_list,
+        FUN = function(obj) {
+          all(
+            vapply(obj,
+              function(obj2) {
+                is(obj2, "Analysis")
+              },
+              FUN.VALUE = logical(1)
+            )
+          )
+        },
+        FUN.VALUE = logical(1)
+      )
+    )
+  )
+})
+
+
+test_that("`create_simulation_obj()` does not create deep copies", {
+  so <- create_simulation_obj(
+    data_list = valid_data_list,
+    covariate_list = valid_covariate_list,
+    outcome_list = valid_outcome_list,
+    borrowing_list = valid_borrowing_list,
+    treatment_list = valid_treatment_list
+  )
+
+  for (i in 1:so@n_combos) {
+    analysis_list <- so@analysis_obj_list[[i]]
+    data_list <- so@data_list@data_list[[
+    so@guide[[so@data_list@index]][i]
+    ]]
+    expect_equal(
+      NROW(analysis_list),
+      NROW(data_list)
+    )
+    for (j in seq_along(analysis_list)) {
+      expect_equal(
+        tracemem(analysis_list[[j]]@data_matrix),
+        tracemem(data_list[[j]])
+      )
+    }
+  }
 })

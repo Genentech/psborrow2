@@ -4,7 +4,7 @@
 \alias{sim_data_list}
 \title{Input generated data for a simulation study}
 \usage{
-sim_data_list(data_list, guide, effect, drift)
+sim_data_list(data_list, guide, effect, drift, index)
 }
 \arguments{
 \item{data_list}{list of lists of matrices. The lists at the highest
@@ -93,7 +93,8 @@ data_list <- list(
 
 guide <- data.frame(
   trueOR = c(1.5, 2.5),
-  driftOR = c(1.0, 1.0)
+  driftOR = c(1.0, 1.0),
+  ind = c(1, 2)
 )
 
 sdl <- sim_data_list(
