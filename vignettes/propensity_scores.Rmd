@@ -1,8 +1,9 @@
 ---
-title: "propensity_scores"
-output: rmarkdown::html_vignette
+title: "Incorporating propensity scores analysis in psborrow2"
+author: "Isaac Gravestock"
+output:rmarkdown::html_vignette:
 vignette: >
-  %\VignetteIndexEntry{propensity_scores}
+  %\VignetteIndexEntry{5. Incorporating propensity scores analysis in psborrow2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: references.bib
@@ -11,7 +12,10 @@ bibliography: references.bib
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 4,
+  fig.align = "center"
 )
 ```
 
@@ -30,15 +34,23 @@ Another approach is the direct inclusion of the PS as a covariate in the outcome
 Propensity scores are the probabilities that an observation belongs to one group or another, in this setting the internal or external patients. The PS models are fitted based on baseline covariates that could be confounders between outcome and being in the internal/external group.
 
 The simplest approach for calculating PS is a logistic generalized linear model.
+First, let's load some demo data from `psborrow2`.
 
 ```{r}
 my_data <- example_surv
+head(my_data)
+```
+
+Let's now fit a logistic generalized linear model and add the PS
+as an additional covariate.
+```{r}
 ps_model <- glm(ext ~ cov1 + cov2 + cov3, data = my_data, family = binomial)
 ps <- predict(ps_model, type = "response")
 my_data$ps <- ps
+head(my_data)
 ```
 
-This can be included as a covariate in the analysis object
+The calculated PS can be included as a covariate in the analysis object
 
 ```{r}
 data_mat <- create_data_matrix(
