@@ -9,13 +9,13 @@ setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
 #'
 #' @slot data_list `SimDataList`. The list of lists of data matrices created
 #' with `sim_data_list()`.
-#' @slot outcome_list `SimOutcomeList`. List of `Outcome` objects created with
+#' @slot outcome `SimOutcomeList`. List of `Outcome` objects created with
 #' `sim_outcome_list()`.
-#' @slot borrowing_list `SimBorrowingList`. List of `Borrowing` objects created
+#' @slot borrowing `SimBorrowingList`. List of `Borrowing` objects created
 #' with `sim_borrowing_list()`.
-#' @slot covariate_list `SimCovariateList` or `NULL`. List of `Covariate` objects created
+#' @slot covariate `SimCovariateList` or `NULL`. List of `Covariate` objects created
 #' with `sim_covariate_list()` or `NULL` (no covariate adjustment).
-#' @slot treatment_list `SimTreatmentList`. List of `Treatment` objects created
+#' @slot treatment `SimTreatmentList`. List of `Treatment` objects created
 #' with `sim_treatment_list()`.
 #' @slot guide data.frame. Data.frame containing information on all
 #' combinations evaluated.
@@ -31,10 +31,10 @@ setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
   "Simulation",
   slots = c(
     data_list = "SimDataList",
-    outcome_list = "SimOutcomeList",
-    borrowing_list = "SimBorrowingList",
-    covariate_list = "SimCovariateListOrNULL",
-    treatment_list = "SimTreatmentList",
+    outcome = "SimOutcomeList",
+    borrowing = "SimBorrowingList",
+    covariate = "SimCovariateListOrNULL",
+    treatment = "SimTreatmentList",
     guide = "data.frame",
     n_combos = "integer",
     n_analyses = "integer",
@@ -82,10 +82,10 @@ setMethod(
   f = "get_vars",
   signature = "Simulation",
   definition = function(object) {
-    cov_cols <- get_vars(object@covariate_list)
-    ext_cols <- get_vars(object@borrowing_list)
-    trt_cols <- get_vars(object@treatment_list)
-    out_cols <- get_vars(object@outcome_list)
+    cov_cols <- get_vars(object@covariate)
+    ext_cols <- get_vars(object@borrowing)
+    trt_cols <- get_vars(object@treatment)
+    out_cols <- get_vars(object@outcome)
     c(cov_cols, ext_cols, trt_cols, out_cols)
   }
 )

@@ -89,19 +89,19 @@ make_analysis_object_list <- function(simulation_obj,
     guide_row <- simulation_obj@guide[i, ]
 
     # Objects needed for `create_analysis_obj()`
-    covariates <- simulation_obj@covariate_list@covariate_list[[
+    covariates <- simulation_obj@covariate@covariate_list[[
     guide_row[["covariate_scenario"]]
     ]]
 
-    outcome <- simulation_obj@outcome_list@outcome_list[[
+    outcome <- simulation_obj@outcome@outcome_list[[
     guide_row[["outcome_scenario"]]
     ]]
 
-    borrowing <- simulation_obj@borrowing_list@borrowing_list[[
+    borrowing <- simulation_obj@borrowing@borrowing_list[[
     guide_row[["borrowing_scenario"]]
     ]]
 
-    treatment <- simulation_obj@treatment_list@treatment_list[[
+    treatment <- simulation_obj@treatment@treatment_list[[
     guide_row[["treatment_scenario"]]
     ]]
 

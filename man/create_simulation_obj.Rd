@@ -6,32 +6,32 @@
 \usage{
 create_simulation_obj(
   data_list,
-  covariate_list = NULL,
-  outcome_list,
-  borrowing_list,
-  treatment_list,
+  covariate = NULL,
+  outcome,
+  borrowing,
+  treatment,
   quiet = TRUE
 )
 }
 \arguments{
-\item{data_list}{\code{SimDataList}. The list of lists of data matrices created
-with \code{sim_data_list()}.}
+\item{outcome}{\code{SimOutcomeList} or \code{Outcome}. List of \code{Outcome} objects created with
+\code{sim_outcome()}, or single \code{Outcome} object (e.g., created by \code{exp_surv_dist()}).}
 
-\item{covariate_list}{\code{SimCovariateList} or \code{Covariate} or \code{NULL}. List of \code{Covariate} objects created
-with \code{sim_covariate_list()}, a single \code{Covariate} object created by \code{add_covariates()},
-or \code{NULL} (no covariate adjustment).}
+\item{borrowing}{\code{SimBorrowingList} or \code{Borrowing}. List of \code{Borrowing} objects created
+with \code{sim_borrowing()}, or a single \code{Borrowing} object created by \code{borrowing_details()}.}
 
-\item{outcome_list}{\code{SimOutcomeList} or \code{Outcome}. List of \code{Outcome} objects created with
-\code{sim_outcome_list()}, or single \code{Outcome} object (e.g., created by \code{exp_surv_dist()}).}
-
-\item{borrowing_list}{\code{SimBorrowingList} or \code{Borrowing}. List of \code{Borrowing} objects created
-with \code{sim_borrowing_list()}, or a single \code{Borrowing} object created by \code{borrowing_details()}.}
-
-\item{treatment_list}{\code{SimTreatmentList} or \code{Treatment}. List of \code{Treatment} objects created
-with \code{sim_treatment_list()} or a single \code{Treatment} object created by \code{treatment_details()}.}
+\item{treatment}{\code{SimTreatmentList} or \code{Treatment}. List of \code{Treatment} objects created
+with \code{sim_treatment()} or a single \code{Treatment} object created by \code{treatment_details()}.}
 
 \item{quiet}{logical. Whether to print messages (\code{quiet = FALSE}) or not
 (\code{quiet = TRUE}, the default)}
+
+\item{data}{\code{SimDataList}. The list of lists of data matrices created
+with \code{sim_data_list()}.}
+
+\item{covariates}{\code{SimCovariateList} or \code{Covariate} or \code{NULL}. List of \code{Covariate} objects created
+with \code{sim_covariate()}, a single \code{Covariate} object created by \code{add_covariates()},
+or \code{NULL} (no covariate adjustment).}
 }
 \value{
 Object of class \code{\link[=Simulation-class]{Simulation}}.
@@ -85,11 +85,11 @@ sdl <- sim_data_list(
 
 sim_object <- create_simulation_obj(
   data_list = sdl,
-  outcome_list = logistic_bin_outcome("ep", normal_prior(0, 1000)),
-  borrowing_list = sim_borrowing_list(list(
+  outcome = logistic_bin_outcome("ep", normal_prior(0, 1000)),
+  borrowing = sim_borrowing(list(
     full_borrowing = borrowing_details("Full borrowing", "ext"),
     bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
   )),
-  treatment_list = treatment_details("trt", normal_prior(0, 1000))
+  treatment = treatment_details("trt", normal_prior(0, 1000))
 )
 }

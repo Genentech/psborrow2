@@ -16,16 +16,16 @@ A class for defining Simulation study details. Objects of class
 \item{\code{data_list}}{\code{SimDataList}. The list of lists of data matrices created
 with \code{sim_data_list()}.}
 
-\item{\code{outcome_list}}{\code{SimOutcomeList}. List of \code{Outcome} objects created with
+\item{\code{outcome}}{\code{SimOutcomeList}. List of \code{Outcome} objects created with
 \code{sim_outcome_list()}.}
 
-\item{\code{borrowing_list}}{\code{SimBorrowingList}. List of \code{Borrowing} objects created
+\item{\code{borrowing}}{\code{SimBorrowingList}. List of \code{Borrowing} objects created
 with \code{sim_borrowing_list()}.}
 
-\item{\code{covariate_list}}{\code{SimCovariateList} or \code{NULL}. List of \code{Covariate} objects created
+\item{\code{covariate}}{\code{SimCovariateList} or \code{NULL}. List of \code{Covariate} objects created
 with \code{sim_covariate_list()} or \code{NULL} (no covariate adjustment).}
 
-\item{\code{treatment_list}}{\code{SimTreatmentList}. List of \code{Treatment} objects created
+\item{\code{treatment}}{\code{SimTreatmentList}. List of \code{Treatment} objects created
 with \code{sim_treatment_list()}.}
 
 \item{\code{guide}}{data.frame. Data.frame containing information on all
