@@ -18,7 +18,7 @@ Stan data {} block.
 Create a list of data in the correct format for Stan
 }
 \examples{
-anls_obj <- analysis_obj(
+anls_obj <- create_analysis_obj(
   data_matrix = example_matrix,
   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
   borrowing = borrowing_details(

@@ -1,6 +1,10 @@
 # class union ----
 setClassUnion("CovariatesOrNULL", c("Covariates", "NULL"))
 
+# R6 CmdStanModel placeholder
+setClass("CmdStanModel")
+setClassUnion("CmdStanModelOrNULL", c("CmdStanModel", "NULL"))
+
 #' `Analysis` Class
 #'
 #' A class for defining Analysis details. Objects of class
@@ -26,7 +30,7 @@ setClassUnion("CovariatesOrNULL", c("Covariates", "NULL"))
 #' @include outcome_class.R
 #' @include borrowing_class.R
 #' @include treatment_class.R
-#' @importClassesFrom cmdstanr CmdStanModel
+#' @import cmdstanr
 .analysis_obj <- setClass(
   "Analysis",
   slots = c(
@@ -36,7 +40,7 @@ setClassUnion("CovariatesOrNULL", c("Covariates", "NULL"))
     borrowing = "Borrowing",
     treatment = "Treatment",
     model_string = "character",
-    model = "CmdStanModel",
+    model = "CmdStanModelOrNULL",
     ready_to_sample = "logical"
   ),
   prototype = list(

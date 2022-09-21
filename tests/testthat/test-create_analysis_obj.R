@@ -253,6 +253,20 @@ test_that("get_vars works for Analysis", {
   )
 })
 
+test_that("confirm the data matrix is not deep copied", {
+  analysis <- create_analysis_obj(
+    data_matrix = example_matrix,
+    covariates = ac,
+    outcome = esd,
+    treatment = td,
+    borrowing = bd_fb
+  )
+  expect_equal(
+    tracemem(example_matrix),
+    tracemem(analysis@data_matrix)
+  )
+})
+
 rm(
   borrowing_list, outcome_list, covariates_list,
   ac, ac2,

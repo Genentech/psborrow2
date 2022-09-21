@@ -38,8 +38,7 @@ anls <- create_analysis_obj(
   treatment = treatment_details(
     "trt",
     normal_prior(0, 1000)
-  ),
-  ready_to_sample = FALSE
+  )
 )
 
 trimmed_mat <- psborrow2:::trim_data_matrix(anls)

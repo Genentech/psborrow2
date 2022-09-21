@@ -8,8 +8,10 @@
 #' @return Named list of data inputs that correspond to items in the
 #' Stan data {} block.
 #'
+#' @include create_analysis_obj.R
+#'
 #' @examples
-#' anls_obj <- analysis_obj(
+#' anls_obj <- create_analysis_obj(
 #'   data_matrix = example_matrix,
 #'   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
 #'   borrowing = borrowing_details(
@@ -29,7 +31,7 @@ prepare_stan_data_inputs <- function(analysis_obj) {
   ## Common inputs
   data_in <- list(
     N = NROW(trimmed_data_matrix),
-    trt = analysis_obj@data_matrix[, analysis_obj@treatment@trt_flag_col]
+    trt = trimmed_data_matrix[, analysis_obj@treatment@trt_flag_col]
   )
 
   ## Outcome-specific additions
