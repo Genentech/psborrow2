@@ -1,4 +1,4 @@
-# class union ----
+# class unions ----
 setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
 
 #' `Simulation` Class
@@ -9,13 +9,13 @@ setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
 #'
 #' @slot data_list `SimDataList`. The list of lists of data matrices created
 #' with `sim_data_list()`.
-#' @slot outcome_list `SimOutcomeList`. List of outcome objects created with
+#' @slot outcome_list `SimOutcomeList`. List of `Outcome` objects created with
 #' `sim_outcome_list()`.
-#' @slot borrowing_list `SimBorrowingList`. List of borrowing objects created
+#' @slot borrowing_list `SimBorrowingList`. List of `Borrowing` objects created
 #' with `sim_borrowing_list()`.
-#' @slot covariate_list `SimCovariateList`. List of covariate objects created
-#' with `sim_covariate_list()`.
-#' @slot treatment_list `SimTreatmentList`. List of treatment objects created
+#' @slot covariate_list `SimCovariateList` or `NULL`. List of `Covariate` objects created
+#' with `sim_covariate_list()` or `NULL` (no covariate adjustment).
+#' @slot treatment_list `SimTreatmentList`. List of `Treatment` objects created
 #' with `sim_treatment_list()`.
 #' @slot guide data.frame. Data.frame containing information on all
 #' combinations evaluated.
@@ -80,22 +80,11 @@ setMethod(
   f = "get_vars",
   signature = "Simulation",
   definition = function(object) {
-    cov_cols <- if (!is.null(object@covariate_list)) {
-      unlist(lapply(object@covariate_list@covariate_list, get_vars))
-    } else {
-      NULL
-    }
-    names(cov_cols) <- NULL
+    cov_cols <- get_vars(object@covariate_list)
+    ext_cols <- get_vars(object@borrowing_list)
+    trt_cols <- get_vars(object@treatment_list)
+    out_cols <- get_vars(object@outcome_list)
 
-    ext_cols <- unique(vapply(object@borrowing_list@borrowing_list, get_vars, character(1)))
-    trt_cols <- unique(vapply(object@treatment_list@treatment_list, get_vars, character(1)))
-    out_cols <- unique(unlist(lapply(object@outcome_list@outcome_list, get_vars)))
-
-    c(
-      cov_cols,
-      ext_cols,
-      trt_cols,
-      out_cols
-    )
+    c(cov_cols, ext_cols, trt_cols, out_cols)
   }
 )

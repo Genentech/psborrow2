@@ -81,3 +81,14 @@ setMethod(
     }
   }
 )
+
+# get_vars ----
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "SimBorrowingList",
+  definition = function(object) {
+    unique(vapply(object@borrowing_list, get_vars, character(1)))
+  }
+)

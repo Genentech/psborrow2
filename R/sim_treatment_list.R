@@ -77,3 +77,14 @@ setMethod(
     }
   }
 )
+
+# get_vars ----
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "SimTreatmentList",
+  definition = function(object) {
+    unique(vapply(object@treatment_list, get_vars, character(1)))
+  }
+)

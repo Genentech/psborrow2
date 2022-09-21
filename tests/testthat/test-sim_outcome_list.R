@@ -153,3 +153,24 @@ test_that("Outcome `guide` is produced correctly", {
   expect_class(outcome_obj2@guide, "data.frame")
   expect_equal(colnames(outcome_obj2@guide), "outcome_scenario")
 })
+
+
+test_that("get_vars for `sim_outcome_list` works", {
+  outcome_obj <- sim_outcome_list(
+    list(
+      "Weibull uninformative" = weib_ph_surv_dist(
+        "time",
+        "cnsr",
+        normal_prior(0, 1000),
+        normal_prior(0, 1000)
+      ),
+      "Weibull increasing hazard" = weib_ph_surv_dist(
+        "time",
+        "cnsr",
+        normal_prior(5, 2),
+        normal_prior(0, 1000)
+      )
+    )
+  )
+  expect_equal(c("time", "cnsr"), get_vars(outcome_obj))
+})

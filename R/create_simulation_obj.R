@@ -2,14 +2,15 @@
 #'
 #' @param data_list `SimDataList`. The list of lists of data matrices created
 #' with `sim_data_list()`.
-#' @param outcome_list `SimOutcomeList`. List of outcome objects created with
-#' `sim_outcome_list()`.
-#' @param borrowing_list `SimBorrowingList`. List of borrowing objects created
-#' with `sim_borrowing_list()`.
-#' @param covariate_list `SimCovariateList`. List of covariate objects created
-#' with `sim_covariate_list()`.
-#' @param treatment_list `SimTreatmentList`. List of treatment objects created
-#' with `sim_treatment_list()`.
+#' @param outcome_list `SimOutcomeList` or `Outcome`. List of `Outcome` objects created with
+#' `sim_outcome_list()`, or single `Outcome` object (e.g., created by `exp_surv_dist()`).
+#' @param borrowing_list `SimBorrowingList` or `Borrowing`. List of `Borrowing` objects created
+#' with `sim_borrowing_list()`, or a single `Borrowing` object created by `borrowing_details()`.
+#' @param covariate_list `SimCovariateList` or `Covariate` or `NULL`. List of `Covariate` objects created
+#' with `sim_covariate_list()`, a single `Covariate` object created by `add_covariates()`,
+#' or `NULL` (no covariate adjustment).
+#' @param treatment_list `SimTreatmentList` or `Treatment`. List of `Treatment` objects created
+#' with `sim_treatment_list()` or a single `Treatment` object created by `treatment_details()`.
 #'
 #' @return Object of class [`Simulation`][Simulation-class].
 #'
@@ -59,15 +60,12 @@
 #'
 #' sim_object <- create_simulation_obj(
 #'   data_list = sdl,
-#'   outcome_list = sim_outcome_list(list(
-#'     standard = logistic_bin_outcome("ep", normal_prior(0, 1000))
-#'   )),
+#'   outcome_list = logistic_bin_outcome("ep", normal_prior(0, 1000)),
 #'   borrowing_list = sim_borrowing_list(list(
-#'     standard = borrowing_details("BDB", "ext", exponential_prior(0.0001))
+#'     full_borrowing = borrowing_details("Full borrowing", "ext"),
+#'     bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
 #'   )),
-#'   treatment_list = sim_treatment_list(list(
-#'     standard = treatment_details("trt", normal_prior(0, 1000))
-#'   ))
+#'   treatment_list = treatment_details("trt", normal_prior(0, 1000))
 #' )
 #' @export
 create_simulation_obj <- function(data_list,
@@ -77,14 +75,28 @@ create_simulation_obj <- function(data_list,
                                   treatment_list) {
   # Check inputs
   assert_class(data_list, "SimDataList")
-  assert_multi_class(covariate_list, c("SimCovariateList", "NULL"))
-  assert_class(outcome_list, "SimOutcomeList")
-  assert_class(borrowing_list, "SimBorrowingList")
-  assert_class(treatment_list, "SimTreatmentList")
+  assert_multi_class(covariate_list, c("SimCovariateList", "Covariates", "NULL"))
+  assert_multi_class(outcome_list, c("SimOutcomeList", "Outcome"))
+  assert_multi_class(borrowing_list, c("SimBorrowingList", "Borrowing"))
+  assert_multi_class(treatment_list, c("SimTreatmentList", "Treatment"))
 
   # Create empty covariate list if NULL
   if (is.null(covariate_list)) {
     covariate_list <- sim_covariate_list(covariate_list = list(`No adjustment` = NULL))
+  }
+
+  # Create lists for non-list objects
+  if (is(covariate_list, "Covariates")) {
+    covariate_list <- sim_covariate_list(covariate_list = list(default = covariate_list))
+  }
+  if (is(outcome_list, "Outcome")) {
+    outcome_list <- sim_outcome_list(outcome_list = list(default = outcome_list))
+  }
+  if (is(borrowing_list, "Borrowing")) {
+    borrowing_list <- sim_borrowing_list(borrowing_list = list(default = borrowing_list))
+  }
+  if (is(treatment_list, "Treatment")) {
+    treatment_list <- sim_treatment_list(treatment_list = list(default = treatment_list))
   }
 
   # Create object
@@ -131,17 +143,14 @@ create_simulation_obj <- function(data_list,
   }
 
   # Create guide
-  simulation_obj@guide <- merge(
-    simulation_obj@data_list@guide,
-    merge(
+  simulation_obj@guide <- Reduce(
+    merge,
+    init = simulation_obj@data_list@guide,
+    x = list(
       simulation_obj@outcome_list@guide,
-      merge(
-        simulation_obj@borrowing_list@guide,
-        merge(
-          simulation_obj@covariate_list@guide,
-          simulation_obj@treatment_list@guide
-        )
-      )
+      simulation_obj@borrowing_list@guide,
+      simulation_obj@covariate_list@guide,
+      simulation_obj@treatment_list@guide
     )
   )
   simulation_obj@n_combos <- NROW(simulation_obj@guide)

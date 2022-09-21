@@ -99,7 +99,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
   expect_error(
     create_simulation_obj(
       data_list = valid_data_list,
-      outcome_list = exp_surv_dist("eventtime", "censor", normal_prior(0, 1000)),
+      outcome_list = list(exp_surv_dist("eventtime", "censor", normal_prior(0, 1000))),
       borrowing_list = valid_borrowing_list,
       treatment_list = valid_treatment_list
     ),
@@ -110,7 +110,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
     create_simulation_obj(
       data_list = valid_data_list,
       outcome_list = valid_outcome_list,
-      borrowing_list = borrowing_details("Full borrowing", "ext"),
+      borrowing_list = list(borrowing_details("Full borrowing", "ext")),
       treatment_list = valid_treatment_list
     ),
     "Must inherit from class 'SimBorrowingList'"
@@ -148,6 +148,50 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
       outcome_list = valid_outcome_list,
       borrowing_list = valid_borrowing_list,
       treatment_list = valid_treatment_list
+    ),
+    "Simulation"
+  )
+
+  expect_class(
+    create_simulation_obj(
+      data_list = valid_data_list,
+      covariate_list = add_covariates(c("cov1"), normal_prior(0, 100)),
+      outcome_list = valid_outcome_list,
+      borrowing_list = valid_borrowing_list,
+      treatment_list = valid_treatment_list
+    ),
+    "Simulation"
+  )
+
+  expect_class(
+    create_simulation_obj(
+      data_list = valid_data_list,
+      covariate_list = valid_covariate_list,
+      outcome_list = exp_surv_dist("eventtime", "censor", normal_prior(0, 100)),
+      borrowing_list = valid_borrowing_list,
+      treatment_list = valid_treatment_list
+    ),
+    "Simulation"
+  )
+
+  expect_class(
+    create_simulation_obj(
+      data_list = valid_data_list,
+      covariate_list = valid_covariate_list,
+      outcome_list = valid_outcome_list,
+      borrowing_list = borrowing_details("Full borrowing", "ext"),
+      treatment_list = valid_treatment_list
+    ),
+    "Simulation"
+  )
+
+  expect_class(
+    create_simulation_obj(
+      data_list = valid_data_list,
+      covariate_list = valid_covariate_list,
+      outcome_list = valid_outcome_list,
+      borrowing_list = valid_borrowing_list,
+      treatment_list = treatment_details("trt", normal_prior(0, 100))
     ),
     "Simulation"
   )
