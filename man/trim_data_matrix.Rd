@@ -11,15 +11,15 @@ trim_data_matrix(analysis_obj)
 as created through \code{.create_analysis_obj()}.}
 }
 \value{
-An object of class \code{Analysis}
+Trimmed data matrix
 }
 \description{
-take an \code{Analysis} object's \code{data_matrix} and remove
+Take an \code{Analysis} object's \code{data_matrix} and remove
 everything unnecessary in preparation of making input data for Stan
 }
 \examples{
 
-anls <- psborrow2:::.analysis_obj(
+anls <- create_analysis_obj(
   data_matrix = example_matrix,
   covariates = add_covariates(
     covariates = c("cov1", "cov2"),
@@ -38,10 +38,9 @@ anls <- psborrow2:::.analysis_obj(
   treatment = treatment_details(
     "trt",
     normal_prior(0, 1000)
-  ),
-  ready_to_sample = FALSE
+  )
 )
 
-anls <- psborrow2:::trim_data_matrix(anls)
+trimmed_mat <- psborrow2:::trim_data_matrix(anls)
 
 }

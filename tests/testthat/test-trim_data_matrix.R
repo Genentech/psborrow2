@@ -12,9 +12,9 @@ test_that("data matrix trimming works with BDB", {
   )
 
   anls1_trim <- psborrow2:::trim_data_matrix(anls1)
-  expect_matrix(anls1_trim@data_matrix, mode = "numeric", nrows = 724, ncols = 5)
+  expect_matrix(anls1_trim, mode = "numeric", nrows = 724, ncols = 5)
   expect_set_equal(
-    colnames(anls1_trim@data_matrix), c("time", "cnsr", "cov1", "trt", "ext")
+    colnames(anls1_trim), c("time", "cnsr", "cov1", "trt", "ext")
   )
 })
 
@@ -30,9 +30,9 @@ test_that("data matrix trimming works with Full Borrowing", {
   )
 
   anls2_trim <- psborrow2:::trim_data_matrix(anls2)
-  expect_matrix(anls2_trim@data_matrix, mode = "numeric", nrows = 724, ncols = 3)
+  expect_matrix(anls2_trim, mode = "numeric", nrows = 724, ncols = 3)
   expect_set_equal(
-    colnames(anls2_trim@data_matrix), c("time", "cnsr", "trt")
+    colnames(anls2_trim), c("time", "cnsr", "trt")
   )
 })
 
@@ -49,8 +49,8 @@ test_that("data matrix trimming works with No Borrowing", {
   )
 
   result <- psborrow2:::trim_data_matrix(object)
-  expect_matrix(result@data_matrix, mode = "numeric", nrows = 380, ncols = 4)
+  expect_matrix(result, mode = "numeric", nrows = 380, ncols = 4)
   expect_set_equal(
-    colnames(result@data_matrix), c("time", "cnsr", "trt", "cov1")
+    colnames(result), c("time", "cnsr", "trt", "cov1")
   )
 })
