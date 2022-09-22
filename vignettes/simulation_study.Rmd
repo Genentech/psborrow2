@@ -244,7 +244,7 @@ unique list elements in `data_matrix_list`, `outcome`, `borrowing`,
 `covariate`, and `treatment`. `data_matrix_list` contains two
 different study parameters and therefore contains a list of length two.
 `borrowing` has four scenarios and is a list of length four. The rest
-contain just one input (or 0 for `covaraite`, which is equivalent to one
+contain just one input (or 0 for `covariate`, which is equivalent to one
 scenario). This means we should expect $2 \times 4 = 8$ combinations of
 parameters. Let's create a simulation object of class `Simulation`:
 
