@@ -109,33 +109,15 @@ make_analysis_object_list <- function(simulation_obj,
     guide_row[[simulation_obj@data_matrix_list@index]]
     ]]
 
-    # Analysis object list to fill in
-    analysis_obj_list_lower <- vector("list", NROW(data_matrix_list))
-
-    # Loop over data in data_matrix_list
-    for (j in seq_along(analysis_obj_list_lower)) {
-      if (quiet) {
-        suppressMessages(
-          analysis_obj_list_lower[[j]] <- create_analysis_obj(
-            data_matrix = data_matrix_list[[j]],
-            covariates = covariates,
-            outcome = outcome,
-            borrowing = borrowing,
-            treatment = treatment
-          )
-        )
-      } else {
-        analysis_obj_list_lower[[j]] <- create_analysis_obj(
-          data_matrix = data_matrix_list[[j]],
-          covariates = covariates,
-          outcome = outcome,
-          borrowing = borrowing,
-          treatment = treatment
-        )
-      }
-    }
-
-    analysis_obj_list[[i]] <- analysis_obj_list_lower
+    analysis_obj_list[[i]] <- lapply(
+      data_matrix_list,
+      FUN = create_analysis_obj,
+      covariates = covariates,
+      outcome = outcome,
+      borrowing = borrowing,
+      treatment = treatment,
+      quiet = quiet
+    )
   }
 
   # Return simulation object
