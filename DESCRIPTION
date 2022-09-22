@@ -106,6 +106,7 @@ Collate:
     'poisson_prior.R'
     'prepare_stan_data_inputs.R'
     'sim_covariates.R'
+    'sim_is_type_i_error.R'
     'sim_samplesize.R'
     'simvar_class.R'
     'trim_data_matrix.R'

@@ -34,7 +34,7 @@ setMethod(
       "`MCMCSimulationResult` object. ",
       "Call `get_results()` to save outputs as a data.frame"
     )
-    head(object@results)
+    object@results
   }
 )
 
