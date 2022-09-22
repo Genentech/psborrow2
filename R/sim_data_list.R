@@ -70,7 +70,7 @@
     }
 
     # index must be coercable to integer
-    if (!test_integer(object@guide[[object@index]])) {
+    if (!test_integerish(object@guide[[object@index]])) {
       return("`index` column in guide must of type integer")
     }
   }
