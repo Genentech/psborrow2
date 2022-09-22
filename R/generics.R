@@ -50,7 +50,6 @@ setGeneric("get_vars", function(object) standardGeneric("get_vars"))
 #' @export
 setGeneric("mcmc_sample", function(x, ...) standardGeneric("mcmc_sample"))
 
-
 #' Show guide for objects with guides
 #'
 #' Show the guide in `Simulation` objects.
@@ -62,3 +61,27 @@ setGeneric("mcmc_sample", function(x, ...) standardGeneric("mcmc_sample"))
 #' @export
 #'
 setGeneric("show_guide", function(object) standardGeneric("show_guide"))
+
+#' Get results for `MCMCSimulationResults` objects
+#'
+#' Get the results `data.frame` from `MCMCSimulationResults` objects.
+#'
+#' @param object `MCMCSimulationResults` object
+#'
+#' @rdname get_results
+#'
+#' @export
+#'
+setGeneric("get_results", function(object) standardGeneric("get_results"))
+
+#' Get draws for `MCMCSimulationResults` objects
+#'
+#' Show the draws `data.frame` from `MCMCSimulationResults` objects.
+#'
+#' @param object `MCMCSimulationResults` object
+#'
+#' @rdname get_draws
+#'
+#' @export
+#'
+setGeneric("get_draws", function(object) standardGeneric("get_draws"))
