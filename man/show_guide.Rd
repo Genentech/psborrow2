@@ -11,8 +11,6 @@ show_guide(object)
 }
 \arguments{
 \item{object}{\code{Simulation} object}
-
-\item{Simulation}{A \code{Simulation} object.}
 }
 \description{
 Show the guide in \code{Simulation} objects.

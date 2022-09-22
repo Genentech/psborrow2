@@ -91,8 +91,6 @@ setMethod(
 )
 
 # show_guide ----
-#' Show Simulation guide
-#' @param Simulation A `Simulation` object.
 #' @rdname show_guide
 setMethod(
   f = "show_guide",
