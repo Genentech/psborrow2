@@ -23,26 +23,32 @@ knitr::opts_chunk$set(
 library(psborrow2)
 ```
 
-Propensity scores (PS) methods offer various ways to adjust analyses for differences in groups of patients. For external control analyses, we are interested in the differences between the internal patients and the external patients.
+Propensity scores (PS) methods offer various ways to adjust analyses for differences in groups of patients.
 
-@wang2021 discuss using propensity scores for IPTW, matching and stratification in combination with a Bayesian analysis. These methods allow for the separation of the design and analysis into two stages, which may be attractive in a regulatory setting.
+@austin2013 discuss various approaches for using PS with survival analyses to obtain effect measures similar to
+randomized controlled trials.
+
+@wang2021 discuss using PS for IPTW, matching and stratification in combination with a Bayesian analysis. These methods
+allow for the separation of the design and analysis into two stages, which may be attractive in a regulatory setting.
 
 Another approach is the direct inclusion of the PS as a covariate in the outcome model.
 
 ## Propensity Score Calculation
 
-Propensity scores are the probabilities that an observation belongs to one group or another, in this setting the internal or external patients. The PS models are fitted based on baseline covariates that could be confounders between outcome and being in the internal/external group.
+Propensity scores are the probabilities that an observation belongs to one group or another, in this setting the
+internal or external patients. The PS models are fitted based on baseline covariates that could be confounders between
+outcome and being in the internal/external group.
 
-The simplest approach for calculating PS is a logistic generalized linear model.
-First, let's load some demo data from `psborrow2`.
+The simplest approach for calculating PS is a logistic generalized linear model. First, let's load some demo data from
+`psborrow2`.
 
 ```{r}
 my_data <- example_surv
 head(my_data)
 ```
 
-Let's now fit a logistic generalized linear model and add the PS
-as an additional covariate.
+Let's now fit a logistic generalized linear model and add the PS as an additional covariate.
+
 ```{r}
 ps_model <- glm(ext ~ cov1 + cov2 + cov3, data = my_data, family = binomial)
 ps <- predict(ps_model, type = "response")
@@ -50,7 +56,7 @@ my_data$ps <- ps
 head(my_data)
 ```
 
-The calculated PS can be included as a covariate in the analysis object
+The calculated PS can be included as a covariate in the analysis object, for the "covariate adjustment" PS approach:
 
 ```{r}
 data_mat <- create_data_matrix(
@@ -84,7 +90,8 @@ For more complex PS analyses, we can use one of the dedicated R packages.
 
 ### PSweight
 
-The [PSweight](https://cran.r-project.org/package=PSweight) package can calculate PS using other model fitting approaches than the simple glm described above. It also provides some summary statistics and plots.
+The [PSweight](https://cran.r-project.org/package=PSweight) package can calculate PS using other model fitting
+approaches than the simple glm described above. It also provides some summary statistics and plots.
 
 ```{r}
 library(PSweight)
