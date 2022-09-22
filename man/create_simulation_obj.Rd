@@ -5,7 +5,7 @@
 \title{Compile MCMC sampler using STAN and create simulation object}
 \usage{
 create_simulation_obj(
-  data_list,
+  data_matrix_list,
   covariate = NULL,
   outcome,
   borrowing,
@@ -14,6 +14,13 @@ create_simulation_obj(
 )
 }
 \arguments{
+\item{data_matrix_list}{\code{SimDataList}. The list of lists of data matrices created
+with \code{sim_data_list()}.}
+
+\item{covariate}{\code{SimCovariateList} or \code{Covariate} or \code{NULL}. List of \code{Covariate} objects created
+with \code{sim_covariate()}, a single \code{Covariate} object created by \code{add_covariates()},
+or \code{NULL} (no covariate adjustment).}
+
 \item{outcome}{\code{SimOutcomeList} or \code{Outcome}. List of \code{Outcome} objects created with
 \code{sim_outcome()}, or single \code{Outcome} object (e.g., created by \code{exp_surv_dist()}).}
 
@@ -25,13 +32,6 @@ with \code{sim_treatment()} or a single \code{Treatment} object created by \code
 
 \item{quiet}{logical. Whether to print messages (\code{quiet = FALSE}) or not
 (\code{quiet = TRUE}, the default)}
-
-\item{data}{\code{SimDataList}. The list of lists of data matrices created
-with \code{sim_data_list()}.}
-
-\item{covariates}{\code{SimCovariateList} or \code{Covariate} or \code{NULL}. List of \code{Covariate} objects created
-with \code{sim_covariate()}, a single \code{Covariate} object created by \code{add_covariates()},
-or \code{NULL} (no covariate adjustment).}
 }
 \value{
 Object of class \code{\link[=Simulation-class]{Simulation}}.
@@ -84,9 +84,9 @@ sdl <- sim_data_list(
 )
 
 sim_object <- create_simulation_obj(
-  data_list = sdl,
+  data_matrix_list = sdl,
   outcome = logistic_bin_outcome("ep", normal_prior(0, 1000)),
-  borrowing = sim_borrowing(list(
+  borrowing = sim_borrowing_list(list(
     full_borrowing = borrowing_details("Full borrowing", "ext"),
     bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
   )),

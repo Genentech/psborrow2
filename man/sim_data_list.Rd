@@ -21,6 +21,9 @@ corresponds to the true treatment effect estimate (hazard ratio or odds ratio).}
 \item{drift}{character. The column in \code{guide} that
 corresponds to the true drift effect estimate (hazard ratio or odds ratio).
 A drift >1 means the external arm experiences greater effects.}
+
+\item{index}{character. The column in \code{guide} that corresponds
+to the index column.}
 }
 \description{
 A function for defining generated data for use as part of a
@@ -101,7 +104,8 @@ sdl <- sim_data_list(
   data_list = data_list,
   guide = guide,
   effect = "trueOR",
-  drift = "driftOR"
+  drift = "driftOR",
+  index = "ind"
 )
 }
 \seealso{

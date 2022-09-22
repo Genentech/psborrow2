@@ -1,8 +1,8 @@
 #' Compile MCMC sampler using STAN and create simulation object
 #'
-#' @param data `SimDataList`. The list of lists of data matrices created
+#' @param data_matrix_list `SimDataList`. The list of lists of data matrices created
 #' with `sim_data_list()`.
-#' @param covariates `SimCovariateList` or `Covariate` or `NULL`. List of `Covariate` objects created
+#' @param covariate `SimCovariateList` or `Covariate` or `NULL`. List of `Covariate` objects created
 #' with `sim_covariate()`, a single `Covariate` object created by `add_covariates()`,
 #' or `NULL` (no covariate adjustment).
 #' @param outcome `SimOutcomeList` or `Outcome`. List of `Outcome` objects created with
@@ -62,23 +62,23 @@
 #' )
 #'
 #' sim_object <- create_simulation_obj(
-#'   data_list = sdl,
+#'   data_matrix_list = sdl,
 #'   outcome = logistic_bin_outcome("ep", normal_prior(0, 1000)),
-#'   borrowing = sim_borrowing(list(
+#'   borrowing = sim_borrowing_list(list(
 #'     full_borrowing = borrowing_details("Full borrowing", "ext"),
 #'     bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
 #'   )),
 #'   treatment = treatment_details("trt", normal_prior(0, 1000))
 #' )
 #' @export
-create_simulation_obj <- function(data_list,
+create_simulation_obj <- function(data_matrix_list,
                                   covariate = NULL,
                                   outcome,
                                   borrowing,
                                   treatment,
                                   quiet = TRUE) {
   # Check inputs
-  assert_class(data_list, "SimDataList")
+  assert_class(data_matrix_list, "SimDataList")
   assert_multi_class(covariate, c("SimCovariateList", "Covariates", "NULL"))
   assert_multi_class(outcome, c("SimOutcomeList", "Outcome"))
   assert_multi_class(borrowing, c("SimBorrowingList", "Borrowing"))
@@ -105,7 +105,7 @@ create_simulation_obj <- function(data_list,
 
   # Create object
   simulation_obj <- .simulation_obj(
-    data_list = data_list,
+    data_matrix_list = data_matrix_list,
     covariate = covariate,
     outcome = outcome,
     borrowing = borrowing,
@@ -116,10 +116,13 @@ create_simulation_obj <- function(data_list,
   ## Data matrices all have external flags, treatment flags, and covariates
   search_cols <- get_vars(simulation_obj)
 
-  for (i in seq_along(simulation_obj@data_list@data_list)) {
-    for (j in seq_along(simulation_obj@data_list@data_list[[i]])) {
-      if (!all(search_cols %in% colnames(simulation_obj@data_list@data_list[[i]][[j]]))) {
-        which_not_in <- search_cols[which(!search_cols %in% colnames(simulation_obj@data_list@data_list[[i]][[j]]))]
+  for (i in seq_along(simulation_obj@data_matrix_list@data_list)) {
+    for (j in seq_along(simulation_obj@data_matrix_list@data_list[[i]])) {
+      if (!all(search_cols %in% colnames(simulation_obj@data_matrix_list@data_list[[i]][[j]]))) {
+        which_not_in <- search_cols[
+          which(!search_cols %in%
+            colnames(simulation_obj@data_matrix_list@data_list[[i]][[j]]))
+        ]
         stop(
           "The following columns were specified in the simulation but ",
           "are missing in some simulated data matrices: '",
@@ -131,16 +134,16 @@ create_simulation_obj <- function(data_list,
   }
 
   ## Data matrices do not contain missing data
-  for (i in seq_along(simulation_obj@data_list@data_list)) {
-    for (j in seq_along(simulation_obj@data_list@data_list[[i]])) {
-      mat_subset <- simulation_obj@data_list@data_list[[i]][[j]][, search_cols]
+  for (i in seq_along(simulation_obj@data_matrix_list@data_list)) {
+    for (j in seq_along(simulation_obj@data_matrix_list@data_list[[i]])) {
+      mat_subset <- simulation_obj@data_matrix_list@data_list[[i]][[j]][, search_cols]
       if (!all(complete.cases(mat_subset))) {
         stop(
-          "Missing data detected in >1 matrix in `data_list`. ",
+          "Missing data detected in >1 matrix in `data_matrix_list`. ",
           "Could be one of the following columns: '",
           paste0(search_cols, collapse = "', '"),
           "'. ",
-          "Error found in simulation_obj@data_list@data_list[[", i, "]][[", j, "]]"
+          "Error found in simulation_obj@data_matrix_list@data_list[[", i, "]][[", j, "]]"
         )
       }
     }
@@ -149,7 +152,7 @@ create_simulation_obj <- function(data_list,
   # Create guide
   simulation_obj@guide <- Reduce(
     merge,
-    init = simulation_obj@data_list@guide,
+    init = simulation_obj@data_matrix_list@guide,
     x = list(
       simulation_obj@outcome@guide,
       simulation_obj@borrowing@guide,

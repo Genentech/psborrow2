@@ -7,7 +7,7 @@ setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
 #' `Simulation` should not be created directly but by the constructor
 #' `create_simulation_obj()`.
 #'
-#' @slot data_list `SimDataList`. The list of lists of data matrices created
+#' @slot data_matrix_list `SimDataList`. The list of lists of data matrices created
 #' with `sim_data_list()`.
 #' @slot outcome `SimOutcomeList`. List of `Outcome` objects created with
 #' `sim_outcome_list()`.
@@ -30,7 +30,7 @@ setClassUnion("SimCovariateListOrNULL", c("SimCovariateList", "NULL"))
 .simulation_obj <- setClass(
   "Simulation",
   slots = c(
-    data_list = "SimDataList",
+    data_matrix_list = "SimDataList",
     outcome = "SimOutcomeList",
     borrowing = "SimBorrowingList",
     covariate = "SimCovariateListOrNULL",
@@ -87,5 +87,14 @@ setMethod(
     trt_cols <- get_vars(object@treatment)
     out_cols <- get_vars(object@outcome)
     c(cov_cols, ext_cols, trt_cols, out_cols)
+  }
+)
+
+# show_guide ----
+setMethod(
+  f = "show_guide",
+  signature = "Simulation",
+  definition = function(object) {
+    print(object@guide)
   }
 )

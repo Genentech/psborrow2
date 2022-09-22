@@ -49,3 +49,16 @@ setGeneric("get_vars", function(object) standardGeneric("get_vars"))
 #'
 #' @export
 setGeneric("mcmc_sample", function(x, ...) standardGeneric("mcmc_sample"))
+
+
+#' Show guide for objects with guides
+#'
+#' Show the guide in `Simulation` objects.
+#'
+#' @param object `Simulation` object
+#'
+#' @rdname show_guide
+#'
+#' @export
+#'
+setGeneric("show_guide", function(object) standardGeneric("show_guide"))

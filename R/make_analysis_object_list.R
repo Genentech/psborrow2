@@ -54,14 +54,14 @@
 #' )
 #'
 #' sim_object <- psborrow2:::.simulation_obj(
-#'   data_list = sdl,
-#'   outcome_list = sim_outcome_list(list(default = logistic_bin_outcome("ep", normal_prior(0, 1000)))),
-#'   covariate_list = sim_covariate_list(covariate_list = list(`No adjustment` = NULL)),
-#'   borrowing_list = sim_borrowing_list(list(
+#'   data_matrix_list = sdl,
+#'   outcome = sim_outcome_list(list(default = logistic_bin_outcome("ep", normal_prior(0, 1000)))),
+#'   covariate = sim_covariate_list(covariate_list = list(`No adjustment` = NULL)),
+#'   borrowing = sim_borrowing_list(list(
 #'     full_borrowing = borrowing_details("Full borrowing", "ext"),
 #'     bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
 #'   )),
-#'   treatment_list = sim_treatment_list(list(default = treatment_details("trt", normal_prior(0, 1000))))
+#'   treatment = sim_treatment_list(list(default = treatment_details("trt", normal_prior(0, 1000))))
 #' )
 #'
 #' sim_object@n_combos <- NROW(sim_object@guide)
@@ -69,7 +69,7 @@
 #'
 #' sim_object@guide <- Reduce(
 #'   merge,
-#'   init = simulation_obj@data_list@guide,
+#'   init = simulation_obj@data_matrix_list@guide,
 #'   x = list(
 #'     sim_object@outcome_list@guide,
 #'     sim_object@borrowing_list@guide,
@@ -105,19 +105,19 @@ make_analysis_object_list <- function(simulation_obj,
     guide_row[["treatment_scenario"]]
     ]]
 
-    data_list <- simulation_obj@data_list@data_list[[
-    guide_row[[simulation_obj@data_list@index]]
+    data_matrix_list <- simulation_obj@data_matrix_list@data_list[[
+    guide_row[[simulation_obj@data_matrix_list@index]]
     ]]
 
     # Analysis object list to fill in
-    analysis_obj_list_lower <- vector("list", NROW(data_list))
+    analysis_obj_list_lower <- vector("list", NROW(data_matrix_list))
 
-    # Loop over data in data_list
+    # Loop over data in data_matrix_list
     for (j in seq_along(analysis_obj_list_lower)) {
       if (quiet) {
         suppressMessages(
           analysis_obj_list_lower[[j]] <- create_analysis_obj(
-            data_matrix = data_list[[j]],
+            data_matrix = data_matrix_list[[j]],
             covariates = covariates,
             outcome = outcome,
             borrowing = borrowing,
@@ -126,7 +126,7 @@ make_analysis_object_list <- function(simulation_obj,
         )
       } else {
         analysis_obj_list_lower[[j]] <- create_analysis_obj(
-          data_matrix = data_list[[j]],
+          data_matrix = data_matrix_list[[j]],
           covariates = covariates,
           outcome = outcome,
           borrowing = borrowing,

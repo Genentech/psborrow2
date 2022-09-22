@@ -32,12 +32,12 @@ sim_single_matrix <- function(true_hr = 0.6,
 }
 
 # Valid data list
-data_list <- list(
+data_matrix_list <- list(
   list(sim_single_matrix(true_hr = 0.6), sim_single_matrix(true_hr = 0.6)),
   list(sim_single_matrix(true_hr = 0.8), sim_single_matrix(true_hr = 0.8))
 )
 valid_data_list <- sim_data_list(
-  data_list,
+  data_matrix_list,
   data.frame(true_hr = c(0.6, 0.8), drift_hr = c(1.0, 1.0), index = 1:2),
   effect = "true_hr",
   drift = "drift_hr",
@@ -77,7 +77,7 @@ valid_treatment <- sim_treatment_list(
 test_that("`create_simulation_obj()` input classes are correct", {
   expect_error(
     create_simulation_obj(
-      data_list = data_list,
+      data_matrix_list = data_matrix_list,
       covariate = valid_covariate,
       outcome = valid_outcome,
       borrowing = valid_borrowing,
@@ -88,7 +88,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
 
   expect_error(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       covariate = c("cov1"),
       outcome = valid_outcome,
       borrowing = valid_borrowing,
@@ -99,7 +99,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
 
   expect_error(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       outcome = list(exp_surv_dist("eventtime", "censor", normal_prior(0, 1000))),
       borrowing = valid_borrowing,
       treatment = valid_treatment
@@ -109,7 +109,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
 
   expect_error(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       outcome = valid_outcome,
       borrowing = list(borrowing_details("Full borrowing", "ext")),
       treatment = valid_treatment
@@ -119,7 +119,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
 
   expect_error(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       outcome = valid_outcome,
       borrowing = valid_borrowing,
       treatment = list(treatment = treatment_details(
@@ -134,7 +134,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
 test_that("`create_simulation_obj()` correct inputs create `Simulation` object", {
   expect_class(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       covariate = valid_covariate,
       outcome = valid_outcome,
       borrowing = valid_borrowing,
@@ -145,7 +145,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
 
   expect_class(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       outcome = valid_outcome,
       borrowing = valid_borrowing,
       treatment = valid_treatment
@@ -155,7 +155,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
 
   expect_class(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       covariate = add_covariates(c("cov1"), normal_prior(0, 100)),
       outcome = valid_outcome,
       borrowing = valid_borrowing,
@@ -166,7 +166,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
 
   expect_class(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       covariate = valid_covariate,
       outcome = exp_surv_dist("eventtime", "censor", normal_prior(0, 100)),
       borrowing = valid_borrowing,
@@ -177,7 +177,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
 
   expect_class(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       covariate = valid_covariate,
       outcome = valid_outcome,
       borrowing = borrowing_details("Full borrowing", "ext"),
@@ -188,7 +188,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
 
   expect_class(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       covariate = valid_covariate,
       outcome = valid_outcome,
       borrowing = valid_borrowing,
@@ -201,7 +201,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
 test_that("`create_simulation_obj()` catches incorrect column names", {
   expect_error(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       covariate = sim_covariate_list(
         list(basic = add_covariates("wrong_cov",
           priors = normal_prior(0, 1000)
@@ -216,7 +216,7 @@ test_that("`create_simulation_obj()` catches incorrect column names", {
 
   expect_error(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       outcome = sim_outcome_list(
         list(basic = exp_surv_dist(
           "eventtime",
@@ -232,7 +232,7 @@ test_that("`create_simulation_obj()` catches incorrect column names", {
 
   expect_error(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       outcome = valid_outcome,
       borrowing = sim_borrowing_list(
         list(normal = borrowing_details(
@@ -247,7 +247,7 @@ test_that("`create_simulation_obj()` catches incorrect column names", {
 
   expect_error(
     create_simulation_obj(
-      data_list = valid_data_list,
+      data_matrix_list = valid_data_list,
       outcome = valid_outcome,
       borrowing = valid_borrowing,
       treatment = sim_treatment_list(
@@ -261,14 +261,13 @@ test_that("`create_simulation_obj()` catches incorrect column names", {
   )
 })
 
-
 test_that("`create_simulation_obj()` catches missing data", {
-  data_list_missing <- data_list
+  data_list_missing <- data_matrix_list
   data_list_missing[[2]][[1]][22, "eventtime"] <- NA_real_
 
   expect_error(
     create_simulation_obj(
-      data_list = sim_data_list(data_list_missing,
+      data_matrix_list = sim_data_list(data_list_missing,
         data.frame(true_hr = c(0.6, 0.8), drift_hr = c(1.0, 1.0), index = 1:2),
         effect = "true_hr",
         drift = "drift_hr",
@@ -279,13 +278,13 @@ test_that("`create_simulation_obj()` catches missing data", {
       borrowing = valid_borrowing,
       treatment = valid_treatment
     ),
-    "Missing data detected in >1 matrix in `data_list`"
+    "Missing data detected in >1 matrix in `data_matrix_list`"
   )
 })
 
 test_that("`create_simulation_obj()` correctly gets number of combinations", {
   valid_simulation_obj8 <- create_simulation_obj(
-    data_list = valid_data_list,
+    data_matrix_list = valid_data_list,
     covariate = valid_covariate,
     outcome = valid_outcome,
     borrowing = valid_borrowing,
@@ -293,7 +292,7 @@ test_that("`create_simulation_obj()` correctly gets number of combinations", {
   )
 
   valid_simulation_obj16 <- create_simulation_obj(
-    data_list = valid_data_list,
+    data_matrix_list = valid_data_list,
     covariate = valid_covariate,
     outcome = sim_outcome_list(list(
       exp = exp_surv_dist(
@@ -324,7 +323,7 @@ test_that("`create_simulation_obj()` correctly gets number of combinations", {
 
 test_that("`create_simulation_obj()` correctly creates analysis objects", {
   valid_simulation_obj <- create_simulation_obj(
-    data_list = valid_data_list,
+    data_matrix_list = valid_data_list,
     covariate = valid_covariate,
     outcome = valid_outcome,
     borrowing = valid_borrowing,
@@ -351,10 +350,9 @@ test_that("`create_simulation_obj()` correctly creates analysis objects", {
   )
 })
 
-
 test_that("`create_simulation_obj()` does not create deep copies", {
   so <- create_simulation_obj(
-    data_list = valid_data_list,
+    data_matrix_list = valid_data_list,
     covariate = valid_covariate,
     outcome = valid_outcome,
     borrowing = valid_borrowing,
@@ -363,17 +361,17 @@ test_that("`create_simulation_obj()` does not create deep copies", {
 
   for (i in 1:so@n_combos) {
     analysis_list <- so@analysis_obj_list[[i]]
-    data_list <- so@data_list@data_list[[
-    so@guide[[so@data_list@index]][i]
+    data_matrix_list <- so@data_matrix_list@data_list[[
+    so@guide[[so@data_matrix_list@index]][i]
     ]]
     expect_equal(
       NROW(analysis_list),
-      NROW(data_list)
+      NROW(data_matrix_list)
     )
     for (j in seq_along(analysis_list)) {
       expect_equal(
         tracemem(analysis_list[[j]]@data_matrix),
-        tracemem(data_list[[j]])
+        tracemem(data_matrix_list[[j]])
       )
     }
   }

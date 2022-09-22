@@ -13,7 +13,7 @@ A class for defining Simulation study details. Objects of class
 \section{Slots}{
 
 \describe{
-\item{\code{data_list}}{\code{SimDataList}. The list of lists of data matrices created
+\item{\code{data_matrix_list}}{\code{SimDataList}. The list of lists of data matrices created
 with \code{sim_data_list()}.}
 
 \item{\code{outcome}}{\code{SimOutcomeList}. List of \code{Outcome} objects created with

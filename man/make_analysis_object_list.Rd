@@ -65,14 +65,14 @@ sdl <- sim_data_list(
 )
 
 sim_object <- psborrow2:::.simulation_obj(
-  data_list = sdl,
-  outcome_list = sim_outcome_list(list(default = logistic_bin_outcome("ep", normal_prior(0, 1000)))),
-  covariate_list = sim_covariate_list(covariate_list = list(`No adjustment` = NULL)),
-  borrowing_list = sim_borrowing_list(list(
+  data_matrix_list = sdl,
+  outcome = sim_outcome_list(list(default = logistic_bin_outcome("ep", normal_prior(0, 1000)))),
+  covariate = sim_covariate_list(covariate_list = list(`No adjustment` = NULL)),
+  borrowing = sim_borrowing_list(list(
     full_borrowing = borrowing_details("Full borrowing", "ext"),
     bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
   )),
-  treatment_list = sim_treatment_list(list(default = treatment_details("trt", normal_prior(0, 1000))))
+  treatment = sim_treatment_list(list(default = treatment_details("trt", normal_prior(0, 1000))))
 )
 
 sim_object@n_combos <- NROW(sim_object@guide)
@@ -80,7 +80,7 @@ sim_object@n_analyses <- sum(sim_object@guide$n_datasets_per_param)
 
 sim_object@guide <- Reduce(
   merge,
-  init = simulation_obj@data_list@guide,
+  init = simulation_obj@data_matrix_list@guide,
   x = list(
     sim_object@outcome_list@guide,
     sim_object@borrowing_list@guide,

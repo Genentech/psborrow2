@@ -92,7 +92,8 @@
 #' @param drift character. The column in `guide` that
 #' corresponds to the true drift effect estimate (hazard ratio or odds ratio).
 #' A drift >1 means the external arm experiences greater effects.
-#'
+#' @param index character. The column in `guide` that corresponds
+#' to the index column.
 #'
 #' @details
 #'
@@ -168,7 +169,8 @@
 #'   data_list = data_list,
 #'   guide = guide,
 #'   effect = "trueOR",
-#'   drift = "driftOR"
+#'   drift = "driftOR",
+#'   index = "ind"
 #' )
 #' @export
 sim_data_list <- function(data_list,
