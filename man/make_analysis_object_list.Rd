@@ -75,19 +75,19 @@ sim_object <- psborrow2:::.simulation_obj(
   treatment = sim_treatment_list(list(default = treatment_details("trt", normal_prior(0, 1000))))
 )
 
-sim_object@n_combos <- NROW(sim_object@guide)
-sim_object@n_analyses <- sum(sim_object@guide$n_datasets_per_param)
-
 sim_object@guide <- Reduce(
   merge,
-  init = simulation_obj@data_matrix_list@guide,
+  init = sim_object@data_matrix_list@guide,
   x = list(
-    sim_object@outcome_list@guide,
-    sim_object@borrowing_list@guide,
-    sim_object@covariate_list@guide,
-    sim_object@treatment_list@guide
+    sim_object@outcome@guide,
+    sim_object@borrowing@guide,
+    sim_object@covariate@guide,
+    sim_object@treatment@guide
   )
 )
+
+sim_object@n_combos <- NROW(sim_object@guide)
+sim_object@n_analyses <- sum(sim_object@guide$n_datasets_per_param)
 
 psborrow2:::make_analysis_object_list(sim_object)
 }

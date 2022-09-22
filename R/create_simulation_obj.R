@@ -86,21 +86,21 @@ create_simulation_obj <- function(data_matrix_list,
 
   # Create empty covariate list if NULL
   if (is.null(covariate)) {
-    covariate <- sim_covariate_list(covariate = list(`No adjustment` = NULL))
+    covariate <- sim_covariate_list(covariate_list = list(`No adjustment` = NULL))
   }
 
   # Create lists for non-list objects
   if (is(covariate, "Covariates")) {
-    covariate <- sim_covariate_list(covariate = list(default = covariate))
+    covariate <- sim_covariate_list(covariate_list = list(default = covariate))
   }
   if (is(outcome, "Outcome")) {
-    outcome <- sim_outcome_list(outcome = list(default = outcome))
+    outcome <- sim_outcome_list(outcome_list = list(default = outcome))
   }
   if (is(borrowing, "Borrowing")) {
-    borrowing <- sim_borrowing_list(borrowing = list(default = borrowing))
+    borrowing <- sim_borrowing_list(borrowing_list = list(default = borrowing))
   }
   if (is(treatment, "Treatment")) {
-    treatment <- sim_treatment_list(treatment = list(default = treatment))
+    treatment <- sim_treatment_list(treatment_list = list(default = treatment))
   }
 
   # Create object
