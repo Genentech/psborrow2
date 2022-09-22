@@ -44,7 +44,7 @@ the use of the MCMC sampling program Stan (via CMD Stan).
 `psborrow2` has two main goals:
 
 1. to provide a user-friendly interface for applying BDB on study results that
-handles the MCMC sampling on behalf of the user.
+handles the MCMC sampling on behalf of the user
 
 2. to facilitate simulation studies that compare different borrowing parameters
 (e.g. full borrowing, no borrowing, BDB) and other trial and BDB

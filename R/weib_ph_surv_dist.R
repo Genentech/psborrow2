@@ -18,6 +18,7 @@
 #' @include outcome_class.R
 #' @include prior_class.R
 #' @include normal_prior.R
+#' @include exponential_prior.R
 #' @family outcome
 .weib_ph_surv_dist <- setClass(
   "WeibullPHSurvDist",

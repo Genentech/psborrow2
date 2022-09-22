@@ -91,9 +91,6 @@ create_analysis_obj <- function(data_matrix,
     }
   }
 
-  # Trim model matrix
-  analysis_obj <- trim_data_matrix(analysis_obj)
-
   # Model string components
   functions_str <- make_model_string_functions(analysis_obj)
   data_str <- make_model_string_data(analysis_obj)
@@ -121,10 +118,10 @@ create_analysis_obj <- function(data_matrix,
   # Compile model
   stan_file <- write_stan_file(analysis_obj@model_string)
   if (!quiet) {
-    analysis_obj@model_and_data <- list(stan_model = cmdstan_model(stan_file))
+    analysis_obj@model <- cmdstan_model(stan_file)
   } else if (quiet) {
     suppressMessages(
-      analysis_obj@model_and_data <- list(stan_model = cmdstan_model(stan_file))
+      analysis_obj@model <- cmdstan_model(stan_file)
     )
   }
 
@@ -133,7 +130,6 @@ create_analysis_obj <- function(data_matrix,
   }
 
   # Prepare data inputs
-  analysis_obj@model_and_data[["data_in"]] <- prepare_stan_data_inputs(analysis_obj)
   analysis_obj@ready_to_sample <- TRUE
   if (!quiet) {
     message("Ready to go! Now call `mcmc_sample()`.")

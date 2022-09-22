@@ -54,13 +54,20 @@ setMethod(
   f = "show",
   signature = "Covariates",
   definition = function(object) {
-    cat(
-      "Covariate object with priors for variables: ",
-      paste0(object@covariates, collapse = ", ")
-    )
+    cat("Covariate object with priors for variables:\n")
+    cat(toString(object@covariates), "\n\n")
+    if (is(object@priors, "Prior")) {
+      cat("Prior for all covariate coefficients:\n")
+      show(object@priors)
+    } else if (is(object@priors, "list")) {
+      for (i in object@covariates) {
+        cat("Prior for ", i, ":\n", sep = "")
+        show(object@priors[[i]])
+        cat("\n")
+      }
+    }
   }
 )
-
 
 # get_vars ----
 #' @rdname get_vars

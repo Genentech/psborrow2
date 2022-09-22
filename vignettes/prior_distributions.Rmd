@@ -28,9 +28,9 @@ In this vignette, you'll learn how to specify prior distributions in `psborrow2`
 
 # Specifying prior distributions
 Because `psborrow2` creates fully-parametrized Bayesian models,
-proper prior distributions on all parameters must be specified. `psborrow2`
+proper prior distributions on all parameters must be specified. \bold{`psborrow2`
 does not provide any default prior distributions by design: users must
-specify these.
+specify these.}
 
 Prior distributions are needed for several parameters,
 depending on the analysis:
@@ -90,11 +90,7 @@ will lead to more borrowing in a BDB analysis):
 
 ```{r}
 conservative_tau <- gamma_prior(0.001, 0.001)
-plot(conservative_tau, xlim = c(0, 2000), ylim = c(0, 1e-03))
-```
-
-```{r}
 aggressive_tau <- gamma_prior(1, 0.001)
-plot(aggressive_tau, xlim = c(0, 2000), ylim = c(0, 1e-03))
+plot(aggressive_tau, xlim = c(0, 2000), col = "blue", ylim = c(0, 1e-03))
 plot(conservative_tau, xlim = c(0, 2000), col = "red", add = TRUE)
 ```

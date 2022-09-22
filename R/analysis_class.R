@@ -1,11 +1,15 @@
 # class union ----
 setClassUnion("CovariatesOrNULL", c("Covariates", "NULL"))
 
+# R6 CmdStanModel placeholder
+setClass("CmdStanModel")
+setClassUnion("CmdStanModelOrNULL", c("CmdStanModel", "NULL"))
+
 #' `Analysis` Class
 #'
 #' A class for defining Analysis details. Objects of class
 #' `Analysis` should not be created directly but by the constructor
-#' `analysis_details()`.
+#' `create_analysis_obj()`.
 #'
 #' @slot data_matrix matrix. The data matrix, including all covariates to be
 #' adjusted for, all relevant outcome variables, and treatment arm and external
@@ -20,9 +24,7 @@ setClassUnion("CovariatesOrNULL", c("Covariates", "NULL"))
 #' `treatment_details()`.
 #' @slot model_string character. The string that contains the full
 #' Stan model code to be compiled.
-#' @slot model_and_data. A named list containing two items: 1) `stan_model`,
-#' the compiled Stan model as output by cmdstanr::cmdstan_model, and
-#' 2) `data_in`, a named list of inputs that will be passed to the compiled model.
+#' @slot model `CmdStanModel`. The compiled Stan model as output by `cmdstanr::cmdstan_model()`
 #' @slot ready_to_sample logical. Is the object ready to sample?
 #' @include covariate_class.R
 #' @include outcome_class.R
@@ -38,7 +40,7 @@ setClassUnion("CovariatesOrNULL", c("Covariates", "NULL"))
     borrowing = "Borrowing",
     treatment = "Treatment",
     model_string = "character",
-    model_and_data = "list",
+    model = "CmdStanModelOrNULL",
     ready_to_sample = "logical"
   ),
   prototype = list(
