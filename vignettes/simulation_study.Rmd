@@ -20,8 +20,8 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 In this vignette, you'll learn how to use `psborrow2` to create a
-simulation study with the goal of informing trial design. Let's start by
-loading `psborrow2`:
+simulation study with the goal of informing trial design. Let's
+load `psborrow2` to start:
 
 ```{r setup, message = FALSE}
 library(psborrow2)
@@ -37,19 +37,20 @@ we need to build an object of class `Simulation` using the function
 
 ```
 create_simulation_obj(
-  sim_data_list,
-  sim_outcome_list,
-  sim_borrowing_list,
-  sim_covariate_list,
-  sim_trt_list
+  data_matrix_list,
+  outcome,
+  borrowing,
+  covariate,
+  treatment
 )
 
 ```
 
-## `sim_data_list()`
+## `data_matrix_list`
 
-`sim_data_list()` is where you input the data you will be using for the
-simulation study. Let's simulate some data together for the sake of example.
+`data_matrix_list` is where you input the data you will be using for the
+simulation study using the function `sim_data_list()`.
+Let's simulate some data together for the sake of example.
 We'll use the `simsurv` package to generate survival data under two
 scenarios: a true hazard ratio (HR) for the treatment effect of 0.6 and a true
 HR of 0.8.
@@ -124,39 +125,38 @@ head(data_list[[1]][[1]])
 ### `guide`
 In order to summarize the results from the different parameters in
 your simulation study, `psborrow2` needs to know how the simulation parameters
-differ. That is the purpose of the argument `guide`, which is a data.frame
-that distinguishes the simulation study parameters. Two columns are required
-in `guide`, though many more can be provided. The two required columns are:
+differ. That is the purpose of the argument `guide`, which is a `data.frame`
+that distinguishes the simulation study parameters. Three columns are required
+in `guide`, though many more can be provided. The three required columns are:
 
 * The true treatment effect (in our case a HR)
 * The true drift effect (in our case a HR). Drift effects >1 will mean
 that the external control arm experiences greater hazard than the internal
 control arm.
+* The name of a column that indexes the `data_list`
 
 In our study, the drift HR was 1.0. We varied the true HR so that it took
 two values: 0.6 and 0.8. Our guide should therefore be two rows to represent
-the two scenarios:
+the two scenarios. We pass `c(1L, 2L)` onto `index` to clarify that
+`data_list[[1L]]` corresponds to the settings in the first row and
+`data_list[[2L]]` to the second row.
 
 ```{r}
 guide <- data.frame(
   trueHR = c(0.6, 0.8),
-  driftHR = c(1.0, 1.0)
+  driftHR = c(1.0, 1.0),
+  index = c(1L, 2L)
 )
 
 guide
 ```
 
-***Note*** the order is extremely important in `guide` and should correspond
-exactly to the order in your simulated data. For us, the scenario with
-a true HR of 0.6 was the first list element in our `data_list` and should
-therefore be the first row of `guide`.
+### `effect`, `drift`, and `index`
 
-### `effect` and `drift`
-
-The last two inputs to `sim_data_list()`, `effect` and `drift`
-are the column names in `guide` that correspond to the true treatment effect
-and true drift effect, respectively. For our study, these are `"trueHR"`
-and `"driftHR"`, respectively.
+The last three inputs to `sim_data_list()`, `effect`, `drift`, and `index`
+are the column names in `guide` that correspond to the true treatment effect,
+true drift effect, and index of the `data_list` items, respectively.
+For our study, these are `"trueHR"`, `"driftHR"`, and `"index"`.
 
 Putting it all together, we can create an object of class `SimDataList`:
 
@@ -165,62 +165,42 @@ sdl <- sim_data_list(
   data_list,
   guide,
   "trueHR",
-  "driftHR"
+  "driftHR",
+  "index"
 )
 
 sdl
 ```
 
-## `sim_outcome_list()`
+## `outcome`
 
-`sim_outcome_list()` is where you input outcome details, for instance
-the type of outcome and prior distributions on the baseline outcome
-rate as well as any ancillary parameters. In `psborrow2` currently, there
-are three outcome types supported:
-
-* Exponential survival distribution (`exp_surv_dist()`)
-* Weibull proportional hazards survival distribution (`weib_ph_surv_dist()`)
-* Bernoulli distribution with a logistic link (logistic regression,
-`logistic_bin_outcome()`)
-
-For our example, let's compare Weibull and exponential survival
-distributions.
+`outcome` is where you pass information on the study outcomes. You can pass
+either a single `Outcome` class object (e.g., as produced by `exp_surv_dist()`),
+or a list of `Outcome` class objects passed to `sim_outcome_list()`. For our
+example, let's just use a single exponential distribution.
 
 ```{r}
-sol <- sim_outcome_list(
-  list(
-    "Exponential" = exp_surv_dist(
-      time_var = "eventtime",
-      cens_var = "censor",
-      baseline_prior = normal_prior(0, 1000)
-    ),
-    "Weibull" = weib_ph_surv_dist(
-      time_var = "eventtime",
-      cens_var = "censor",
-      shape_prior = normal_prior(0, 1000),
-      baseline_prior = normal_prior(0, 1000)
-    )
-  )
+out <- exp_surv_dist(
+  time_var = "eventtime",
+  cens_var = "censor",
+  baseline_prior = normal_prior(0, 1000)
 )
-sol
+out
 ```
 
-## `sim_borrowing_list()`
+## `borrowing`
 
-`sim_borrowing_list()` is where you input borrowing details, including
-the type of borrowing from among:
-
-* No borrowing
-* Full borrowing
-* BDB
-
-In addition, the prior on the commensurability parameter may also be
-varied. For our example, let's compare four scenarios:
+`borrowing` is where we input information on the type of borrowing we want to
+evaluate. This can be either a single object of class `Borrowing` or
+a list of objects created with `sim_borrowing_list()`. For the sake of example,
+let's assume we are interested in comparing four borrowing scenarios:
 
 * No borrowing
 * Full borrowing
 * BDB, conservative prior
 * BDB, aggressive prior
+
+We will create a borrowing list with `sim_borrowing_list()`.
 
 ```{r}
 sbl <- sim_borrowing_list(
@@ -234,22 +214,53 @@ sbl <- sim_borrowing_list(
 sbl
 ```
 
-## `sim_covariate_list()`
+## `covariate`
 
-`sim_covariate_list()` is where you input details on which covariates to
-adjust for in your simulation study outcome models. Note that we did not
-simulate any covariates, so we will leave this argument empty.
+`covariate` is for information on covariate adjustment details. This can be
+a single instance of class `Covariates` (from `add_covariates()` or a list of
+`Covariates` objects created by `sim_covariate_list()` . This is also the only
+argument that is not required in `create_simulation_obj`. Let's leave
+this argument empty (i.e., let's not adjust for any covariates).
 
+## `treatment`
 
-## `sim_treatment_list()`
-
-`sim_treatment_list()` is where you input the treatment details for a simulation study. Of most
-importance in this field is specifying the prior distribution for the treatment effect. Let's
-keep an uninformative prior in this example:
+`treatment` is where we input the treatment details for our simulation study.
+As with other inputs, this can be a single instance of a class (`Treatment`),
+or a list of these classes, created with `sim_treatment_list()`. Let's
+just use a single instance:
 
 ```{r}
-stl <- sim_treatment_list(
-  list("Standard" = treatment_details("trt", normal_prior(0, 1000)))
+txd <- treatment_details("trt", normal_prior(0, 1000))
+```
+
+## `create_simulation_obj()`
+
+Now that we have all of the relevant inputs for `create_simulation_obj()`,
+let's call the function, which will generate and compile Stan models
+ready to sample on our behalf.
+
+***Important:*** `psborrow2` will simulate the Cartesian product of all
+unique list elements in `data_matrix_list`, `outcome`, `borrowing`,
+`covariate`, and `treatment`. `data_matrix_list` contains two
+different study parameters and therefore contains a list of length two.
+`borrowing` has four scenarios and is a list of length four. The rest
+contain just one input (or 0 for `covariate`, which is equivalent to one
+scenario). This means we should expect $2 \times 4 = 8$ combinations of
+parameters. Let's create a simulation object of class `Simulation`:
+
+```{r}
+sim_obj <- create_simulation_obj(
+  data_matrix_list = sdl,
+  outcome = out,
+  borrowing = sbl,
+  treatment = txd
 )
-stl
+sim_obj
+```
+
+We can access the guide to see the specific scenarios that will be
+simulated with `show_guide()`:
+
+```{r}
+show_guide(sim_obj)
 ```

@@ -27,5 +27,8 @@ corresponds to the true treatment effect estimate (hazard ratio or odds ratio).}
 \item{\code{drift}}{character. The column in \code{guide} that
 corresponds to the drift between external and internal control arms. A
 drift >1 means the external arm experiences greater effects.}
+
+\item{\code{index}}{character. The column in \code{guide} that corresponds
+to the index of the parameter situations in \code{data_list}.}
 }}
 

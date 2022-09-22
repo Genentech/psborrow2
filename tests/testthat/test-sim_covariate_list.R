@@ -116,3 +116,18 @@ test_that("Covariate `guide` is produced correctly", {
   expect_class(covariate_obj2@guide, "data.frame")
   expect_equal(colnames(covariate_obj2@guide), "covariate_scenario")
 })
+
+
+
+test_that("get_vars for `sim_covariate_list` works", {
+  covariate_obj <- sim_covariate_list(
+    list(
+      "No adjustment" = NULL,
+      "Full adjustment" = add_covariates(
+        c("cov1", "cov2"),
+        normal_prior(0, 1000)
+      )
+    )
+  )
+  expect_equal(c("cov1", "cov2"), get_vars(covariate_obj))
+})

@@ -15,13 +15,16 @@
 #' @slot drift character. The column in `guide` that
 #' corresponds to the drift between external and internal control arms. A
 #' drift >1 means the external arm experiences greater effects.
+#' @slot index character. The column in `guide` that corresponds
+#' to the index of the parameter situations in `data_list`.
 .sim_data_list <- setClass(
   "SimDataList",
   slots = c(
     data_list = "list",
     guide = "data.frame",
     effect = "character",
-    drift = "character"
+    drift = "character",
+    index = "character"
   ),
   validity = function(object) {
     # Format is list of lists
@@ -43,13 +46,32 @@
       return("`guide` and `data_list` must be same length")
     }
 
-    # Effect and drift are columns in guide
+    # Effect, drift, and index are columns in guide
     if (!object@effect %in% colnames(object@guide)) {
       return("`effect` must be a column in `guide`")
     }
 
     if (!object@drift %in% colnames(object@guide)) {
       return("`drift` must be a column in `guide`")
+    }
+
+    if (!object@index %in% colnames(object@guide)) {
+      return("`index` must be a column in `guide`")
+    }
+
+    # n_datasets_per_list is protected
+    if ("n_datasets_per_param" %in% colnames(object@guide)) {
+      return("'n_datasets_per_param' is a protected column name in `guide`.")
+    }
+
+    # index items must be unique
+    if (length(unique(object@guide[[object@index]])) != NROW(object@data_list)) {
+      return("`index` column in guide must be unique, one for each entry in data_list")
+    }
+
+    # index must be coercable to integer
+    if (!test_integerish(object@guide[[object@index]])) {
+      return("`index` column in guide must of type integer")
     }
   }
 )
@@ -70,7 +92,8 @@
 #' @param drift character. The column in `guide` that
 #' corresponds to the true drift effect estimate (hazard ratio or odds ratio).
 #' A drift >1 means the external arm experiences greater effects.
-#'
+#' @param index character. The column in `guide` that corresponds
+#' to the index column.
 #'
 #' @details
 #'
@@ -138,26 +161,38 @@
 #'
 #' guide <- data.frame(
 #'   trueOR = c(1.5, 2.5),
-#'   driftOR = c(1.0, 1.0)
+#'   driftOR = c(1.0, 1.0),
+#'   ind = c(1, 2)
 #' )
 #'
 #' sdl <- sim_data_list(
 #'   data_list = data_list,
 #'   guide = guide,
 #'   effect = "trueOR",
-#'   drift = "driftOR"
+#'   drift = "driftOR",
+#'   index = "ind"
 #' )
 #' @export
 sim_data_list <- function(data_list,
                           guide,
                           effect,
-                          drift) {
-  .sim_data_list(
+                          drift,
+                          index) {
+  sim_data_list <- .sim_data_list(
     data_list = data_list,
     guide = guide,
     effect = effect,
-    drift = drift
+    drift = drift,
+    index = index
   )
+
+  sim_data_list@guide$n_datasets_per_param <- vapply(
+    sim_data_list@data_list,
+    NROW,
+    FUN.VALUE = integer(1)
+  )
+
+  return(sim_data_list)
 }
 
 # show ----

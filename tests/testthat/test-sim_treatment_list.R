@@ -92,3 +92,14 @@ test_that("Treatment `guide` is produced correctly", {
   expect_class(treatment_obj2@guide, "data.frame")
   expect_equal(colnames(treatment_obj2@guide), "treatment_scenario")
 })
+
+test_that("get_vars for `sim_treatment_list` works", {
+  treatment_obj <- sim_treatment_list(
+    list(
+      "Uninformative" = treatment_details("trt", normal_prior(0, 1000)),
+      "Informative" = treatment_details("trt", normal_prior(-50, 20))
+    )
+  )
+
+  expect_equal("trt", get_vars(treatment_obj))
+})

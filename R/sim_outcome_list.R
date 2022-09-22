@@ -79,3 +79,14 @@ setMethod(
     }
   }
 )
+
+# get_vars ----
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "SimOutcomeList",
+  definition = function(object) {
+    unique(unlist(lapply(object@outcome_list, get_vars)))
+  }
+)

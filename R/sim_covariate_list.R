@@ -84,3 +84,21 @@ setMethod(
     }
   }
 )
+
+
+# get_vars ----
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "SimCovariateList",
+  definition = function(object) {
+    cov_cols <- if (!is.null(object@covariate_list)) {
+      unlist(lapply(object@covariate_list, get_vars))
+    } else {
+      NULL
+    }
+    names(cov_cols) <- NULL
+    return(cov_cols)
+  }
+)

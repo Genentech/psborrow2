@@ -69,7 +69,6 @@ setMethod(
   }
 )
 
-
 # get_vars ----
 #' @rdname get_vars
 #' @include generics.R

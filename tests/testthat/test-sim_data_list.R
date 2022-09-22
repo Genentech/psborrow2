@@ -35,10 +35,12 @@ test_that("Incorrect inputs lead to errors", {
       short_list,
       data.frame(
         trueOR = c(1.5, 2.5),
-        driftOR = c(1.0, 1.0)
+        driftOR = c(1.0, 1.0),
+        index = 1L:2L
       ),
       "trueOR",
-      "driftOR"
+      "driftOR",
+      "index"
     ),
     "must be a list of lists"
   )
@@ -52,10 +54,12 @@ test_that("Incorrect inputs lead to errors", {
       data_list_df,
       data.frame(
         trueOR = c(1.5),
-        driftOR = c(1.0)
+        driftOR = c(1.0),
+        index = 1L:2L
       ),
       "trueOR",
-      "driftOR"
+      "driftOR",
+      "index"
     ),
     "must be matrices"
   )
@@ -66,10 +70,12 @@ test_that("Incorrect inputs lead to errors", {
       data_list,
       data.frame(
         trueOR = c(1.5),
-        driftOR = c(1.0)
+        driftOR = c(1.0),
+        index = 1L
       ),
       "trueOR",
-      "driftOR"
+      "driftOR",
+      "index"
     ),
     "must be same length"
   )
@@ -80,10 +86,12 @@ test_that("Incorrect inputs lead to errors", {
       data_list,
       data.frame(
         trueOR = c(1.5, 2.5),
-        driftOR = c(1.0, 1.0)
+        driftOR = c(1.0, 1.0),
+        index = as.integer(1:2)
       ),
       "OR",
-      "driftOR"
+      "driftOR",
+      "index"
     ),
     "must be a column"
   )
@@ -93,15 +101,77 @@ test_that("Incorrect inputs lead to errors", {
       data_list,
       data.frame(
         trueOR = c(1.5, 2.5),
-        driftOR = c(1.0, 1.0)
+        driftOR = c(1.0, 1.0),
+        index = as.integer(1:2)
       ),
       "trueOR",
-      "drift"
+      "drift",
+      "index"
     ),
     "must be a column"
   )
-})
 
+  expect_error(
+    sim_data_list(
+      data_list,
+      data.frame(
+        trueOR = c(1.5, 2.5),
+        driftOR = c(1.0, 1.0),
+        n_datasets_per_param = c(2L, 2L),
+        index = 1L:2L
+      ),
+      "trueOR",
+      "driftOR",
+      "index"
+    ),
+    "'n_datasets_per_param' is a protected column name in `guide`"
+  )
+
+  expect_error(
+    sim_data_list(
+      data_list,
+      data.frame(
+        trueOR = c(1.5, 2.5),
+        driftOR = c(1.0, 1.0),
+        index = 1L:2L
+      ),
+      "trueOR",
+      "driftOR",
+      "windex"
+    ),
+    "`index` must be a column in `guide`"
+  )
+
+  expect_error(
+    sim_data_list(
+      data_list,
+      data.frame(
+        trueOR = c(1.5, 2.5),
+        driftOR = c(1.0, 1.0),
+        index = 1L:1L
+      ),
+      "trueOR",
+      "driftOR",
+      "index"
+    ),
+    "must be unique"
+  )
+
+  expect_error(
+    sim_data_list(
+      data_list,
+      data.frame(
+        trueOR = c(1.5, 2.5),
+        driftOR = c(1.0, 1.0),
+        index = c(1.000, 2.000001)
+      ),
+      "trueOR",
+      "driftOR",
+      "index"
+    ),
+    "must of type integer"
+  )
+})
 
 test_that("Correct inputs successfully produce `SimDataList`", {
   expect_class(
@@ -109,11 +179,30 @@ test_that("Correct inputs successfully produce `SimDataList`", {
       data_list,
       data.frame(
         trueOR = c(1.5, 2.5),
-        driftOR = c(1.0, 1.0)
+        driftOR = c(1.0, 1.0),
+        index = 1L:2L
       ),
       "trueOR",
-      "driftOR"
+      "driftOR",
+      "index"
     ),
     "SimDataList"
+  )
+})
+
+test_that("N datasets per param is correct", {
+  expect_equal(
+    sim_data_list(
+      data_list,
+      data.frame(
+        trueOR = c(1.5, 2.5),
+        driftOR = c(1.0, 1.0),
+        index = as.integer(1:2)
+      ),
+      "trueOR",
+      "driftOR",
+      "index"
+    )@guide$n_datasets_per_param,
+    c(2, 2)
   )
 })

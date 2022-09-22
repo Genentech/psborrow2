@@ -9,7 +9,7 @@ setClassUnion("CmdStanModelOrNULL", c("CmdStanModel", "NULL"))
 #'
 #' A class for defining Analysis details. Objects of class
 #' `Analysis` should not be created directly but by the constructor
-#' `analysis_details()`.
+#' `create_analysis_obj()`.
 #'
 #' @slot data_matrix matrix. The data matrix, including all covariates to be
 #' adjusted for, all relevant outcome variables, and treatment arm and external
