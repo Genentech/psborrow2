@@ -219,7 +219,8 @@ setMethod(
     mcmc_simulation_result <- .mcmc_simulation_result(
       results = x@guide
     )
-    mcmc_simulation_result@results$coverage <- rep(NA_real_, x@n_combos)
+    mcmc_simulation_result@results$true_coverage <- rep(NA_real_, x@n_combos)
+    mcmc_simulation_result@results$null_coverage <- rep(NA_real_, x@n_combos)
 
     # MCMC sample
     for (i in 1:x@n_combos) {
@@ -233,7 +234,7 @@ setMethod(
       true_effect <- x@guide[i, x@data_matrix_list@effect]
 
       # Placeholder objects
-      coverage <- vector(mode = "integer", length = n_sim)
+      true_coverage <- null_coverage <- vector(mode = "integer", length = n_sim)
 
       for (j in 1:n_sim) {
         anls_obj <- x@analysis_obj_list[[i]][[j]]
@@ -249,9 +250,14 @@ setMethod(
         draws <- mcmc_results$draws()
 
         # Coverage
-        coverage[j] <- sim_is_covered(
+        true_coverage[j] <- sim_is_true_effect_covered(
           draws,
           true_effect,
+          posterior_quantiles
+        )
+
+        null_coverage[j] <- sim_is_null_effect_covered(
+          draws,
           posterior_quantiles
         )
 
@@ -267,7 +273,8 @@ setMethod(
       }
 
       # Add simulation study results
-      mcmc_simulation_result@results$coverage[[i]] <- mean(coverage)
+      mcmc_simulation_result@results$true_coverage[[i]] <- mean(true_coverage)
+      mcmc_simulation_result@results$null_coverage[[i]] <- mean(null_coverage)
     }
 
     # Attach draws

@@ -69,14 +69,14 @@
 #' res <- mcmc_sample(anls_obj, iter_sampling = 500)
 #' draws <- res$draws()
 #'
-#' psborrow2:::sim_is_covered(
+#' psborrow2:::sim_is_true_effect_covered(
 #'   draws,
 #'   true_effect,
 #'   c(0.025, 0.975)
 #' )
-sim_is_covered <- function(draws,
-                           true_effect,
-                           posterior_quantiles) {
+sim_is_true_effect_covered <- function(draws,
+                                       true_effect,
+                                       posterior_quantiles) {
   summ_draws <- posterior::summarise_draws(draws, ~ quantile(.x, probs = posterior_quantiles))
   effect_range <- c(
     summ_draws[summ_draws$variable %in% c("HR_trt", "OR_trt"), 2][[1]],
