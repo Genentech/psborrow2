@@ -222,7 +222,7 @@ setMethod(
     mcmc_simulation_result@results$true_coverage <-
       mcmc_simulation_result@results$null_coverage <-
       mcmc_simulation_result@results$bias_mean <-
-      mcmc_simulation_result@results$mse_min <-
+      mcmc_simulation_result@results$mse_mean <-
       rep(NA_real_, x@n_combos)
 
     # MCMC sample
