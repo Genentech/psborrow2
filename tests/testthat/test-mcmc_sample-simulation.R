@@ -100,5 +100,5 @@ test_that("mcmc_sample.Simulation() creates an object of class `MCMCSimulationRe
   expect_class(mcmc_model_results, "list")
   expect_class(mcmc_model_results[[1]], "list")
   expect_class(mcmc_model_results[[1]][[1]], "CmdStanModel")
-  expect_equal(sum(is.na(result_df$type_i_error)), 0)
+  expect_equal(sum(is.na(result_df$coverage)), 0)
 })

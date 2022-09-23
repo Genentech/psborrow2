@@ -1,4 +1,4 @@
-#' Does a simulation study commit a type I error?
+#' Do the posterior quantiles contain the true treatment effect?
 #'
 #' @param draws draws_array Object of class `draws` from
 #' `CmdStanMCMC$draws()`.
@@ -7,7 +7,7 @@
 #' quantiles of the posterior treatment effect distribution in which
 #' to search for the true effect.
 #'
-#' @return 1L if a type 1 error was committed, otherwise 0L
+#' @return 1L if the effect is contained within the quantiles, else 0L
 #' @examples
 #' base_mat <- matrix(
 #'   c(
@@ -69,18 +69,18 @@
 #' res <- mcmc_sample(anls_obj, iter_sampling = 500)
 #' draws <- res$draws()
 #'
-#' psborrow2:::sim_is_type_i_error(
+#' psborrow2:::sim_is_covered(
 #'   draws,
 #'   true_effect,
 #'   c(0.025, 0.975)
 #' )
-sim_is_type_i_error <- function(draws,
-                                true_effect,
-                                posterior_quantiles) {
+sim_is_covered <- function(draws,
+                           true_effect,
+                           posterior_quantiles) {
   summ_draws <- posterior::summarise_draws(draws, ~ quantile(.x, probs = posterior_quantiles))
   effect_range <- c(
     summ_draws[summ_draws$variable %in% c("HR_trt", "OR_trt"), 2][[1]],
     summ_draws[summ_draws$variable %in% c("HR_trt", "OR_trt"), 3][[1]]
   )
-  return(1 - as.integer(true_effect >= effect_range[1] & true_effect <= effect_range[2]))
+  return(as.integer(true_effect >= effect_range[1] & true_effect <= effect_range[2]))
 }
