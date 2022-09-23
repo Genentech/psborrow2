@@ -1,12 +1,14 @@
-#' Do the posterior quantiles contain a value of 1.0?
+#' What is the bias for a given model (using the median estimate)
 #'
 #' @param draws draws_array Object of class `draws` from
 #' `CmdStanMCMC$draws()`.
-#' @param posterior_quantiles numeric. Vector of length two specifying
-#' quantiles of the posterior treatment effect distribution in which
-#' to search for the null effect.
+#' @param true_effect numeric. The true treatment effect.
 #'
-#' @return 1L if the null effect (1.0) is contained within the quantiles, else 0L
+#' @return the bias of the sample
+#'
+#' @details
+#' Bias will be calculated as (true_effect - median_estimated_effect)
+#'
 #' @examples
 #' base_mat <- matrix(
 #'   c(
@@ -63,20 +65,18 @@
 #'
 #' i <- 1
 #' j <- 1
+#' true_effect <- x@guide[i, x@data_matrix_list@effect]
 #' anls_obj <- x@analysis_obj_list[[i]][[j]]
 #' res <- mcmc_sample(anls_obj, iter_sampling = 500)
 #' draws <- res$draws()
 #'
-#' psborrow2:::sim_is_null_effect_covered(
+#' psborrow2:::sim_estimate_bias(
 #'   draws,
-#'   c(0.025, 0.975)
+#'   true_effect
 #' )
-sim_is_null_effect_covered <- function(draws,
-                                       posterior_quantiles) {
-  summ_draws <- posterior::summarise_draws(draws, ~ quantile(.x, probs = posterior_quantiles))
-  effect_range <- c(
-    summ_draws[summ_draws$variable %in% c("HR_trt", "OR_trt"), 2][[1]],
-    summ_draws[summ_draws$variable %in% c("HR_trt", "OR_trt"), 3][[1]]
-  )
-  return(as.integer(1.00 >= effect_range[1] & 1.00 <= effect_range[2]))
+sim_estimate_bias <- function(draws,
+                              true_effect) {
+  summ_draws <- posterior::summarise_draws(draws, ~ quantile(.x, probs = 0.5))
+  med_effect <- summ_draws[summ_draws$variable %in% c("HR_trt", "OR_trt"), 2][[1]]
+  return(true_effect - med_effect)
 }

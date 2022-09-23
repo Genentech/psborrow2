@@ -219,8 +219,11 @@ setMethod(
     mcmc_simulation_result <- .mcmc_simulation_result(
       results = x@guide
     )
-    mcmc_simulation_result@results$true_coverage <- rep(NA_real_, x@n_combos)
-    mcmc_simulation_result@results$null_coverage <- rep(NA_real_, x@n_combos)
+    mcmc_simulation_result@results$true_coverage <-
+      mcmc_simulation_result@results$null_coverage <-
+      mcmc_simulation_result@results$bias_mean <-
+      mcmc_simulation_result@results$mse_min <-
+      rep(NA_real_, x@n_combos)
 
     # MCMC sample
     for (i in 1:x@n_combos) {
@@ -235,6 +238,7 @@ setMethod(
 
       # Placeholder objects
       true_coverage <- null_coverage <- vector(mode = "integer", length = n_sim)
+      bias <- mse <- vector(mode = "numeric", length = n_sim)
 
       for (j in 1:n_sim) {
         anls_obj <- x@analysis_obj_list[[i]][[j]]
@@ -261,6 +265,18 @@ setMethod(
           posterior_quantiles
         )
 
+        # Bias
+        bias[j] <- sim_estimate_bias(
+          draws,
+          true_effect
+        )
+
+        # MSE
+        mse[j] <- sim_estimate_mse(
+          draws,
+          true_effect
+        )
+
         # Save draws if desired
         if (keep_cmd_stan_models) {
           cmd_stan_models_out[[i]][[j]] <- mcmc_results
@@ -275,6 +291,8 @@ setMethod(
       # Add simulation study results
       mcmc_simulation_result@results$true_coverage[[i]] <- mean(true_coverage)
       mcmc_simulation_result@results$null_coverage[[i]] <- mean(null_coverage)
+      mcmc_simulation_result@results$bias_mean[[i]] <- mean(bias)
+      mcmc_simulation_result@results$mse_mean[[i]] <- mean(mse)
     }
 
     # Attach draws
