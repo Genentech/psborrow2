@@ -16,7 +16,7 @@ A class for defining Simulation study results. Objects of class
 \item{\code{results}}{\code{data.frame}. The results of the simulation study summarized
 in a \code{data.frame}}
 
-\item{\code{draws}}{list. List of lists of \code{draws_arrays} corresponding to the
+\item{\code{cmd_stan_models}}{list. List of lists of \code{CmdStanmodels} corresponding to the
 different parameters in \code{Simulation@guide} and different datasets in
 \code{Simulation@data_matrix_list}.}
 }}

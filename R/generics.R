@@ -74,14 +74,14 @@ setGeneric("show_guide", function(object) standardGeneric("show_guide"))
 #'
 setGeneric("get_results", function(object) standardGeneric("get_results"))
 
-#' Get draws for `MCMCSimulationResults` objects
+#' Get `CmdStanModel` objects for `MCMCSimulationResults`
 #'
-#' Show the draws `data.frame` from `MCMCSimulationResults` objects.
+#' Show the `CmdStanModel` objects from `MCMCSimulationResults` objects.
 #'
 #' @param object `MCMCSimulationResults` object
 #'
-#' @rdname get_draws
+#' @rdname get_cmd_stan_models
 #'
 #' @export
 #'
-setGeneric("get_draws", function(object) standardGeneric("get_draws"))
+setGeneric("get_cmd_stan_models", function(object) standardGeneric("get_cmd_stan_models"))

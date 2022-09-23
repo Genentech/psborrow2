@@ -9,7 +9,7 @@ setClassUnion("listOrNULL", c("list", "NULL"))
 #'
 #' @slot results `data.frame`. The results of the simulation study summarized
 #' in a `data.frame`
-#' @slot draws list. List of lists of `draws_arrays` corresponding to the
+#' @slot cmd_stan_models list. List of lists of `CmdStanmodels` corresponding to the
 #' different parameters in `Simulation@guide` and different datasets in
 #' `Simulation@data_matrix_list`.
 #'
@@ -18,10 +18,10 @@ setClassUnion("listOrNULL", c("list", "NULL"))
   "MCMCSimulationResult",
   slots = c(
     results = "data.frame",
-    draws = "listOrNULL"
+    cmd_stan_models = "listOrNULL"
   ),
   prototype = list(
-    draws = NULL
+    cmd_stan_models = NULL
   )
 )
 
@@ -48,12 +48,12 @@ setMethod(
   }
 )
 
-# get_draws----
-#' @rdname get_draws
+# get_cmd_stan_models----
+#' @rdname get_cmd_stan_models
 setMethod(
-  f = "get_draws",
+  f = "get_cmd_stan_models",
   signature = "MCMCSimulationResult",
   definition = function(object) {
-    return(object@draws)
+    return(object@cmd_stan_models)
   }
 )

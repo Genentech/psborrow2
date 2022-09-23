@@ -27,7 +27,7 @@ mcmc_sample(x, ...)
   iter_sampling = 10000L,
   chains = 4L,
   verbose = FALSE,
-  keep_draws = FALSE,
+  keep_cmd_stan_models = FALSE,
   ...
 )
 }
@@ -53,8 +53,9 @@ The default is 10000.}
 The posterior quantiles used for summarizing simulation results. The
 default is \code{c(0.025, 0.975)} See details.}
 
-\item{keep_draws}{logical. Whether to keep the draws from the \code{mcmc_sampler}
-(discouraged in most scenarios) or not.}
+\item{keep_cmd_stan_models}{logical. Whether to keep the
+\code{CmdStanModel} objects from the \code{mcmc_sampler} (\code{TRUE},
+discouraged in most scenarios) or not (\code{FALSE}). The default is \code{FALSE}.}
 }
 \value{
 An object of class \code{CmdStanMCMC}

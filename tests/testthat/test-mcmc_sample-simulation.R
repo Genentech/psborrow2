@@ -93,12 +93,12 @@ test_that("mcmc_sample.Simulation() creates an object of class `MCMCSimulationRe
     iter_sampling = 1000
   )
   result_df <- get_results(mcmc_res)
-  draws <- get_draws(mcmc_res)
+  mcmc_model_results <- get_cmd_stan_models(mcmc_res)
 
   expect_class(mcmc_res, "MCMCSimulationResult")
   expect_class(result_df, "data.frame")
-  expect_class(draws, "list")
-  expect_class(draws[[1]], "list")
-  expect_class(draws[[1]][[1]], "draws_array")
+  expect_class(mcmc_model_results, "list")
+  expect_class(mcmc_model_results[[1]], "list")
+  expect_class(mcmc_model_results[[1]][[1]], "CmdStanModel")
   expect_equal(sum(is.na(result_df$type_i_error)), 0)
 })

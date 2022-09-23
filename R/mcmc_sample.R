@@ -103,8 +103,9 @@ setMethod(
 #' @param iter_sampling integer. The number of post-warm up iterations to run per chain.
 #' The default is 10000.
 #' @param chains integer. The number of Markov chains to run. The default is 4.
-#' @param keep_draws logical. Whether to keep the draws from the `mcmc_sampler`
-#' (discouraged in most scenarios) or not.
+#' @param keep_cmd_stan_models logical. Whether to keep the
+#' `CmdStanModel` objects from the `mcmc_sampler` (`TRUE`,
+#' discouraged in most scenarios) or not (`FALSE`). The default is `FALSE`.
 #' @param verbose logical. Whether to print sampler updates (`TRUE`) or not
 #' (`FALSE`)
 #'
@@ -190,7 +191,7 @@ setMethod(
                         iter_sampling = 10000L,
                         chains = 4L,
                         verbose = FALSE,
-                        keep_draws = FALSE,
+                        keep_cmd_stan_models = FALSE,
                         ...) {
     # Input checks
     assert_class(x, "Simulation")
@@ -200,18 +201,18 @@ setMethod(
     assert_numeric(iter_sampling)
     assert_numeric(chains)
     assert_flag(verbose)
-    assert_flag(keep_draws)
+    assert_flag(keep_cmd_stan_models)
     if (any(posterior_quantiles < 0 | posterior_quantiles > 1)) {
       stop("`posterior_quantiles` must be [0, 1]")
     }
 
-    # Message if `keep_draws` = `TRUE`
-    if (keep_draws) {
+    # Message if `keep_cmd_stan_models` = `TRUE`
+    if (keep_cmd_stan_models) {
       message("Creating ", x@n_analyses, " `draws` objects! ")
       if (x@n_analyses > 20) {
-        message("This is a lot! You may consider `keep_draws` = `FALSE`.")
+        message("This is a lot! You may consider `keep_cmd_stan_models` = `FALSE`.")
       }
-      draws_out <- list()
+      cmd_stan_models_out <- list()
     }
 
     # Create object
@@ -223,8 +224,8 @@ setMethod(
     # MCMC sample
     for (i in 1:x@n_combos) {
       # Create a list for `draws`
-      if (keep_draws) {
-        draws_out[[i]] <- list()
+      if (keep_cmd_stan_models) {
+        cmd_stan_models_out[[i]] <- list()
       }
 
       # Important values
@@ -255,15 +256,14 @@ setMethod(
         )
 
         # Save draws if desired
-        if (keep_draws) {
-          draws_out[[i]][[j]] <- draws
+        if (keep_cmd_stan_models) {
+          cmd_stan_models_out[[i]][[j]] <- mcmc_results
+        } else {
+          for (file in mcmc_results$output_files()) {
+            file.remove(file)
+          }
+          rm(mcmc_results)
         }
-
-        # Remove output files and mcmc_results object
-        for (file in mcmc_results$output_files()) {
-          file.remove(file)
-        }
-        rm(mcmc_results)
       }
 
       # Add simulation study results
@@ -271,8 +271,8 @@ setMethod(
     }
 
     # Attach draws
-    if (keep_draws) {
-      mcmc_simulation_result@draws <- draws_out
+    if (keep_cmd_stan_models) {
+      mcmc_simulation_result@cmd_stan_models <- cmd_stan_models_out
     }
 
     # Return object
