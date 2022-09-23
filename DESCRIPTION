@@ -41,7 +41,8 @@ Imports:
     glue,
     methods,
     graphics,
-    posterior
+    posterior,
+    learnr
 Suggests:
     survival,
     flexsurv,

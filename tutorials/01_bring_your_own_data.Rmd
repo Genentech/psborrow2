@@ -1,0 +1,277 @@
+---
+title: "Bring your own data to `psborrow2`"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+description: >
+  Learn how to bring your own data in a Bayesian Dynamic Borrowing analysis of `psborrow2`.
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+devtools::load_all()
+library(survival)
+tutorial_options(
+  exercise.timelimit = 60,
+  # A simple checker function that just returns the message in the check chunk
+  exercise.checker = function(check_code, ...) {
+    list(
+      message = eval(parse(text = check_code)),
+      correct = logical(0),
+      type = "info",
+      location = "append"
+    )
+  }
+)
+knitr::opts_chunk$set(error = TRUE)
+
+diabetic <- survival::diabetic
+# For demonstration purposes, let some patients be external controls
+diabetic$ext <- ifelse(diabetic$trt == 0 & diabetic$id > 1000, 1, 0)
+diabetic$cens <- ifelse(diabetic$status == 0, 1, 0)
+
+```
+
+## Welcome
+
+Welcome to this tutorial on how to use `psborrow2` to conduct your own hybrid control analysis using 
+Bayesian Dynamic Borrowing. 
+
+###
+
+In this tutorial, you will learn how to:
+
+* format data in an appropriate manner for `psborrow2`
+* specify all relevant inputs for your analysis
+* compile an MCMC sampler and sample from the posterior distribution
+* summarize results
+
+### Prerequisites
+
+To practice these skills, we will use the `diabetic` dataset from the `survival::diabetic` package. This data.frame comes from the Diabetic Retinopathy Study and includes 197 patients with 
+"high-risk" diabetic retinopathy. Patients were randomized to either a laser treatment or a no treatment. Because our goal is a hybrid control analysis with three arms (as opposed to the two
+in this study), we have randomly assigned some control patients to an external control arm, `ext`. We have also added a variable `cens` which correspond to a censorship flag (
+this is the complement to the `diabetic` variable, `status`). 
+
+You can see more information about the fields in the `diabetic` database with `?diabetic`.
+
+### The end goal
+
+Ultimately, in `psborrow2`, we need to create an object
+of class `Analysis` which contains all the information needed to build a model
+and compile an MCMC sampler using Stan. To create an `Analysis` object,
+we will call the function `create_analysis_obj()`. Let's look at the four
+required arguments to this function and evaluate them one-at-a-time.
+
+```
+create_analysis_obj(
+  data_matrix,
+  outcome,
+  borrowing,
+  treatment
+)
+```
+
+## Format the data in `data_matrix`
+
+###
+
+Let's start by looking at our modified `diabetic` database. Click Run Code to print out the head of the data:
+
+```{r head-diabetic, exercise = TRUE, exercise.eval = FALSE}
+head(diabetic)
+```
+
+###
+
+Note that this object is a `data.frame`. Let's use the help functionality to see if
+`psborrow2` will accept that in the place of `data_matrix`:
+
+```{r create-analysis-object-help, exercise = TRUE, exercise.eval = FALSE}
+?create_analysis_obj
+```
+
+### 
+
+Based on the help screen in the previous slide, answer the below quiz:
+
+```{r which-data-matrix-inputs-valid, echo = FALSE}
+question(" Which inputs into `data_matrix` are valid? Select ALL that apply",
+         answer("matrix", correct = TRUE),
+         answer("data.frame"),
+         answer("list"),
+         answer("tibble"),
+         allow_retry = TRUE,
+         type = "learnr_checkbox"
+)
+```
+
+###
+
+Awesome! Let's reformat our data.frame into a matrix. `psborrow2` has a helper function to assist us with this: `create_data_matrix.` Look at the help files, then fill in the
+appropriate arguments into the function. For now, let's ignore `covariates`, because we will not adjust for any covariates in our outcome model.
+
+
+```{r create_data_matrix-help, exercise = TRUE, exercise.eval = FALSE}
+?create_data_matrix
+```
+
+```{r create-data-matrix, exercise = TRUE, exercise.eval = FALSE}
+data_matrix <- create_data_matrix(
+  data = diabetic,
+  outcome = ,
+  trt_flag_col = ,
+  ext_flag_col = 
+)
+
+head(data_matrix)
+```
+
+```{r create-data-matrix-solution}
+data_matrix <- create_data_matrix(
+  diabetic,
+  outcome = c("time", "cens"),
+  trt_flag_col = "trt",
+  ext_flag_col = "ext"
+)
+```
+
+###
+
+For our understanding, let's see what the distribution of the arms is:
+
+```{r data-matrix-table, exercise = TRUE, exercise.eval = FALSE, exercise.setup = "create-data-matrix-solution"}
+table(ext = data_matrix[,'ext'], trt = data_matrix[, 'trt'])
+```
+
+## Create an outcome object
+
+###
+
+Revisiting our end goal of filling in the function `create_analysis_obj()`, we see 
+that the next argument is `outcome`:
+
+```
+create_analysis_obj(
+  data_matrix,
+  outcome,
+  borrowing,
+  treatment
+)
+```
+
+###
+
+There are three outcomes that are currently available in `psborrow2`:
+
+* Time-to-event with exponential distribution (constant hazard), created with
+`exp_surv_dist()`
+* Time-to-event with Weibull distribution and proportional hazards
+parametrization, created with `weib_ph_surv_dist()`
+* Binary endpoints with a Bernoulli distribution and using logistic regression,
+created with `logistic_bin_outcome()`
+
+### Exponential survival distribution
+
+Because we're dealing with a time-to-event endpoint (survival), let's 
+use `exp_surv_dist()` and model our outcome with an exponential survival
+distribution. First we'll look at the help for the function. Pay 
+attention to the meaning of and type of input required for `baseline_prior`. 
+Let's assume our final outcome model will leverage Bayesian Dynamic Borrowing.
+
+```{r exp-surv-dist-help,  exercise = TRUE, exercise.eval = FALSE}
+?exp_surv_dist
+```
+
+```{r which-baseline-input-meaning, echo = FALSE}
+question(" What is the meaning of `baseline_prior` in `exp_surv_dist()`?",
+         answer("The prior distribution for the ***log hazard ratio*** between ***treatment and control***"),
+         answer("The prior distribution for the ***log hazard ratio*** between ***external and internal arms***"),
+         answer("The prior distribution for the ***log hazard rate*** of the ***external control arm***", correct = TRUE),
+         allow_retry = TRUE,
+         type = "learnr_radio"
+)
+```
+
+###
+
+Nice! We'll use `Prior` objects, which are classes unique to `psborrow2` to summarize our prior information on the
+hazard rate for the external control arm. There are several constructors to make objects of class `Prior`:
+
+* `bernoulli_prior(theta)`
+* `beta_prior(alpha, beta)`
+* `cauchy_prior(mu, sigma)`
+* `exponential_prior(beta)`
+* `gamma_prior(alpha, beta)`
+* `normal_prior(mu, sigma)`
+* `poisson_prior(lambda)`
+* `uniform_prior(alpha, beta)`
+
+Right now, let's just consider a normal prior.
+
+###
+
+Suppose we have no idea what the hazard rate for the external control arm would be before seeing the data. Which of the distributions below best represents our prior information?
+
+```{r, echo = FALSE}
+plot(normal_prior(50, 10), xlim=c(-1000, 1000), ylim = c(0, .04))
+title("1: normal(mean = 50, sd = 10)")
+```
+
+```{r, echo = FALSE}
+plot(normal_prior(0, 30), xlim=c(-1000, 1000), ylim = c(0, .04))
+title("2: normal(mean = 0, sd = 30)")
+```
+
+```{r, echo = FALSE}
+plot(normal_prior(0, 1000), xlim=c(-1000, 1000), ylim = c(0, .04))
+title("3: normal(mean = 0, sd = 1000)")
+```
+
+```{r which-baseline-prior, echo = FALSE}
+question(" Which of the above distributions best represents our prior information?",
+         answer("1"),
+         answer("2"),
+         answer("3", correct = TRUE),
+         allow_retry = TRUE,
+         type = "learnr_radio"
+)
+```
+
+###
+Bingo! If we have no prior knowledge, we should make a wide prior. Look at the help article for `normal_prior()` to see how to create a wide prior:
+```{r normal-prior-help, exercise = TRUE, exercise.eval = FALSE}
+?normal_prior
+```
+
+###
+
+Now that we know how to make an uninformative prior, let's fill in all of our
+inputs into `exp_surv_dist()`. Remember to check out `diabetic` again to 
+help with column names.
+
+
+```{r exp-surv-dist, exercise = TRUE, exercise.eval = FALSE}
+# head(diabetic)
+# ?exp_surv_dist
+outcome <- exp_surv_dist(
+  time_var = ,
+  cens_var = ,
+  baseline_prior =
+)
+
+outcome
+```
+
+```{r exp-surv-dist-solution, exercise.setup = "create-data-matrix-solution"}
+outcome <- exp_surv_dist(
+  time_var = "time",
+  cens_var = "cens",
+  baseline_prior = normal_prior(0, 1000)
+)
+
+outcome
+```
+
