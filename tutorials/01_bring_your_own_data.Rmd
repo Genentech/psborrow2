@@ -34,6 +34,103 @@ diabetic$cens <- ifelse(diabetic$status == 0, 1, 0)
 
 ```
 
+```{r all-inputs, include = FALSE}
+data_matrix <- create_data_matrix(
+  diabetic,
+  outcome = c("time", "cens"),
+  trt_flag_col = "trt",
+  ext_flag_col = "ext"
+)
+
+outcome <- exp_surv_dist(
+  time_var = "time",
+  cens_var = "cens",
+  baseline_prior = normal_prior(0, 1000)
+)
+
+borrowing <- borrowing_details(
+  method = "BDB",
+  ext_flag_col = "ext",
+  tau_prior = gamma_prior(0.001, 0.001)
+)
+
+treatment <- treatment_details(
+  trt_flag_col = "trt",
+  trt_prior = normal_prior(0, 1000)
+)
+
+```
+
+```{r anls-obj, include = FALSE}
+data_matrix <- create_data_matrix(
+  diabetic,
+  outcome = c("time", "cens"),
+  trt_flag_col = "trt",
+  ext_flag_col = "ext"
+)
+
+outcome <- exp_surv_dist(
+  time_var = "time",
+  cens_var = "cens",
+  baseline_prior = normal_prior(0, 1000)
+)
+
+borrowing <- borrowing_details(
+  method = "BDB",
+  ext_flag_col = "ext",
+  tau_prior = gamma_prior(0.001, 0.001)
+)
+
+treatment <- treatment_details(
+  trt_flag_col = "trt",
+  trt_prior = normal_prior(0, 1000)
+)
+
+analysis_obj <- create_analysis_obj(
+  data_matrix = data_matrix,
+  outcome = outcome,
+  borrowing = borrowing,
+  treatment = treatment
+)
+```
+
+```{r mcmc-res-obj, include = FALSE}
+data_matrix <- create_data_matrix(
+  diabetic,
+  outcome = c("time", "cens"),
+  trt_flag_col = "trt",
+  ext_flag_col = "ext"
+)
+
+outcome <- exp_surv_dist(
+  time_var = "time",
+  cens_var = "cens",
+  baseline_prior = normal_prior(0, 1000)
+)
+
+borrowing <- borrowing_details(
+  method = "BDB",
+  ext_flag_col = "ext",
+  tau_prior = gamma_prior(0.001, 0.001)
+)
+
+treatment <- treatment_details(
+  trt_flag_col = "trt",
+  trt_prior = normal_prior(0, 1000)
+)
+
+analysis_obj <- create_analysis_obj(
+  data_matrix = data_matrix,
+  outcome = outcome,
+  borrowing = borrowing,
+  treatment = treatment
+)
+
+mcmc_obj <- mcmc_sample(
+  analysis_obj
+)
+```
+
 ## Welcome
 
 Welcome to this tutorial on how to use `psborrow2` to conduct your own hybrid control analysis using 
@@ -136,6 +233,8 @@ data_matrix <- create_data_matrix(
   trt_flag_col = "trt",
   ext_flag_col = "ext"
 )
+
+head(data_matrix)
 ```
 
 ###
@@ -246,16 +345,27 @@ Bingo! If we have no prior knowledge, we should make a wide prior. Look at the h
 ?normal_prior
 ```
 
+You can always print a prior distribution with the `plot()` function:
+```{r normal-prior-print, exercise = TRUE, exercise.eval = FALSE}
+plot(normal_prior(0, 1000))
+```
+
+
 ###
 
 Now that we know how to make an uninformative prior, let's fill in all of our
 inputs into `exp_surv_dist()`. Remember to check out `diabetic` again to 
 help with column names.
 
+```{r}
+head(diabetic)
+```
+
+```{r}
+colnames(diabetic)
+```
 
 ```{r exp-surv-dist, exercise = TRUE, exercise.eval = FALSE}
-# head(diabetic)
-# ?exp_surv_dist
 outcome <- exp_surv_dist(
   time_var = ,
   cens_var = ,
@@ -265,7 +375,7 @@ outcome <- exp_surv_dist(
 outcome
 ```
 
-```{r exp-surv-dist-solution, exercise.setup = "create-data-matrix-solution"}
+```{r exp-surv-dist-solution}
 outcome <- exp_surv_dist(
   time_var = "time",
   cens_var = "cens",
@@ -274,4 +384,258 @@ outcome <- exp_surv_dist(
 
 outcome
 ```
+
+## Create a borrowing object
+
+###
+
+Revisiting our end goal of filling in the function `create_analysis_obj()`, we see 
+that the next argument is `borrowing`:
+
+```
+create_analysis_obj(
+  data_matrix,
+  outcome,
+  borrowing,
+  treatment
+)
+```
+
+###
+
+`borrowing` is where we input the type of borrowing we would like to conduct. 
+`psborrow2` supports three different borrowing methods which are specified in
+the `method` argument of `borrowing_details()`. Let's look at the help page
+to get a summary of these options
+
+```{r borrowing-details-help, exercise = TRUE, exercise.eval = FALSE}
+?borrowing_details
+```
+
+As you can see from the help sections, there are three types of borrowing:
+* "No borrowing": This is the internal trial comparison without any external
+data
+* "Full borrowing": This is pooling of the external and internal control arms
+* "BDB": Bayesian dynamic borrowing
+
+For this example, we're only interested in "BDB".
+
+### 
+
+Importantly, if "BDB" is selected as the borrowing type, then an argument
+`tau_prior` must be provided to `borrowing_details()`. What is the best
+description of `tau_prior`:
+
+```{r what-is-tau-prior, echo = FALSE}
+question(" What is the best description of the `tau_prior` argument?",
+         answer("The hyperprior distribution for the precision parameter commonly referred to as the commensurability parameter", correct = TRUE),
+         answer("The hyperprior distribution for the exponential survival ancillary scale parameter", message = "The exponential distribution has no ancillary parameters"),
+         answer("The prior distribution for the log hazard ratio comparing treated and untreated patients", message = "This will be specified later"),
+         allow_retry = TRUE,
+         type = "learnr_radio"
+)
+```
+
+### 
+
+Which hyperprior distributions for commensurability parameter `tau` below are valid? Remember that `tau` is a precision parameter guiding the commensurability between external
+and internal arms -- $tau = 1 / variance$.
+
+```{r, echo = FALSE}
+plot(normal_prior(0, 1000), xlim=c(-1000, 1000), ylim = c(0, .0001))
+title("1: normal(mean = 0, sd = 1000)")
+```
+
+```{r, echo = FALSE}
+plot(gamma_prior(0.001, 0.001), xlim=c(-1000, 1000), ylim = c(0, .0001))
+title("2: gamma(alpha = 0.001, beta = 0.001)")
+```
+
+```{r, echo = FALSE}
+plot(exponential_prior(0.001), xlim=c(-1000, 1000), ylim = c(0, .0001))
+title("3: exponential_prior(beta = 0.001)")
+```
+
+```{r which-tau, echo = FALSE}
+question(" Which of the above distributions is appropriate for `tau`?",
+         answer("1", message = "Because a tau is a precision parameter, it must be >0. Some density of this normal prior is <=0."),
+         answer("2", correct = TRUE),
+         answer("3", correct = TRUE),
+         allow_retry = TRUE,
+         type = "learnr_checkbox"
+)
+```
+
+###
+
+Correct! The hyperprior on `tau` must be >0. Now that we have a good idea of what priors to specify for `tau`, let's consider the implications of choosing different `tau` parameters. Suppose we wanted to encourage borrowing. That is, we thought that the external control arm hazard rate corresponded to the internal control arm hazard rate with great precision. We would presumably
+want greater values of `tau`. Which of the below prior distributions on `tau` is more aggressive and will lead to greater borrowing?
+
+```{r, echo = FALSE}
+plot(gamma_prior(0.001, 0.001), xlim=c(0, 1000), ylim = c(0, .0001))
+title("1: gamma(0.001, 0.001)")
+```
+
+```{r, echo = FALSE}
+plot(gamma_prior(1, 0.001), xlim=c(0, 1000), ylim = c(0, .0001))
+title("2: gamma(1, 0.001)")
+```
+
+```{r which-tau-more-aggressive, echo = FALSE}
+question(" Which of the above distributions will lead to more borrowing of the external control data (eg is aggressive)?",
+         answer("1", message = "Not quite! Look at where there is more density at greater values of x."),
+         answer("2", correct = TRUE),
+         allow_retry = TRUE,
+         type = "learnr_radio"
+)
+```
+
+###
+
+Now that we understand what values of `tau_prior` make sense in the context of our study, let's create a 
+`borrowing` object with a conservative prior on `tau`.
+
+```{r}
+head(diabetic)
+```
+
+```{r}
+colnames(diabetic)
+```
+
+```{r borrowing-details, exercise = TRUE, exercise.eval = FALSE}
+borrowing <- borrowing_details(
+  method = ,
+  ext_flag_col = ,
+  tau_prior = 
+)
+
+borrowing
+```
+
+```{r borrowing-details-solution}
+borrowing <- borrowing_details(
+  method = "BDB",
+  ext_flag_col = "ext",
+  tau_prior = gamma_prior(0.001, 0.001)
+)
+
+borrowing
+```
+
+## Create a treatment object
+
+###
+
+Revisiting our end goal of filling in the function `create_analysis_obj()`, we see 
+that the final argument is `treatment`:
+
+```
+create_analysis_obj(
+  data_matrix,
+  outcome,
+  borrowing,
+  treatment
+)
+```
+
+###
+
+`treatment` is where we input information on the column name in `data_matrix` for the
+treatment and specify the prior on the effect estimate, `trt_prior`.
+Let's look at the help page of the construtor `treatment_details()` to get a summary of the 
+inputs:
+
+```{r treatment-details-help, exercise = TRUE, exercise.eval = FALSE}
+?treatment_details
+```
+
+### 
+
+What does the `trt_prior` argument to the function `treatment_details` refer to?
+
+```{r which-trt-prior-meaning, echo = FALSE}
+question(" What is the meaning of `trt_prior` in `treatment_details()`?",
+         answer("The prior distribution for the ***log hazard ratio*** between ***treatment and control***", correct = TRUE),
+         answer("The prior distribution for the ***log hazard ratio*** between ***external and internal arms***"),
+         answer("The prior distribution for the ***log hazard rate*** of the ***external control arm***"),
+         allow_retry = TRUE,
+         type = "learnr_radio"
+)
+```
+
+### 
+
+Let's fill in `treatment_details`, as the remaining arguments are straightforward. As with previous functions, let's
+also print details of our data matrix as reminders. For our study, let's make an uninformative prior on the treatment
+log hazard ratio, `normal(0, 1000)`.
+
+```{r}
+head(diabetic)
+```
+
+```{r}
+colnames(diabetic)
+```
+
+```{r treatment-details, exercise = TRUE, exercise.eval = FALSE}
+treatment <- treatment_details(
+  trt_flag_col = ,
+  trt_prior = 
+)
+
+treatment
+```
+
+```{r treatment-details-solution}
+treatment <- treatment_details(
+  trt_flag_col = "trt",
+  trt_prior = normal_prior(0, 1000)
+)
+
+treatment
+```
+
+## Putting it all together and compiling a Stan model
+
+Now that we have all of the arguments to `create_analysis_obj()`, let's go ahead and 
+make the object. You may have to visit other modules to remind yourself of the object names:
+
+```{r analysis-obj, exercise = TRUE, exercise.eval = FALSE, exercise.setup = "all-inputs"}
+analysis_obj <- create_analysis_obj(
+)
+analysis_obj
+```
+
+```{r analysis-obj-solution, exercise.setup = "all-inputs"}
+analysis_obj <- create_analysis_obj(
+  data_matrix = data_matrix,
+  outcome = outcome,
+  borrowing = borrowing,
+  treatment = treatment
+)
+analysis_obj
+```
+
+## Sampling from the `Analysis` object
+
+Congratulations! You've just compiled a Stan MCMC sampler for a Bayesian Dynamic Borrowing analysis. To sample
+from this object, use the function `mcmc_sample(analysis_obj)`. We can explore the arguments later, for now let's
+just accept the defaults and pass the only argument we need, the `Analysis` object named `analysis_obj`.
+
+This may take a minute or two!
+
+```{r mcmc-sample, exercise = TRUE, exercise.eval = FALSE, exercise.setup = "anls-obj"}
+mcmc_obj <- mcmc_sample(
+)
+mcmc_obj
+```
+
+```{r mcmc-sample-solution, exercise.setup = "anls-obj"}
+mcmc_obj <- mcmc_sample(
+  analysis_obj
+)
+mcmc_obj
+```
+
 
