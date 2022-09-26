@@ -1,4 +1,4 @@
-#' What is the bias for a given model (using the median estimate)
+#' What is the bias for a given model
 #'
 #' @param draws draws_array Object of class `draws` from
 #' `CmdStanMCMC$draws()`.
@@ -76,7 +76,7 @@
 #' )
 sim_estimate_bias <- function(draws,
                               true_effect) {
-  summ_draws <- posterior::summarise_draws(draws, ~ quantile(.x, probs = 0.5))
-  med_effect <- summ_draws[summ_draws$variable %in% c("HR_trt", "OR_trt"), 2][[1]]
-  return(true_effect - med_effect)
+  effect_index <- dimnames(draws)$variable %in% c("HR_trt", "OR_trt")
+  bias <- mean(draws[, , effect_index] - true_effect)
+  return(bias)
 }

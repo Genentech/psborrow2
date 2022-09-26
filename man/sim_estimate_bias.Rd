@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_estimate_bias.R
 \name{sim_estimate_bias}
 \alias{sim_estimate_bias}
-\title{What is the bias for a given model (using the median estimate)}
+\title{What is the bias for a given model}
 \usage{
 sim_estimate_bias(draws, true_effect)
 }
@@ -16,7 +16,7 @@ sim_estimate_bias(draws, true_effect)
 the bias of the sample
 }
 \description{
-What is the bias for a given model (using the median estimate)
+What is the bias for a given model
 }
 \details{
 Bias will be calculated as (true_effect - median_estimated_effect)
