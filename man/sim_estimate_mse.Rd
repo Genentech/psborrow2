@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_estimate_mse.R
 \name{sim_estimate_mse}
 \alias{sim_estimate_mse}
-\title{What is the MSE for a given model (using the median estimate)}
+\title{What is the MSE for a given model}
 \usage{
 sim_estimate_mse(draws, true_effect)
 }
@@ -16,7 +16,7 @@ sim_estimate_mse(draws, true_effect)
 the mean squared error (MSE) of the sample
 }
 \description{
-What is the MSE for a given model (using the median estimate)
+What is the MSE for a given model
 }
 \details{
 MSE will be calculated as (true_effect - median_estimated_effect) ^ 2
