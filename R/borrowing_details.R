@@ -87,6 +87,7 @@ borrowing_details <- function(method,
   if (method == "BDB") {
     if (is.null(tau_prior)) stop("When method='BDB', tau_prior must be specified")
     assert_class(tau_prior, "Prior")
+    if (!parse_constraint(tau_prior@constraint)["lower"] >= 0) stop("tau distribution must be bounded >=0")
   }
 
   .borrowing_class(
