@@ -74,6 +74,7 @@ x <- create_simulation_obj(
   treatment = treatment_details("trt", normal_prior(0, 1000))
 )
 
+\dontrun{
 i <- 1
 j <- 1
 anls_obj <- x@analysis_obj_list[[i]][[j]]
@@ -84,4 +85,5 @@ psborrow2:::sim_is_null_effect_covered(
   draws,
   c(0.025, 0.975)
 )
+}
 }

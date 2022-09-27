@@ -62,6 +62,7 @@
 #'   treatment = treatment_details("trt", normal_prior(0, 1000))
 #' )
 #'
+#' \dontrun{
 #' i <- 1
 #' j <- 1
 #' true_effect <- x@guide[i, x@data_matrix_list@effect]
@@ -74,6 +75,7 @@
 #'   true_effect,
 #'   c(0.025, 0.975)
 #' )
+#' }
 sim_is_true_effect_covered <- function(draws,
                                        true_effect,
                                        posterior_quantiles) {

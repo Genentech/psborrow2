@@ -76,6 +76,7 @@ x <- create_simulation_obj(
   treatment = treatment_details("trt", normal_prior(0, 1000))
 )
 
+\dontrun{
 i <- 1
 j <- 1
 true_effect <- x@guide[i, x@data_matrix_list@effect]
@@ -88,4 +89,5 @@ psborrow2:::sim_is_true_effect_covered(
   true_effect,
   c(0.025, 0.975)
 )
+}
 }

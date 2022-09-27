@@ -61,6 +61,7 @@
 #'   treatment = treatment_details("trt", normal_prior(0, 1000))
 #' )
 #'
+#' \dontrun{
 #' i <- 1
 #' j <- 1
 #' anls_obj <- x@analysis_obj_list[[i]][[j]]
@@ -71,6 +72,7 @@
 #'   draws,
 #'   c(0.025, 0.975)
 #' )
+#' }
 sim_is_null_effect_covered <- function(draws,
                                        posterior_quantiles) {
   summ_draws <- posterior::summarise_draws(draws, ~ quantile(.x, probs = posterior_quantiles))
