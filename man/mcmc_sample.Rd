@@ -4,7 +4,6 @@
 \alias{mcmc_sample}
 \alias{mcmc_sample,ANY-method}
 \alias{mcmc_sample,Analysis-method}
-\alias{mcmc_sample,Simulation-method}
 \title{Sample from Stan model}
 \usage{
 mcmc_sample(x, ...)
@@ -19,17 +18,6 @@ mcmc_sample(x, ...)
   verbose = FALSE,
   ...
 )
-
-\S4method{mcmc_sample}{Simulation}(
-  x,
-  posterior_quantiles = c(0.025, 0.975),
-  iter_warmup = 1000L,
-  iter_sampling = 10000L,
-  chains = 4L,
-  verbose = FALSE,
-  keep_cmd_stan_models = FALSE,
-  ...
-)
 }
 \arguments{
 \item{x}{object to sample, such as \code{Analysis} (created with \code{\link[=create_analysis_obj]{create_analysis_obj()}}) or \code{Simulation}.}
@@ -38,45 +26,23 @@ mcmc_sample(x, ...)
 \code{cmdstanr} Stan model.
 See https://mc-stan.org/cmdstanr/reference/model-method-sample.html}
 
-\item{iter_warmup}{integer. The number of warm up iterations to run per chain.
+\item{iter_warmup}{The number of warm up iterations to run per chain.
 The default is 1000.}
 
-\item{iter_sampling}{integer. The number of post-warm up iterations to run per chain.
+\item{iter_sampling}{The number of post-warm up iterations to run per chain.
 The default is 10000.}
 
-\item{chains}{integer. The number of Markov chains to run. The default is 4.}
+\item{chains}{The number of Markov chains to run. The default is 4.}
 
 \item{verbose}{logical. Whether to print sampler updates (\code{TRUE}) or not
 (\code{FALSE})}
-
-\item{posterior_quantiles}{numeric vector of length two.
-The posterior quantiles used for summarizing simulation results. The
-default is \code{c(0.025, 0.975)} See details.}
-
-\item{keep_cmd_stan_models}{logical. Whether to keep the
-\code{CmdStanModel} objects from the \code{mcmc_sampler} (\code{TRUE},
-discouraged in most scenarios) or not (\code{FALSE}). The default is \code{FALSE}.}
 }
 \value{
 An object of class \code{CmdStanMCMC}
-
-An object of class \code{MCMCSimulationResult}
 }
 \description{
 Method to sample from compiled Stan model and
 return a \code{CmdStanMCMC} object with draws.
-}
-\details{
-\subsection{Simulation objects}{
-
-This function takes draws from an MCMC sampler and summarizes
-results. Several metrics are summarized:
-
-\itemize{
-\item{"Type 1 error"}{ This is the probability that the posterior
-treatment effect distribution excludes the true value.}
-}
-}
 }
 \examples{
 ## Analysis objects
@@ -102,59 +68,4 @@ anls <- create_analysis_obj(
 
 mcmc_results <- mcmc_sample(anls)
 
-## Simulation objects
-base_mat <- matrix(
-  c(
-    rep(0, 200), rep(0, 200), rep(1, 200),
-    rep(1, 200), rep(0, 200), rep(0, 200),
-    rep(0, 600)
-  ),
-  ncol = 3,
-  dimnames = list(NULL, c("ext", "trt", "driftOR"))
-)
-
-add_binary_endpoint <- function(odds_ratio,
-                                base_matrix = base_mat) {
-  linear_predictor <- base_matrix[, "trt"] * log(odds_ratio)
-  prob <- 1 / (1 + exp(-linear_predictor))
-
-  bin_endpoint <- rbinom(
-    NROW(base_matrix),
-    1,
-    prob
-  )
-
-  cbind(base_matrix, matrix(bin_endpoint, ncol = 1, dimnames = list(NULL, "ep")))
-}
-
-data_list <- list(
-  list(add_binary_endpoint(1.5), add_binary_endpoint(1.5)),
-  list(add_binary_endpoint(2.5), add_binary_endpoint(2.5))
-)
-
-guide <- data.frame(
-  trueOR = c(1.5, 2.5),
-  driftOR = c(1.0, 1.0),
-  index = 1:2
-)
-
-sdl <- sim_data_list(
-  data_list = data_list,
-  guide = guide,
-  effect = "trueOR",
-  drift = "driftOR",
-  index = "index"
-)
-
-sim_object <- create_simulation_obj(
-  data_matrix_list = sdl,
-  outcome = logistic_bin_outcome("ep", normal_prior(0, 1000)),
-  borrowing = sim_borrowing_list(list(
-    full_borrowing = borrowing_details("Full borrowing", "ext"),
-    bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
-  )),
-  treatment = treatment_details("trt", normal_prior(0, 1000))
-)
-
-mcmc_sample(sim_object, chains = 1, iter_warmup = 500L, iter_sampling = 1000L)
 }
