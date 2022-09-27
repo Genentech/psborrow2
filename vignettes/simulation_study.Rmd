@@ -62,8 +62,8 @@ requires a list of lists of matrices. Each list of matrices should represent
 a different data generation scenario, such as our difference true HR.
 Therefore, let's create an object `data_list` that is length two:
 one list for a HR of 0.6, and one for a HR of 0.8. Within
-these lists, we can provide any number of matrices, but we'll only do
-two for the sake of ease.
+these lists, we can provide any number of matrices. We'll
+do 10 in this example.
 
 ```{r}
 library(simsurv)
@@ -105,8 +105,8 @@ set.seed(112233)
 
 # Create data list
 data_list <- list(
-  list(sim_single_matrix(true_hr = 0.6), sim_single_matrix(true_hr = 0.6)),
-  list(sim_single_matrix(true_hr = 0.8), sim_single_matrix(true_hr = 0.8))
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6)),
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.8))
 )
 ```
 
@@ -263,4 +263,33 @@ simulated with `show_guide()`:
 
 ```{r}
 show_guide(sim_obj)
+```
+
+## `mcmc_sample()`
+
+Now that we've created a simulation object, we're ready to call `mcmc_sample()`
+and generate draws for our model. For now, we will stick with the default inputs:
+
+
+```{r, include = FALSE}
+st <- Sys.time()
+results <- mcmc_sample(sim_obj,
+  seed = 112233
+)
+en <- Sys.time()
+```
+
+```{r, eval = FALSE}
+results <- mcmc_sample(sim_obj,
+  seed = 112233
+)
+```
+
+This evaluation took about `r format(round(as.numeric(difftime(en, st, units = "min")), 1), nsmall=1)`
+minutes. Let's look at the performance of our simulation study by extracting the data.frame
+that summarizes results, `get_results()`:
+
+```{r}
+results_df <- get_results(results)
+print(results_df)
 ```
