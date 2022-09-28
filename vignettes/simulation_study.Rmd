@@ -5,6 +5,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
+    code_folding: show
 vignette: >
   %\VignetteIndexEntry{4. Conduct a simulation study}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,7 +15,11 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#"
+  comment = "#",
+  fig.width = 5,
+  fig.height = 3,
+  dpi = 120,
+  fig.align = "center"
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
@@ -63,7 +68,7 @@ a different data generation scenario, such as our difference true HR.
 Therefore, let's create an object `data_list` that is length two:
 one list for a HR of 0.6, and one for a HR of 0.8. Within
 these lists, we can provide any number of matrices. We'll
-do 10 in this example.
+do 20 in this example.
 
 ```{r}
 library(simsurv)
@@ -105,19 +110,13 @@ set.seed(112233)
 
 # Create data list
 data_list <- list(
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.8))
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.8))
 )
 ```
 
-As you can see, `data_list` is a list of list of matrices, the correct format
-for inputting into `sim_data_list()`:
-
-```{r}
-str(data_list)
-```
-
-At the lowest level are matrices of simulated data:
+`data_list` is a list of list of matrices, the correct format
+for inputting into `sim_data_list()`. At the lowest level are matrices of simulated data:
 ```{r}
 head(data_list[[1]][[1]])
 ```
@@ -268,19 +267,38 @@ show_guide(sim_obj)
 ## `mcmc_sample()`
 
 Now that we've created a simulation object, we're ready to call `mcmc_sample()`
-and generate draws for our model. For now, we will stick with the default inputs:
+and generate draws for our model. For now, we will stick with the default inputs.
 
+***Note*** unlike an analysis on a single dataset, `mcmc_sample()` does not
+return a `CmdStanModel` object when applied to a simulation study object.
+Instead, it returns a class unique to simulation study results:
+`MCMCSimulationResult`.
+
+***Note*** there is one important additional argument to `mcmc_sample()` for
+simulation objects: `posterior_quantiles`. This numeric vector of length 2
+specifies the quantiles for null coverage and true coverage. For instance,
+95% credible coverage would be estimated with
+`posterior_quantiles = c(0.025, 0.975)`, the default argument.
 
 ```{r, include = FALSE}
 st <- Sys.time()
-results <- mcmc_sample(sim_obj,
+results <- mcmc_sample(
+  sim_obj,
+  posterior_quantiles = c(0.025, 0.975),
+  iter_warmup = 400,
+  iter_sampling = 1000,
+  chains = 1L,
   seed = 112233
 )
 en <- Sys.time()
 ```
 
 ```{r, eval = FALSE}
-results <- mcmc_sample(sim_obj,
+results <- mcmc_sample(
+  sim_obj,
+  iter_warmup = 400,
+  iter_sampling = 1000,
+  chains = 1L,
   seed = 112233
 )
 ```
@@ -293,3 +311,103 @@ that summarizes results, `get_results()`:
 results_df <- get_results(results)
 print(results_df)
 ```
+
+Let's quickly visualize the results using `ggplot2`:
+
+## Summary of results
+
+As an example of the types of visual summaries you can provide on simulation
+study results, let's explore performance of several different metrics:
+
+### Bias
+
+```{r class.source = "fold-hide"}
+library(ggplot2)
+ggplot(results_df) +
+  geom_tile(aes(x = borrowing_scenario, y = factor(trueHR), fill = bias_mean)) +
+  labs(
+    fill = "Bias (mean)",
+    x = "Borrowing type",
+    y = "True HR"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+On the basis of these results, it loos like bias was higher, on average,
+when the true hazard ratio was greater. This makes sense.
+
+### MSE
+
+```{r class.source = "fold-hide"}
+ggplot(results_df) +
+  geom_tile(aes(x = borrowing_scenario, y = factor(trueHR), fill = mse_mean)) +
+  labs(
+    fill = "MSE (mean)",
+    x = "Borrowing type",
+    y = "True HR"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+The same is true of MSE. The true hazard ratio of 0.6 had lower MSE on
+average than a hazard ratio of 0.8.
+
+### Null coverage
+
+Null coverage refers to the proportion of specified credible intervals
+(in this case, 95% credible intervals) that contain the null effect (1.0).
+When the true hazard ratio is not 1.0, this refers to the type II error proportion.
+
+```{r class.source = "fold-hide"}
+ggplot(results_df) +
+  geom_bar(aes(
+    x = borrowing_scenario,
+    y = null_coverage,
+    fill = factor(trueHR)
+  ),
+  stat = "identity",
+  position = "dodge"
+  ) +
+  labs(
+    x = "Borrowing type",
+    fill = "True HR",
+    y = "Type II error"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+The type II error proportion is much higher when the true hazard ratio is 0.8
+compared to 0.6, as we might anticipate.
+
+### True coverage
+
+True coverage refers to the proportion of analyses simulations that contain
+the effect estimate of interest.
+
+```{r class.source = "fold-hide"}
+ggplot(results_df) +
+  geom_bar(aes(
+    x = borrowing_scenario,
+    y = true_coverage,
+    fill = factor(trueHR)
+  ),
+  stat = "identity",
+  position = "dodge"
+  ) +
+  labs(
+    x = "Borrowing type",
+    fill = "True HR",
+    y = "Coverage of true effect"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+It looks like almost all of our analyses captured the effect estimate of interest.
