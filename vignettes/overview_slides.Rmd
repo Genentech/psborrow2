@@ -14,7 +14,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = ">"
 )
 ```
 
@@ -29,8 +29,8 @@ slides slide {
 ## Presentation flow
 
 - Bayesian Dynamic Borrowing
-- History of `psborrow` and `psborrow2`
-- Overview of package structure
+- History of `psborrow2`
+- Overview of package
 - Demonstration of a single dataset analysis
 - Demonstration of a simulation study analysis
 
@@ -47,6 +47,7 @@ among others, the below:
 - Herb Pang
 - Matthew Secrest
 - Jiawen Zhu
+
 
 # Bayesian Dynamic Borrowing
 
@@ -228,6 +229,73 @@ tab_style(
 )
 ```
 
+## The name `psborrow2`
 
+The focus of `psborrow` included propensity score methods as well as 
+dynamic borrowing methods, hence the name PS (propensity score) + borrow (
+dynamic borrowing). In `psborrow2`, propensity score methods can be incorporated
+by writing helper functions, but are not provided out-of-the-box.
 
+# Overview of package
+
+## Package objectives
+
+`psborrow2` has two objectives:
+
+### <b><u>Facilitate BDB analyses</u></b>
+`psborrow2` has a user-friendly interface for applying
+analyses and handles the computationally-difficult MCMC sampling on behalf of the user.
+
+### <b><u>Facilitate simulation studies of BDB</u></b>
+`psborrow2` can be used to compare different borrowing parameters 
+(e.g. full borrowing, no borrowing, BDB) and other trial and BDB characteristics in a unified way 
+to inform trial design and analysis.
+
+## Conducting BDB analyses in `psborrow2`
+
+When analyzing data, the goal is to create an object of class `Analysis`
+through the helper function `create_analysis_obj()`.
+
+<center>
+![](psborrow2_anls_schematic.jpg){width=50%}
+</center>
+
+## Conducting simulation studies in `psborrow2`
+
+When conducting a simulation study, the goal is to create an object of 
+class `Simulation` through the helpder function `create_simulation_obj()`.
+
+<center>
+![](psborrow2_sim_schematic.jpg){width=50%}
+</center>
+
+# Demonstration of a single BDB analysis
+
+## Example data
+
+`psborrow2` has example data we can use. Let's load the package and 
+explore `example_matrix`
+
+```{r message = FALSE}
+library(psborrow2)
+head(example_matrix)
+```
+
+## 
+
+The flags in this data.frame are explained in `?example_matrix`. For now,
+we need to understand that `trt` is a flag denoting receipt of the 
+experimental treatment (`trt = 1L`) or the control therapy (`trt = 0L`). 
+`ext` is a flag for external data status, `1L` for external data or `0L` for
+the internal trial.
+
+```{r}
+table(
+  trt = example_matrix[,'trt'],
+  ext = example_matrix[,'ext']
+)
+```
+
+It looks like we have 200 patients in our internal control,
+180 in our internal experimental, and 344 in our external control.
 
