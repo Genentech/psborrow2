@@ -92,6 +92,7 @@ Collate:
     'simulation_class.R'
     'create_simulation_obj.R'
     'data.R'
+    'example_objects.R'
     'gamma_prior.R'
     'helpers.R'
     'make_analysis_object_list.R'
