@@ -1,0 +1,77 @@
+---
+title: "psborrow2 Overview"
+subtitle: "Matt Secrest, Isaac Gravestock"
+output: 
+  rmarkdown::ioslides_presentation:
+    widescreen: true
+vignette: >
+  %\VignetteIndexEntry{5. Walkthrough overview slides}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introducing `psborrow2`
+
+## Presentation flow
+
+- Bayesian Dynamic Borrowing
+- History of `psborrow` and `psborrow2`
+- Overview of package structure
+- Demonstration of a single dataset analysis
+- Demonstration of a simulation study analysis
+
+## Acknowledgements
+
+`psborrow2` is the culmination of work from many individuals within 
+industry, academia, and the FDA. The authors would like to thank,
+among others, the below:
+
+- Daniel Sabanes Bove
+- Isaac Gravestock
+- Craig Gower-Page
+- Yichen Lu
+- Herb Pang
+- Matthew Secrest
+- Jiawen Zhu
+
+# Bayesian Dynamic Borrowing
+
+## Backround
+
+### <u><b>Challenge</b></u>
+Difficult to recruit patients in the control arm
+
+- Rare disease
+- Pediatric condition
+- Oncology
+
+### <u><b>Opportunity</b></u>
+Abundant data available on control arm
+
+- Reduce randomization to control arm
+- Improve statistical power of randomized trial
+
+# In the evening
+
+## Dinner
+
+- Eat spaghetti
+- Drink wine
+
+---
+
+```{r, cars, fig.cap="A scatterplot.", echo=FALSE}
+plot(cars)
+```
+
+## Going to sleep
+
+- Get in bed
+- Count sheep
