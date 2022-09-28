@@ -4,6 +4,7 @@ subtitle: "Matt Secrest, Isaac Gravestock"
 output: 
   rmarkdown::ioslides_presentation:
     widescreen: true
+    transition: 0.1
 vignette: >
   %\VignetteIndexEntry{5. Walkthrough overview slides}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,6 +16,12 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+```
+
+```{css, echo=FALSE}
+slides slide { 
+  background-image: none; 
+}
 ```
 
 # Introducing `psborrow2`
@@ -58,20 +65,169 @@ Abundant data available on control arm
 - Reduce randomization to control arm
 - Improve statistical power of randomized trial
 
-# In the evening
+## Hybrid controls
 
-## Dinner
+Hybrid control studies are those in which external data (i.e., from outside
+the trial of consideration) are used to supplement the control arm of a
+randomized, controlled trial (RCT).
 
-- Eat spaghetti
-- Drink wine
+<br>
 
----
+<center>
+![](hc_schematic.jpg)
+</center>
 
-```{r, cars, fig.cap="A scatterplot.", echo=FALSE}
-plot(cars)
+## Types of borrowing
+
+Consider the scenario just described. How best should we incorporate the knowledge we
+have on the external control arm?
+
+<br>
+
+```{r echo = FALSE}
+library(gt)
+types_of_borrowing <- data.frame(
+   bt = c("No borrowing", "Full borrowing", "Bayesian dynamic borrowing (BDB)"),
+  desc = c(
+    "Only include the internal RCT date (i.e., ignorin external controls)",
+    "Pool external and internal controls",
+    "Borrowing external controls to the extent that the outcomes are similar"
+  )
+)
+colnames(types_of_borrowing) <- c("Borrowing type", "Description")
+tab_style(
+  gt(types_of_borrowing),
+  locations = cells_column_labels(columns = everything()),
+  style = list(
+    cell_text(weight = "bold")
+  )
+)
 ```
 
-## Going to sleep
+## Standard Bayesian analysis
 
-- Get in bed
-- Count sheep
+Consider a standard Bayesian model with survival as an endpoint without external data.
+We will assume two parameters of interest:
+
+- $\rho_{00}$, the hazard rate for the internal control
+- $\rho_{10}$, the hazard rate for the internal experimental
+
+The hazard rate would be: 
+$$
+\theta = \rho_{10} / \rho_{00}
+$$
+
+And the posterior distribution would be: 
+
+$$
+P(\theta | X) \propto P(X | \theta) \times P(\theta)
+$$
+
+## Bayesian Dynamic Borrowing
+
+In BDB, we introduce two more parameters: the hazard rate of the 
+external cohort, $\rho_{01}$ and the precision parameter, $\tau$,
+also known as the "commensurability parameter".
+
+Information from the external control, $\rho_{01}$ is borrowed
+as a prior on $\rho_{00}$ through a hierarchical model. That is:
+
+$$
+\rho_{00} | \rho_{01} \sim Normal(\rho_{01}, 1 / \tau)
+$$
+
+Therefore:
+
+$$
+P(\theta, \tau | X) \propto P(X | \theta, \tau) \times P(\theta | \tau) \times P(\tau)
+$$
+
+## Impact of $\tau$
+
+The commensurability parameter dictates the extent of borrowing of the external
+control arm. 
+
+At greater values of $\tau$, more borrowing is performed. 
+As $\tau$ approaches infinity, the prior distribution on $\rho_{00}$ effectively
+becomes:
+
+$$
+\rho_{00} \sim \rho_{01} \approxeq Normal(\rho_{01}, \infty)
+$$
+
+The commensurability parameter is estimated by the model but can be influenced
+by the choice of prior.
+
+## Choice of prior for $\tau$
+
+Consider two prior distributions for $\tau$:
+
+```{r echo = FALSE, fig.align="center", fig.dim = c(8,4)}
+library(ggplot2)
+uninf_gamma <- vapply(seq(1, 10000, 1), dgamma, shape = .01, rate = .001, FUN.VALUE = numeric(1))
+inf_gamma <- vapply(seq(1, 10000, 1), dgamma, shape = 1, rate = 0.001, FUN.VALUE = numeric(1))
+gamma_dens_df <- data.frame(
+  xval = c(seq(1, 10000, 1), seq(1, 10000, 1)),
+  dens = c(uninf_gamma, inf_gamma),
+  type = c(rep("gamma(0.01, 0.001) -> Less borrowing", length(uninf_gamma)),
+           rep("gamma(1, 0.001) -> More borrowing", length(inf_gamma)))
+)
+gamma_dens_df$type <- factor(gamma_dens_df$type, levels = c("gamma(1, 0.001) -> More borrowing",
+                                                            "gamma(0.01, 0.001) -> Less borrowing"))
+ggplot(gamma_dens_df)+
+  geom_density(aes(x = xval,
+                   y = dens, 
+                   fill = type),
+               stat = 'identity')+
+  scale_x_continuous(limits = c(0, 10000)) +
+  scale_y_continuous(limits = c(0, .0010)) + 
+  labs(
+    x = "tau",
+    y = "density",
+    fill = "prior"
+  ) + 
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+It is clear that the $gamma(1, .001)$ distribution has higher density at
+higher levels of $\tau$ and will therefore induce more borrowing.
+
+# History of `psborrow2`
+
+## `psborrow2` timeline
+
+`psborrow2` is the successor to [`psborrow`](https://cran.r-project.org/web/packages/psborrow/index.html),
+an R package for primarily facilitating simulation studies to aid trial
+design and understand the benefits of innovative methods such as Bayesian
+Dynamic Borrowing on operating characteristics.
+
+```{r echo = FALSE}
+library(gt)
+psborrow2_history <- data.frame(
+  date = c("2019", "Q2 2021", "Q3 2021", "2021", "Q1 2022", "May 2022", "Jul 2022", "Sept 2022"),
+  desc = c(
+    "psborrow development started",
+    "CRAN v0.1.0 published",
+    "Biopharmaceutical Report Article to introduce psborrow published",
+    "Initial user feedback received from the interial POC study and the FDA CID pilot project",
+    "We start a collaboration with Roche statistical engineering team to productionize the package",
+    "psborrow v0.2.0 published (bug fixed, documentation improved) on CRAN",
+    "psborrow2 development started (faster, improved UI, tests, flexibility, more outcomes)",
+    "psborrow2 package made public"
+  )
+)
+colnames(psborrow2_history) <- c("Date", "Event")
+tab_style(
+  gt(psborrow2_history),
+  locations = cells_column_labels(columns = everything()),
+  style = list(
+    cell_text(weight = "bold")
+  )
+)
+```
+
+
+
+
