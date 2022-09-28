@@ -4,7 +4,7 @@
 \alias{exp_surv_dist}
 \title{Exponential survival distribution}
 \usage{
-exp_surv_dist(time_var, cens_var, baseline_prior)
+exp_surv_dist(time_var, cens_var, baseline_prior, weight_var = "")
 }
 \arguments{
 \item{time_var}{character. Name of time variable column in model matrix}

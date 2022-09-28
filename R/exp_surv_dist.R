@@ -69,13 +69,26 @@
 #'   cens_var = "cens",
 #'   baseline_prior = normal_prior(0, 1000)
 #' )
-exp_surv_dist <- function(time_var, cens_var, baseline_prior) {
+exp_surv_dist <- function(time_var, cens_var, baseline_prior, weight_var = "") {
   assert_string(time_var)
   assert_string(cens_var)
+  assert_string(weight_var)
   assert_class(baseline_prior, "Prior")
   .exp_surv_dist(
     time_var = time_var,
     cens_var = cens_var,
-    baseline_prior = baseline_prior
+    baseline_prior = baseline_prior,
+    weight_var = weight_var,
+    likelihood_stan_code =
+      h_glue("
+         for (i in 1:N) {
+            if (cens[i] == 1) {
+               target += exponential_lccdf(time[i] | elp[i] ){{weight}};
+            } else {
+               target += exponential_lpdf(time[i] | elp[i] ){{weight}};
+            }
+         }",
+        weight = if (weight_var != "") "* weight[i]" else ""
+      )
   )
 }

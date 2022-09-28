@@ -109,6 +109,17 @@ weib_ph_surv_dist <- function(time_var,
     param_priors = list(
       shape_weibull = shape_prior
     ),
-    baseline_prior = baseline_prior
+    baseline_prior = baseline_prior,
+    likelihood_stan_code = h_glue(
+      "
+       for (i in 1:N) {
+          if (cens[i] == 1) {
+             target += weibull_ph_lccdf(time[i] | shape_weibull, elp[i] ){{weight}};
+          } else {
+             target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i] ){{weight}};
+          }
+       }",
+      weight = if (weight_var != "") "* weight[i]" else ""
+    )
   )
 }

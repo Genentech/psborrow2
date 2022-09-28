@@ -60,6 +60,12 @@ make_model_string_data <- function(analysis_obj) {
       vector[K] U_beta;")
   }
 
+  if (analysis_obj@outcome@weight_var != "") {
+    data_string <- h_glue("
+      {{data_string}}
+      vector[N] weight;")
+  }
+
   ### Close block
   data_string <- h_glue("{{data_string}} }")
 
