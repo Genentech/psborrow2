@@ -65,10 +65,9 @@ HR of 0.8.
 Looking at the arguments to `sim_data_list()`, the first argument, `data_list`
 requires a list of lists of matrices. Each list of matrices should represent
 a different data generation scenario, such as our difference true HR.
-Therefore, let's create an object `data_list` that is length two:
-one list for a HR of 0.6, and one for a HR of 0.8. Within
-these lists, we can provide any number of matrices. We'll
-do 20 in this example.
+Therefore, let's create an object `data_list` that is considers all combinations
+of true HRs of 0.6 and 0.8 and drift HRs of 0.5, 1.0, and 1.5. That gives us
+6 total scenarios, and we'll simulate 10 datasets within each scenario.
 
 ```{r}
 library(simsurv)
@@ -110,13 +109,23 @@ set.seed(112233)
 
 # Create data list
 data_list <- list(
-  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6)),
-  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.8))
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6)),
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.8)),
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)),
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.8, drift_hr = 1.5)),
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 0.5)),
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.8, drift_hr = 0.5))
 )
 ```
 
-`data_list` is a list of list of matrices, the correct format
-for inputting into `sim_data_list()`. At the lowest level are matrices of simulated data:
+As you can see, `data_list` is a list of list of matrices, the correct format
+for inputting into `sim_data_list()`:
+
+```{r}
+str(data_list)
+```
+
+At the lowest level are matrices of simulated data:
 ```{r}
 head(data_list[[1]][[1]])
 ```
@@ -134,17 +143,18 @@ that the external control arm experiences greater hazard than the internal
 control arm.
 * The name of a column that indexes the `data_list`
 
-In our study, the drift HR was 1.0. We varied the true HR so that it took
-two values: 0.6 and 0.8. Our guide should therefore be two rows to represent
-the two scenarios. We pass `c(1L, 2L)` onto `index` to clarify that
-`data_list[[1L]]` corresponds to the settings in the first row and
-`data_list[[2L]]` to the second row.
+We varied the true HR so that it took
+two values: 0.6 and 0.8. We varied the drift HR so it took three values: 
+0.5, 1.0, and 1.5. Our guide should therefore be six rows to represent
+the six scenarios. We pass `c(1L, 2L, 3L, 4L, 5L, 6L)` onto `index` to clarify that
+`data_list[[1L]]` corresponds to the settings in the first row,
+`data_list[[2L]]` to the second row, and so on.
 
 ```{r}
 guide <- data.frame(
-  trueHR = c(0.6, 0.8),
-  driftHR = c(1.0, 1.0),
-  index = c(1L, 2L)
+  trueHR = c(0.6, 0.8, 0.6, 0.8, 0.6, 0.8),
+  driftHR = c(1.0, 1.0, 1.5, 1.5, 0.5, 0.5),
+  index = c(1L, 2L, 3L, 4L, 5L, 6L)
 )
 
 guide
@@ -192,10 +202,9 @@ out
 `borrowing` is where we input information on the type of borrowing we want to
 evaluate. This can be either a single object of class `Borrowing` or
 a list of objects created with `sim_borrowing_list()`. For the sake of example,
-let's assume we are interested in comparing four borrowing scenarios:
+let's assume we are interested in comparing three borrowing scenarios:
 
 * No borrowing
-* Full borrowing
 * BDB, conservative prior
 * BDB, aggressive prior
 
@@ -205,13 +214,13 @@ We will create a borrowing list with `sim_borrowing_list()`.
 sbl <- sim_borrowing_list(
   list(
     "No borrowing" = borrowing_details("No borrowing", "ext"),
-    "Full borrowing" = borrowing_details("Full borrowing", "ext"),
     "BDB, conservative prior" = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
     "BDB, aggressive prior" = borrowing_details("BDB", "ext", gamma_prior(1.000, 0.001))
   )
 )
 sbl
 ```
+
 
 ## `covariate`
 
