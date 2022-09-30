@@ -190,24 +190,9 @@ Note that this object is a `data.frame`. Let's use the help functionality to see
 ?create_analysis_obj
 ```
 
-### 
-
-Based on the help screen in the previous slide, answer the below quiz:
-
-```{r which-data-matrix-inputs-valid, echo = FALSE}
-question(" Which inputs into `data_matrix` are valid? Select ALL that apply",
-         answer("matrix", correct = TRUE),
-         answer("data.frame"),
-         answer("list"),
-         answer("tibble"),
-         allow_retry = TRUE,
-         type = "learnr_checkbox"
-)
-```
-
 ###
 
-Awesome! Let's reformat our data.frame into a matrix. `psborrow2` has a helper function to assist us with this: `create_data_matrix.` Look at the help files, then fill in the
+Let's reformat our data.frame into a matrix. `psborrow2` has a helper function to assist us with this: `create_data_matrix.` Look at the help files, then fill in the
 appropriate arguments into the function. For now, let's ignore `covariates`, because we will not adjust for any covariates in our outcome model.
 
 
@@ -310,37 +295,9 @@ hazard rate for the external control arm. There are several constructors to make
 
 Right now, let's just consider a normal prior.
 
-###
-
-Suppose we have no idea what the hazard rate for the external control arm would be before seeing the data. Which of the distributions below best represents our prior information?
-
-```{r, echo = FALSE}
-plot(normal_prior(50, 10), xlim=c(-1000, 1000), ylim = c(0, .04))
-title("1: normal(mean = 50, sd = 10)")
-```
-
-```{r, echo = FALSE}
-plot(normal_prior(0, 30), xlim=c(-1000, 1000), ylim = c(0, .04))
-title("2: normal(mean = 0, sd = 30)")
-```
-
-```{r, echo = FALSE}
-plot(normal_prior(0, 1000), xlim=c(-1000, 1000), ylim = c(0, .04))
-title("3: normal(mean = 0, sd = 1000)")
-```
-
-```{r which-baseline-prior, echo = FALSE}
-question(" Which of the above distributions best represents our prior information?",
-         answer("1"),
-         answer("2"),
-         answer("3", correct = TRUE),
-         allow_retry = TRUE,
-         type = "learnr_radio"
-)
-```
 
 ###
-Bingo! If we have no prior knowledge, we should make a wide prior. Look at the help article for `normal_prior()` to see how to create a wide prior:
+If we have no prior knowledge, we should make a wide prior such as a normal distribution with wide standard deviation. Look at the help article for `normal_prior()` to see how to create such a wide prior:
 ```{r normal-prior-help, exercise = TRUE, exercise.eval = FALSE}
 ?normal_prior
 ```
@@ -349,7 +306,6 @@ You can always print a prior distribution with the `plot()` function:
 ```{r normal-prior-print, exercise = TRUE, exercise.eval = FALSE}
 plot(normal_prior(0, 1000))
 ```
-
 
 ###
 
