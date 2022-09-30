@@ -336,7 +336,7 @@ ggplot(results_df) +
 ```
 
 On the basis of these results, it loos like bias was higher, on average,
-when the true hazard ratio was greater. This makes sense.
+when the true hazard ratio was greater.
 
 ### MSE
 
