@@ -383,7 +383,7 @@ ggplot(results_df) +
 ```
 
 The type II error proportion is much higher when the true hazard ratio is 0.8
-compared to 0.6, as we might anticipate.
+compared to 0.6.
 
 ### True coverage
 
