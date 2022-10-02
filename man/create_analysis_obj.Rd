@@ -21,7 +21,7 @@ control arm flags.}
 \item{covariates}{\code{Covariates}. Object of class \code{\link[=Covariates-class]{Covariates}} as output by
 the function \code{\link[=add_covariates]{add_covariates()}}.}
 
-\item{outcome}{\code{Outcome}. Object of class \code{Outcome}\linkS4class{Outcome} as output by
+\item{outcome}{\code{Outcome}. Object of class \code{\link[=Outcome-class]{Outcome}} as output by
 \code{\link[=exp_surv_dist]{exp_surv_dist()}}, \code{\link[=weib_ph_surv_dist]{weib_ph_surv_dist()}}, or \code{\link[=logistic_bin_outcome]{logistic_bin_outcome()}}.}
 
 \item{borrowing}{\code{Borrowing}. Object of class \code{\link[=Borrowing-class]{Borrowing}} as output by
