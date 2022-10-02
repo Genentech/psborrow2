@@ -56,9 +56,9 @@ create_simulation_obj(
 `data_matrix_list` is where you input the data you will be using for the
 simulation study using the function `sim_data_list()`.
 Let's simulate some data together for the sake of example.
-We'll use the `simsurv` package to generate survival data under two
-scenarios: a true hazard ratio (HR) for the treatment effect of 0.6 and a true
-HR of 0.8.
+We'll use the `simsurv` package to generate survival data under three
+scenarios: a true hazard ratio (HR) for the treatment effect of 0.6, 0.8, and 1.0.
+Similarly we'll look at three drift HR scenarios: 0.5, 1.0, and 1.5.
 
 ### `data_list`
 
@@ -66,8 +66,8 @@ Looking at the arguments to `sim_data_list()`, the first argument, `data_list`
 requires a list of lists of matrices. Each list of matrices should represent
 a different data generation scenario, such as our difference true HR.
 Therefore, let's create an object `data_list` that is considers all combinations
-of true HRs of 0.6 and 0.8 and drift HRs of 0.5, 1.0, and 1.5. That gives us
-6 total scenarios, and we'll simulate 10 datasets within each scenario.
+of true HRs of 0.6, 0.8, and 1.0 and drift HRs of 0.5, 1.0, and 1.5. That gives us
+9 total scenarios, and we'll simulate 20 datasets within each scenario.
 
 ```{r}
 library(simsurv)
@@ -109,12 +109,15 @@ set.seed(112233)
 
 # Create data list
 data_list <- list(
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.8)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.8, drift_hr = 1.5)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 0.5)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.8, drift_hr = 0.5))
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.8)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 1.0)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.8, drift_hr = 1.5)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.5)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 0.5)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.8, drift_hr = 0.5)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 0.5))
 )
 ```
 
@@ -144,17 +147,17 @@ control arm.
 * The name of a column that indexes the `data_list`
 
 We varied the true HR so that it took
-two values: 0.6 and 0.8. We varied the drift HR so it took three values: 
-0.5, 1.0, and 1.5. Our guide should therefore be six rows to represent
-the six scenarios. We pass `c(1L, 2L, 3L, 4L, 5L, 6L)` onto `index` to clarify that
-`data_list[[1L]]` corresponds to the settings in the first row,
+three values: 0.6, 0.8, and 1.0. We also varied  the drift HR so it took three
+values: 0.5, 1.0, and 1.5. Our guide should therefore be nine rows to represent
+the nine scenarios. We pass `c(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L)` onto `index`
+to clarify that `data_list[[1L]]` corresponds to the settings in the first row,
 `data_list[[2L]]` to the second row, and so on.
 
 ```{r}
 guide <- data.frame(
-  trueHR = c(0.6, 0.8, 0.6, 0.8, 0.6, 0.8),
-  driftHR = c(1.0, 1.0, 1.5, 1.5, 0.5, 0.5),
-  index = c(1L, 2L, 3L, 4L, 5L, 6L)
+  trueHR = rep(c(0.6, 0.8, 1.0), 3),
+  driftHR = rep(c(1.0, 1.5, 0.5), each = 3),
+  index = 1L:9L
 )
 
 guide
@@ -249,11 +252,11 @@ ready to sample on our behalf.
 
 ***Important:*** `psborrow2` will simulate the Cartesian product of all
 unique list elements in `data_matrix_list`, `outcome`, `borrowing`,
-`covariate`, and `treatment`. `data_matrix_list` contains two
-different study parameters and therefore contains a list of length two.
-`borrowing` has four scenarios and is a list of length four. The rest
+`covariate`, and `treatment`. `data_matrix_list` contains nine
+different study parameters and therefore contains a list of length nine.
+`borrowing` has three scenarios and is a list of length three. The rest
 contain just one input (or 0 for `covariate`, which is equivalent to one
-scenario). This means we should expect $2 \times 4 = 8$ combinations of
+scenario). This means we should expect $9 \times 3 = 27$ combinations of
 parameters. Let's create a simulation object of class `Simulation`:
 
 ```{r}
@@ -265,6 +268,9 @@ sim_obj <- create_simulation_obj(
 )
 sim_obj
 ```
+
+While we get a warning about the size of the simulation study, we are not worried
+because we are limiting our MCMC samples below in this example.
 
 We can access the guide to see the specific scenarios that will be
 simulated with `show_guide()`:
@@ -318,7 +324,7 @@ that summarizes results, `get_results()`:
 
 ```{r}
 results_df <- get_results(results)
-print(results_df)
+head(results_df)
 ```
 
 Let's quickly visualize the results using `ggplot2`:
@@ -326,44 +332,25 @@ Let's quickly visualize the results using `ggplot2`:
 ## Summary of results
 
 As an example of the types of visual summaries you can provide on simulation
-study results, let's explore performance of several different metrics:
-
-### Bias
-
-```{r class.source = "fold-hide"}
-library(ggplot2)
-ggplot(results_df) +
-  geom_tile(aes(x = borrowing_scenario, y = factor(trueHR), fill = bias_mean)) +
-  labs(
-    fill = "Bias (mean)",
-    x = "Borrowing type",
-    y = "True HR"
-  ) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1)
-  )
-```
-
-On the basis of these results, it loos like bias was higher, on average,
-when the true hazard ratio was greater.
+study results, let's explore performance of several some select metrics:
 
 ### MSE
 
-```{r class.source = "fold-hide"}
+```{r class.source = "fold-hide", fig.dim = c(5, 3), dpi = 140}
+library(ggplot2)
 ggplot(results_df) +
-  geom_tile(aes(x = borrowing_scenario, y = factor(trueHR), fill = mse_mean)) +
+  geom_bar(aes(x = factor(trueHR), fill = borrowing_scenario, y = mse_mean), stat = "identity", position = "dodge") +
   labs(
-    fill = "MSE (mean)",
-    x = "Borrowing type",
-    y = "True HR"
+    fill = "Borrowing scenario",
+    x = "True HR",
+    y = "MSE (mean)"
   ) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1)
-  )
+  facet_wrap(~ paste0("drift HR = ", driftHR)) +
+  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
 ```
 
-The same is true of MSE. The true hazard ratio of 0.6 had lower MSE on
-average than a hazard ratio of 0.8.
+From this graph, it is clear that the impact of aggressive borrowing
+depends greatly on the drift HR between the internal and external controls.
 
 ### Null coverage
 
@@ -371,52 +358,56 @@ Null coverage refers to the proportion of specified credible intervals
 (in this case, 95% credible intervals) that contain the null effect (1.0).
 When the true hazard ratio is not 1.0, this refers to the type II error proportion.
 
-```{r class.source = "fold-hide"}
-ggplot(results_df) +
-  geom_bar(aes(
-    x = borrowing_scenario,
-    y = null_coverage,
-    fill = factor(trueHR)
-  ),
-  stat = "identity",
-  position = "dodge"
+```{r class.source = "fold-hide", fig.dim = c(5, 3), dpi = 140}
+ggplot(results_df[results_df$trueHR != 1.0, ]) +
+  geom_bar(aes(x = factor(trueHR), fill = borrowing_scenario, y = null_coverage),
+    stat = "identity", position = "dodge"
   ) +
   labs(
-    x = "Borrowing type",
-    fill = "True HR",
+    fill = "Borrowing scenario",
+    x = "True HR",
     y = "Type II error"
   ) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1)
-  )
+  facet_wrap(~ paste0("drift HR = ", driftHR)) +
+  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
 ```
 
-The type II error proportion is much higher when the true hazard ratio is 0.8
-compared to 0.6.
+The type II error proportion is higher when the true hazard ratio is 0.8 and
+generally when no borrowing is used.
+
+When the true hazard ratio is equal to 1.0, this refers to the compliment of
+the type I error proportion, which we can use to derive type I error:
+
+```{r class.source = "fold-hide", fig.dim = c(5, 3), dpi = 140}
+ggplot(results_df[results_df$trueHR == 1.0, ]) +
+  geom_bar(aes(x = factor(driftHR), fill = borrowing_scenario, y = 1 - null_coverage),
+    stat = "identity", position = "dodge"
+  ) +
+  labs(
+    fill = "Borrowing scenario",
+    x = "drift HR",
+    y = "Type I error"
+  ) +
+  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+```
 
 ### True coverage
 
-True coverage refers to the proportion of analyses simulations that contain
+True coverage refers to the proportion of simulations that contain
 the effect estimate of interest.
 
-```{r class.source = "fold-hide"}
+```{r class.source = "fold-hide", fig.dim = c(5, 3), dpi = 140}
 ggplot(results_df) +
-  geom_bar(aes(
-    x = borrowing_scenario,
-    y = true_coverage,
-    fill = factor(trueHR)
-  ),
-  stat = "identity",
-  position = "dodge"
+  geom_bar(aes(x = factor(trueHR), fill = borrowing_scenario, y = true_coverage),
+    stat = "identity", position = "dodge"
   ) +
   labs(
-    x = "Borrowing type",
-    fill = "True HR",
-    y = "Coverage of true effect"
+    fill = "Borrowing scenario",
+    x = "True HR",
+    y = "True coverage"
   ) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1)
-  )
+  facet_wrap(~ paste0("drift HR = ", driftHR)) +
+  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
 ```
 
 It looks like almost all of our analyses captured the effect estimate of interest.
