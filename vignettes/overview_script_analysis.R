@@ -164,37 +164,55 @@ ggsurvplot(
           subset = trt == 0)
 )
 
-## Let's adjust for cov1
+## Let's incorporate propensity scores into our analysis
+ps_model <- glm(ext ~ cov1 + cov2, data = example_dataframe, family = binomial)
+ps <- predict(ps_model, type = "response")
+example_dataframe$ps <- ps
+head(example_dataframe)
+
+example_dataframe$ps_cat <- cut(example_dataframe$ps,
+                                breaks = c(0,.2,.4,.8,1),
+                                include.lowest = T)
+
+example_matrix_ps <- create_data_matrix(
+  example_dataframe,
+  outcome = c("time", "cnsr"),
+  trt_flag_col = "trt",
+  ext_flag_col = "ext",
+  covariates = ~ ps_cat
+)
+
 ### No borrowing
-anls_cov1_no_borrow <- create_analysis_obj(
-  data_matrix = example_matrix,
+anls_ps_no_borrow <- create_analysis_obj(
+  data_matrix = example_matrix_ps,
   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
   borrowing = borrowing_details("No borrowing", "ext"),
   treatment = treatment_details("trt", normal_prior(0, 10000)),
-  covariates = add_covariates("cov1", normal_prior(0, 10000))
+  covariates = add_covariates(c("ps_cat(0.2,0.4]", "ps_cat(0.4,0.8]", "ps_cat(0.8,1]"), normal_prior(0, 10000))
 )
-res_cov1_no_borrow <- mcmc_sample(
-  x = anls_cov1_no_borrow,
+
+res_ps_no_borrow <- mcmc_sample(
+  x = anls_ps_no_borrow,
   iter_warmup = 1000,
   iter_sampling = 10000,
   chains = 2
 )
-summarize_draws(res_cov1_no_borrow$draws(),  ~ quantile(.x, probs = c(0.025, 0.975)))
+summarize_draws(res_ps_no_borrow$draws(),  ~ quantile(.x, probs = c(0.025, 0.975)))
 
 ### BDB
-anls_cov1_bdb <- create_analysis_obj(
-  data_matrix = example_matrix,
+anls_ps_bdb <- create_analysis_obj(
+  data_matrix = example_matrix_ps,
   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details("trt", normal_prior(0, 10000)),
-  covariates = add_covariates("cov1", normal_prior(0, 10000))
+  covariates = add_covariates(c("ps_cat(0.2,0.4]", "ps_cat(0.4,0.8]", "ps_cat(0.8,1]"), normal_prior(0, 10000))
 )
 
-res_cov1_bdb <- mcmc_sample(
-  x = anls_cov1_bdb,
+res_ps_bdb <- mcmc_sample(
+  x = anls_ps_bdb,
   iter_warmup = 1000,
   iter_sampling = 10000,
   chains = 2
 )
 
-summarize_draws(res_cov1_bdb$draws(),  ~ quantile(.x, probs = c(0.025, 0.975)))
+summarize_draws(anls_ps_bdb$draws(),  ~ quantile(.x, probs = c(0.025, 0.975)))
