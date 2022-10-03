@@ -1,10 +1,13 @@
 ############################################################
 #                                                          #
-#               OVERVIEW OF PSBORROW2                      #
+#         OVERVIEW OF BDB ANALYSIS IN PSBORROW2            #
 #                  Matthew Secrest                         #
 #                   October 2022                           #
 #                                                          #
 ############################################################
+
+# Goals of this demo are to:
+  # Do a Bayesian Dynamic Borrowing analysis on a custom dataset
 
 # Load dependancies----
 # psborrow2
@@ -15,13 +18,16 @@ library(survival)
 library(survminer)
 library(flexsurv)
 
-# plotting
-library(ggplot2)
+# additional tools for draws objects
+library(bayesplot)
+library(posterior)
 
-# simulating survival data
-library(simsurv)
+# comparing populations
+library(table1)
 
+############################################################
 # Explore example data ----
+############################################################
 
 ## psborrow2 contains an example matrix
 ?example_matrix
@@ -33,12 +39,15 @@ example_dataframe <- as.data.frame(example_matrix)
 # Distribution of arms
 table(ext = example_matrix[,'ext'], trt = example_matrix[,'trt'])
 
-# Naive internal comparison ----
+############################################################
+# Naive internal comparisons ----
+############################################################
 
 ## Cox model
 cox_fit <- coxph(Surv(time = time, event = 1 - cnsr) ~ trt,
                  data = example_dataframe,
                  subset = ext == 0)
+
 exp(confint(cox_fit))
 
 ## Kaplan-meier curves
@@ -53,9 +62,13 @@ exp_fit <- flexsurvreg(Surv(time = time, event = 1 - cnsr) ~ trt,
                        dist = "exponential",
                        data = example_dataframe,
                        subset = ext == 0)
+
 exp(confint(exp_fit))
 
+############################################################
 # Hybrid control analysis----
+############################################################
+
 ## The end goal
 ?create_analysis_obj
 
@@ -67,6 +80,17 @@ exp(confint(exp_fit))
 plot(normal_prior(0, 1), xlim = c(-100, 100), ylim = c(0, 1))
 plot(normal_prior(0, 10), xlim = c(-100, 100), ylim = c(0, 1))
 plot(normal_prior(0, 10000), xlim = c(-100, 100), ylim = c(0, 1))
+
+### Available priors:
+
+# `bernoulli_prior(theta)`
+# `beta_prior(alpha, beta)`
+# `cauchy_prior(mu, sigma)`
+# `exponential_prior(beta)`
+# `gamma_prior(alpha, beta)`
+# `normal_prior(mu, sigma)`
+# `poisson_prior(lambda)`
+# `uniform_prior(alpha, beta)`
 
 ### Create Outcome object
 exp_outcome <- exp_surv_dist(time_var = "time",
@@ -112,3 +136,62 @@ results$summary()
 variable_dictionary(analysis_object)
 
 ## Evaluate draws object----
+### Create draws object
+draws <- results$draws()
+
+### Rename to be more intepretable
+draws <- rename_draws_covariates(draws, analysis_object)
+summary(draws)
+summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.975)))
+
+# Why did our model not borrow much from the external arm?
+ggsurvplot(
+  survfit(Surv(time, 1-cnsr) ~ ext,
+          example_dataframe,
+          subset = trt == 0)
+)
+
+############################################################
+# Maybe our control arms are fundamentally different ----
+############################################################
+
+## Balance between cohorts
+table1(~ cov1 + cov2 | trt + ext, data = example_dataframe)
+
+ggsurvplot(
+  survfit(Surv(time, 1-cnsr) ~ cov1,
+          example_dataframe,
+          subset = trt == 0)
+)
+
+## Let's adjust for cov1
+### No borrowing
+anls_cov1_no_borrow <- create_analysis_obj(
+  data_matrix = example_matrix,
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+  borrowing = borrowing_details("No borrowing", "ext"),
+  treatment = treatment_details("trt", normal_prior(0, 10000)),
+  covariates = add_covariates("cov1", normal_prior(0, 10000))
+)
+res_cov1_no_borrow <- mcmc_sample(
+  x = anls_cov1_no_borrow,
+  iter_warmup = 1000,
+  iter_sampling = 10000,
+  chains = 2
+)
+
+### BDB
+anls_cov1_bdb <- create_analysis_obj(
+  data_matrix = example_matrix,
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+  borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
+  treatment = treatment_details("trt", normal_prior(0, 10000)),
+  covariates = add_covariates("cov1", normal_prior(0, 10000))
+)
+
+res_cov1_bdb <- mcmc_sample(
+  x = anls_cov1_bdb,
+  iter_warmup = 1000,
+  iter_sampling = 10000,
+  chains = 2
+)

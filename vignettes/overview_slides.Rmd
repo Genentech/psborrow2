@@ -1,6 +1,6 @@
 ---
 title: "psborrow2 Overview"
-subtitle: "Matt Secrest, Isaac Gravestock"
+subtitle: "Matt Secrest"
 output: 
   rmarkdown::ioslides_presentation:
     widescreen: true
