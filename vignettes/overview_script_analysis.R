@@ -6,7 +6,7 @@
 #                                                          #
 ############################################################
 
-# Goals of this demo are to:
+# Goal of this demo is to:
   # Do a Bayesian Dynamic Borrowing analysis on a custom dataset
 
 # Load dependancies----
@@ -74,23 +74,23 @@ exp(confint(exp_fit))
 
 ## Outcome class----
 ?exp_surv_dist
+?weib_ph_surv_dist
+?logistic_bin_outcome
 
 ### A side note on priors
+?bernoulli_prior
+?beta_prior
+?cauchy_prior
+?exponential_prior
+?gamma_prior
 ?normal_prior
+?poisson_prior
+?uniform_prior
+
+### Plotting priors
 plot(normal_prior(0, 1), xlim = c(-100, 100), ylim = c(0, 1))
 plot(normal_prior(0, 10), xlim = c(-100, 100), ylim = c(0, 1))
 plot(normal_prior(0, 10000), xlim = c(-100, 100), ylim = c(0, 1))
-
-### Available priors:
-
-# `bernoulli_prior(theta)`
-# `beta_prior(alpha, beta)`
-# `cauchy_prior(mu, sigma)`
-# `exponential_prior(beta)`
-# `gamma_prior(alpha, beta)`
-# `normal_prior(mu, sigma)`
-# `poisson_prior(lambda)`
-# `uniform_prior(alpha, beta)`
 
 ### Create Outcome object
 exp_outcome <- exp_surv_dist(time_var = "time",
@@ -118,6 +118,8 @@ analysis_object <- create_analysis_obj(
   treatment = trt_details
 )
 
+analysis_object
+
 ## Sample from the MCMC sampler----
 ?mcmc_sample
 
@@ -139,9 +141,7 @@ variable_dictionary(analysis_object)
 ### Create draws object
 draws <- results$draws()
 
-### Rename to be more intepretable
-draws <- rename_draws_covariates(draws, analysis_object)
-summary(draws)
+### Get 95% posterior credible intervals
 summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.975)))
 
 # Why did our model not borrow much from the external arm?
@@ -179,6 +179,7 @@ res_cov1_no_borrow <- mcmc_sample(
   iter_sampling = 10000,
   chains = 2
 )
+summarize_draws(res_cov1_no_borrow$draws(),  ~ quantile(.x, probs = c(0.025, 0.975)))
 
 ### BDB
 anls_cov1_bdb <- create_analysis_obj(
@@ -195,3 +196,5 @@ res_cov1_bdb <- mcmc_sample(
   iter_sampling = 10000,
   chains = 2
 )
+
+summarize_draws(res_cov1_bdb$draws(),  ~ quantile(.x, probs = c(0.025, 0.975)))

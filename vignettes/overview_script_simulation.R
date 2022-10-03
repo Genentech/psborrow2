@@ -6,6 +6,9 @@
 #                                                          #
 ############################################################
 
+# Goal of this demo is to:
+# Simulate the impact of a BDB study on trial design
+
 # Load dependancies----
 
 # psborrow2
@@ -59,14 +62,14 @@ sim_single_matrix <- function(true_hr = 0.6,
 sim_single_matrix()
 
 # Set seed
-set.seed(1234)
+set.seed(12345)
 
 # Create list of lists of data
 my_data_list <- list(
-  lapply(1:5, function(z) sim_single_matrix(true_hr = 0.6)),
-  lapply(1:5, function(z) sim_single_matrix(true_hr = 1.0)),
-  lapply(1:5, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)),
-  lapply(1:5, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.5))
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6)),
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 1.0)),
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)),
+  lapply(1:10, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.5))
 )
 
 NROW(my_data_list)
@@ -132,6 +135,7 @@ simulation_res_df <- get_results(simulation_res)
 # Plot results----
 ############################################################
 
+## Type I error ----
 ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - true_coverage),
            stat = "identity", position = "dodge"
@@ -141,4 +145,15 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
     x = "drift HR",
     y = "Type I error"
   ) +
+  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+
+## MSE ----
+ggplot(simulation_res_df) +
+  geom_bar(aes(x = factor(true_hr), fill = borrowing_scenario, y = mse_mean), stat = "identity", position = "dodge") +
+  labs(
+    fill = "Borrowing scenario",
+    x = "True HR",
+    y = "MSE (mean)"
+  ) +
+  facet_wrap(~ paste0("drift HR = ", drift_hr)) +
   scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
