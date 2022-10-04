@@ -158,7 +158,7 @@ ggplot(simulation_res_df) +
   labs(
     fill = "Borrowing scenario",
     x = "True HR",
-    y = "MSE (mean)"
+    y = "MSE"
   ) +
   facet_wrap(~ paste0("drift HR = ", drift_hr)) +
   scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))

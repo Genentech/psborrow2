@@ -25,6 +25,9 @@ library(posterior)
 # comparing populations
 library(table1)
 
+# plotting results
+library(bayesplot)
+
 ############################################################
 # Explore example data ----
 ############################################################
@@ -37,7 +40,10 @@ head(example_matrix)
 example_dataframe <- as.data.frame(example_matrix)
 
 # Distribution of arms
-table(ext = example_matrix[,'ext'], trt = example_matrix[,'trt'])
+table(ext = example_matrix[, "ext"], trt = example_matrix[, "trt"])
+
+# -------------------------------------------------------------------------
+
 
 ############################################################
 # Naive internal comparisons ----
@@ -143,6 +149,9 @@ draws <- results$draws()
 
 ### Get 95% posterior credible intervals
 summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.975)))
+
+### Look at histogram of draws
+mcmc_hist(draws, c("HR_trt"))
 
 # Why did our model not borrow much from the external arm?
 ggsurvplot(
