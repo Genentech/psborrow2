@@ -37,7 +37,6 @@ library(simsurv)
 sim_single_matrix <- function(true_hr = 0.6,
                               drift_hr = 1.0,
                               n = 600) {
-
   cov <- data.frame(
     id = 1:n,
     trt = rbinom(n, 1, 0.5)
@@ -91,7 +90,7 @@ my_sim_data_guide <- expand.grid(
   drift_hr = c(1.0, 1.5)
 )
 
-my_sim_data_guide$id <- 1:NROW(my_sim_data_guide)
+my_sim_data_guide$id <- seq(1, NROW(my_sim_data_guide))
 
 my_sim_data_list <- sim_data_list(
   data_list = my_data_list,
@@ -129,10 +128,12 @@ simulation_obj <- create_simulation_obj(
 )
 simulation_obj
 
-simulation_res <- mcmc_sample(x = simulation_obj,
-                              iter_warmup = 1000,
-                              iter_sampling = 1000,
-                              chains = 1)
+simulation_res <- mcmc_sample(
+  x = simulation_obj,
+  iter_warmup = 1000,
+  iter_sampling = 1000,
+  chains = 1
+)
 
 simulation_res_df <- get_results(simulation_res)
 
@@ -143,7 +144,7 @@ simulation_res_df <- get_results(simulation_res)
 ## Type I error ----
 ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - true_coverage),
-           stat = "identity", position = "dodge"
+    stat = "identity", position = "dodge"
   ) +
   labs(
     fill = "Borrowing scenario",

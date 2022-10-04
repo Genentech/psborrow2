@@ -7,7 +7,7 @@
 ############################################################
 
 # Goal of this demo is to:
-  # Do a Bayesian Dynamic Borrowing analysis on a custom dataset
+# Do a Bayesian Dynamic Borrowing analysis on a custom dataset
 
 # Load dependancies----
 # psborrow2
@@ -51,23 +51,26 @@ table(ext = example_matrix[, "ext"], trt = example_matrix[, "trt"])
 
 ## Cox model
 cox_fit <- coxph(Surv(time = time, event = 1 - cnsr) ~ trt,
-                 data = example_dataframe,
-                 subset = ext == 0)
+  data = example_dataframe,
+  subset = ext == 0
+)
 
 exp(confint(cox_fit))
 
 ## Kaplan-meier curves
 km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt,
-                  data = example_dataframe,
-                  subset = ext == 0)
+  data = example_dataframe,
+  subset = ext == 0
+)
 
 ggsurvplot(km_fit)
 
 ## Exponential survival distribution
 exp_fit <- flexsurvreg(Surv(time = time, event = 1 - cnsr) ~ trt,
-                       dist = "exponential",
-                       data = example_dataframe,
-                       subset = ext == 0)
+  dist = "exponential",
+  data = example_dataframe,
+  subset = ext == 0
+)
 
 exp(confint(exp_fit))
 
@@ -99,22 +102,28 @@ plot(normal_prior(0, 10), xlim = c(-100, 100), ylim = c(0, 1))
 plot(normal_prior(0, 10000), xlim = c(-100, 100), ylim = c(0, 1))
 
 ### Create Outcome object
-exp_outcome <- exp_surv_dist(time_var = "time",
-                             cens_var = "cnsr",
-                             baseline_prior = normal_prior(0, 10000))
+exp_outcome <- exp_surv_dist(
+  time_var = "time",
+  cens_var = "cnsr",
+  baseline_prior = normal_prior(0, 10000)
+)
 
 ## Borrowing class ----
 ?borrowing_details
 
-bdb_borrowing <- borrowing_details(method = "BDB",
-                                   ext_flag_col = "ext",
-                                   tau_prior = gamma_prior(0.001, 0.001))
+bdb_borrowing <- borrowing_details(
+  method = "BDB",
+  ext_flag_col = "ext",
+  tau_prior = gamma_prior(0.001, 0.001)
+)
 
 ## Treatment class ----
 ?treatment_details
 
-trt_details <- treatment_details(trt_flag_col = "trt",
-                                 trt_prior = normal_prior(0, 10000))
+trt_details <- treatment_details(
+  trt_flag_col = "trt",
+  trt_prior = normal_prior(0, 10000)
+)
 
 ## Analysis class object ----
 analysis_object <- create_analysis_obj(
@@ -132,8 +141,8 @@ analysis_object
 results <- mcmc_sample(
   x = analysis_object,
   iter_warmup = 1000,
-  iter_sampling = 10000,
-  chains = 2
+  iter_sampling = 500,
+  chains = 1
 )
 
 class(results)
@@ -155,9 +164,10 @@ mcmc_hist(draws, c("HR_trt"))
 
 # Why did our model not borrow much from the external arm?
 ggsurvplot(
-  survfit(Surv(time, 1-cnsr) ~ ext,
-          example_dataframe,
-          subset = trt == 0)
+  survfit(Surv(time, 1 - cnsr) ~ ext,
+    example_dataframe,
+    subset = trt == 0
+  )
 )
 
 ############################################################
@@ -165,12 +175,17 @@ ggsurvplot(
 ############################################################
 
 ## Balance between cohorts
-table1(~ cov1 + cov2 | trt + ext, data = example_dataframe)
+table1(~ cov1 + cov2 |
+  factor(trt, levels = 0:1, labels = c("Control", "Treatment")) +
+    factor(ext, levels = 0:1, labels = c("Internal", "External")),
+data = example_dataframe
+)
 
 ggsurvplot(
-  survfit(Surv(time, 1-cnsr) ~ cov1,
-          example_dataframe,
-          subset = trt == 0)
+  survfit(Surv(time, 1 - cnsr) ~ cov1,
+    example_dataframe,
+    subset = trt == 0
+  )
 )
 
 ## Let's incorporate propensity scores into our analysis
@@ -180,15 +195,16 @@ example_dataframe$ps <- ps
 head(example_dataframe)
 
 example_dataframe$ps_cat <- cut(example_dataframe$ps,
-                                breaks = c(0,.2,.4,.8,1),
-                                include.lowest = T)
+  breaks = c(0, .2, .4, .8, 1),
+  include.lowest = TRUE
+)
 
 example_matrix_ps <- create_data_matrix(
   example_dataframe,
   outcome = c("time", "cnsr"),
   trt_flag_col = "trt",
   ext_flag_col = "ext",
-  covariates = ~ ps_cat
+  covariates = ~ps_cat
 )
 
 ### No borrowing
@@ -203,10 +219,10 @@ anls_ps_no_borrow <- create_analysis_obj(
 res_ps_no_borrow <- mcmc_sample(
   x = anls_ps_no_borrow,
   iter_warmup = 1000,
-  iter_sampling = 10000,
-  chains = 2
+  iter_sampling = 500,
+  chains = 1
 )
-summarize_draws(res_ps_no_borrow$draws(),  ~ quantile(.x, probs = c(0.025, 0.975)))
+summarize_draws(res_ps_no_borrow$draws(), ~ quantile(.x, probs = c(0.025, 0.975)))
 
 ### BDB
 anls_ps_bdb <- create_analysis_obj(
@@ -220,8 +236,8 @@ anls_ps_bdb <- create_analysis_obj(
 res_ps_bdb <- mcmc_sample(
   x = anls_ps_bdb,
   iter_warmup = 1000,
-  iter_sampling = 10000,
-  chains = 2
+  iter_sampling = 500,
+  chains = 1
 )
 
-summarize_draws(anls_ps_bdb$draws(),  ~ quantile(.x, probs = c(0.025, 0.975)))
+summarize_draws(res_ps_bdb$draws(), ~ quantile(.x, probs = c(0.025, 0.975)))
