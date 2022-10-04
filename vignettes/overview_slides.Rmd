@@ -963,10 +963,10 @@ set.seed(12345)
 ```{r}
 # Create list of lists of data
 my_data_list <- list(
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.0)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.0)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.5))
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.0)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.0)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.5))
 )
 ```
 
@@ -1180,6 +1180,23 @@ ggplot(simulation_res_df) +
 
 Because we included a true HR of 1.0, we can evaluate type I error by looking
 at the compliment to the true parameter coverage:
+
+```{r, echo = FALSE, fig.align = "center"}
+ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
+  geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - true_coverage),
+    stat = "identity", position = "dodge"
+  ) +
+  labs(
+    fill = "Borrowing scenario",
+    x = "drift HR",
+    y = "Type I error"
+  ) +
+  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+```
+
+## Power
+
+We can include power by looking at the results for our true simulation of 0.6.
 
 ```{r, echo = FALSE, fig.align = "center"}
 ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +

@@ -70,10 +70,10 @@ set.seed(12345)
 
 # Create list of lists of data
 my_data_list <- list(
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 1.0)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.5))
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 1.0)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.5))
 )
 
 NROW(my_data_list)
@@ -140,6 +140,18 @@ simulation_res_df <- get_results(simulation_res)
 ############################################################
 # Plot results----
 ############################################################
+
+## Power ----
+ggplot(simulation_res_df[simulation_res_df$true_hr != 1.0, ]) +
+  geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = true_coverage),
+    stat = "identity", position = "dodge"
+  ) +
+  labs(
+    fill = "Borrowing scenario",
+    x = "drift HR",
+    y = "Power"
+  ) +
+  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
 
 ## Type I error ----
 ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
