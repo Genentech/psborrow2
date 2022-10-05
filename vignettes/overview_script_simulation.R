@@ -33,6 +33,10 @@ library(simsurv)
 # Simulate data ----
 ############################################################
 
+# DSB: I would put even more comments in this script since it is more complex
+# than the analysis script - that will help folks to go back later and understand
+# the details.
+
 ## Create function to simulate single matrix
 sim_single_matrix <- function(true_hr = 0.6,
                               drift_hr = 1.0,
