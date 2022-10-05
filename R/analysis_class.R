@@ -56,16 +56,17 @@ setMethod(
 
     cat("Outcome model:", class(object@outcome)[1], "\n")
     outcome_vars <- get_vars(object@outcome)
-    cat("Outcome variable", ifelse(length(outcome_vars) > 1, "s:", ":"), outcome_vars, "\n\n", sep = "")
+    cat("Outcome", ifelse(length(outcome_vars) > 1, "variables:", "variable:"), outcome_vars, "\n\n")
 
     cat("Borrowing method:", object@borrowing@method, "\n")
     cat("External flag:", get_vars(object@borrowing), "\n\n")
 
     cat("Treatment variable:", get_vars(object@treatment), "\n\n")
 
-    cat("Covariates:", get_vars(object@covariates), "\n\n")
+    cov_names <- get_vars(object@covariates)
+    cat("Covariates:", ifelse(!is.null(cov_names), cov_names, "(none)"), "\n\n")
 
-    cat("Data: matrix with", nrow(object@data_matrix), "observations \n\n")
+    cat("Data: Matrix with", nrow(object@data_matrix), "observations \n\n")
 
 
     if (object@ready_to_sample == TRUE) {
