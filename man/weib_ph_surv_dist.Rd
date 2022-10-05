@@ -4,7 +4,13 @@
 \alias{weib_ph_surv_dist}
 \title{Weibull survival distribution (proportional hazards formulation)}
 \usage{
-weib_ph_surv_dist(time_var, cens_var, shape_prior, baseline_prior)
+weib_ph_surv_dist(
+  time_var,
+  cens_var,
+  shape_prior,
+  baseline_prior,
+  weight_var = ""
+)
 }
 \arguments{
 \item{time_var}{character. Name of time variable column in model matrix}

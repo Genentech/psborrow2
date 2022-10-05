@@ -137,9 +137,11 @@ create_data_matrix(
 
 ### MatchIt
 
-A variety of matching methods, including PS matching are implemented in the [MatchIt](https://cran.r-project.org/package=MatchIt) package.
+A variety of matching methods, including PS matching are implemented in the
+[MatchIt](https://cran.r-project.org/package=MatchIt) package.
 
-As described in the [Getting Started vignette](https://cran.r-project.org/web/packages/MatchIt/vignettes/MatchIt.html), it can be useful to check the imbalance before matching.
+As described in the [Getting Started vignette](https://cran.r-project.org/web/packages/MatchIt/vignettes/MatchIt.html),
+it can be useful to check the imbalance before matching.
 
 ```{r matchit}
 library(MatchIt)
@@ -151,7 +153,8 @@ no_match <- matchit(trt ~ cov1 + cov2 + cov3,
 summary(no_match)
 ```
 
-Here we are matching treated to untreated to select the most comparable control group, regardless of whether they are internal or external.
+Here we are matching treated to untreated to select the most comparable control group, regardless of whether they are
+internal or external.
 
 Now we can try a 1:1 nearest matching approach.
 
@@ -174,7 +177,11 @@ plot(match_11,
 )
 ```
 
-Determining whether the balance after matching is appropriate is beyond the scope of this vignette. You can read more in the [MatchIt Assessing Balance vignette](https://cran.r-project.org/web/packages/MatchIt/vignettes/assessing-balance.html). Another useful package is [cobalt](https://cran.r-project.org/package=cobalt), which provides tools for assessing balance between groups after weighting or matching. It is compatible with many matching and weighting packaes. See the [vignette](https://cran.r-project.org/web/packages/cobalt/vignettes/cobalt.html) for more details.
+Determining whether the balance after matching is appropriate is beyond the scope of this vignette. You can read more in
+the [MatchIt Assessing Balance](https://cran.r-project.org/web/packages/MatchIt/vignettes/assessing-balance.html)
+vignette. Another useful package is [cobalt](https://cran.r-project.org/package=cobalt), which provides tools for
+assessing balance between groups after weighting or matching. It is compatible with many matching and weighting packaes.
+See the [vignette](https://cran.r-project.org/web/packages/cobalt/vignettes/cobalt.html) for more details.
 
 However, if you are happy with the results of the matching procedure, you can extract the data for use in psborrow2.
 
@@ -187,5 +194,154 @@ create_data_matrix(
   trt_flag_col = "trt"
 )
 ```
+
+
+# Weighted Analysis
+
+The models also support fixed weights on the likelihood contributions from each observation. This
+is equivalent to fixed power prior weights. This allows for the combination of models, such as an
+IPTW + commensurate prior approach.
+
+This also allows for power prior analyses:
+
+```{r}
+# fixed borrowing of external patients at alpha = 0.1
+data_mat <- cbind(data_mat[, 1:8], w01 = ifelse(data_mat[, "ext"] == 1, 0.1, 1))
+
+
+analysis_object_w01 <- create_analysis_obj(
+  data_matrix = data_mat,
+  covariates = add_covariates(c("cov1", "cov2"),
+    priors = normal_prior(0, 100)
+  ),
+  borrowing = borrowing_details("Full borrowing",
+    ext_flag_col = "ext",
+  ),
+  treatment = treatment_details("trt", normal_prior(0, 100)),
+  outcome = exp_surv_dist("eventtime", "censor",
+    baseline_prior = normal_prior(0, 1000),
+    weight_var = "w01"
+  )
+)
+
+analysis_object_w05 <- create_analysis_obj(
+  data_matrix = cbind(data_mat[, 1:8], w01 = ifelse(data_mat[, "ext"] == 1, 0.5, 1)),
+  covariates = add_covariates(c("cov1", "cov2"),
+    priors = normal_prior(0, 100)
+  ),
+  borrowing = borrowing_details("Full borrowing",
+    ext_flag_col = "ext",
+  ),
+  treatment = treatment_details("trt", normal_prior(0, 100)),
+  outcome = exp_surv_dist("eventtime", "censor",
+    baseline_prior = normal_prior(0, 1000),
+    weight_var = "w01"
+  )
+)
+
+analysis_object_w08 <- create_analysis_obj(
+  data_matrix = cbind(data_mat[, 1:8], w01 = ifelse(data_mat[, "ext"] == 1, 0.8, 1)),
+  covariates = add_covariates(c("cov1", "cov2"),
+    priors = normal_prior(0, 100)
+  ),
+  borrowing = borrowing_details("Full borrowing",
+    ext_flag_col = "ext",
+  ),
+  treatment = treatment_details("trt", normal_prior(0, 100)),
+  outcome = exp_surv_dist("eventtime", "censor",
+    baseline_prior = normal_prior(0, 1000),
+    weight_var = "w01"
+  )
+)
+
+analysis_object_w08 <- create_analysis_obj(
+  data_matrix = cbind(data_mat[, 1:8], w01 = ifelse(data_mat[, "ext"] == 1, 0.8, 1)),
+  covariates = add_covariates(c("cov1", "cov2"),
+    priors = normal_prior(0, 100)
+  ),
+  borrowing = borrowing_details("Full borrowing",
+    ext_flag_col = "ext",
+  ),
+  treatment = treatment_details("trt", normal_prior(0, 100)),
+  outcome = exp_surv_dist("eventtime", "censor",
+    baseline_prior = normal_prior(0, 1000),
+    weight_var = "w01"
+  )
+)
+
+analysis_object_tau2 <- create_analysis_obj(
+  data_matrix = data_mat,
+  covariates = add_covariates(c("cov1", "cov2"),
+    priors = normal_prior(0, 100)
+  ),
+  borrowing = borrowing_details("BDB",
+    ext_flag_col = "ext",
+    tau_prior = uniform_prior(2, 2.00001)
+  ),
+  treatment = treatment_details("trt", normal_prior(0, 100)),
+  outcome = exp_surv_dist("eventtime", "censor",
+    baseline_prior = normal_prior(0, 1000)
+  )
+)
+
+
+analysis_object_full <- create_analysis_obj(
+  data_matrix = cbind(data_mat[, 1:8], w01 = ifelse(data_mat[, "ext"] == 1, 0.8, 1)),
+  covariates = add_covariates(c("cov1", "cov2"),
+    priors = normal_prior(0, 100)
+  ),
+  borrowing = borrowing_details("Full borrowing",
+    ext_flag_col = "ext",
+  ),
+  treatment = treatment_details("trt", normal_prior(0, 100)),
+  outcome = exp_surv_dist("eventtime", "censor",
+    baseline_prior = normal_prior(0, 1000)
+  )
+)
+
+analysis_object_no <- create_analysis_obj(
+  data_matrix = cbind(data_mat[, 1:8], w01 = ifelse(data_mat[, "ext"] == 1, 0.8, 1)),
+  covariates = add_covariates(c("cov1", "cov2"),
+    priors = normal_prior(0, 100)
+  ),
+  borrowing = borrowing_details("No borrowing",
+    ext_flag_col = "ext",
+  ),
+  treatment = treatment_details("trt", normal_prior(0, 100)),
+  outcome = exp_surv_dist("eventtime", "censor",
+    baseline_prior = normal_prior(0, 1000)
+  )
+)
+
+
+
+
+pp_01 <- mcmc_sample(analysis_object_w01, verbose = TRUE)
+pp_05 <- mcmc_sample(analysis_object_w05, verbose = TRUE)
+pp_08 <- mcmc_sample(analysis_object_w08, verbose = TRUE)
+pp_10 <- mcmc_sample(analysis_object_full, verbose = TRUE)
+pp_00 <- mcmc_sample(analysis_object_no, verbose = TRUE)
+tau_2 <- mcmc_sample(analysis_object_tau2, verbose = TRUE)
+
+pp_00
+pp_01
+pp_05
+pp_08
+pp_10
+tau_2
+```
+
+
+```{r}
+library(survival)
+exp_surv <- survival::survreg(
+  Surv(eventtime, 1 - censor) ~ trt + cov1 + cov2,
+  data = as.data.frame(data_mat),
+  dist = "exponential"
+)
+summary(exp_surv)
+```
+
+An IPTW analysis
 
 ## References

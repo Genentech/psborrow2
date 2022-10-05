@@ -98,14 +98,17 @@
 weib_ph_surv_dist <- function(time_var,
                               cens_var,
                               shape_prior,
-                              baseline_prior) {
+                              baseline_prior,
+                              weight_var = "") {
   assert_string(time_var)
   assert_string(cens_var)
+  assert_string(weight_var)
   assert_class(shape_prior, "Prior")
   assert_class(baseline_prior, "Prior")
   .weib_ph_surv_dist(
     time_var = time_var,
     cens_var = cens_var,
+    weight_var = weight_var,
     param_priors = list(
       shape_weibull = shape_prior
     ),
