@@ -52,13 +52,29 @@ setMethod(
   f = "show",
   signature = "Analysis",
   definition = function(object) {
+    cat("Analysis Object\n\n")
+
+    cat("Outcome model:", class(object@outcome)[1], "\n")
+    outcome_vars <- get_vars(object@outcome)
+    cat("Outcome variable", ifelse(length(outcome_vars) > 1, "s:", ":"), outcome_vars, "\n\n", sep = "")
+
+    cat("Borrowing method:", object@borrowing@method, "\n")
+    cat("External flag:", get_vars(object@borrowing), "\n\n")
+
+    cat("Treatment variable:", get_vars(object@treatment), "\n\n")
+
+    cat("Covariates:", get_vars(object@covariates), "\n\n")
+
+    cat("Data: matrix with", nrow(object@data_matrix), "observations \n\n")
+
+
     if (object@ready_to_sample == TRUE) {
       cat(
-        "Analysis object (compiled and ready to sample).\n",
+        "Stan model compiled and ready to sample.\n",
         "Call mcmc_sample() next."
       )
     } else {
-      cat("Analysis object (not ready to sample yet)")
+      cat("Not ready to sample yet.")
     }
   }
 )
