@@ -25,25 +25,19 @@ library(posterior)
 # comparing populations
 library(table1)
 
-# plotting results
-library(bayesplot)
-
 ############################################################
 # Explore example data ----
 ############################################################
 
 ## psborrow2 contains an example matrix
-?example_matrix
 head(example_matrix)
+?example_matrix
 
 ## load as data.frame for some functions
 example_dataframe <- as.data.frame(example_matrix)
 
 # Distribution of arms
 table(ext = example_matrix[, "ext"], trt = example_matrix[, "trt"])
-
-# -------------------------------------------------------------------------
-
 
 ############################################################
 # Naive internal comparisons ----
@@ -141,13 +135,11 @@ analysis_object
 results <- mcmc_sample(
   x = analysis_object,
   iter_warmup = 1000,
-  iter_sampling = 500,
+  iter_sampling = 1000,
   chains = 1
 )
 
 class(results)
-
-results$summary()
 
 ## Dictionary to interpret results ----
 variable_dictionary(analysis_object)
@@ -157,9 +149,11 @@ variable_dictionary(analysis_object)
 draws <- results$draws()
 
 ### Get 95% posterior credible intervals
+# posterior package
 summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.975)))
 
 ### Look at histogram of draws
+# bayesplot package
 mcmc_hist(draws, c("HR_trt"))
 
 # Why did our model not borrow much from the external arm?
