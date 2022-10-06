@@ -21,10 +21,12 @@
 #' psborrow2:::make_model_string_transf_param(anls_obj)
 #'
 make_model_string_transf_param <- function(analysis_obj) {
-  if (is(analysis_obj@outcome, "TimeToEvent")) {
-    transformed_parameters_string <- h_glue("real HR_trt = exp(beta_trt);")
+  transformed_parameters_string <- if (is(analysis_obj@outcome, "TimeToEvent")) {
+    "real HR_trt = exp(beta_trt);"
   } else if (is(analysis_obj@outcome, "BinaryOutcome")) {
-    transformed_parameters_string <- h_glue("real OR_trt = exp(beta_trt);")
+    "real OR_trt = exp(beta_trt);"
+  } else {
+    ""
   }
 
   h_glue("transformed parameters {
