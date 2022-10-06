@@ -21,12 +21,7 @@
 #' psborrow2:::make_model_string_data(anls_obj)
 #'
 make_model_string_data <- function(analysis_obj) {
-  outcome_string <- if (is(analysis_obj@outcome, "TimeToEvent")) {
-    h_glue("vector[N] time;
-     vector[N] cens;")
-  } else if (is(analysis_obj@outcome, "BinaryOutcome")) {
-    "array[N] int y;"
-  }
+  outcome_string <- analysis_obj@outcome@data_stan_code
 
   borrowing_string <- analysis_obj@borrowing@data_stan_code
 
