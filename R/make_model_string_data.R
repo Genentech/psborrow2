@@ -28,7 +28,7 @@ make_model_string_data <- function(analysis_obj) {
     "array[N] int y;"
   }
 
-  borrowing_string <- ifelse(analysis_obj@borrowing@method == "BDB", "matrix[N,2] Z;", "")
+  borrowing_string <- analysis_obj@borrowing@data_stan_code
 
   covariate_string <- ifelse(
     !is.null(analysis_obj@covariates),

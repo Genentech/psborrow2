@@ -241,9 +241,8 @@ variable_dictionary <- function(analysis_obj) {
 #' @param object `Prior` or list of `Prior` objects.
 #'
 #' @return A string containing the Stan code sampling from specified distribution.
-#'
 #' @examples
-#' get_prior_string(normal_prior(0, 100))
+#' psborrow2:::get_prior_string(normal_prior(0, 100))
 get_prior_string <- function(object) {
   assert_multi_class(object, c("Prior", "list"))
   if (is(object, "list")) {
