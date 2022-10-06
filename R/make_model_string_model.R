@@ -21,7 +21,7 @@
 #' psborrow2:::make_model_string_model(anls_obj)
 #'
 make_model_string_model <- function(analysis_obj) {
-  # treatment prior
+  ### Treatment prior
   beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
 
   ### Linear predictor
@@ -89,7 +89,7 @@ make_model_string_model <- function(analysis_obj) {
   ### Add in likelihood function
   likelihood_string <- h_glue("{{analysis_obj@outcome@likelihood_stan_code}}")
 
-  model_string <- h_glue("
+  h_glue("
   model {
     vector[N] lp;
     vector[N] elp;
@@ -100,6 +100,4 @@ make_model_string_model <- function(analysis_obj) {
     {{borrowing_string}}
     {{likelihood_string}}
   }")
-
-  return(model_string)
 }

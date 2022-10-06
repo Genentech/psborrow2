@@ -22,9 +22,8 @@
 #'
 make_model_string_functions <- function(analysis_obj) {
   ## Bring in analysis_obj functions
-  functions_string <- h_glue("
+  h_glue("
     functions {
       {{analysis_obj@outcome@function_stan_code}}
     }")
-  return(functions_string)
 }
