@@ -7,7 +7,7 @@
         int<lower=0> N;
         vector[N] trt;
         vector[N] time;
-      vector[N] cens;
+          vector[N] cens;
         
         
       }
@@ -21,7 +21,7 @@
         int<lower=0> N;
         vector[N] trt;
         vector[N] time;
-      vector[N] cens;
+          vector[N] cens;
         matrix[N,2] Z;
         
       }
@@ -35,7 +35,7 @@
         int<lower=0> N;
         vector[N] trt;
         vector[N] time;
-      vector[N] cens;
+          vector[N] cens;
         matrix[N,2] Z;
         int<lower=0> K;
       matrix[N, K] X;

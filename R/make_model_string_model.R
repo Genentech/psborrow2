@@ -31,8 +31,7 @@ make_model_string_model <- function(analysis_obj) {
   if (has_covariates && is_bdb) {
     linear_predictor <- h_glue("
       lp = X * beta + Z * alpha + trt * beta_trt;
-      elp = exp(lp) ;
-    ")
+      elp = exp(lp) ;")
   } else if (!has_covariates && is_bdb) {
     linear_predictor <- h_glue("
       lp = Z * alpha + trt * beta_trt;

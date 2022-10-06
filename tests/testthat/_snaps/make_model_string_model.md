@@ -57,8 +57,8 @@
         vector[N] lp;
         vector[N] elp;
         beta_trt ~ normal(0, 1000);
-          lp = X * beta + Z * alpha + trt * beta_trt;
-        elp = exp(lp) ;
+        lp = X * beta + Z * alpha + trt * beta_trt;
+      elp = exp(lp) ;
         shape_weibull ~ normal(0, 1000) ;
         beta[1] ~ normal(0, 1000) ;
       beta[2] ~ normal(0, 1000) ;
@@ -85,8 +85,8 @@
         vector[N] lp;
         vector[N] elp;
         beta_trt ~ normal(0, 1000);
-          lp = X * beta + Z * alpha + trt * beta_trt;
-        elp = exp(lp) ;
+        lp = X * beta + Z * alpha + trt * beta_trt;
+      elp = exp(lp) ;
         
         beta[1] ~ normal(0, 1000) ;
       beta[2] ~ normal(0, 1000) ;
