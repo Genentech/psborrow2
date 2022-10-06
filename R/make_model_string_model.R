@@ -22,7 +22,7 @@
 #'
 make_model_string_model <- function(analysis_obj) {
   # treatment prior
-  beta_trt_prior <- h_glue(analysis_obj@treatment@trt_prior@stan_code, object = analysis_obj@treatment@trt_prior)
+  beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
 
   ### Linear predictor
   has_covariates <- !is.null(analysis_obj@covariates)
@@ -46,7 +46,7 @@ make_model_string_model <- function(analysis_obj) {
       lp = alpha + trt * beta_trt ;
       elp = exp(lp);")
   } else {
-    linear_predictor <- ""
+    stop("No linear predictor defined.")
   }
 
   ### Add priors for relevant parameters
@@ -61,8 +61,9 @@ make_model_string_model <- function(analysis_obj) {
   ### Add priors on betas
   if (has_covariates) {
     i <- seq_along(analysis_obj@covariates@covariates)
-    value <- rep(get_prior_string(analysis_obj@covariates@priors), length.out = length(i))
-    covariate_prior <- h_glue("beta[{{i}}] ~ {{value}} ;", collapse = TRUE)
+    value <- get_prior_string(analysis_obj@covariates@priors)
+    index <- if (test_named(value)) get_vars(analysis_obj@covariates) else rep(1, length(i))
+    covariate_prior <- h_glue("beta[{{i}}] ~ {{value[index]}} ;", collapse = TRUE)
   } else {
     covariate_prior <- ""
   }
