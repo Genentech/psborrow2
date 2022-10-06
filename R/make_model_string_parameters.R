@@ -30,7 +30,7 @@ make_model_string_parameters <- function(analysis_obj) {
 
   ### Set alpha
   intercept_string <- h_glue(
-    "{{type}}{{constraint}}{{n}} alpha",
+    "{{type}}{{constraint}}{{n}} alpha;",
     type = if (is_bdb) "vector" else "real",
     constraint = analysis_obj@outcome@baseline_prior@constraint,
     n = if (is_bdb) "[2]" else ""
