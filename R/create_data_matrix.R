@@ -47,7 +47,7 @@ create_data_matrix <- function(data, outcome, trt_flag_col, ext_flag_col, covari
       assert_subset(covariates, data_cols)
       covariates <- formula(paste("~", paste(covariates, collapse = "+")))
     }
-    covariates_matrix <- model.matrix(covariates, data)[, -1]
+    covariates_matrix <- model.matrix(covariates, data)[, -1, drop = FALSE]
     matrix_cov_cols <- deparse(colnames(covariates_matrix))
     cat("Call `add_covariates()` with `covariates = ", matrix_cov_cols, "`\n")
     output_matrix <- cbind(output_matrix, covariates_matrix)

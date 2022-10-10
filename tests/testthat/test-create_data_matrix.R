@@ -45,6 +45,23 @@ test_that("create_data_matrix works with complex formulas", {
 })
 
 
+test_that("create_data_matrix works with one covariate", {
+  dat <- survival::diabetic
+  dat$ext <- dat$trt == 0 & dat$id > 1000
+  result <- create_data_matrix(
+    dat,
+    outcome = c("time", "status"),
+    trt_flag_col = "trt",
+    ext_flag_col = "ext",
+    covariates = ~laser
+  )
+  expect_set_equal(
+    colnames(result),
+    c("time", "status", "trt", "extTRUE", "laserargon")
+  )
+})
+
+
 test_that("create_data_matrix works with no covariates", {
   dat <- survival::diabetic
   dat$ext <- dat$trt == 0 & dat$id > 1000
