@@ -131,7 +131,11 @@ simulation_obj
 simulation_res <- mcmc_sample(
   x = simulation_obj,
   iter_warmup = 1000,
+<<<<<<< Updated upstream
   iter_sampling = 1000,
+=======
+  iter_sampling = 500,
+>>>>>>> Stashed changes
   chains = 1
 )
 

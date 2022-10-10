@@ -189,7 +189,11 @@ example_dataframe$ps <- ps
 head(example_dataframe)
 
 example_dataframe$ps_cat <- cut(example_dataframe$ps,
+<<<<<<< Updated upstream
   breaks = c(0, .2, .4, .8, 1),
+=======
+  breaks = c(0, .5, 1),
+>>>>>>> Stashed changes
   include.lowest = TRUE
 )
 
@@ -198,16 +202,26 @@ example_matrix_ps <- create_data_matrix(
   outcome = c("time", "cnsr"),
   trt_flag_col = "trt",
   ext_flag_col = "ext",
+<<<<<<< Updated upstream
   covariates = ~ps_cat
+=======
+  covariates = ~ ps_cat
+>>>>>>> Stashed changes
 )
 
 ### No borrowing
 anls_ps_no_borrow <- create_analysis_obj(
   data_matrix = example_matrix_ps,
   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+<<<<<<< Updated upstream
   borrowing = borrowing_details("No borrowing", "ext"),
   treatment = treatment_details("trt", normal_prior(0, 10000)),
   covariates = add_covariates(c("ps_cat(0.2,0.4]", "ps_cat(0.4,0.8]", "ps_cat(0.8,1]"), normal_prior(0, 10000))
+=======
+  borrowing = borrowing_details(method = "No borrowing", "ext"),
+  treatment = treatment_details("trt", normal_prior(0, 10000)),
+  covariates = add_covariates(c("covariates_matrix"), normal_prior(0, 10000))
+>>>>>>> Stashed changes
 )
 
 res_ps_no_borrow <- mcmc_sample(
@@ -216,6 +230,10 @@ res_ps_no_borrow <- mcmc_sample(
   iter_sampling = 500,
   chains = 1
 )
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 summarize_draws(res_ps_no_borrow$draws(), ~ quantile(.x, probs = c(0.025, 0.975)))
 
 ### BDB
@@ -224,7 +242,11 @@ anls_ps_bdb <- create_analysis_obj(
   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details("trt", normal_prior(0, 10000)),
+<<<<<<< Updated upstream
   covariates = add_covariates(c("ps_cat(0.2,0.4]", "ps_cat(0.4,0.8]", "ps_cat(0.8,1]"), normal_prior(0, 10000))
+=======
+  covariates = add_covariates(c("covariates_matrix"), normal_prior(0, 10000))
+>>>>>>> Stashed changes
 )
 
 res_ps_bdb <- mcmc_sample(
