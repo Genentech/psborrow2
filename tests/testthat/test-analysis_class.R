@@ -54,3 +54,44 @@ test_that("show works for Analysis", {
   )
   expect_snapshot(show(object))
 })
+
+test_that("show works without covariates", {
+  object <- .analysis_obj(
+    data_matrix = example_matrix,
+    outcome = exp_surv_dist(
+      time_var = "time",
+      cens_var = "cnsr",
+      baseline_prior = normal_prior(0, 1000)
+    ),
+    treatment = treatment_details(
+      "trt",
+      normal_prior(0, 1000)
+    ),
+    borrowing = borrowing_details(
+      method = "Full borrowing",
+      ext_flag_col = "ext"
+    )
+  )
+  expect_snapshot(show(object))
+})
+
+
+test_that("show works with no borrowing", {
+  object <- .analysis_obj(
+    data_matrix = example_matrix,
+    outcome = exp_surv_dist(
+      time_var = "time",
+      cens_var = "cnsr",
+      baseline_prior = normal_prior(0, 1000)
+    ),
+    treatment = treatment_details(
+      "trt",
+      normal_prior(0, 1000)
+    ),
+    borrowing = borrowing_details(
+      method = "No borrowing",
+      ext_flag_col = "ext"
+    )
+  )
+  expect_snapshot(show(object))
+})
