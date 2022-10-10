@@ -66,7 +66,11 @@ exp_fit <- flexsurvreg(Surv(time = time, event = 1 - cnsr) ~ trt,
   subset = ext == 0
 )
 
+# DSB: needed?...
 exp(confint(exp_fit))
+
+# DSB: would be more useful for your story:
+exp(coef(exp_fit))
 
 ############################################################
 # Hybrid control analysis----
@@ -87,7 +91,7 @@ exp(confint(exp_fit))
 ?exponential_prior
 ?gamma_prior
 ?normal_prior
-?poisson_prior
+?poisson_prior # DSB: needed? as this is a count distribution?...
 ?uniform_prior
 
 ### Plotting priors
@@ -142,6 +146,14 @@ results <- mcmc_sample(
 class(results)
 
 ## Dictionary to interpret results ----
+
+# DSB: I wonder now if it could be nicer for the user to have another class
+# e.g. psborrow2MCMC which has a separate show method and directly includes
+# the description as a column in:
+results
+# DSB: this would not be a lot of programming effort
+
+# DSB: at least, maybe a tipp after running `mcmc_sample()` would be good.
 variable_dictionary(analysis_object)
 
 ## Evaluate draws object----
