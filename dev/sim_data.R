@@ -1,5 +1,3 @@
-library(posterior)
-
 make_odds <- function(prob) {
   prob / (1 - prob)
 }
@@ -33,8 +31,7 @@ sim_single_matrix <- function(n = 500,
                               trt_or_cov1 = 1.5,
                               trt_or_cov2 = 1.5,
                               trt_or_cov3 = 0.75,
-                              trt_or_cov4 = 0.75
-                              ) {
+                              trt_or_cov4 = 0.75) {
   #' Creates simulated data for survival and binary endpoints w/ 4 covariates
   #'
   #' @param n number of simulated patients
@@ -71,19 +68,22 @@ sim_single_matrix <- function(n = 500,
   # Create a data frame with the subject IDs and treatment group
   cov <- data.frame(
     id = 1:n,
-    group = sample(c("internal control",
-                     "external control",
-                     "internal experimental"),
-                   size = n,
-                   replace = TRUE,
-                   prob = prob)
+    group = sample(c(
+      "internal control",
+      "external control",
+      "internal experimental"
+    ),
+    size = n,
+    replace = TRUE,
+    prob = prob
+    )
   )
 
   cov$ext <- as.integer(cov$group == "external control")
   cov$trt <- as.integer(cov$group == "internal experimental")
   cov$cov1 <- cov$cov2 <- cov$cov3 <- cov$cov4 <- integer(length = nrow(cov))
 
-  for (i in 1:NROW(cov)) {
+  for (i in seq(1, NROW(cov))) {
     if (cov$ext[i] == 1) {
       cov$cov1[i] <- rbinom(1, 1, make_prob(ext_or_cov1 * make_odds(cov1_baseline_prob)))
       cov$cov2[i] <- rbinom(1, 1, make_prob(ext_or_cov2 * make_odds(cov2_baseline_prob)))
@@ -134,41 +134,45 @@ sim_single_matrix <- function(n = 500,
 
   dat$bin_endpoint <- rbinom(n, 1, exlp)
 
-  dat <- dat[,c("id", "ext", "trt", "cov4", "cov3", "cov2", "cov1",
-                "eventtime", "status", "censor", "bin_endpoint")]
+  dat <- dat[, c(
+    "id", "ext", "trt", "cov4", "cov3", "cov2", "cov1",
+    "eventtime", "status", "censor", "bin_endpoint"
+  )]
 
-  # # Add propensity scores
-  # ps_model <- glm(ext ~ cov1 + cov2 + cov3 + cov4, data = dat, family = binomial)
-  # ps <- predict(ps_model, type = "response")
-  # dat$ps <- ps
+  colnames(dat) <- c(
+    "id", "ext", "trt", "cov4", "cov3", "cov2", "cov1",
+    "time", "status", "cnsr", "resp"
+  )
 
   as.matrix(dat)
 }
 
 set.seed(123)
-examp_mat <- sim_single_matrix()
-examp_df <- as.data.frame(examp_mat)
+example_matrix <- sim_single_matrix()
+usethis::use_data(example_matrix, overwrite = TRUE)
+
+examp_df <- as.data.frame(example_matrix)
 
 anls_noborrow <- create_analysis_obj(
-  examp_mat,
-  outcome = exp_surv_dist("eventtime", "censor", normal_prior(0, 1000)),
+  example_matrix,
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 1000)),
   borrowing = borrowing_details("No borrowing", "ext"),
   treatment = treatment_details(trt_flag_col = "trt", trt_prior = normal_prior(0, 1000))
 )
 res_noborrow <- mcmc_sample(anls_noborrow, iter_sampling = 10000, chains = 1)
 
 anls_borrow <- create_analysis_obj(
-  examp_mat,
-  outcome = exp_surv_dist("eventtime", "censor", normal_prior(0, 1000)),
+  example_matrix,
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 1000)),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details(trt_flag_col = "trt", trt_prior = normal_prior(0, 1000))
 )
 res_borrow <- mcmc_sample(anls_borrow, iter_sampling = 10000, chains = 1)
 
 anls_borrow_cov <- create_analysis_obj(
-  examp_mat,
+  example_matrix,
   covariates = add_covariates(c("cov1", "cov2", "cov3", "cov4"), normal_prior(0, 1000)),
-  outcome = exp_surv_dist("eventtime", "censor", normal_prior(0, 1000)),
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 1000)),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details(trt_flag_col = "trt", trt_prior = normal_prior(0, 1000))
 )
@@ -182,18 +186,22 @@ res_noborrow_tbl
 res_borrow_tbl
 res_borrow_tbl_cov
 
-ggsurvplot(survfit(Surv(eventtime, status) ~ ext, subset = trt == 0, data = examp_df))
+ggsurvplot(survfit(Surv(time, status) ~ ext, subset = trt == 0, data = examp_df))
 examp_df %>%
   count(status)
 
-# ggsurvplot(survfit(Surv(eventtime, status) ~ trt + ext, data = examp_df))
-# coxph(Surv(eventtime, status) ~ trt, data = examp_df, subset = ext == 0)
-# coxph(Surv(eventtime, status) ~ trt + cov1 + cov2 + cov3 + cov4, data = examp_df, subset = ext == 0)
-#
-# fstrt <- flexsurvreg(Surv(eventtime, status) ~ trt, dist = "exponential", data = examp_df, subset = ext == 0)
-# exp(coef(fstrt))
-# exp(confint(fstrt))
-#
-# fstrtcov <- flexsurvreg(Surv(eventtime, status) ~ trt +cov1 + cov2 + cov3 + cov4, dist = "exponential", data = examp_df, subset = ext == 0)
-# exp(coef(fstrtcov))
-# exp(confint(fstrtcov))
+ggsurvplot(survfit(Surv(time, status) ~ trt + ext, data = examp_df))
+coxph(Surv(time, status) ~ trt, data = examp_df, subset = ext == 0)
+coxph(Surv(time, status) ~ trt + cov1 + cov2 + cov3 + cov4, data = examp_df, subset = ext == 0)
+
+fstrt <- flexsurvreg(Surv(time, status) ~ trt, dist = "exponential", data = examp_df, subset = ext == 0)
+exp(coef(fstrt))
+exp(confint(fstrt))
+
+fstrtcov <- flexsurvreg(Surv(time, status) ~ trt + cov1 + cov2 + cov3 + cov4,
+  dist = "exponential",
+  data = examp_df,
+  subset = ext == 0
+)
+exp(coef(fstrtcov))
+exp(confint(fstrtcov))
