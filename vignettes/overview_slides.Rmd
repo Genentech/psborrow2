@@ -50,14 +50,12 @@ and collaborators has been integral to the package development (alphabetical):
 
 # Bayesian Dynamic Borrowing
 
-## Background
-
 ## Hybrid controls
 
-Hybrid control studies are those in which external data (i.e., from outside
-the trial of consideration) are used to supplement the control arm of a
-randomized, controlled trial (RCT) to increase study power and
-shorten trial duration or reduce the number of subjects needed to enroll.
+Hybrid control studies are those in which external data 
+are used to supplement the control arm of a
+randomized, controlled trial (RCT). The schematic below describes such 
+a scenario:
 
 <br>
 
@@ -67,11 +65,12 @@ shorten trial duration or reduce the number of subjects needed to enroll.
 
 ## Types of borrowing
 
-Consider the scenario just described. How best should we incorporate the
-knowledge we have on the external control arm?
+How best should we incorporate the knowledge we have on the external control arm?
 
-`psborrow2` allows the user to evaluate and compare three different
+There are several ways to do this. `psborrow2` allows for three 
 ways of incorporating external data:
+
+<br>
 
 ```{r echo = FALSE}
 library(gt)
@@ -96,17 +95,18 @@ tab_style(
 ## Standard Bayesian analysis without borrowing
 
 Consider a standard Bayesian model with survival as an endpoint without 
-external data. We will assume two parameters of interest:
+external data. This is equally valid in "No borrowing" and "Full borrowing" 
+approaches. There are two parameters of interest:
 
 - $\rho_{00}$, the hazard rate for the internal control
 - $\rho_{10}$, the hazard rate for the internal experimental
 
-The hazard rate would be:
+The hazard ratio, $\theta$, is therefore:
 $$
 \theta = \frac{\rho_{10}}{\rho_{00}}
 $$
 
-And the posterior distribution would be:
+And the posterior distribution of $\theta$ is:
 
 $$
 P(\theta | X) \propto P(X | \theta) \times P(\theta)
@@ -114,18 +114,19 @@ $$
 
 ## Bayesian Dynamic Borrowing
 
-In BDB, we introduce two more parameters: the hazard rate of the
-external cohort, $\rho_{01}$ and the precision parameter, $\tau$,
-also known as the "commensurability parameter".
+In BDB, we introduce two more parameters: 
 
-Information from the external control, $\rho_{01}$ is borrowed
-as a prior on $\rho_{00}$ through a hierarchical model. That is:
+- $\rho_{01}$, the hazard rate of the external control cohort
+- $\tau$, a precision parameter known as the "commensurability parameter"
+
+Information from $\rho_{01}$ is used in estimating $\rho_{00}$ through a 
+hierarchical model:
 
 $$
 \rho_{00} | \rho_{01} \sim Normal(\rho_{01}, \frac{1}{\tau})
 $$
 
-Therefore:
+The posterior distribution for $\theta$ is then:
 
 $$
 P(\theta, \tau | X) \propto P(X | \theta, \tau) \times P(\theta | \tau) \times P(\tau)
@@ -133,13 +134,9 @@ $$
 
 ## Impact of $\tau$
 
-The commensurability parameter dictates the extent of borrowing of the external
-control arm.
-
-At greater values of $\tau$, more borrowing is performed.
-As $\tau$ approaches infinity, the hierarchy collapses and
-the prior distribution on $\rho_{00}$ effectively
-becomes:
+$\tau$ dictates the extent of borrowing. At greater values of $\tau$, more 
+borrowing is performed. As $\tau$ approaches infinity, the prior distribution 
+on $\rho_{00}$ effectively becomes $\rho_{01}$:
 
 $$
 \rho_{00} \sim \rho_{01} \approxeq Normal(\rho_{01}, \infty)
@@ -181,29 +178,28 @@ ggplot(gamma_dens_df) +
   labs(
     x = "tau",
     y = "density",
-    fill = "prior"
+    fill = "hyperprior"
   ) +
   theme(
     legend.position = "bottom"
   )
 ```
 
-The $gamma(1, .001)$ distribution has higher density at
-higher levels of $\tau$ and will therefore induce more borrowing.
+The $gamma(1, .001)$ will induce more borrowing.
 
 # History of `psborrow2`
 
 ## `psborrow2` timeline
 
 `psborrow2` is the successor to [`psborrow`](https://cran.r-project.org/web/packages/psborrow/index.html),
-an R package for primarily facilitating simulation studies to aid trial
-design and understand the benefits of innovative methods such as Bayesian
-Dynamic Borrowing on operating characteristics.
+an R package for simulation studies to aid trial
+design and understand the benefits of BDB on
+operating characteristics.
 
 ```{r echo = FALSE}
 library(gt)
 psborrow2_history <- data.frame(
-  date = c("2019", "Q2 2021", "Q3 2021", "2021", "Q1 2022", "May 2022", "Jul 2022", "Sept 2022"),
+  date = c("2019", "Q2 2021", "Q3 2021", "2021", "Q1 2022", "May 2022", "Jul 2022", "Oct 2022"),
   desc = c(
     "psborrow development started",
     "CRAN v0.1.0 published",
@@ -225,44 +221,20 @@ tab_style(
 )
 ```
 
-## `psborrow2`: building and improving upon psborrow
-
-<center>
-![](psborrow_to_psborrow2.jpg){width=70%}
-</center>
-
 # Overview of package
 
 ## Package objectives
 
 `psborrow2` has two objectives:
 
-### <b><u>Facilitate BDB analyses</u></b>
-`psborrow2` has a user-friendly interface for applying
-analyses and handles the computationally-difficult MCMC sampling on behalf of the user.
+### <b><u>1) Facilitate BDB analyses</u></b>
+`psborrow2` has a user-friendly interface for conducting
+BDB analyses that handles the computationally-difficult MCMC sampling
+for the user
 
-### <b><u>Facilitate simulation studies of BDB</u></b>
-`psborrow2` can be used to compare different borrowing parameters
-(e.g. full borrowing, no borrowing, BDB) and other trial and BDB characteristics in a unified way
-to inform trial design and analysis.
-
-## Conducting BDB analyses in `psborrow2`
-
-When analyzing data, the goal is to create an object of class `Analysis`
-through the helper function `create_analysis_obj()`.
-
-<center>
-![](psborrow2_anls_schematic.jpg){width=50%}
-</center>
-
-## Conducting simulation studies in `psborrow2`
-
-When conducting a simulation study, the goal is to create an object of
-class `Simulation` through the helper function `create_simulation_obj()`.
-
-<center>
-![](psborrow2_sim_schematic.jpg){width=50%}
-</center>
+### <b><u>2) Facilitate simulation studies of BDB</u></b>
+`psborrow2` can be used to compare different trial and BDB characteristics in a 
+unified way in simulation studies to inform trial design
 
 # Demonstration of a single BDB analysis
 
@@ -276,17 +248,15 @@ library(psborrow2)
 head(example_matrix)
 ```
 
-We also may need this in `data.frame` format, so let's convert to
-`data.frame` for later as well.
-
-```{r}
+```{r include = FALSE}
 example_dataframe <- as.data.frame(example_matrix)
 ```
 
 ##
 
-The flags in this `data.frame` are explained in `?example_matrix`. For now,
-we need to understand that `trt` is a flag denoting receipt of the
+The flags in this `data.frame` are explained in `?example_matrix`. 
+
+For now, we need to understand that `trt` is a flag denoting receipt of the
 experimental treatment (`trt = 1L`) or the control therapy (`trt = 0L`).
 `ext` is a flag for external data status, `1L` for external data or `0L` for
 the internal trial.
@@ -298,30 +268,17 @@ table(
 )
 ```
 
-It looks like we have 120 patients in our internal control,
-260 in our internal experimental, and 344 in our external control.
+It looks like we have 48 patients in our internal control,
+95 in our internal experimental, and 357 in our external control.
 
 ## Naive internal comparisons
 
-In a scenario where results from a trial just became available, we may
-first want to conduct an internal comparison. Let's do this for
-the time to event endpoint in our study.
+In a scenario where an RCT is completed, we may
+first want to conduct an internal comparison. Let's evaluate a Cox proportional
+hazards model.
 
-```{r message = FALSE}
+```{r message = FALSE, echo = FALSE, fig.align = "center", fig.dim = c(5, 3)}
 library(survival)
-cox_fit <- coxph(Surv(time = time, event = 1 - cnsr) ~ trt,
-  data = example_dataframe,
-  subset = ext == 0
-)
-
-exp(confint(cox_fit))
-```
-
-##
-
-Let's also explore the Kaplan-Meier curves.
-
-```{r message = FALSE, fig.align = "center", fig.dim = c(6,4)}
 library(survminer)
 km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt, example_dataframe,
   subset = ext == 0
@@ -329,46 +286,101 @@ km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt, example_dataframe,
 ggsurvplot(fit = km_fit, data = example_dataframe)
 ```
 
-##
-
-Because later we will use an exponential survival distribution in our
-fully parametric Bayesian model, let's also do so here for comparison:
-
-```{r}
-library(flexsurv)
-exp_fit <- flexsurvreg(Surv(time = time, event = 1 - cnsr) ~ trt,
-  dist = "exponential",
+<center>
+```{r message = FALSE, echo = FALSE}
+library(broom)
+library(tidyverse)
+cox_fit <- coxph(Surv(time = time, event = 1 - cnsr) ~ trt,
   data = example_dataframe,
   subset = ext == 0
 )
 
-exp(confint(exp_fit))
+tidy(cox_fit, exponentiate = TRUE, conf.int = TRUE) %>% 
+  gt() %>% 
+  fmt_number(columns = 2:7, decimals = 2)
 ```
+
+</center>
+
+
+Here, the hazard ratio is 0.87 (95% CI 0.61 - 1.24).
+
+##
+
+Because later we will use an exponential survival distribution in our
+fully parametric Bayesian model, let's also evaluate the internal results 
+with an exponential model:
+
+<center>
+```{r echo = FALSE}
+library(flexsurv)
+exp_fit <- flexsurvreg(Surv(time = time, event = 1 - cnsr) ~ trt,
+  dist = "exponential",
+  data = filter(example_dataframe, ext == 0),
+)
+
+tidy(exp_fit, conf.int = TRUE, transform = "coefs.exp") %>% 
+  gt() %>% 
+  fmt_number(columns = 2:7, decimals = 2)
+```
+
+</center>
+
+Here, the hazard ratio is very similar to the Cox proportional hazards 
+model: 0.88 (95% CI 0.62 - 1.25).
 
 ## Hybrid control analysis
 
-We now may want to adjust conduct a Bayesian Dynamic Borrowing model that
-incorporates external control data. Remember, our ultimate goal is to
-create an object of class `Analysis` with `create_analysis_obj()`:
+For a BDB analyiss, we want to create an object of class `Analysis`
+with `create_analysis_obj()`. There are five 
+required arguments: 
 
-```
+```{r eval = FALSE}
 create_analysis_obj(
   data_matrix,
+  covariates,
   outcome,
   borrowing,
   treatment
 )
 ```
 
+```{r echo = FALSE}
+gt(
+  tribble(
+    ~Argument, ~Description,
+    "data_matrix", "The data matrix, including all relevant outcome variables, and treatment arm and external control arm flags.",
+    "covariates", "Object of class Covariates as output by the function add_covariates().",
+    "outcome", "Object of class Outcome as output by exp_surv_dist(), weib_ph_surv_dist(), or logistic_bin_outcome().",
+    "borrowing", "Object of class Borrowing as output by borrowing_details().",
+    "treatment", "Object of class Treatment as output by treatment_details()."
+  )) %>% 
+  tab_style(
+  locations = cells_body(columns = "Argument"),
+  style = list(
+    cell_text(weight = "bold")
+  ))
+```
+
 ## Outcome class
 
 Let's start with the `Outcome` class. There are three different
-classes currently supported by `psborrow2`, which can be evaluated with:
+classes currently supported by `psborrow2`, each of which has a 
+custom constructor:
 
-```
-?exp_surv_dist
-?weib_ph_surv_dist
-?logistic_bin_outcome
+```{r, echo = FALSE}
+gt(
+  tribble(
+    ~Constructor, ~Description,
+    "exp_surv_dist()", "Exponential survival distribution",
+    "weib_ph_surv_dist()", "Weibull survival distribution (proportional hazards formulation)",
+    "logistic_bin_outcome()", "Bernoulli distribution with logit parametrization"
+  )) %>% 
+  tab_style(
+  locations = cells_body(columns = "Constructor"),
+  style = list(
+    cell_text(weight = "bold")
+  ))
 ```
 
 ##
@@ -377,54 +389,64 @@ Let's create an exponential survival
 distribution with the constructor `exp_surv_dist()`. Note there are three
 arguments:
 
-```
+```{r eval = FALSE}
 exp_surv_dist(time_var,
               cens_var,
               baseline_prior)
 ```
 
-The first two arguments are simply the names of the time column and censorship flag
-column in our data matrix. `baseline_prior` refers to the prior distribution for
-the <b>log hazard rate of the external control arm</b> if we are doing Bayesian
-Dynamic Borrowing.
+The first two arguments are straightforward:
+
+- `time_var`, Name of time variable column in model matrix
+- `cens_var`, Name of the censorship variable flag in model matrix
+
+The final argument is more complicated:
+
+- `baseline_prior`, Prior distribution for the log hazard rate of the external
+control arm.
 
 ##
 
-How do we create objects of class `Prior`? There are many
-priors available. Be sure to evaluate the help pages for them:
+How do we specify a prior distribution for `baseline_prior`? We can do so with
+`Prior` class objects. These all follow a naming convention of: 
+distribution name + `_prior()`, e.g.:
 
-```
-?bernoulli_prior
-?beta_prior
-?cauchy_prior
-?exponential_prior
-?gamma_prior
-?normal_prior
-?poisson_prior
-?uniform_prior
+```{r eval = FALSE}
+bernoulli_prior()
+beta_prior()
+cauchy_prior()
+exponential_prior()
+gamma_prior()
+normal_prior()
+poisson_prior()
+uniform_prior()
 ```
 
 ##
 
-Each prior has a `plot` method. Let's confirm that a normal distribution
-centered at 0 and with wide variance appears to be an uninformative:
+Each `Prior` object has a `plot` method. Let's confirm that a normal distribution
+centered at 0 and with wide variance appears to be uninformative:
 
 ```{r fig.align = "center", fig.dim = c(6,4)}
-plot(normal_prior(mu = 0, sigma = 10000),
+plot(
+  normal_prior(mu = 0, sigma = 10000),
   xlim = c(-100, 100),
   ylim = c(0, 0.1)
 )
 ```
 
-#
+##
 
-Each prior has a `plot` method. Let's confirm that a normal distribution
-centered at 0 and with wide variance appears to be an uninformative:
+For the sake of example, let's also see what an informative normal prior may
+look like:
 
 ```{r fig.align = "center", fig.dim = c(6,4)}
-plot(gamma_prior(alpha = 0.001, beta = 0.001))
+plot(
+  normal_prior(mu = 0, sigma = 10),
+  xlim = c(-100, 100),
+  ylim = c(0, 0.1)
+)
 ```
-
 
 ##
 
@@ -450,17 +472,35 @@ exp_outcome
 ## Borrowing class
 
 Next, we'll create an object of class `Borrowing` through the constructor
-`borrowing_details`. We need to specify  `tau_prior`, which refers to the
-hyperprior for the commensurability parameter. We'll
-use a gamma distribution to create a largely uninformative prior:
+`borrowing_details`. We need to specify  three arguments:
+
+```{r eval = FALSE}
+borrowing_details(
+  method, 
+  ext_flag_col,
+  tau_prior
+)
+```
+
+- `method`, The type of borrowing to perform. It must be one of: `'BDB'`, 
+`'Full borrowing'`, or `'No borrowing'`
+- `ext_flag_col`, The name of the column in the data matrix that corresponds to 
+the external control flag
+- `tau_prior`, the hyperprior for the commensurability parameter (only 
+necessary for 'BDB')
+
+## 
+
+We'll use a gamma distribution to create a largely uninformative prior. In 
+the context of $\tau$, density concentrated around 0 is uninformative.
 
 ```{r fig.align = "center", fig.dim = c(6, 4)}
-plot(gamma_prior(0.001, 0.001), xlim = c(-10, 1000))
+plot(gamma_prior(0.001, 0.001), xlim = c(-10, 100))
 ```
 
 ##
 
-Now let's use this gamma prior to create our `Borrowing` object:
+Now, let's create our `Borrowing` object:
 
 ```{r}
 bdb_borrowing <- borrowing_details(
@@ -481,8 +521,24 @@ bdb_borrowing
 ## Treatment class
 
 Finally, we'll create an object of class `Treatment` through the constructor
-`treatment_details`. In addition to column names, we need to provide a prior
-distribution for the log hazard rate. Let's assume an uninformative prior.
+`treatment_details`. Only two arguments are required:
+
+```{r eval = FALSE}
+treatment_details(
+  trt_flag_col,
+  trt_prior
+)
+```
+
+- `trt_flag_col`, The name of the column in the model matrix that corresponds to
+the treatment flag
+- `trt_prior`, Object of class `Prior` specifying the prior distribution of the
+log hazard ratio for the experimental treatment
+
+## 
+
+Let's assume an uninformative prior distribution for the log hazard ratio
+of treatment and create our `Treatment` object:
 
 ```{r}
 trt_details <- treatment_details(
@@ -520,34 +576,27 @@ Let's print the `Analysis` object:
 analysis_object
 ```
 
-Note that it tells us the inputs are valid and suggests calling `mcmc_sample()`
-as a next step. Let's follow that advice!
-
 ## Sampling from an analysis object
 
-The `Analysis` object contains all the data we need, plus a pre-compiled
-MCMC sampler. Let's go ahead and take draws from the posterior distribution
-using the function `mcmc_sample()`. Look at `?mcmc_sample` to better understand
-the arguments to this function:
+The `Analysis` object suggests calling `mcmc_sample()`
+as a next step. We'll follow that advice! Let's go ahead and take draws from the
+posterior distribution using the function `mcmc_sample()`.
+
+Look at `?mcmc_sample` for additional MCMC options that can be specified
+in the analysis.
 
 ```{r include = FALSE}
 results <- mcmc_sample(
   x = analysis_object,
   iter_warmup = 1000,
-  iter_sampling = 500,
-  chains = 2
+  iter_sampling = 1000,
+  chains = 1
 )
 ```
 
 ```{r eval = FALSE}
-results <- mcmc_sample(
-  x = analysis_object,
-  iter_warmup = 1000,
-  iter_sampling = 500,
-  chains = 2
-)
+results <- mcmc_sample(analysis_object)
 ```
-
 
 ##
 
@@ -559,68 +608,48 @@ class(results)
 
 At this point in our analysis, we should refer
 to the [`cmdstanr`](https://github.com/stan-dev/cmdstanr) help pages for
-methods to apply to these objects, as we will only discuss a couple here.
+methods to apply to these objects.
 
 ##
 
-For instance, the `$summary()` method prints a `data.frame` / `tibble` of results:
+Let's look at a summary of the median and 95% credible intervals for the
+parameters that our model evaluated:
 
-```{r}
-results$summary()
-```
-
-##
-
-You may be wondering what the parameters in the `results` object refer to.
-For that reason, there is the `variable_dictionary()` function:
-
-```{r}
-variable_dictionary(analysis_object)
-```
-
-According to the variable dictionary, our primary estimand is `HR_trt`.
-
-##
-
-The `$draws()` method returns `draws` objects, which are objects shared
-across many sampling packages in `R`:
-
-```{r}
-draws <- results$draws()
-```
-
-```{r}
-class(draws)
-```
-
-##
-
-With `draws` objects, we can use many other packages such as `posterior`.
-Let's use `posterior` to see the 95% credible intervals instead of the default
-90% credible intervals:
-
-```{r message = FALSE}
+```{r echo = FALSE, message=FALSE, warning=FALSE}
 library(posterior)
-summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.975)))
+library(bayesplot)
+draws <- results$draws()
+draws <- rename_draws_covariates(draws, analysis_object)
+
+summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975))) %>% 
+  filter(variable != 'lp__') %>% 
+  gt() %>% 
+  fmt_number(2:4, decimals = 2) %>% 
+  tab_style(
+    locations = cells_body(rows = 5),
+    style = list(
+      cell_text(weight = "bold"),
+      cell_fill(color = "lightcyan")
+    ))
+
+```
+
+<br>
+
+```{r message = FALSE, fig.align = "center", echo = FALSE, fig.dim = c(4, 2.5)}
+library(bayesplot)
+mcmc_hist(draws, c("treatment HR")) + 
+   geom_vline(aes(xintercept = 1.0), linetype = 2)
 ```
 
 ##
-
-We can also use `draws` with the package `bayesplot`. Let's look at
-the histogram of draws for our estimand of interest, the treatment hazard
-ratio:
-
-```{r message = FALSE, fig.align = "center"}
-library(bayesplot)
-mcmc_hist(draws, c("HR_trt"))
-```
 
 Interestingly, our results did not change substantially after using
-Bayesian dynamic borrowing. This suggests that perhaps our outcome
-distributions are dissimilar between internal and external control. Let's check:
-<<<<<<< Updated upstream
+BDB This suggests that perhaps our outcome
+distributions are dissimilar between internal and external control. 
+Let's check:
 
-```{r, fig.align="center", fig.dim = c(3,2)}
+```{r, fig.align="center", fig.dim = c(6,4), echo = FALSE}
 ggsurvplot(
   survfit(Surv(time, 1 - cnsr) ~ ext, example_dataframe,
     subset = trt == 0
@@ -632,18 +661,14 @@ ggsurvplot(
 ## Evaluating balance between cohorts
 
 Maybe our cohorts are imbalanced:
-
-```{r, message = FALSE, fig.align = "center", warning = FALSE}
+<center>
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
 library(table1)
-t1 <- table1(~ cov1 + cov2 |
+t1 <- table1(~ cov1 + cov2 + cov3 + cov4|
   factor(trt, levels = 0:1, labels = c("Control", "Treatment")) +
     factor(ext, levels = 0:1, labels = c("Internal", "External")),
 data = example_dataframe
 )
-```
-
-<center>
-```{r}
 t1
 ```
 </center>
@@ -658,39 +683,35 @@ Let's consider adjusting for these imbalances through the use of
 propensity scores. First, we'll build a propensity score model:
 
 ```{r}
-ps_model <- glm(ext ~ cov1 + cov2, data = example_dataframe, family = binomial)
+ps_model <- glm(ext ~ cov1 + cov2 + cov3 + cov4,
+                data = example_dataframe, 
+                family = binomial)
 ```
 
-Let's incorporate the propensity scores back into our example `data.frame`.
 ```{r}
+ps_model
+```
+
+##
+
+We'll then incorporate the propensity scores back into our example `data.frame`
+and create propensity score quartiles for which we'll adjust.
+```{r include = FALSE}
 ps <- predict(ps_model, type = "response")
 example_dataframe$ps <- ps
 ```
 
-```{r}
-head(example_dataframe)
-```
 
-##
-
-Now let's convert into propensity score quartiles for which we will adjust:
-
-```{r, message = FALSE}
-example_dataframe$ps_cat <- cut(example_dataframe$ps,
-  breaks = c(0, .2, .4, .8, 1),
+```{r, include = FALSE}
+example_dataframe$ps_cat_ <- cut(
+  example_dataframe$ps,
+  breaks = 5,
   include.lowest = TRUE
 )
+levels(example_dataframe$ps_cat_) <- c("ref", "low", 
+                                      "low_med", "high_med", "high")
+
 ```
-
-```{r}
-head(example_dataframe)
-```
-
-##
-
-`psborrow2` has a helper function to convert a `data.frame` into a matrix.
-Let's use this function to create a matrix with our propensity score
-quartiles:
 
 ```{r include = FALSE}
 example_matrix_ps <- create_data_matrix(
@@ -698,17 +719,7 @@ example_matrix_ps <- create_data_matrix(
   outcome = c("time", "cnsr"),
   trt_flag_col = "trt",
   ext_flag_col = "ext",
-  covariates = ~ps_cat
-)
-```
-
-```{r eval = FALSE}
-example_matrix_ps <- create_data_matrix(
-  example_dataframe,
-  outcome = c("time", "cnsr"),
-  trt_flag_col = "trt",
-  ext_flag_col = "ext",
-  covariates = ~ps_cat
+  covariates = ~ps_cat_
 )
 ```
 
@@ -716,498 +727,410 @@ example_matrix_ps <- create_data_matrix(
 head(example_matrix_ps)
 ```
 
-<!-- ## Propensity score analysis, no borrowing -->
-
-<!-- Let's do our propensity score analysis, first without any borrowing. First, -->
-<!-- we make an `Analysis` object: -->
-
-<!-- ```{r message = FALSE} -->
-<!-- anls_ps_no_borrow <- create_analysis_obj( -->
-<!--   data_matrix = example_matrix_ps, -->
-<!--   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)), -->
-<!--   borrowing = borrowing_details("No borrowing", "ext"), -->
-<!--   treatment = treatment_details("trt", normal_prior(0, 10000)), -->
-<!--   covariates = add_covariates( -->
-<!--     c( -->
-<!--       "ps_cat(0.2,0.4]", -->
-<!--       "ps_cat(0.4,0.8]", -->
-<!--       "ps_cat(0.8,1]" -->
-<!--     ), -->
-<!--     normal_prior(0, 10000) -->
-<!--   ) -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- anls_ps_no_borrow -->
-<!-- ``` -->
-
-<!-- ## -->
-
-<!-- We then sample from the `Analysis` object and evaluate 95% credible intervals: -->
-
-<!-- ```{r message = FALSE, include = FALSE} -->
-<!-- res_ps_no_borrow <- mcmc_sample( -->
-<!--   x = anls_ps_no_borrow, -->
-<!--   iter_warmup = 1000, -->
-<!--   iter_sampling = 500, -->
-<!--   chains = 2 -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ```{r eval = FALSE} -->
-<!-- res_ps_no_borrow <- mcmc_sample( -->
-<!--   x = anls_ps_no_borrow, -->
-<!--   iter_warmup = 1000, -->
-<!--   iter_sampling = 500, -->
-<!--   chains = 2 -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ## -->
-
-<!-- ```{r} -->
-<!-- summarize_draws(res_ps_no_borrow$draws(), ~ quantile(.x, probs = c(0.025, 0.975))) -->
-<!-- ``` -->
-
-<!-- ## Propensity score analysis, Bayesian dynamic borrowing -->
-
-<!-- Let's do this again, this time with Bayesian Dynamic Borrowing: -->
-
-<!-- ```{r, include = FALSE} -->
-<!-- anls_ps_bdb <- create_analysis_obj( -->
-<!--   data_matrix = example_matrix_ps, -->
-<!--   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)), -->
-<!--   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)), -->
-<!--   treatment = treatment_details("trt", normal_prior(0, 10000)), -->
-<!--   covariates = add_covariates( -->
-<!--     c( -->
-<!--       "ps_cat(0.2,0.4]", -->
-<!--       "ps_cat(0.4,0.8]", -->
-<!--       "ps_cat(0.8,1]" -->
-<!--     ), -->
-<!--     normal_prior(0, 10000) -->
-<!--   ) -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ```{r, echo = FALSE} -->
-<!-- anls_ps_bdb <- create_analysis_obj( -->
-<!--   data_matrix = example_matrix_ps, -->
-<!--   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)), -->
-<!--   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)), -->
-<!--   treatment = treatment_details("trt", normal_prior(0, 10000)), -->
-<!--   covariates = add_covariates( -->
-<!--     c( -->
-<!--       "ps_cat(0.2,0.4]", -->
-<!--       "ps_cat(0.4,0.8]", -->
-<!--       "ps_cat(0.8,1]" -->
-<!--     ), -->
-<!--     normal_prior(0, 10000) -->
-<!--   ) -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- anls_ps_bdb -->
-<!-- ``` -->
-
-<!-- ## -->
-
-<!-- We then sample from the `Analysis` object and evaluate 95% credible intervals: -->
-
-<!-- ```{r message = FALSE, include = FALSE} -->
-<!-- res_ps_bdb <- mcmc_sample( -->
-<!--   x = anls_ps_bdb, -->
-<!--   iter_warmup = 1000, -->
-<!--   iter_sampling = 500, -->
-<!--   chains = 2 -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ```{r eval = FALSE} -->
-<!-- res_ps_bdb <- mcmc_sample( -->
-<!--   x = anls_ps_bdb, -->
-<!--   iter_warmup = 1000, -->
-<!--   iter_sampling = 500, -->
-<!--   chains = 2 -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ## -->
-
-<!-- ```{r} -->
-<!-- summarize_draws(res_ps_bdb$draws(), ~ quantile(.x, probs = c(0.025, 0.975))) -->
-<!-- ``` -->
-
-<!-- ## Summary of `psborrow2` for conducting Bayesian Dynamic Borrowing analyses -->
-
-<!-- In just a few lines of code, `psborrow2` is able to: -->
-
-<!-- * Help the user think about and specify inputs to a Bayesian analysis -->
-<!-- * Create and compile an MCMC sampler -->
-<!-- * Summarize results from the posterior distribution -->
-
-<!-- # Demonstration of a simulation study -->
-
-<!-- ## Simulation study -->
-
-<!-- We now turn to the question of how to design trials with Bayesian -->
-<!-- dynamic borrowing in mind. Here, our ultimate goal is to -->
-<!-- create an object of class `Simulation` with `create_simulation_obj()`: -->
-
-<!-- ``` -->
-<!-- create_simulation_obj( -->
-<!--   data_matrix_list, -->
-<!--   outcome, -->
-<!--   borrowing, -->
-<!--   treatment -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- If this looks similar to `create_analysis_obj()`, that is by design! -->
-
-<!-- ## Important information on inputs! -->
-
-<!-- All the inputs to `create_simulation_obj()` except the data argument -->
-<!-- can be identical to those to `create_analysis_obj()`. That is, if you only -->
-<!-- want to simulate with one treatment prior distribution, you can specify: -->
-
-<!-- ``` -->
-<!-- treatment = treatment_details("trt", normal_prior(0, 1000)) -->
-<!-- ``` -->
-
-<!-- If you want to specify multiple scenarios (maybe an informative -->
-<!-- and uninformative prior), you effectively make a list of the treatment -->
-<!-- details. We'll show this for the case of borrowing below. -->
-
-<!-- ## `sim_data_list()` -->
-
-<!-- To fill in `create_simulation_obj()`, the first argument we need to fill in -->
-<!-- is `data_matrix_list`. This argument requires a special `psborrow2` -->
-<!-- data matrix list created by the function `sim_data_list`. -->
-
-<!-- The key inputs to `sim_data_list` are: -->
-
-<!-- ``` -->
-<!-- sim_data_list( -->
-<!--   data_list, -->
-<!--   guide, -->
-<!--   effect, -->
-<!--   drift, -->
-<!--   index -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- The first of these is a list of lists of matrices. At the highest level, -->
-<!-- we'll index different data generation parameters. At the lowest level, -->
-<!-- we'll index different matrices generated with these parameters. -->
-
-<!-- ## -->
-
-<!-- For instance, supposing we have a function called `sim_single_matrix()` -->
-<!-- that creates a matrix with 600 patients according to a true hazard ratio -->
-<!-- and drift hazard ratio (i.e., the ratio between the external and internal controls). -->
-<!-- That function may work as follows: -->
-
-<!-- ```{r, include = FALSE} -->
-<!-- library(simsurv) -->
-<!-- sim_single_matrix <- function(true_hr = 0.6, -->
-<!--                               drift_hr = 1.0, -->
-<!--                               n = 600) { -->
-<!--   cov <- data.frame( -->
-<!--     id = 1:n, -->
-<!--     trt = rbinom(n, 1, 0.5) -->
-<!--   ) -->
-<!--   cov$ext <- ifelse(cov$trt == 1L, 0L, rbinom(sum(cov$trt), 1, 0.5)) -->
-
-<!--   # Simulate the event times -->
-<!--   dat <- simsurv( -->
-<!--     lambdas = 0.1, -->
-<!--     gammas = 1.5, -->
-<!--     betas = c( -->
-<!--       trt = log(true_hr), -->
-<!--       ext = log(drift_hr) -->
-<!--     ), -->
-<!--     x = cov, -->
-<!--     maxt = 5 -->
-<!--   ) -->
-
-<!--   dat$censor <- 1 - dat$status -->
-
-<!--   # Merge the simulated event times onto covariate data frame -->
-<!--   dat <- merge(cov, dat) -->
-
-<!--   as.matrix(dat) -->
-<!-- } -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- single_mat <- sim_single_matrix( -->
-<!--   true_hr = 0.6, -->
-<!--   drift_hr = 1.0 -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- head(single_mat) -->
-<!-- ``` -->
-
-<!-- ## -->
-
-<!-- We could use this function to generate lists of lists of data: -->
-
-<!-- ```{r include = FALSE} -->
-<!-- set.seed(12345) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- # Create list of lists of data -->
-<!-- my_data_list <- list( -->
-<!--   lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.0)), -->
-<!--   lapply(1:20, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.0)), -->
-<!--   lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)), -->
-<!--   lapply(1:20, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.5)) -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- NROW(my_data_list) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- NROW(my_data_list[[1]]) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- my_data_list[[1]][[1]][1, ] -->
-<!-- ``` -->
-
-<!-- ## -->
-
-<!-- Looking back at `?sim_data_list`, the next thing we need to specify is -->
-<!-- `guide`, which is a `data.frame` that explains how the top-level data generation -->
-<!-- parameters differ in our simulated data list. Let's make a guide with -->
-<!-- all four scenarios we created: -->
-
-<!-- ```{r} -->
-<!-- my_sim_data_guide <- expand.grid( -->
-<!--   true_hr = c(0.6, 1.0), -->
-<!--   drift_hr = c(1.0, 1.5) -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- my_sim_data_guide$id <- seq(1, NROW(my_sim_data_guide)) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- my_sim_data_guide -->
-<!-- ``` -->
-
-<!-- ## -->
-
-<!-- Finally, we need to specify where in the `guide` three important features are: -->
-<!-- the true hazard ratio, the drift hazard ratio, and the index. These are all -->
-<!-- the columns we have in our guide, so we simply specify the inputs: -->
-
-<!-- ```{r} -->
-<!-- my_sim_data_list <- sim_data_list( -->
-<!--   data_list = my_data_list, -->
-<!--   guide = my_sim_data_guide, -->
-<!--   effect = "true_hr", -->
-<!--   drift = "drift_hr", -->
-<!--   index = "id" -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- my_sim_data_list -->
-<!-- ``` -->
-
-<!-- ## Borrowing list -->
-
-<!-- For this simulation study, let's focus on comparing three borrowing methods: -->
-
-<!-- * No borrowing -->
-<!-- * Full borrowing -->
-<!-- * Bayesian dynamic borrowing -->
-
-<!-- To compare those three methods, we'll use a special list of `Borrowing` objects, -->
-<!-- which we'll create through the function `sim_borrowing_list()`. Note that -->
-<!-- if we did not want to vary any inputs, we could simply use the constructor -->
-<!-- `borrowing_details()`. -->
-
-<!-- ## -->
-
-<!-- `sim_borrowing_list()` just needs a named list of `Borrowing` objects -->
-<!-- as inputs, so let's pass one: -->
-
-<!-- ```{r} -->
-<!-- my_borrowing_list <- sim_borrowing_list( -->
-<!--   list( -->
-<!--     "No borrowing" = borrowing_details("No borrowing", "ext"), -->
-<!--     "Full borrowing" = borrowing_details("Full borrowing", "ext"), -->
-<!--     "BDB" = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)) -->
-<!--   ) -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- my_borrowing_list -->
-<!-- ``` -->
-
-<!-- ## `create_simulation_obj()` -->
-
-<!-- Now, let's create a simulation object, filling in reasonable defaults -->
-<!-- for `outcome` and `treatment`, which are features of the simulation study -->
-<!-- we are not varying. -->
-
-<!-- ```{r} -->
-<!-- simulation_obj <- create_simulation_obj( -->
-<!--   my_sim_data_list, -->
-<!--   outcome = exp_surv_dist("eventtime", -->
-<!--     "censor", -->
-<!--     baseline_prior = normal_prior(0, 10000) -->
-<!--   ), -->
-<!--   borrowing = my_borrowing_list, -->
-<!--   treatment = treatment_details( -->
-<!--     trt_flag_col = "trt", -->
-<!--     trt_prior = normal_prior(0, 10000) -->
-<!--   ) -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- ## `mcmc_sample()` -->
-
-<!-- As with `Analysis` objects, the next step for us with `Simulation` objects -->
-<!-- is to call `mcmc_sample()`: -->
-
-<!-- ```{r, include = FALSE} -->
-<!-- simulation_res <- mcmc_sample( -->
-<!--   x = simulation_obj, -->
-<!--   iter_warmup = 1000, -->
-<!--   iter_sampling = 500, -->
-<!--   chains = 1 -->
-<!-- ) -->
-<!-- ``` -->
-
-
-<!-- ```{r, eval = FALSE} -->
-<!-- simulation_res <- mcmc_sample( -->
-<!--   x = simulation_obj, -->
-<!--   iter_warmup = 1000, -->
-<!--   iter_sampling = 500, -->
-<!--   chains = 1 -->
-<!-- ) -->
-<!-- ``` -->
-
-
-<!-- ## -->
-
-<!-- You'll note the simulation study results are a special `psborrow2` class, -->
-<!-- <b>NOT</b> a `CmdStanMCMC` object (as with `Analysis` objects). -->
-
-<!-- ```{r} -->
-<!-- simulation_res -->
-<!-- ``` -->
-
-<!-- Let's get a useful `data.frame` of results by calling `get_results`: -->
-
-<!-- ```{r} -->
-<!-- simulation_res_df <- get_results(simulation_res) -->
-<!-- ``` -->
-
-<!-- ## Simulation study results -->
-
-<!-- You can see that the simulation study results `data.frame` is essentially -->
-<!-- the cartesian product of our starting `sim_data_list` parameters and the three -->
-<!-- borrowing scenarios we evaluated: -->
-
-<!-- ```{r} -->
-<!-- head(simulation_res_df, 2) -->
-<!-- ``` -->
-
-<!-- ## -->
-
-<!-- Let's see what exactly is contained in the results. -->
-
-<!-- ```{r} -->
-<!-- colnames(simulation_res_df) -->
-<!-- ``` -->
-
-<!-- Several results columns exist that summarize results across iterations of the -->
-<!-- same study parameters: -->
-
-<!-- * `mse_mean`, the mean MSE for results -->
-<!-- * `bias_mean`, the mean bias for the results -->
-<!-- * `null_coverage`, the proportion of results that contain the null effect (1.0) -->
-<!-- in the specified credible interval quantiles (default are 0.025 - 0.975) -->
-<!-- * `true_coverage`, the proportion of results that contain the true effect -->
-<!-- in the specified credible interval quantiles (default are 0.025 - 0.975) -->
-
-<!-- ## -->
-
-<!-- Let's look at the number of parameter combinations that were evaluated: -->
-
-<!-- ```{r} -->
-<!-- NROW(simulation_res_df) -->
-<!-- ``` -->
-
-<!-- This makes sense as we had -->
-<!-- `r NROW(my_sim_data_guide)` scenarios in our data generation step and -->
-<!-- `r NROW(my_borrowing_list@guide)` in our borrowing step. The cartesian -->
-<!-- product is `r NROW(simulation_res_df)`. -->
-
-<!-- ## MSE -->
-
-<!-- We can use the results to plot MSE by scenario as below: -->
-
-<!-- ```{r, echo = FALSE, fig.align = "center"} -->
-<!-- ggplot(simulation_res_df) + -->
-<!--   geom_bar(aes(x = factor(true_hr), fill = borrowing_scenario, y = mse_mean), -->
-<!--     stat = "identity", position = "dodge" -->
-<!--   ) + -->
-<!--   labs( -->
-<!--     fill = "Borrowing scenario", -->
-<!--     x = "True HR", -->
-<!--     y = "MSE" -->
-<!--   ) + -->
-<!--   facet_wrap(~ paste0("drift HR = ", drift_hr)) + -->
-<!--   scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC")) -->
-<!-- ``` -->
-
-<!-- ## Type I error -->
-
-<!-- Because we included a true HR of 1.0, we can evaluate type I error by looking -->
-<!-- at the compliment to the true parameter coverage: -->
-
-<!-- ```{r, echo = FALSE, fig.align = "center"} -->
-<!-- ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) + -->
-<!--   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - true_coverage), -->
-<!--     stat = "identity", position = "dodge" -->
-<!--   ) + -->
-<!--   labs( -->
-<!--     fill = "Borrowing scenario", -->
-<!--     x = "drift HR", -->
-<!--     y = "Type I error" -->
-<!--   ) + -->
-<!--   scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC")) -->
-<!-- ``` -->
-
-<!-- ## Power -->
-
-<!-- We can include power by looking at the results for our true simulation of 0.6. -->
-
-<!-- ```{r, echo = FALSE, fig.align = "center"} -->
-<!-- ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) + -->
-<!--   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - true_coverage), -->
-<!--     stat = "identity", position = "dodge" -->
-<!--   ) + -->
-<!--   labs( -->
-<!--     fill = "Borrowing scenario", -->
-<!--     x = "drift HR", -->
-<!--     y = "Type I error" -->
-<!--   ) + -->
-<!--   scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC")) -->
-<!-- ``` -->
+
+## Adjusting for covariates in `psborrow2`
+
+Let's do another BDB analysis, but this time we'll adjust for PS values.
+To adjust for variables in `psborrow2`, use the function `add_covariates()`:
+
+```{r eval = FALSE}
+add_covariates(
+  covariates,
+  priors
+)
+```
+
+- `covariates`, Names of columns in the data matrix containing covariates to
+be adjusted for
+- `priors`, Either a single object of class `Prior` specifying the prior 
+distribution to apply to all covariates or a named list of distributions of 
+class `Prior`, one for each covariate
+
+## Analysis object adjusting for propensity scores
+
+```{r message = FALSE}
+analysis_object_ps <- create_analysis_obj(
+  data_matrix = example_matrix_ps, 
+  covariates = add_covariates(
+    c("ps_cat_low", "ps_cat_low_med",
+      "ps_cat_high_med", "ps_cat_high" ),
+    normal_prior(0, 10000)),
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+  borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
+  treatment = treatment_details("trt", normal_prior(0, 10000))
+)
+```
+
+```{r eval = FALSE}
+results_ps <- mcmc_sample(analysis_object_ps)
+```
+
+```{r include = FALSE}
+results_ps <- mcmc_sample(analysis_object_ps, 
+                          iter_warmup = 1000, 
+                          iter_sampling = 1000,
+                          chains = 1)
+```
+
+## 
+
+It looks like we do indeed see a treatment effect when relevant
+confounders are taken into consideration!
+
+```{r echo = FALSE}
+draws_ps <- results_ps$draws()
+draws_ps <- rename_draws_covariates(draws_ps, analysis_object_ps)
+
+summarize_draws(draws_ps, ~ quantile(.x, probs = c(0.025, 0.50, 0.975))) %>% 
+  filter(variable != 'lp__') %>% 
+  gt() %>% 
+  fmt_number(2:4, decimals = 2) %>% 
+  tab_style(
+  locations = cells_body(rows = 9),
+    style = list(
+      cell_text(weight = "bold"),
+      cell_fill(color = "lightcyan")
+    ))
+```
+
+##
+
+```{r echo = FALSE, message = FALSE, warning = FALSE, fig.dim = c(6, 4), fig.align='center'}
+mcmc_hist(draws_ps, c("treatment HR")) + 
+  geom_vline(aes(xintercept = 1.0), linetype = 2)
+```
+
+# Demonstration of a simulation study
+
+## Simulation study
+
+We now turn to the question of how to design trials with BDB 
+in mind. Here, we will need to
+create an object of class `Simulation` with `create_simulation_obj()`:
+
+```{r eval = FALSE}
+create_simulation_obj(
+  data_matrix_list,
+  outcome,
+  borrowing,
+  treatment
+)
+```
+
+If this looks similar to `create_analysis_obj()`, that is by design!
+
+## Important information on inputs!
+
+All the inputs to `create_simulation_obj()` except the data argument
+can be identical to those to `create_analysis_obj()`. That is, if you only
+want to simulate with one treatment prior distribution, you can specify:
+
+```{r eval = FALSE}
+treatment = treatment_details("trt",
+                              normal_prior(0, 1000)
+                              )
+```
+
+If you want to specify multiple scenarios (maybe an informative
+and uninformative prior), you effectively make a list of the treatment
+details. 
+
+## `sim_data_list()`
+
+To fill in `create_simulation_obj()`, the first argument we need to fill in
+is `data_matrix_list`. This argument requires a special `psborrow2`
+data matrix list created by the function `sim_data_list`.
+
+The key inputs to `sim_data_list` are:
+
+```{r eval = FALSE}
+sim_data_list(
+  data_list,
+  guide,
+  effect,
+  drift,
+  index
+)
+```
+
+The first of these is a list of lists of matrices. At the highest level,
+we'll index different data generation parameters. At the lowest level,
+we'll index different matrices generated with these parameters.
+
+##
+
+Suppose we have a list of lists of simulated data called
+`my_data_list`:
+
+```{r, include = FALSE}
+library(simsurv)
+sim_single_matrix <- function(true_hr = 0.6,
+                              drift_hr = 1.0,
+                              n = 600) {
+  cov <- data.frame(
+    id = 1:n,
+    trt = rbinom(n, 1, 0.5)
+  )
+  cov$ext <- ifelse(cov$trt == 1L, 0L, rbinom(sum(cov$trt), 1, 0.5))
+
+  # Simulate the event times
+  dat <- simsurv(
+    lambdas = 0.1,
+    gammas = 1.5,
+    betas = c(
+      trt = log(true_hr),
+      ext = log(drift_hr)
+    ),
+    x = cov,
+    maxt = 5
+  )
+
+  dat$censor <- 1 - dat$status
+
+  # Merge the simulated event times onto covariate data frame
+  dat <- merge(cov, dat)
+
+  as.matrix(dat)
+}
+
+set.seed(123)
+
+# Create list of lists of data
+my_data_list <- list(
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.0)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.0)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)),
+  lapply(1:20, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.5))
+)
+```
+
+```{r}
+NROW(my_data_list)
+```
+
+```{r}
+NROW(my_data_list[[1]])
+```
+
+```{r}
+my_data_list[[1]][[1]][1, ]
+```
+
+## Data generation guide
+
+For this data, we need to create a `guide` that explains
+how the data were generated. In this example, here are the four
+scenarios:
+
+```{r echo = FALSE}
+my_sim_data_guide <- expand.grid(
+  true_hr = c(0.6, 1.0),
+  drift_hr = c(1.0, 1.5)
+)
+```
+
+```{r include = FALSE}
+my_sim_data_guide$id <- seq(1, NROW(my_sim_data_guide))
+```
+
+```{r}
+my_sim_data_guide
+```
+
+##
+
+Finally, we need to specify where in the `guide` three important features are:
+the true hazard ratio, the drift hazard ratio, and the index. These are all
+the columns we have in our guide, so we simply specify the inputs:
+
+```{r}
+my_sim_data_list <- sim_data_list(
+  data_list = my_data_list,
+  guide = my_sim_data_guide,
+  effect = "true_hr",
+  drift = "drift_hr",
+  index = "id"
+)
+```
+
+```{r}
+my_sim_data_list
+```
+
+## Borrowing list
+
+For this simulation study, let's focus on comparing three borrowing methods:
+
+* No borrowing
+* Full borrowing
+* BDB 
+
+To compare those three methods, we'll use a special list of `Borrowing` objects,
+which we'll create through the function `sim_borrowing_list()`.
+
+##
+
+`sim_borrowing_list()` just needs a named list of `Borrowing` objects
+as inputs, so let's pass one:
+
+```{r}
+my_borrowing_list <- sim_borrowing_list(
+  list(
+    "No borrowing" = borrowing_details("No borrowing", "ext"),
+    "Full borrowing" = borrowing_details("Full borrowing", "ext"),
+    "BDB" = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001))
+  )
+)
+```
+
+```{r}
+my_borrowing_list
+```
+
+## `create_simulation_obj()`
+
+Now, let's create a simulation object, filling in reasonable defaults
+for `outcome` and `treatment`, which are features of the simulation study
+we are not varying.
+
+```{r}
+simulation_obj <- create_simulation_obj(
+  my_sim_data_list,
+  outcome = exp_surv_dist("eventtime",
+    "censor",
+    baseline_prior = normal_prior(0, 10000)
+  ),
+  borrowing = my_borrowing_list,
+  treatment = treatment_details(
+    trt_flag_col = "trt",
+    trt_prior = normal_prior(0, 10000)
+  )
+)
+```
+
+## `mcmc_sample()`
+
+As with `Analysis` objects, the next step for us with `Simulation` objects
+is to call `mcmc_sample()`:
+
+```{r, include = FALSE}
+simulation_res <- mcmc_sample(
+  x = simulation_obj,
+  iter_warmup = 500,
+  iter_sampling = 250,
+  chains = 1
+)
+```
+
+
+```{r, eval = FALSE}
+simulation_res <- mcmc_sample(simulation_obj)
+```
+
+
+You'll note the simulation study results are a special `psborrow2` class,
+<b>NOT</b> a `CmdStanMCMC` object (as with `Analysis` objects).
+
+```{r}
+simulation_res
+```
+
+Let's get a useful `data.frame` of results by calling `get_results`:
+
+```{r}
+simulation_res_df <- get_results(simulation_res)
+```
+
+## Simulation study results
+
+The simulation study results `data.frame` is essentially
+the cartesian product of our starting `sim_data_list` parameters and the three
+borrowing scenarios we evaluated:
+
+```{r}
+head(simulation_res_df, 2)
+```
+
+##
+
+Let's see what exactly is contained in the results.
+
+```{r}
+colnames(simulation_res_df)
+```
+
+Several results columns exist that summarize results across iterations of the
+same study parameters:
+
+* `mse_mean`, the mean MSE for results
+* `bias_mean`, the mean bias for the results
+* `null_coverage`, the proportion of results that contain the null effect (1.0)
+in the specified credible interval quantiles (default are 0.025 - 0.975)
+* `true_coverage`, the proportion of results that contain the true effect
+in the specified credible interval quantiles (default are 0.025 - 0.975)
+
+##
+
+Let's look at the number of parameter combinations that were evaluated:
+
+```{r}
+NROW(simulation_res_df)
+```
+
+This makes sense as we had
+`r NROW(my_sim_data_guide)` scenarios in our data generation step and
+`r NROW(my_borrowing_list@guide)` in our borrowing step. The cartesian
+product is `r NROW(simulation_res_df)`.
+
+## MSE
+
+We can use the results to plot MSE by scenario as below:
+
+```{r, echo = FALSE, fig.align = "center"}
+ggplot(simulation_res_df) +
+  geom_bar(aes(x = factor(true_hr), fill = borrowing_scenario, y = mse_mean),
+    stat = "identity", position = "dodge"
+  ) +
+  labs(
+    fill = "Borrowing scenario",
+    x = "True HR",
+    y = "MSE"
+  ) +
+  facet_wrap(~ paste0("drift HR = ", drift_hr)) +
+  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+```
+
+## Type I error
+
+Because we included a true HR of 1.0, we can evaluate type I error by looking
+at the compliment to the true parameter coverage:
+
+```{r, echo = FALSE, fig.align = "center"}
+ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
+  geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - true_coverage),
+    stat = "identity", position = "dodge"
+  ) +
+  labs(
+    fill = "Borrowing scenario",
+    x = "drift HR",
+    y = "Type I error"
+  ) +
+  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+```
+
+## Power
+
+We can include power by looking at the results for our true simulation of 0.6.
+
+```{r, echo = FALSE, fig.align = "center"}
+ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
+  geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - null_coverage),
+    stat = "identity", position = "dodge"
+  ) +
+  labs(
+    fill = "Borrowing scenario",
+    x = "drift HR",
+    y = "Type I error"
+  ) +
+  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+```
