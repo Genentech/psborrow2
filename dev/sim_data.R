@@ -8,9 +8,9 @@ make_prob <- function(odds) {
   odds / (1 + odds)
 }
 
-sim_single_matrix <- function(n = 400,
+sim_single_matrix <- function(n = 500,
                               prob = c(0.1, 0.2, 0.7),
-                              hr = 0.7,
+                              hr = 0.70,
                               or = 1.20,
                               inherent_drift_hr = 1.0,
                               inherent_drift_or = 1.0,
@@ -18,10 +18,10 @@ sim_single_matrix <- function(n = 400,
                               cov2_baseline_prob = 0.25,
                               cov3_baseline_prob = 0.75,
                               cov4_baseline_prob = 0.5,
-                              cov1_hr = 2.0,
-                              cov2_hr = 2.0,
-                              cov3_hr = 0.5,
-                              cov4_hr = 0.5,
+                              cov1_hr = 2.5,
+                              cov2_hr = 2.5,
+                              cov3_hr = 0.25,
+                              cov4_hr = 0.25,
                               cov1_or = 0.5,
                               cov2_or = 0.5,
                               cov3_or = 1.50,
@@ -29,7 +29,11 @@ sim_single_matrix <- function(n = 400,
                               ext_or_cov1 = 3,
                               ext_or_cov2 = 3,
                               ext_or_cov3 = 0.25,
-                              ext_or_cov4 = 0.25
+                              ext_or_cov4 = 0.25,
+                              trt_or_cov1 = 1.5,
+                              trt_or_cov2 = 1.5,
+                              trt_or_cov3 = 0.75,
+                              trt_or_cov4 = 0.75
                               ) {
   #' Creates simulated data for survival and binary endpoints w/ 4 covariates
   #'
@@ -85,6 +89,11 @@ sim_single_matrix <- function(n = 400,
       cov$cov2[i] <- rbinom(1, 1, make_prob(ext_or_cov2 * make_odds(cov2_baseline_prob)))
       cov$cov3[i] <- rbinom(1, 1, make_prob(ext_or_cov3 * make_odds(cov3_baseline_prob)))
       cov$cov4[i] <- rbinom(1, 1, make_prob(ext_or_cov4 * make_odds(cov4_baseline_prob)))
+    } else if (cov$trt[i] == 1) {
+      cov$cov1[i] <- rbinom(1, 1, make_prob(trt_or_cov1 * make_odds(cov1_baseline_prob)))
+      cov$cov2[i] <- rbinom(1, 1, make_prob(trt_or_cov2 * make_odds(cov2_baseline_prob)))
+      cov$cov3[i] <- rbinom(1, 1, make_prob(trt_or_cov3 * make_odds(cov3_baseline_prob)))
+      cov$cov4[i] <- rbinom(1, 1, make_prob(trt_or_cov4 * make_odds(cov4_baseline_prob)))
     } else {
       cov$cov1[i] <- rbinom(1, 1, cov1_baseline_prob)
       cov$cov2[i] <- rbinom(1, 1, cov2_baseline_prob)
@@ -96,17 +105,17 @@ sim_single_matrix <- function(n = 400,
   # Simulate the event times
   dat <- simsurv(
     lambdas = 0.1,
-    gammas = 1.5,
+    dist = "exponential",
     betas = c(
       trt = log(hr),
       ext = log(inherent_drift_hr),
       cov1 = log(cov1_hr),
       cov2 = log(cov2_hr),
-      cov3 = log(cov3_hr)#,
-      #cov4 = log(cov4_hr)
+      cov3 = log(cov3_hr),
+      cov4 = log(cov4_hr)
     ),
     x = cov,
-    maxt = 20
+    maxt = 50
   )
 
   dat$censor <- 1 - dat$status
@@ -118,8 +127,8 @@ sim_single_matrix <- function(n = 400,
   lp <- dat$trt * log(or) + dat$ext * log(inherent_drift_or) +
     dat$cov1 * log(cov1_or) +
     dat$cov2 * log(cov2_or) +
-    dat$cov3 * log(cov3_or)# +
-    #dat$cov4 * log(cov4_or)
+    dat$cov3 * log(cov3_or) +
+    dat$cov4 * log(cov4_or)
 
   exlp <- 1 / (1 + exp(-lp))
 
@@ -158,7 +167,7 @@ res_borrow <- mcmc_sample(anls_borrow, iter_sampling = 10000, chains = 1)
 
 anls_borrow_cov <- create_analysis_obj(
   examp_mat,
-  covariates = add_covariates(c("cov1", "cov2", "cov3"), normal_prior(0, 1000)),
+  covariates = add_covariates(c("cov1", "cov2", "cov3", "cov4"), normal_prior(0, 1000)),
   outcome = exp_surv_dist("eventtime", "censor", normal_prior(0, 1000)),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details(trt_flag_col = "trt", trt_prior = normal_prior(0, 1000))
@@ -173,14 +182,18 @@ res_noborrow_tbl
 res_borrow_tbl
 res_borrow_tbl_cov
 
-ggsurvplot(survfit(Surv(eventtime, status) ~ trt + ext, data = examp_df))
-coxph(Surv(eventtime, status) ~ trt, data = examp_df, subset = ext == 0)
-coxph(Surv(eventtime, status) ~ trt + cov1 + cov2 + cov3, data = examp_df, subset = ext == 0)
+ggsurvplot(survfit(Surv(eventtime, status) ~ ext, subset = trt == 0, data = examp_df))
+examp_df %>%
+  count(status)
 
-fstrt <- flexsurvreg(Surv(eventtime, status) ~ trt, dist = "exponential", data = examp_df, subset = ext == 0)
-exp(coef(fstrt))
-exp(confint(fstrt))
-
-fstrtcov <- flexsurvreg(Surv(eventtime, status) ~ trt +cov1 + cov2 + cov3, dist = "exponential", data = examp_df, subset = ext == 0)
-exp(coef(fstrtcov))
-exp(confint(fstrtcov))
+# ggsurvplot(survfit(Surv(eventtime, status) ~ trt + ext, data = examp_df))
+# coxph(Surv(eventtime, status) ~ trt, data = examp_df, subset = ext == 0)
+# coxph(Surv(eventtime, status) ~ trt + cov1 + cov2 + cov3 + cov4, data = examp_df, subset = ext == 0)
+#
+# fstrt <- flexsurvreg(Surv(eventtime, status) ~ trt, dist = "exponential", data = examp_df, subset = ext == 0)
+# exp(coef(fstrt))
+# exp(confint(fstrt))
+#
+# fstrtcov <- flexsurvreg(Surv(eventtime, status) ~ trt +cov1 + cov2 + cov3 + cov4, dist = "exponential", data = examp_df, subset = ext == 0)
+# exp(coef(fstrtcov))
+# exp(confint(fstrtcov))
