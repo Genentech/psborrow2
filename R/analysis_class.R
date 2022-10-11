@@ -52,13 +52,47 @@ setMethod(
   f = "show",
   signature = "Analysis",
   definition = function(object) {
+    cat("Analysis Object\n\n")
+
+    cat("Outcome model:", class(object@outcome)[1], "\n")
+    outcome_vars <- get_vars(object@outcome)
+    cat("Outcome", ifelse(length(outcome_vars) > 1, "variables:", "variable:"), outcome_vars, "\n\n")
+
+    cat("Borrowing method:", object@borrowing@method, "\n")
+    cat("External flag:", get_vars(object@borrowing), "\n\n")
+
+    cat("Treatment variable:", get_vars(object@treatment), "\n\n")
+
+    cov_names <- get_vars(object@covariates)
+    if (!is.null(cov_names)) cat("Covariates:", cov_names, "\n\n")
+
+    cat("Data: Matrix with", nrow(object@data_matrix), "observations \n")
+    cat(
+      "    - ", sum(object@data_matrix[, get_vars(object@treatment)] == 0 &
+        object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 0),
+      " internal controls\n"
+    )
+    cat(
+      "    - ", sum(object@data_matrix[, get_vars(object@treatment)] == 0 &
+        object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 1),
+      " external controls", ifelse(object@borrowing@method == "No borrowing",
+        " (ignored in this analysis)\n",
+        "\n"
+      )
+    )
+    cat(
+      "    - ", sum(object@data_matrix[, get_vars(object@treatment)] == 1 &
+        object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 0),
+      " internal experimental\n\n"
+    )
+
     if (object@ready_to_sample == TRUE) {
       cat(
-        "Analysis object (compiled and ready to sample).\n",
+        "Stan model compiled and ready to sample.\n",
         "Call mcmc_sample() next."
       )
     } else {
-      cat("Analysis object (not ready to sample yet)")
+      cat("Not ready to sample yet.")
     }
   }
 )
