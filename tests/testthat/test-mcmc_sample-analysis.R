@@ -678,9 +678,9 @@ test_that("mcmc_sample for Analysis works for exponential BDB, conservative borr
   )
 
   result_summary <- result$summary("HR_trt")
-  expect_equal(result_summary[["median"]], .741, tolerance = .05)
-  expect_equal(result_summary[["q5"]], 0.557, tolerance = .05)
-  expect_equal(result_summary[["q95"]], 0.991, tolerance = .05)
+  expect_equal(result_summary[["median"]], 0.85, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 0.62, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 1.18, tolerance = .05)
 })
 
 # Exponential models, BDB aggressive----
@@ -708,9 +708,9 @@ test_that("mcmc_sample for Analysis works for exponential BDB, aggressive borrow
   )
 
   result_summary <- result$summary("HR_trt")
-  expect_equal(result_summary[["median"]], .651, tolerance = .05)
-  expect_equal(result_summary[["q5"]], 0.509, tolerance = .05)
-  expect_equal(result_summary[["q95"]], 0.837, tolerance = .05)
+  expect_equal(result_summary[["median"]], 0.80, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 0.58, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 1.11, tolerance = .05)
 })
 
 # Weibull models, BDB conservative----
@@ -739,9 +739,9 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, conservative borrowin
   )
 
   result_summary <- result$summary("HR_trt")
-  expect_equal(result_summary[["median"]], .751, tolerance = .05)
-  expect_equal(result_summary[["q5"]], 0.558, tolerance = .05)
-  expect_equal(result_summary[["q95"]], 1.018, tolerance = .05)
+  expect_equal(result_summary[["median"]], 0.87, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 0.63, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 1.21, tolerance = .05)
 })
 
 # Weibull models, BDB aggressive----
@@ -770,9 +770,9 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, aggressive borrowing"
   )
 
   result_summary <- result$summary("HR_trt")
-  expect_equal(result_summary[["median"]], 0.656, tolerance = .05)
-  expect_equal(result_summary[["q5"]], 0.508, tolerance = .05)
-  expect_equal(result_summary[["q95"]], 0.844, tolerance = .05)
+  expect_equal(result_summary[["median"]], 0.80, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 0.57, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 1.12, tolerance = .05)
 })
 
 
@@ -797,9 +797,9 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, conservat
   )
 
   result_summary <- result$summary("OR_trt")
-  expect_equal(result_summary[["median"]], 1.29, tolerance = .05)
-  expect_equal(result_summary[["q5"]], 0.938, tolerance = .05)
-  expect_equal(result_summary[["q95"]], 1.87, tolerance = .05)
+  expect_equal(result_summary[["median"]], 1.19, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 0.63, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 2.08, tolerance = .05)
 })
 
 # Logistic regression models, BDB aggressive----
@@ -823,7 +823,7 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressiv
   )
 
   result_summary <- result$summary("OR_trt")
-  expect_equal(result_summary[["median"]], 1.25, tolerance = .05)
-  expect_equal(result_summary[["q5"]], 0.928, tolerance = .05)
-  expect_equal(result_summary[["q95"]], 1.68, tolerance = .05)
+  expect_equal(result_summary[["median"]], 1.65, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 1.11, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 2.44, tolerance = .05)
 })

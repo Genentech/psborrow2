@@ -20,10 +20,10 @@ test_that("check_data_matrix() catches errors", {
   expect_null(psborrow2:::check_data_matrix_has_columns(anls_full))
 
   anls_broken <- anls_full
-  anls_broken@covariates <- add_covariates(c("cov1", "cov3"), normal_prior(0, 1000))
+  anls_broken@covariates <- add_covariates(c("cov1", "cov9"), normal_prior(0, 1000))
   expect_error(
     psborrow2:::check_data_matrix_has_columns(anls_broken),
-    "The following specified variables were not found in `data_matrix`:\n  covariates: cov3"
+    "The following specified variables were not found in `data_matrix`:\n  covariates: cov9"
   )
 
   anls_broken <- anls_full
