@@ -60,6 +60,11 @@ sim_single_matrix <- function(n = 500,
   #' @param ext_or_cov3 OR of being cov3 for external controls
   #' @param ext_or_cov4 OR of being cov4 for external controls
 
+  # checks
+  if (sum(prob) != 1.0) {
+    stop("prob must sum to 1")
+  }
+
   # Depend
   require(simsurv)
   require(broom)
@@ -68,19 +73,16 @@ sim_single_matrix <- function(n = 500,
   # Create a data frame with the subject IDs and treatment group
   cov <- data.frame(
     id = 1:n,
-    group = sample(c(
-      "internal control",
-      "external control",
-      "internal experimental"
+    ext = c(
+      rep(0L, n * (prob[1] + prob[2])),
+      rep(1L, n * prob[3])
     ),
-    size = n,
-    replace = TRUE,
-    prob = prob
+    trt = c(
+      rep(0L, n * prob[1]),
+      rep(1L, n * prob[2]),
+      rep(0L, n * prob[3])
     )
   )
-
-  cov$ext <- as.integer(cov$group == "external control")
-  cov$trt <- as.integer(cov$group == "internal experimental")
   cov$cov1 <- cov$cov2 <- cov$cov3 <- cov$cov4 <- integer(length = nrow(cov))
 
   for (i in seq(1, NROW(cov))) {

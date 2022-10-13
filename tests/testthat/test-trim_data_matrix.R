@@ -49,7 +49,7 @@ test_that("data matrix trimming works with No Borrowing", {
   )
 
   result <- psborrow2:::trim_data_matrix(object)
-  expect_matrix(result, mode = "numeric", nrows = 405, ncols = 4)
+  expect_matrix(result, mode = "numeric", nrows = 150, ncols = 4)
   expect_set_equal(
     colnames(result), c("time", "cnsr", "trt", "cov1")
   )
