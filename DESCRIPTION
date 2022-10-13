@@ -102,6 +102,7 @@ Collate:
     'make_model_string_transf_params.R'
     'mcmc_sample.R'
     'mcmc_simulation_result.R'
+    'onload.R'
     'package.R'
     'poisson_prior.R'
     'prepare_stan_data_inputs.R'
