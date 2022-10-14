@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.776811594202899" branch-rate="0" lines-covered="804" lines-valid="1035" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2022-10-12 13:32:31">
+<coverage line-rate="0.763757115749526" branch-rate="0" lines-covered="805" lines-valid="1054" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2022-10-14 15:24:36">
   <sources/>
   <packages>
-    <package name="psborrow2" line-rate="0.776811594202899" branch-rate="0" complexity="0">
+    <package name="psborrow2" line-rate="0.763757115749526" branch-rate="0" complexity="0">
       <classes>
         <class name="add_covariates.R" filename="R/add_covariates.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -2902,6 +2902,54 @@
             <line number="111" hits="21" branch="false"/>
             <line number="112" hits="21" branch="false"/>
             <line number="113" hits="21" branch="false"/>
+          </lines>
+        </class>
+        <class name="zzz.R" filename="R/zzz.R" line-rate="0.0526315789473684" branch-rate="0" complexity="0">
+          <methods>
+            <method name=".onAttach" signature="" line-rate="0.0526315789473684" branch-rate="0">
+              <lines>
+                <line number="2" hits="2" branch="false"/>
+                <line number="3" hits="0" branch="false"/>
+                <line number="4" hits="0" branch="false"/>
+                <line number="5" hits="0" branch="false"/>
+                <line number="6" hits="0" branch="false"/>
+                <line number="7" hits="0" branch="false"/>
+                <line number="8" hits="0" branch="false"/>
+                <line number="9" hits="0" branch="false"/>
+                <line number="10" hits="0" branch="false"/>
+                <line number="12" hits="0" branch="false"/>
+                <line number="13" hits="0" branch="false"/>
+                <line number="14" hits="0" branch="false"/>
+                <line number="15" hits="0" branch="false"/>
+                <line number="16" hits="0" branch="false"/>
+                <line number="17" hits="0" branch="false"/>
+                <line number="18" hits="0" branch="false"/>
+                <line number="19" hits="0" branch="false"/>
+                <line number="20" hits="0" branch="false"/>
+                <line number="21" hits="0" branch="false"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="2" hits="2" branch="false"/>
+            <line number="3" hits="0" branch="false"/>
+            <line number="4" hits="0" branch="false"/>
+            <line number="5" hits="0" branch="false"/>
+            <line number="6" hits="0" branch="false"/>
+            <line number="7" hits="0" branch="false"/>
+            <line number="8" hits="0" branch="false"/>
+            <line number="9" hits="0" branch="false"/>
+            <line number="10" hits="0" branch="false"/>
+            <line number="12" hits="0" branch="false"/>
+            <line number="13" hits="0" branch="false"/>
+            <line number="14" hits="0" branch="false"/>
+            <line number="15" hits="0" branch="false"/>
+            <line number="16" hits="0" branch="false"/>
+            <line number="17" hits="0" branch="false"/>
+            <line number="18" hits="0" branch="false"/>
+            <line number="19" hits="0" branch="false"/>
+            <line number="20" hits="0" branch="false"/>
+            <line number="21" hits="0" branch="false"/>
           </lines>
         </class>
       </classes>
