@@ -113,7 +113,7 @@ test_that("Matrix should have no missing data", {
   # Matrix should have no missing data
   example_matrix2 <- rbind(
     example_matrix,
-    matrix(c(NA, 0, 1, 1, 2.2, 0, 1), ncol = 7)
+    matrix(c(999, 0, 1, 1, NA, 1, 1, 10, 0, 1, 1), ncol = 11)
   )
   expect_error(
     create_analysis_obj(
@@ -131,14 +131,14 @@ test_that("Columns in analysis_obj should be in matrix", {
   expect_error(
     create_analysis_obj(
       data_matrix = example_matrix,
-      covariates = add_covariates(c("cov3", "cov2"),
+      covariates = add_covariates(c("cov9", "cov2"),
         priors = normal_prior(0, 1000)
       ),
       outcome = esd,
       treatment = td,
       borrowing = bd_fb
     ),
-    "The following specified variables were not found in `data_matrix`:\n  covariates: cov3"
+    "The following specified variables were not found in `data_matrix`:\n  covariates: cov9"
   )
 
   expect_error(

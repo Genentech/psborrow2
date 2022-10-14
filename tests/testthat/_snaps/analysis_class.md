@@ -15,10 +15,10 @@
       
       Covariates: cov1 cov2 
       
-      Data: Matrix with 724 observations 
-          -  120  internal controls
-          -  344  external controls 
-          -  260  internal experimental
+      Data: Matrix with 500 observations 
+          -  50  internal controls
+          -  350  external controls 
+          -  100  internal experimental
       
       Not ready to sample yet.
 
@@ -37,10 +37,10 @@
       
       Treatment variable: trt 
       
-      Data: Matrix with 724 observations 
-          -  120  internal controls
-          -  344  external controls 
-          -  260  internal experimental
+      Data: Matrix with 500 observations 
+          -  50  internal controls
+          -  350  external controls 
+          -  100  internal experimental
       
       Not ready to sample yet.
 
@@ -59,10 +59,10 @@
       
       Treatment variable: trt 
       
-      Data: Matrix with 724 observations 
-          -  120  internal controls
-          -  344  external controls  (ignored in this analysis)
-          -  260  internal experimental
+      Data: Matrix with 500 observations 
+          -  50  internal controls
+          -  350  external controls  (ignored in this analysis)
+          -  100  internal experimental
       
       Not ready to sample yet.
 
