@@ -24,6 +24,10 @@ slides slide {
 }
 ```
 
+```{r psborrow2, include = FALSE}
+library(psborrow2)
+```
+
 # Introducing `psborrow2`
 
 ## Presentation flow
@@ -238,15 +242,94 @@ unified way in simulation studies to inform trial design
 
 # Demonstration of a single BDB analysis
 
+## Prior distributions
+
+In `psborrow2`, the user creates fully parametric Bayesian models with 
+proper prior distributions specified for all parameters using the constructors:
+
+```{r eval = FALSE}
+bernoulli_prior()
+beta_prior()
+cauchy_prior()
+exponential_prior()
+gamma_prior()
+normal_prior()
+poisson_prior()
+uniform_prior()
+```
+
+Prior distributions all belong to parent class `Prior`:
+
+```{r}
+is(normal_prior(mu = 0, sigma = 100), "Prior")
+```
+
+## Plotting priors
+
+Each `Prior` object has a `plot` method. For the sake of example, 
+let's look at a normal distribution centered around <b>0</b> with 
+standard deviation of <b>10</b>:
+
+```{r fig.align = "center", fig.dim = c(6, 3)}
+plot(
+  normal_prior(mu = 0, sigma = 10),
+  xlim = c(-100, 100),
+  ylim = c(0, 0.1)
+)
+```
+
+
+##
+
+Let's also see what an uninformative normal prior may
+look like:
+
+```{r fig.align = "center", fig.dim = c(6, 4)}
+plot(
+  normal_prior(mu = 0, sigma = 10000),
+  xlim = c(-100, 100),
+  ylim = c(0, 0.1)
+)
+```
+
+## Hyperpriors for commensurability parameters
+
+In BDB, a hyperprior for the commensurability parameter, $\tau$, 
+must be specified. Let's look at a conservative distribution:
+
+```{r fig.align = "center", fig.dim = c(5, 3)}
+plot(
+  gamma_prior(alpha = 0.001, beta = 0.001),
+  xlim = c(-1, 20),
+  ylim = c(0, .04)
+)
+```
+
+##
+
+Now set's look at a conservative distribution:
+
+```{r fig.align = "center", fig.dim = c(5, 3)}
+plot(
+  gamma_prior(alpha = 1, beta = 0.001),
+  xlim = c(-1, 20),
+  ylim = c(0, .04)
+)
+```
+
 ## Example data
 
 `psborrow2` has example data we can use. Let's load the package and
-explore `example_matrix`.
+explore a few relevant columns `example_matrix`.
 
 ```{r message = FALSE}
-library(psborrow2)
-head(example_matrix)
+head(example_matrix[, c("ext", "trt", "time", "cnsr")], 3)
 ```
+
+* `ext = 1` for external trial patients, else `ext = 0`
+* `trt = 1` for experimentally-treated patients, else `trt = 0`
+* `time` is the time to event or censorship
+* `cnsr = 1` if a patient's follow-up was censored, else `csnr = 0`
 
 ```{r include = FALSE}
 example_dataframe <- as.data.frame(example_matrix)
@@ -254,17 +337,22 @@ example_dataframe <- as.data.frame(example_matrix)
 
 ##
 
-The flags in this `data.frame` are explained in `?example_matrix`. 
+The flags in this `data.frame` are explained in greater detail
+in `?example_matrix`. 
 
-```{r}
-table(
-  trt = example_matrix[, "trt"],
-  ext = example_matrix[, "ext"]
+<center>
+```{r echo = FALSE}
+library(gtsummary)
+tbl_cross(
+  example_dataframe,
+  trt,
+  ext
 )
 ```
+</center>
 
-It looks like we have 48 patients in our internal control,
-95 in our internal experimental, and 357 in our external control.
+It looks like we have 50 patients in our internal control,
+100 in our internal experimental, and 350 in our external control.
 
 ## Naive internal comparisons
 
@@ -272,7 +360,7 @@ In a scenario where an RCT is completed, we may
 first want to conduct an internal comparison. Let's evaluate a Cox proportional
 hazards model.
 
-```{r message = FALSE, echo = FALSE, fig.align = "center", fig.dim = c(5, 3)}
+```{r message = FALSE, echo = FALSE, fig.align = "center", fig.dim = c(5, 2)}
 library(survival)
 library(survminer)
 km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt, example_dataframe,
@@ -297,43 +385,18 @@ tidy(cox_fit, exponentiate = TRUE, conf.int = TRUE) %>%
 
 </center>
 
+<br>
 
 Here, the hazard ratio is 0.87 (95% CI 0.61 - 1.24).
 
-##
-
-Because later we will use an exponential survival distribution in our
-fully parametric Bayesian model, let's also evaluate the internal results 
-with an exponential model:
-
-<center>
-```{r echo = FALSE}
-library(flexsurv)
-exp_fit <- flexsurvreg(Surv(time = time, event = 1 - cnsr) ~ trt,
-  dist = "exponential",
-  data = filter(example_dataframe, ext == 0),
-)
-
-tidy(exp_fit, conf.int = TRUE, transform = "coefs.exp") %>% 
-  gt() %>% 
-  fmt_number(columns = 2:7, decimals = 2)
-```
-
-</center>
-<br>
-Here, the hazard ratio is very similar to the Cox proportional hazards 
-model: 0.88 (95% CI 0.62 - 1.25).
-
 ## Hybrid control analysis
 
-For a BDB analyiss, we want to create an object of class `Analysis`
-with `create_analysis_obj()`. There are five 
-required arguments: 
+For a BDB analysis, we want to create an object of class `Analysis`
+with `create_analysis_obj()`. There are four required arguments: 
 
 ```{r eval = FALSE}
 create_analysis_obj(
   data_matrix,
-  covariates,
   outcome,
   borrowing,
   treatment
@@ -345,7 +408,6 @@ gt(
   tribble(
     ~Argument, ~Description,
     "data_matrix", "The data matrix, including all relevant outcome variables, and treatment arm and external control arm flags.",
-    "covariates", "Object of class Covariates as output by the function add_covariates().",
     "outcome", "Object of class Outcome as output by exp_surv_dist(), weib_ph_surv_dist(), or logistic_bin_outcome().",
     "borrowing", "Object of class Borrowing as output by borrowing_details().",
     "treatment", "Object of class Treatment as output by treatment_details()."
@@ -363,6 +425,8 @@ Let's start with the `Outcome` class. There are three different
 classes currently supported by `psborrow2`, each of which has a 
 custom constructor:
 
+<br>
+
 ```{r, echo = FALSE}
 gt(
   tribble(
@@ -378,9 +442,7 @@ gt(
   ))
 ```
 
-##
-
-There are three arguments to `exp_surv_dist()`:
+## Arguments to `exp_surv_dist()`
 
 ```{r eval = FALSE}
 exp_surv_dist(time_var,
@@ -388,7 +450,7 @@ exp_surv_dist(time_var,
               baseline_prior)
 ```
 
-The first two arguments are straightforward:
+The first two arguments to `exp_surv_dist()` are straightforward:
 
 - `time_var`, Name of time variable column in model matrix
 - `cens_var`, Name of the censorship variable flag in model matrix
@@ -401,45 +463,10 @@ control arm.
 ##
 
 How do we specify a prior distribution for `baseline_prior`? We can do so with
-`Prior` class objects. These all follow a naming convention of: 
-distribution name + `_prior()`, e.g.:
+`Prior` class objects.
 
-```{r eval = FALSE}
-bernoulli_prior()
-beta_prior()
-cauchy_prior()
-exponential_prior()
-gamma_prior()
-normal_prior()
-poisson_prior()
-uniform_prior()
-```
 
-##
 
-Each `Prior` object has a `plot` method. Let's confirm that a normal distribution
-centered at 0 and with wide variance appears to be uninformative:
-
-```{r fig.align = "center", fig.dim = c(6,4)}
-plot(
-  normal_prior(mu = 0, sigma = 10000),
-  xlim = c(-100, 100),
-  ylim = c(0, 0.1)
-)
-```
-
-##
-
-For the sake of example, let's also see what an informative normal prior may
-look like:
-
-```{r fig.align = "center", fig.dim = c(6,4)}
-plot(
-  normal_prior(mu = 0, sigma = 10),
-  xlim = c(-100, 100),
-  ylim = c(0, 0.1)
-)
-```
 
 ##
 
@@ -454,16 +481,11 @@ exp_outcome <- exp_surv_dist(
 )
 ```
 
-##
-
 ```{r}
-exp_outcome
+class(exp_outcome)
 ```
 
 ## Borrowing class
-
-Next, we'll create an object of class `Borrowing` through the constructor
-`borrowing_details`. We need to specify  three arguments:
 
 ```{r eval = FALSE}
 borrowing_details(
