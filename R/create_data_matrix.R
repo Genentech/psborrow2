@@ -8,6 +8,7 @@
 #' @param trt_flag_col character. The treatment indicator variable.
 #' @param ext_flag_col character. The external cohort indicator.
 #' @param covariates character or formula. The covariates for model adjustment.
+#' @param weight character. An optional weight varaible.
 #'
 #' @return  Invisibly returns a `matrix` containing all variables to pass to [create_analysis_obj()].
 #'  Prints names of covariates columns to use with [add_covariates()].
@@ -24,7 +25,7 @@
 #'   covariates = ~ age + laser + log(risk)
 #' )
 #' data_mat
-create_data_matrix <- function(data, outcome, trt_flag_col, ext_flag_col, covariates = NULL) {
+create_data_matrix <- function(data, outcome, trt_flag_col, ext_flag_col, covariates = NULL, weight_var = NULL) {
   assert_data_frame(data)
   data_cols <- colnames(data)
   assert_character(outcome, min.len = 1, max.len = 2, any.missing = FALSE)
@@ -36,7 +37,10 @@ create_data_matrix <- function(data, outcome, trt_flag_col, ext_flag_col, covari
   assert_character(ext_flag_col, len = 1, any.missing = FALSE)
   assert_subset(ext_flag_col, data_cols)
 
-  flag_outcome_formula <- formula(paste("~", paste(c(outcome, trt_flag_col, ext_flag_col), collapse = "+")))
+  assert_character(weight_var, len = 1, any.missing = FALSE, null.ok = TRUE)
+  assert_subset(weight_var, data_cols)
+
+  flag_outcome_formula <- formula(paste("~", paste(c(outcome, trt_flag_col, ext_flag_col, weight_var), collapse = "+")))
   output_matrix <- model.matrix(flag_outcome_formula, data)[, -1]
 
   if (!is.null(covariates)) {

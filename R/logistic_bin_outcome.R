@@ -80,7 +80,7 @@ logistic_bin_outcome <- function(binary_var,
          for (i in 1:N) {
             target += bernoulli_logit_lupmf(y[i] | lp[i]){{weight}};
          }",
-        weight = if (weight_var != "") "* weight[i]" else ""
+        weight = if (weight_var != "") " * weight[i]" else ""
       )
   )
 }

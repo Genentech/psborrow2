@@ -9,7 +9,8 @@ create_data_matrix(
   outcome,
   trt_flag_col,
   ext_flag_col,
-  covariates = NULL
+  covariates = NULL,
+  weight_var = NULL
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ create_data_matrix(
 \item{ext_flag_col}{character. The external cohort indicator.}
 
 \item{covariates}{character or formula. The covariates for model adjustment.}
+
+\item{weight}{character. An optional weight varaible.}
 }
 \value{
 Invisibly returns a \code{matrix} containing all variables to pass to \code{\link[=create_analysis_obj]{create_analysis_obj()}}.

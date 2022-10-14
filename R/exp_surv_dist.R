@@ -88,7 +88,7 @@ exp_surv_dist <- function(time_var, cens_var, baseline_prior, weight_var = "") {
                target += exponential_lpdf(time[i] | elp[i] ){{weight}};
             }
          }",
-        weight = if (weight_var != "") "* weight[i]" else ""
+        weight = if (weight_var != "") " * weight[i]" else ""
       )
   )
 }

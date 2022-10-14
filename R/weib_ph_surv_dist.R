@@ -122,7 +122,7 @@ weib_ph_surv_dist <- function(time_var,
              target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i] ){{weight}};
           }
        }",
-      weight = if (weight_var != "") "* weight[i]" else ""
+      weight = if (weight_var != "") " * weight[i]" else ""
     )
   )
 }

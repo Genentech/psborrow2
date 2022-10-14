@@ -28,4 +28,37 @@ test_that("get_vars works for WeibullPHSurvDist", {
     )),
     c(time_var = "TIME", cens_var = "CENS")
   )
+
+  expect_identical(
+    get_vars(weib_ph_surv_dist(
+      time_var = "TIME",
+      cens_var = "CENS",
+      normal_prior(0, 1000),
+      normal_prior(0, 1000),
+      weight_var = "W"
+    )),
+    c(time_var = "TIME", cens_var = "CENS", weight_var = "W")
+  )
+})
+
+test_that("weib_ph_surv_dist works with weights", {
+  result <- weib_ph_surv_dist(
+    time_var = "time",
+    cens_var = "cens",
+    normal_prior(0, 1000),
+    normal_prior(0, 1000),
+    weight_var = "w"
+  )
+  expect_class(result, "WeibullPHSurvDist")
+  expect_equal(result@weight_var, "w")
+  expect_string(
+    result@likelihood_stan_code,
+    fixed = "for (i in 1:N) {
+   if (cens[i] == 1) {
+      target += weibull_ph_lccdf(time[i] | shape_weibull, elp[i] ) * weight[i];
+   } else {
+      target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i] ) * weight[i];
+   }
+}"
+  )
 })
