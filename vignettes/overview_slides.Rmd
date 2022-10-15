@@ -127,7 +127,7 @@ Information from $\rho_{01}$ is used in estimating $\rho_{00}$ through a
 hierarchical model:
 
 $$
-\rho_{00} | \rho_{01} \sim Normal(\rho_{01}, \frac{1}{\tau})
+\rho_{00} | \rho_{01} \sim \operatorname{Normal}\left(\rho_{01}, \frac{1}{\tau}\right)
 $$
 
 The posterior distribution for $\theta$ is then:
@@ -144,7 +144,7 @@ As $\tau$ approaches infinity, the prior distribution on $\rho_{00}$ effectively
 becomes $\rho_{01}$:
 
 $$
-\rho_{00} \sim \rho_{01} \approxeq Normal(\rho_{01}, \infty)
+\rho_{00} \sim \rho_{01} \approxeq \operatorname{Normal}\left(\rho_{01}, \infty\right)
 $$
 
 
