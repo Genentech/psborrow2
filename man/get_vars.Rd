@@ -33,7 +33,7 @@ get_vars(object)
 
 \S4method{get_vars}{Analysis}(object)
 
-\S4method{get_vars}{`NULL`}(object)
+\S4method{get_vars}{NULL}(object)
 
 \S4method{get_vars}{SimTreatmentList}(object)
 
