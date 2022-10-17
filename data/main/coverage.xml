@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.763757115749526" branch-rate="0" lines-covered="805" lines-valid="1054" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2022-10-14 15:24:36">
+<coverage line-rate="0.763757115749526" branch-rate="0" lines-covered="805" lines-valid="1054" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2022-10-17 10:16:21">
   <sources/>
   <packages>
     <package name="psborrow2" line-rate="0.763757115749526" branch-rate="0" complexity="0">
@@ -106,7 +106,7 @@
             </method>
             <method name="NULL" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="122" hits="115" branch="false"/>
+                <line number="123" hits="115" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -151,7 +151,7 @@
             <line number="110" hits="13" branch="false"/>
             <line number="111" hits="13" branch="false"/>
             <line number="112" hits="13" branch="false"/>
-            <line number="122" hits="115" branch="false"/>
+            <line number="123" hits="115" branch="false"/>
           </lines>
         </class>
         <class name="bernoulli_prior.R" filename="R/bernoulli_prior.R" line-rate="1" branch-rate="0" complexity="0">
