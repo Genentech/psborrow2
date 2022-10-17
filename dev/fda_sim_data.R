@@ -68,8 +68,8 @@ my_borrowing_list <- sim_borrowing_list(
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
   outcome = exp_surv_dist("eventtime",
-                          "censor",
-                          baseline_prior = normal_prior(0, 10000)
+    "censor",
+    baseline_prior = normal_prior(0, 10000)
   ),
   borrowing = my_borrowing_list,
   treatment = treatment_details(
@@ -88,7 +88,7 @@ simulation_res <- mcmc_sample(
 
 ggplot(simulation_res_df) +
   geom_bar(aes(x = factor(true_hr), fill = borrowing_scenario, y = mse_mean),
-           stat = "identity", position = "dodge"
+    stat = "identity", position = "dodge"
   ) +
   labs(
     fill = "Borrowing scenario",
@@ -101,7 +101,7 @@ ggplot(simulation_res_df) +
 
 ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - true_coverage),
-           stat = "identity", position = "dodge"
+    stat = "identity", position = "dodge"
   ) +
   labs(
     fill = "Borrowing scenario",
@@ -113,7 +113,7 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
 
 ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - null_coverage),
-           stat = "identity", position = "dodge"
+    stat = "identity", position = "dodge"
   ) +
   labs(
     fill = "Borrowing scenario",
