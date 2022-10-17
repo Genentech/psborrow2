@@ -115,6 +115,7 @@ setMethod(
 
 #' @rdname get_vars
 #' @include generics.R
+#' @usage \S4method{get_vars}{NULL}(object)
 setMethod(
   f = "get_vars",
   signature = "NULL",
