@@ -1,49 +1,38 @@
 devtools::load_all()
 library(simsurv)
-sim_single_matrix <- function(true_hr = 0.6,
-                              drift_hr = 1.0,
-                              n = 600) {
-  cov <- data.frame(
-    id = 1:n,
-    trt = rbinom(n, 1, 0.5)
-  )
-  cov$ext <- ifelse(cov$trt == 1L, 0L, rbinom(sum(cov$trt), 1, 0.5))
-
-  # Simulate the event times
-  dat <- simsurv(
-    lambdas = 0.1,
-    gammas = 1.5,
-    betas = c(
-      trt = log(true_hr),
-      ext = log(drift_hr)
-    ),
-    x = cov,
-    maxt = 5
-  )
-
-  dat$censor <- 1 - dat$status
-
-  # Merge the simulated event times onto covariate data frame
-  dat <- merge(cov, dat)
-
-  as.matrix(dat)
-}
+source("./dev/sim_data.R")
 
 set.seed(123)
 
-n <- 20
+n <- 50
 
 # Create list of lists of data
 my_data_list <- list(
-  replicate(n, sim_single_matrix(true_hr = 0.6, drift_hr = 1.0), simplify = FALSE),
-  replicate(n, sim_single_matrix(true_hr = 1.0, drift_hr = 1.0), simplify = FALSE),
-  replicate(n, sim_single_matrix(true_hr = 0.6, drift_hr = 1.5), simplify = FALSE),
-  replicate(n, sim_single_matrix(true_hr = 1.0, drift_hr = 1.5), simplify = FALSE)
+  replicate(n, sim_single_matrix(n = 250, hr = 0.6, inherent_drift_hr = 1.0,
+                                 cov1_hr = 1.2,
+                                 cov2_hr = 0.8,
+                                 cov3_hr = 1.2,
+                                 cov4_hr = 0.8,), simplify = FALSE),
+  replicate(n, sim_single_matrix(n = 250, hr = 1.0, inherent_drift_hr = 1.0,
+                                 cov1_hr = 1.2,
+                                 cov2_hr = 0.8,
+                                 cov3_hr = 1.2,
+                                 cov4_hr = 0.8), simplify = FALSE),
+  replicate(n, sim_single_matrix(n = 250, hr = 0.6, inherent_drift_hr = 1.5,
+                                 cov1_hr = 1.2,
+                                 cov2_hr = 0.8,
+                                 cov3_hr = 1.2,
+                                 cov4_hr = 0.8), simplify = FALSE),
+  replicate(n, sim_single_matrix(n = 250, hr = 1.0, inherent_drift_hr = 1.5,
+                                 cov1_hr = 1.2,
+                                 cov2_hr = 0.8,
+                                 cov3_hr = 1.2,
+                                 cov4_hr = 0.8), simplify = FALSE)
 )
 
 my_sim_data_guide <- expand.grid(
   true_hr = c(0.6, 1.0),
-  drift_hr = c(1.0, 1.5)
+  drift_hr = c("No drift HR", "Moderate drift HR")
 )
 
 my_sim_data_guide$id <- seq(1, NROW(my_sim_data_guide))
@@ -67,8 +56,8 @@ my_borrowing_list <- sim_borrowing_list(
 
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
-  outcome = exp_surv_dist("eventtime",
-                          "censor",
+  outcome = exp_surv_dist("time",
+                          "cnsr",
                           baseline_prior = normal_prior(0, 10000)
   ),
   borrowing = my_borrowing_list,
@@ -85,6 +74,12 @@ simulation_res <- mcmc_sample(
   chains = 1
 )
 
+simulation_res_df <- get_results(simulation_res)
+simulation_res_df$borrowing_scenario <- factor(simulation_res_df$borrowing_scenario,
+                                               levels = c("No borrowing",
+                                                          "BDB - conservative",
+                                                          "BDB - aggressive",
+                                                          "Full borrowing"))
 
 ggplot(simulation_res_df) +
   geom_bar(aes(x = factor(true_hr), fill = borrowing_scenario, y = mse_mean),
@@ -95,8 +90,8 @@ ggplot(simulation_res_df) +
     x = "True HR",
     y = "MSE"
   ) +
-  facet_wrap(~ paste0("drift HR = ", drift_hr)) +
-  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+  facet_wrap(~ drift_hr) +
+  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))
 
 
 ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
@@ -108,7 +103,7 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
     x = "drift HR",
     y = "Type I error"
   ) +
-  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))
 
 
 ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
@@ -118,6 +113,6 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
   labs(
     fill = "Borrowing scenario",
     x = "drift HR",
-    y = "Type I error"
+    y = "Power"
   ) +
-  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))
