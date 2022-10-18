@@ -114,5 +114,6 @@ Collate:
     'simvar_class.R'
     'trim_data_matrix.R'
     'uniform_prior.R'
+    'zzz.R'
 LazyData: true
 VignetteBuilder: knitr
