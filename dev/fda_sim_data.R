@@ -8,26 +8,34 @@ n <- 50
 
 # Create list of lists of data
 my_data_list <- list(
-  replicate(n, sim_single_matrix(n = 250, hr = 0.6, inherent_drift_hr = 1.0,
-                                 cov1_hr = 1.2,
-                                 cov2_hr = 0.8,
-                                 cov3_hr = 1.2,
-                                 cov4_hr = 0.8,), simplify = FALSE),
-  replicate(n, sim_single_matrix(n = 250, hr = 1.0, inherent_drift_hr = 1.0,
-                                 cov1_hr = 1.2,
-                                 cov2_hr = 0.8,
-                                 cov3_hr = 1.2,
-                                 cov4_hr = 0.8), simplify = FALSE),
-  replicate(n, sim_single_matrix(n = 250, hr = 0.6, inherent_drift_hr = 1.5,
-                                 cov1_hr = 1.2,
-                                 cov2_hr = 0.8,
-                                 cov3_hr = 1.2,
-                                 cov4_hr = 0.8), simplify = FALSE),
-  replicate(n, sim_single_matrix(n = 250, hr = 1.0, inherent_drift_hr = 1.5,
-                                 cov1_hr = 1.2,
-                                 cov2_hr = 0.8,
-                                 cov3_hr = 1.2,
-                                 cov4_hr = 0.8), simplify = FALSE)
+  replicate(n, sim_single_matrix(
+    n = 250, hr = 0.6, inherent_drift_hr = 1.0,
+    cov1_hr = 1.2,
+    cov2_hr = 0.8,
+    cov3_hr = 1.2,
+    cov4_hr = 0.8,
+  ), simplify = FALSE),
+  replicate(n, sim_single_matrix(
+    n = 250, hr = 1.0, inherent_drift_hr = 1.0,
+    cov1_hr = 1.2,
+    cov2_hr = 0.8,
+    cov3_hr = 1.2,
+    cov4_hr = 0.8
+  ), simplify = FALSE),
+  replicate(n, sim_single_matrix(
+    n = 250, hr = 0.6, inherent_drift_hr = 1.5,
+    cov1_hr = 1.2,
+    cov2_hr = 0.8,
+    cov3_hr = 1.2,
+    cov4_hr = 0.8
+  ), simplify = FALSE),
+  replicate(n, sim_single_matrix(
+    n = 250, hr = 1.0, inherent_drift_hr = 1.5,
+    cov1_hr = 1.2,
+    cov2_hr = 0.8,
+    cov3_hr = 1.2,
+    cov4_hr = 0.8
+  ), simplify = FALSE)
 )
 
 my_sim_data_guide <- expand.grid(
@@ -57,8 +65,8 @@ my_borrowing_list <- sim_borrowing_list(
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
   outcome = exp_surv_dist("time",
-                          "cnsr",
-                          baseline_prior = normal_prior(0, 10000)
+    "cnsr",
+    baseline_prior = normal_prior(0, 10000)
   ),
   borrowing = my_borrowing_list,
   treatment = treatment_details(
@@ -76,27 +84,30 @@ simulation_res <- mcmc_sample(
 
 simulation_res_df <- get_results(simulation_res)
 simulation_res_df$borrowing_scenario <- factor(simulation_res_df$borrowing_scenario,
-                                               levels = c("No borrowing",
-                                                          "BDB - conservative",
-                                                          "BDB - aggressive",
-                                                          "Full borrowing"))
+  levels = c(
+    "No borrowing",
+    "BDB - conservative",
+    "BDB - aggressive",
+    "Full borrowing"
+  )
+)
 
 ggplot(simulation_res_df) +
   geom_bar(aes(x = factor(true_hr), fill = borrowing_scenario, y = mse_mean),
-           stat = "identity", position = "dodge"
+    stat = "identity", position = "dodge"
   ) +
   labs(
     fill = "Borrowing scenario",
     x = "True HR",
     y = "MSE"
   ) +
-  facet_wrap(~ drift_hr) +
+  facet_wrap(~drift_hr) +
   scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))
 
 
 ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - true_coverage),
-           stat = "identity", position = "dodge"
+    stat = "identity", position = "dodge"
   ) +
   labs(
     fill = "Borrowing scenario",
@@ -108,7 +119,7 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
 
 ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - null_coverage),
-           stat = "identity", position = "dodge"
+    stat = "identity", position = "dodge"
   ) +
   labs(
     fill = "Borrowing scenario",
