@@ -55,7 +55,7 @@ Suggests:
     bayesplot,
     matrixcalc,
     simsurv,
-    WeighIt,
+    WeightIt,
     MatchIt,
     BayesPPD
 Remotes:
