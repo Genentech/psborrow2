@@ -309,12 +309,12 @@ We can extract a `draws` object from each model and plot the posterior distribut
 treatment hazard ratio.
 ```{r plots, fig.height=8, fig.width=8}
 plot(density(models[[1]]$draws("HR_trt")),
-  col = 1, xlim = c(0, 2), ylim = c(0, 9),
+  col = 1, xlim = c(0, 2), ylim = c(0, 9), lwd = 2,
   xlab = "HR_trt",
   main = "Posterior Hazard Ratio"
 )
 for (i in 2:8) {
-  lines(density(models[[i]]$draws("HR_trt")), col = i, lty = i)
+  lines(density(models[[i]]$draws("HR_trt")), col = i, lty = i, lwd = 2)
 }
 legend("topright", col = seq_along(models), lty = seq_along(models), legend = model_names)
 ```
