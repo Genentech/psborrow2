@@ -57,7 +57,8 @@ Suggests:
     simsurv,
     WeightIt,
     MatchIt,
-    BayesPPD
+    BayesPPD,
+    gbm
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
 Language: en-US
