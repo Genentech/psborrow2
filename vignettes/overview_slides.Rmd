@@ -826,13 +826,12 @@ trt_from_anls <- function(borrowing, adjustment = NULL) {
     treatment = trt_details,
     borrowing = borrowing
   )
-  
   res <- mcmc_sample(anls, iter_warmup = 500, iter_sampling = 1000, chains = 1L)
   draws <- res$draws()
   quant <- summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
-  lci <- quant[quant$variable=="HR_trt", "2.5%"][[1]]
-  uci <- quant[quant$variable=="HR_trt", "97.5%"][[1]]
-  med <- quant[quant$variable=="HR_trt", "50%"][[1]]
+  lci <- quant[quant$variable == "HR_trt", "2.5%"][[1]]
+  uci <- quant[quant$variable == "HR_trt", "97.5%"][[1]]
+  med <- quant[quant$variable == "HR_trt", "50%"][[1]]
   tibble(
     adjustment = ifelse(is.null(adjustment), "No adjustment", "PS adjustment"),
     borrowing = borrowing@method,
@@ -847,40 +846,47 @@ no_borrow <- borrowing_details(method = "No borrowing", ext_flag_col = "ext")
 bdb_borrow <- borrowing_details(method = "BDB", ext_flag_col = "ext", tau_prior = gamma_prior(0.001, 0.001))
 full_borrow <- borrowing_details(method = "Full borrowing", ext_flag_col = "ext")
 adj_ps <- add_covariates(
-    c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
-    normal_prior(0, 10000)
-  )
+  c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
+  normal_prior(0, 10000)
+)
 
 # results
 library(purrr)
 res <- map2(
-  list(no_borrow, no_borrow,
-       bdb_borrow, bdb_borrow),
+  list(
+    no_borrow, no_borrow,
+    bdb_borrow, bdb_borrow
+  ),
   list(NULL, adj_ps, NULL, adj_ps),
   trt_from_anls
 )
 
 res_df <- bind_rows(res)
-res_df$adjustment <- factor(res_df$adjustment, 
-                            levels = c("No adjustment", "PS adjustment")
-                            )
-res_df$borrowing <- factor(res_df$borrowing, 
-                           levels = rev(c(
-                             "No borrowing", 
-                             "BDB")
-                           ))
+res_df$adjustment <- factor(res_df$adjustment,
+  levels = c("No adjustment", "PS adjustment")
+)
+res_df$borrowing <- factor(res_df$borrowing,
+  levels = rev(c(
+    "No borrowing",
+    "BDB"
+  ))
+)
 
-forest_plot <- ggplot(res_df) + 
-  geom_point(aes(x = med,
-                 y = borrowing),
-             color = "blue",
-             size = 3) + 
-  geom_errorbarh(aes(xmin = lci, xmax = uci, y = borrowing), 
-                 color = "blue",
-                 height = 0.3) + 
+forest_plot <- ggplot(res_df) +
+  geom_point(aes(
+    x = med,
+    y = borrowing
+  ),
+  color = "blue",
+  size = 3
+  ) +
+  geom_errorbarh(aes(xmin = lci, xmax = uci, y = borrowing),
+    color = "blue",
+    height = 0.3
+  ) +
   geom_vline(aes(xintercept = 1.0), linetype = 2) +
-  facet_wrap(~ adjustment, ncol = 1) + 
-  labs(x = "Hazard ratio", y = "") + 
+  facet_wrap(~adjustment, ncol = 1) +
+  labs(x = "Hazard ratio", y = "") +
   theme_bw()
 ```
 
@@ -953,21 +959,15 @@ make_prob <- function(odds) {
 sim_single_matrix <- function(n = 500,
                               prob = c(0.1, 0.2, 0.7),
                               hr = 0.70,
-                              or = 1.20,
                               inherent_drift_hr = 1.0,
-                              inherent_drift_or = 1.0,
                               cov1_baseline_prob = 0.5,
                               cov2_baseline_prob = 0.25,
                               cov3_baseline_prob = 0.75,
                               cov4_baseline_prob = 0.5,
-                              cov1_hr = 2.5,
-                              cov2_hr = 2.5,
-                              cov3_hr = 0.25,
-                              cov4_hr = 0.25,
-                              cov1_or = 0.5,
-                              cov2_or = 0.5,
-                              cov3_or = 1.50,
-                              cov4_or = 1.50,
+                              cov1_hr = 1.0,
+                              cov2_hr = 1.0,
+                              cov3_hr = 1.0,
+                              cov4_hr = 1.0,
                               ext_or_cov1 = 3,
                               ext_or_cov2 = 3,
                               ext_or_cov3 = 0.25,
@@ -982,10 +982,7 @@ sim_single_matrix <- function(n = 500,
   #' @param prob numeric vector of probabilities for internal control,
   #' external control, internal experimental, in that order.
   #' @param hr true HR
-  #' @param or true OR
   #' @param inherent_drift_hr the baseline HR between internal
-  #' and external controls not caused by covariates
-  #' @param inherent_drift_or the baseline OR between internal
   #' and external controls not caused by covariates
   #' @param cov1_baseline_prob probability of cov1 in ext = 0 groups
   #' @param cov2_baseline_prob probability of cov2 in ext = 0 groups
@@ -995,10 +992,6 @@ sim_single_matrix <- function(n = 500,
   #' @param cov2_hr true HR for cov2
   #' @param cov3_hr true HR for cov3
   #' @param cov4_hr true HR for cov4
-  #' @param cov1_or true OR for cov1
-  #' @param cov2_or true OR for cov2
-  #' @param cov3_or true OR for cov3
-  #' @param cov4_or true OR for cov4
   #' @param ext_or_cov1 OR of being cov1 for external controls
   #' @param ext_or_cov2 OR of being cov2 for external controls
   #' @param ext_or_cov3 OR of being cov3 for external controls
@@ -1069,25 +1062,14 @@ sim_single_matrix <- function(n = 500,
   # Merge the simulated event times onto covariate data frame
   dat <- merge(cov, dat)
 
-  # Add in binary endpoint
-  lp <- dat$trt * log(or) + dat$ext * log(inherent_drift_or) +
-    dat$cov1 * log(cov1_or) +
-    dat$cov2 * log(cov2_or) +
-    dat$cov3 * log(cov3_or) +
-    dat$cov4 * log(cov4_or)
-
-  exlp <- 1 / (1 + exp(-lp))
-
-  dat$bin_endpoint <- rbinom(n, 1, exlp)
-
   dat <- dat[, c(
     "id", "ext", "trt", "cov4", "cov3", "cov2", "cov1",
-    "eventtime", "status", "censor", "bin_endpoint"
+    "eventtime", "status", "censor"
   )]
 
   colnames(dat) <- c(
     "id", "ext", "trt", "cov4", "cov3", "cov2", "cov1",
-    "time", "status", "cnsr", "resp"
+    "time", "status", "cnsr"
   )
 
   as.matrix(dat)
@@ -1099,36 +1081,23 @@ n <- 50
 
 # Create list of lists of data
 my_data_list <- list(
-  replicate(n, sim_single_matrix(
-    n = 300, hr = 0.6, inherent_drift_hr = 1.0,
-    cov1_hr = 1.0,
-    cov2_hr = 1.0,
-    cov3_hr = 1.0,
-    cov4_hr = 1.0
-  ), simplify = FALSE),
-  replicate(n, sim_single_matrix(
-    n = 250, hr = 1.0, inherent_drift_hr = 1.0,
-    cov1_hr = 1.0,
-    cov2_hr = 1.0,
-    cov3_hr = 1.0,
-    cov4_hr = 1.0
-  ), simplify = FALSE),
-  replicate(n, sim_single_matrix(
-    n = 250, hr = 0.6, inherent_drift_hr = 1.5,
-    cov1_hr = 1.0,
-    cov2_hr = 1.0,
-    cov3_hr = 1.0,
-    cov4_hr = 1.0
-  ), simplify = FALSE),
-  replicate(n, sim_single_matrix(
-    n = 250, hr = 1.0, inherent_drift_hr = 1.5,
-    cov1_hr = 1.0,
-    cov2_hr = 1.0,
-    cov3_hr = 1.0,
-    cov4_hr = 1.0
-  ), simplify = FALSE)
+  replicate(n,
+    sim_single_matrix(n = 250, hr = 0.6, inherent_drift_hr = 1.0),
+    simplify = FALSE
+  ),
+  replicate(n,
+    sim_single_matrix(n = 250, hr = 1.0, inherent_drift_hr = 1.0),
+    simplify = FALSE
+  ),
+  replicate(n,
+    sim_single_matrix(n = 250, hr = 0.6, inherent_drift_hr = 1.5),
+    simplify = FALSE
+  ),
+  replicate(n,
+    sim_single_matrix(n = 250, hr = 1.0, inherent_drift_hr = 1.5),
+    simplify = FALSE
+  )
 )
-
 ```
 
 There are four scenarios.
@@ -1142,7 +1111,6 @@ Each scenario has 50 matrices.
 ```{r}
 NROW(my_data_list[[1]])
 ```
-
 
 
 ```{r}
@@ -1300,7 +1268,6 @@ simulation_res_df$borrowing_scenario <- factor(simulation_res_df$borrowing_scena
     "Full borrowing"
   )
 )
-
 ```
 
 ## Simulation study results
@@ -1369,7 +1336,7 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
     y = "Type I error"
   ) +
   scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75")) +
-  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0, 0.8))+
+  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0, 1)) +
   geom_hline(aes(yintercept = 0.05), linetype = 2)
 ```
 
@@ -1387,23 +1354,29 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
     x = "drift HR",
     y = "Power"
   ) +
-  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))+
-  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0,1)) +
+  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75")) +
+  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0, 1)) +
   geom_hline(aes(yintercept = 0.80), linetype = 2)
 ```
 
 # Installing `psborrow2`
 
-## 
+##
 `psborrow2` can be installed from GitHub with:
 
 ```{r eval = FALSE}
-devtools::install_git('https://github.com/Genentech/psborrow2')
+devtools::install_git("https://github.com/Genentech/psborrow2")
 ```
 
 Feedback can be provided through GitHub issues:
 
 `https://github.com/Genentech/psborrow2/issues`
+
+The vignettes can be accessed with:
+
+```{r eval = FALSE}
+browseVignettes("psborrow2")
+```
 
 # Questions?
 
