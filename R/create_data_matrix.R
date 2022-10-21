@@ -8,7 +8,7 @@
 #' @param trt_flag_col character. The treatment indicator variable.
 #' @param ext_flag_col character. The external cohort indicator.
 #' @param covariates character or formula. The covariates for model adjustment.
-#' @param weight character. An optional weight varaible.
+#' @param weight_var character. An optional weight variable.
 #'
 #' @return  Invisibly returns a `matrix` containing all variables to pass to [create_analysis_obj()].
 #'  Prints names of covariates columns to use with [add_covariates()].

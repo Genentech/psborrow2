@@ -39,6 +39,7 @@
 #'
 #' @param binary_var character. Name of binary (1/0 or TRUE/FALSE) outcome variable in the
 #' model matrix
+#' @param weight_var character. Optional name of variable in model matrix for weighting the log likelihood.
 #' @param baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' See `Details` for more information.

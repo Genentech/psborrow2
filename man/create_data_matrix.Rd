@@ -24,7 +24,7 @@ create_data_matrix(
 
 \item{covariates}{character or formula. The covariates for model adjustment.}
 
-\item{weight}{character. An optional weight varaible.}
+\item{weight_var}{character. An optional weight variable.}
 }
 \value{
 Invisibly returns a \code{matrix} containing all variables to pass to \code{\link[=create_analysis_obj]{create_analysis_obj()}}.

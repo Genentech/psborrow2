@@ -13,6 +13,8 @@ model matrix}
 \item{baseline_prior}{\code{Prior}. Object of class \code{Prior}
 specifying prior distribution for the baseline outcome.
 See \code{Details} for more information.}
+
+\item{weight_var}{character. Optional name of variable in model matrix for weighting the log likelihood.}
 }
 \value{
 Object of class \code{\link[=LogisticBinaryOutcome-class]{LogisticBinaryOutcome}}.

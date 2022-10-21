@@ -16,7 +16,9 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.width = 8,
   fig.height = 4,
-  fig.align = "center"
+  fig.align = "center",
+  messages = FALSE,
+  warnings = FALSE
 )
 ```
 
@@ -231,14 +233,15 @@ result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb)
 
 ## Fixed Weights
 
-We can also use weights to specify a fixed power prior model. Here we set $alpha = 0.1$ for external controls.
+We can also use weights to specify a fixed power prior model. Here we set the power parameter $\alpha = 0.1$
+for the external controls.
 
 ```{r}
-example_matrix_pp01 <- cbind(example_matrix, pp = ifelse(example_matrix[, "ext"] == 1, 0.1, 1))
+example_matrix_pp01 <- cbind(example_matrix, pp_alpha = ifelse(example_matrix[, "ext"] == 1, 0.1, 1))
 
 analysis_pp01 <- create_analysis_obj(
   data_matrix = example_matrix_pp01,
-  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000), weight_var = "pp"),
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000), weight_var = "pp_alpha"),
   borrowing = borrowing_details("Full borrowing", "ext"),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
@@ -316,7 +319,7 @@ plot(density(models[[1]]$draws("HR_trt")),
 for (i in 2:8) {
   lines(density(models[[i]]$draws("HR_trt")), col = i, lty = i, lwd = 2)
 }
-legend("topright", col = seq_along(models), lty = seq_along(models), legend = model_names)
+legend("topright", col = seq_along(models), lty = seq_along(models), legend = names(models))
 ```
 
 Here we see no borrowing and full borrowing at the extremes and the other methods in between.

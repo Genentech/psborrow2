@@ -44,6 +44,7 @@
 #'
 #' @param time_var character. Name of time variable column in model matrix
 #' @param cens_var character. Name of the censorship variable flag in model matrix
+#' @param weight_var character. Optional name of variable in model matrix for weighting the log likelihood.
 #' @param baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' See `Details` for more information.
