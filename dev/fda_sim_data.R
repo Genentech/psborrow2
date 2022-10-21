@@ -115,7 +115,7 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
     y = "Type I error"
   ) +
   scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75")) +
-  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0,1))+
+  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0, 1)) +
   geom_hline(aes(yintercept = 0.05), linetype = 2)
 
 
@@ -128,6 +128,6 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
     x = "drift HR",
     y = "Power"
   ) +
-  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))+
-  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0,1)) +
+  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75")) +
+  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0, 1)) +
   geom_hline(aes(yintercept = 0.80), linetype = 2)
