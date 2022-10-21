@@ -976,27 +976,6 @@ sim_single_matrix <- function(n = 500,
                               trt_or_cov2 = 1.5,
                               trt_or_cov3 = 0.75,
                               trt_or_cov4 = 0.75) {
-  #' Creates simulated data for survival and binary endpoints w/ 4 covariates
-  #'
-  #' @param n number of simulated patients
-  #' @param prob numeric vector of probabilities for internal control,
-  #' external control, internal experimental, in that order.
-  #' @param hr true HR
-  #' @param inherent_drift_hr the baseline HR between internal
-  #' and external controls not caused by covariates
-  #' @param cov1_baseline_prob probability of cov1 in ext = 0 groups
-  #' @param cov2_baseline_prob probability of cov2 in ext = 0 groups
-  #' @param cov3_baseline_prob probability of cov3 in ext = 0 groups
-  #' @param cov4_baseline_prob probability of cov4 in ext = 0 groups
-  #' @param cov1_hr true HR for cov1
-  #' @param cov2_hr true HR for cov2
-  #' @param cov3_hr true HR for cov3
-  #' @param cov4_hr true HR for cov4
-  #' @param ext_or_cov1 OR of being cov1 for external controls
-  #' @param ext_or_cov2 OR of being cov2 for external controls
-  #' @param ext_or_cov3 OR of being cov3 for external controls
-  #' @param ext_or_cov4 OR of being cov4 for external controls
-
   # checks
   if (sum(prob) != 1.0) {
     stop("prob must sum to 1")
