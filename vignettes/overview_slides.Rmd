@@ -37,6 +37,7 @@ library(psborrow2)
 - Overview of package
 - Demonstration of a single dataset analysis
 - Demonstration of a simulation study analysis
+- Installing `psborrow2`
 
 ## Acknowledgements
 
@@ -154,19 +155,19 @@ Consider two hyperprior distributions for $\tau$:
 
 ```{r echo = FALSE, fig.align="center", fig.dim = c(8,4)}
 library(ggplot2)
-uninf_gamma <- vapply(seq(1, 10000, 1), dgamma, shape = .01, rate = .001, FUN.VALUE = numeric(1))
+uninf_gamma <- vapply(seq(1, 10000, 1), dgamma, shape = .001, rate = .001, FUN.VALUE = numeric(1))
 inf_gamma <- vapply(seq(1, 10000, 1), dgamma, shape = 1, rate = 0.001, FUN.VALUE = numeric(1))
 gamma_dens_df <- data.frame(
   xval = c(seq(1, 10000, 1), seq(1, 10000, 1)),
   dens = c(uninf_gamma, inf_gamma),
   type = c(
-    rep("gamma(0.01, 0.001) -> Less borrowing", length(uninf_gamma)),
+    rep("gamma(0.001, 0.001) -> Less borrowing", length(uninf_gamma)),
     rep("gamma(1, 0.001) -> More borrowing", length(inf_gamma))
   )
 )
 gamma_dens_df$type <- factor(gamma_dens_df$type, levels = c(
   "gamma(1, 0.001) -> More borrowing",
-  "gamma(0.01, 0.001) -> Less borrowing"
+  "gamma(0.001, 0.001) -> Less borrowing"
 ))
 ggplot(gamma_dens_df) +
   geom_density(aes(
@@ -176,7 +177,7 @@ ggplot(gamma_dens_df) +
   ),
   stat = "identity"
   ) +
-  scale_x_continuous(limits = c(0, 10000)) +
+  scale_x_continuous(limits = c(0, 5000)) +
   scale_y_continuous(limits = c(0, .0010)) +
   labs(
     x = "tau",
@@ -603,7 +604,7 @@ results <- mcmc_sample(analysis_object)
 Note that `results` is of class `CmdStanMCMC`, which is a `cmdstanr` class.
 
 ```{r}
-class(results)
+results
 ```
 
 At this point in our analysis, we should refer
@@ -813,6 +814,80 @@ mcmc_hist(draws_ps, c("treatment HR")) +
   geom_vline(aes(xintercept = 1.0), linetype = 2)
 ```
 
+## Summary of analyses
+
+```{r include = FALSE}
+# Function to help evaluate all combinations of adjustment and borrowing
+trt_from_anls <- function(borrowing, adjustment = NULL) {
+  anls <- create_analysis_obj(
+    example_matrix_ps,
+    covariates = adjustment,
+    outcome = exp_outcome,
+    treatment = trt_details,
+    borrowing = borrowing
+  )
+  
+  res <- mcmc_sample(anls, iter_warmup = 500, iter_sampling = 1000, chains = 1L)
+  draws <- res$draws()
+  quant <- summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
+  lci <- quant[quant$variable=="HR_trt", "2.5%"][[1]]
+  uci <- quant[quant$variable=="HR_trt", "97.5%"][[1]]
+  med <- quant[quant$variable=="HR_trt", "50%"][[1]]
+  tibble(
+    adjustment = ifelse(is.null(adjustment), "No adjustment", "PS adjustment"),
+    borrowing = borrowing@method,
+    lci = lci,
+    uci = uci,
+    med = med
+  )
+}
+
+# Make relevant outputs
+no_borrow <- borrowing_details(method = "No borrowing", ext_flag_col = "ext")
+bdb_borrow <- borrowing_details(method = "BDB", ext_flag_col = "ext", tau_prior = gamma_prior(0.001, 0.001))
+full_borrow <- borrowing_details(method = "Full borrowing", ext_flag_col = "ext")
+adj_ps <- add_covariates(
+    c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
+    normal_prior(0, 10000)
+  )
+
+# results
+library(purrr)
+res <- map2(
+  list(no_borrow, no_borrow,
+       bdb_borrow, bdb_borrow),
+  list(NULL, adj_ps, NULL, adj_ps),
+  trt_from_anls
+)
+
+res_df <- bind_rows(res)
+res_df$adjustment <- factor(res_df$adjustment, 
+                            levels = c("No adjustment", "PS adjustment")
+                            )
+res_df$borrowing <- factor(res_df$borrowing, 
+                           levels = rev(c(
+                             "No borrowing", 
+                             "BDB")
+                           ))
+
+forest_plot <- ggplot(res_df) + 
+  geom_point(aes(x = med,
+                 y = borrowing),
+             color = "blue",
+             size = 3) + 
+  geom_errorbarh(aes(xmin = lci, xmax = uci, y = borrowing), 
+                 color = "blue",
+                 height = 0.3) + 
+  geom_vline(aes(xintercept = 1.0), linetype = 2) +
+  facet_wrap(~ adjustment, ncol = 1) + 
+  labs(x = "Hazard ratio", y = "") + 
+  theme_bw()
+```
+
+```{echo = FALSE}
+forest_plot
+```
+
 # Demonstration of a simulation study
 
 ## Simulation study
@@ -867,26 +942,126 @@ Suppose we have a list of lists of simulated data called
 `my_data_list`:
 
 ```{r, include = FALSE}
-library(simsurv)
-sim_single_matrix <- function(true_hr = 0.6,
-                              drift_hr = 1.0,
-                              n = 600) {
+make_odds <- function(prob) {
+  prob / (1 - prob)
+}
+
+make_prob <- function(odds) {
+  odds / (1 + odds)
+}
+
+sim_single_matrix <- function(n = 500,
+                              prob = c(0.1, 0.2, 0.7),
+                              hr = 0.70,
+                              or = 1.20,
+                              inherent_drift_hr = 1.0,
+                              inherent_drift_or = 1.0,
+                              cov1_baseline_prob = 0.5,
+                              cov2_baseline_prob = 0.25,
+                              cov3_baseline_prob = 0.75,
+                              cov4_baseline_prob = 0.5,
+                              cov1_hr = 2.5,
+                              cov2_hr = 2.5,
+                              cov3_hr = 0.25,
+                              cov4_hr = 0.25,
+                              cov1_or = 0.5,
+                              cov2_or = 0.5,
+                              cov3_or = 1.50,
+                              cov4_or = 1.50,
+                              ext_or_cov1 = 3,
+                              ext_or_cov2 = 3,
+                              ext_or_cov3 = 0.25,
+                              ext_or_cov4 = 0.25,
+                              trt_or_cov1 = 1.5,
+                              trt_or_cov2 = 1.5,
+                              trt_or_cov3 = 0.75,
+                              trt_or_cov4 = 0.75) {
+  #' Creates simulated data for survival and binary endpoints w/ 4 covariates
+  #'
+  #' @param n number of simulated patients
+  #' @param prob numeric vector of probabilities for internal control,
+  #' external control, internal experimental, in that order.
+  #' @param hr true HR
+  #' @param or true OR
+  #' @param inherent_drift_hr the baseline HR between internal
+  #' and external controls not caused by covariates
+  #' @param inherent_drift_or the baseline OR between internal
+  #' and external controls not caused by covariates
+  #' @param cov1_baseline_prob probability of cov1 in ext = 0 groups
+  #' @param cov2_baseline_prob probability of cov2 in ext = 0 groups
+  #' @param cov3_baseline_prob probability of cov3 in ext = 0 groups
+  #' @param cov4_baseline_prob probability of cov4 in ext = 0 groups
+  #' @param cov1_hr true HR for cov1
+  #' @param cov2_hr true HR for cov2
+  #' @param cov3_hr true HR for cov3
+  #' @param cov4_hr true HR for cov4
+  #' @param cov1_or true OR for cov1
+  #' @param cov2_or true OR for cov2
+  #' @param cov3_or true OR for cov3
+  #' @param cov4_or true OR for cov4
+  #' @param ext_or_cov1 OR of being cov1 for external controls
+  #' @param ext_or_cov2 OR of being cov2 for external controls
+  #' @param ext_or_cov3 OR of being cov3 for external controls
+  #' @param ext_or_cov4 OR of being cov4 for external controls
+
+  # checks
+  if (sum(prob) != 1.0) {
+    stop("prob must sum to 1")
+  }
+
+  # Depend
+  require(simsurv)
+  require(broom)
+  require(survival)
+
+  # Create a data frame with the subject IDs and treatment group
   cov <- data.frame(
     id = 1:n,
-    trt = rbinom(n, 1, 0.5)
+    ext = c(
+      rep(0L, n * (prob[1] + prob[2])),
+      rep(1L, n * prob[3])
+    ),
+    trt = c(
+      rep(0L, n * prob[1]),
+      rep(1L, n * prob[2]),
+      rep(0L, n * prob[3])
+    )
   )
-  cov$ext <- ifelse(cov$trt == 1L, 0L, rbinom(sum(cov$trt), 1, 0.5))
+  cov$cov1 <- cov$cov2 <- cov$cov3 <- cov$cov4 <- integer(length = nrow(cov))
+
+  for (i in seq(1, NROW(cov))) {
+    if (cov$ext[i] == 1) {
+      cov$cov1[i] <- rbinom(1, 1, make_prob(ext_or_cov1 * make_odds(cov1_baseline_prob)))
+      cov$cov2[i] <- rbinom(1, 1, make_prob(ext_or_cov2 * make_odds(cov2_baseline_prob)))
+      cov$cov3[i] <- rbinom(1, 1, make_prob(ext_or_cov3 * make_odds(cov3_baseline_prob)))
+      cov$cov4[i] <- rbinom(1, 1, make_prob(ext_or_cov4 * make_odds(cov4_baseline_prob)))
+    } else if (cov$trt[i] == 1) {
+      cov$cov1[i] <- rbinom(1, 1, make_prob(trt_or_cov1 * make_odds(cov1_baseline_prob)))
+      cov$cov2[i] <- rbinom(1, 1, make_prob(trt_or_cov2 * make_odds(cov2_baseline_prob)))
+      cov$cov3[i] <- rbinom(1, 1, make_prob(trt_or_cov3 * make_odds(cov3_baseline_prob)))
+      cov$cov4[i] <- rbinom(1, 1, make_prob(trt_or_cov4 * make_odds(cov4_baseline_prob)))
+    } else {
+      cov$cov1[i] <- rbinom(1, 1, cov1_baseline_prob)
+      cov$cov2[i] <- rbinom(1, 1, cov2_baseline_prob)
+      cov$cov3[i] <- rbinom(1, 1, cov3_baseline_prob)
+      cov$cov4[i] <- rbinom(1, 1, cov4_baseline_prob)
+    }
+  }
 
   # Simulate the event times
   dat <- simsurv(
     lambdas = 0.1,
-    gammas = 1.5,
+    dist = "exponential",
     betas = c(
-      trt = log(true_hr),
-      ext = log(drift_hr)
+      trt = log(hr),
+      ext = log(inherent_drift_hr),
+      cov1 = log(cov1_hr),
+      cov2 = log(cov2_hr),
+      cov3 = log(cov3_hr),
+      cov4 = log(cov4_hr)
     ),
     x = cov,
-    maxt = 5
+    maxt = 50
   )
 
   dat$censor <- 1 - dat$status
@@ -894,18 +1069,66 @@ sim_single_matrix <- function(true_hr = 0.6,
   # Merge the simulated event times onto covariate data frame
   dat <- merge(cov, dat)
 
+  # Add in binary endpoint
+  lp <- dat$trt * log(or) + dat$ext * log(inherent_drift_or) +
+    dat$cov1 * log(cov1_or) +
+    dat$cov2 * log(cov2_or) +
+    dat$cov3 * log(cov3_or) +
+    dat$cov4 * log(cov4_or)
+
+  exlp <- 1 / (1 + exp(-lp))
+
+  dat$bin_endpoint <- rbinom(n, 1, exlp)
+
+  dat <- dat[, c(
+    "id", "ext", "trt", "cov4", "cov3", "cov2", "cov1",
+    "eventtime", "status", "censor", "bin_endpoint"
+  )]
+
+  colnames(dat) <- c(
+    "id", "ext", "trt", "cov4", "cov3", "cov2", "cov1",
+    "time", "status", "cnsr", "resp"
+  )
+
   as.matrix(dat)
 }
 
 set.seed(123)
 
+n <- 50
+
 # Create list of lists of data
 my_data_list <- list(
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.0)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.0)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 0.6, drift_hr = 1.5)),
-  lapply(1:10, function(z) sim_single_matrix(true_hr = 1.0, drift_hr = 1.5))
+  replicate(n, sim_single_matrix(
+    n = 300, hr = 0.6, inherent_drift_hr = 1.0,
+    cov1_hr = 1.0,
+    cov2_hr = 1.0,
+    cov3_hr = 1.0,
+    cov4_hr = 1.0
+  ), simplify = FALSE),
+  replicate(n, sim_single_matrix(
+    n = 250, hr = 1.0, inherent_drift_hr = 1.0,
+    cov1_hr = 1.0,
+    cov2_hr = 1.0,
+    cov3_hr = 1.0,
+    cov4_hr = 1.0
+  ), simplify = FALSE),
+  replicate(n, sim_single_matrix(
+    n = 250, hr = 0.6, inherent_drift_hr = 1.5,
+    cov1_hr = 1.0,
+    cov2_hr = 1.0,
+    cov3_hr = 1.0,
+    cov4_hr = 1.0
+  ), simplify = FALSE),
+  replicate(n, sim_single_matrix(
+    n = 250, hr = 1.0, inherent_drift_hr = 1.5,
+    cov1_hr = 1.0,
+    cov2_hr = 1.0,
+    cov3_hr = 1.0,
+    cov4_hr = 1.0
+  ), simplify = FALSE)
 )
+
 ```
 
 There are four scenarios.
@@ -914,7 +1137,7 @@ There are four scenarios.
 NROW(my_data_list)
 ```
 
-Each scenario has 100 matrices.
+Each scenario has 50 matrices.
 
 ```{r}
 NROW(my_data_list[[1]])
@@ -935,7 +1158,7 @@ summarized with the below `guide`:
 ```{r echo = FALSE}
 my_sim_data_guide <- expand.grid(
   true_hr = c(0.6, 1.0),
-  drift_hr = c(1.0, 1.5)
+  drift_hr = c("No drift HR", "Moderate drift HR")
 )
 ```
 
@@ -972,11 +1195,12 @@ my_sim_data_list
 
 ## Borrowing list
 
-For this simulation study, let's focus on comparing three borrowing methods:
+For this simulation study, let's focus on comparing four borrowing methods:
 
 * No borrowing
+* BDB, conservative hyperprior
+* BDB, aggressive hyperprior
 * Full borrowing
-* BDB
 
 How do we specify that we want to evaluate multiple borrowing methods?
 We'll use a special list of `Borrowing` objects,
@@ -991,7 +1215,8 @@ my_borrowing_list <- sim_borrowing_list(
   list(
     "No borrowing" = borrowing_details("No borrowing", "ext"),
     "Full borrowing" = borrowing_details("Full borrowing", "ext"),
-    "BDB" = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001))
+    "BDB - conservative" = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
+    "BDB - aggressive" = borrowing_details("BDB", "ext", gamma_prior(1, 0.001))
   )
 )
 ```
@@ -1022,8 +1247,8 @@ Now, let's create a `Simulation` object:
 ```{r}
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
-  outcome = exp_surv_dist("eventtime",
-    "censor",
+  outcome = exp_surv_dist("time",
+    "cnsr",
     baseline_prior = normal_prior(0, 10000)
   ),
   borrowing = my_borrowing_list,
@@ -1066,6 +1291,18 @@ Let's get a useful `data.frame` of results by calling `get_results`:
 simulation_res_df <- get_results(simulation_res)
 ```
 
+```{r include = FALSE}
+simulation_res_df$borrowing_scenario <- factor(simulation_res_df$borrowing_scenario,
+  levels = c(
+    "No borrowing",
+    "BDB - conservative",
+    "BDB - aggressive",
+    "Full borrowing"
+  )
+)
+
+```
+
 ## Simulation study results
 
 Let's see what exactly is contained in the results.
@@ -1089,6 +1326,10 @@ Let's look at the number of parameter combinations that were evaluated:
 NROW(simulation_res_df)
 ```
 
+```{r}
+head(simulation_res_df, 2)
+```
+
 This makes sense as we had
 `r NROW(my_sim_data_guide)` scenarios in our data generation step and
 `r NROW(my_borrowing_list@guide)` in our borrowing step. The cartesian
@@ -1098,7 +1339,7 @@ product is `r NROW(simulation_res_df)`.
 
 We can use the results to plot MSE by scenario as below:
 
-```{r, echo = FALSE, fig.align = "center"}
+```{r, echo = FALSE, fig.align = "center", fig.dim = c(8, 4)}
 ggplot(simulation_res_df) +
   geom_bar(aes(x = factor(true_hr), fill = borrowing_scenario, y = mse_mean),
     stat = "identity", position = "dodge"
@@ -1108,8 +1349,8 @@ ggplot(simulation_res_df) +
     x = "True HR",
     y = "MSE"
   ) +
-  facet_wrap(~ paste0("drift HR = ", drift_hr)) +
-  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+  facet_wrap(~drift_hr) +
+  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))
 ```
 
 ## Type I error
@@ -1117,7 +1358,7 @@ ggplot(simulation_res_df) +
 Because we included a true HR of 1.0, we can evaluate type I error by looking
 at the compliment to the true parameter coverage:
 
-```{r, echo = FALSE, fig.align = "center"}
+```{r, echo = FALSE, fig.align = "center", fig.dim = c(8, 4)}
 ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - true_coverage),
     stat = "identity", position = "dodge"
@@ -1127,14 +1368,16 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
     x = "drift HR",
     y = "Type I error"
   ) +
-  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75")) +
+  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0, 0.8))+
+  geom_hline(aes(yintercept = 0.05), linetype = 2)
 ```
 
 ## Power
 
 We can include power by looking at the results for our true simulation of 0.6.
 
-```{r, echo = FALSE, fig.align = "center"}
+```{r, echo = FALSE, fig.align = "center", fig.dim = c(8, 4)}
 ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - null_coverage),
     stat = "identity", position = "dodge"
@@ -1142,10 +1385,25 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
   labs(
     fill = "Borrowing scenario",
     x = "drift HR",
-    y = "Type I error"
+    y = "Power"
   ) +
-  scale_fill_manual(values = c("#29339B", "#74A4BC", "#B6D6CC"))
+  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))+
+  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0,1)) +
+  geom_hline(aes(yintercept = 0.80), linetype = 2)
 ```
+
+# Installing `psborrow2`
+
+## 
+`psborrow2` can be installed from GitHub with:
+
+```{r eval = FALSE}
+devtools::install_git('https://github.com/Genentech/psborrow2')
+```
+
+Feedback can be provided through GitHub issues:
+
+`https://github.com/Genentech/psborrow2/issues`
 
 # Questions?
 

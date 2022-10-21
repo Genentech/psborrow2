@@ -9,32 +9,32 @@ n <- 50
 # Create list of lists of data
 my_data_list <- list(
   replicate(n, sim_single_matrix(
-    n = 250, hr = 0.6, inherent_drift_hr = 1.0,
-    cov1_hr = 1.2,
-    cov2_hr = 0.8,
-    cov3_hr = 1.2,
-    cov4_hr = 0.8,
+    n = 300, hr = 0.6, inherent_drift_hr = 1.0,
+    cov1_hr = 1.0,
+    cov2_hr = 1.0,
+    cov3_hr = 1.0,
+    cov4_hr = 1.0
   ), simplify = FALSE),
   replicate(n, sim_single_matrix(
     n = 250, hr = 1.0, inherent_drift_hr = 1.0,
-    cov1_hr = 1.2,
-    cov2_hr = 0.8,
-    cov3_hr = 1.2,
-    cov4_hr = 0.8
+    cov1_hr = 1.0,
+    cov2_hr = 1.0,
+    cov3_hr = 1.0,
+    cov4_hr = 1.0
   ), simplify = FALSE),
   replicate(n, sim_single_matrix(
     n = 250, hr = 0.6, inherent_drift_hr = 1.5,
-    cov1_hr = 1.2,
-    cov2_hr = 0.8,
-    cov3_hr = 1.2,
-    cov4_hr = 0.8
+    cov1_hr = 1.0,
+    cov2_hr = 1.0,
+    cov3_hr = 1.0,
+    cov4_hr = 1.0
   ), simplify = FALSE),
   replicate(n, sim_single_matrix(
     n = 250, hr = 1.0, inherent_drift_hr = 1.5,
-    cov1_hr = 1.2,
-    cov2_hr = 0.8,
-    cov3_hr = 1.2,
-    cov4_hr = 0.8
+    cov1_hr = 1.0,
+    cov2_hr = 1.0,
+    cov3_hr = 1.0,
+    cov4_hr = 1.0
   ), simplify = FALSE)
 )
 
@@ -114,7 +114,9 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
     x = "drift HR",
     y = "Type I error"
   ) +
-  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))
+  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75")) +
+  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0,1))+
+  geom_hline(aes(yintercept = 0.05), linetype = 2)
 
 
 ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
@@ -126,4 +128,6 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
     x = "drift HR",
     y = "Power"
   ) +
-  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))
+  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))+
+  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0,1)) +
+  geom_hline(aes(yintercept = 0.80), linetype = 2)
