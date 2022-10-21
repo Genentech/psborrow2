@@ -1,5 +1,5 @@
 ---
-title: "Conduct a hybrid control analysis on a dataset using BDB"
+title: "2. Conduct a hybrid control analysis on a dataset using BDB"
 author: "Matt Secrest and Isaac Gravestock"
 output:
   rmarkdown::html_vignette:

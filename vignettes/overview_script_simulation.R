@@ -174,7 +174,7 @@ sim_single_matrix()
 set.seed(123)
 
 # Set number of simulations per scenario
-n <- 50
+n <- 2000 # Will take a long time!
 
 # Create list of lists of data
 my_data_list <- list(

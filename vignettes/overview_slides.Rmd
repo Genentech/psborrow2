@@ -1,12 +1,12 @@
 ---
-title: "`psborrow2` Overview Slides"
+title: "6. Walkthrough overview slides"
 subtitle: "Matt Secrest"
 output:
   rmarkdown::ioslides_presentation:
     widescreen: true
     transition: 0.05
 vignette: >
-  %\VignetteIndexEntry{5. Walkthrough overview slides}
+  %\VignetteIndexEntry{6. Walkthrough overview slides}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
