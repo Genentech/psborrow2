@@ -31,7 +31,7 @@ library(table1)
 
 ## psborrow2 contains an example matrix
 head(example_matrix)
-#?example_matrix
+# ?example_matrix
 
 ## load as data.frame for some functions
 example_dataframe <- as.data.frame(example_matrix)
@@ -45,16 +45,16 @@ table(ext = example_matrix[, "ext"], trt = example_matrix[, "trt"])
 
 ## Cox model
 cox_fit <- coxph(Surv(time = time, event = 1 - cnsr) ~ trt,
-                 data = example_dataframe,
-                 subset = ext == 0
+  data = example_dataframe,
+  subset = ext == 0
 )
 
 exp(confint(cox_fit))
 
 ## Kaplan-meier curves
 km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt,
-                  data = example_dataframe,
-                  subset = ext == 0
+  data = example_dataframe,
+  subset = ext == 0
 )
 
 ggsurvplot(km_fit)
@@ -64,22 +64,22 @@ ggsurvplot(km_fit)
 ############################################################
 
 ## The end goal
-#?create_analysis_obj
+# ?create_analysis_obj
 
 ## Outcome class----
-#?exp_surv_dist
-#?weib_ph_surv_dist
-#?logistic_bin_outcome
+# ?exp_surv_dist
+# ?weib_ph_surv_dist
+# ?logistic_bin_outcome
 
 ### A side note on priors
-#?bernoulli_prior
-#?beta_prior
-#?cauchy_prior
-#?exponential_prior
-#?gamma_prior
-#?normal_prior
-#?poisson_prior
-#?uniform_prior
+# ?bernoulli_prior
+# ?beta_prior
+# ?cauchy_prior
+# ?exponential_prior
+# ?gamma_prior
+# ?normal_prior
+# ?poisson_prior
+# ?uniform_prior
 
 ### Plotting priors
 plot(normal_prior(0, 1), xlim = c(-100, 100), ylim = c(0, 1))
@@ -94,7 +94,7 @@ exp_outcome <- exp_surv_dist(
 )
 
 ## Borrowing class ----
-#?borrowing_details
+# ?borrowing_details
 
 bdb_borrowing <- borrowing_details(
   method = "BDB",
@@ -103,7 +103,7 @@ bdb_borrowing <- borrowing_details(
 )
 
 ## Treatment class ----
-#?treatment_details
+# ?treatment_details
 
 trt_details <- treatment_details(
   trt_flag_col = "trt",
@@ -121,7 +121,7 @@ analysis_object <- create_analysis_obj(
 analysis_object
 
 ## Sample from the MCMC sampler----
-#?mcmc_sample
+# ?mcmc_sample
 
 results <- mcmc_sample(
   x = analysis_object,
@@ -155,8 +155,8 @@ mcmc_hist(draws, c("treatment HR"))
 # Why did our model not borrow much from the external arm?
 ggsurvplot(
   survfit(Surv(time, 1 - cnsr) ~ ext,
-          example_dataframe,
-          subset = trt == 0
+    example_dataframe,
+    subset = trt == 0
   )
 )
 
@@ -165,16 +165,16 @@ ggsurvplot(
 ############################################################
 
 ## Balance between cohorts
-table1(~ cov1 + cov2 + cov3 + cov4|
-         factor(trt, levels = 0:1, labels = c("Control", "Treatment")) +
-         factor(ext, levels = 0:1, labels = c("Internal", "External")),
-       data = example_dataframe
+table1(~ cov1 + cov2 + cov3 + cov4 |
+  factor(trt, levels = 0:1, labels = c("Control", "Treatment")) +
+    factor(ext, levels = 0:1, labels = c("Internal", "External")),
+data = example_dataframe
 )
 
 ## Let's incorporate propensity scores into our analysis
 ps_model <- glm(ext ~ cov1 + cov2 + cov3 + cov4,
-                data = example_dataframe,
-                family = binomial
+  data = example_dataframe,
+  family = binomial
 )
 ps <- predict(ps_model, type = "response")
 example_dataframe$ps <- ps
