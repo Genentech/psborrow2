@@ -81,6 +81,9 @@ ways of incorporating external data:
 if (!"gt" %in% installed.packages()[, "Package"]) {
   install.packages("gt")
 }
+if (!"gtsummary" %in% installed.packages()[, "Package"]) {
+  install.packages("gtsummary")
+}
 ```
 
 ```{r echo = FALSE}
