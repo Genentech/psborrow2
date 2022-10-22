@@ -77,6 +77,12 @@ ways of incorporating external data:
 
 <br>
 
+```{r include = FALSE}
+if (!"gt" %in% installed.packages()[, "Package"]) {
+  install.packages("gt")
+}
+```
+
 ```{r echo = FALSE}
 library(gt)
 types_of_borrowing <- data.frame(
@@ -201,7 +207,6 @@ design and understand the benefits of BDB on
 operating characteristics.
 
 ```{r echo = FALSE}
-library(gt)
 psborrow2_history <- data.frame(
   date = c("2019", "Q2 2021", "2021", "Q1 2022", "May 2022", "Jul 2022", "Oct 2022"),
   desc = c(
