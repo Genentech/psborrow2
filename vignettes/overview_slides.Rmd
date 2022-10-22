@@ -79,10 +79,10 @@ ways of incorporating external data:
 
 ```{r include = FALSE}
 if (!"gt" %in% installed.packages()[, "Package"]) {
-  install.packages("gt")
+  install.packages("gt", repos = c("CRAN" = "https://cran.r-project.org/"))
 }
 if (!"gtsummary" %in% installed.packages()[, "Package"]) {
-  install.packages("gtsummary")
+  install.packages("gtsummary", repos = c("CRAN" = "https://cran.r-project.org/"))
 }
 ```
 
@@ -685,7 +685,7 @@ Our cohorts appear to differ in baseline characteristics:
 
 ```{r include = FALSE}
 if (!"table1" %in% installed.packages()[, "Package"]) {
-  install.packages("table1")
+  install.packages("table1", repos = c("CRAN" = "https://cran.r-project.org/"))
 }
 ```
 
