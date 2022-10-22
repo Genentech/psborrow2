@@ -154,7 +154,6 @@ $$
 Consider two hyperprior distributions for $\tau$:
 
 ```{r echo = FALSE, fig.align="center", fig.dim = c(8,4)}
-library(ggplot2)
 uninf_gamma <- vapply(seq(1, 10000, 1), dgamma, shape = .001, rate = .001, FUN.VALUE = numeric(1))
 inf_gamma <- vapply(seq(1, 10000, 1), dgamma, shape = 1, rate = 0.001, FUN.VALUE = numeric(1))
 gamma_dens_df <- data.frame(
@@ -169,6 +168,7 @@ gamma_dens_df$type <- factor(gamma_dens_df$type, levels = c(
   "gamma(1, 0.001) -> More borrowing",
   "gamma(0.001, 0.001) -> Less borrowing"
 ))
+library(ggplot2)
 ggplot(gamma_dens_df) +
   geom_density(aes(
     x = xval,
@@ -588,17 +588,13 @@ print(analysis_object)
 The `Analysis` object suggests calling `mcmc_sample()`
 as a next step. We'll follow that advice!
 
-```{r include = FALSE}
+```{r}
 results <- mcmc_sample(
-  x = analysis_object,
+  analysis_object,
   iter_warmup = 1000,
   iter_sampling = 1000,
   chains = 1
 )
-```
-
-```{r eval = FALSE}
-results <- mcmc_sample(analysis_object)
 ```
 
 Note that `results` is of class `CmdStanMCMC`, which is a `cmdstanr` class.
@@ -767,12 +763,9 @@ analysis_object_ps <- create_analysis_obj(
 )
 ```
 
-```{r eval = FALSE}
-results_ps <- mcmc_sample(analysis_object_ps)
-```
-
-```{r include = FALSE}
-results_ps <- mcmc_sample(analysis_object_ps,
+```{r}
+results_ps <- mcmc_sample(
+  analysis_object_ps,
   iter_warmup = 1000,
   iter_sampling = 1000,
   chains = 1
@@ -819,6 +812,8 @@ mcmc_hist(draws_ps, c("treatment HR")) +
 ```{r include = FALSE}
 # Function to help evaluate all combinations of adjustment and borrowing
 trt_from_anls <- function(borrowing, adjustment = NULL) {
+  require(posterior)
+  require(tibble)
   anls <- create_analysis_obj(
     example_matrix_ps,
     covariates = adjustment,
@@ -826,7 +821,7 @@ trt_from_anls <- function(borrowing, adjustment = NULL) {
     treatment = trt_details,
     borrowing = borrowing
   )
-  res <- mcmc_sample(anls, iter_warmup = 500, iter_sampling = 1000, chains = 1L)
+  res <- mcmc_sample(anls, iter_warmup = 1000, iter_sampling = 1000, chains = 4L)
   draws <- res$draws()
   quant <- summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
   lci <- quant[quant$variable == "HR_trt", "2.5%"][[1]]
@@ -834,7 +829,16 @@ trt_from_anls <- function(borrowing, adjustment = NULL) {
   med <- quant[quant$variable == "HR_trt", "50%"][[1]]
   tibble(
     adjustment = ifelse(is.null(adjustment), "No adjustment", "PS adjustment"),
-    borrowing = borrowing@method,
+    borrowing = ifelse(borrowing@method != "BDB",
+      borrowing@method,
+      paste0(
+        borrowing@method,
+        " - ",
+        psborrow2:::h_glue(borrowing@tau_prior@stan_code,
+          object = borrowing@tau_prior
+        )
+      )
+    ),
     lci = lci,
     uci = uci,
     med = med
@@ -844,6 +848,7 @@ trt_from_anls <- function(borrowing, adjustment = NULL) {
 # Make relevant outputs
 no_borrow <- borrowing_details(method = "No borrowing", ext_flag_col = "ext")
 bdb_borrow <- borrowing_details(method = "BDB", ext_flag_col = "ext", tau_prior = gamma_prior(0.001, 0.001))
+bdb_borrow_agg <- borrowing_details(method = "BDB", ext_flag_col = "ext", tau_prior = gamma_prior(1, 0.001))
 full_borrow <- borrowing_details(method = "Full borrowing", ext_flag_col = "ext")
 adj_ps <- add_covariates(
   c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
@@ -852,12 +857,15 @@ adj_ps <- add_covariates(
 
 # results
 library(purrr)
+library(dplyr)
 res <- map2(
   list(
     no_borrow, no_borrow,
-    bdb_borrow, bdb_borrow
+    bdb_borrow, bdb_borrow,
+    bdb_borrow_agg, bdb_borrow_agg,
+    full_borrow, full_borrow
   ),
-  list(NULL, adj_ps, NULL, adj_ps),
+  list(NULL, adj_ps, NULL, adj_ps, NULL, adj_ps, adj_ps, NULL),
   trt_from_anls
 )
 
@@ -865,29 +873,47 @@ res_df <- bind_rows(res)
 res_df$adjustment <- factor(res_df$adjustment,
   levels = c("No adjustment", "PS adjustment")
 )
+res_df$borrowing <- ifelse(res_df$borrowing == "BDB - gamma(0.001, 0.001)",
+  "BDB - conservative",
+  ifelse(res_df$borrowing == "BDB - gamma(1, 0.001)",
+    "BDB - aggressive",
+    res_df$borrowing
+  )
+)
+
 res_df$borrowing <- factor(res_df$borrowing,
   levels = rev(c(
     "No borrowing",
-    "BDB"
+    "BDB - conservative",
+    "BDB - aggressive",
+    "Full borrowing"
   ))
 )
 
 forest_plot <- ggplot(res_df) +
+  geom_vline(aes(xintercept = hr, color = Reference), linetype = 2, data = data.frame(
+    Reference = c("Null effect", "True HR"),
+    hr = c(1.0, 0.7)
+  )) +
+  scale_color_manual(values = c(
+    "Null effect" = "gray",
+    "True HR" = "#ECC30B"
+  )) +
   geom_point(aes(
     x = med,
     y = borrowing
   ),
-  color = "blue",
+  color = "#067BC2",
   size = 3
   ) +
   geom_errorbarh(aes(xmin = lci, xmax = uci, y = borrowing),
-    color = "blue",
+    color = "#067BC2",
     height = 0.3
   ) +
-  geom_vline(aes(xintercept = 1.0), linetype = 2) +
   facet_wrap(~adjustment, ncol = 1) +
   labs(x = "Hazard ratio", y = "") +
-  theme_bw()
+  theme_bw() +
+  theme(legend.position = "bottom")
 ```
 
 ```{echo = FALSE}
@@ -1056,7 +1082,7 @@ sim_single_matrix <- function(n = 500,
 
 set.seed(123)
 
-n <- 50
+n <- 20
 
 # Create list of lists of data
 my_data_list <- list(
@@ -1085,7 +1111,7 @@ There are four scenarios.
 NROW(my_data_list)
 ```
 
-Each scenario has 50 matrices.
+Each scenario has 20 matrices.
 
 ```{r}
 NROW(my_data_list[[1]])
@@ -1211,18 +1237,13 @@ simulation_obj <- create_simulation_obj(
 As with `Analysis` objects, the next step for us with `Simulation` objects
 is to call `mcmc_sample()`:
 
-```{r, include = FALSE}
+```{r}
 simulation_res <- mcmc_sample(
-  x = simulation_obj,
-  iter_warmup = 500,
-  iter_sampling = 250,
+  simulation_obj,
+  iter_warmup = 1000,
+  iter_sampling = 1000,
   chains = 1
 )
-```
-
-
-```{r, eval = FALSE}
-simulation_res <- mcmc_sample(simulation_obj)
 ```
 
 You'll note the simulation study results are a special `psborrow2` class,

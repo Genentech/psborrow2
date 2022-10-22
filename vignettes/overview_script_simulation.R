@@ -174,23 +174,27 @@ sim_single_matrix()
 set.seed(123)
 
 # Set number of simulations per scenario
-n <- 2000 # Will take a long time!
+n_datasets_per_sim <- 2000 # Will take a long time! Specify your N datasets here.
 
 # Create list of lists of data
 my_data_list <- list(
-  replicate(n,
+  replicate(
+    n_datasets_per_sim,
     sim_single_matrix(n = 250, hr = 0.6, inherent_drift_hr = 1.0),
     simplify = FALSE
   ),
-  replicate(n,
+  replicate(
+    n_datasets_per_sim,
     sim_single_matrix(n = 250, hr = 1.0, inherent_drift_hr = 1.0),
     simplify = FALSE
   ),
-  replicate(n,
+  replicate(
+    n_datasets_per_sim,
     sim_single_matrix(n = 250, hr = 0.6, inherent_drift_hr = 1.5),
     simplify = FALSE
   ),
-  replicate(n,
+  replicate(
+    n_datasets_per_sim,
     sim_single_matrix(n = 250, hr = 1.0, inherent_drift_hr = 1.5),
     simplify = FALSE
   )
@@ -207,7 +211,7 @@ head(my_data_list[[1]][[1]])
 
 my_sim_data_guide <- expand.grid(
   true_hr = c(0.6, 1.0),
-  drift_hr = c(1.0, 1.5)
+  drift_hr = c("No drift HR", "Moderate drift HR")
 )
 
 my_sim_data_guide$id <- seq(1, NROW(my_sim_data_guide))
