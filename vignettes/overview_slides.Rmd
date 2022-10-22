@@ -377,7 +377,8 @@ ggsurvplot(fit = km_fit, data = example_dataframe, palette = "Set1")
 <center>
 ```{r message = FALSE, echo = FALSE}
 library(broom)
-library(tidyverse)
+library(dplyr)
+library(tidyselect)
 cox_fit <- coxph(Surv(time = time, event = 1 - cnsr) ~ trt,
   data = example_dataframe,
   subset = ext == 0
