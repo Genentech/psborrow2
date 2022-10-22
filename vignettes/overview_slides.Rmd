@@ -588,7 +588,16 @@ print(analysis_object)
 The `Analysis` object suggests calling `mcmc_sample()`
 as a next step. We'll follow that advice!
 
-```{r}
+```{r include = FALSE}
+results <- mcmc_sample(
+  analysis_object,
+  iter_warmup = 1000,
+  iter_sampling = 1000,
+  chains = 1
+)
+```
+
+```{r eval = FALSE}
 results <- mcmc_sample(
   analysis_object,
   iter_warmup = 1000,
@@ -763,7 +772,16 @@ analysis_object_ps <- create_analysis_obj(
 )
 ```
 
-```{r}
+```{r include = FALSE}
+results_ps <- mcmc_sample(
+  analysis_object_ps,
+  iter_warmup = 1000,
+  iter_sampling = 1000,
+  chains = 1
+)
+```
+
+```{r eval = FALSE}
 results_ps <- mcmc_sample(
   analysis_object_ps,
   iter_warmup = 1000,
@@ -1237,7 +1255,16 @@ simulation_obj <- create_simulation_obj(
 As with `Analysis` objects, the next step for us with `Simulation` objects
 is to call `mcmc_sample()`:
 
-```{r}
+```{r include = FALSE}
+simulation_res <- mcmc_sample(
+  simulation_obj,
+  iter_warmup = 1000,
+  iter_sampling = 1000,
+  chains = 1
+)
+```
+
+```{r eval = FALSE}
 simulation_res <- mcmc_sample(
   simulation_obj,
   iter_warmup = 1000,
