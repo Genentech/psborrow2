@@ -682,6 +682,13 @@ Our cohorts appear to differ in baseline characteristics:
 <br>
 
 <center>
+
+```{r include = FALSE}
+if (!"table1" %in% installed.packages()[, "Package"]) {
+  install.packages("table1")
+}
+```
+
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 library(table1)
 t1 <- table1(~ cov1 + cov2 + cov3 + cov4 |
