@@ -402,7 +402,7 @@ tidy(cox_fit, exponentiate = TRUE, conf.int = TRUE) %>%
 
 <br>
 
-Here, the hazard ratio is 0.87 (95% CI 0.61 - 1.24), ignoring the external
+Here, the hazard ratio is 0.90 (95% CI 0.61 - 1.32), ignoring the external
 control data.
 
 ## Hybrid control analysis
