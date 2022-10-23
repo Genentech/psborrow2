@@ -362,18 +362,27 @@ It looks like we have 50 patients in our internal control,
 
 ## Naive internal comparisons
 
-Let's start by conducting a Cox proportional hazards model without using
-the external data:
+Let's start by exploring the three arms descriptively:
 
-```{r message = FALSE, echo = FALSE, fig.align = "center", fig.dim = c(5, 2.7)}
+```{r message = FALSE, echo = FALSE, fig.align = "center", fig.dim = c(7, 4)}
 library(survival)
 library(survminer)
-km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt, example_dataframe,
-  subset = ext == 0
-)
+km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt + ext, example_dataframe)
 ggsurvplot(fit = km_fit, data = example_dataframe, palette = "Set1")
 ```
 <br>
+Wow, the external control population looks quite different from the internal
+control population!
+
+##
+
+<br>
+
+As a point of reference, let's conduct a Cox proportional hazards model
+looking just at the internal RCT data.
+
+<br>
+
 <center>
 ```{r message = FALSE, echo = FALSE}
 library(broom)
@@ -393,12 +402,14 @@ tidy(cox_fit, exponentiate = TRUE, conf.int = TRUE) %>%
 
 <br>
 
-Here, the hazard ratio is 0.87 (95% CI 0.61 - 1.24).
+Here, the hazard ratio is 0.87 (95% CI 0.61 - 1.24), ignoring the external
+control data.
 
 ## Hybrid control analysis
 
-For a BDB analysis, we want to create an object of class `Analysis`
-with `create_analysis_obj()`.
+Let's confirm that BDB will <b>not</b> perform much borrowing when we include
+the external data. For a BDB analysis in `psborrow2`, we want to
+create an object of class `Analysis` with:
 
 ```{r eval = FALSE}
 create_analysis_obj(
@@ -435,7 +446,7 @@ gt(
 
 ## Outcome class
 
-Let's start with the `Outcome` class. There are three different
+Let's look at the `Outcome` class. There are three different
 outcomes supported by `psborrow2`, each of which has a constructor:
 
 <br>
@@ -615,8 +626,6 @@ results <- mcmc_sample(
 )
 ```
 
-Note that `results` is of class `CmdStanMCMC`, which is a `cmdstanr` class.
-
 ```{r}
 results
 ```
@@ -658,28 +667,12 @@ mcmc_hist(draws, c("treatment HR")) +
 
 ##
 
-Interestingly, our results did not change substantially after using
-BDB. Maybe our outcome
-distributions are dissimilar between internal and external controls:
+Our results did not change substantially after using
+BDB. This is exactly what we would expect given how different our
+populations are!
 
-```{r, fig.align="center", fig.dim = c(6,3.5), echo = FALSE}
-ggsurvplot(
-  survfit(Surv(time, 1 - cnsr) ~ ext, example_dataframe,
-    subset = trt == 0
-  ),
-  example_dataframe,
-  palette = "Set1"
-)
-```
-
-The outcomes are quite different (and we should have checked
-this earlier)!
-
-## Evaluating balance between cohorts
-
-Our cohorts appear to differ in baseline characteristics:
-
-<br>
+Let's explore baseline characteristics and see if we can identify ways
+in which the internal and external control arms differ:
 
 <center>
 
@@ -702,7 +695,8 @@ t1
 
 ##
 
-Let's adjust for these imbalances with propensity score adjustment:
+There appear to be some differences. Let's use statistical adjustment
+base on the propensity score to address this:
 
 ```{r}
 ps_model <- glm(ext ~ cov1 + cov2 + cov3 + cov4,
@@ -789,8 +783,7 @@ analysis_object_ps <- create_analysis_obj(
 ```
 
 ```{r include = FALSE}
-results_ps <- mcmc_sample(
-  analysis_object_ps,
+results_ps <- mcmc_sample(analysis_object_ps,
   iter_warmup = 1000,
   iter_sampling = 1000,
   chains = 1
@@ -798,8 +791,7 @@ results_ps <- mcmc_sample(
 ```
 
 ```{r eval = FALSE}
-results_ps <- mcmc_sample(
-  analysis_object_ps,
+results_ps <- mcmc_sample(analysis_object_ps,
   iter_warmup = 1000,
   iter_sampling = 1000,
   chains = 1
@@ -950,7 +942,7 @@ forest_plot <- ggplot(res_df) +
   theme(legend.position = "bottom")
 ```
 
-```{echo = FALSE}
+```{r, echo = FALSE, fig.align = 'center'}
 forest_plot
 ```
 
@@ -999,7 +991,7 @@ list of lists with two data generation scenarios (e.g., true
 HR of 1.0 and true HR of 0.8).
 
 <center>
-![](data_list.jpg){width = 80%}
+![](data_list.jpg){width=80%}
 </center>
 
 ##
@@ -1296,6 +1288,8 @@ You'll note the simulation study results are a special `psborrow2` class,
 simulation_res
 ```
 
+##
+
 Let's get a useful `data.frame` of results by calling `get_results`:
 
 ```{r}
@@ -1421,8 +1415,4 @@ The vignettes can be accessed with:
 browseVignettes("psborrow2")
 ```
 
-# Questions?
-
-## Thank you!
-
-Thank you! Any questions?
+# Thank you!
