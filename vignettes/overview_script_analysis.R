@@ -6,10 +6,10 @@
 #                                                          #
 ############################################################
 
-# Goal of this demo is to:
-# Do a Bayesian Dynamic Borrowing analysis on a custom dataset
+# The goal of this demo is to conduct a
+# Bayesian Dynamic Borrowing (BDB) analysis on a custom dataset
 
-# Load dependancies----
+# load dependancies----
 # psborrow2
 library(psborrow2)
 
@@ -29,72 +29,87 @@ library(table1)
 # Explore example data ----
 ############################################################
 
-## psborrow2 contains an example matrix
+# psborrow2 contains an example matrix
 head(example_matrix)
-# ?example_matrix
+?example_matrix # true HR = 0.70 for trt = 1 vs trt = 0
 
-## load as data.frame for some functions
+# load as data.frame for some functions
 example_dataframe <- as.data.frame(example_matrix)
 
-# Distribution of arms
+# look at distribution of arms
 table(ext = example_matrix[, "ext"], trt = example_matrix[, "trt"])
 
 ############################################################
 # Naive internal comparisons ----
 ############################################################
 
-## Cox model
+# kaplan-meier curves
+km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt + ext,
+  data = example_dataframe
+)
+
+ggsurvplot(km_fit) # the internal and external control arms look quite different
+
+## cox model
 cox_fit <- coxph(Surv(time = time, event = 1 - cnsr) ~ trt,
   data = example_dataframe,
   subset = ext == 0
 )
 
-exp(confint(cox_fit))
-
-## Kaplan-meier curves
-km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt,
-  data = example_dataframe,
-  subset = ext == 0
-)
-
-ggsurvplot(km_fit)
+cox_fit
+exp(confint(cox_fit)) # the internal HR is 0.90 (95% CI 0.61 - 1.32)
 
 ############################################################
 # Hybrid control analysis----
 ############################################################
 
-## The end goal
-# ?create_analysis_obj
+# Let's start by demonstrating the utility of BDB by trying to
+# borrow data from the external control arm which we know
+# experiences worse survival.
 
-## Outcome class----
-# ?exp_surv_dist
-# ?weib_ph_surv_dist
-# ?logistic_bin_outcome
+## the end goal is to create an Analysis object with:
+?create_analysis_obj
 
-### A side note on priors
-# ?bernoulli_prior
-# ?beta_prior
-# ?cauchy_prior
-# ?exponential_prior
-# ?gamma_prior
-# ?normal_prior
-# ?poisson_prior
-# ?uniform_prior
+############################################################
+# A note on prior distributions ----
+############################################################
+# psborrow2 allows the user to specify priors with the below constructors:
+?bernoulli_prior
+?beta_prior
+?cauchy_prior
+?exponential_prior
+?gamma_prior
+?normal_prior
+?poisson_prior
+?uniform_prior
 
-### Plotting priors
+# prior distributions can be plotted with the plot() method
 plot(normal_prior(0, 1), xlim = c(-100, 100), ylim = c(0, 1))
 plot(normal_prior(0, 10), xlim = c(-100, 100), ylim = c(0, 1))
 plot(normal_prior(0, 10000), xlim = c(-100, 100), ylim = c(0, 1))
 
-### Create Outcome object
+############################################################
+# Outcome objects----
+############################################################
+
+# psborrow2 currently supports 3 outcomes:
+?exp_surv_dist
+?weib_ph_surv_dist
+?logistic_bin_outcome
+
+# create an exponential survival distribution Outcome object
 exp_outcome <- exp_surv_dist(
   time_var = "time",
   cens_var = "cnsr",
   baseline_prior = normal_prior(0, 10000)
 )
 
-## Borrowing class ----
-# ?borrowing_details
+############################################################
+# Borrowing objects ----
+############################################################
+
+# Borrowing objects are created with:
+?borrowing_details
 
 bdb_borrowing <- borrowing_details(
   method = "BDB",
@@ -102,15 +117,23 @@ bdb_borrowing <- borrowing_details(
   tau_prior = gamma_prior(0.001, 0.001)
 )
 
-## Treatment class ----
-# ?treatment_details
+############################################################
+# Treatment objects ----
+############################################################
+
+# Treatment objects are created with:
+?treatment_details
 
 trt_details <- treatment_details(
   trt_flag_col = "trt",
   trt_prior = normal_prior(0, 10000)
 )
 
-## Analysis class object ----
+############################################################
+# Analysis objects ----
+############################################################
+
+# Combine everything and create object of class Analysis:
 analysis_object <- create_analysis_obj(
   data_matrix = example_matrix,
   outcome = exp_outcome,
@@ -120,8 +143,12 @@ analysis_object <- create_analysis_obj(
 
 analysis_object
 
-## Sample from the MCMC sampler----
-# ?mcmc_sample
+############################################################
+# MCMC sampling----
+############################################################
+
+# conduct MCMC sampling with:
+?mcmc_sample
 
 results <- mcmc_sample(
   x = analysis_object,
@@ -134,44 +161,43 @@ class(results)
 
 results
 
-## Dictionary to interpret results ----
+############################################################
+# Interpret results ----
+############################################################
+
+# dictionary to interpret parameters
 variable_dictionary(analysis_object)
 
-## Evaluate draws object----
-### Create draws object
+# create draws object
 draws <- results$draws()
 
-### Rename draws based on variable dictionary
+# rename draws object parameters
 draws <- rename_draws_covariates(draws, analysis_object)
 
-### Get 95% posterior credible intervals
-# posterior package
-summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.975)))
+# get 95% credible intervals with posterior package
+posterior::summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
 
-### Look at histogram of draws
-# bayesplot package
-mcmc_hist(draws, c("treatment HR"))
+# look at histogram of draws with bayesplot package
+bayesplot::mcmc_hist(draws, c("treatment HR"))
 
-# Why did our model not borrow much from the external arm?
-ggsurvplot(
-  survfit(Surv(time, 1 - cnsr) ~ ext,
-    example_dataframe,
-    subset = trt == 0
-  )
-)
+# Our model not borrow much from the external arm!
+# This is the desired outcome given how different the controlm arms were.
 
 ############################################################
-# Maybe our control arms are fundamentally different ----
+# Control arm imbalances ----
 ############################################################
 
-## Balance between cohorts
+# balance between arms
 table1(~ cov1 + cov2 + cov3 + cov4 |
-  factor(trt, levels = 0:1, labels = c("Control", "Treatment")) +
-    factor(ext, levels = 0:1, labels = c("Internal", "External")),
+  factor(ext, labels = c("Internal RCT", "External data")) +
+    factor(trt, labels = c("Not treated", "Treated")),
 data = example_dataframe
 )
 
-## Let's incorporate propensity scores into our analysis
+## Because the imbalance may be conditional on observed covariates,
+## let's adjust for propensity scores in our analysis
+
+# create a propensity score model
 ps_model <- glm(ext ~ cov1 + cov2 + cov3 + cov4,
   data = example_dataframe,
   family = binomial
@@ -188,6 +214,7 @@ levels(example_dataframe$ps_cat_) <- c(
   "low_med", "high_med", "high"
 )
 
+## cast back to matrix with psborrow2::create_data_matrix()
 example_matrix_ps <- create_data_matrix(
   example_dataframe,
   outcome = c("time", "cnsr"),
@@ -196,7 +223,9 @@ example_matrix_ps <- create_data_matrix(
   covariates = ~ps_cat_
 )
 
-### No borrowing
+############################################################
+# Propensity score analysis without borrowing ----
+############################################################
 anls_ps_no_borrow <- create_analysis_obj(
   data_matrix = example_matrix_ps,
   covariates = add_covariates(
@@ -220,9 +249,12 @@ draws_ps_no_borrow <- rename_draws_covariates(
   anls_ps_no_borrow
 )
 
-summarize_draws(draws_ps_no_borrow, ~ quantile(.x, probs = c(0.025, 0.975)))
+summarize_draws(draws_ps_no_borrow, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
 
-### BDB
+############################################################
+# Propensity score analysis with BDB ----
+############################################################
+
 anls_ps_bdb <- create_analysis_obj(
   data_matrix = example_matrix_ps,
   covariates = add_covariates(
@@ -246,4 +278,7 @@ draws_ps_bdb <- rename_draws_covariates(
   anls_ps_bdb
 )
 
-summarize_draws(draws_ps_bdb, ~ quantile(.x, probs = c(0.025, 0.975)))
+summarize_draws(draws_ps_bdb, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
+
+## It looks like PS + BDB allowed us to most accurately recover the
+## true hazard ratio of 0.70.
