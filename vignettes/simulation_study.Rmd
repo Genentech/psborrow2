@@ -1,5 +1,5 @@
 ---
-title: "Conduct a simulation study"
+title: "4. Conduct a simulation study"
 author: "Matt Secrest, Yichen Lu, Isaac Gravestock"
 output:
   rmarkdown::html_vignette:
