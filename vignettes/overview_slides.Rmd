@@ -179,12 +179,13 @@ gamma_dens_df$type <- factor(gamma_dens_df$type, levels = c(
 ))
 library(ggplot2)
 ggplot(gamma_dens_df) +
-  geom_density(aes(
-    x = xval,
-    y = dens,
-    fill = type
-  ),
-  stat = "identity"
+  geom_density(
+    aes(
+      x = xval,
+      y = dens,
+      fill = type
+    ),
+    stat = "identity"
   ) +
   scale_x_continuous(limits = c(0, 5000)) +
   scale_y_continuous(limits = c(0, .0010)) +
@@ -684,10 +685,11 @@ if (!"table1" %in% installed.packages()[, "Package"]) {
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 library(table1)
-t1 <- table1(~ cov1 + cov2 + cov3 + cov4 |
-  factor(trt, levels = 0:1, labels = c("Control", "Treatment")) +
-    factor(ext, levels = 0:1, labels = c("Internal", "External")),
-data = example_dataframe
+t1 <- table1(
+  ~ cov1 + cov2 + cov3 + cov4 |
+    factor(trt, levels = 0:1, labels = c("Control", "Treatment")) +
+      factor(ext, levels = 0:1, labels = c("Internal", "External")),
+  data = example_dataframe
 )
 t1
 ```
@@ -925,12 +927,13 @@ forest_plot <- ggplot(res_df) +
     "Null effect" = "gray",
     "True HR" = "#ECC30B"
   )) +
-  geom_point(aes(
-    x = med,
-    y = borrowing
-  ),
-  color = "#067BC2",
-  size = 3
+  geom_point(
+    aes(
+      x = med,
+      y = borrowing
+    ),
+    color = "#067BC2",
+    size = 3
   ) +
   geom_errorbarh(aes(xmin = lci, xmax = uci, y = borrowing),
     color = "#067BC2",
