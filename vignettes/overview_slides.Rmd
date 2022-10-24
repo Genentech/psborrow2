@@ -1000,46 +1000,24 @@ Suppose we have a list of lists of simulated data called
 `my_data_list`:
 
 ```{r, include = FALSE}
-make_odds <- function(prob) {
-  prob / (1 - prob)
-}
 
-make_prob <- function(odds) {
-  odds / (1 + odds)
-}
-
-sim_single_matrix <- function(n = 500,
-                              prob = c(0.1, 0.2, 0.7),
-                              hr = 0.70,
-                              inherent_drift_hr = 1.0,
-                              cov1_baseline_prob = 0.5,
-                              cov2_baseline_prob = 0.25,
-                              cov3_baseline_prob = 0.75,
-                              cov4_baseline_prob = 0.5,
-                              cov1_hr = 1.0,
-                              cov2_hr = 1.0,
-                              cov3_hr = 1.0,
-                              cov4_hr = 1.0,
-                              ext_or_cov1 = 3,
-                              ext_or_cov2 = 3,
-                              ext_or_cov3 = 0.25,
-                              ext_or_cov4 = 0.25,
-                              trt_or_cov1 = 1.5,
-                              trt_or_cov2 = 1.5,
-                              trt_or_cov3 = 0.75,
-                              trt_or_cov4 = 0.75) {
+# function to create a single matrix
+sim_single_matrix <- function(n = 500, # n simulated pts
+                              prob = c(
+                                0.1, # proportion internal control
+                                0.2, # proportion internal treated
+                                0.7
+                              ), # proportion external control
+                              hr = 0.70, # true HR for the treatment
+                              inherent_drift_hr = 1.0 # HR of external/internal
+) {
   # checks
   if (sum(prob) != 1.0) {
     stop("prob must sum to 1")
   }
 
-  # Depend
-  require(simsurv)
-  require(broom)
-  require(survival)
-
-  # Create a data frame with the subject IDs and treatment group
-  cov <- data.frame(
+  # data frame with the subject IDs and treatment group
+  df_ids <- data.frame(
     id = 1:n,
     ext = c(
       rep(0L, n * (prob[1] + prob[2])),
@@ -1051,59 +1029,26 @@ sim_single_matrix <- function(n = 500,
       rep(0L, n * prob[3])
     )
   )
-  cov$cov1 <- cov$cov2 <- cov$cov3 <- cov$cov4 <- integer(length = nrow(cov))
 
-  for (i in seq(1, NROW(cov))) {
-    if (cov$ext[i] == 1) {
-      cov$cov1[i] <- rbinom(1, 1, make_prob(ext_or_cov1 * make_odds(cov1_baseline_prob)))
-      cov$cov2[i] <- rbinom(1, 1, make_prob(ext_or_cov2 * make_odds(cov2_baseline_prob)))
-      cov$cov3[i] <- rbinom(1, 1, make_prob(ext_or_cov3 * make_odds(cov3_baseline_prob)))
-      cov$cov4[i] <- rbinom(1, 1, make_prob(ext_or_cov4 * make_odds(cov4_baseline_prob)))
-    } else if (cov$trt[i] == 1) {
-      cov$cov1[i] <- rbinom(1, 1, make_prob(trt_or_cov1 * make_odds(cov1_baseline_prob)))
-      cov$cov2[i] <- rbinom(1, 1, make_prob(trt_or_cov2 * make_odds(cov2_baseline_prob)))
-      cov$cov3[i] <- rbinom(1, 1, make_prob(trt_or_cov3 * make_odds(cov3_baseline_prob)))
-      cov$cov4[i] <- rbinom(1, 1, make_prob(trt_or_cov4 * make_odds(cov4_baseline_prob)))
-    } else {
-      cov$cov1[i] <- rbinom(1, 1, cov1_baseline_prob)
-      cov$cov2[i] <- rbinom(1, 1, cov2_baseline_prob)
-      cov$cov3[i] <- rbinom(1, 1, cov3_baseline_prob)
-      cov$cov4[i] <- rbinom(1, 1, cov4_baseline_prob)
-    }
-  }
-
-  # Simulate the event times
-  dat <- simsurv(
+  # simulated event times
+  df_surv <- simsurv(
     lambdas = 0.1,
     dist = "exponential",
     betas = c(
       trt = log(hr),
-      ext = log(inherent_drift_hr),
-      cov1 = log(cov1_hr),
-      cov2 = log(cov2_hr),
-      cov3 = log(cov3_hr),
-      cov4 = log(cov4_hr)
+      ext = log(inherent_drift_hr)
     ),
-    x = cov,
+    x = df_ids,
     maxt = 50
   )
 
-  dat$censor <- 1 - dat$status
+  df_surv$censor <- 1 - df_surv$status
 
-  # Merge the simulated event times onto covariate data frame
-  dat <- merge(cov, dat)
-
-  dat <- dat[, c(
-    "id", "ext", "trt", "cov4", "cov3", "cov2", "cov1",
-    "eventtime", "status", "censor"
-  )]
-
-  colnames(dat) <- c(
-    "id", "ext", "trt", "cov4", "cov3", "cov2", "cov1",
-    "time", "status", "cnsr"
-  )
-
-  as.matrix(dat)
+  # merge the simulated event times into data frame
+  df <- merge(df_ids, df_surv)
+  df <- df[, c("id", "ext", "trt", "eventtime", "status", "censor")]
+  colnames(df) <- c("id", "ext", "trt", "time", "status", "cnsr")
+  return(as.matrix(df))
 }
 
 set.seed(123)

@@ -67,7 +67,7 @@ exp(confint(cox_fit)) # the internal HR is 0.90 (95% CI 0.61 - 1.32)
 # borrow data from the external control arm which we know
 # experiences worse survival.
 
-## the end goal is to create an Analysis object with:
+# the end goal is to create an Analysis object with:
 ?create_analysis_obj
 
 ############################################################

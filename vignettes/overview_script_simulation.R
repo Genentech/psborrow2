@@ -6,11 +6,10 @@
 #                                                          #
 ############################################################
 
-# Goal of this demo is to:
-# Simulate the impact of a BDB study on trial design
+# The goal of this demo is to: simulate the impact of
+# a BDB study on trial design
 
-# Load dependancies----
-
+# load dependancies----
 # psborrow2
 library(psborrow2)
 
@@ -28,80 +27,44 @@ library(simsurv)
 library(broom)
 
 ############################################################
-# The end goal ----
+# Simulation studies----
 ############################################################
-# ?create_simulation_obj
+# Our goal is to create a simulation object which will
+# help facilicate a simulation study.
+
+# We do this with:
+?create_simulation_obj
+
+# Note: the first argument is an object of type SimDataList.
+# We'll come back to this after writing a function to
+# simulate data below.
 
 ############################################################
-# Simulate data ----
+# Create a function to simulate a single matrix----
 ############################################################
 
-# DSB: I would put even more comments in this script since it is more complex
-# than the analysis script - that will help folks to go back later and understand
-# the details.
+# While psborrow2 can be used to conduct simulation studies,
+# it does not currently perform any data generation tasks
+# on behalf of the user. Therefore, we need to create a function
+# that will simulate data for a single matrix.
 
-## Create function to simulate single matrix
-make_odds <- function(prob) {
-  prob / (1 - prob)
-}
-
-make_prob <- function(odds) {
-  odds / (1 + odds)
-}
-
-sim_single_matrix <- function(n = 500,
-                              prob = c(0.1, 0.2, 0.7),
-                              hr = 0.70,
-                              inherent_drift_hr = 1.0,
-                              cov1_baseline_prob = 0.5,
-                              cov2_baseline_prob = 0.25,
-                              cov3_baseline_prob = 0.75,
-                              cov4_baseline_prob = 0.5,
-                              cov1_hr = 1.0,
-                              cov2_hr = 1.0,
-                              cov3_hr = 1.0,
-                              cov4_hr = 1.0,
-                              ext_or_cov1 = 3,
-                              ext_or_cov2 = 3,
-                              ext_or_cov3 = 0.25,
-                              ext_or_cov4 = 0.25,
-                              trt_or_cov1 = 1.5,
-                              trt_or_cov2 = 1.5,
-                              trt_or_cov3 = 0.75,
-                              trt_or_cov4 = 0.75) {
-  #' Creates simulated data for survival and binary endpoints w/ 4 covariates
-  #'
-  #' @param n number of simulated patients
-  #' @param prob numeric vector of probabilities for internal control,
-  #' external control, internal experimental, in that order.
-  #' @param hr true HR
-  #' @param inherent_drift_hr the baseline HR between internal
-  #' and external controls not caused by covariates
-  #' @param cov1_baseline_prob probability of cov1 in ext = 0 groups
-  #' @param cov2_baseline_prob probability of cov2 in ext = 0 groups
-  #' @param cov3_baseline_prob probability of cov3 in ext = 0 groups
-  #' @param cov4_baseline_prob probability of cov4 in ext = 0 groups
-  #' @param cov1_hr true HR for cov1
-  #' @param cov2_hr true HR for cov2
-  #' @param cov3_hr true HR for cov3
-  #' @param cov4_hr true HR for cov4
-  #' @param ext_or_cov1 OR of being cov1 for external controls
-  #' @param ext_or_cov2 OR of being cov2 for external controls
-  #' @param ext_or_cov3 OR of being cov3 for external controls
-  #' @param ext_or_cov4 OR of being cov4 for external controls
-
+# function to create a single matrix
+sim_single_matrix <- function(n = 500, # n simulated pts
+                              prob = c(
+                                0.1, # proportion internal control
+                                0.2, # proportion internal treated
+                                0.7
+                              ), # proportion external control
+                              hr = 0.70, # true HR for the treatment
+                              inherent_drift_hr = 1.0 # HR of external/internal
+) {
   # checks
   if (sum(prob) != 1.0) {
     stop("prob must sum to 1")
   }
 
-  # Depend
-  require(simsurv)
-  require(broom)
-  require(survival)
-
-  # Create a data frame with the subject IDs and treatment group
-  cov <- data.frame(
+  # data frame with the subject IDs and treatment group
+  df_ids <- data.frame(
     id = 1:n,
     ext = c(
       rep(0L, n * (prob[1] + prob[2])),
@@ -113,70 +76,55 @@ sim_single_matrix <- function(n = 500,
       rep(0L, n * prob[3])
     )
   )
-  cov$cov1 <- cov$cov2 <- cov$cov3 <- cov$cov4 <- integer(length = nrow(cov))
 
-  for (i in seq(1, NROW(cov))) {
-    if (cov$ext[i] == 1) {
-      cov$cov1[i] <- rbinom(1, 1, make_prob(ext_or_cov1 * make_odds(cov1_baseline_prob)))
-      cov$cov2[i] <- rbinom(1, 1, make_prob(ext_or_cov2 * make_odds(cov2_baseline_prob)))
-      cov$cov3[i] <- rbinom(1, 1, make_prob(ext_or_cov3 * make_odds(cov3_baseline_prob)))
-      cov$cov4[i] <- rbinom(1, 1, make_prob(ext_or_cov4 * make_odds(cov4_baseline_prob)))
-    } else if (cov$trt[i] == 1) {
-      cov$cov1[i] <- rbinom(1, 1, make_prob(trt_or_cov1 * make_odds(cov1_baseline_prob)))
-      cov$cov2[i] <- rbinom(1, 1, make_prob(trt_or_cov2 * make_odds(cov2_baseline_prob)))
-      cov$cov3[i] <- rbinom(1, 1, make_prob(trt_or_cov3 * make_odds(cov3_baseline_prob)))
-      cov$cov4[i] <- rbinom(1, 1, make_prob(trt_or_cov4 * make_odds(cov4_baseline_prob)))
-    } else {
-      cov$cov1[i] <- rbinom(1, 1, cov1_baseline_prob)
-      cov$cov2[i] <- rbinom(1, 1, cov2_baseline_prob)
-      cov$cov3[i] <- rbinom(1, 1, cov3_baseline_prob)
-      cov$cov4[i] <- rbinom(1, 1, cov4_baseline_prob)
-    }
-  }
-
-  # Simulate the event times
-  dat <- simsurv(
+  # simulated event times
+  df_surv <- simsurv(
     lambdas = 0.1,
     dist = "exponential",
     betas = c(
       trt = log(hr),
-      ext = log(inherent_drift_hr),
-      cov1 = log(cov1_hr),
-      cov2 = log(cov2_hr),
-      cov3 = log(cov3_hr),
-      cov4 = log(cov4_hr)
+      ext = log(inherent_drift_hr)
     ),
-    x = cov,
+    x = df_ids,
     maxt = 50
   )
 
-  dat$censor <- 1 - dat$status
+  df_surv$censor <- 1 - df_surv$status
 
-  # Merge the simulated event times onto covariate data frame
-  dat <- merge(cov, dat)
-
-  dat <- dat[, c(
-    "id", "ext", "trt", "cov4", "cov3", "cov2", "cov1",
-    "eventtime", "status", "censor"
-  )]
-
-  colnames(dat) <- c(
-    "id", "ext", "trt", "cov4", "cov3", "cov2", "cov1",
-    "time", "status", "cnsr"
-  )
-
-  as.matrix(dat)
+  # merge the simulated event times into data frame
+  df <- merge(df_ids, df_surv)
+  df <- df[, c("id", "ext", "trt", "eventtime", "status", "censor")]
+  colnames(df) <- c("id", "ext", "trt", "time", "status", "cnsr")
+  return(as.matrix(df))
 }
 
+# confirm we get a single matrix
 sim_single_matrix()
 
-# Set seed
+############################################################
+# Create SimDataList object ----
+############################################################
+
+# The first argument to create_simulation_obj() is a
+# SimDataList object. This is created with the constructor:
+?sim_data_list
+
+###########################
+# data_list               #
+###########################
+
+# The first argument is a list of lists of matrices. Let's
+# create this using our new function sim_single_matrix().
+# For this example, we'll vary:
+## 2 true HRs: 0.6 and 1.0
+## 2 drift HRs: 1.0 and 1.5
+# We'll do 100 simulations per scenario
+n_datasets_per_sim <- 100 # (for a real study, you may consider more)
+
+# set seed so we all get the same results
 set.seed(123)
 
-# Set number of simulations per scenario
-n_datasets_per_sim <- 2000 # Will take a long time! Specify your N datasets here.
-
-# Create list of lists of data
+# create list of lists of data with replicate
 my_data_list <- list(
   replicate(
     n_datasets_per_sim,
@@ -200,14 +148,18 @@ my_data_list <- list(
   )
 )
 
+# confirm we have a list of lists of matrices
 NROW(my_data_list)
 NROW(my_data_list[[1]])
 head(my_data_list[[1]][[1]])
 
-############################################################
-# Create data list object ----
-############################################################
-# ?sim_data_list
+###########################
+# guide                   #
+###########################
+
+# The second argument is a guide, which is simply a data.frame
+# that indexes that parameters that differ at the highest level of
+# the data_list. An example guide for us could be:
 
 my_sim_data_guide <- expand.grid(
   true_hr = c(0.6, 1.0),
@@ -215,6 +167,15 @@ my_sim_data_guide <- expand.grid(
 )
 
 my_sim_data_guide$id <- seq(1, NROW(my_sim_data_guide))
+
+my_sim_data_guide
+
+###########################
+# sim_data_list           #
+###########################
+
+# Now we have all the information we need to create a
+# SimDataList object:
 
 my_sim_data_list <- sim_data_list(
   data_list = my_data_list,
@@ -224,10 +185,20 @@ my_sim_data_list <- sim_data_list(
   index = "id"
 )
 
+my_sim_data_list
+
 ############################################################
 # Create borrowing list object ----
 ############################################################
-# ?sim_borrowing_list
+
+# For this example, let's assume we're mostly interested
+# in comparing four different borrowing scenarios:
+## No borrowing
+## BDB with a conservative hyperprior
+## BDB with an aggressive hyperprior
+## Full borrowing
+# We can specify these different scenarios with:
+?sim_borrowing_list
 
 my_borrowing_list <- sim_borrowing_list(
   list(
@@ -239,11 +210,13 @@ my_borrowing_list <- sim_borrowing_list(
 )
 
 ############################################################
-# Simulation study analysis----
+# Simulation object----
 ############################################################
 
-## The end goal
-# ?create_simulation_obj
+# Suppose that we do not want to vary any other parameters.
+# We can now create our simulation object. For any parameter
+# that is not varied in the simulation study, the same inputs
+# as create_analysis_obj() still apply!
 
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
@@ -252,6 +225,10 @@ simulation_obj <- create_simulation_obj(
   treatment = treatment_details(trt_flag_col = "trt", trt_prior = normal_prior(0, 10000))
 )
 simulation_obj
+
+############################################################
+# MCMC sampling----
+############################################################
 
 simulation_res <- mcmc_sample(
   x = simulation_obj,
@@ -275,6 +252,7 @@ simulation_res_df$borrowing_scenario <- factor(simulation_res_df$borrowing_scena
     "Full borrowing"
   )
 )
+
 ## Power ----
 ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = 1 - null_coverage),
@@ -300,18 +278,5 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
     y = "Type I error"
   ) +
   scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75")) +
-  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0, 0.8)) +
+  scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0, 1)) +
   geom_hline(aes(yintercept = 0.05), linetype = 2)
-
-## MSE ----
-ggplot(simulation_res_df) +
-  geom_bar(aes(x = factor(true_hr), fill = borrowing_scenario, y = mse_mean),
-    stat = "identity", position = "dodge"
-  ) +
-  labs(
-    fill = "Borrowing scenario",
-    x = "True HR",
-    y = "MSE"
-  ) +
-  facet_wrap(~drift_hr) +
-  scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))

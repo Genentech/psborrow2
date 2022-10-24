@@ -36,7 +36,7 @@ sim_single_matrix <- function(n = 500,
   #'
   #' @param n number of simulated patients
   #' @param prob numeric vector of probabilities for internal control,
-  #' external control, internal experimental, in that order.
+  #' internal experimental, and external control, in that order.
   #' @param hr true HR
   #' @param or true OR
   #' @param inherent_drift_hr the baseline HR between internal
