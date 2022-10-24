@@ -26,11 +26,15 @@ make_ggplot_of_dists <- function() {
 
     # Plot
     ggplot(df) + 
-        geom_density(aes(x = x, y = density, fill = analysis),
+        geom_density(aes(x = x, 
+                         y = density, 
+                         fill = analysis,
+                         color = analysis),
                      stat = "identity",
-                     alpha = 0.5,
+                     alpha = 0.8,
                      show.legend = FALSE) + 
         scale_fill_manual(values = c("#F5B700", "#00A1E4", "#DC0073")) +
+        scale_color_manual(values = c("#F5B700", "#00A1E4", "#DC0073")) +
         theme_void()
 }
 
@@ -44,19 +48,20 @@ make_hexplot <- function(out_path = "./inst/img/psborrow2_hex.png") {
     hexSticker::sticker(
         subplot = make_ggplot_of_dists(),
         package = "psborrow2", 
-        p_size = 120,
+        p_size = 140,
         p_color = "#094F26",
         p_y = 1.4,
-        s_y = .82,
-        s_x = .8,
-        s_width = 3,
-        s_height = .7,
+        s_y = .83,
+        s_x = .65,
+        s_width = 4.5,
+        s_height = .75,
         h_fill = "#04E762",
         h_color = "#DC0073",
         h_size = 2,
         url = "github.com/Genentech/psborrow2",
         u_size = 24,
         filename = out_path,
+        p_family = "mono", 
         dpi = 2000
     )
 }
