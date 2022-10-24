@@ -592,6 +592,29 @@ class(analysis_object)
 ```
 
 ##
+We can do this in one function call as well:
+
+```{r message = FALSE}
+analysis_object <- create_analysis_obj(
+  data_matrix = example_matrix,
+  outcome = exp_surv_dist(
+    time_var = "time",
+    cens_var = "cnsr",
+    baseline_prior = normal_prior(0, 10000)
+  ),
+  borrowing = borrowing_details(
+    method = "BDB",
+    ext_flag_col = "ext",
+    tau_prior = gamma_prior(alpha = 0.001, beta = 0.001)
+  ),
+  treatment = treatment_details(
+    trt_flag_col = "trt",
+    trt_prior = normal_prior(0, 10000)
+  )
+)
+```
+
+##
 
 ```{r}
 print(analysis_object)
@@ -652,6 +675,10 @@ summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975))) %>%
 ```
 
 <br>
+
+```{r include = FALSE}
+color_scheme_set("blue")
+```
 
 ```{r message = FALSE, fig.align = "center", echo = FALSE, fig.dim = c(4, 2.5)}
 library(bayesplot)
