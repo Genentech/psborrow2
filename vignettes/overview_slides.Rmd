@@ -843,7 +843,7 @@ trt_from_anls <- function(borrowing, adjustment = NULL) {
   uci <- quant[quant$variable == "HR_trt", "97.5%"][[1]]
   med <- quant[quant$variable == "HR_trt", "50%"][[1]]
   tibble(
-    adjustment = ifelse(is.null(adjustment), "No adjustment", "PS adjustment"),
+    adjustment = ifelse(is.null(adjustment), "No adjustment", "Regression adjustment for PS categories"),
     borrowing = ifelse(borrowing@method != "BDB",
       borrowing@method,
       paste0(
@@ -886,7 +886,7 @@ res <- map2(
 
 res_df <- bind_rows(res)
 res_df$adjustment <- factor(res_df$adjustment,
-  levels = c("No adjustment", "PS adjustment")
+  levels = c("No adjustment", "Regression adjustment for PS categories")
 )
 res_df$borrowing <- ifelse(res_df$borrowing == "BDB - gamma(0.001, 0.001)",
   "BDB - conservative",
@@ -907,12 +907,12 @@ res_df$borrowing <- factor(res_df$borrowing,
 
 forest_plot <- ggplot(res_df) +
   geom_vline(aes(xintercept = hr, color = Reference), linetype = 2, data = data.frame(
-    Reference = c("Null effect", "True HR"),
+    Reference = c("Null effect", "True hazard ratio"),
     hr = c(1.0, 0.7)
   )) +
   scale_color_manual(values = c(
     "Null effect" = "gray",
-    "True HR" = "#ECC30B"
+    "True hazard ratio" = "#ECC30B"
   )) +
   geom_point(
     aes(
@@ -1043,7 +1043,7 @@ sim_single_matrix <- function(n = 500, # n simulated pts
 
 set.seed(123)
 
-n <- 20
+n <- 100
 
 # Create list of lists of data
 my_data_list <- list(

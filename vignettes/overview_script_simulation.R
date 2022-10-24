@@ -119,7 +119,7 @@ sim_single_matrix()
 ## 2 true HRs: 0.6 and 1.0
 ## 2 drift HRs: 1.0 and 1.5
 # We'll do 100 simulations per scenario
-n_datasets_per_sim <- 100 # (for a real study, you may consider more)
+n_datasets_per_sim <- 100 # (for a real study, you may consider many more)
 
 # set seed so we all get the same results
 set.seed(123)
