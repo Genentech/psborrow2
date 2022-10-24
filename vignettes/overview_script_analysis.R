@@ -188,10 +188,11 @@ bayesplot::mcmc_hist(draws, c("treatment HR"))
 ############################################################
 
 # balance between arms
-table1(~ cov1 + cov2 + cov3 + cov4 |
-  factor(ext, labels = c("Internal RCT", "External data")) +
-    factor(trt, labels = c("Not treated", "Treated")),
-data = example_dataframe
+table1(
+  ~ cov1 + cov2 + cov3 + cov4 |
+    factor(ext, labels = c("Internal RCT", "External data")) +
+      factor(trt, labels = c("Not treated", "Treated")),
+  data = example_dataframe
 )
 
 ## Because the imbalance may be conditional on observed covariates,
