@@ -1000,7 +1000,7 @@ Suppose we have a list of lists of simulated data called
 `my_data_list`:
 
 ```{r, include = FALSE}
-
+library(simsurv)
 # function to create a single matrix
 sim_single_matrix <- function(n = 500, # n simulated pts
                               prob = c(
