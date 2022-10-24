@@ -56,7 +56,10 @@ Suggests:
     matrixcalc,
     simsurv,
     PSweight,
-    MatchIt
+    MatchIt,
+    table1,
+    gt,
+    gtsummary
 Remotes:
    github::stan-dev/cmdstanr@v0.5.2
 Language: en-US

@@ -77,15 +77,6 @@ ways of incorporating external data:
 
 <br>
 
-```{r include = FALSE}
-if (!"gt" %in% installed.packages()[, "Package"]) {
-  install.packages("gt", repos = c("CRAN" = "https://cran.r-project.org/"))
-}
-if (!"gtsummary" %in% installed.packages()[, "Package"]) {
-  install.packages("gtsummary", repos = c("CRAN" = "https://cran.r-project.org/"))
-}
-```
-
 ```{r echo = FALSE}
 library(gt)
 types_of_borrowing <- data.frame(
@@ -676,12 +667,6 @@ Let's explore baseline characteristics and see if we can identify ways
 in which the internal and external control arms differ:
 
 <center>
-
-```{r include = FALSE}
-if (!"table1" %in% installed.packages()[, "Package"]) {
-  install.packages("table1", repos = c("CRAN" = "https://cran.r-project.org/"))
-}
-```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 library(table1)
