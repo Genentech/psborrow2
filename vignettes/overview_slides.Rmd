@@ -154,10 +154,11 @@ $$
 Consider two hyperprior distributions for $\tau$:
 
 ```{r echo = FALSE, fig.align="center", fig.dim = c(8,4)}
-uninf_gamma <- vapply(seq(1, 10000, 1), dgamma, shape = .001, rate = .001, FUN.VALUE = numeric(1))
-inf_gamma <- vapply(seq(1, 10000, 1), dgamma, shape = 1, rate = 0.001, FUN.VALUE = numeric(1))
+x_seq <- c(seq(0, 10, .001), seq(10, 10000, 1))
+uninf_gamma <- vapply(x_seq, dgamma, shape = .001, rate = .001, FUN.VALUE = numeric(1))
+inf_gamma <- vapply(x_seq, dgamma, shape = 1, rate = 0.001, FUN.VALUE = numeric(1))
 gamma_dens_df <- data.frame(
-  xval = c(seq(1, 10000, 1), seq(1, 10000, 1)),
+  xval = c(x_seq, x_seq),
   dens = c(uninf_gamma, inf_gamma),
   type = c(
     rep("gamma(0.001, 0.001) -> Less borrowing", length(uninf_gamma)),
@@ -165,8 +166,8 @@ gamma_dens_df <- data.frame(
   )
 )
 gamma_dens_df$type <- factor(gamma_dens_df$type, levels = c(
-  "gamma(1, 0.001) -> More borrowing",
-  "gamma(0.001, 0.001) -> Less borrowing"
+  "gamma(0.001, 0.001) -> Less borrowing",
+  "gamma(1, 0.001) -> More borrowing"
 ))
 library(ggplot2)
 ggplot(gamma_dens_df) +
@@ -174,16 +175,17 @@ ggplot(gamma_dens_df) +
     aes(
       x = xval,
       y = dens,
-      fill = type
+      color = type
     ),
-    stat = "identity"
+    stat = "identity",
+    size = 1.5
   ) +
-  scale_x_continuous(limits = c(0, 5000)) +
-  scale_y_continuous(limits = c(0, .0010)) +
+  scale_x_continuous(limits = c(-.1, 5000)) +
+  scale_y_continuous(limits = c(0, .01)) +
   labs(
     x = "tau",
     y = "density",
-    fill = "hyperprior"
+    color = "hyperprior"
   ) +
   theme(
     legend.position = "bottom"
