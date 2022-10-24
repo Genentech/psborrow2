@@ -15,7 +15,7 @@ make_ggplot_of_dists <- function() {
     norm_1 <- norm_2 <- norm_3 <- vector("numeric", length(log_x_vals))
     norm_1 <- dnorm(x = log_x_vals, mean = 3, sd = 3)
     norm_2 <- dnorm(x = log_x_vals, mean = .25, sd = 1.5)
-    norm_3 <- dnorm(x = log_x_vals, mean = 2.8, sd = .9)
+    norm_3 <- dnorm(x = log_x_vals, mean = 2, sd = .9)
 
     # Combine
     df <- data.frame( 
@@ -52,9 +52,9 @@ make_hexplot <- function(out_path = "./inst/img/psborrow2_hex.png") {
         p_color = "#094F26",
         p_y = 1.4,
         s_y = .83,
-        s_x = .65,
+        s_x = .7,
         s_width = 4.5,
-        s_height = .75,
+        s_height = .7,
         h_fill = "#04E762",
         h_color = "#DC0073",
         h_size = 2,
