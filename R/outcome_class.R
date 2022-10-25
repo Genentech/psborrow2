@@ -7,10 +7,10 @@ setClass(
 
 #' `TimeToEvent` class
 #'
-#' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
-#' @slot param_stan_code character. stan parameter code block containing text to interpolate into stan model.
-#' @slot likelihood_stan_code character. stan model likelihood code block containing text
-#' to interpolate into stan model.
+#' @slot function_stan_code character. Code to include in the Stan functions program block.
+#' @slot param_stan_code character. Code to include in the Stan parameters program block.
+#' @slot likelihood_stan_code character. Code defining the likelihood to include in the Stan model program block.
+#' @slot data_stan_code character. Code to include in the Stan data program block.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate.
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' @slot time_var character. Variable used for time in `TimeToEvent` objects.
@@ -24,6 +24,7 @@ setClass(
     function_stan_code = "character",
     param_stan_code = "character",
     likelihood_stan_code = "character",
+    data_stan_code = "character",
     n_param = "integer",
     param_priors = "list",
     time_var = "character",
@@ -35,16 +36,18 @@ setClass(
     function_stan_code = "",
     param_stan_code = "",
     likelihood_stan_code = "",
+    data_stan_code = "vector[N] time;
+    vector[N] cens;",
     baseline_prior = NULL
   ),
   contains = "Outcome"
 )
 
 #' `BinaryOutcome` class
-#' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
-#' @slot param_stan_code character. stan parameter code block containing text to interpolate into stan model.
-#' @slot likelihood_stan_code character. stan model likelihood code block containing text
-#' to interpolate into stan model.
+#' @slot function_stan_code character. Code to include in the Stan functions program block.
+#' @slot param_stan_code character. Code to include in the Stan parameters program block.
+#' @slot likelihood_stan_code character. Code defining the likelihood to include in the Stan model program block.
+#' @slot data_stan_code character. Code to include in the Stan data program block.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate.
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' @slot binary_var character. Variable used for outcome in `BinaryOutcome` objects.
@@ -57,6 +60,7 @@ setClass(
     function_stan_code = "character",
     param_stan_code = "character",
     likelihood_stan_code = "character",
+    data_stan_code = "character",
     n_param = "integer",
     param_priors = "list",
     binary_var = "character",
@@ -67,6 +71,7 @@ setClass(
     function_stan_code = "",
     param_stan_code = "",
     likelihood_stan_code = "",
+    data_stan_code = "array[N] int y;",
     baseline_prior = NULL
   ),
   contains = "Outcome"

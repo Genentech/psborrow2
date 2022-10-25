@@ -88,11 +88,15 @@ borrowing_details <- function(method,
     if (is.null(tau_prior)) stop("When method='BDB', tau_prior must be specified")
     assert_class(tau_prior, "Prior")
     if (!parse_constraint(tau_prior@constraint)["lower"] >= 0) stop("tau distribution must be bounded >=0")
+    data_stan_code <- "matrix[N,2] Z;"
+  } else {
+    data_stan_code <- ""
   }
 
   .borrowing_class(
     method = method,
     ext_flag_col = ext_flag_col,
-    tau_prior = tau_prior
+    tau_prior = tau_prior,
+    data_stan_code = data_stan_code
   )
 }

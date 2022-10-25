@@ -24,5 +24,7 @@ control cohort.}
 
 \item{\code{tau_prior}}{\code{Prior}. Object of class \code{Prior} defining the hyperprior on the
 "commensurability parameter". See \code{?borrowing_details} for more information.}
+
+\item{\code{data_stan_code}}{string. Code to include in the Stan data program block.}
 }}
 

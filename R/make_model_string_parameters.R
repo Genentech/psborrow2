@@ -22,53 +22,36 @@
 #'
 make_model_string_parameters <- function(analysis_obj) {
   ## Parameters string
-  parameters_string <- h_glue(
-    "parameters {
-    real{{constraint}} beta_trt;",
-    constraint = analysis_obj@treatment@trt_prior@constraint
+  trt_string <- h_glue("real{{analysis_obj@treatment@trt_prior@constraint}} beta_trt;")
+
+  is_bdb <- isTRUE(analysis_obj@borrowing@method == "BDB")
+  ### Set tau
+  borrowing_string <- if (is_bdb) h_glue("real{{analysis_obj@borrowing@tau_prior@constraint}} tau;") else ""
+
+  ### Set alpha
+  intercept_string <- h_glue(
+    "{{type}}{{constraint}}{{n}} alpha;",
+    type = if (is_bdb) "vector" else "real",
+    constraint = analysis_obj@outcome@baseline_prior@constraint,
+    n = if (is_bdb) "[2]" else ""
   )
-
-  ### Set tau and alpha[2] for BDB
-  if (analysis_obj@borrowing@method == "BDB") {
-    parameters_string <- h_glue("
-      {{parameters_string}}
-      real {{tau_constraint}} tau;
-      vector{{alpha_constraint}}[2] alpha;",
-      alpha_constraint = analysis_obj@outcome@baseline_prior@constraint,
-      tau_constraint = analysis_obj@borrowing@tau_prior@constraint
-    )
-  }
-
-  ### Set alpha for non-BDB
-  if (analysis_obj@borrowing@method != "BDB") {
-    parameters_string <- h_glue("
-      {{parameters_string}}
-      real{{constraint}} alpha;",
-      constraint = analysis_obj@outcome@baseline_prior@constraint
-    )
-  }
 
   ### Add outcome specific parameters
   if (NROW(analysis_obj@outcome@param_priors) > 0) {
-    for (name in names(analysis_obj@outcome@param_priors)) {
-      parameters_string <- h_glue(
-        "{{parameters_string}}
-        real{{constraint}} {{name}};",
-        constraint = analysis_obj@outcome@param_priors[[name]]@constraint
-      )
-    }
+    constraints <- lapply(analysis_obj@outcome@param_priors, function(p) p@constraint)
+    outcome_string <- h_glue("real{{constraints}} {{names(constraints)}};")
+  } else {
+    outcome_string <- analysis_obj@outcome@param_stan_code
   }
 
   ### Add in vector of coefficients if covariates are provided
-  if (!is.null(analysis_obj@covariates)) {
-    parameters_string <- h_glue("
-      {{parameters_string}}
-      vector<lower=L_beta, upper=U_beta>[K] beta ;")
-  }
+  covariate_string <- if (!is.null(analysis_obj@covariates)) "vector<lower=L_beta, upper=U_beta>[K] beta;" else ""
 
-  ### Close block
-  parameters_string <- h_glue("{{parameters_string}} }")
-
-  # Return
-  return(parameters_string)
+  h_glue("parameters {
+  {{trt_string}}
+  {{outcome_string}}
+  {{borrowing_string}}
+  {{intercept_string}}
+  {{covariate_string}}
+  }")
 }
