@@ -1,6 +1,6 @@
 ---
 title: "5. Incorporating propensity scores analysis in psborrow2"
-author: "Isaac Gravestock"
+author: "Isaac Gravestock and Matt Secrest"
 output:rmarkdown::html_vignette:
 vignette: >
   %\VignetteIndexEntry{5. Incorporating propensity scores analysis in psborrow2}
