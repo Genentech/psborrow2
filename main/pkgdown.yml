@@ -3,11 +3,13 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   dataset: dataset.html
+  overview_slides: overview_slides.html
   prior_distributions: prior_distributions.html
   propensity_scores: propensity_scores.html
   psborrow2: psborrow2.html
   simulation_study: simulation_study.html
-last_built: 2022-10-25T06:55Z
+  weighting: weighting.html
+last_built: 2022-10-25T22:50Z
 urls:
   reference: https://genentech.github.io/psborrow2/main/reference
   article: https://genentech.github.io/psborrow2/main/articles

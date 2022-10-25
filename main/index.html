@@ -43,7 +43,7 @@
     
     <a class="navbar-brand me-2" href="index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,22 +61,17 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/dataset.html">Conduct a hybrid control analysis on a dataset using BDB</a>
-    <a class="dropdown-item" href="articles/prior_distributions.html">Specifying prior distributions</a>
-    <a class="dropdown-item" href="articles/propensity_scores.html">Incorporating propensity scores analysis in psborrow2</a>
-    <a class="dropdown-item" href="articles/simulation_study.html">Conduct a simulation study</a>
+    <a class="dropdown-item" href="articles/dataset.html">2. Conduct a hybrid control analysis on a dataset using BDB</a>
+    <a class="dropdown-item" href="articles/overview_slides.html">6. Walkthrough overview slides</a>
+    <a class="dropdown-item" href="articles/prior_distributions.html">3. Specifying prior distributions</a>
+    <a class="dropdown-item" href="articles/propensity_scores.html">5. Incorporating propensity scores analysis in psborrow2</a>
+    <a class="dropdown-item" href="articles/simulation_study.html">4. Conduct a simulation study</a>
+    <a class="dropdown-item" href="articles/weighting.html">Comparison of Fixed Weights</a>
   </div>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/develop">develop</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -97,29 +92,53 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="psborrow2">psborrow2<a class="anchor" aria-label="anchor" href="#psborrow2"></a>
+<div class="page-header"><h1 id="psborrow2-">psborrow2 <img src="./inst/img/psborrow2_hex.png" align="right" width="120"><a class="anchor" aria-label="anchor" href="#psborrow2-"></a>
 </h1></div>
+<!-- badges: start -->
+
+<!-- badges: end -->
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The <code>psborrow2</code> package exists to provide an efficient framework for users to conduct Bayesian Dynamic Borrowing (BDB) analyses (for more information on BDB, see Ibrahim et al., 2000; Hobbs et al., 2012; Schmidli et al., 2014; Lewis, et al., 2019).</p>
-<p><code>psborrow2</code> has two main goals: First, facilitate simulation studies that compare different borrowing parameters (e.g. full borrowing, no borrowing, BDB) and other trial and BDB characteristics (e.g. sample size, covariates) in a unified way; and second, provide a user-friendly interface for applying BDB on the study results that handles the MCMC sampling on behalf of the user.</p>
-<p><code>psborrow2</code> is the successor of <a href="https://github.com/Genentech/psborrow" class="external-link"><code>psborrow</code></a>. Major updates to <code>psborrow2</code> include:</p>
+<p><code>psborrow2</code> provides an efficient framework for users to conduct Bayesian Dynamic Borrowing (BDB) analyses and other innovative analytical designs.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Lewis CJ, Sarkar S, Zhu J, Carlin BP. Borrowing from historical control data in cancer drug development: a cautionary tale and practical guidelines. Statistics in biopharmaceutical research. 2019 Jan 2;11(1):67-78.&lt;/p&gt;"><sup>1</sup></a> <a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Viele K, Berry S, Neuenschwander B, Amzal B, Chen F, Enas N, Hobbs B, Ibrahim JG, Kinnersley N, Lindborg S, Micallef S. Use of historical control data for assessing treatment effects in clinical trials. Pharmaceutical statistics. 2014 Jan;13(1):41-54.&lt;/p&gt;"><sup>2</sup></a> <code>psborrow2</code> has two main objectives:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Facilitate BDB analyses</strong>. <code>psborrow2</code> has a user-friendly interface for conducting BDB analyses that handles the computationally-difficult MCMC sampling on behalf of the user.</p></li>
+<li><p><strong>Facilitate simulation studies of BDB</strong>. <code>psborrow2</code> includes a framework to compare different trial and BDB characteristics in a unified way in simulation studies to inform trial design.</p></li>
+</ol>
+</div>
+<div class="section level2">
+<h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
+</h2>
+<p><code>psborrow2</code> is the successor to <a href="https://github.com/Genentech/psborrow" class="external-link"><code>psborrow</code></a>. <code>psborrow</code> is still freely available on <a href="https://cran.r-project.org/package=psborrow" class="external-link"><code>CRAN</code></a> with the same validated functionality; however, the package is not actively developed. Major updates in <code>psborrow2</code> include:</p>
 <ul>
+<li>New, more flexible user interface</li>
 <li>New MCMC software (STAN)</li>
-<li>New user interface</li>
-<li>Additional functionality</li>
+<li>Expanded functionality</li>
 </ul>
+<p>The name <code>psborrow</code> combines propensity scoring (<code>ps</code>) and Bayesian dynamic <code>borrow</code>ing. As the name implies, this package can be used to combine dynamic borrowing and propensity-score adjustment/weighting methods.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p><code>psborrow2</code> is currently under development and should therefore be used with caution. You can install the development version via:</p>
+<p>You can install the latest version of <code>psborrow2</code> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Genentech/psborrow2"</span><span class="op">)</span></span></code></pre></div>
-<p>Please note that this package requires <a href="https://mc-stan.org/cmdstanr/" class="external-link"><code>cmdstanr</code></a> to be installed.</p>
+<p>Please note that this package requires <a href="https://mc-stan.org/cmdstanr/" class="external-link"><code>cmdstanr</code></a>.</p>
+</div>
+<div class="section level2">
+<h2 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a>
+</h2>
+<p>To learn how to use the <code>psborrow2</code> R package, refer to the package vignettes:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html" class="external-link">browseVignettes</a></span><span class="op">(</span><span class="st">"psborrow2"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="bibliography">Bibliography<a class="anchor" aria-label="anchor" href="#bibliography"></a>
+</h2>
 </div>
 </div>
+
+
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
@@ -152,7 +171,13 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/Genentech/psborrow2" class="external-link"><img src="https://img.shields.io/static/v1.svg?label=github.com/genentech&amp;message=v.0.0.2.0&amp;color=DC0073" alt="Version"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: maturing"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>

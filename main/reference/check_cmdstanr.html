@@ -15,7 +15,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,22 +32,17 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/dataset.html">Conduct a hybrid control analysis on a dataset using BDB</a>
-    <a class="dropdown-item" href="../articles/prior_distributions.html">Specifying prior distributions</a>
-    <a class="dropdown-item" href="../articles/propensity_scores.html">Incorporating propensity scores analysis in psborrow2</a>
-    <a class="dropdown-item" href="../articles/simulation_study.html">Conduct a simulation study</a>
+    <a class="dropdown-item" href="../articles/dataset.html">2. Conduct a hybrid control analysis on a dataset using BDB</a>
+    <a class="dropdown-item" href="../articles/overview_slides.html">6. Walkthrough overview slides</a>
+    <a class="dropdown-item" href="../articles/prior_distributions.html">3. Specifying prior distributions</a>
+    <a class="dropdown-item" href="../articles/propensity_scores.html">5. Incorporating propensity scores analysis in psborrow2</a>
+    <a class="dropdown-item" href="../articles/simulation_study.html">4. Conduct a simulation study</a>
+    <a class="dropdown-item" href="../articles/weighting.html">Comparison of Fixed Weights</a>
   </div>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/develop">develop</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -133,16 +128,16 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.1 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    variable   mean median   sd  mad     q5    q95 rhat ess_bulk ess_tail</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  lp__       -66.04 -65.72 1.51 1.27 -68.93 -64.31 1.01      498      640</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  alpha        0.38   0.38 0.22 0.21   0.03   0.74 1.00     1027      725</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  beta[1]     -0.67  -0.66 0.25 0.26  -1.07  -0.29 1.00      962      717</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  beta[2]     -0.28  -0.28 0.24 0.24  -0.68   0.11 1.00      967      676</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  beta[3]      0.69   0.68 0.28 0.28   0.24   1.16 1.00     1169      709</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  log_lik[1]  -0.52  -0.51 0.10 0.10  -0.68  -0.36 1.00      907      626</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  log_lik[2]  -0.40  -0.38 0.14 0.13  -0.67  -0.20 1.00     1411      904</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  log_lik[3]  -0.51  -0.47 0.23 0.21  -0.92  -0.20 1.00     1031      725</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  log_lik[4]  -0.45  -0.43 0.15 0.15  -0.71  -0.23 1.00     1036      756</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  log_lik[5]  -1.19  -1.16 0.30 0.29  -1.74  -0.75 1.00     1080      806</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  lp__       -65.95 -65.63 1.40 1.27 -68.62 -64.29 1.00      527      693</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  alpha        0.38   0.37 0.21 0.21   0.04   0.73 1.00     1116      844</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  beta[1]     -0.67  -0.66 0.25 0.24  -1.11  -0.26 1.00     1173      714</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  beta[2]     -0.27  -0.25 0.23 0.24  -0.65   0.09 1.00      766      670</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  beta[3]      0.67   0.66 0.27 0.27   0.21   1.11 1.00     1046      893</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  log_lik[1]  -0.51  -0.51 0.09 0.09  -0.67  -0.36 1.00     1091      720</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  log_lik[2]  -0.41  -0.39 0.15 0.14  -0.68  -0.20 1.00     1148      736</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  log_lik[3]  -0.50  -0.46 0.22 0.20  -0.92  -0.21 1.00      837      601</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  log_lik[4]  -0.45  -0.43 0.15 0.15  -0.73  -0.25 1.00      829      790</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  log_lik[5]  -1.17  -1.16 0.28 0.28  -1.64  -0.75 1.00     1225      772</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  # showing 10 of 105 rows (change via 'max_rows' argument or 'cmdstanr_max_rows' option)</span>
 </code></pre></div>
