@@ -26,4 +26,39 @@ test_that("get_vars works for ExponentialSurvDist", {
     )),
     c(time_var = "TIME", cens_var = "CENS")
   )
+
+  expect_identical(
+    get_vars(exp_surv_dist(
+      time_var = "TIME",
+      cens_var = "CENS",
+      weight_var = "W",
+      normal_prior(0, 100)
+    )),
+    c(time_var = "TIME", cens_var = "CENS", weight_var = "W")
+  )
+})
+
+test_that("exp_surv_dist works with weights", {
+  result <- exp_surv_dist(
+    time_var = "time",
+    cens_var = "cens",
+    normal_prior(0, 1000),
+    weight_var = "w"
+  )
+  expect_class(result, "ExponentialSurvDist")
+  expect_equal(result@weight_var, "w")
+  expect_string(
+    result@likelihood_stan_code,
+    fixed = "for (i in 1:N) {
+   if (cens[i] == 1) {
+      target += exponential_lccdf(time[i] | elp[i] ) * weight[i];
+   } else {
+      target += exponential_lpdf(time[i] | elp[i] ) * weight[i];
+   }
+}"
+  )
+  expect_string(
+    result@data_stan_code,
+    fixed = "vector[N] time;\nvector[N] cens;\nvector[N] weight;"
+  )
 })

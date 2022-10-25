@@ -1,0 +1,327 @@
+---
+title: "Comparison of Fixed Weights"
+author: "Matt Secrest and Isaac Gravestock"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{8. Comparison of Fixed Weights}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+```{r knitr, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.align = "center",
+  fig.width = 5,
+  fig.height = 3,
+  dpi = 120,
+  comment = "#",
+  message = FALSE,
+  warning = FALSE
+)
+options(rmarkdown.html_vignette.check_title = FALSE)
+```
+
+# Introduction
+
+In a `psborrow2` analysis it is possible to specify fixed weights for an observation's log-likelihood contribution.
+This is similar to a weighted regression or a fixed power prior parameter.
+
+This vignette will show how weights can be specified and compare regression model results with other packages.
+We will compare a `glm` model with weights, a weighted likelihood in Stan with `psborrow2`, and
+`BayesPPD::glm.fixed.a0` for generalized linear models with fixed `a0` (power prior parameter).
+
+```{r packages, results = "hide", message = FALSE}
+library(psborrow2)
+library(BayesPPD)
+library(ggplot2)
+```
+
+# Logistic regression
+
+We fit logistic regression models with the external control arm having weights (or power parameters)
+equal to 0, 0.25, 0.5, 0.75, 1. The internal treated and control patients have weight = 1.
+The model has a treatment indicator and two covariates, `resp ~ trt + cov1 + cov2`.
+
+### glm
+
+```{r glm_logistic, results = "hide"}
+logistic_glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
+  logistic_glm <- glm(
+    resp ~ trt + cov1 + cov2,
+    data = as.data.frame(example_matrix),
+    family = binomial,
+    weights = ifelse(example_matrix[, "ext"] == 1, w, 1)
+  )
+  glm_summary <- summary(logistic_glm)$coef
+  ci <- confint(logistic_glm)
+  data.frame(
+    fitter = "glm",
+    borrowing = w,
+    variable = c("(Intercept)", "trt", "cov1", "cov2"),
+    estimate = glm_summary[, "Estimate"],
+    lower = ci[, 1],
+    upper = ci[, 2]
+  )
+})
+```
+
+### BayesPPD
+
+```{r bayesppd_logistic, results = "hide"}
+logistic_ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
+  logistic_ppd <- glm.fixed.a0(
+    data.type = "Bernoulli",
+    data.link = "Logistic",
+    y = example_matrix[example_matrix[, "ext"] == 0, ][, "resp"],
+    x = example_matrix[example_matrix[, "ext"] == 0, ][, c("trt", "cov1", "cov2")],
+    historical = list(list(
+      y0 = example_matrix[example_matrix[, "ext"] == 1, ][, "resp"],
+      x0 = example_matrix[example_matrix[, "ext"] == 1, ][, c("cov1", "cov2")],
+      a0 = w
+    )),
+    lower.limits = rep(-100, 5),
+    upper.limits = rep(100, 5),
+    slice.widths = rep(1, 5),
+    nMC = 10000,
+    nBI = 1000
+  )
+  ci <- apply(logistic_ppd, 2, quantile, probs = c(0.025, 0.975))
+  data.frame(
+    fitter = "BayesPPD",
+    borrowing = w,
+    variable = c("(Intercept)", "trt", "cov1", "cov2"),
+    estimate = colMeans(logistic_ppd),
+    lower = ci[1, ],
+    upper = ci[2, ]
+  )
+})
+```
+
+### psborrow2
+
+```{r psb2_logistic, results = "hide"}
+logistic_psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
+  logistic_psb2 <- create_analysis_obj(
+    data_matrix = as.matrix(cbind(
+      example_matrix,
+      w = ifelse(example_matrix[, "ext"] == 1, w, 1)
+    )),
+    covariates = add_covariates(c("cov1", "cov2"),
+      priors = normal_prior(0, 100)
+    ),
+    borrowing = borrowing_details("Full borrowing",
+      ext_flag_col = "ext",
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 100)),
+    outcome = logistic_bin_outcome("resp",
+      baseline_prior = normal_prior(0, 1000),
+      weight_var = "w"
+    )
+  )
+
+  mcmc_logistic_psb2 <- mcmc_sample(logistic_psb2, chains = 1, verbose = FALSE)
+  mcmc_summary <- mcmc_logistic_psb2$summary(
+    variables = c("alpha", "beta_trt", "beta[1]", "beta[2]"),
+    mean,
+    ~ quantile(.x, probs = c(0.025, 0.975))
+  )
+
+  data.frame(
+    fitter = "psborrow2",
+    borrowing = w,
+    variable = c("(Intercept)", "trt", "cov1", "cov2"),
+    estimate = mcmc_summary$mean,
+    lower = mcmc_summary$`2.5%`,
+    upper = mcmc_summary$`97.5%`
+  )
+})
+```
+
+### Results
+
+```{r logistic_results}
+logistic_res_df <- do.call(
+  rbind,
+  c(logistic_glm_reslist, logistic_ppd_reslist, logistic_psb_reslist)
+)
+
+logistic_res_df$est_ci <- sprintf(
+  "%.3f (%.3f, %.3f)",
+  logistic_res_df$estimate, logistic_res_df$lower, logistic_res_df$upper
+)
+
+wide <- reshape(
+  logistic_res_df[, c("fitter", "borrowing", "variable", "est_ci")],
+  direction = "wide",
+  timevar = "fitter",
+  idvar = c("borrowing", "variable"),
+)
+new_order <- order(wide$variable, wide$borrowing)
+knitr::kable(wide[new_order, ], digits = 3, row.names = FALSE)
+```
+
+```{r logistic_plot}
+logistic_res_df$borrowing_x <- logistic_res_df$borrowing +
+  (as.numeric(factor(logistic_res_df$fitter)) - 3) / 100
+
+ggplot(logistic_res_df, aes(x = borrowing_x, y = estimate, group = fitter, colour = fitter)) +
+  geom_errorbar(aes(ymin = lower, ymax = upper)) +
+  geom_point() +
+  facet_wrap(~variable, scales = "free")
+```
+
+# Exponential models
+
+Now we fit models with an exponentially distributed outcome. There is no censoring in this data set.
+For `glm` we use `family = Gamma(link = "log")` and specify fixed `dispersion = 1` to fit a exponential model.
+As before, the external control arm having weights (or power parameters)
+equal to 0, 0.25, 0.5, 0.75, 1. The internal treated and control patients have weight = 1.
+The model has a treatment indicator and two covariates, `eventtime ~ trt + cov1 + cov2`.
+
+```{r surv_data, results = "hide"}
+sim_data_exp <- cbind(
+  simsurv::simsurv(
+    dist = "exponential",
+    x = as.data.frame(example_matrix[, c("trt", "cov1", "cov2", "ext")]),
+    betas = c("trt" = 1.3, "cov1" = 1, "cov2" = 0.1, "ext" = -0.4),
+    lambdas = 5
+  ),
+  example_matrix[, c("trt", "cov1", "cov2", "ext")],
+  censor = 0
+)
+```
+```{r}
+head(sim_data_exp)
+```
+
+
+```{r glm_exp, results = "hide"}
+## glm
+glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
+  exp_glm <- glm(
+    eventtime ~ trt + cov1 + cov2,
+    data = sim_data_exp,
+    family = Gamma(link = "log"),
+    weights = ifelse(sim_data_exp$ext == 1, w, 1)
+  )
+  glm_summary <- summary(exp_glm, dispersion = 1)
+  est <- -glm_summary$coefficients[, "Estimate"]
+  lower <- est - 1.96 * glm_summary$coefficients[, "Std. Error"]
+  upper <- est + 1.96 * glm_summary$coefficients[, "Std. Error"]
+
+  data.frame(
+    fitter = "glm",
+    borrowing = w,
+    variable = c("(Intercept)", "trt", "cov1", "cov2"),
+    estimate = est,
+    lower = lower,
+    upper = upper
+  )
+})
+```
+
+```{r bayesppd_Exp, results = "hide"}
+## BayesPPD
+ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
+  exp_ppd <- glm.fixed.a0(
+    data.type = "Exponential",
+    data.link = "Log",
+    y = sim_data_exp[sim_data_exp$ext == 0, ]$eventtime,
+    x = as.matrix(sim_data_exp[sim_data_exp$ext == 0, c("trt", "cov1", "cov2")]),
+    historical = list(list(
+      y0 = sim_data_exp[sim_data_exp$ext == 1, ]$eventtime,
+      x0 = as.matrix(sim_data_exp[sim_data_exp$ext == 1, c("cov1", "cov2")]),
+      a0 = w
+    )),
+    lower.limits = rep(-100, 5),
+    upper.limits = rep(100, 5),
+    slice.widths = rep(1, 5),
+    nMC = 10000,
+    nBI = 1000
+  )
+  ci <- apply(exp_ppd, 2, quantile, probs = c(0.025, 0.975))
+  data.frame(
+    fitter = "BayesPPD",
+    borrowing = w,
+    variable = c("(Intercept)", "trt", "cov1", "cov2"),
+    estimate = colMeans(exp_ppd),
+    lower = ci[1, ],
+    upper = ci[2, ]
+  )
+})
+```
+
+
+```{r psborrow2_Exp, results = "hide"}
+## psborrow2
+psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
+  exp_psb2 <- create_analysis_obj(
+    data_matrix = as.matrix(cbind(sim_data_exp, w = ifelse(example_matrix[, "ext"] == 1, w, 1))),
+    covariates = add_covariates(c("cov1", "cov2"),
+      priors = normal_prior(0, 100)
+    ),
+    borrowing = borrowing_details("Full borrowing",
+      ext_flag_col = "ext",
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 100)),
+    outcome = exp_surv_dist("eventtime", "censor",
+      baseline_prior = normal_prior(0, 1000),
+      weight_var = "w"
+    )
+  )
+
+  mcmc_exp_psb2 <- mcmc_sample(exp_psb2, chains = 1, verbose = FALSE)
+  mcmc_summary <- mcmc_exp_psb2$summary(
+    variables = c("alpha", "beta_trt", "beta[1]", "beta[2]"),
+    mean,
+    ~ quantile(.x, probs = c(0.025, 0.975))
+  )
+
+  data.frame(
+    fitter = "psborrow2",
+    borrowing = w,
+    variable = c("(Intercept)", "trt", "cov1", "cov2"),
+    estimate = mcmc_summary$mean,
+    lower = mcmc_summary$`2.5%`,
+    upper = mcmc_summary$`97.5%`
+  )
+})
+```
+
+### Results
+
+Note: Wald confidence intervals are displayed here for `glm` for the exponential models.
+
+```{r exp_results}
+res_df <- do.call(rbind, c(glm_reslist, ppd_reslist, psb_reslist))
+
+res_df$est_ci <- sprintf(
+  "%.3f (%.3f, %.3f)",
+  res_df$estimate, res_df$lower, res_df$upper
+)
+
+wide <- reshape(
+  res_df[, c("fitter", "borrowing", "variable", "est_ci")],
+  direction = "wide",
+  timevar = "fitter",
+  idvar = c("borrowing", "variable"),
+)
+new_order <- order(wide$variable, wide$borrowing)
+knitr::kable(wide[new_order, ], digits = 3, row.names = FALSE)
+```
+
+```{r exp_plot}
+res_df$borrowing_x <- res_df$borrowing +
+  (as.numeric(factor(res_df$fitter)) - 3) / 100
+
+ggplot(res_df, aes(x = borrowing_x, y = estimate, group = fitter, colour = fitter)) +
+  geom_errorbar(aes(ymin = lower, ymax = upper)) +
+  geom_point() +
+  facet_wrap(~variable, scales = "free")
+```

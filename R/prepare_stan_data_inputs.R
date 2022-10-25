@@ -59,5 +59,10 @@ prepare_stan_data_inputs <- function(analysis_obj) {
     data_in[["U_beta"]] <- beta_constraints[, "upper"]
   }
 
+  ## Weights
+  if (analysis_obj@outcome@weight_var != "") {
+    data_in[["weight"]] <- trimmed_data_matrix[, analysis_obj@outcome@weight_var]
+  }
+
   return(data_in)
 }
