@@ -11,17 +11,17 @@ maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https
 ## Overview
 
 `psborrow2` provides an efficient framework for users to
-conduct Bayesian Dynamic Borrowing (BDB) analyses and other 
-innovative analytical designs.<sup>1-2</sup>
+conduct Bayesian Dynamic Borrowing (BDB) analyses and other
+innovative analytical designs.[^1] [^2]
 `psborrow2` has two main objectives:
 
-1. <b>Facilitate BDB analyses</b>. `psborrow2` has a user-friendly interface for
-conducting BDB analyses that handles the computationally-difficult MCMC sampling
-on behalf of the user.
+1. **Facilitate BDB analyses**. `psborrow2` has a user-friendly interface for
+   conducting BDB analyses that handles the computationally-difficult MCMC sampling
+   on behalf of the user.
 
-2. <b>Facilitate simulation studies of BDB</b>. `psborrow2` includes a
-framework to compare different trial and BDB characteristics in a unified way
-in simulation studies to inform trial design.
+2. **Facilitate simulation studies of BDB**. `psborrow2` includes a
+   framework to compare different trial and BDB characteristics in a unified way
+   in simulation studies to inform trial design.
 
 ## Background
 
@@ -59,11 +59,13 @@ browseVignettes("psborrow2")
 
 ## Bibliography
 
-1. Lewis CJ, Sarkar S, Zhu J, Carlin BP. Borrowing from historical control data
-in cancer drug development: a cautionary tale and practical guidelines.
-Statistics in biopharmaceutical research. 2019 Jan 2;11(1):67-78.
+[^1]:
+    Lewis CJ, Sarkar S, Zhu J, Carlin BP. Borrowing from historical control data
+    in cancer drug development: a cautionary tale and practical guidelines.
+    Statistics in biopharmaceutical research. 2019 Jan 2;11(1):67-78.
 
-2. Viele K, Berry S, Neuenschwander B, Amzal B, Chen F, Enas N, Hobbs B, 
-Ibrahim JG, Kinnersley N, Lindborg S, Micallef S. Use of historical control
-data for assessing treatment effects in clinical trials. Pharmaceutical 
-statistics. 2014 Jan;13(1):41-54.
+[^2]:
+    Viele K, Berry S, Neuenschwander B, Amzal B, Chen F, Enas N, Hobbs B,
+    Ibrahim JG, Kinnersley N, Lindborg S, Micallef S. Use of historical control
+    data for assessing treatment effects in clinical trials. Pharmaceutical
+    statistics. 2014 Jan;13(1):41-54.
