@@ -7,7 +7,8 @@
         int<lower=0> N;
         vector[N] trt;
         vector[N] time;
-          vector[N] cens;
+      vector[N] cens;
+      
         
         
       }
@@ -21,7 +22,8 @@
         int<lower=0> N;
         vector[N] trt;
         vector[N] time;
-          vector[N] cens;
+      vector[N] cens;
+      
         matrix[N,2] Z;
         
       }
@@ -35,7 +37,8 @@
         int<lower=0> N;
         vector[N] trt;
         vector[N] time;
-          vector[N] cens;
+      vector[N] cens;
+      
         matrix[N,2] Z;
         int<lower=0> K;
       matrix[N, K] X;
@@ -52,6 +55,24 @@
         int<lower=0> N;
         vector[N] trt;
         array[N] int y;
+      
+        matrix[N,2] Z;
+        int<lower=0> K;
+      matrix[N, K] X;
+      vector[K] L_beta;
+      vector[K] U_beta;
+      }
+
+# make_model_string_data works with binary outcome and weights
+
+    Code
+      result
+    Output
+      data {
+        int<lower=0> N;
+        vector[N] trt;
+        array[N] int y;
+      vector[N] weight;
         matrix[N,2] Z;
         int<lower=0> K;
       matrix[N, K] X;

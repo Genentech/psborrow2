@@ -55,8 +55,12 @@ Suggests:
     bayesplot,
     matrixcalc,
     simsurv,
-    PSweight,
+    WeightIt,
     MatchIt,
+    BayesPPD,
+    gbm,
+    ggplot2,
+    cobalt,
     table1,
     gt,
     gtsummary

@@ -29,6 +29,7 @@ setClass(
     param_priors = "list",
     time_var = "character",
     cens_var = "character",
+    weight_var = "character",
     baseline_prior = "Prior"
   ),
   prototype = list(
@@ -36,6 +37,7 @@ setClass(
     function_stan_code = "",
     param_stan_code = "",
     likelihood_stan_code = "",
+    weight_var = NULL,
     data_stan_code = "vector[N] time;
     vector[N] cens;",
     baseline_prior = NULL
@@ -64,6 +66,7 @@ setClass(
     n_param = "integer",
     param_priors = "list",
     binary_var = "character",
+    weight_var = "character",
     baseline_prior = "Prior"
   ),
   prototype = list(
@@ -71,6 +74,7 @@ setClass(
     function_stan_code = "",
     param_stan_code = "",
     likelihood_stan_code = "",
+    weight_var = "",
     data_stan_code = "array[N] int y;",
     baseline_prior = NULL
   ),
@@ -106,7 +110,8 @@ setMethod(
   f = "get_vars",
   signature = "TimeToEvent",
   definition = function(object) {
-    c(time_var = object@time_var, cens_var = object@cens_var)
+    weight_var <- if (object@weight_var != "") object@weight_var
+    c(time_var = object@time_var, cens_var = object@cens_var, weight_var = weight_var)
   }
 )
 
@@ -116,6 +121,7 @@ setMethod(
   f = "get_vars",
   signature = "BinaryOutcome",
   definition = function(object) {
-    c(binary_var = object@binary_var)
+    weight_var <- if (object@weight_var != "") object@weight_var
+    c(binary_var = object@binary_var, weight_var = weight_var)
   }
 )

@@ -1,8 +1,10 @@
+ATT
 Acknowledgements
 Amzal
 BDB
-Bove
 CJ
+BayesPPD
+Bove
 CMD
 Enas
 Gower
@@ -23,6 +25,7 @@ RCT
 Roychoudhury
 Sabanes
 Sarkar
+Schmidli
 Statist
 Viele
 Walkthrough
@@ -43,11 +46,11 @@ confounders
 consquence
 costructor
 doi
+estimands
 et
 exponentiate
 fmt
 frac
-gbm
 glm
 https
 hyperprior
@@ -57,7 +60,6 @@ ing
 interpretable
 mc
 operatorname
-packaes
 parametrized
 poisson
 propto
