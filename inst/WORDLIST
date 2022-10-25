@@ -2,6 +2,7 @@ ATT
 Acknowledgements
 Amzal
 BDB
+CJ
 BayesPPD
 Bove
 CMD
@@ -13,14 +14,17 @@ IPTW
 Ibrahim
 Jiawen
 Kinnersley
+Lifecycle
 Lindborg
 MatchIt
 Micallef
 Neuenschwander
+PSweight
 Pharmaceut
 RCT
 Roychoudhury
 Sabanes
+Sarkar
 Schmidli
 Statist
 Viele
@@ -32,6 +36,7 @@ approxeq
 bernoulli
 binarization
 binarizing
+biopharmaceutical
 cauchy
 CMD
 CmdStan
@@ -53,6 +58,7 @@ https
 hyperprior
 hyperpriors
 infty
+ing
 interpretable
 mc
 operatorname
