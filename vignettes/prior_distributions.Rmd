@@ -1,5 +1,6 @@
 ---
 title: "3. Specifying prior distributions"
+author: "Matt Secrest and Isaac Gravestock"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{3. Specifying prior distributions}
