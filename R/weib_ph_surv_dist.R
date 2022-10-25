@@ -26,7 +26,7 @@
   prototype = list(
     n_param = 1L,
     function_stan_code =
-      glue::glue("
+      h_glue("
           real weibull_ph_lpdf(real y, real alpha, real lambda) {
               real lprob = log(alpha) + log(lambda) + (alpha - 1) * log(y) - lambda * (y^alpha);
               return lprob;
@@ -41,16 +41,16 @@
               real lprob = -lambda * y^alpha;
               return lprob;
           }
-         ", .open = "{{", .close = "}}"),
+         "),
     likelihood_stan_code =
-      glue::glue("
+      h_glue("
          for (i in 1:N) {
             if (cens[i] == 1) {
                target += weibull_ph_lccdf(time[i] | shape_weibull, elp[i] );
             } else {
                target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i] );
             }
-         }", .open = "{{", .close = "}}"),
+         }"),
     param_stan_code = "real<lower=0> shape_weibull; ",
     param_priors = list(
       shape_weibull = exponential_prior(beta = 0.0001)

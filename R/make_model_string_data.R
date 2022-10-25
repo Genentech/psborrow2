@@ -21,54 +21,32 @@
 #' psborrow2:::make_model_string_data(anls_obj)
 #'
 make_model_string_data <- function(analysis_obj) {
-  ## Data string
-  data_string <- h_glue("data {")
+  outcome_string <- analysis_obj@outcome@data_stan_code
 
-  ## Data shared by all TTE
-  if (is(analysis_obj@outcome, "TimeToEvent")) {
-    data_string <- h_glue("
-      {{data_string}}
-      int<lower=0> N;
-      vector[N] time;
-      vector[N] cens;
-      vector[N] trt;")
-  }
+  borrowing_string <- analysis_obj@borrowing@data_stan_code
 
-  ### Data shared by all binary endpoints
-  if (is(analysis_obj@outcome, "BinaryOutcome")) {
-    data_string <- h_glue("
-      {{data_string}}
-      int<lower=0> N;
-      array[N] int y;
-      vector[N] trt;")
-  }
-
-  ### Add external control flag for BDB
-  if (analysis_obj@borrowing@method == "BDB") {
-    data_string <- h_glue("
-      {{data_string}}
-      matrix[N,2] Z;")
-  }
-
-  ### Add covariates for when these are specified
-  if (!is.null(analysis_obj@covariates)) {
-    data_string <- h_glue("
-      {{data_string}}
-      int<lower=0> K;
-      matrix[N, K] X;
-      vector[K] L_beta;
-      vector[K] U_beta;")
-  }
+  covariate_string <- ifelse(
+    !is.null(analysis_obj@covariates),
+    h_glue("int<lower=0> K;
+     matrix[N, K] X;
+     vector[K] L_beta;
+     vector[K] U_beta;
+     "),
+    ""
+  )
 
   if (analysis_obj@outcome@weight_var != "") {
-    data_string <- h_glue("
-      {{data_string}}
-      vector[N] weight;")
+    weight_string <- h_glue("vector[N] weight;")
   }
+  
+  data_string <- h_glue("data {
+    int<lower=0> N;
+    vector[N] trt;
+    {{outcome_string}}
+    {{borrowing_string}}
+    {{covariate_string}}
+    {{weight_string}}
+  }")
 
-  ### Close block
-  data_string <- h_glue("{{data_string}} }")
-
-  ## Return
   return(data_string)
 }
