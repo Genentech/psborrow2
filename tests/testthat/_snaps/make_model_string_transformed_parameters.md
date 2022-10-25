@@ -4,7 +4,8 @@
       result
     Output
       transformed parameters {
-      real HR_trt = exp(beta_trt); }
+        real HR_trt = exp(beta_trt);
+      }
 
 # make_model_string_transf_param works with exponential survival and BDB
 
@@ -12,7 +13,8 @@
       result
     Output
       transformed parameters {
-      real HR_trt = exp(beta_trt); }
+        real HR_trt = exp(beta_trt);
+      }
 
 # make_model_string_transf_param works with weibull survival and BDB and covariates
 
@@ -20,7 +22,8 @@
       result
     Output
       transformed parameters {
-      real HR_trt = exp(beta_trt); }
+        real HR_trt = exp(beta_trt);
+      }
 
 # make_model_string_transf_param works with binary outcome and BDB  and covariates
 
@@ -28,5 +31,6 @@
       result
     Output
       transformed parameters {
-      real OR_trt = exp(beta_trt); }
+        real OR_trt = exp(beta_trt);
+      }
 
