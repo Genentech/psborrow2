@@ -10,12 +10,13 @@
 \section{Slots}{
 
 \describe{
-\item{\code{function_stan_code}}{character. stan function code block containing text to interpolate into stan model.}
+\item{\code{function_stan_code}}{character. Code to include in the Stan functions program block.}
 
-\item{\code{param_stan_code}}{character. stan parameter code block containing text to interpolate into stan model.}
+\item{\code{param_stan_code}}{character. Code to include in the Stan parameters program block.}
 
-\item{\code{likelihood_stan_code}}{character. stan model likelihood code block containing text
-to interpolate into stan model.}
+\item{\code{likelihood_stan_code}}{character. Code defining the likelihood to include in the Stan model program block.}
+
+\item{\code{data_stan_code}}{character. Code to include in the Stan data program block.}
 
 \item{\code{n_param}}{integer. Number of ancillary parameters for the model to estimate.}
 

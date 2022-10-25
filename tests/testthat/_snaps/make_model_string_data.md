@@ -4,10 +4,13 @@
       result
     Output
       data {
-      int<lower=0> N;
-      vector[N] time;
-      vector[N] cens;
-      vector[N] trt; }
+        int<lower=0> N;
+        vector[N] trt;
+        vector[N] time;
+          vector[N] cens;
+        
+        
+      }
 
 # make_model_string_data works with exponential survival and BDB
 
@@ -15,11 +18,13 @@
       result
     Output
       data {
-      int<lower=0> N;
-      vector[N] time;
-      vector[N] cens;
-      vector[N] trt;
-      matrix[N,2] Z; }
+        int<lower=0> N;
+        vector[N] trt;
+        vector[N] time;
+          vector[N] cens;
+        matrix[N,2] Z;
+        
+      }
 
 # make_model_string_data works with weibull survival and BDB and covariates
 
@@ -27,15 +32,16 @@
       result
     Output
       data {
-      int<lower=0> N;
-      vector[N] time;
-      vector[N] cens;
-      vector[N] trt;
-      matrix[N,2] Z;
-      int<lower=0> K;
+        int<lower=0> N;
+        vector[N] trt;
+        vector[N] time;
+          vector[N] cens;
+        matrix[N,2] Z;
+        int<lower=0> K;
       matrix[N, K] X;
       vector[K] L_beta;
-      vector[K] U_beta; }
+      vector[K] U_beta;
+      }
 
 # make_model_string_data works with binary outcome and BDB and covariates
 
@@ -43,12 +49,13 @@
       result
     Output
       data {
-      int<lower=0> N;
-      array[N] int y;
-      vector[N] trt;
-      matrix[N,2] Z;
-      int<lower=0> K;
+        int<lower=0> N;
+        vector[N] trt;
+        array[N] int y;
+        matrix[N,2] Z;
+        int<lower=0> K;
       matrix[N, K] X;
       vector[K] L_beta;
-      vector[K] U_beta; }
+      vector[K] U_beta;
+      }
 

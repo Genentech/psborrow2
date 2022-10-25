@@ -21,19 +21,9 @@
 #' psborrow2:::make_model_string_functions(anls_obj)
 #'
 make_model_string_functions <- function(analysis_obj) {
-  ## Functions string
-  functions_string <- h_glue("functions {")
-
   ## Bring in analysis_obj functions
-  functions_string <- h_glue("
-    {{functions_string}}
-    {{analysis_obj@outcome@function_stan_code}}")
-
-  ## Close block
-  functions_string <- h_glue("
-    {{functions_string}}
+  h_glue("
+    functions {
+      {{analysis_obj@outcome@function_stan_code}}
     }")
-
-  # Return
-  return(functions_string)
 }

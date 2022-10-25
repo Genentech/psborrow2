@@ -17,7 +17,7 @@
 #' @slot binary_var character. Variable used for outcome in `LogisticBinaryOutcome` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
-#' @include outcome_class.R
+#' @include outcome_class.R helpers.R
 #' @family outcome
 .logistic_bin_outcome <- setClass(
   "LogisticBinaryOutcome",
@@ -25,10 +25,10 @@
   prototype = list(
     n_param = 0L,
     likelihood_stan_code =
-      glue::glue("
+      h_glue("
          for (i in 1:N) {
             target += bernoulli_logit_lupmf(y[i] | lp[i]);
-         }", .open = "{{", .close = "}}")
+         }")
   ),
   validity = function(object) {
     return(TRUE)

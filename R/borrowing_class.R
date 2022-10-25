@@ -16,24 +16,27 @@ setClassUnion("PriorOrNULL", c("Prior", "NULL"))
 #' control cohort.
 #' @slot tau_prior `Prior`. Object of class `Prior` defining the hyperprior on the
 #' "commensurability parameter". See `?borrowing_details` for more information.
+#' @slot data_stan_code string. Code to include in the Stan data program block.
 .borrowing_class <- setClass(
   "Borrowing",
   slots = c(
     method = "character",
     ext_flag_col = "character",
-    tau_prior = "PriorOrNULL"
+    tau_prior = "PriorOrNULL",
+    data_stan_code = "character"
   ),
   prototype = c(
     method = "No borrowing",
     ext_flag_col = NULL,
-    tau_prior = NULL
+    tau_prior = NULL,
+    data_stan_code = ""
   ),
   validity = function(object) {
     assert_choice(object@method, c("Full borrowing", "No borrowing", "BDB"))
     if (object@method != "BDB" && !is.null(object@tau_prior)) {
       return("no need to specify tau prior when method is not BDB")
     }
-
+    assert_string(object@data_stan_code)
     return(TRUE)
   }
 )
