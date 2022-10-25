@@ -1,4 +1,4 @@
-# psborrow2 <img src="./inst/img/psborrow2_hex.png" align="right" width="120" />
+# psborrow2 <img src="./man/figures/hex.png" align="right" width="120"/>
 
 <!-- badges: start -->
 

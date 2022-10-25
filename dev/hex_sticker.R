@@ -41,7 +41,7 @@ make_ggplot_of_dists <- function() {
     theme_void()
 }
 
-make_hexplot <- function(out_path = "./inst/img/psborrow2_hex.png") {
+make_hexplot <- function(out_path = "./man/figures/hex.png") {
   # Dependancies
   require(hexSticker)
   require(showtext)
