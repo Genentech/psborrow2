@@ -38,7 +38,7 @@ make_model_string_data <- function(analysis_obj) {
   if (analysis_obj@outcome@weight_var != "") {
     weight_string <- h_glue("vector[N] weight;")
   }
-  
+
   data_string <- h_glue("data {
     int<lower=0> N;
     vector[N] trt;
