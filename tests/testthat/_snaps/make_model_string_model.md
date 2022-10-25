@@ -96,7 +96,7 @@
       alpha[2] ~ normal(0, 100) ;
       alpha[1] ~ normal(alpha[2], sqrt(sigma)) ;
         for (i in 1:N) {
-         target += bernoulli_logit_lupmf(y[i] | lp[i]);
+        target += bernoulli_logit_lupmf(y[i] | lp[i]);
       }
       }
 

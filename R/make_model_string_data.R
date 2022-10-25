@@ -43,5 +43,5 @@ make_model_string_data <- function(analysis_obj) {
     {{covariate_string}}
   }")
 
-  return(data_string)
+  data_string
 }
