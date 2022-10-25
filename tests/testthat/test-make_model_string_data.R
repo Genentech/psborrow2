@@ -104,3 +104,32 @@ test_that("make_model_string_data works with binary outcome and BDB and covariat
   expect_true(grepl("y", result))
   expect_snapshot(result)
 })
+
+test_that("make_model_string_data works with binary outcome and weights", {
+  object <- psborrow2:::.analysis_obj(
+    data_matrix = example_matrix,
+    covariates = add_covariates(
+      c("cov1", "cov2"),
+      normal_prior(0, 1000)
+    ),
+    outcome = logistic_bin_outcome("cnsr", normal_prior(0, 1000), weight_var = "w"),
+    borrowing = borrowing_details(
+      "BDB",
+      "ext",
+      exponential_prior(0.001)
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 1000))
+  )
+
+  result <- psborrow2:::make_model_string_data(object)
+  expect_class(result, "glue")
+  expect_true(grepl("data", result))
+  expect_false(grepl("time", result))
+  expect_false(grepl("cens", result))
+  expect_true(grepl("trt", result))
+  expect_true(grepl("Z", result))
+  expect_true(grepl("X", result))
+  expect_true(grepl("y", result))
+  expect_true(grepl("weight", result))
+  expect_snapshot(result)
+})

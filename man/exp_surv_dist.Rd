@@ -4,7 +4,7 @@
 \alias{exp_surv_dist}
 \title{Exponential survival distribution}
 \usage{
-exp_surv_dist(time_var, cens_var, baseline_prior)
+exp_surv_dist(time_var, cens_var, baseline_prior, weight_var = "")
 }
 \arguments{
 \item{time_var}{character. Name of time variable column in model matrix}
@@ -14,6 +14,8 @@ exp_surv_dist(time_var, cens_var, baseline_prior)
 \item{baseline_prior}{\code{Prior}. Object of class \code{Prior}
 specifying prior distribution for the baseline outcome.
 See \code{Details} for more information.}
+
+\item{weight_var}{character. Optional name of variable in model matrix for weighting the log likelihood.}
 }
 \value{
 Object of class \code{\link[=ExponentialSurvDist-class]{ExponentialSurvDist}}.

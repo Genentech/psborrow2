@@ -1,6 +1,6 @@
 ---
 title: "5. Incorporating propensity scores analysis in psborrow2"
-author: "Isaac Gravestock"
+author: "Isaac Gravestock and Matt Secrest"
 output:rmarkdown::html_vignette:
 vignette: >
   %\VignetteIndexEntry{5. Incorporating propensity scores analysis in psborrow2}
@@ -16,7 +16,9 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.width = 8,
   fig.height = 4,
-  fig.align = "center"
+  fig.align = "center",
+  messages = FALSE,
+  warnings = FALSE
 )
 ```
 
@@ -44,120 +46,136 @@ The simplest approach for calculating PS is a logistic generalized linear model.
 `psborrow2`.
 
 ```{r data}
-my_data <- example_surv
-head(my_data)
+example_dataframe <- as.data.frame(example_matrix)
+example_dataframe$int <- 1 - example_dataframe$ext
 ```
 
 Let's now fit a logistic generalized linear model and add the PS as an additional covariate.
 
 ```{r glm}
-ps_model <- glm(ext ~ cov1 + cov2 + cov3, data = my_data, family = binomial)
+ps_model <- glm(int ~ cov1 + cov2 + cov3 + cov4,
+  data = example_dataframe,
+  family = binomial
+)
 ps <- predict(ps_model, type = "response")
-my_data$ps <- ps
-head(my_data)
+example_dataframe$ps <- ps
+
+example_dataframe$ps_cat_ <- cut(
+  example_dataframe$ps,
+  breaks = 5,
+  include.lowest = TRUE
+)
+levels(example_dataframe$ps_cat_) <- c(
+  "ref", "low",
+  "low_med", "high_med", "high"
+)
+```
+
+```{r include = FALSE}
+example_matrix_ps <- create_data_matrix(
+  example_dataframe,
+  outcome = c("time", "cnsr"),
+  trt_flag_col = "trt",
+  ext_flag_col = "ext",
+  covariates = ~ ps_cat_ + ps
+)
 ```
 
 The calculated PS can be included as a covariate in the analysis object, for the "covariate adjustment" PS approach:
 
 ```{r analysis_obj}
-data_mat <- create_data_matrix(
-  my_data,
-  covariates = c("cov1", "cov2", "cov3", "ps"),
-  ext_flag_col = "ext",
-  outcome = c("eventtime", "censor"),
-  trt_flag_col = "trt"
+analysis_ps_cuts <- create_analysis_obj(
+  data_matrix = example_matrix_ps,
+  covariates = add_covariates(
+    c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
+    priors = normal_prior(0, 10000)
+  ),
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+  borrowing = borrowing_details("Full borrowing", "ext"),
+  treatment = treatment_details("trt", normal_prior(0, 10000))
 )
 
-analysis_object <- create_analysis_obj(
-  data_matrix = data_mat,
-  covariates = add_covariates(c("cov1", "cov2", "cov3", "ps"),
-    priors = normal_prior(0, 100)
-  ),
-  borrowing = borrowing_details("BDB",
-    ext_flag_col = "ext",
-    tau_prior = gamma_prior(0.1, 0.1)
-  ),
-  treatment = treatment_details("trt", normal_prior(0, 100)),
-  outcome = weib_ph_surv_dist("eventtime", "censor",
-    shape_prior = exponential_prior(1),
-    baseline_prior = normal_prior(0, 1000)
-  )
+result_ps_cuts <- mcmc_sample(analysis_ps_cuts)
+```
+
+
+## Alternative PS Weights with `WeightIt`
+
+The [`WeightIt`](https://cran.r-project.org/package=WeightIt) package can calculate PS and other balancing
+weights with a number of different methods, such as generalized boosted modeling (`method = "gbm"`).
+In addition, weights can be calculated differently for different estimands. Here, we specifying
+`estimand = "ATT"`, to calculate weights for estimating the average treatment effect among the treated (ATT).
+
+```{r WeightIt}
+library(WeightIt)
+
+weightit_model <- weightit(
+  int ~ cov1 + cov2 + cov3 + cov4,
+  data = example_dataframe,
+  method = "gbm",
+  estimand = "ATT"
 )
+summary(weightit_model)
 ```
 
-## Other PS Analyses
+Another useful package is [cobalt](https://cran.r-project.org/package=cobalt), which provides tools for
+assessing balance between groups after weighting or matching. It is compatible with many matching and weighting packages.
+See the [vignette](https://cran.r-project.org/web/packages/cobalt/vignettes/cobalt.html) for more details.
+We can use the `cobalt` package to assess balance with `bal.plot()`.
 
-For more complex PS analyses, we can use one of the dedicated R packages.
-
-### PSweight
-
-The [PSweight](https://cran.r-project.org/package=PSweight) package can calculate PS using other model fitting
-approaches than the simple glm described above. It also provides some summary statistics and plots.
-For example we can use a generalized boosted regression model (gbm):
-
-```{r psweight}
-library(PSweight)
-my_data2 <- example_surv
-psw_model <- SumStat(ext ~ cov1 + cov2 + cov3, data = my_data2, method = "gbm")
-summary(psw_model)
-```
-
-A plot of the distributions shows there is good overlap between the scores between both groups.
-
-```{r psweight_plot, fig.show="hold", out.width="50%", results='hide', message = FALSE}
-plot(psw_model, type = "density")
+```{r balplot}
+library(cobalt)
+bal.plot(weightit_model)
 ```
 
 The PS values can be copied into the data set and the analysis object can be constructed as before.
 
-```{r covs, results='hide'}
-my_data2$ps <- psw_model$propensity[, 2]
-```
+```{r covs}
+example_dataframe$att <- weightit_model$weights
 
-This package can also trim the data.
-
-```{r trim}
-psw_trimmed <- PStrim(ext ~ cov1 + cov2 + cov3, data = my_data2, delta = 0.1)
-psw_trimmed
-```
-
-Since there is a reasonable overlap between the data, only 5 patients were trimmed.
-
-As before this can be used for in the analysis by creating a suitable data matrix.
-
-```{r cov_mat}
-create_data_matrix(
-  psw_trimmed$data,
-  covariates = c("cov1", "cov2", "cov3", "ps"),
+example_matrix_att <- create_data_matrix(
+  example_dataframe,
   ext_flag_col = "ext",
-  outcome = c("eventtime", "censor"),
-  trt_flag_col = "trt"
+  outcome = c("time", "cnsr"),
+  trt_flag_col = "trt",
+  weight_var = "att"
 )
+
+analysis_att <- create_analysis_obj(
+  data_matrix = example_matrix_att,
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
+  borrowing = borrowing_details("Full borrowing", "ext"),
+  treatment = treatment_details("trt", normal_prior(0, 10000))
+)
+
+result_att <- mcmc_sample(analysis_att)
 ```
 
-### MatchIt
 
-A variety of matching methods, including PS matching are implemented in the [MatchIt](https://cran.r-project.org/package=MatchIt) package.
+## Matching with `MatchIt`
 
-As described in the [Getting Started vignette](https://cran.r-project.org/web/packages/MatchIt/vignettes/MatchIt.html), it can be useful to check the imbalance before matching.
+A variety of matching methods, including PS matching are implemented in the
+[MatchIt](https://cran.r-project.org/package=MatchIt) package.
+
+As described in the [Getting Started vignette](https://cran.r-project.org/web/packages/MatchIt/vignettes/MatchIt.html),
+it can be useful to check the imbalance before matching.
 
 ```{r matchit}
 library(MatchIt)
 # No matching; constructing a pre-match matchit object
-no_match <- matchit(trt ~ cov1 + cov2 + cov3,
-  data = example_surv,
+no_match <- matchit(trt ~ cov1 + cov2 + cov3 + cov4,
+  data = example_dataframe,
   method = NULL, distance = "glm"
 )
 summary(no_match)
 ```
 
-Here we are matching treated to untreated to select the most comparable control group, regardless of whether they are internal or external.
-
-Now we can try a 1:1 nearest matching approach.
+Here we are matching treated to untreated to select the most comparable control group, regardless of whether they are
+internal or external. For simplicity let's try a 1:1 nearest matching approach.
 
 ```{r matchit11}
-match_11 <- matchit(trt ~ cov1 + cov2 + cov3,
-  data = example_surv,
+match_11 <- matchit(trt ~ cov1 + cov2 + cov3 + cov4,
+  data = example_dataframe,
   method = "nearest", distance = "glm"
 )
 summary(match_11)
@@ -167,25 +185,143 @@ summary(match_11)
 plot(match_11, type = "jitter", interactive = FALSE)
 ```
 
-```{r matchit_qq}
-plot(match_11,
-  type = "qq", interactive = FALSE,
-  which.xs = c("cov1", "cov2", "cov3")
-)
-```
+Determining whether the balance after matching is appropriate is beyond the scope of this vignette. You can read more in
+the [MatchIt Assessing Balance](https://cran.r-project.org/web/packages/MatchIt/vignettes/assessing-balance.html)
+vignette. Again the `cobalt` package can be useful here.
 
-Determining whether the balance after matching is appropriate is beyond the scope of this vignette. You can read more in the [MatchIt Assessing Balance vignette](https://cran.r-project.org/web/packages/MatchIt/vignettes/assessing-balance.html). Another useful package is [cobalt](https://cran.r-project.org/package=cobalt), which provides tools for assessing balance between groups after weighting or matching. It is compatible with many matching and weighting packaes. See the [vignette](https://cran.r-project.org/web/packages/cobalt/vignettes/cobalt.html) for more details.
-
-However, if you are happy with the results of the matching procedure, you can extract the data for use in psborrow2.
+However, if you are happy with the results of the matching procedure, you can extract the data for use in `psborrow2`.
 
 ```{r trimmed_mat}
-create_data_matrix(
-  data = example_surv[match_11$weights == 1, ],
-  covariates = c("cov1", "cov2", "cov3"),
+example_matrix_match <- create_data_matrix(
+  data = example_dataframe[match_11$weights == 1, ],
   ext_flag_col = "ext",
-  outcome = c("eventtime", "censor"),
+  outcome = c("time", "cnsr"),
   trt_flag_col = "trt"
 )
 ```
+
+```{r}
+analysis_match <- create_analysis_obj(
+  data_matrix = example_matrix_match,
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+  borrowing = borrowing_details("Full borrowing", "ext"),
+  treatment = treatment_details("trt", normal_prior(0, 10000))
+)
+
+result_match <- mcmc_sample(analysis_match)
+```
+
+
+## Combined Weighting and Dynamic Borrowing
+
+The models also support fixed weights on the likelihood contributions from each observation. This
+is equivalent to fixed power prior weights. This allows for the combination of models, such as an
+IPTW + commensurate prior approach.
+
+
+```{r}
+analysis_iptw_bdb <- create_analysis_obj(
+  data_matrix = example_matrix_att,
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
+  borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
+  treatment = treatment_details("trt", normal_prior(0, 10000))
+)
+
+result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb)
+```
+
+
+## Fixed Weights
+
+We can also use weights to specify a fixed power prior model. Here we set the power parameter $\alpha = 0.1$
+for the external controls.
+
+```{r}
+example_matrix_pp01 <- cbind(example_matrix, pp_alpha = ifelse(example_matrix[, "ext"] == 1, 0.1, 1))
+
+analysis_pp01 <- create_analysis_obj(
+  data_matrix = example_matrix_pp01,
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000), weight_var = "pp_alpha"),
+  borrowing = borrowing_details("Full borrowing", "ext"),
+  treatment = treatment_details("trt", normal_prior(0, 10000))
+)
+
+result_pp01 <- mcmc_sample(analysis_pp01)
+```
+
+
+## Reference Models
+
+For comparison, we also fit a full borrowing, a no borrowing, and a BDB model without weights.
+
+```{r}
+result_full <- mcmc_sample(
+  create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+    borrowing = borrowing_details("Full borrowing", "ext"),
+    treatment = treatment_details("trt", normal_prior(0, 10000))
+  )
+)
+
+result_none <- mcmc_sample(
+  create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+    borrowing = borrowing_details("No borrowing", "ext"),
+    treatment = treatment_details("trt", normal_prior(0, 10000))
+  )
+)
+
+result_bdb <- mcmc_sample(
+  create_analysis_obj(
+    data_matrix = example_matrix_att,
+    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+    borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
+    treatment = treatment_details("trt", normal_prior(0, 10000))
+  )
+)
+```
+
+
+# Comparison of Results
+
+```{r}
+models <- list(
+  "No borrowing" = result_none,
+  "Full borrowing" = result_full,
+  "Power Prior 01" = result_pp01,
+  "PS Groups" = result_ps_cuts,
+  "ATT Weights" = result_att,
+  "IPTW + BDB" = result_iptw_bdb,
+  "Matching 1:1" = result_match,
+  "BDB" = result_bdb
+)
+```
+
+We can use `summary()` to extract the variable of interest and specify summary statistics.
+```{r}
+results_table <- do.call(rbind, lapply(
+  models,
+  function(i) i$summary("HR_trt", c("mean", "median", "sd", "quantile2"))
+))
+knitr::kable(cbind(models = names(models), results_table), digits = 3)
+```
+
+We can extract a `draws` object from each model and plot the posterior distribution of the
+treatment hazard ratio.
+```{r plots, fig.height=8, fig.width=8}
+plot(density(models[[1]]$draws("HR_trt")),
+  col = 1, xlim = c(0, 2), ylim = c(0, 9), lwd = 2,
+  xlab = "HR_trt",
+  main = "Posterior Hazard Ratio"
+)
+for (i in 2:8) {
+  lines(density(models[[i]]$draws("HR_trt")), col = i, lty = i, lwd = 2)
+}
+legend("topright", col = seq_along(models), lty = seq_along(models), legend = names(models))
+```
+
+Here we see no borrowing and full borrowing at the extremes and the other methods in between.
 
 ## References

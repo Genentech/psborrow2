@@ -117,3 +117,22 @@ test_that("prepare_stan_data_inputs returns correct matrix dimensions for X", {
   expect_matrix(result2$X)
   expect_equal(dim(result2$X), c(NROW(example_matrix), 2))
 })
+
+
+test_that("prepare_stan_data_inputs works with weights", {
+  weights <- seq(1:500 / 500)
+  object <- psborrow2:::.analysis_obj(
+    data_matrix = cbind(example_matrix, w = weights),
+    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100), weight_var = "w"),
+    borrowing = borrowing_details(
+      "Full borrowing",
+      "ext"
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 1000))
+  )
+
+  result <- psborrow2:::prepare_stan_data_inputs(object)
+  expect_list(result, types = "numeric", len = 5)
+  expect_equal(names(result), c("N", "trt", "time", "cens", "weight"))
+  expect_equal(result[["weight"]], weights)
+})
