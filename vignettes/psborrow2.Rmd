@@ -1,5 +1,5 @@
 ---
-title: "Getting started with `psborrow2`"
+title: "1. Getting started with `psborrow2`"
 author: "Matt Secrest and Isaac Gravestock"
 output:
   rmarkdown::html_vignette:
