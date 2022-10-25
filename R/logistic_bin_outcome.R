@@ -71,17 +71,21 @@ logistic_bin_outcome <- function(binary_var,
   assert_string(binary_var)
   assert_string(weight_var)
   assert_class(baseline_prior, "Prior")
+  has_weight <- isTRUE(weight_var != "")
   .logistic_bin_outcome(
     binary_var = binary_var,
     baseline_prior = baseline_prior,
     weight_var = weight_var,
-    likelihood_stan_code =
-      h_glue(
-        "
-         for (i in 1:N) {
-            target += bernoulli_logit_lupmf(y[i] | lp[i]){{weight}};
-         }",
-        weight = if (weight_var != "") " * weight[i]" else ""
-      )
+    likelihood_stan_code = h_glue("
+      for (i in 1:N) {
+        target += bernoulli_logit_lupmf(y[i] | lp[i]){{weight}};
+      }",
+      weight = if (has_weight) " * weight[i]" else ""
+    ),
+    data_stan_code = h_glue("
+      array[N] int y;
+      {{weight}}",
+      weight = if (has_weight) "vector[N] weight;" else ""
+    )
   )
 }

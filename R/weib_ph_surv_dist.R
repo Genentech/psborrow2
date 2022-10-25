@@ -106,6 +106,7 @@ weib_ph_surv_dist <- function(time_var,
   assert_string(weight_var)
   assert_class(shape_prior, "Prior")
   assert_class(baseline_prior, "Prior")
+  has_weight <- isTRUE(weight_var != "")
   .weib_ph_surv_dist(
     time_var = time_var,
     cens_var = cens_var,
@@ -123,7 +124,13 @@ weib_ph_surv_dist <- function(time_var,
              target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i] ){{weight}};
           }
        }",
-      weight = if (weight_var != "") " * weight[i]" else ""
+      weight = if (has_weight) " * weight[i]" else ""
+    ),
+    data_stan_code = h_glue("
+      vector[N] time;
+      vector[N] cens;
+      {{weight}}",
+      weight = if (has_weight) "vector[N] weight;" else ""
     )
   )
 }

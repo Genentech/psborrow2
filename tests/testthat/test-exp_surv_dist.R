@@ -57,4 +57,8 @@ test_that("exp_surv_dist works with weights", {
    }
 }"
   )
+  expect_string(
+    result@data_stan_code,
+    fixed = "vector[N] time;\nvector[N] cens;\nvector[N] weight;"
+  )
 })

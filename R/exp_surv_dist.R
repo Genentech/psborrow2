@@ -75,6 +75,7 @@ exp_surv_dist <- function(time_var, cens_var, baseline_prior, weight_var = "") {
   assert_string(cens_var)
   assert_string(weight_var)
   assert_class(baseline_prior, "Prior")
+  has_weight <- isTRUE(weight_var != "")
   .exp_surv_dist(
     time_var = time_var,
     cens_var = cens_var,
@@ -90,6 +91,12 @@ exp_surv_dist <- function(time_var, cens_var, baseline_prior, weight_var = "") {
             }
          }",
         weight = if (weight_var != "") " * weight[i]" else ""
-      )
+      ),
+    data_stan_code = h_glue("
+      vector[N] time;
+      vector[N] cens;
+      {{weight}}",
+      weight = if (has_weight) "vector[N] weight;" else ""
+    )
   )
 }
