@@ -4,7 +4,7 @@
 \alias{logistic_bin_outcome}
 \title{Bernoulli distribution with logit parametrization}
 \usage{
-logistic_bin_outcome(binary_var, baseline_prior)
+logistic_bin_outcome(binary_var, baseline_prior, weight_var = "")
 }
 \arguments{
 \item{binary_var}{character. Name of binary (1/0 or TRUE/FALSE) outcome variable in the
@@ -13,6 +13,8 @@ model matrix}
 \item{baseline_prior}{\code{Prior}. Object of class \code{Prior}
 specifying prior distribution for the baseline outcome.
 See \code{Details} for more information.}
+
+\item{weight_var}{character. Optional name of variable in model matrix for weighting the log likelihood.}
 }
 \value{
 Object of class \code{\link[=LogisticBinaryOutcome-class]{LogisticBinaryOutcome}}.

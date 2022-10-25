@@ -1,7 +1,9 @@
 al
 Amzal
+ATT
 austin
 bayesplot
+BayesPPD
 BDB
 bernoulli
 binarization
@@ -19,6 +21,7 @@ consquence
 doi
 dx
 Enas
+estimands
 et
 gbm
 glm
@@ -48,7 +51,9 @@ pst
 PSweight
 RCT
 registrational
+rmarkdown
 Roychoudhury
+rstudio
 Schmidli
 simvar
 stan
@@ -56,6 +61,7 @@ Statist
 Suttner
 tabset
 tibble
+varaible
 Viele
 wang
 Xiaoyun

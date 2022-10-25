@@ -66,6 +66,7 @@
 #'
 #' @param time_var character. Name of time variable column in model matrix
 #' @param cens_var character. Name of the censorship variable flag in model matrix
+#' @param weight_var character. Optional name of variable in model matrix for weighting the log likelihood.
 #' @param shape_prior `Prior` class object for the Weibull shape
 #' parameter. Default is `exponential_prior(beta = 0.0001)`.
 #' @param baseline_prior `Prior`. Object of class `Prior`
@@ -98,17 +99,31 @@
 weib_ph_surv_dist <- function(time_var,
                               cens_var,
                               shape_prior,
-                              baseline_prior) {
+                              baseline_prior,
+                              weight_var = "") {
   assert_string(time_var)
   assert_string(cens_var)
+  assert_string(weight_var)
   assert_class(shape_prior, "Prior")
   assert_class(baseline_prior, "Prior")
   .weib_ph_surv_dist(
     time_var = time_var,
     cens_var = cens_var,
+    weight_var = weight_var,
     param_priors = list(
       shape_weibull = shape_prior
     ),
-    baseline_prior = baseline_prior
+    baseline_prior = baseline_prior,
+    likelihood_stan_code = h_glue(
+      "
+       for (i in 1:N) {
+          if (cens[i] == 1) {
+             target += weibull_ph_lccdf(time[i] | shape_weibull, elp[i] ){{weight}};
+          } else {
+             target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i] ){{weight}};
+          }
+       }",
+      weight = if (weight_var != "") " * weight[i]" else ""
+    )
   )
 }

@@ -43,4 +43,16 @@ test_that("check_data_matrix() catches errors", {
     psborrow2:::check_data_matrix_has_columns(anls_broken),
     "The following specified variables were not found in `data_matrix`:\n  time_var: time_months\n  cens_var: non_dead"
   )
+
+  anls_broken <- anls_full
+  anls_broken@outcome <- exp_surv_dist(
+    time_var = "time",
+    cens_var = "cnsr",
+    baseline_prior = normal_prior(0, 1000),
+    weight_var = "weights"
+  )
+  expect_error(
+    psborrow2:::check_data_matrix_has_columns(anls_broken),
+    "The following specified variables were not found in `data_matrix`:\n  weight_var: weights"
+  )
 })
