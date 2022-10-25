@@ -43,13 +43,6 @@ return a CmdStanMCMC object with draws."><!-- mathjax --><script src="https://cd
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/develop">develop</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -205,14 +198,14 @@ treatment effect distribution excludes the true value.</p></li>
 <span class="r-in"><span><span class="va">mcmc_results</span> <span class="op">&lt;-</span> <span class="fu">mcmc_sample</span><span class="op">(</span><span class="va">anls</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 4 sequential chains...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 25.7 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2 finished in 19.7 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 3 finished in 22.4 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 4 finished in 21.8 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 12.9 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2 finished in 12.8 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 3 finished in 16.2 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 4 finished in 14.9 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All 4 chains finished successfully.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mean chain execution time: 22.4 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Total execution time: 90.1 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean chain execution time: 14.2 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total execution time: 57.1 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Simulation objects</span></span></span>
@@ -272,28 +265,28 @@ treatment effect distribution excludes the true value.</p></li>
 <span class="r-in"><span><span class="fu">mcmc_sample</span><span class="op">(</span><span class="va">sim_object</span>, chains <span class="op">=</span> <span class="fl">1</span>, iter_warmup <span class="op">=</span> <span class="fl">500L</span>, iter_sampling <span class="op">=</span> <span class="fl">1000L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.6 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.6 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.6 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.5 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 2.5 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.4 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 3.7 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.4 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 4.4 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.4 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 3.4 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 4.5 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 3.6 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 3.0 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> `MCMCSimulationResult` object.  Call `get_results()` to save outputs as a data.frame</span>
 </code></pre></div>
     </div>
