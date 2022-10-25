@@ -5,31 +5,39 @@
 [![Version](https://img.shields.io/static/v1.svg?label=github.com/genentech&message=v.0.0.1&color=DC0073)](https://github.com/Genentech/psborrow2)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+
 <!-- badges: end -->
 
 ## Overview
 
 `psborrow2` provides an efficient framework for users to
-conduct Bayesian Dynamic Borrowing (BDB) analyses and other innovative analytical designs.<sup>1-2</sup>
- `psborrow2` has two main objectives: 
+conduct Bayesian Dynamic Borrowing (BDB) analyses and other 
+innovative analytical designs.<sup>1-2</sup>
+`psborrow2` has two main objectives:
 
-1) <b>Facilitate BDB analyses</b>. `psborrow2` has a user-friendly interface for conducting
-BDB analyses that handles the computationally-difficult MCMC sampling on behalf of the user.
+1. <b>Facilitate BDB analyses</b>. `psborrow2` has a user-friendly interface for
+conducting BDB analyses that handles the computationally-difficult MCMC sampling
+on behalf of the user.
 
-2) <b>Facilitate simulation studies of BDB</b>. `psborrow2` includes a framework to compare different trial and BDB characteristics in a unified way in simulation studies to inform trial design.
+2. <b>Facilitate simulation studies of BDB</b>. `psborrow2` includes a
+framework to compare different trial and BDB characteristics in a unified way
+in simulation studies to inform trial design.
 
 ## Background
 
 `psborrow2` is the successor to
-[`psborrow`](https://github.com/Genentech/psborrow). `psborrow` is still freely available on [`CRAN`](https://cran.r-project.org/package=psborrow) with the same validated functionality; however, the package is not actively developed. Major updates in `psborrow2` include:
+[`psborrow`](https://github.com/Genentech/psborrow). `psborrow` is still freely
+available on [`CRAN`](https://cran.r-project.org/package=psborrow) with the
+same validated functionality; however, the package is not actively developed.
+Major updates in `psborrow2` include:
 
-* New, more flexible user interface
-* New MCMC software (STAN)
-* Expanded functionality
+- New, more flexible user interface
+- New MCMC software (STAN)
+- Expanded functionality
 
-The name `psborrow` combines propensity scoring (`ps`) and Bayesian dynamic `borrow`ing. As the name
-implies, this package can be used to combine dynamic borrowing and propensity-score adjustment/weighting
-methods.
+The name `psborrow` combines propensity scoring (`ps`) and Bayesian dynamic
+`borrow`ing. As the name implies, this package can be used to combine dynamic
+borrowing and propensity-score adjustment/weighting methods.
 
 ## Installation
 
@@ -51,6 +59,11 @@ browseVignettes("psborrow2")
 
 ## Bibliography
 
-1. Lewis CJ, Sarkar S, Zhu J, Carlin BP. Borrowing from historical control data in cancer drug development: a cautionary tale and practical guidelines. Statistics in biopharmaceutical research. 2019 Jan 2;11(1):67-78.
+1. Lewis CJ, Sarkar S, Zhu J, Carlin BP. Borrowing from historical control data
+in cancer drug development: a cautionary tale and practical guidelines.
+Statistics in biopharmaceutical research. 2019 Jan 2;11(1):67-78.
 
-2. Viele K, Berry S, Neuenschwander B, Amzal B, Chen F, Enas N, Hobbs B, Ibrahim JG, Kinnersley N, Lindborg S, Micallef S. Use of historical control data for assessing treatment effects in clinical trials. Pharmaceutical statistics. 2014 Jan;13(1):41-54.
+2. Viele K, Berry S, Neuenschwander B, Amzal B, Chen F, Enas N, Hobbs B, 
+Ibrahim JG, Kinnersley N, Lindborg S, Micallef S. Use of historical control
+data for assessing treatment effects in clinical trials. Pharmaceutical 
+statistics. 2014 Jan;13(1):41-54.
