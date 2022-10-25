@@ -1,5 +1,5 @@
 ---
-title: "Specifying prior distributions"
+title: "3. Specifying prior distributions"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{3. Specifying prior distributions}
