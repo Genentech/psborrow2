@@ -103,7 +103,7 @@ test_that("create_data_matrix gives error invalid outcome", {
       outcome = "OUTCOME",
       trt_flag_col = "trt",
       ext_flag_col = "ext",
-      covariates =  "age"
+      covariates = "age"
     ),
     "Must be a subset of"
   )
@@ -113,7 +113,7 @@ test_that("create_data_matrix gives error invalid outcome", {
       outcome = NULL,
       trt_flag_col = "trt",
       ext_flag_col = "ext",
-      covariates =  "age"
+      covariates = "age"
     ),
     "Must be of type 'character'"
   )
@@ -124,7 +124,7 @@ test_that("create_data_matrix gives error invalid outcome", {
       outcome = c("age", "laser", "risk"),
       trt_flag_col = "trt",
       ext_flag_col = "ext",
-      covariates =  "age"
+      covariates = "age"
     ),
     "Must have length <= 2"
   )
@@ -139,7 +139,7 @@ test_that("create_data_matrix gives error invalid trt_flag_col", {
       outcome = c("time", "status"),
       trt_flag_col = "TREATMENT",
       ext_flag_col = "ext",
-      covariates =  "age"
+      covariates = "age"
     ),
     "Must be a subset of"
   )
@@ -154,7 +154,7 @@ test_that("create_data_matrix gives error invalid ext_flag_col", {
       outcome = c("time", "status"),
       trt_flag_col = "trt",
       ext_flag_col = "EXTERNAL",
-      covariates =  "age"
+      covariates = "age"
     ),
     "Must be a subset of"
   )
@@ -169,7 +169,7 @@ test_that("create_data_matrix gives error invalid covariates", {
       outcome = c("time", "status"),
       trt_flag_col = "trt",
       ext_flag_col = "ext",
-      covariates =  "COVARIATE"
+      covariates = "COVARIATE"
     ),
     "Must be a subset of"
   )
@@ -191,7 +191,7 @@ test_that("create_data_matrix gives error invalid covariates", {
       outcome = c("time", "status"),
       trt_flag_col = "trt",
       ext_flag_col = "ext",
-      covariates =  "~age"
+      covariates = "~age"
     ),
     "Must be a subset of"
   )
@@ -202,7 +202,7 @@ test_that("create_data_matrix gives error invalid covariates", {
       outcome = c("time", "status"),
       trt_flag_col = "trt",
       ext_flag_col = "ext",
-      covariates =  1:3
+      covariates = 1:3
     ),
     "Must inherit from class 'character'/'formula'"
   )
@@ -215,7 +215,7 @@ test_that("create_data_matrix gives error for invalid data", {
       outcome = "OUTCOME",
       trt_flag_col = "trt",
       ext_flag_col = "ext",
-      covariates =  "age"
+      covariates = "age"
     ),
     "Must be of type 'data.frame'"
   )
@@ -226,7 +226,7 @@ test_that("create_data_matrix gives error for invalid data", {
       outcome = "OUTCOME",
       trt_flag_col = "trt",
       ext_flag_col = "ext",
-      covariates =  "age"
+      covariates = "age"
     ),
     "Must be of type 'data.frame'"
   )
