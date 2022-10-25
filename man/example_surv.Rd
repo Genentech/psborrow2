@@ -22,7 +22,7 @@ example_surv
 }
 \description{
 A data frame containing simulated data from a clinical trial
-with a treatment arm (n=200)and a control arm (n=158), as well as data
+with a treatment arm (n=200) and a control arm (n=158), as well as data
 from an external control (n=242).
 }
 \keyword{datasets}
