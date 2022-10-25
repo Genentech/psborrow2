@@ -6,23 +6,22 @@
 #                                                          #
 ############################################################
 
-# The goal of this demo is to conduct a
-# Bayesian Dynamic Borrowing (BDB) analysis on a custom dataset
+# The goal of this demo is to conduct a Bayesian Dynamic Borrowing
+# (BDB) analysis on a dataset
 
-# load dependancies----
-# psborrow2
+# Load packages ----
 library(psborrow2)
 
-# survival analysis
+# Survival analysis
 library(survival)
 library(survminer)
 library(flexsurv)
 
-# additional tools for draws objects
+# Additional tools for draws objects
 library(bayesplot)
 library(posterior)
 
-# comparing populations
+# Comparing populations
 library(table1)
 
 ############################################################
@@ -33,31 +32,31 @@ library(table1)
 head(example_matrix)
 ?example_matrix # true HR = 0.70 for trt = 1 vs trt = 0
 
-# load as data.frame for some functions
+# Load as data.frame for some functions
 example_dataframe <- as.data.frame(example_matrix)
 
-# look at distribution of arms
+# Look at distribution of arms
 table(ext = example_matrix[, "ext"], trt = example_matrix[, "trt"])
 
 ############################################################
 # Naive internal comparisons ----
 ############################################################
 
-# kaplan-meier curves
+# Kaplan-Meier curves
 km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt + ext,
   data = example_dataframe
 )
 
-ggsurvplot(km_fit) # the internal and external control arms look quite different
+ggsurvplot(km_fit) # The internal and external control arms look quite different
 
-## cox model
+## Cox model
 cox_fit <- coxph(Surv(time = time, event = 1 - cnsr) ~ trt,
   data = example_dataframe,
   subset = ext == 0
 )
 
 cox_fit
-exp(confint(cox_fit)) # the internal HR is 0.90 (95% CI 0.61 - 1.32)
+exp(confint(cox_fit)) # The internal HR is 0.90 (95% CI 0.61 - 1.32)
 
 ############################################################
 # Hybrid control analysis----
@@ -67,13 +66,14 @@ exp(confint(cox_fit)) # the internal HR is 0.90 (95% CI 0.61 - 1.32)
 # borrow data from the external control arm which we know
 # experiences worse survival.
 
-# the end goal is to create an Analysis object with:
+# The end goal is to create an Analysis object with:
 ?create_analysis_obj
 
 ############################################################
 # A note on prior distributions ----
 ############################################################
-# psborrow2 allows the user to specify priors with the below constructors:
+# psborrow2 allows the user to specify priors with the following
+# functions:
 ?bernoulli_prior
 ?beta_prior
 ?cauchy_prior
@@ -83,7 +83,7 @@ exp(confint(cox_fit)) # the internal HR is 0.90 (95% CI 0.61 - 1.32)
 ?poisson_prior
 ?uniform_prior
 
-# prior distributions can be plotted with the plot() method
+# Prior distributions can be plotted with the plot() method
 plot(normal_prior(0, 1), xlim = c(-100, 100), ylim = c(0, 1))
 plot(normal_prior(0, 10), xlim = c(-100, 100), ylim = c(0, 1))
 plot(normal_prior(0, 10000), xlim = c(-100, 100), ylim = c(0, 1))
@@ -97,7 +97,7 @@ plot(normal_prior(0, 10000), xlim = c(-100, 100), ylim = c(0, 1))
 ?weib_ph_surv_dist
 ?logistic_bin_outcome
 
-# create an exponential survival distribution Outcome object
+# Create an exponential survival distribution Outcome object
 exp_outcome <- exp_surv_dist(
   time_var = "time",
   cens_var = "cnsr",
@@ -147,7 +147,7 @@ analysis_object
 # MCMC sampling----
 ############################################################
 
-# conduct MCMC sampling with:
+# Conduct MCMC sampling with:
 ?mcmc_sample
 
 results <- mcmc_sample(
@@ -165,29 +165,29 @@ results
 # Interpret results ----
 ############################################################
 
-# dictionary to interpret parameters
+# Dictionary to interpret parameters
 variable_dictionary(analysis_object)
 
-# create draws object
+# Create draws object
 draws <- results$draws()
 
-# rename draws object parameters
+# Rename draws object parameters
 draws <- rename_draws_covariates(draws, analysis_object)
 
-# get 95% credible intervals with posterior package
+# Get 95% credible intervals with posterior package
 posterior::summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
 
-# look at histogram of draws with bayesplot package
+# Look at histogram of draws with bayesplot package
 bayesplot::mcmc_hist(draws, c("treatment HR"))
 
-# Our model not borrow much from the external arm!
-# This is the desired outcome given how different the controlm arms were.
+# Our model does not borrow much from the external arm!
+# This is the desired outcome given how different the control arms were.
 
 ############################################################
 # Control arm imbalances ----
 ############################################################
 
-# balance between arms
+# Check balance between arms
 table1(
   ~ cov1 + cov2 + cov3 + cov4 |
     factor(ext, labels = c("Internal RCT", "External data")) +
@@ -198,7 +198,7 @@ table1(
 ## Because the imbalance may be conditional on observed covariates,
 ## let's adjust for propensity scores in our analysis
 
-# create a propensity score model
+# Create a propensity score model
 ps_model <- glm(ext ~ cov1 + cov2 + cov3 + cov4,
   data = example_dataframe,
   family = binomial
@@ -215,7 +215,7 @@ levels(example_dataframe$ps_cat_) <- c(
   "low_med", "high_med", "high"
 )
 
-## cast back to matrix with psborrow2::create_data_matrix()
+## Convert the data back to a matrix with dummy variables for `ps_cat_` levels
 example_matrix_ps <- create_data_matrix(
   example_dataframe,
   outcome = c("time", "cnsr"),

@@ -9,21 +9,20 @@
 # The goal of this demo is to: simulate the impact of
 # a BDB study on trial design
 
-# load dependancies----
-# psborrow2
+# Load packages ----
 library(psborrow2)
 
-# survival analysis
+# Survival analysis
 library(survival)
 library(survminer)
 
-# plotting
+# Plotting
 library(ggplot2)
 
-# simulating survival data
+# Simulating survival data
 library(simsurv)
 
-# summarizing results
+# Summarizing results
 library(broom)
 
 ############################################################
@@ -48,36 +47,36 @@ library(broom)
 # on behalf of the user. Therefore, we need to create a function
 # that will simulate data for a single matrix.
 
-# function to create a single matrix
+# Function to create a single matrix
 sim_single_matrix <- function(n = 500, # n simulated pts
-                              prob = c(
+                              prop = c(
                                 0.1, # proportion internal control
                                 0.2, # proportion internal treated
-                                0.7
-                              ), # proportion external control
+                                0.7 # proportion external control
+                              ),
                               hr = 0.70, # true HR for the treatment
                               inherent_drift_hr = 1.0 # HR of external/internal
 ) {
-  # checks
-  if (sum(prob) != 1.0) {
-    stop("prob must sum to 1")
+  # Checks
+  if (!all.equal(sum(prop), 1)) {
+    stop("prop must sum to 1")
   }
 
-  # data frame with the subject IDs and treatment group
+  # Data frame with the subject IDs and treatment group
   df_ids <- data.frame(
     id = 1:n,
     ext = c(
-      rep(0L, n * (prob[1] + prob[2])),
-      rep(1L, n * prob[3])
+      rep(0L, n * (prop[1] + prop[2])),
+      rep(1L, n * prop[3])
     ),
     trt = c(
-      rep(0L, n * prob[1]),
-      rep(1L, n * prob[2]),
-      rep(0L, n * prob[3])
+      rep(0L, n * prop[1]),
+      rep(1L, n * prop[2]),
+      rep(0L, n * prop[3])
     )
   )
 
-  # simulated event times
+  # Simulated event times
   df_surv <- simsurv(
     lambdas = 0.1,
     dist = "exponential",
@@ -91,14 +90,14 @@ sim_single_matrix <- function(n = 500, # n simulated pts
 
   df_surv$censor <- 1 - df_surv$status
 
-  # merge the simulated event times into data frame
+  # Merge the simulated event times into data frame
   df <- merge(df_ids, df_surv)
   df <- df[, c("id", "ext", "trt", "eventtime", "status", "censor")]
   colnames(df) <- c("id", "ext", "trt", "time", "status", "cnsr")
   return(as.matrix(df))
 }
 
-# confirm we get a single matrix
+# Confirm we get a single matrix
 sim_single_matrix()
 
 ############################################################
@@ -148,7 +147,7 @@ my_data_list <- list(
   )
 )
 
-# confirm we have a list of lists of matrices
+# Confirm we have a list of lists of matrices
 NROW(my_data_list)
 NROW(my_data_list[[1]])
 head(my_data_list[[1]][[1]])
@@ -193,10 +192,10 @@ my_sim_data_list
 
 # For this example, let's assume we're mostly interested
 # in comparing four different borrowing scenarios:
-## No borrowing
-## BDB with a conservative hyperprior
-## BDB with an aggressive hyperprior
-## Full borrowing
+#  - No borrowing
+#  - BDB with a conservative hyperprior
+#  - BDB with an aggressive hyperprior
+#  - Full borrowing
 # We can specify these different scenarios with:
 ?sim_borrowing_list
 
@@ -230,10 +229,12 @@ simulation_obj
 # MCMC sampling----
 ############################################################
 
+# Sample from all the simulation models.
+# Notes: this may take some a few minutes.
 simulation_res <- mcmc_sample(
   x = simulation_obj,
-  iter_warmup = 500,
-  iter_sampling = 250,
+  iter_warmup = 500, # A small number of samples is used
+  iter_sampling = 250, # for this demonstration.
   chains = 1
 )
 
@@ -243,7 +244,7 @@ simulation_res_df <- get_results(simulation_res)
 # Plot results----
 ############################################################
 
-# factorize borrowing scenario
+# Set order of Borrowing Scenario labels for plot
 simulation_res_df$borrowing_scenario <- factor(simulation_res_df$borrowing_scenario,
   levels = c(
     "No borrowing",
