@@ -60,7 +60,7 @@ Suggests:
     BayesPPD,
     gbm,
     ggplot2,
-    cobalt
+    cobalt,
     table1,
     gt,
     gtsummary

@@ -106,7 +106,7 @@ weights with a number of different methods, such as generalized boosted modeling
 In addition, weights can be calculated differently for different estimands. Here, we specifying
 `estimand = "ATT"`, to calculate weights for estimating the average treatment effect among the treated (ATT).
 
-```{r psweight}
+```{r WeightIt}
 library(WeightIt)
 
 weightit_model <- weightit(
@@ -123,7 +123,7 @@ assessing balance between groups after weighting or matching. It is compatible w
 See the [vignette](https://cran.r-project.org/web/packages/cobalt/vignettes/cobalt.html) for more details.
 We can use the `cobalt` package to assess balance with `bal.plot()`.
 
-```{r}
+```{r balplot}
 library(cobalt)
 bal.plot(weightit_model)
 ```
