@@ -26,6 +26,10 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/pkgdown.yaml@main
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      additional-env-vars: |
+        CMDSTAN=/root/.cmdstan
+        CMDSTAN_PATH=/root/.cmdstan
   release:
     name: Create release 🎉
     uses: insightsengineering/r.pkg.template/.github/workflows/release.yaml@main

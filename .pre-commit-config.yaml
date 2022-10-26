@@ -40,7 +40,8 @@ repos:
           .*\.Rds|
           .*\.sh|
           .*\.svg|
-          .*\.RData
+          .*\.RData|
+          man/figures/.*
           )$
       - id: lintr
       - id: readme-rmd-rendered
