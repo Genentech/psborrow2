@@ -60,13 +60,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/develop">develop</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -92,8 +85,8 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>4. Conduct a simulation study</h1>
-                        <h4 data-toc-skip class="author">Matt Secrest,
-Yichen Lu, Isaac Gravestock</h4>
+                        <h4 data-toc-skip class="author">Matt Secrest
+and Isaac Gravestock</h4>
             
       
       
@@ -129,818 +122,145 @@ one-by-one below:</p>
 </h3>
 <p><code>data_matrix_list</code> is where you input the data you will be
 using for the simulation study using the function
-<code><a href="../reference/sim_data_list.html">sim_data_list()</a></code>. Let’s simulate some data together for the
-sake of example. We’ll use the <code>simsurv</code> package to generate
-survival data under three scenarios: a true hazard ratio (HR) for the
-treatment effect of 0.6, 0.8, and 1.0. Similarly we’ll look at three
-drift HR scenarios: 0.5, 1.0, and 1.5.</p>
-<div class="section level4">
-<h4 id="data_list">
+<code><a href="../reference/sim_data_list.html">sim_data_list()</a></code>.</p>
+<p>The first argument is a list of lists of matrices. At the highest
+level, we’ll index different data generation parameters. At the lowest
+level, we’ll index different matrices generated with these
+parameters.</p>
+</div>
+<div class="section level3">
+<h3 id="data_list">
 <code>data_list</code><a class="anchor" aria-label="anchor" href="#data_list"></a>
-</h4>
-<p>Looking at the arguments to <code><a href="../reference/sim_data_list.html">sim_data_list()</a></code>, the first
-argument, <code>data_list</code> requires a list of lists of matrices.
-Each list of matrices should represent a different data generation
-scenario, such as our difference true HR. Therefore, let’s create an
-object <code>data_list</code> that is considers all combinations of true
-HRs of 0.6, 0.8, and 1.0 and drift HRs of 0.5, 1.0, and 1.5. That gives
-us 9 total scenarios, and we’ll simulate 20 datasets within each
-scenario.</p>
+</h3>
+<p><b>Figure 1</b> below depicts an example <code>data_list</code>
+object. This object is a list of lists with two data generation
+scenarios (e.g., true HR of 1.0 and true HR of 0.8). Each scenario is
+arranged as a list of matrices that were generated according to that
+data generation scenario.</p>
+<center>
+<div class="figure">
+<img src="data_list.jpg" style="width:80.0%" alt=""><p class="caption">Figure 1</p>
+</div>
+</center>
+<p>We’ll use the <code>simsurv</code> package to generate survival data
+and we’ll then put it in a similar format. In this example, we’ll vary
+two data generation parameters: true HR and drift HR (the HR comparing
+external to internal controls). Suppose we have a function,
+<code>sim_single_matrix()</code> which can simulate data for a single
+matrix.</p>
+<p>That is:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">simsurv</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
+<span><span class="co"># function to create a single matrix</span></span>
+<span><span class="va">sim_single_matrix</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">500</span>, <span class="co"># n simulated pts</span></span>
+<span>                              <span class="va">prob</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>                                <span class="fl">0.1</span>, <span class="co"># proportion internal control</span></span>
+<span>                                <span class="fl">0.2</span>, <span class="co"># proportion internal treated</span></span>
+<span>                                <span class="fl">0.7</span></span>
+<span>                              <span class="op">)</span>, <span class="co"># proportion external control</span></span>
+<span>                              <span class="va">hr</span> <span class="op">=</span> <span class="fl">0.70</span>, <span class="co"># true HR for the treatment</span></span>
+<span>                              <span class="va">drift_hr</span> <span class="op">=</span> <span class="fl">1.0</span> <span class="co"># HR of external/internal</span></span>
+<span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># checks</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">prob</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"prob must sum to 1"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
 <span></span>
-<span><span class="co"># Simulate a single matrix</span></span>
-<span><span class="va">sim_single_matrix</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">true_hr</span> <span class="op">=</span> <span class="fl">0.6</span>,</span>
-<span>                              <span class="va">drift_hr</span> <span class="op">=</span> <span class="fl">1.0</span>,</span>
-<span>                              <span class="va">n</span> <span class="op">=</span> <span class="fl">600</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="co"># Create a data frame with the subject IDs and treatment covariate</span></span>
-<span>  <span class="va">cov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="co"># data frame with the subject IDs and treatment group</span></span>
+<span>  <span class="va">df_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span>,</span>
-<span>    trt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span></span>
+<span>    ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="va">n</span> <span class="op">*</span> <span class="op">(</span><span class="va">prob</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">prob</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="va">n</span> <span class="op">*</span> <span class="va">prob</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    trt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="va">n</span> <span class="op">*</span> <span class="va">prob</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="va">n</span> <span class="op">*</span> <span class="va">prob</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="va">n</span> <span class="op">*</span> <span class="va">prob</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span>  <span class="va">cov</span><span class="op">$</span><span class="va">ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">cov</span><span class="op">$</span><span class="va">trt</span> <span class="op">==</span> <span class="fl">1L</span>, <span class="fl">0L</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">cov</span><span class="op">$</span><span class="va">trt</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="co"># Simulate the event times</span></span>
-<span>  <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/simsurv/man/simsurv.html" class="external-link">simsurv</a></span><span class="op">(</span></span>
+<span>  <span class="co"># simulated event times</span></span>
+<span>  <span class="va">df_surv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/simsurv/man/simsurv.html" class="external-link">simsurv</a></span><span class="op">(</span></span>
 <span>    lambdas <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>    gammas <span class="op">=</span> <span class="fl">1.5</span>,</span>
+<span>    dist <span class="op">=</span> <span class="st">"exponential"</span>,</span>
 <span>    betas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>      trt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">true_hr</span><span class="op">)</span>,</span>
+<span>      trt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">hr</span><span class="op">)</span>,</span>
 <span>      ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">drift_hr</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    x <span class="op">=</span> <span class="va">cov</span>,</span>
-<span>    maxt <span class="op">=</span> <span class="fl">5</span></span>
+<span>    x <span class="op">=</span> <span class="va">df_ids</span>,</span>
+<span>    maxt <span class="op">=</span> <span class="fl">50</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span>  <span class="va">dat</span><span class="op">$</span><span class="va">censor</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">dat</span><span class="op">$</span><span class="va">status</span></span>
+<span>  <span class="va">df_surv</span><span class="op">$</span><span class="va">censor</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">df_surv</span><span class="op">$</span><span class="va">status</span></span>
 <span></span>
-<span>  <span class="co"># Merge the simulated event times onto covariate data frame</span></span>
-<span>  <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">cov</span>, <span class="va">dat</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="co"># Set seed</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">112233</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Create data list</span></span>
-<span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">sim_single_matrix</span><span class="op">(</span>true_hr <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">sim_single_matrix</span><span class="op">(</span>true_hr <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">sim_single_matrix</span><span class="op">(</span>true_hr <span class="op">=</span> <span class="fl">1.0</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">sim_single_matrix</span><span class="op">(</span>true_hr <span class="op">=</span> <span class="fl">0.6</span>, drift_hr <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">sim_single_matrix</span><span class="op">(</span>true_hr <span class="op">=</span> <span class="fl">0.8</span>, drift_hr <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">sim_single_matrix</span><span class="op">(</span>true_hr <span class="op">=</span> <span class="fl">1.0</span>, drift_hr <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">sim_single_matrix</span><span class="op">(</span>true_hr <span class="op">=</span> <span class="fl">0.6</span>, drift_hr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">sim_single_matrix</span><span class="op">(</span>true_hr <span class="op">=</span> <span class="fl">0.8</span>, drift_hr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">sim_single_matrix</span><span class="op">(</span>true_hr <span class="op">=</span> <span class="fl">1.0</span>, drift_hr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p>As you can see, <code>data_list</code> is a list of list of matrices,
-the correct format for inputting into <code><a href="../reference/sim_data_list.html">sim_data_list()</a></code>:</p>
+<span>  <span class="co"># merge the simulated event times into data frame</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">df_ids</span>, <span class="va">df_surv</span><span class="op">)</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"ext"</span>, <span class="st">"trt"</span>, <span class="st">"eventtime"</span>, <span class="st">"status"</span>, <span class="st">"censor"</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"ext"</span>, <span class="st">"trt"</span>, <span class="st">"time"</span>, <span class="st">"status"</span>, <span class="st">"cnsr"</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">data_list</span><span class="op">)</span></span>
-<span><span class="co"># List of 9</span></span>
-<span><span class="co">#  $ :List of 20</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#  $ :List of 20</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#  $ :List of 20</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#  $ :List of 20</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#  $ :List of 20</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#  $ :List of 20</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#  $ :List of 20</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#  $ :List of 20</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#  $ :List of 20</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span>
-<span><span class="co">#   ..$ : num [1:600, 1:6] 1 2 3 4 5 6 7 8 9 10 ...</span></span>
-<span><span class="co">#   .. ..- attr(*, "dimnames")=List of 2</span></span>
-<span><span class="co">#   .. .. ..$ : NULL</span></span>
-<span><span class="co">#   .. .. ..$ : chr [1:6] "id" "trt" "ext" "eventtime" ...</span></span></code></pre></div>
-<p>At the lowest level are matrices of simulated data:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">sim_single_matrix</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span>, hr <span class="op">=</span> <span class="fl">0.5</span>, drift_hr <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#      id ext trt      time status cnsr</span></span>
+<span><span class="co"># [1,]  1   0   0  3.550602      1    0</span></span>
+<span><span class="co"># [2,]  2   0   0  8.510682      1    0</span></span>
+<span><span class="co"># [3,]  3   0   0  3.447213      1    0</span></span>
+<span><span class="co"># [4,]  4   0   0 50.000000      0    1</span></span>
+<span><span class="co"># [5,]  5   0   0 18.252211      1    0</span></span>
+<span><span class="co"># [6,]  6   0   0  5.829403      1    0</span></span></code></pre></div>
+<p>Using this function, let’s simulate a list of lists of matrices with
+four scenarios:</p>
+<ul>
+<li>True HR = 0.6, drift HR = 1.0</li>
+<li>True HR = 1.0, drift HR = 1.0</li>
+<li>True HR = 0.6, drift HR = 1.5</li>
+<li>True HR = 1.0, drift HR = 1.5</li>
+</ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#      id trt ext eventtime status censor</span></span>
-<span><span class="co"># [1,]  1   1   0  3.006226      1      0</span></span>
-<span><span class="co"># [2,]  2   1   0  5.000000      0      1</span></span>
-<span><span class="co"># [3,]  3   0   1  1.112636      1      0</span></span>
-<span><span class="co"># [4,]  4   0   0  5.000000      0      1</span></span>
-<span><span class="co"># [5,]  5   1   0  3.906986      1      0</span></span>
-<span><span class="co"># [6,]  6   0   1  5.000000      0      1</span></span></code></pre></div>
-</div>
+<code class="sourceCode R"><span><span class="co"># Seed for reproducibility</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Number of simulations per scenario</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span></span>
+<span><span class="co"># Create list of lists of data</span></span>
+<span><span class="va">my_data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">n</span>,</span>
+<span>    <span class="fu">sim_single_matrix</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">250</span>, hr <span class="op">=</span> <span class="fl">0.6</span>, drift_hr <span class="op">=</span> <span class="fl">1.0</span><span class="op">)</span>,</span>
+<span>    simplify <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">n</span>,</span>
+<span>    <span class="fu">sim_single_matrix</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">250</span>, hr <span class="op">=</span> <span class="fl">1.0</span>, drift_hr <span class="op">=</span> <span class="fl">1.0</span><span class="op">)</span>,</span>
+<span>    simplify <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">n</span>,</span>
+<span>    <span class="fu">sim_single_matrix</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">250</span>, hr <span class="op">=</span> <span class="fl">0.6</span>, drift_hr <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span>,</span>
+<span>    simplify <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="va">n</span>,</span>
+<span>    <span class="fu">sim_single_matrix</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">250</span>, hr <span class="op">=</span> <span class="fl">1.0</span>, drift_hr <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span>,</span>
+<span>    simplify <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>There are 4 scenarios.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NROW</a></span><span class="op">(</span><span class="va">my_data_list</span><span class="op">)</span></span>
+<span><span class="co"># [1] 4</span></span></code></pre></div>
+<p>Each scenario has 100 matrices.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NROW</a></span><span class="op">(</span><span class="va">my_data_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co"># [1] 100</span></span></code></pre></div>
+<p>The lowest level of the list of lists is a data matrix.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">my_data_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#      id ext trt      time status cnsr</span></span>
+<span><span class="co"># [1,]  1   0   0  8.179722      1    0</span></span>
+<span><span class="co"># [2,]  2   0   0  6.884286      1    0</span></span>
+<span><span class="co"># [3,]  3   0   0  2.348331      1    0</span></span>
+<span><span class="co"># [4,]  4   0   0 17.898011      1    0</span></span>
+<span><span class="co"># [5,]  5   0   0  3.870353      1    0</span></span>
+<span><span class="co"># [6,]  6   0   0  6.795403      1    0</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="guide">
 <code>guide</code><a class="anchor" aria-label="anchor" href="#guide"></a>
@@ -960,31 +280,24 @@ internal control arm.</li>
 <li>The name of a column that indexes the <code>data_list</code>
 </li>
 </ul>
-<p>We varied the true HR so that it took three values: 0.6, 0.8, and
-1.0. We also varied the drift HR so it took three values: 0.5, 1.0, and
-1.5. Our guide should therefore be nine rows to represent the nine
-scenarios. We pass <code>c(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L)</code>
-onto <code>index</code> to clarify that <code>data_list[[1L]]</code>
-corresponds to the settings in the first row,
-<code>data_list[[2L]]</code> to the second row, and so on.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">guide</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  trueHR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="fl">1.0</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>  driftHR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.5</span>, <span class="fl">0.5</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span>  index <span class="op">=</span> <span class="fl">1L</span><span class="op">:</span><span class="fl">9L</span></span>
+<p>In this example, the 4 scenarios are summarized with the below
+<code>guide</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_sim_data_guide</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
+<span>  true_hr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">1.0</span><span class="op">)</span>,</span>
+<span>  drift_hr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"No drift HR"</span>, <span class="st">"Moderate drift HR"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">guide</span></span>
-<span><span class="co">#   trueHR driftHR index</span></span>
-<span><span class="co"># 1    0.6     1.0     1</span></span>
-<span><span class="co"># 2    0.8     1.0     2</span></span>
-<span><span class="co"># 3    1.0     1.0     3</span></span>
-<span><span class="co"># 4    0.6     1.5     4</span></span>
-<span><span class="co"># 5    0.8     1.5     5</span></span>
-<span><span class="co"># 6    1.0     1.5     6</span></span>
-<span><span class="co"># 7    0.6     0.5     7</span></span>
-<span><span class="co"># 8    0.8     0.5     8</span></span>
-<span><span class="co"># 9    1.0     0.5     9</span></span></code></pre></div>
+<span><span class="va">my_sim_data_guide</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NROW</a></span><span class="op">(</span><span class="va">my_sim_data_guide</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_sim_data_guide</span></span>
+<span><span class="co">#   true_hr          drift_hr id</span></span>
+<span><span class="co"># 1     0.6       No drift HR  1</span></span>
+<span><span class="co"># 2     1.0       No drift HR  2</span></span>
+<span><span class="co"># 3     0.6 Moderate drift HR  3</span></span>
+<span><span class="co"># 4     1.0 Moderate drift HR  4</span></span></code></pre></div>
+<p>This guide implies that <code>my_sim_data_guide[[1]]</code> is a list
+of matrices where the treatment HR was 0.6 and the drift HR was 1.0.</p>
 </div>
 <div class="section level4">
 <h4 id="effect-drift-and-index">
@@ -994,31 +307,26 @@ corresponds to the settings in the first row,
 <code>effect</code>, <code>drift</code>, and <code>index</code> are the
 column names in <code>guide</code> that correspond to the true treatment
 effect, true drift effect, and index of the <code>data_list</code>
-items, respectively. For our study, these are <code>"trueHR"</code>,
-<code>"driftHR"</code>, and <code>"index"</code>.</p>
+items, respectively. For our study, these are <code>"true_hr"</code>,
+<code>"drift_hr"</code>, and <code>"id"</code>.</p>
 <p>Putting it all together, we can create an object of class
 <code>SimDataList</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sdl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_data_list.html">sim_data_list</a></span><span class="op">(</span></span>
-<span>  <span class="va">data_list</span>,</span>
-<span>  <span class="va">guide</span>,</span>
-<span>  <span class="st">"trueHR"</span>,</span>
-<span>  <span class="st">"driftHR"</span>,</span>
-<span>  <span class="st">"index"</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_sim_data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_data_list.html">sim_data_list</a></span><span class="op">(</span></span>
+<span>  data_list <span class="op">=</span> <span class="va">my_data_list</span>,</span>
+<span>  guide <span class="op">=</span> <span class="va">my_sim_data_guide</span>,</span>
+<span>  effect <span class="op">=</span> <span class="st">"true_hr"</span>,</span>
+<span>  drift <span class="op">=</span> <span class="st">"drift_hr"</span>,</span>
+<span>  index <span class="op">=</span> <span class="st">"id"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">sdl</span></span>
-<span><span class="co"># SimDataList object with  9  different scenarios</span></span>
-<span><span class="co">#   trueHR driftHR index n_datasets_per_param</span></span>
-<span><span class="co"># 1    0.6     1.0     1                   20</span></span>
-<span><span class="co"># 2    0.8     1.0     2                   20</span></span>
-<span><span class="co"># 3    1.0     1.0     3                   20</span></span>
-<span><span class="co"># 4    0.6     1.5     4                   20</span></span>
-<span><span class="co"># 5    0.8     1.5     5                   20</span></span>
-<span><span class="co"># 6    1.0     1.5     6                   20</span></span>
-<span><span class="co"># 7    0.6     0.5     7                   20</span></span>
-<span><span class="co"># 8    0.8     0.5     8                   20</span></span>
-<span><span class="co"># 9    1.0     0.5     9                   20</span></span></code></pre></div>
+<span><span class="va">my_sim_data_list</span></span>
+<span><span class="co"># SimDataList object with  4  different scenarios</span></span>
+<span><span class="co">#   true_hr          drift_hr id n_datasets_per_param</span></span>
+<span><span class="co"># 1     0.6       No drift HR  1                  100</span></span>
+<span><span class="co"># 2     1.0       No drift HR  2                  100</span></span>
+<span><span class="co"># 3     0.6 Moderate drift HR  3                  100</span></span>
+<span><span class="co"># 4     1.0 Moderate drift HR  4                  100</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -1031,18 +339,19 @@ outcomes. You can pass either a single <code>Outcome</code> class object
 <code>Outcome</code> class objects passed to
 <code><a href="../reference/sim_outcome_list.html">sim_outcome_list()</a></code>. For our example, let’s just use a
 single exponential distribution.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span></span>
-<span>  time_var <span class="op">=</span> <span class="st">"eventtime"</span>,</span>
-<span>  cens_var <span class="op">=</span> <span class="st">"censor"</span>,</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_sim_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span></span>
+<span>  time_var <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  cens_var <span class="op">=</span> <span class="st">"cnsr"</span>,</span>
 <span>  baseline_prior <span class="op">=</span> <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">out</span></span>
+<span></span>
+<span><span class="va">my_sim_out</span></span>
 <span><span class="co"># Outcome object with class ExponentialSurvDist </span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># Outcome variables:</span></span>
-<span><span class="co">#    time_var    cens_var </span></span>
-<span><span class="co"># "eventtime"    "censor" </span></span>
+<span><span class="co"># time_var cens_var </span></span>
+<span><span class="co">#   "time"   "cnsr" </span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># Baseline prior:</span></span>
 <span><span class="co"># Normal Distribution</span></span>
@@ -1059,28 +368,34 @@ single exponential distribution.</p>
 borrowing we want to evaluate. This can be either a single object of
 class <code>Borrowing</code> or a list of objects created with
 <code><a href="../reference/sim_borrowing_list.html">sim_borrowing_list()</a></code>. For the sake of example, let’s assume
-we are interested in comparing three borrowing scenarios:</p>
+we are interested in comparing four borrowing scenarios:</p>
 <ul>
 <li>No borrowing</li>
-<li>BDB, conservative prior</li>
-<li>BDB, aggressive prior</li>
+<li>BDB, conservative hyperprior</li>
+<li>BDB, aggressive hyperprior</li>
+<li>Full borrowing</li>
 </ul>
-<p>We will create a borrowing list with
+<p>How do we specify that we want to evaluate multiple borrowing
+methods? We’ll use a special list of <code>Borrowing</code> objects,
+which we’ll create through the function
 <code><a href="../reference/sim_borrowing_list.html">sim_borrowing_list()</a></code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_borrowing_list.html">sim_borrowing_list</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_borrowing_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_borrowing_list.html">sim_borrowing_list</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    <span class="st">"No borrowing"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"No borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
-<span>    <span class="st">"BDB, conservative prior"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="st">"BDB, aggressive prior"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">1.000</span>, <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="st">"Full borrowing"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
+<span>    <span class="st">"BDB - conservative"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="st">"BDB - aggressive"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">sbl</span></span>
-<span><span class="co"># SimBorrowingList object with  3  different scenario(s)</span></span>
-<span><span class="co">#        borrowing_scenario</span></span>
-<span><span class="co"># 1            No borrowing</span></span>
-<span><span class="co"># 2 BDB, conservative prior</span></span>
-<span><span class="co"># 3   BDB, aggressive prior</span></span></code></pre></div>
+<span></span>
+<span><span class="va">my_borrowing_list</span></span>
+<span><span class="co"># SimBorrowingList object with  4  different scenario(s)</span></span>
+<span><span class="co">#   borrowing_scenario</span></span>
+<span><span class="co"># 1       No borrowing</span></span>
+<span><span class="co"># 2     Full borrowing</span></span>
+<span><span class="co"># 3 BDB - conservative</span></span>
+<span><span class="co"># 4   BDB - aggressive</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="covariate">
@@ -1088,7 +403,7 @@ we are interested in comparing three borrowing scenarios:</p>
 </h3>
 <p><code>covariate</code> is for information on covariate adjustment
 details. This can be a single instance of class <code>Covariates</code>
-(from <code><a href="../reference/add_covariates.html">add_covariates()</a></code> or a list of <code>Covariates</code>
+from <code><a href="../reference/add_covariates.html">add_covariates()</a></code> or a list of <code>Covariates</code>
 objects created by <code><a href="../reference/sim_covariate_list.html">sim_covariate_list()</a></code> . This is also the
 only argument that is not required in
 <code>create_simulation_obj</code>. Let’s leave this argument empty
@@ -1100,11 +415,23 @@ only argument that is not required in
 </h3>
 <p><code>treatment</code> is where we input the treatment details for
 our simulation study. As with other inputs, this can be a single
-instance of a class (<code>Treatment</code>), or a list of these
-classes, created with <code><a href="../reference/sim_treatment_list.html">sim_treatment_list()</a></code>. Let’s just use
-a single instance:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">txd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+instance of a class <code>Treatment</code>, or a list of these classes,
+created with <code><a href="../reference/sim_treatment_list.html">sim_treatment_list()</a></code>. Let’s just use a single
+instance:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_sim_treat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_sim_treat</span></span>
+<span><span class="co"># Treatment object</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># Treatment flag column: trt </span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># Treatment effect prior:</span></span>
+<span><span class="co"># Normal Distribution</span></span>
+<span><span class="co"># Parameters:</span></span>
+<span><span class="co">#  Stan  R    Value</span></span>
+<span><span class="co">#  mu    mean    0 </span></span>
+<span><span class="co">#  sigma sd   1000</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="create_simulation_obj">
@@ -1117,98 +444,69 @@ will generate and compile Stan models ready to sample on our behalf.</p>
 simulate the Cartesian product of all unique list elements in
 <code>data_matrix_list</code>, <code>outcome</code>,
 <code>borrowing</code>, <code>covariate</code>, and
-<code>treatment</code>. <code>data_matrix_list</code> contains nine
-different study parameters and therefore contains a list of length nine.
-<code>borrowing</code> has three scenarios and is a list of length
-three. The rest contain just one input (or 0 for <code>covariate</code>,
-which is equivalent to one scenario). This means we should expect <span class="math inline">\(9 \times 3 = 27\)</span> combinations of
-parameters. Let’s create a simulation object of class
-<code>Simulation</code>:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sim_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_simulation_obj.html">create_simulation_obj</a></span><span class="op">(</span></span>
-<span>  data_matrix_list <span class="op">=</span> <span class="va">sdl</span>,</span>
-<span>  outcome <span class="op">=</span> <span class="va">out</span>,</span>
-<span>  borrowing <span class="op">=</span> <span class="va">sbl</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="va">txd</span></span>
+<code>treatment</code>. We have 4 data generation scenarios and 4
+borrowing scenarios. The other inputs just have one scenario (or 0 for
+<code>covariate</code>, which is equivalent to one scenario). This means
+we should expect 4 <span class="math inline">\(\times\)</span> 4 <span class="math inline">\(=\)</span> 16 combinations of parameters. Let’s
+create a simulation object of class <code>Simulation</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">simulation_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_simulation_obj.html">create_simulation_obj</a></span><span class="op">(</span></span>
+<span>  <span class="va">my_sim_data_list</span>,</span>
+<span>  outcome <span class="op">=</span> <span class="va">my_sim_out</span>,</span>
+<span>  borrowing <span class="op">=</span> <span class="va">my_borrowing_list</span>,</span>
+<span>  treatment <span class="op">=</span> <span class="va">my_sim_treat</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">sim_obj</span></span>
-<span><span class="co"># Simulation object with  27  combinations and  540  analyses ready to sample.  This is a lot of combinations/analyses! Consider breaking the  study into different simulation objects. Or if you  prefer to use these combinations, call `mcmc_sample()` next.</span></span></code></pre></div>
+<span></span>
+<span><span class="va">simulation_obj</span></span>
+<span><span class="co"># Simulation object with  16  combinations and  1600  analyses ready to sample.  This is a lot of combinations/analyses! Consider breaking the  study into different simulation objects. Or if you  prefer to use these combinations, call `mcmc_sample()` next.</span></span></code></pre></div>
 <p>While we get a warning about the size of the simulation study, we are
 not worried because we are limiting our MCMC samples below in this
 example.</p>
 <p>We can access the guide to see the specific scenarios that will be
 simulated with <code><a href="../reference/show_guide.html">show_guide()</a></code>:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/show_guide.html">show_guide</a></span><span class="op">(</span><span class="va">sim_obj</span><span class="op">)</span></span>
-<span><span class="co">#    trueHR driftHR index n_datasets_per_param outcome_scenario</span></span>
-<span><span class="co"># 1     0.6     1.0     1                   20          default</span></span>
-<span><span class="co"># 2     0.8     1.0     2                   20          default</span></span>
-<span><span class="co"># 3     1.0     1.0     3                   20          default</span></span>
-<span><span class="co"># 4     0.6     1.5     4                   20          default</span></span>
-<span><span class="co"># 5     0.8     1.5     5                   20          default</span></span>
-<span><span class="co"># 6     1.0     1.5     6                   20          default</span></span>
-<span><span class="co"># 7     0.6     0.5     7                   20          default</span></span>
-<span><span class="co"># 8     0.8     0.5     8                   20          default</span></span>
-<span><span class="co"># 9     1.0     0.5     9                   20          default</span></span>
-<span><span class="co"># 10    0.6     1.0     1                   20          default</span></span>
-<span><span class="co"># 11    0.8     1.0     2                   20          default</span></span>
-<span><span class="co"># 12    1.0     1.0     3                   20          default</span></span>
-<span><span class="co"># 13    0.6     1.5     4                   20          default</span></span>
-<span><span class="co"># 14    0.8     1.5     5                   20          default</span></span>
-<span><span class="co"># 15    1.0     1.5     6                   20          default</span></span>
-<span><span class="co"># 16    0.6     0.5     7                   20          default</span></span>
-<span><span class="co"># 17    0.8     0.5     8                   20          default</span></span>
-<span><span class="co"># 18    1.0     0.5     9                   20          default</span></span>
-<span><span class="co"># 19    0.6     1.0     1                   20          default</span></span>
-<span><span class="co"># 20    0.8     1.0     2                   20          default</span></span>
-<span><span class="co"># 21    1.0     1.0     3                   20          default</span></span>
-<span><span class="co"># 22    0.6     1.5     4                   20          default</span></span>
-<span><span class="co"># 23    0.8     1.5     5                   20          default</span></span>
-<span><span class="co"># 24    1.0     1.5     6                   20          default</span></span>
-<span><span class="co"># 25    0.6     0.5     7                   20          default</span></span>
-<span><span class="co"># 26    0.8     0.5     8                   20          default</span></span>
-<span><span class="co"># 27    1.0     0.5     9                   20          default</span></span>
-<span><span class="co">#         borrowing_scenario covariate_scenario treatment_scenario</span></span>
-<span><span class="co"># 1             No borrowing      No adjustment            default</span></span>
-<span><span class="co"># 2             No borrowing      No adjustment            default</span></span>
-<span><span class="co"># 3             No borrowing      No adjustment            default</span></span>
-<span><span class="co"># 4             No borrowing      No adjustment            default</span></span>
-<span><span class="co"># 5             No borrowing      No adjustment            default</span></span>
-<span><span class="co"># 6             No borrowing      No adjustment            default</span></span>
-<span><span class="co"># 7             No borrowing      No adjustment            default</span></span>
-<span><span class="co"># 8             No borrowing      No adjustment            default</span></span>
-<span><span class="co"># 9             No borrowing      No adjustment            default</span></span>
-<span><span class="co"># 10 BDB, conservative prior      No adjustment            default</span></span>
-<span><span class="co"># 11 BDB, conservative prior      No adjustment            default</span></span>
-<span><span class="co"># 12 BDB, conservative prior      No adjustment            default</span></span>
-<span><span class="co"># 13 BDB, conservative prior      No adjustment            default</span></span>
-<span><span class="co"># 14 BDB, conservative prior      No adjustment            default</span></span>
-<span><span class="co"># 15 BDB, conservative prior      No adjustment            default</span></span>
-<span><span class="co"># 16 BDB, conservative prior      No adjustment            default</span></span>
-<span><span class="co"># 17 BDB, conservative prior      No adjustment            default</span></span>
-<span><span class="co"># 18 BDB, conservative prior      No adjustment            default</span></span>
-<span><span class="co"># 19   BDB, aggressive prior      No adjustment            default</span></span>
-<span><span class="co"># 20   BDB, aggressive prior      No adjustment            default</span></span>
-<span><span class="co"># 21   BDB, aggressive prior      No adjustment            default</span></span>
-<span><span class="co"># 22   BDB, aggressive prior      No adjustment            default</span></span>
-<span><span class="co"># 23   BDB, aggressive prior      No adjustment            default</span></span>
-<span><span class="co"># 24   BDB, aggressive prior      No adjustment            default</span></span>
-<span><span class="co"># 25   BDB, aggressive prior      No adjustment            default</span></span>
-<span><span class="co"># 26   BDB, aggressive prior      No adjustment            default</span></span>
-<span><span class="co"># 27   BDB, aggressive prior      No adjustment            default</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/show_guide.html">show_guide</a></span><span class="op">(</span><span class="va">simulation_obj</span><span class="op">)</span></span>
+<span><span class="co">#    true_hr          drift_hr id n_datasets_per_param outcome_scenario</span></span>
+<span><span class="co"># 1      0.6       No drift HR  1                  100          default</span></span>
+<span><span class="co"># 2      1.0       No drift HR  2                  100          default</span></span>
+<span><span class="co"># 3      0.6 Moderate drift HR  3                  100          default</span></span>
+<span><span class="co"># 4      1.0 Moderate drift HR  4                  100          default</span></span>
+<span><span class="co"># 5      0.6       No drift HR  1                  100          default</span></span>
+<span><span class="co"># 6      1.0       No drift HR  2                  100          default</span></span>
+<span><span class="co"># 7      0.6 Moderate drift HR  3                  100          default</span></span>
+<span><span class="co"># 8      1.0 Moderate drift HR  4                  100          default</span></span>
+<span><span class="co"># 9      0.6       No drift HR  1                  100          default</span></span>
+<span><span class="co"># 10     1.0       No drift HR  2                  100          default</span></span>
+<span><span class="co"># 11     0.6 Moderate drift HR  3                  100          default</span></span>
+<span><span class="co"># 12     1.0 Moderate drift HR  4                  100          default</span></span>
+<span><span class="co"># 13     0.6       No drift HR  1                  100          default</span></span>
+<span><span class="co"># 14     1.0       No drift HR  2                  100          default</span></span>
+<span><span class="co"># 15     0.6 Moderate drift HR  3                  100          default</span></span>
+<span><span class="co"># 16     1.0 Moderate drift HR  4                  100          default</span></span>
+<span><span class="co">#    borrowing_scenario covariate_scenario treatment_scenario</span></span>
+<span><span class="co"># 1        No borrowing      No adjustment            default</span></span>
+<span><span class="co"># 2        No borrowing      No adjustment            default</span></span>
+<span><span class="co"># 3        No borrowing      No adjustment            default</span></span>
+<span><span class="co"># 4        No borrowing      No adjustment            default</span></span>
+<span><span class="co"># 5      Full borrowing      No adjustment            default</span></span>
+<span><span class="co"># 6      Full borrowing      No adjustment            default</span></span>
+<span><span class="co"># 7      Full borrowing      No adjustment            default</span></span>
+<span><span class="co"># 8      Full borrowing      No adjustment            default</span></span>
+<span><span class="co"># 9  BDB - conservative      No adjustment            default</span></span>
+<span><span class="co"># 10 BDB - conservative      No adjustment            default</span></span>
+<span><span class="co"># 11 BDB - conservative      No adjustment            default</span></span>
+<span><span class="co"># 12 BDB - conservative      No adjustment            default</span></span>
+<span><span class="co"># 13   BDB - aggressive      No adjustment            default</span></span>
+<span><span class="co"># 14   BDB - aggressive      No adjustment            default</span></span>
+<span><span class="co"># 15   BDB - aggressive      No adjustment            default</span></span>
+<span><span class="co"># 16   BDB - aggressive      No adjustment            default</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="mcmc_sample">
 <code>mcmc_sample()</code><a class="anchor" aria-label="anchor" href="#mcmc_sample"></a>
 </h3>
 <p>Now that we’ve created a simulation object, we’re ready to call
-<code><a href="../reference/mcmc_sample.html">mcmc_sample()</a></code> and generate draws for our model. For now, we
-will stick with the default inputs.</p>
-<p><strong><em>Note</em></strong> unlike an analysis on a single
-dataset, <code><a href="../reference/mcmc_sample.html">mcmc_sample()</a></code> does not return a
-<code>CmdStanModel</code> object when applied to a simulation study
-object. Instead, it returns a class unique to simulation study results:
-<code>MCMCSimulationResult</code>.</p>
+<code><a href="../reference/mcmc_sample.html">mcmc_sample()</a></code> and generate draws for our model.</p>
 <p><strong><em>Note</em></strong> there is one important additional
 argument to <code><a href="../reference/mcmc_sample.html">mcmc_sample()</a></code> for simulation objects:
 <code>posterior_quantiles</code>. This numeric vector of length 2
@@ -1216,96 +514,93 @@ specifies the quantiles for null coverage and true coverage. For
 instance, 95% credible coverage would be estimated with
 <code>posterior_quantiles = c(0.025, 0.975)</code>, the default
 argument.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span></span>
-<span>  <span class="va">sim_obj</span>,</span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">simulation_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span></span>
+<span>  <span class="va">simulation_obj</span>,</span>
+<span>  posterior_quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span>,</span>
 <span>  iter_warmup <span class="op">=</span> <span class="fl">400</span>,</span>
 <span>  iter_sampling <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  chains <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">112233</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>This evaluation took about 7.5 minutes. Let’s look at the performance
-of our simulation study by extracting the data.frame that summarizes
-results, <code><a href="../reference/get_results.html">get_results()</a></code>:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">results_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_results.html">get_results</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results_df</span><span class="op">)</span></span>
-<span><span class="co">#   trueHR driftHR index n_datasets_per_param outcome_scenario borrowing_scenario</span></span>
-<span><span class="co"># 1    0.6     1.0     1                   20          default       No borrowing</span></span>
-<span><span class="co"># 2    0.8     1.0     2                   20          default       No borrowing</span></span>
-<span><span class="co"># 3    1.0     1.0     3                   20          default       No borrowing</span></span>
-<span><span class="co"># 4    0.6     1.5     4                   20          default       No borrowing</span></span>
-<span><span class="co"># 5    0.8     1.5     5                   20          default       No borrowing</span></span>
-<span><span class="co"># 6    1.0     1.5     6                   20          default       No borrowing</span></span>
-<span><span class="co">#   covariate_scenario treatment_scenario   mse_mean   bias_mean null_coverage</span></span>
-<span><span class="co"># 1      No adjustment            default 0.01135933 0.030999363          0.05</span></span>
-<span><span class="co"># 2      No adjustment            default 0.02445432 0.051906414          0.70</span></span>
-<span><span class="co"># 3      No adjustment            default 0.02643635 0.026549183          1.00</span></span>
-<span><span class="co"># 4      No adjustment            default 0.01034652 0.001293679          0.00</span></span>
-<span><span class="co"># 5      No adjustment            default 0.02356386 0.040341639          0.70</span></span>
-<span><span class="co"># 6      No adjustment            default 0.02964010 0.060640982          1.00</span></span>
-<span><span class="co">#   true_coverage</span></span>
-<span><span class="co"># 1          1.00</span></span>
-<span><span class="co"># 2          1.00</span></span>
-<span><span class="co"># 3          1.00</span></span>
-<span><span class="co"># 4          0.95</span></span>
-<span><span class="co"># 5          0.95</span></span>
-<span><span class="co"># 6          1.00</span></span></code></pre></div>
-<p>Let’s quickly visualize the results using <code>ggplot2</code>:</p>
-</div>
-<div class="section level3">
-<h3 id="summary-of-results">Summary of results<a class="anchor" aria-label="anchor" href="#summary-of-results"></a>
-</h3>
-<p>As an example of the types of visual summaries you can provide on
-simulation study results, let’s explore performance of several some
-select metrics:</p>
+<p><strong><em>Note</em></strong> unlike an analysis on a single
+dataset, <code><a href="../reference/mcmc_sample.html">mcmc_sample()</a></code> does not return a
+<code>CmdStanModel</code> object when applied to a simulation study
+object. Instead, it returns a class unique to simulation study results:
+<code>MCMCSimulationResult</code>.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">simulation_res</span><span class="op">)</span></span>
+<span><span class="co"># [1] "MCMCSimulationResult"</span></span>
+<span><span class="co"># attr(,"package")</span></span>
+<span><span class="co"># [1] "psborrow2"</span></span></code></pre></div>
+<p>This evaluation took about 12.3 minutes. Let’s look at the
+performance of our simulation study by extracting the data.frame that
+summarizes results, <code><a href="../reference/get_results.html">get_results()</a></code>:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">simulation_res_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_results.html">get_results</a></span><span class="op">(</span><span class="va">simulation_res</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">simulation_res_df</span><span class="op">)</span></span>
+<span><span class="co">#   true_hr          drift_hr id n_datasets_per_param outcome_scenario</span></span>
+<span><span class="co"># 1     0.6       No drift HR  1                  100          default</span></span>
+<span><span class="co"># 2     1.0       No drift HR  2                  100          default</span></span>
+<span><span class="co"># 3     0.6 Moderate drift HR  3                  100          default</span></span>
+<span><span class="co"># 4     1.0 Moderate drift HR  4                  100          default</span></span>
+<span><span class="co"># 5     0.6       No drift HR  1                  100          default</span></span>
+<span><span class="co"># 6     1.0       No drift HR  2                  100          default</span></span>
+<span><span class="co">#   borrowing_scenario covariate_scenario treatment_scenario   mse_mean</span></span>
+<span><span class="co"># 1       No borrowing      No adjustment            default 0.05800176</span></span>
+<span><span class="co"># 2       No borrowing      No adjustment            default 0.13074879</span></span>
+<span><span class="co"># 3       No borrowing      No adjustment            default 0.04597869</span></span>
+<span><span class="co"># 4       No borrowing      No adjustment            default 0.12651258</span></span>
+<span><span class="co"># 5     Full borrowing      No adjustment            default 0.02020501</span></span>
+<span><span class="co"># 6     Full borrowing      No adjustment            default 0.05046406</span></span>
+<span><span class="co">#    bias_mean null_coverage true_coverage</span></span>
+<span><span class="co"># 1 0.05900659          0.56          0.96</span></span>
+<span><span class="co"># 2 0.03669141          0.97          0.97</span></span>
+<span><span class="co"># 3 0.01031734          0.42          0.96</span></span>
+<span><span class="co"># 4 0.02528194          0.94          0.94</span></span>
+<span><span class="co"># 5 0.02199620          0.10          0.96</span></span>
+<span><span class="co"># 6 0.01225166          0.97          0.97</span></span></code></pre></div>
+<p>Let’s quickly visualize the results using <code>ggplot2</code>. We
+will first load <code>ggplot2</code> and factorize our borrowing
+scenarios:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load ggplot2</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Factorize</span></span>
+<span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">borrowing_scenario</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">borrowing_scenario</span>,</span>
+<span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"No borrowing"</span>,</span>
+<span>    <span class="st">"BDB - conservative"</span>,</span>
+<span>    <span class="st">"BDB - aggressive"</span>,</span>
+<span>    <span class="st">"Full borrowing"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="mse">MSE<a class="anchor" aria-label="anchor" href="#mse"></a>
 </h4>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_df</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">trueHR</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">borrowing_scenario</span>, y <span class="op">=</span> <span class="va">mse_mean</span><span class="op">)</span>, stat <span class="op">=</span> <span class="st">"identity"</span>, position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    fill <span class="op">=</span> <span class="st">"Borrowing scenario"</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">"True HR"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"MSE (mean)"</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"drift HR = "</span>, <span class="va">driftHR</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#29339B"</span>, <span class="st">"#74A4BC"</span>, <span class="st">"#B6D6CC"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulation_study_files/figure-html/unnamed-chunk-15-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>From this graph, it is clear that the impact of aggressive borrowing
-depends greatly on the drift HR between the internal and external
-controls.</p>
-</div>
-<div class="section level4">
-<h4 id="null-coverage">Null coverage<a class="anchor" aria-label="anchor" href="#null-coverage"></a>
-</h4>
-<p>Null coverage refers to the proportion of specified credible
-intervals (in this case, 95% credible intervals) that contain the null
-effect (1.0). When the true hazard ratio is not 1.0, this refers to the
-type II error proportion.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_df</span><span class="op">[</span><span class="va">results_df</span><span class="op">$</span><span class="va">trueHR</span> <span class="op">!=</span> <span class="fl">1.0</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">trueHR</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">borrowing_scenario</span>, y <span class="op">=</span> <span class="va">null_coverage</span><span class="op">)</span>,</span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">simulation_res_df</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">true_hr</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">borrowing_scenario</span>, y <span class="op">=</span> <span class="va">mse_mean</span><span class="op">)</span>,</span>
 <span>    stat <span class="op">=</span> <span class="st">"identity"</span>, position <span class="op">=</span> <span class="st">"dodge"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    fill <span class="op">=</span> <span class="st">"Borrowing scenario"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"True HR"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Type II error"</span></span>
+<span>    y <span class="op">=</span> <span class="st">"MSE"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"drift HR = "</span>, <span class="va">driftHR</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#29339B"</span>, <span class="st">"#74A4BC"</span>, <span class="st">"#B6D6CC"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulation_study_files/figure-html/unnamed-chunk-16-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>The type II error proportion is higher when the true hazard ratio is
-0.8 and generally when no borrowing is used.</p>
-<p>When the true hazard ratio is equal to 1.0, this refers to the
-compliment of the type I error proportion, which we can use to derive
-type I error:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_df</span><span class="op">[</span><span class="va">results_df</span><span class="op">$</span><span class="va">trueHR</span> <span class="op">==</span> <span class="fl">1.0</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">driftHR</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">borrowing_scenario</span>, y <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">null_coverage</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">drift_hr</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#EF798A"</span>, <span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="simulation_study_files/figure-html/unnamed-chunk-20-1.png" width="700" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level4">
+<h4 id="type-i-error">Type I error<a class="anchor" aria-label="anchor" href="#type-i-error"></a>
+</h4>
+<p>Because we included a true HR of 1.0, we can evaluate type I error by
+looking at the compliment to the true parameter coverage:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">simulation_res_df</span><span class="op">[</span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">true_hr</span> <span class="op">==</span> <span class="fl">1.0</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">drift_hr</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">borrowing_scenario</span>, y <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">true_coverage</span><span class="op">)</span>,</span>
 <span>    stat <span class="op">=</span> <span class="st">"identity"</span>, position <span class="op">=</span> <span class="st">"dodge"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
@@ -1313,29 +608,30 @@ type I error:</p>
 <span>    x <span class="op">=</span> <span class="st">"drift HR"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Type I error"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#29339B"</span>, <span class="st">"#74A4BC"</span>, <span class="st">"#B6D6CC"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulation_study_files/figure-html/unnamed-chunk-17-1.png" width="700" style="display: block; margin: auto;"></p>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#EF798A"</span>, <span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.1</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="simulation_study_files/figure-html/unnamed-chunk-21-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
-<h4 id="true-coverage">True coverage<a class="anchor" aria-label="anchor" href="#true-coverage"></a>
+<h4 id="power">Power<a class="anchor" aria-label="anchor" href="#power"></a>
 </h4>
-<p>True coverage refers to the proportion of simulations that contain
-the effect estimate of interest.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_df</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">trueHR</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">borrowing_scenario</span>, y <span class="op">=</span> <span class="va">true_coverage</span><span class="op">)</span>,</span>
+<p>We can include power by looking at the results for our true
+simulation of 0.6.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">simulation_res_df</span><span class="op">[</span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">true_hr</span> <span class="op">==</span> <span class="fl">0.6</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">drift_hr</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">borrowing_scenario</span>, y <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">null_coverage</span><span class="op">)</span>,</span>
 <span>    stat <span class="op">=</span> <span class="st">"identity"</span>, position <span class="op">=</span> <span class="st">"dodge"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    fill <span class="op">=</span> <span class="st">"Borrowing scenario"</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">"True HR"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"True coverage"</span></span>
+<span>    x <span class="op">=</span> <span class="st">"drift HR"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Power"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"drift HR = "</span>, <span class="va">driftHR</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#29339B"</span>, <span class="st">"#74A4BC"</span>, <span class="st">"#B6D6CC"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulation_study_files/figure-html/unnamed-chunk-18-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>It looks like almost all of our analyses captured the effect estimate
-of interest.</p>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#EF798A"</span>, <span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.1</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="simulation_study_files/figure-html/unnamed-chunk-22-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>
