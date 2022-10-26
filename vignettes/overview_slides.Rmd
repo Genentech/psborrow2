@@ -1099,7 +1099,7 @@ There are four scenarios.
 NROW(my_data_list)
 ```
 
-Each scenario has 20 matrices.
+Each scenario has `r n` matrices.
 
 ```{r}
 NROW(my_data_list[[1]])
