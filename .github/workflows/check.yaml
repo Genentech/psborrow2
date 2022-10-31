@@ -30,8 +30,9 @@ jobs:
       additional-env-vars: |
         CMDSTAN=/root/.cmdstan
         CMDSTAN_PATH=/root/.cmdstan
+        CMDSTANR_NO_VER_CHECK=true
   coverage:
-    name: Coverage 📔 
+    name: Coverage 📔
     uses: insightsengineering/r.pkg.template/.github/workflows/test-coverage.yaml@main
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -39,6 +40,7 @@ jobs:
       additional-env-vars: |
         CMDSTAN=/root/.cmdstan
         CMDSTAN_PATH=/root/.cmdstan
+        CMDSTANR_NO_VER_CHECK=true
   linter:
     if: github.event_name == 'pull_request'
     name: SuperLinter 🦸‍♀️
