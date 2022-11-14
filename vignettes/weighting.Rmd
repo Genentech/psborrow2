@@ -1,12 +1,12 @@
 ---
-title: "Comparison of Fixed Weights"
+title: "7. Comparison of Fixed Weights"
 author: "Matt Secrest and Isaac Gravestock"
 output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{8. Comparison of Fixed Weights}
+  %\VignetteIndexEntry{7. Comparison of Fixed Weights}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:

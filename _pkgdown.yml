@@ -5,16 +5,28 @@ template:
   bootswatch: cerulean
   includes:
     in_header: |
-       <!-- Global site tag (gtag.js) - Google Analytics -->
-       <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125641273-1"></script>
-       <script>
-         window.dataLayer = window.dataLayer || [];
-         function gtag(){dataLayer.push(arguments);}
-         gtag('js', new Date());
-         gtag('config', 'UA-125641273-1');
-       </script>
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125641273-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-125641273-1');
+      </script>
 
 navbar:
   right:
     - icon: fa-github
       href: https://github.com/Genentech/psborrow2
+
+articles:
+  - title: All vignettes
+    desc: ~
+    contents:
+      - "`psborrow2`"
+      - "`dataset`"
+      - "`prior_distributions`"
+      - "`simulation_study`"
+      - "`propensity_scores`"
+      - "`overview_slides`"
+      - "`weighting`"
