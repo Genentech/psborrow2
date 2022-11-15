@@ -20,9 +20,7 @@ knitr::opts_chunk$set(
   fig.width = 5,
   fig.height = 3,
   dpi = 120,
-  comment = "#",
-  message = FALSE,
-  warning = FALSE
+  comment = "#"
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
@@ -50,7 +48,7 @@ The model has a treatment indicator and two covariates, `resp ~ trt + cov1 + cov
 
 ### glm
 
-```{r glm_logistic, results = "hide"}
+```{r glm_logistic, include = FALSE}
 logistic_glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   logistic_glm <- glm(
     resp ~ trt + cov1 + cov2,
@@ -73,7 +71,7 @@ logistic_glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 
 ### BayesPPD
 
-```{r bayesppd_logistic, results = "hide"}
+```{r bayesppd_logistic, include = FALSE}
 logistic_ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   logistic_ppd <- glm.fixed.a0(
     data.type = "Bernoulli",
@@ -90,7 +88,7 @@ logistic_ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
     slice.widths = rep(1, 5),
     nMC = 10000,
     nBI = 1000
-  )
+  )[[1]]
   ci <- apply(logistic_ppd, 2, quantile, probs = c(0.025, 0.975))
   data.frame(
     fitter = "BayesPPD",
@@ -105,7 +103,7 @@ logistic_ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 
 ### psborrow2
 
-```{r psb2_logistic, results = "hide"}
+```{r psb2_logistic, include = FALSE}
 logistic_psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   logistic_psb2 <- create_analysis_obj(
     data_matrix = as.matrix(cbind(
@@ -184,7 +182,7 @@ As before, the external control arm having weights (or power parameters)
 equal to 0, 0.25, 0.5, 0.75, 1. The internal treated and control patients have weight = 1.
 The model has a treatment indicator and two covariates, `eventtime ~ trt + cov1 + cov2`.
 
-```{r surv_data, results = "hide"}
+```{r surv_data, include = FALSE}
 sim_data_exp <- cbind(
   simsurv::simsurv(
     dist = "exponential",
@@ -201,7 +199,7 @@ head(sim_data_exp)
 ```
 
 
-```{r glm_exp, results = "hide"}
+```{r glm_exp, include = FALSE}
 ## glm
 glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   exp_glm <- glm(
@@ -226,7 +224,7 @@ glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 })
 ```
 
-```{r bayesppd_Exp, results = "hide"}
+```{r bayesppd_Exp, include = FALSE}
 ## BayesPPD
 ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   exp_ppd <- glm.fixed.a0(
@@ -244,7 +242,7 @@ ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
     slice.widths = rep(1, 5),
     nMC = 10000,
     nBI = 1000
-  )
+  )[[1]]
   ci <- apply(exp_ppd, 2, quantile, probs = c(0.025, 0.975))
   data.frame(
     fitter = "BayesPPD",
@@ -258,7 +256,7 @@ ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 ```
 
 
-```{r psborrow2_Exp, results = "hide"}
+```{r psborrow2_Exp, include = FALSE}
 ## psborrow2
 psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   exp_psb2 <- create_analysis_obj(
