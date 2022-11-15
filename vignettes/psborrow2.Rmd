@@ -1,12 +1,12 @@
 ---
-title: "1. Getting start with psborrow2"
+title: "1. Getting started with psborrow2"
 author: "Matt Secrest and Isaac Gravestock"
 output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{1. Getting start with psborrow2}
+  %\VignetteIndexEntry{1. Getting started with psborrow2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
