@@ -18,6 +18,7 @@ coverage.*
 ^\.pre-commit-config\.yaml$
 ^codemeta\.json$
 devel
+^design$
 ^data-raw$
 ^doc$
 ^Meta$
