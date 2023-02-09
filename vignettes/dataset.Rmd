@@ -321,18 +321,17 @@ variable we are interested in by plotting histograms of the draws with the
 function `mcmc_hist()`. Let's do that for the Hazard ratio for the treatment
 effect and for our commensurability parameter, tau.
 
-```{r mcmc-hist, message = FALSE}
-library(bayesplot)
-mcmc_hist(draws, c("treatment HR", "commensurability parameter"))
+```{r mcmc-hist, message = FALSE, eval = requireNamespace("bayesplot")}
+bayesplot::mcmc_hist(draws, c("treatment HR", "commensurability parameter"))
 ```
 
 We can see other plots that help us understand and diagnose problems with
 the MCMC sampler, such as trace and rank plots:
 
-```{r mcmc-trace, fig.width=6, fig.height=3.6, dpi = 100}
-color_scheme_set("mix-blue-pink")
+```{r mcmc-trace, fig.width=6, fig.height=3.6, dpi = 100, eval = requireNamespace("bayesplot")}
+bayesplot::color_scheme_set("mix-blue-pink")
 
-mcmc_trace(
+bayesplot::mcmc_trace(
   draws[1:5000, 1:2, ], # Using a subset of draws only
   pars = c("treatment HR", "commensurability parameter"),
   n_warmup = 1000

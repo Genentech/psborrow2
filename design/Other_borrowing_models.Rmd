@@ -1,0 +1,424 @@
+---
+title: "Design for other borrowing models"
+author: "Isaac Gravestock"
+date: "2022-12-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem
+
+Currently we try to build the stan model with the functions `make_model_string_data()`,
+`make_model_string_parameters()`, etc. These functions insert code from the various
+model parts, ie `Covariates`, `Outcome`, `Treatment`, etc. For the most part this works cleanly.
+This approach becomes difficult in `make_model_string_model()`, which needs to integrate the
+outcome model, the borrowing model, covariate adjustment and all priors. Currently this
+has various cases hard coded, eg for full/no/BDB and for covariates/no covariates, but this doesn't
+extensible and flexible enough for different models.
+
+## Proposal
+
+Let `make_model_string_model` be a generic with the signature taking the borrowing method
+and the outcome model. Any future outcome or borrowing method can define those construction
+functions as necessary. For some new outcome models, no additional method definition will
+be required and it can just define that it uses an existing function.
+Also borrowing methods will define for which outcome models they work.
+This will also allow to explicitly show which models are not supported/implemented.
+
+For the generic to work, we will also need to generalise `Borrowing` and define child classes
+for each method.
+
+Then our generic can be
+```{r}
+setGeneric("make_model_string_model", function(borrowing, outcome, analysis_obj) {
+  standardGeneric("make_model_string_model")
+})
+```
+
+The existing `make_model_string_model` can be carried over into this new model or broken into
+smaller parts without any if/else constructions.
+
+
+## Sketch
+
+### Borrowing classes
+
+```{r}
+setClass(
+  "Borrowing",
+  slots = c(
+    ext_flag_col = "character",
+    data_stan_code = "character"
+  )
+)
+
+# Dynamic
+setClass("BDB", contains = "Borrowing", slots = c(tau_prior = "Prior"))
+dynamic_borrowing <- function(tau_prior, ext_flag_col) {
+  # check args
+  new("BDB", ext_flag_col = ext_flag_col, tau_prior = tau_prior, data_stan_code = "matrix[N] Z;")
+}
+
+# Full Borrowing
+setClass("Full_Borrowing", contains = "Borrowing")
+full_borrowing <- function(ext_flag_col) {
+  # check args
+  new("Full_Borrowing", ext_flag_col = ext_flag_col, data_stan_code = "")
+}
+
+# No Borrowing
+setClass("No_Borrowing", contains = "Borrowing")
+no_orrowing <- function(ext_flag_col) {
+  # check args
+  new("No_Borrowing", ext_flag_col = ext_flag_col, data_stan_code = "")
+}
+
+# Commensurate All Betas
+setClass("Commensurate", contains = "Borrowing", slots = c(tau_prior = "Prior"))
+commensurate <- function(tau_prior, ext_flag_col) {
+  # check args
+  new("BDB", ext_flag_col = ext_flag_col, tau_prior = tau_prior, data_stan_code = "matrix[N] Z;")
+}
+```
+
+### Model string method
+
+```{r}
+setMethod(
+  "make_model_string_model",
+  signature("BDB", "ANY", "Analysis"),
+  function(borrowing, outcome, analysis_obj) {
+    ### Treatment prior
+    beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
+
+    ### Linear predictor
+    has_covariates <- !is.null(analysis_obj@covariates)
+
+    if (has_covariates) {
+      linear_predictor <- h_glue("
+      lp = X * beta + Z * alpha + trt * beta_trt;
+      elp = exp(lp) ;")
+    } else if (!has_covariates) {
+      linear_predictor <- h_glue("
+      lp = Z * alpha + trt * beta_trt;
+      elp = exp(lp) ;")
+    }
+
+    ### Add priors for relevant parameters
+    if (NROW(analysis_obj@outcome@param_priors) > 0) {
+      names <- names(analysis_obj@outcome@param_priors)
+      values <- get_prior_string(analysis_obj@outcome@param_priors)
+      outcome_prior <- h_glue("{{names}} ~ {{values}} ;", collapse = TRUE)
+    } else {
+      outcome_prior <- ""
+    }
+
+    ### Add priors on betas
+    if (has_covariates) {
+      i <- seq_along(analysis_obj@covariates@covariates)
+      value <- get_prior_string(analysis_obj@covariates@priors)
+      index <- if (test_named(value)) get_vars(analysis_obj@covariates) else rep(1, length(i))
+      covariate_prior <- h_glue("beta[{{i}}] ~ {{value[index]}} ;", collapse = TRUE)
+    } else {
+      covariate_prior <- ""
+    }
+
+    tau_prior <- get_prior_string(analysis_obj@borrowing@tau_prior)
+    alpha_2_prior <- get_prior_string(analysis_obj@outcome@baseline_prior)
+
+    borrowing_string <- h_glue("
+      tau ~ {{tau_prior}} ;
+      real sigma;
+      sigma = 1 / tau;
+      alpha[2] ~ {{alpha_2_prior}} ;
+      alpha[1] ~ normal(alpha[2], sqrt(sigma)) ;")
+
+    ### Add in likelihood function
+    likelihood_string <- h_glue("{{analysis_obj@outcome@likelihood_stan_code}}")
+
+    h_glue("
+  model {
+    vector[N] lp;
+    vector[N] elp;
+    beta_trt ~ {{beta_trt_prior}};
+    {{linear_predictor}}
+    {{outcome_prior}}
+    {{covariate_prior}}
+    {{borrowing_string}}
+    {{likelihood_string}}
+  }")
+  }
+)
+
+
+
+full_no_borrowing <- function(borrowing, outcome, analysis_obj) {
+  ### Treatment prior
+  beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
+
+  ### Linear predictor
+  has_covariates <- !is.null(analysis_obj@covariates)
+  if (has_covariates) {
+    linear_predictor <- h_glue("
+      lp = alpha + X * beta + trt * beta_trt ;
+      elp = exp(lp) ;")
+  } else if (!has_covariates) {
+    linear_predictor <- h_glue("
+      lp = alpha + trt * beta_trt ;
+      elp = exp(lp);")
+  }
+
+  ### Add priors for relevant parameters
+  if (NROW(analysis_obj@outcome@param_priors) > 0) {
+    names <- names(analysis_obj@outcome@param_priors)
+    values <- get_prior_string(analysis_obj@outcome@param_priors)
+    outcome_prior <- h_glue("{{names}} ~ {{values}} ;", collapse = TRUE)
+  } else {
+    outcome_prior <- ""
+  }
+
+  ### Add priors on betas
+  if (has_covariates) {
+    i <- seq_along(analysis_obj@covariates@covariates)
+    value <- get_prior_string(analysis_obj@covariates@priors)
+    index <- if (test_named(value)) get_vars(analysis_obj@covariates) else rep(1, length(i))
+    covariate_prior <- h_glue("beta[{{i}}] ~ {{value[index]}} ;", collapse = TRUE)
+  } else {
+    covariate_prior <- ""
+  }
+
+  alpha_prior <- get_prior_string(analysis_obj@outcome@baseline_prior)
+  borrowing_string <- h_glue("alpha ~ {{alpha_prior}} ;")
+
+  ### Add in likelihood function
+  likelihood_string <- h_glue("{{analysis_obj@outcome@likelihood_stan_code}}")
+
+  h_glue("
+  model {
+    vector[N] lp;
+    vector[N] elp;
+    beta_trt ~ {{beta_trt_prior}};
+    {{linear_predictor}}
+    {{outcome_prior}}
+    {{covariate_prior}}
+    {{borrowing_string}}
+    {{likelihood_string}}
+  }")
+}
+
+setMethod("make_model_string_model", signature("Full_Borrowing", "ANY", "Analysis"), full_no_borrowing)
+setMethod("make_model_string_model", signature("No_Borrowing", "ANY", "Analysis"), full_no_borrowing)
+```
+
+
+So far no new functionality. Looking at the above code we can probably factor our some helper code for priors.
+
+The benefit comes now that we can define a method for `"BDB'` for piecewise exponential without complicating the other
+code.
+
+```{r}
+setMethod(
+  "make_model_string_model",
+  signature("BDB", "PiecewiseExponentialSurvDist", "Analysis"),
+  function(borrowing, outcome, analysis_obj) {
+    ### Treatment prior
+    beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
+
+    ### Linear predictor
+    has_covariates <- !is.null(analysis_obj@covariates)
+
+    linear_predictor <- if (has_covariates) {
+      h_glue("lp = Z*alpha_ext' + (1-Z)*alpha' + rep_matrix(trt * beta_trt + X * beta, M);")
+    } else if (!has_covariates) {
+      h_glue("lp = Z*alpha_ext' + (1-Z)*alpha' + rep_matrix(trt * beta_trt, M);")
+    }
+
+    ### Add priors for relevant parameters
+    if (NROW(analysis_obj@outcome@param_priors) > 0) {
+      names <- names(analysis_obj@outcome@param_priors)
+      values <- get_prior_string(analysis_obj@outcome@param_priors)
+      outcome_prior <- h_glue("{{names}} ~ {{values}} ;", collapse = TRUE)
+    } else {
+      outcome_prior <- ""
+    }
+
+    ### Add priors on betas
+    if (has_covariates) {
+      i <- seq_along(analysis_obj@covariates@covariates)
+      value <- get_prior_string(analysis_obj@covariates@priors)
+      index <- if (test_named(value)) get_vars(analysis_obj@covariates) else rep(1, length(i))
+      covariate_prior <- h_glue("beta[{{i}}] ~ {{value[index]}} ;", collapse = TRUE)
+    } else {
+      covariate_prior <- ""
+    }
+
+    tau_prior <- get_prior_string(analysis_obj@borrowing@tau_prior)
+    alpha_2_prior <- get_prior_string(analysis_obj@outcome@baseline_prior)
+
+    borrowing_string <- h_glue("
+      tau ~ {{tau_prior}} ;
+      real sigma;
+      sigma = 1 / tau;
+      alpha_ext ~ {{alpha_2_prior}};
+      alpha ~ normal(alpha_ext, sqrt(sigma)) ;
+      ")
+
+    ### Add in likelihood function
+    likelihood_string <- "target += sum((lp .* D) - (exp(lp) .* T));"
+
+    h_glue("
+  model {
+    matrix[N,M] lp;
+    vector[N] elp;
+    beta_trt ~ {{beta_trt_prior}};
+    {{linear_predictor}}
+    {{outcome_prior}}
+    {{covariate_prior}}
+    {{borrowing_string}}
+    {{likelihood_string}}
+  }")
+  }
+)
+
+
+setMethod(
+  "make_model_string_model",
+  signature("No_Borrowing", "PiecewiseExponentialSurvDist", "Analysis"),
+  function(borrowing, outcome, analysis_obj) {
+    ### Treatment prior
+    beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
+
+    ### Linear predictor
+    has_covariates <- !is.null(analysis_obj@covariates)
+
+    linear_predictor <- if (has_covariates) {
+      h_glue("lp = alpha' + rep_matrix(trt * beta_trt + X * beta, M);")
+    } else if (!has_covariates) {
+      h_glue("lp = alpha' + rep_matrix(trt * beta_trt, M);")
+    }
+
+    ### Add priors for relevant parameters
+    if (NROW(analysis_obj@outcome@param_priors) > 0) {
+      names <- names(analysis_obj@outcome@param_priors)
+      values <- get_prior_string(analysis_obj@outcome@param_priors)
+      outcome_prior <- h_glue("{{names}} ~ {{values}} ;", collapse = TRUE)
+    } else {
+      outcome_prior <- ""
+    }
+
+    ### Add priors on betas
+    if (has_covariates) {
+      i <- seq_along(analysis_obj@covariates@covariates)
+      value <- get_prior_string(analysis_obj@covariates@priors)
+      index <- if (test_named(value)) get_vars(analysis_obj@covariates) else rep(1, length(i))
+      covariate_prior <- h_glue("beta[{{i}}] ~ {{value[index]}} ;", collapse = TRUE)
+    } else {
+      covariate_prior <- ""
+    }
+
+    tau_prior <- get_prior_string(analysis_obj@borrowing@tau_prior)
+    alpha_prior <- get_prior_string(analysis_obj@outcome@baseline_prior)
+    borrowing_string <- h_glue("alpha ~ {{alpha_prior}};")
+
+    ### Add in likelihood function
+    likelihood_string <- "target += sum((lp .* D) - (exp(lp) .* T));"
+
+    h_glue("
+  model {
+    matrix[N,M] lp;
+    beta_trt ~ {{beta_trt_prior}};
+    {{linear_predictor}}
+    {{outcome_prior}}
+    {{covariate_prior}}
+    {{borrowing_string}}
+    {{likelihood_string}}
+  }")
+  }
+)
+```
+
+
+### Classes for Piecewise exponential survival
+
+```{r}
+.piecewise_exp_surv_dist <- setClass(
+  "PiecewiseExponentialSurvDist",
+  contains = "TimeToEvent",
+  slots = c(
+    start_times = "numeric",
+    transformed_data_stan_code = "character"
+  ),
+  prototype = list(
+    n_param = 0L,
+    likelihood_stan_code = ""
+  )
+)
+
+#' Piecewise Exponential survival distribution
+#'
+#' @param time_var character. Name of time variable column in model matrix
+#' @param cens_var character. Name of the censorship variable flag in model matrix
+#' @param weight_var character. Optional name of variable in model matrix for weighting the log likelihood.
+#' @param baseline_prior `Prior`. Object of class `Prior` specifying prior distribution for the baseline outcome.
+#' @param start_times numeric. A vector of times to define periods.
+#'
+#' @return Object of class [`PiecewiseExponentialSurvDist`][PiecewiseExponentialSurvDist-class].
+#' @export
+#' @family outcome models
+#'
+#' @examples
+#' es <- piecewise_exp_surv_dist(
+#'   time_var = "time",
+#'   cens_var = "cens",
+#'   baseline_prior = normal_prior(0, 1000),
+#'   start_times = c(0, 10, 20)
+#' )
+piecewise_exp_surv_dist <- function(time_var, cens_var, start_times, baseline_prior, weight_var = "") {
+  assert_string(time_var)
+  assert_string(cens_var)
+  assert_string(weight_var)
+  assert_numeric(start_times, lower = 0, finite = TRUE, any.missing = FALSE, min.len = 1, sorted = TRUE)
+  assert_class(baseline_prior, "Prior")
+  has_weight <- isTRUE(weight_var != "")
+  .piecewise_exp_surv_dist(
+    time_var = time_var,
+    cens_var = cens_var,
+    baseline_prior = baseline_prior,
+    weight_var = weight_var,
+    likelihood_stan_code = "",
+    data_stan_code = h_glue(
+      "
+      vector[N] time;
+      vector[N] cens;
+      int<lower = 1> M = {{length(start_times)}};
+      vector[M] starts = [{{toString(start_times)}}]';
+      {{weight}}",
+      weight = if (has_weight) "vector[N] weight;" else ""
+    ),
+    function_stan_code = h_glue("
+    vector make_durations(vector starts, vector time) {
+      vector [rows(starts)] ends = append_row(tail(starts, rows(starts) - 1), max(time));
+      return fdim(ends, starts);
+    }"),
+    param_stan_code = "vector[M] alpha;",
+    transformed_data_stan_code = h_glue("
+      vector[M] durations;
+      matrix[N,M] T;
+      matrix[N,M] D;
+
+      durations = make_durations(starts, time);
+
+      for(j in 1:M) {
+        T[,j] = fmin(fdim(time, starts[j]), durations[j]);
+      }
+      for(j in 1:M) {
+        for(i in 1:N) {
+          D[i,j] = (starts[j] <= time[i] && time[i] < starts[j] + durations[j]) * (1 - cens[i]);
+        }
+      }")
+  )
+}
+```
