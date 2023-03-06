@@ -153,13 +153,13 @@ analysis_object
 results <- mcmc_sample(
   x = analysis_object,
   iter_warmup = 1000,
-  iter_sampling = 1000,
-  chains = 1
+  iter_sampling = 4000,
+  chains = 4
 )
 
 class(results)
 
-results
+summarize_draws(results, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
 
 ############################################################
 # Interpret results ----
@@ -199,21 +199,25 @@ table1(
 ## let's adjust for propensity scores in our analysis
 
 # Create a propensity score model
-ps_model <- glm(ext ~ cov1 + cov2 + cov3 + cov4,
+example_dataframe$int <- 1 - example_dataframe$ext
+ps_model <- glm(int ~ cov1 + cov2 + cov3 + cov4,
   data = example_dataframe,
   family = binomial
 )
 ps <- predict(ps_model, type = "response")
 example_dataframe$ps <- ps
-example_dataframe$ps_cat_ <- cut(
-  example_dataframe$ps,
-  breaks = 5,
-  include.lowest = TRUE
+example_dataframe$iptw_att <- example_dataframe$int + (1 - example_dataframe$int) * (example_dataframe$ps / (1 - example_dataframe$ps))
+example_dataframe$iptw_att_stable <- example_dataframe$iptw_att
+example_dataframe$iptw_att_stable[example_dataframe$ext == 1] <- example_dataframe$iptw_att[example_dataframe$ext == 1] * (sum(example_dataframe$ext==1) / sum(example_dataframe$iptw_att[example_dataframe$ext == 1]) )
+sum(example_dataframe$iptw_att_stable)
+
+# Weighted KM curve
+km_fit_ps <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt + ext,
+                     data = example_dataframe,
+                     weights = example_dataframe$iptw_att_stable
 )
-levels(example_dataframe$ps_cat_) <- c(
-  "ref", "low",
-  "low_med", "high_med", "high"
-)
+
+ggsurvplot(km_fit_ps)
 
 ## Convert the data back to a matrix with dummy variables for `ps_cat_` levels
 example_matrix_ps <- create_data_matrix(
@@ -221,48 +225,15 @@ example_matrix_ps <- create_data_matrix(
   outcome = c("time", "cnsr"),
   trt_flag_col = "trt",
   ext_flag_col = "ext",
-  covariates = ~ps_cat_
+  covariates = ~iptw_att_stable
 )
-
-############################################################
-# Propensity score analysis without borrowing ----
-############################################################
-anls_ps_no_borrow <- create_analysis_obj(
-  data_matrix = example_matrix_ps,
-  covariates = add_covariates(
-    c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
-    normal_prior(0, 10000)
-  ),
-  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
-  borrowing = borrowing_details("No borrowing", "ext"),
-  treatment = treatment_details("trt", normal_prior(0, 10000))
-)
-
-res_ps_no_borrow <- mcmc_sample(
-  x = anls_ps_no_borrow,
-  iter_warmup = 1000,
-  iter_sampling = 500,
-  chains = 1
-)
-
-draws_ps_no_borrow <- rename_draws_covariates(
-  res_ps_no_borrow$draws(),
-  anls_ps_no_borrow
-)
-
-summarize_draws(draws_ps_no_borrow, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
 
 ############################################################
 # Propensity score analysis with BDB ----
 ############################################################
-
 anls_ps_bdb <- create_analysis_obj(
   data_matrix = example_matrix_ps,
-  covariates = add_covariates(
-    c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
-    normal_prior(0, 10000)
-  ),
-  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000), weight_var = "iptw_att_stable"),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
@@ -270,8 +241,8 @@ anls_ps_bdb <- create_analysis_obj(
 res_ps_bdb <- mcmc_sample(
   x = anls_ps_bdb,
   iter_warmup = 1000,
-  iter_sampling = 500,
-  chains = 1
+  iter_sampling = 2000,
+  chains = 4
 )
 
 draws_ps_bdb <- rename_draws_covariates(
@@ -281,5 +252,4 @@ draws_ps_bdb <- rename_draws_covariates(
 
 summarize_draws(draws_ps_bdb, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
 
-## It looks like PS + BDB allowed us to most accurately recover the
-## true hazard ratio of 0.70.
+## It looks like PS + BDB allowed us to improve precision around our true HR.
