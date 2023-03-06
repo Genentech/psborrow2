@@ -103,12 +103,12 @@ Consider a standard Bayesian model with survival as an endpoint without
 external data. This is equally valid in "No borrowing" and "Full borrowing"
 approaches. There are two parameters of interest:
 
-- $\rho_{00}$, the hazard rate for the internal control
-- $\rho_{10}$, the hazard rate for the internal experimental
+- $\rho_{00}$, the log hazard rate for the internal control
+- $\rho_{10}$, the log hazard rate for the internal experimental
 
 The hazard ratio, $\theta$, is therefore:
 $$
-\theta = \frac{\rho_{10}}{\rho_{00}}
+\theta = e^{\frac{\rho_{10}}{\rho_{00}}}
 $$
 
 And the posterior distribution of $\theta$ is:
@@ -121,7 +121,7 @@ $$
 
 In BDB, we introduce two more parameters:
 
-- $\rho_{01}$, the hazard rate of the external control cohort
+- $\rho_{01}$, the log hazard rate of the external control cohort
 - $\tau$, a precision parameter known as the "commensurability parameter"
 
 Information from $\rho_{01}$ is used in estimating $\rho_{00}$ through a
@@ -664,7 +664,7 @@ draws <- rename_draws_covariates(draws, analysis_object)
 summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975))) %>%
   filter(variable != "lp__") %>%
   gt() %>%
-  fmt_number(2:4, decimals = 2) %>%
+
   tab_style(
     locations = cells_body(rows = 5),
     style = list(
@@ -828,7 +828,7 @@ draws_ps <- rename_draws_covariates(draws_ps, analysis_object_ps)
 summarize_draws(draws_ps, ~ quantile(.x, probs = c(0.025, 0.50, 0.975))) %>%
   filter(variable != "lp__") %>%
   gt() %>%
-  fmt_number(2:4, decimals = 2) %>%
+  
   tab_style(
     locations = cells_body(rows = 9),
     style = list(
