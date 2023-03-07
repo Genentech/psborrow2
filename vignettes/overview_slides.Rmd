@@ -153,7 +153,7 @@ $$
 
 Consider two hyperprior distributions for $\tau$:
 
-```{r echo = FALSE, fig.align="center", fig.dim = c(8,4)}
+```{r echo = FALSE, fig.align="center", fig.dim = c(8,4), warning = FALSE}
 x_seq <- c(seq(0, 10, .001), seq(10, 10000, 1))
 uninf_gamma <- vapply(x_seq, dgamma, shape = .001, rate = .001, FUN.VALUE = numeric(1))
 inf_gamma <- vapply(x_seq, dgamma, shape = 1, rate = 0.001, FUN.VALUE = numeric(1))
@@ -335,7 +335,7 @@ in `?example_matrix`.
 
 <center>
 <br>
-```{r echo = FALSE, message = FALSE}
+```{r echo = FALSE, message = FALSE, warning = FALSE}
 library(gtsummary)
 tbl_cross(
   example_dataframe,
@@ -663,8 +663,9 @@ draws <- rename_draws_covariates(draws, analysis_object)
 
 summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975))) %>%
   filter(variable != "lp__") %>%
+  mutate_at(2:4, as.numeric) %>% 
   gt() %>%
-
+  fmt_number(columns = 2:4, decimals = 3) %>% 
   tab_style(
     locations = cells_body(rows = 5),
     style = list(
@@ -711,42 +712,32 @@ t1
 
 ##
 
-There appear to be some differences. Let's use statistical adjustment
-base on the propensity score to address this:
+There appear to be some differences. Let's use inverse probability of treatment 
+weighting (IPTW) using the ATT estimand to adjust for confounding. We first 
+create a propensity score model:
 
 ```{r}
-ps_model <- glm(ext ~ cov1 + cov2 + cov3 + cov4,
+library(WeightIt)
+example_dataframe$int <- 1-example_dataframe$ext
+weightit_model <- weightit(
+  int ~ cov1 + cov2 + cov3 + cov4,
   data = example_dataframe,
-  family = binomial
+  method = "gbm",
+  estimand = "ATT"
 )
 ```
 
 ```{r}
-ps_model
+weightit_model
 ```
 
 ##
 
-We'll make a new matrix called `example_matrix_ps` which has 5 categories of
-propensity score levels with approximately the same number of patients
-in each.
+We'll make a new matrix called `example_matrix_ps` includes the 
+IPTW weights:
 
 ```{r include = FALSE}
-ps <- predict(ps_model, type = "response")
-example_dataframe$ps <- ps
-```
-
-
-```{r, include = FALSE}
-example_dataframe$ps_cat_ <- cut(
-  example_dataframe$ps,
-  breaks = 5,
-  include.lowest = TRUE
-)
-levels(example_dataframe$ps_cat_) <- c(
-  "ref", "low",
-  "low_med", "high_med", "high"
-)
+example_dataframe$att <- weightit_model$weights
 ```
 
 ```{r include = FALSE}
@@ -755,7 +746,7 @@ example_matrix_ps <- create_data_matrix(
   outcome = c("time", "cnsr"),
   trt_flag_col = "trt",
   ext_flag_col = "ext",
-  covariates = ~ps_cat_
+  covariates = ~att
 )
 ```
 
@@ -763,36 +754,34 @@ example_matrix_ps <- create_data_matrix(
 head(example_matrix_ps)
 ```
 
-
-## Adjusting for covariates in `psborrow2`
-
-To adjust for covariates, we'll use the costructor `add_covariates()`:
-
-```{r eval = FALSE}
-add_covariates(
-  covariates,
-  priors
-)
+```{r}
+tail(example_matrix_ps)
 ```
 
-- `covariates`, Names of columns in the data matrix containing covariates to
-be adjusted for
-- `priors`, Either a single object of class `Prior` specifying the prior
-distribution to apply to all covariates or a named list of distributions of
-class `Prior`, one for each covariate
+## Weighted KM curves
 
-## Analysis object adjusting for propensity scores
+The weighted curves look much more similar!
 
-Now let's create an `Analysis` object that adjusts for propensity scores:
+```{r message = FALSE, echo = FALSE, fig.align = "center", fig.dim = c(7, 4)}
+km_fit_ps <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt + ext, 
+                     data = example_dataframe, 
+                     weights = example_dataframe$att)
+ggsurvplot(fit = km_fit_ps, data = example_dataframe, palette = "Set1")
+```
+
+
+## Weighted analysis object
+
+Now let's create an `Analysis` object that adjusts for propensity scores by 
+passing the weights to `exp_surv_dist`:
 
 ```{r message = FALSE}
 analysis_object_ps <- create_analysis_obj(
   data_matrix = example_matrix_ps,
-  covariates = add_covariates(
-    c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
-    normal_prior(0, 10000)
-  ),
-  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+  outcome = exp_surv_dist("time",
+                          "cnsr", 
+                          normal_prior(0, 10000), 
+                          weight_var = "att"),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
@@ -801,22 +790,22 @@ analysis_object_ps <- create_analysis_obj(
 ```{r include = FALSE}
 results_ps <- mcmc_sample(analysis_object_ps,
   iter_warmup = 1000,
-  iter_sampling = 1000,
-  chains = 1
+  iter_sampling = 10000,
+  chains = 4
 )
 ```
 
 ```{r eval = FALSE}
 results_ps <- mcmc_sample(analysis_object_ps,
   iter_warmup = 1000,
-  iter_sampling = 1000,
-  chains = 1
+  iter_sampling = 10000,
+  chains = 4
 )
 ```
 
 ##
 
-It looks like we do indeed see a treatment effect when differences in the
+It looks like we see more of a treatment effect when differences in the
 distributions of baseline confounds are taken into consideration!
 
 <br>
@@ -827,10 +816,11 @@ draws_ps <- rename_draws_covariates(draws_ps, analysis_object_ps)
 
 summarize_draws(draws_ps, ~ quantile(.x, probs = c(0.025, 0.50, 0.975))) %>%
   filter(variable != "lp__") %>%
+  mutate_at(2:4, as.numeric) %>% 
   gt() %>%
-  
+  fmt_number(columns = 2:4, decimals = 3) %>% 
   tab_style(
-    locations = cells_body(rows = 9),
+    locations = cells_body(rows = 5),
     style = list(
       cell_text(weight = "bold"),
       cell_fill(color = "lightcyan")
@@ -853,12 +843,11 @@ mcmc_hist(draws_ps, c("treatment HR")) +
 
 ```{r include = FALSE}
 # Function to help evaluate all combinations of adjustment and borrowing
-trt_from_anls <- function(borrowing, adjustment = NULL) {
+trt_from_anls <- function(borrowing, exp_outcome) {
   require(posterior)
   require(tibble)
   anls <- create_analysis_obj(
     example_matrix_ps,
-    covariates = adjustment,
     outcome = exp_outcome,
     treatment = trt_details,
     borrowing = borrowing
@@ -870,7 +859,7 @@ trt_from_anls <- function(borrowing, adjustment = NULL) {
   uci <- quant[quant$variable == "HR_trt", "97.5%"][[1]]
   med <- quant[quant$variable == "HR_trt", "50%"][[1]]
   tibble(
-    adjustment = ifelse(is.null(adjustment), "No adjustment", "Regression adjustment for PS categories"),
+    adjustment = ifelse(exp_outcome@weight_var == "", "No weighting", "IPTW-ATT weights"),
     borrowing = ifelse(borrowing@method != "BDB",
       borrowing@method,
       paste0(
@@ -892,9 +881,11 @@ no_borrow <- borrowing_details(method = "No borrowing", ext_flag_col = "ext")
 bdb_borrow <- borrowing_details(method = "BDB", ext_flag_col = "ext", tau_prior = gamma_prior(0.001, 0.001))
 bdb_borrow_agg <- borrowing_details(method = "BDB", ext_flag_col = "ext", tau_prior = gamma_prior(1, 0.001))
 full_borrow <- borrowing_details(method = "Full borrowing", ext_flag_col = "ext")
-adj_ps <- add_covariates(
-  c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
-  normal_prior(0, 10000)
+exp_outcome_weight <- exp_surv_dist(
+  time_var = "time",
+  cens_var = "cnsr",
+  baseline_prior = normal_prior(0, 10000),
+  weight_var = "att"
 )
 
 # results
@@ -907,13 +898,13 @@ res <- map2(
     bdb_borrow_agg, bdb_borrow_agg,
     full_borrow, full_borrow
   ),
-  list(NULL, adj_ps, NULL, adj_ps, NULL, adj_ps, adj_ps, NULL),
+  list(exp_outcome, exp_outcome_weight, exp_outcome, exp_outcome_weight, exp_outcome, exp_outcome_weight, exp_outcome, exp_outcome_weight),
   trt_from_anls
 )
 
 res_df <- bind_rows(res)
 res_df$adjustment <- factor(res_df$adjustment,
-  levels = c("No adjustment", "Regression adjustment for PS categories")
+  levels = c("No weighting", "IPTW-ATT weights")
 )
 res_df$borrowing <- ifelse(res_df$borrowing == "BDB - gamma(0.001, 0.001)",
   "BDB - conservative",

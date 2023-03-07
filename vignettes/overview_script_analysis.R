@@ -24,6 +24,9 @@ library(posterior)
 # Comparing populations
 library(table1)
 
+# Weighting
+library(WeightIt)
+
 ############################################################
 # Explore example data ----
 ############################################################
@@ -200,21 +203,20 @@ table1(
 
 # Create a propensity score model
 example_dataframe$int <- 1 - example_dataframe$ext
-ps_model <- glm(int ~ cov1 + cov2 + cov3 + cov4,
+
+weightit_model <- weightit(
+  int ~ cov1 + cov2 + cov3 + cov4,
   data = example_dataframe,
-  family = binomial
+  method = "gbm",
+  estimand = "ATT"
 )
-ps <- predict(ps_model, type = "response")
-example_dataframe$ps <- ps
-example_dataframe$iptw_att <- example_dataframe$int + (1 - example_dataframe$int) * (example_dataframe$ps / (1 - example_dataframe$ps))
-example_dataframe$iptw_att_stable <- example_dataframe$iptw_att
-example_dataframe$iptw_att_stable[example_dataframe$ext == 1] <- example_dataframe$iptw_att[example_dataframe$ext == 1] * (sum(example_dataframe$ext==1) / sum(example_dataframe$iptw_att[example_dataframe$ext == 1]) )
-sum(example_dataframe$iptw_att_stable)
+
+example_dataframe$att <- weightit_model$weights
 
 # Weighted KM curve
 km_fit_ps <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt + ext,
                      data = example_dataframe,
-                     weights = example_dataframe$iptw_att_stable
+                     weights = example_dataframe$att
 )
 
 ggsurvplot(km_fit_ps)
@@ -225,7 +227,7 @@ example_matrix_ps <- create_data_matrix(
   outcome = c("time", "cnsr"),
   trt_flag_col = "trt",
   ext_flag_col = "ext",
-  covariates = ~iptw_att_stable
+  covariates = ~att
 )
 
 ############################################################
@@ -233,7 +235,7 @@ example_matrix_ps <- create_data_matrix(
 ############################################################
 anls_ps_bdb <- create_analysis_obj(
   data_matrix = example_matrix_ps,
-  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000), weight_var = "iptw_att_stable"),
+  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
