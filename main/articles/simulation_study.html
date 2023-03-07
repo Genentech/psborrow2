@@ -52,13 +52,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/develop">develop</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -202,12 +195,12 @@ matrix.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">sim_single_matrix</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span>, hr <span class="op">=</span> <span class="fl">0.5</span>, drift_hr <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#      id ext trt      time status cnsr</span></span>
-<span><span class="co"># [1,]  1   0   0  1.992972      1    0</span></span>
-<span><span class="co"># [2,]  2   0   0 16.906917      1    0</span></span>
-<span><span class="co"># [3,]  3   0   0 30.362886      1    0</span></span>
-<span><span class="co"># [4,]  4   0   0  7.373410      1    0</span></span>
-<span><span class="co"># [5,]  5   0   0  7.870506      1    0</span></span>
-<span><span class="co"># [6,]  6   0   0  1.681103      1    0</span></span></code></pre></div>
+<span><span class="co"># [1,]  1   0   0 13.511389      1    0</span></span>
+<span><span class="co"># [2,]  2   0   0 11.652988      1    0</span></span>
+<span><span class="co"># [3,]  3   0   0  5.505998      1    0</span></span>
+<span><span class="co"># [4,]  4   0   0 17.489336      1    0</span></span>
+<span><span class="co"># [5,]  5   0   0 20.547556      1    0</span></span>
+<span><span class="co"># [6,]  6   0   0  2.859826      1    0</span></span></code></pre></div>
 <p>Using this function, let’s simulate a list of lists of matrices with
 four scenarios:</p>
 <ul>
@@ -532,7 +525,7 @@ object. Instead, it returns a class unique to simulation study results:
 <span><span class="co"># [1] "MCMCSimulationResult"</span></span>
 <span><span class="co"># attr(,"package")</span></span>
 <span><span class="co"># [1] "psborrow2"</span></span></code></pre></div>
-<p>This evaluation took about 12.7 minutes. Let’s look at the
+<p>This evaluation took about 15.3 minutes. Let’s look at the
 performance of our simulation study by extracting the data.frame that
 summarizes results, <code><a href="../reference/get_results.html">get_results()</a></code>:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
