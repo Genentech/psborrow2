@@ -23,7 +23,7 @@ Authors@R: c(
       )
    )
 Description: `psborrow2` is an R package for complex, innovative trial designs using
-   Bayesian dynamic borrowing (BDB). `psborrow` has two main goals:
+   Bayesian dynamic borrowing (BDB). `psborrow2` has two main goals:
    First, `psborrow2` facilitates simulation studies that compare different borrowing
    parameters (e.g. full borrowing, no borrowing, dynamic borrowing) and
    other trial and borrowing characteristics (e.g. sample size, covariates) in
