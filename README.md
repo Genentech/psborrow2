@@ -10,9 +10,8 @@ maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https
 
 ## Overview
 
-`psborrow2` provides an efficient framework for users to
-conduct Bayesian Dynamic Borrowing (BDB) analyses and other
-innovative analytical designs.[^1] [^2]
+`psborrow2` is an R package that for conducting Bayesian Dynamic Borrowing (BDB)
+analyses and simulation studies.[^1] [^2]
 `psborrow2` has two main objectives:
 
 1. **Facilitate BDB analyses**. `psborrow2` has a user-friendly interface for
@@ -26,8 +25,8 @@ innovative analytical designs.[^1] [^2]
 ## Background
 
 `psborrow2` is the successor to
-[`psborrow`](https://github.com/Genentech/psborrow). `psborrow` is still freely
-available on [`CRAN`](https://cran.r-project.org/package=psborrow) with the
+[`psborrow`](https://github.com/Genentech/psborrow). [`psborrow`](https://github.com/Genentech/psborrow)
+is still freely available on [`CRAN`](https://cran.r-project.org/package=psborrow) with the
 same validated functionality; however, the package is not actively developed.
 Major updates in `psborrow2` include:
 
@@ -62,10 +61,10 @@ browseVignettes("psborrow2")
 [^1]:
     Lewis CJ, Sarkar S, Zhu J, Carlin BP. Borrowing from historical control data
     in cancer drug development: a cautionary tale and practical guidelines.
-    Statistics in biopharmaceutical research. 2019 Jan 2;11(1):67-78.
+    Statistics in biopharmaceutical research. 2019 Jan 2;11(1):67-78. [https://doi.org/10.1080/19466315.2018.1497533](https://doi.org/10.1080/19466315.2018.1497533)
 
 [^2]:
     Viele K, Berry S, Neuenschwander B, Amzal B, Chen F, Enas N, Hobbs B,
     Ibrahim JG, Kinnersley N, Lindborg S, Micallef S. Use of historical control
     data for assessing treatment effects in clinical trials. Pharmaceutical
-    statistics. 2014 Jan;13(1):41-54.
+    statistics. 2014 Jan;13(1):41-54. [https://doi.org/10.1002/pst.1589](https://doi.org/10.1002/pst.1589)
