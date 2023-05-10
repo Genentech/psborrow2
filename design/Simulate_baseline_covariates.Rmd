@@ -1,0 +1,137 @@
+---
+title: "Simulate Baseline Covariates"
+author: "Isaac Gravestock"
+date: "2023-03-31"
+output: html_document
+---
+
+To prepare for simulating survival data, we need to first create the baseline data for the cohort.
+
+Requirements:
+
+1. number of patients in the 3 arms
+2. arbitrary number of correlated variables
+3. transform to binary variables by cut-off value
+4. set names
+5. set means for internal and external arms
+
+```{r, eval = FALSE}
+# generate correlated variables
+correlated_covs <- add_covariates(
+  names = c("x1", "x2", "x3"),
+  means_int = c(0, 0, 0),
+  means_ext = means,
+  covariance = covariance_matrix(diag = c(1, 1, 1), upper_tri = c(0, .2, .3))
+) %>% transform(x1 = binary_tranform(cut_off = 0.4, cut_off_ext = 0.45))
+
+# generate uncorrelated variables
+indep_covs <- add_covariates(
+  names = c("age", "sex"),
+  means = c(60, 0.5),
+  means_ext = means,
+  covariance = covariance_matrix(diag = c(1, 1), upper_tri = c(0, 0))
+)
+
+baseline_obj <- sim_baseline(
+  sample_size = c(trt_int = 100, ctrl_int = 50, ctrl_ext = 200),
+  covariates = list(correlated_covs, indep_covs)
+)
+```
+
+# sim_baseline is enough to specify a cohort
+
+# For survival we need to specify in addition:
+
+ - baseline hazard parameters
+ - HR:
+   - internal/external HR "drift"
+   - covariate HR coefficients
+   - treatment effect HR
+
+```{r}
+
+baseline_design <- design_matrix(baseline_obj, ~ sex + I(age^2) + trt + ext)
+colnames(baseline_design)
+
+baseline_predictor <- linear_predictor(
+  design = baseline_design,
+  betas = c(
+    sex = .3,
+    "I(age^2)" = .4,
+    trt = 1,
+    ext = 1.1
+  )
+)
+
+simulate_survival(
+  baseline_predictor,
+  hazard_model = weibull_ph(shape = 0.76, lambda = 1) # is a function that takes vector of LPs and gives vector of times
+)
+```
+
+- recruitment rate
+- cut off
+- censoring
+
+
+# Functions
+
+```{r}
+# Specify covariates to include in baseline
+#
+# names: covariates names
+# means_int: means for internal trial patients
+# means_ext: means for external patients
+# covariance_int: covariance matrix for multivariate normal for internal
+# covariance_ext: covariance matrix for multivariate normal for external
+#
+# Returns object capturing these parameters for later processing
+add_covariates(names, means_int, means_ext, covariance_int, covariance_ext)
+
+# Transform variables
+#
+# ... Arguments corresponding to the names in `add_covariates` taking functions
+#  which takes a list of vectors of percentiles (int, ext), transforms them, and returns
+#  a list of vectors of the same dimension.
+#
+#  Returns a modified covariates object
+transform(...)
+
+binary_tranform <- function(cut_off_int, cut_off_ext) {
+  function(qlist) {
+    list(int = qlist$int > cut_off_int, ext = qlist$ext > cut_off_ext)
+  }
+}
+
+
+# Covariance matrix
+#
+# diag: variances to put in the main diagonal
+# upper_tri: covariance terms to put in the upper and lower triangles. Given by column
+covariance_matrix(diag, upper_tri)
+
+# Simulate Baseline
+#
+# sample_size: named vector of sample sizes (maybe these should be directly parameters)
+# covariates: a list of covariates objects
+#
+# Constructs the multivariate normal distribution by combining the means and covariance matrices blockwise.
+# Generates a data frame using mvrnorm().
+# Any variables to be transformed and calculated back to percentiles using marginal distribution and then
+# transformed.
+sim_baseline(sample_size, covariates)
+
+
+# Construct design matrix
+# Maybe this should just be model.matrix()
+design_matrix()
+
+# Calculate Linear Predictor
+#
+# Takes design matrix and vector of betas and multiplies them
+#
+linear_predictor(matrix, betas)
+
+# Simulate Survival times
+#
+```
