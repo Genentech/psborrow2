@@ -29,6 +29,7 @@ Other priors:
 \code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},
 \code{\link{exponential_prior}()},
+\code{\link{half_cauchy_prior}()},
 \code{\link{normal_prior}()},
 \code{\link{poisson_prior}()},
 \code{\link{uniform_prior}()}
