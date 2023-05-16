@@ -7,20 +7,17 @@ test_that("h_glue works as expected", {
 })
 
 test_that("parse_constraint works as expected", {
+  hcp <- half_cauchy_prior(1, 100)
   expect_equal(
-    parse_constraint("<lower=1>"),
+    parse_constraint(hcp),
     c(lower = 1, upper = Inf)
   )
-
+  tp <- tau_prior(0.001, 0.001)
   expect_equal(
-    parse_constraint("<lower=0, upper=1>"),
-    c(lower = 0, upper = 1)
+    parse_constraint(tp),
+    c(lower = 0, upper = Inf)
   )
 
-  expect_equal(
-    parse_constraint(""),
-    c(lower = -Inf, upper = Inf)
-  )
 })
 
 
