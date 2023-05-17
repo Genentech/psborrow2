@@ -128,7 +128,7 @@ get_covariate_constraints <- function(cov_obj) {
 #' psborrow2:::parse_constraint(np)
 parse_constraint <- function(object) {
   assert_class(object, "Prior")
-  s <- h_glue(object@constraint)
+  s <- eval_constraints(object)
   s <- gsub("[<>[:space:]]", "", s)
   s_list <- strsplit(s, ",")[[1]]
 
@@ -233,8 +233,6 @@ variable_dictionary <- function(analysis_obj) {
   vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addl_params)
   data.frame(Stan_variable = unname(vars), Description = names(vars))
 }
-
-
 
 #' Get Stan code for a `Prior`
 #'
