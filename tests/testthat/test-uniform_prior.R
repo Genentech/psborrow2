@@ -32,4 +32,3 @@ test_that("plot works for UniformPrior", {
 test_that("constraints work for UniformPrior", {
   expect_equal(eval_constraints(uniform_prior(0, 3)), "<lower=0,upper=3>")
 })
-

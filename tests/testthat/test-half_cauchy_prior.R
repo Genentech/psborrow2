@@ -34,4 +34,3 @@ test_that("constraints work for HalfCauchyPrior", {
   expect_equal(eval_constraints(half_cauchy_prior(4, 5)), "<lower=4>")
   expect_equal(eval_constraints(half_cauchy_prior(200, 10000)), "<lower=200>")
 })
-

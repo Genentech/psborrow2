@@ -17,7 +17,6 @@ test_that("parse_constraint works as expected", {
     parse_constraint(tp),
     c(lower = 0, upper = Inf)
   )
-
 })
 
 

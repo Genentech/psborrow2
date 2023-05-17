@@ -33,4 +33,3 @@ test_that("plot works for GammaPrior", {
 test_that("constraints work for GammaPrior", {
   expect_equal(eval_constraints(gamma_prior(2, 5)), "<lower=0>")
 })
-
