@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.771324863883848" branch-rate="0" lines-covered="850" lines-valid="1102" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-05-17 21:50:10">
+<coverage line-rate="0.771324863883848" branch-rate="0" lines-covered="850" lines-valid="1102" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-05-17 22:25:22">
   <sources>
     <source>/__w/psborrow2/psborrow2/psborrow2</source>
   </sources>
@@ -847,7 +847,7 @@
           <methods>
             <method name="exponential_prior" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="46" hits="41" branch="false"/>
+                <line number="46" hits="40" branch="false"/>
               </lines>
             </method>
             <method name="ExponentialPrior" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -875,7 +875,7 @@
             </method>
           </methods>
           <lines>
-            <line number="46" hits="41" branch="false"/>
+            <line number="46" hits="40" branch="false"/>
             <line number="54" hits="1" branch="false"/>
             <line number="55" hits="1" branch="false"/>
             <line number="56" hits="1" branch="false"/>
@@ -983,7 +983,7 @@
           <methods>
             <method name="half_cauchy_prior" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="51" hits="10" branch="false"/>
+                <line number="51" hits="11" branch="false"/>
               </lines>
             </method>
             <method name="HalfCauchyPrior" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -1017,7 +1017,7 @@
             </method>
           </methods>
           <lines>
-            <line number="51" hits="10" branch="false"/>
+            <line number="51" hits="11" branch="false"/>
             <line number="59" hits="1" branch="false"/>
             <line number="60" hits="1" branch="false"/>
             <line number="61" hits="1" branch="false"/>
