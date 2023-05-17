@@ -2,18 +2,18 @@
 % Please edit documentation in R/helpers.R
 \name{parse_constraint}
 \alias{parse_constraint}
-\title{Extract Upper and Lower Bounds from Constraint String}
+\title{Extract Upper and Lower Bounds from a Prior object}
 \usage{
 parse_constraint(object)
 }
 \arguments{
-\item{s}{Character. Constraint string, of the form \code{"<lower = 0, upper = 1>"}.}
+\item{object}{\code{Prior} Object of class Prior}
 }
 \value{
 A list with upper and lower bounds. Any unspecified bounds are set to \code{-Inf} or \code{Inf}.
 }
 \description{
-Extract Upper and Lower Bounds from Constraint String
+Extract Upper and Lower Bounds from a Prior object
 }
 \examples{
 np <- normal_prior(0, 100)

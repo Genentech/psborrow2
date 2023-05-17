@@ -117,9 +117,9 @@ get_covariate_constraints <- function(cov_obj) {
   cons
 }
 
-#' Extract Upper and Lower Bounds from Constraint String
+#' Extract Upper and Lower Bounds from a Prior object
 #'
-#' @param s Character. Constraint string, of the form `"<lower = 0, upper = 1>"`.
+#' @param object `Prior` Object of class Prior
 #'
 #' @return
 #' A list with upper and lower bounds. Any unspecified bounds are set to `-Inf` or `Inf`.

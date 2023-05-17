@@ -6,7 +6,7 @@ test_that("Uniform priors are rendering correctly", {
   expect_class(prior, "UniformPrior")
   expect_equal(prior@alpha, 20)
   expect_equal(prior@beta, 300)
-  expect_equal(prior@constraint, "<lower=20, upper=300>")
+  expect_equal(eval_constraints(prior), "<lower=20,upper=300>")
 
   # Expect N inputs correct
   expect_equal(NROW(slotNames(prior)) - 3, prior@n_param)
@@ -28,3 +28,8 @@ test_that("plot works for UniformPrior", {
     plot(uniform_prior(0, 3))
   )
 })
+
+test_that("constraints work for UniformPrior", {
+  expect_equal(eval_constraints(uniform_prior(0, 3)), "<lower=0,upper=3>")
+})
+

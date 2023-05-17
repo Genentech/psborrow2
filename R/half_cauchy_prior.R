@@ -66,7 +66,7 @@ setMethod(
       ),
       row.names = FALSE, right = FALSE
     )
-    if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
+    print(h_glue("Constraints: {{eval_constraints(object)}}"))
   }
 )
 

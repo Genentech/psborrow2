@@ -23,18 +23,15 @@ test_that("show works for HalfCauchyPrior", {
 
 test_that("plot works for HalfCauchyPrior", {
   vdiffr::expect_doppelganger(
-    "hafl_cauchy_prior_plot",
+    "half_cauchy_prior_plot",
     plot(half_cauchy_prior(0, 0.8))
   )
 })
 
-test_that("the STAN code is correctly generated for Half Cauchy", {
-  stan_model_string <- create_analysis_obj(
-    data_matrix = example_matrix,
-    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
-    borrowing = borrowing_details("Full borrowing",
-                                  ext_flag_col = "ext"
-    ),
-    treatment = treatment_details("trt", half_cauchy_prior(0,20))
-  )
+
+test_that("constraints work for HalfCauchyPrior", {
+  expect_equal(eval_constraints(half_cauchy_prior(2, 5)), "<lower=2>")
+  expect_equal(eval_constraints(half_cauchy_prior(4, 5)), "<lower=4>")
+  expect_equal(eval_constraints(half_cauchy_prior(200, 10000)), "<lower=200>")
 })
+
