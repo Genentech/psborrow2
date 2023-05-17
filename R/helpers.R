@@ -108,27 +108,27 @@ h_glue <- function(..., collapse = FALSE, collapse_sep = "\n") {
 get_covariate_constraints <- function(cov_obj) {
   n_covs <- length(cov_obj@covariates)
   if (is(cov_obj@priors, "Prior")) {
-    cons <- rep(parse_constraint(cov_obj@priors@constraint), each = n_covs)
+    cons <- rep(parse_constraint(cov_obj@priors), each = n_covs)
     cons <- matrix(cons, ncol = 2, dimnames = list(NULL, c("lower", "upper")))
   } else {
-    cons <- t(vapply(cov_obj@priors, function(p) parse_constraint(p@constraint), numeric(2L)))
+    cons <- t(vapply(cov_obj@priors, function(p) parse_constraint(p), numeric(2L)))
   }
   assert_numeric(cons, any.missing = FALSE, len = 2 * n_covs)
   cons
 }
 
-#' Extract Upper and Lower Bounds from Constraint String
+#' Extract Upper and Lower Bounds from a Prior object
 #'
-#' @param s Character. Constraint string, of the form `"<lower = 0, upper = 1>"`.
+#' @param object `Prior` Object of class Prior
 #'
 #' @return
 #' A list with upper and lower bounds. Any unspecified bounds are set to `-Inf` or `Inf`.
 #' @examples
-#' psborrow2:::parse_constraint("<lower=0>")
-#' psborrow2:::parse_constraint("<lower=0, upper=1>")
-#' psborrow2:::parse_constraint("")
-parse_constraint <- function(s) {
-  assert_character(s)
+#' np <- normal_prior(0, 100)
+#' psborrow2:::parse_constraint(np)
+parse_constraint <- function(object) {
+  assert_class(object, "Prior")
+  s <- eval_constraints(object)
   s <- gsub("[<>[:space:]]", "", s)
   s_list <- strsplit(s, ",")[[1]]
 
@@ -233,8 +233,6 @@ variable_dictionary <- function(analysis_obj) {
   vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addl_params)
   data.frame(Stan_variable = unname(vars), Description = names(vars))
 }
-
-
 
 #' Get Stan code for a `Prior`
 #'

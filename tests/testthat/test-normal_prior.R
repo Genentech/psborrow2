@@ -26,3 +26,7 @@ test_that("plot works for NormalPrior", {
     plot(normal_prior(0, 0.8))
   )
 })
+
+test_that("constraints work for NormalPrior", {
+  expect_equal(eval_constraints(normal_prior(2, 5)), "")
+})

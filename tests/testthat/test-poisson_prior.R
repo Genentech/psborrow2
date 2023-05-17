@@ -25,3 +25,8 @@ test_that("plot works for PoissonPrior", {
     plot(poisson_prior(3))
   )
 })
+
+test_that("constraints work for PoissonPrior", {
+  expect_equal(eval_constraints(poisson_prior(3)), "<lower=0>")
+})
+
