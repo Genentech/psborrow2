@@ -26,3 +26,10 @@ test_that("plot works for CauchyPrior", {
     plot(cauchy_prior(0, 0.8))
   )
 })
+
+test_that("constraints work for CauchyPrior", {
+  expect_equal(eval_constraints(cauchy_prior(0, 0.8)), "")
+})
+
+
+

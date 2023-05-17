@@ -12,7 +12,7 @@ test_that("parse_constraint works as expected", {
     parse_constraint(hcp),
     c(lower = 1, upper = Inf)
   )
-  tp <- tau_prior(0.001, 0.001)
+  tp <- gamma_prior(0.001, 0.001)
   expect_equal(
     parse_constraint(tp),
     c(lower = 0, upper = Inf)

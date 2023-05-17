@@ -117,9 +117,9 @@ get_covariate_constraints <- function(cov_obj) {
   cons
 }
 
-#' Extract Upper and Lower Bounds from Constraint String
+#' Extract Upper and Lower Bounds from a Prior object
 #'
-#' @param s Character. Constraint string, of the form `"<lower = 0, upper = 1>"`.
+#' @param object `Prior` Object of class Prior
 #'
 #' @return
 #' A list with upper and lower bounds. Any unspecified bounds are set to `-Inf` or `Inf`.
@@ -128,7 +128,7 @@ get_covariate_constraints <- function(cov_obj) {
 #' psborrow2:::parse_constraint(np)
 parse_constraint <- function(object) {
   assert_class(object, "Prior")
-  s <- h_glue(object@constraint)
+  s <- eval_constraints(object)
   s <- gsub("[<>[:space:]]", "", s)
   s_list <- strsplit(s, ",")[[1]]
 
@@ -233,8 +233,6 @@ variable_dictionary <- function(analysis_obj) {
   vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addl_params)
   data.frame(Stan_variable = unname(vars), Description = names(vars))
 }
-
-
 
 #' Get Stan code for a `Prior`
 #'
