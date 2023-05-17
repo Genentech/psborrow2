@@ -4,7 +4,7 @@
 \alias{parse_constraint}
 \title{Extract Upper and Lower Bounds from Constraint String}
 \usage{
-parse_constraint(s)
+parse_constraint(object)
 }
 \arguments{
 \item{s}{Character. Constraint string, of the form \code{"<lower = 0, upper = 1>"}.}
@@ -16,7 +16,6 @@ A list with upper and lower bounds. Any unspecified bounds are set to \code{-Inf
 Extract Upper and Lower Bounds from Constraint String
 }
 \examples{
-psborrow2:::parse_constraint("<lower=0>")
-psborrow2:::parse_constraint("<lower=0, upper=1>")
-psborrow2:::parse_constraint("")
+np <- normal_prior(0, 100)
+psborrow2:::parse_constraint(np)
 }

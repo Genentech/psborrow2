@@ -28,7 +28,6 @@ test_that("plot works for HalfCauchyPrior", {
   )
 })
 
-
 test_that("the STAN code is correctly generated for Half Cauchy", {
   stan_model_string <- create_analysis_obj(
     data_matrix = example_matrix,
