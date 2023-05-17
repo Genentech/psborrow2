@@ -83,9 +83,9 @@ test_that("the STAN code is correctly generated when limits are placed in the tr
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
     borrowing = borrowing_details("Full borrowing",
-                                  ext_flag_col = "ext"
+      ext_flag_col = "ext"
     ),
-    treatment = treatment_details("trt", half_cauchy_prior(0,20))
+    treatment = treatment_details("trt", half_cauchy_prior(0, 20))
   )@model_string
 
   expect_true(grepl("real<lower=0> beta_trt", stan_model_string))
@@ -96,8 +96,8 @@ test_that("the STAN code is correctly generated when limits are placed in the bo
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
     borrowing = borrowing_details("BDB",
-                                  ext_flag_col = "ext",
-                                  tau_prior =  half_cauchy_prior(10,20)
+      ext_flag_col = "ext",
+      tau_prior = half_cauchy_prior(10, 20)
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
   )@model_string
@@ -110,7 +110,7 @@ test_that("the STAN code is correctly generated when limits are placed in the ou
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", uniform_prior(0, 10)),
     borrowing = borrowing_details("Full borrowing",
-                                  ext_flag_col = "ext"
+      ext_flag_col = "ext"
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
   )@model_string
@@ -123,7 +123,7 @@ test_that("the STAN code is correctly generated when limits are placed in the ou
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", uniform_prior(0, 10)),
     borrowing = borrowing_details("Full borrowing",
-                                  ext_flag_col = "ext"
+      ext_flag_col = "ext"
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
   )@model_string
@@ -138,7 +138,7 @@ test_that("the STAN code is correctly generated when limits are placed in the co
     covariates = add_covariates("cov1", uniform_prior(0, 10)),
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
     borrowing = borrowing_details("Full borrowing",
-                                  ext_flag_col = "ext"
+      ext_flag_col = "ext"
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
   )
@@ -150,13 +150,19 @@ test_that("the STAN code is correctly generated when limits are placed in the co
 
   anls_obj <- create_analysis_obj(
     data_matrix = example_matrix,
-    covariates = add_covariates(c("cov1",
-                                  "cov2"),
-                                list(uniform_prior(0, 10),
-                                     uniform_prior(10, 20))),
+    covariates = add_covariates(
+      c(
+        "cov1",
+        "cov2"
+      ),
+      list(
+        uniform_prior(0, 10),
+        uniform_prior(10, 20)
+      )
+    ),
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
     borrowing = borrowing_details("Full borrowing",
-                                  ext_flag_col = "ext"
+      ext_flag_col = "ext"
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
   )
@@ -165,7 +171,4 @@ test_that("the STAN code is correctly generated when limits are placed in the co
 
   expect_equal(inputs$L_beta, c(0, 10))
   expect_equal(inputs$U_beta, c(10, 20))
-
-
 })
-

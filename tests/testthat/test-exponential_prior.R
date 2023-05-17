@@ -29,5 +29,3 @@ test_that("plot works for ExponentialPrior", {
 test_that("constraints work for ExponentialPrior", {
   expect_equal(eval_constraints(exponential_prior(4)), "<lower=0>")
 })
-
-

@@ -30,4 +30,3 @@ test_that("plot works for BetaPrior", {
 test_that("constraints work for BetaPrior", {
   expect_equal(eval_constraints(beta_prior(1.5, 0.8)), "<lower=0, upper=1>")
 })
-
