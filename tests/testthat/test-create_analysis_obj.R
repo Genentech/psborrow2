@@ -23,12 +23,12 @@ bd_nb <- borrowing_details(
 bd_db <- borrowing_details(
   method = "BDB",
   ext_flag_col = "ext",
-  tau_prior = exponential_prior(0.0001)
+  tau_prior = half_cauchy_prior(0, .0001)
 )
 
 td <- treatment_details(
   "trt",
-  normal_prior(0, 1000)
+  half_normal_prior(0, 1000)
 )
 
 esd <- exp_surv_dist(

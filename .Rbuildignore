@@ -15,7 +15,6 @@ README.*
 ^\.prettierignore$
 ^staged_dependencies\.yaml$
 coverage.*
-^\.pre-commit-config\.yaml$
 ^codemeta\.json$
 devel
 ^design$
@@ -23,3 +22,4 @@ devel
 ^doc$
 ^Meta$
 ^dev$
+^\.pre-commit-config\.yaml$

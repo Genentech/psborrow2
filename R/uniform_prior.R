@@ -24,7 +24,7 @@
   prototype = list(
     n_param = 2L,
     stan_code = "uniform({{object@alpha}}, {{object@beta}})",
-    constraint = "<lower={{object@alpha}}, upper = {{object@beta}}>"
+    constraint = "<lower={{object@alpha}},upper={{object@beta}}>"
   ),
   validity = function(object) {
     if (object@beta <= object@alpha) {
@@ -48,8 +48,7 @@
 #' @examples
 #' up <- uniform_prior(0, 1)
 uniform_prior <- function(alpha, beta) {
-  constraint <- glue::glue("<lower={{alpha}}, upper={{beta}}>", .open = "{{", .close = "}}")
-  .uniform_prior(alpha = alpha, beta = beta, constraint = constraint)
+  .uniform_prior(alpha = alpha, beta = beta)
 }
 
 
@@ -68,7 +67,7 @@ setMethod(
       ),
       row.names = FALSE, right = FALSE
     )
-    if (object@constraint != "") print(h_glue("Constraints: {{object@constraint}}"))
+    print(h_glue("Constraints: {{eval_constraints(object)}}"))
   }
 )
 
