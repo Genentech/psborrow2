@@ -13,7 +13,7 @@ test_that("Half Normal priors are rendering correctly", {
 
   # Errors
   expect_error(half_normal_prior(mu = 2, sigma = -1),
-               regexp = "invalid class .HalfNormalPrior. object: sigma must be >0"
+    regexp = "invalid class .HalfNormalPrior. object: sigma must be >0"
   )
 })
 
