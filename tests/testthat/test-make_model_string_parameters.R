@@ -92,7 +92,7 @@ test_that("the STAN code is correctly generated when limits are placed in the tr
 })
 
 test_that("the STAN code is correctly generated when limits are placed in the borrowing parameters", {
-  stan_model_string <- create_analysis_obj(
+  stan_model_string_cauchy <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
     borrowing = borrowing_details("BDB",
@@ -102,7 +102,18 @@ test_that("the STAN code is correctly generated when limits are placed in the bo
     treatment = treatment_details("trt", normal_prior(0, 100000))
   )@model_string
 
-  expect_true(grepl("real<lower=10> tau", stan_model_string))
+  stan_model_string_normal <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
+    borrowing = borrowing_details("BDB",
+                                  ext_flag_col = "ext",
+                                  tau_prior = half_normal_prior(10, 20)
+    ),
+    treatment = treatment_details("trt", normal_prior(0, 100000))
+  )@model_string
+
+  expect_true(grepl("real<lower=10> tau", stan_model_string_cauchy))
+  expect_true(grepl("real<lower=10> tau", stan_model_string_normal))
 })
 
 test_that("the STAN code is correctly generated when limits are placed in the outcome parameters", {

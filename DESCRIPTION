@@ -103,6 +103,7 @@ Collate:
     'data.R'
     'gamma_prior.R'
     'half_cauchy_prior.R'
+    'half_normal_prior.R'
     'make_analysis_object_list.R'
     'make_model_string_data.R'
     'make_model_string_functions.R'

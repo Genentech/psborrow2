@@ -35,6 +35,7 @@ Other prior classes:
 \code{\link{ExponentialPrior-class}},
 \code{\link{GammaPrior-class}},
 \code{\link{HalfCauchyPrior-class}},
+\code{\link{HalfNormalPrior-class}},
 \code{\link{PoissonPrior-class}},
 \code{\link{Prior-class}},
 \code{\link{UniformPrior-class}}

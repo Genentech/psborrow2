@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R, R/prior_class.R,
 %   R/normal_prior.R, R/bernoulli_prior.R, R/beta_prior.R, R/cauchy_prior.R,
 %   R/exponential_prior.R, R/gamma_prior.R, R/half_cauchy_prior.R,
-%   R/poisson_prior.R, R/uniform_prior.R
+%   R/half_normal_prior.R, R/poisson_prior.R, R/uniform_prior.R
 \name{plot}
 \alias{plot}
 \alias{plot,Prior,missing-method}
@@ -13,6 +13,7 @@
 \alias{plot,ExponentialPrior,missing-method}
 \alias{plot,GammaPrior,missing-method}
 \alias{plot,HalfCauchyPrior,missing-method}
+\alias{plot,HalfNormalPrior,missing-method}
 \alias{plot,PoissonPrior,missing-method}
 \alias{plot,UniformPrior,missing-method}
 \title{Plot Prior Objects}
@@ -40,6 +41,8 @@
 \S4method{plot}{GammaPrior,missing}(x, y, add = FALSE, ...)
 
 \S4method{plot}{HalfCauchyPrior,missing}(x, y, add = FALSE, ...)
+
+\S4method{plot}{HalfNormalPrior,missing}(x, y, add = FALSE, ...)
 
 \S4method{plot}{PoissonPrior,missing}(x, y, add = FALSE, ...)
 
@@ -80,6 +83,8 @@ plot(exponential_prior(0.1))
 plot(gamma_prior(0.1, 0.1))
 plot(half_cauchy_prior(0, 1), xlim = c(-20, 20))
 plot(half_cauchy_prior(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
+plot(half_normal_prior(0, 1), xlim = c(-20, 20))
+plot(half_normal_prior(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
 plot(poisson_prior(5), xlim = c(0, 15))
 plot(uniform_prior(1, 2), xlim = c(0, 3))
 }

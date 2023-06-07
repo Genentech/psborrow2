@@ -28,7 +28,7 @@ bd_db <- borrowing_details(
 
 td <- treatment_details(
   "trt",
-  normal_prior(0, 1000)
+  half_normal_prior(0, 1000)
 )
 
 esd <- exp_surv_dist(
