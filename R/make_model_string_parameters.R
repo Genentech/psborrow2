@@ -22,23 +22,23 @@
 #'
 make_model_string_parameters <- function(analysis_obj) {
   ## Parameters string
-  trt_string <- h_glue("real{{analysis_obj@treatment@trt_prior@constraint}} beta_trt;")
+  trt_string <- h_glue("real{{eval_constraints(analysis_obj@treatment@trt_prior)}} beta_trt;")
 
   is_bdb <- isTRUE(analysis_obj@borrowing@method == "BDB")
   ### Set tau
-  borrowing_string <- if (is_bdb) h_glue("real{{analysis_obj@borrowing@tau_prior@constraint}} tau;") else ""
+  borrowing_string <- if (is_bdb) h_glue("real{{eval_constraints(analysis_obj@borrowing@tau_prior)}} tau;") else ""
 
   ### Set alpha
   intercept_string <- h_glue(
     "{{type}}{{constraint}}{{n}} alpha;",
     type = if (is_bdb) "vector" else "real",
-    constraint = analysis_obj@outcome@baseline_prior@constraint,
+    constraint = eval_constraints(analysis_obj@outcome@baseline_prior),
     n = if (is_bdb) "[2]" else ""
   )
 
   ### Add outcome specific parameters
   if (NROW(analysis_obj@outcome@param_priors) > 0) {
-    constraints <- lapply(analysis_obj@outcome@param_priors, function(p) p@constraint)
+    constraints <- lapply(analysis_obj@outcome@param_priors, function(p) eval_constraints(p))
     outcome_string <- h_glue("real{{constraints}} {{names(constraints)}};")
   } else {
     outcome_string <- analysis_obj@outcome@param_stan_code
