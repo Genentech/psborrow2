@@ -33,6 +33,8 @@ Other prior classes:
 \code{\link{BetaPrior-class}},
 \code{\link{ExponentialPrior-class}},
 \code{\link{GammaPrior-class}},
+\code{\link{HalfCauchyPrior-class}},
+\code{\link{HalfNormalPrior-class}},
 \code{\link{NormalPrior-class}},
 \code{\link{PoissonPrior-class}},
 \code{\link{Prior-class}},

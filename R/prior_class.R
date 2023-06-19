@@ -80,3 +80,26 @@ setMethod(
     }
   }
 )
+
+# evaluate constraints----
+
+#' Evaluate constraints
+#'
+#' Evaluate constraints when these are called
+#'
+#' @param object `Prior` object
+#'
+#' @rdname eval_constraints
+#'
+#' @export
+#'
+setGeneric("eval_constraints", function(object) standardGeneric("eval_constraints"))
+
+#' @rdname eval_constraints
+setMethod(
+  f = "eval_constraints",
+  signature = c("Prior"),
+  definition = function(object) {
+    return(h_glue(object@constraint))
+  }
+)
