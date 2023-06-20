@@ -1,5 +1,5 @@
 ---
-title: "Simulate Baseline Covariates"
+title: "Simulate Data: Baseline"
 author: "Isaac Gravestock"
 date: "2023-03-31"
 output: html_document
@@ -41,61 +41,10 @@ baseline_obj <- sim_baseline(
 ```
 
 `sim_baseline` is enough to specify a cohort to generate survival times.
-Implementation of the above functions can be a first phase.
+Implementation of the above functions can be a first phase, generating survival data will be in another
+design doc
 
-A second phase continues as below, with some further refinements.
-
-# 2. Survival Design
-
-For survival we need to specify in addition:
-
- - baseline hazard parameters
- - HR:
-   - internal/external HR "drift"
-   - covariate HR coefficients
-   - treatment effect HR
-
-```{r}
-generate(baseline_obj()) %>%
-  mutate(age2 = age^2) %>%
-  design_matrix(~ sex + trt + ext)
-
-baseline_design <- design_matrix(baseline_obj, ~ sex + I(age^2) + trt + ext, preprocess_fun = function(data) data)
-baseline_design2 <- design_matrix(baseline_obj, ~., preprocess_fun = function(data) data$age2 <- data$age^2)
-colnames(baseline_design)
-
-
-baseline_predictor <- linear_predictor(
-  design = baseline_design, # matrix
-  betas = c(
-    sex = .3,
-    "I(age^2)" = .4,
-    trt = 1,
-    ext = 1.1
-  )
-)
-
-simulate_survival(
-  baseline_predictor,
-  hazard_model = weibull_ph(shape = 0.76, lambda = 1) # is a function that takes vector of LPs and gives vector of times
-)
-
-survival_matrix(
-  baseline_design,
-  surv_times = simulate_survival(baseline_predictor, hazard_model = weibull_ph(shape = 0.76, lambda = 1)),
-  censor_times = censor(),
-  recruitment = recruitment()
-)
-```
-
-Refer to psborrow for how these can be calculated and combined.
-
-- recruitment rate
-- cut off
-- censoring
-
-
-# Appendix: Functions descriptions
+# Functions descriptions
 
 ```{r}
 # Specify covariates to include in baseline
@@ -141,9 +90,4 @@ covariance_matrix(diag, upper_tri)
 # Any variables to be transformed and calculated back to percentiles using marginal distribution and then
 # transformed.
 sim_baseline(sample_size, covariates)
-
-
-# Construct design matrix
-# Maybe this should just be model.matrix()
-design_matrix()
 ```
