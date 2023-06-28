@@ -24,7 +24,7 @@ correlated_covs <- add_covariates(
   means_int = c(0, 0, 0),
   means_ext = means,
   covariance = covariance_matrix(diag = c(1, 1, 1), upper_tri = c(0, .2, .3))
-) %>% transform(x1 = binary_tranform(cut_off = 0.4, cut_off_ext = 0.45))
+)
 
 # generate uncorrelated variables
 indep_covs <- add_covariates(
@@ -37,6 +37,20 @@ indep_covs <- add_covariates(
 baseline_obj <- sim_baseline(
   sample_size = c(trt_int = 100, ctrl_int = 50, ctrl_ext = 200),
   covariates = list(correlated_covs, indep_covs)
+) %>% transform(
+  x1 = binary_tranform(x1, cut_off = 0.4, cut_off_ext = 0.45),
+  age2 = \(data) data$age^2
+)
+
+
+
+baseline_obj <- sim_baseline(
+  sample_size = c(trt_int = 100, ctrl_int = 50, ctrl_ext = 200),
+  covariates = list(correlated_covs, indep_covs),
+  transformations = list(
+    x1 = binary_tranform(cut_off = 0.4, cut_off_ext = 0.45),
+    age2 = \(data) data$age^2
+  )
 )
 ```
 

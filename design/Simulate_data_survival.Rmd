@@ -1,0 +1,74 @@
+---
+title: 'Simulate Data: Survival'
+author: "Isaac Gravestock"
+date: "2023-06-20"
+output: html_document
+---
+
+Continuing from the design of baseline covariates, we consider how to implement survival data simulation.
+
+# 2. Survival Design
+
+For survival we need to specify in addition:
+
+ - baseline hazard parameters
+ - HR:
+   - internal/external HR "drift"
+   - covariate HR coefficients
+   - treatment effect HR
+
+```{r}
+
+# each of these builds up the object
+# nothing needs to generate any data
+#
+# implement generate() method for all of them
+# generate methods are recursive,
+# highest level would take n=N repeat from highest level
+#
+
+
+baseline_obj %>%
+  generate() %>%
+  design_matrx(~ sex + trt + ext) %>%
+  linear_predictor(betas = c(sex = 0.3, trt = 1, ext = 1.1)) %>%
+  simulate_survival(hazard_model = weibull_ph(shape = 1, scale = 0.9)) %>%
+  survival_matrix()
+
+generate(baseline_obj()) %>%
+  mutate(age2 = age^2) %>%
+  design_matrix(~ sex + trt + ext)
+
+baseline_design <- design_matrix(baseline_obj, ~ sex + I(age^2) + trt + ext, preprocess_fun = function(data) data)
+baseline_design2 <- design_matrix(baseline_obj, ~., preprocess_fun = function(data) data$age2 <- data$age^2)
+colnames(baseline_design)
+
+
+baseline_predictor <- linear_predictor(
+  design = baseline_design, # matrix
+  betas = c(
+    sex = .3,
+    "I(age^2)" = .4,
+    trt = 1,
+    ext = 1.1
+  )
+)
+
+simulate_survival(
+  baseline_predictor,
+  hazard_model = weibull_ph(shape = 0.76, lambda = 1) # is a function that takes vector of LPs and gives vector of times
+)
+
+survival_matrix(
+  baseline_design,
+  surv_times = simulate_survival(baseline_predictor, hazard_model = weibull_ph(shape = 0.76, lambda = 1)),
+  censor_times = censor(),
+  recruitment = recruitment()
+)
+```
+
+Refer to psborrow for how these can be calculated and combined.
+
+- recruitment rate
+- cut off
+- censoring
