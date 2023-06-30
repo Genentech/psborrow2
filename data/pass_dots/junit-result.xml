@@ -1,0 +1,866 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="add_covariates" timestamp="2023-06-30T19:19:06Z" hostname="49dc38828495" tests="10" skipped="0" failures="0" errors="0" time="0.204">
+    <testcase time="0.024" classname="add_covariates" name="add_covariates_works_for_list_of_priors"/>
+    <testcase time="0.028" classname="add_covariates" name="add_covariates_works_for_list_of_priors"/>
+    <testcase time="0.0419999999999998" classname="add_covariates" name="add_covariates_works_for_a_single_prior"/>
+    <testcase time="0.002" classname="add_covariates" name="add_covariates_works_for_a_single_prior"/>
+    <testcase time="0.034" classname="add_covariates" name="add_covariates_fails_for_invalid_prior_specification"/>
+    <testcase time="0.014" classname="add_covariates" name="add_covariates_fails_for_invalid_prior_specification"/>
+    <testcase time="0.0130000000000001" classname="add_covariates" name="add_covariates_fails_for_invalid_prior_specification"/>
+    <testcase time="0.0149999999999999" classname="add_covariates" name="add_covariates_fails_for_invalid_prior_specification"/>
+    <testcase time="0.0110000000000001" classname="add_covariates" name="add_covariates_fails_for_invalid_prior_specification"/>
+    <testcase time="0.0209999999999999" classname="add_covariates" name="get_vars_works_for_Covariates"/>
+  </testsuite>
+  <testsuite name="analysis_class" timestamp="2023-06-30T19:19:07Z" hostname="49dc38828495" tests="5" skipped="3" failures="0" errors="0" time="0.323">
+    <testcase time="0.05" classname="analysis_class" name="get_vars_works_for_Analysis"/>
+    <testcase time="0.0129999999999999" classname="analysis_class" name="get_vars_works_for_Analysis"/>
+    <testcase time="0.119" classname="analysis_class" name="show_works_for_Analysis">
+      <skipped message="Reason: On CRAN ('test-analysis_class.R:55:3')"/>
+    </testcase>
+    <testcase time="0.0669999999999999" classname="analysis_class" name="show_works_without_covariates">
+      <skipped message="Reason: On CRAN ('test-analysis_class.R:75:3')"/>
+    </testcase>
+    <testcase time="0.0740000000000003" classname="analysis_class" name="show_works_with_no_borrowing">
+      <skipped message="Reason: On CRAN ('test-analysis_class.R:96:3')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="bernoulli_prior" timestamp="2023-06-30T19:19:07Z" hostname="49dc38828495" tests="7" skipped="2" failures="0" errors="0" time="0.214">
+    <testcase time="0.0649999999999999" classname="bernoulli_prior" name="Bernoulli_priors_are_rendering_correctly"/>
+    <testcase time="0.00700000000000012" classname="bernoulli_prior" name="Bernoulli_priors_are_rendering_correctly"/>
+    <testcase time="0.0129999999999999" classname="bernoulli_prior" name="Bernoulli_priors_are_rendering_correctly"/>
+    <testcase time="0.0139999999999998" classname="bernoulli_prior" name="Bernoulli_priors_are_rendering_correctly"/>
+    <testcase time="0.0329999999999999" classname="bernoulli_prior" name="show_works_for_BernoulliPrior">
+      <skipped message="Reason: On CRAN ('test-bernoulli_prior.R:19:3')"/>
+    </testcase>
+    <testcase time="0.0450000000000004" classname="bernoulli_prior" name="plot_works_for_BernoulliPrior">
+      <skipped message="Reason: On CRAN ('test-bernoulli_prior.R:23:3')"/>
+    </testcase>
+    <testcase time="0.0369999999999999" classname="bernoulli_prior" name="constraints_work_for_BernoulliPrior"/>
+  </testsuite>
+  <testsuite name="beta_prior" timestamp="2023-06-30T19:19:07Z" hostname="49dc38828495" tests="8" skipped="2" failures="0" errors="0" time="0.199">
+    <testcase time="0.0179999999999998" classname="beta_prior" name="Beta_priors_are_rendering_correctly"/>
+    <testcase time="0.00700000000000012" classname="beta_prior" name="Beta_priors_are_rendering_correctly"/>
+    <testcase time="0.00700000000000012" classname="beta_prior" name="Beta_priors_are_rendering_correctly"/>
+    <testcase time="0.00800000000000001" classname="beta_prior" name="Beta_priors_are_rendering_correctly"/>
+    <testcase time="0.012" classname="beta_prior" name="Beta_priors_are_rendering_correctly"/>
+    <testcase time="0.069" classname="beta_prior" name="show_works_for_BetaPrior">
+      <skipped message="Reason: On CRAN ('test-beta_prior.R:20:3')"/>
+    </testcase>
+    <testcase time="0.0379999999999998" classname="beta_prior" name="plot_works_for_BetaPrior">
+      <skipped message="Reason: On CRAN ('test-beta_prior.R:24:3')"/>
+    </testcase>
+    <testcase time="0.04" classname="beta_prior" name="constraints_work_for_BetaPrior"/>
+  </testsuite>
+  <testsuite name="borrowing_details" timestamp="2023-06-30T19:19:07Z" hostname="49dc38828495" tests="16" skipped="0" failures="0" errors="0" time="0.188">
+    <testcase time="0.0190000000000001" classname="borrowing_details" name="borrowing_details_works_as_expected_for_no_borrowing"/>
+    <testcase time="0.00700000000000012" classname="borrowing_details" name="borrowing_details_works_as_expected_for_no_borrowing"/>
+    <testcase time="0.00599999999999978" classname="borrowing_details" name="borrowing_details_works_as_expected_for_no_borrowing"/>
+    <testcase time="0.012" classname="borrowing_details" name="borrowing_details_works_as_expected_for_full_borrowing"/>
+    <testcase time="0.00599999999999978" classname="borrowing_details" name="borrowing_details_works_as_expected_for_full_borrowing"/>
+    <testcase time="0.00600000000000023" classname="borrowing_details" name="borrowing_details_works_as_expected_for_full_borrowing"/>
+    <testcase time="0.024" classname="borrowing_details" name="borrowing_details_works_as_expected_for_BDB"/>
+    <testcase time="0.00700000000000012" classname="borrowing_details" name="borrowing_details_works_as_expected_for_BDB"/>
+    <testcase time="0.00199999999999978" classname="borrowing_details" name="borrowing_details_works_as_expected_for_BDB"/>
+    <testcase time="0.00600000000000023" classname="borrowing_details" name="borrowing_details_works_as_expected_for_BDB"/>
+    <testcase time="0.0189999999999997" classname="borrowing_details" name="borrowing_details_gives_expected_errors"/>
+    <testcase time="0.0100000000000002" classname="borrowing_details" name="borrowing_details_gives_expected_errors"/>
+    <testcase time="0.016" classname="borrowing_details" name="borrowing_details_gives_expected_errors"/>
+    <testcase time="0.0169999999999999" classname="borrowing_details" name="get_vars_works_for_borrowing_details"/>
+    <testcase time="0.0209999999999999" classname="borrowing_details" name="borrowing_details_checks_tau_prior_limits"/>
+    <testcase time="0.0100000000000002" classname="borrowing_details" name="borrowing_details_checks_tau_prior_limits"/>
+  </testsuite>
+  <testsuite name="cauchy_prior" timestamp="2023-06-30T19:19:07Z" hostname="49dc38828495" tests="8" skipped="2" failures="0" errors="0" time="0.15">
+    <testcase time="0.024" classname="cauchy_prior" name="Cauchy_priors_are_rendering_correctly"/>
+    <testcase time="0.00699999999999967" classname="cauchy_prior" name="Cauchy_priors_are_rendering_correctly"/>
+    <testcase time="0.00800000000000001" classname="cauchy_prior" name="Cauchy_priors_are_rendering_correctly"/>
+    <testcase time="0.00800000000000001" classname="cauchy_prior" name="Cauchy_priors_are_rendering_correctly"/>
+    <testcase time="0.0130000000000003" classname="cauchy_prior" name="Cauchy_priors_are_rendering_correctly"/>
+    <testcase time="0.0149999999999997" classname="cauchy_prior" name="show_works_for_CauchyPrior">
+      <skipped message="Reason: On CRAN ('test-cauchy_prior.R:20:3')"/>
+    </testcase>
+    <testcase time="0.0409999999999999" classname="cauchy_prior" name="plot_works_for_CauchyPrior">
+      <skipped message="Reason: On CRAN ('test-cauchy_prior.R:24:3')"/>
+    </testcase>
+    <testcase time="0.0340000000000003" classname="cauchy_prior" name="constraints_work_for_CauchyPrior"/>
+  </testsuite>
+  <testsuite name="check_data_matrix_has_columns" timestamp="2023-06-30T19:19:08Z" hostname="49dc38828495" tests="5" skipped="0" failures="0" errors="0" time="0.078">
+    <testcase time="0.0329999999999999" classname="check_data_matrix_has_columns" name="check_data_matrix_catches_errors"/>
+    <testcase time="0.0100000000000002" classname="check_data_matrix_has_columns" name="check_data_matrix_catches_errors"/>
+    <testcase time="0.00999999999999979" classname="check_data_matrix_has_columns" name="check_data_matrix_catches_errors"/>
+    <testcase time="0.0110000000000001" classname="check_data_matrix_has_columns" name="check_data_matrix_catches_errors"/>
+    <testcase time="0.0139999999999998" classname="check_data_matrix_has_columns" name="check_data_matrix_catches_errors"/>
+  </testsuite>
+  <testsuite name="cmdstan" timestamp="2023-06-30T19:19:08Z" hostname="49dc38828495" tests="2" skipped="0" failures="0" errors="0" time="19.247">
+    <testcase time="19.245" classname="cmdstan" name="check_cmdstanr_runs_as_expected"/>
+    <testcase time="0.00199999999999889" classname="cmdstan" name="check_cmdstanr_runs_as_expected"/>
+  </testsuite>
+  <testsuite name="create_analysis_obj" timestamp="2023-06-30T19:19:27Z" hostname="49dc38828495" tests="42" skipped="0" failures="0" errors="0" time="392.488">
+    <testcase time="0.0530000000000008" classname="create_analysis_obj" name="Inputs_classes_are_correct"/>
+    <testcase time="0.0210000000000008" classname="create_analysis_obj" name="Inputs_classes_are_correct"/>
+    <testcase time="0.0109999999999992" classname="create_analysis_obj" name="Inputs_classes_are_correct"/>
+    <testcase time="0.0100000000000016" classname="create_analysis_obj" name="Inputs_classes_are_correct"/>
+    <testcase time="0.00999999999999801" classname="create_analysis_obj" name="Inputs_classes_are_correct"/>
+    <testcase time="0.0200000000000031" classname="create_analysis_obj" name="Matrix_should_have_no_missing_data"/>
+    <testcase time="0.0239999999999974" classname="create_analysis_obj" name="Columns_in_analysis_obj_should_be_in_matrix"/>
+    <testcase time="0.0130000000000017" classname="create_analysis_obj" name="Columns_in_analysis_obj_should_be_in_matrix"/>
+    <testcase time="0.0139999999999993" classname="create_analysis_obj" name="Columns_in_analysis_obj_should_be_in_matrix"/>
+    <testcase time="0.0120000000000005" classname="create_analysis_obj" name="Columns_in_analysis_obj_should_be_in_matrix"/>
+    <testcase time="0.0129999999999981" classname="create_analysis_obj" name="Columns_in_analysis_obj_should_be_in_matrix"/>
+    <testcase time="23.538" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_1_outcome_1_covariates_1_"/>
+    <testcase time="22.488" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_1_outcome_1_covariates_2_"/>
+    <testcase time="14.573" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_1_outcome_1_covariates_3_"/>
+    <testcase time="23.778" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_1_outcome_2_covariates_1_"/>
+    <testcase time="23.55" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_1_outcome_2_covariates_2_"/>
+    <testcase time="15.122" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_1_outcome_2_covariates_3_"/>
+    <testcase time="23.188" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_1_outcome_3_covariates_1_"/>
+    <testcase time="24.169" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_1_outcome_3_covariates_2_"/>
+    <testcase time="15.18" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_1_outcome_3_covariates_3_"/>
+    <testcase time="0.0460000000000207" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_2_outcome_1_covariates_1_"/>
+    <testcase time="0.0440000000000111" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_2_outcome_1_covariates_2_"/>
+    <testcase time="0.046999999999997" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_2_outcome_1_covariates_3_"/>
+    <testcase time="0.0500000000000114" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_2_outcome_2_covariates_1_"/>
+    <testcase time="0.0589999999999975" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_2_outcome_2_covariates_2_"/>
+    <testcase time="0.0550000000000068" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_2_outcome_2_covariates_3_"/>
+    <testcase time="0.0499999999999829" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_2_outcome_3_covariates_1_"/>
+    <testcase time="0.0480000000000018" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_2_outcome_3_covariates_2_"/>
+    <testcase time="0.0430000000000064" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_2_outcome_3_covariates_3_"/>
+    <testcase time="24.219" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_3_outcome_1_covariates_1_"/>
+    <testcase time="24.169" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_3_outcome_1_covariates_2_"/>
+    <testcase time="17.994" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_3_outcome_1_covariates_3_"/>
+    <testcase time="23.831" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_3_outcome_2_covariates_1_"/>
+    <testcase time="24.356" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_3_outcome_2_covariates_2_"/>
+    <testcase time="18.945" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_3_outcome_2_covariates_3_"/>
+    <testcase time="26.9" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_3_outcome_3_covariates_1_"/>
+    <testcase time="26.628" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_3_outcome_3_covariates_2_"/>
+    <testcase time="19.05" classname="create_analysis_obj" name="All_allowable_inputs_create_Analysis_object_borrowing_3_outcome_3_covariates_3_"/>
+    <testcase time="0.0509999999999877" classname="create_analysis_obj" name="ready_to_sample_flag_is_set"/>
+    <testcase time="0.0480000000000018" classname="create_analysis_obj" name="get_vars_works_for_Analysis"/>
+    <testcase time="0.00999999999999091" classname="create_analysis_obj" name="get_vars_works_for_Analysis"/>
+    <testcase time="0.0579999999999927" classname="create_analysis_obj" name="confirm_the_data_matrix_is_not_deep_copied"/>
+  </testsuite>
+  <testsuite name="create_data_matrix" timestamp="2023-06-30T19:25:59Z" hostname="49dc38828495" tests="19" skipped="0" failures="0" errors="0" time="1.778">
+    <testcase time="1.51600000000002" classname="create_data_matrix" name="create_data_matrix_works"/>
+    <testcase time="0.00200000000000955" classname="create_data_matrix" name="create_data_matrix_works"/>
+    <testcase time="0.00899999999995771" classname="create_data_matrix" name="create_data_matrix_works"/>
+    <testcase time="0.0130000000000337" classname="create_data_matrix" name="create_data_matrix_works_with_complex_formulas"/>
+    <testcase time="0.0149999999999864" classname="create_data_matrix" name="create_data_matrix_works_with_weights"/>
+    <testcase time="0.0180000000000291" classname="create_data_matrix" name="create_data_matrix_works_with_one_covariate"/>
+    <testcase time="0.0189999999999486" classname="create_data_matrix" name="create_data_matrix_works_with_no_covariates"/>
+    <testcase time="0.00200000000000955" classname="create_data_matrix" name="create_data_matrix_works_with_no_covariates"/>
+    <testcase time="0.0219999999999914" classname="create_data_matrix" name="create_data_matrix_gives_error_invalid_outcome"/>
+    <testcase time="0.0100000000000477" classname="create_data_matrix" name="create_data_matrix_gives_error_invalid_outcome"/>
+    <testcase time="0.0109999999999673" classname="create_data_matrix" name="create_data_matrix_gives_error_invalid_outcome"/>
+    <testcase time="0.0219999999999914" classname="create_data_matrix" name="create_data_matrix_gives_error_invalid_trt_flag_col"/>
+    <testcase time="0.0260000000000105" classname="create_data_matrix" name="create_data_matrix_gives_error_invalid_ext_flag_col"/>
+    <testcase time="0.0250000000000341" classname="create_data_matrix" name="create_data_matrix_gives_error_invalid_covariates"/>
+    <testcase time="0.0120000000000005" classname="create_data_matrix" name="create_data_matrix_gives_error_invalid_covariates"/>
+    <testcase time="0.0120000000000005" classname="create_data_matrix" name="create_data_matrix_gives_error_invalid_covariates"/>
+    <testcase time="0.0129999999999768" classname="create_data_matrix" name="create_data_matrix_gives_error_invalid_covariates"/>
+    <testcase time="0.0200000000000387" classname="create_data_matrix" name="create_data_matrix_gives_error_for_invalid_data"/>
+    <testcase time="0.0109999999999673" classname="create_data_matrix" name="create_data_matrix_gives_error_for_invalid_data"/>
+  </testsuite>
+  <testsuite name="create_simulation_obj" timestamp="2023-06-30T19:26:02Z" hostname="49dc38828495" tests="49" skipped="0" failures="0" errors="0" time="372.667">
+    <testcase time="0.65300000000002" classname="create_simulation_obj" name="_create_simulation_obj_input_classes_are_correct"/>
+    <testcase time="0.00900000000001455" classname="create_simulation_obj" name="_create_simulation_obj_input_classes_are_correct"/>
+    <testcase time="0.0109999999999673" classname="create_simulation_obj" name="_create_simulation_obj_input_classes_are_correct"/>
+    <testcase time="0.00999999999999091" classname="create_simulation_obj" name="_create_simulation_obj_input_classes_are_correct"/>
+    <testcase time="0.0100000000000477" classname="create_simulation_obj" name="_create_simulation_obj_input_classes_are_correct"/>
+    <testcase time="79.096" classname="create_simulation_obj" name="_create_simulation_obj_correct_inputs_create_Simulation_object"/>
+    <testcase time="0.300999999999988" classname="create_simulation_obj" name="_create_simulation_obj_correct_inputs_create_Simulation_object"/>
+    <testcase time="47.347" classname="create_simulation_obj" name="_create_simulation_obj_correct_inputs_create_Simulation_object"/>
+    <testcase time="80.6609999999999" classname="create_simulation_obj" name="_create_simulation_obj_correct_inputs_create_Simulation_object"/>
+    <testcase time="0.326999999999998" classname="create_simulation_obj" name="_create_simulation_obj_correct_inputs_create_Simulation_object"/>
+    <testcase time="80.645" classname="create_simulation_obj" name="_create_simulation_obj_correct_inputs_create_Simulation_object"/>
+    <testcase time="0.02800000000002" classname="create_simulation_obj" name="_create_simulation_obj_catches_incorrect_column_names"/>
+    <testcase time="0.0149999999999864" classname="create_simulation_obj" name="_create_simulation_obj_catches_incorrect_column_names"/>
+    <testcase time="0.01400000000001" classname="create_simulation_obj" name="_create_simulation_obj_catches_incorrect_column_names"/>
+    <testcase time="0.01400000000001" classname="create_simulation_obj" name="_create_simulation_obj_catches_incorrect_column_names"/>
+    <testcase time="0.0249999999999773" classname="create_simulation_obj" name="_create_simulation_obj_catches_missing_data"/>
+    <testcase time="81.991" classname="create_simulation_obj" name="_create_simulation_obj_correctly_gets_number_of_combinations"/>
+    <testcase time="0.00900000000001455" classname="create_simulation_obj" name="_create_simulation_obj_correctly_gets_number_of_combinations"/>
+    <testcase time="0.0080000000000382" classname="create_simulation_obj" name="_create_simulation_obj_correctly_gets_number_of_combinations"/>
+    <testcase time="0.00999999999999091" classname="create_simulation_obj" name="_create_simulation_obj_correctly_gets_number_of_combinations"/>
+    <testcase time="0.0080000000000382" classname="create_simulation_obj" name="_create_simulation_obj_correctly_gets_number_of_combinations"/>
+    <testcase time="0.00999999999999091" classname="create_simulation_obj" name="_create_simulation_obj_correctly_gets_number_of_combinations"/>
+    <testcase time="0.00900000000001455" classname="create_simulation_obj" name="_create_simulation_obj_correctly_gets_number_of_combinations"/>
+    <testcase time="0.00799999999992451" classname="create_simulation_obj" name="_create_simulation_obj_correctly_gets_number_of_combinations"/>
+    <testcase time="0.634000000000015" classname="create_simulation_obj" name="_create_simulation_obj_correctly_creates_analysis_objects"/>
+    <testcase time="0.632000000000062" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00999999999999091" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00699999999994816" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00700000000006185" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00799999999992451" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.0080000000000382" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00699999999994816" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00700000000006185" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00699999999994816" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.0080000000000382" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.0080000000000382" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00799999999992451" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.0080000000000382" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.0080000000000382" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00799999999992451" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00999999999999091" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00900000000001455" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.0080000000000382" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.0080000000000382" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00699999999994816" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.0080000000000382" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00699999999994816" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.0080000000000382" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+    <testcase time="0.00799999999992451" classname="create_simulation_obj" name="_create_simulation_obj_does_not_create_deep_copies"/>
+  </testsuite>
+  <testsuite name="exp_surv_dist" timestamp="2023-06-30T19:32:14Z" hostname="49dc38828495" tests="10" skipped="0" failures="0" errors="0" time="0.111">
+    <testcase time="0.0240000000000009" classname="exp_surv_dist" name="Exponential_survival_distributions_are_rendering_correctly"/>
+    <testcase time="0.00700000000006185" classname="exp_surv_dist" name="Exponential_survival_distributions_are_rendering_correctly"/>
+    <testcase time="0.00699999999994816" classname="exp_surv_dist" name="Exponential_survival_distributions_are_rendering_correctly"/>
+    <testcase time="0.01400000000001" classname="exp_surv_dist" name="Exponential_survival_distributions_are_rendering_correctly"/>
+    <testcase time="0.0210000000000719" classname="exp_surv_dist" name="get_vars_works_for_ExponentialSurvDist"/>
+    <testcase time="0.00999999999999091" classname="exp_surv_dist" name="get_vars_works_for_ExponentialSurvDist"/>
+    <testcase time="0.0159999999999627" classname="exp_surv_dist" name="exp_surv_dist_works_with_weights"/>
+    <testcase time="0.0080000000000382" classname="exp_surv_dist" name="exp_surv_dist_works_with_weights"/>
+    <testcase time="0.00199999999995271" classname="exp_surv_dist" name="exp_surv_dist_works_with_weights"/>
+    <testcase time="0.00200000000006639" classname="exp_surv_dist" name="exp_surv_dist_works_with_weights"/>
+  </testsuite>
+  <testsuite name="exponential_prior" timestamp="2023-06-30T19:32:14Z" hostname="49dc38828495" tests="7" skipped="2" failures="0" errors="0" time="0.144">
+    <testcase time="0.0219999999999345" classname="exponential_prior" name="Exponential_priors_are_rendering_correctly"/>
+    <testcase time="0.00700000000006185" classname="exponential_prior" name="Exponential_priors_are_rendering_correctly"/>
+    <testcase time="0.00799999999992451" classname="exponential_prior" name="Exponential_priors_are_rendering_correctly"/>
+    <testcase time="0.0149999999999864" classname="exponential_prior" name="Exponential_priors_are_rendering_correctly"/>
+    <testcase time="0.0190000000000055" classname="exponential_prior" name="show_works_for_ExponentialPrior">
+      <skipped message="Reason: On CRAN ('test-exponential_prior.R:19:3')"/>
+    </testcase>
+    <testcase time="0.0380000000000109" classname="exponential_prior" name="plot_works_for_ExponentialPrior">
+      <skipped message="Reason: On CRAN ('test-exponential_prior.R:23:3')"/>
+    </testcase>
+    <testcase time="0.0349999999999682" classname="exponential_prior" name="constraints_work_for_ExponentialPrior"/>
+  </testsuite>
+  <testsuite name="gamma_prior" timestamp="2023-06-30T19:32:14Z" hostname="49dc38828495" tests="9" skipped="2" failures="0" errors="0" time="0.178">
+    <testcase time="0.0240000000000009" classname="gamma_prior" name="Gamma_priors_are_rendering_correctly"/>
+    <testcase time="0.0080000000000382" classname="gamma_prior" name="Gamma_priors_are_rendering_correctly"/>
+    <testcase time="0.00900000000001455" classname="gamma_prior" name="Gamma_priors_are_rendering_correctly"/>
+    <testcase time="0.0080000000000382" classname="gamma_prior" name="Gamma_priors_are_rendering_correctly"/>
+    <testcase time="0.0149999999999864" classname="gamma_prior" name="Gamma_priors_are_rendering_correctly"/>
+    <testcase time="0.0159999999999627" classname="gamma_prior" name="Gamma_priors_are_rendering_correctly"/>
+    <testcase time="0.0199999999999818" classname="gamma_prior" name="show_works_for_GammaPrior">
+      <skipped message="Reason: On CRAN ('test-gamma_prior.R:23:3')"/>
+    </testcase>
+    <testcase time="0.0380000000000109" classname="gamma_prior" name="plot_works_for_GammaPrior">
+      <skipped message="Reason: On CRAN ('test-gamma_prior.R:27:3')"/>
+    </testcase>
+    <testcase time="0.0400000000000773" classname="gamma_prior" name="constraints_work_for_GammaPrior"/>
+  </testsuite>
+  <testsuite name="half_cauchy_prior" timestamp="2023-06-30T19:32:14Z" hostname="49dc38828495" tests="11" skipped="2" failures="0" errors="0" time="0.155">
+    <testcase time="0.0189999999998918" classname="half_cauchy_prior" name="Half_Cauchy_priors_are_rendering_correctly"/>
+    <testcase time="0.0080000000000382" classname="half_cauchy_prior" name="Half_Cauchy_priors_are_rendering_correctly"/>
+    <testcase time="0.00700000000006185" classname="half_cauchy_prior" name="Half_Cauchy_priors_are_rendering_correctly"/>
+    <testcase time="0.00699999999994816" classname="half_cauchy_prior" name="Half_Cauchy_priors_are_rendering_correctly"/>
+    <testcase time="0.0080000000000382" classname="half_cauchy_prior" name="Half_Cauchy_priors_are_rendering_correctly"/>
+    <testcase time="0.01400000000001" classname="half_cauchy_prior" name="Half_Cauchy_priors_are_rendering_correctly"/>
+    <testcase time="0.0190000000000055" classname="half_cauchy_prior" name="show_works_for_HalfCauchyPrior">
+      <skipped message="Reason: On CRAN ('test-half_cauchy_prior.R:21:3')"/>
+    </testcase>
+    <testcase time="0.0319999999999254" classname="half_cauchy_prior" name="plot_works_for_HalfCauchyPrior">
+      <skipped message="Reason: On CRAN ('test-half_cauchy_prior.R:25:3')"/>
+    </testcase>
+    <testcase time="0.02800000000002" classname="half_cauchy_prior" name="constraints_work_for_HalfCauchyPrior"/>
+    <testcase time="0.00600000000008549" classname="half_cauchy_prior" name="constraints_work_for_HalfCauchyPrior"/>
+    <testcase time="0.00699999999994816" classname="half_cauchy_prior" name="constraints_work_for_HalfCauchyPrior"/>
+  </testsuite>
+  <testsuite name="half_normal_prior" timestamp="2023-06-30T19:32:14Z" hostname="49dc38828495" tests="11" skipped="2" failures="0" errors="0" time="0.162">
+    <testcase time="0.0180000000000291" classname="half_normal_prior" name="Half_Normal_priors_are_rendering_correctly"/>
+    <testcase time="0.00699999999994816" classname="half_normal_prior" name="Half_Normal_priors_are_rendering_correctly"/>
+    <testcase time="0.0080000000000382" classname="half_normal_prior" name="Half_Normal_priors_are_rendering_correctly"/>
+    <testcase time="0.00699999999994816" classname="half_normal_prior" name="Half_Normal_priors_are_rendering_correctly"/>
+    <testcase time="0.0080000000000382" classname="half_normal_prior" name="Half_Normal_priors_are_rendering_correctly"/>
+    <testcase time="0.0149999999999864" classname="half_normal_prior" name="Half_Normal_priors_are_rendering_correctly"/>
+    <testcase time="0.0190000000000055" classname="half_normal_prior" name="show_works_for_HalfNormalPrior">
+      <skipped message="Reason: On CRAN ('test-half_normal_prior.R:21:3')"/>
+    </testcase>
+    <testcase time="0.0320000000000391" classname="half_normal_prior" name="plot_works_for_HalfNormalPrior">
+      <skipped message="Reason: On CRAN ('test-half_normal_prior.R:25:3')"/>
+    </testcase>
+    <testcase time="0.0330000000000155" classname="half_normal_prior" name="constraints_work_for_HalfNormalPrior"/>
+    <testcase time="0.00699999999994816" classname="half_normal_prior" name="constraints_work_for_HalfNormalPrior"/>
+    <testcase time="0.0080000000000382" classname="half_normal_prior" name="constraints_work_for_HalfNormalPrior"/>
+  </testsuite>
+  <testsuite name="helpers" timestamp="2023-06-30T19:32:15Z" hostname="49dc38828495" tests="12" skipped="0" failures="0" errors="0" time="0.195">
+    <testcase time="0.0240000000000009" classname="helpers" name="h_glue_works_as_expected"/>
+    <testcase time="0.00699999999994816" classname="helpers" name="h_glue_works_as_expected"/>
+    <testcase time="0.00700000000006185" classname="helpers" name="h_glue_works_as_expected"/>
+    <testcase time="0.0159999999999627" classname="helpers" name="parse_constraint_works_as_expected"/>
+    <testcase time="0.0080000000000382" classname="helpers" name="parse_constraint_works_as_expected"/>
+    <testcase time="0.0209999999999582" classname="helpers" name="parse_constraint_works_as_expected_with_prior_list"/>
+    <testcase time="0.0180000000000291" classname="helpers" name="parse_constraint_works_as_expected_with_single_prior"/>
+    <testcase time="0.0240000000000009" classname="helpers" name="rename_draws_covariates_works_as_expected"/>
+    <testcase time="0.00699999999994816" classname="helpers" name="rename_draws_covariates_works_as_expected"/>
+    <testcase time="0.0220000000000482" classname="helpers" name="variable_dictionary_works_as_expected_for_logistic_and_BDB"/>
+    <testcase time="0.0199999999999818" classname="helpers" name="variable_dictionary_works_as_expected_for_exponential_and_no_borrowing"/>
+    <testcase time="0.0210000000000719" classname="helpers" name="variable_dictionary_includes_shape_parameter_for_Weibull_PH"/>
+  </testsuite>
+  <testsuite name="logistic_bin_outcome" timestamp="2023-06-30T19:32:15Z" hostname="49dc38828495" tests="9" skipped="0" failures="0" errors="0" time="0.091">
+    <testcase time="0.0190000000000055" classname="logistic_bin_outcome" name="LogisticBinaryOutcome_distribution_is_rendering_correctly"/>
+    <testcase time="0.00699999999994816" classname="logistic_bin_outcome" name="LogisticBinaryOutcome_distribution_is_rendering_correctly"/>
+    <testcase time="0.00999999999999091" classname="logistic_bin_outcome" name="LogisticBinaryOutcome_distribution_is_rendering_correctly"/>
+    <testcase time="0.0180000000000291" classname="logistic_bin_outcome" name="get_vars_works_for_LogisticBinaryOutcome"/>
+    <testcase time="0.00999999999999091" classname="logistic_bin_outcome" name="get_vars_works_for_LogisticBinaryOutcome"/>
+    <testcase time="0.0159999999999627" classname="logistic_bin_outcome" name="logistic_bin_outcome_works_with_weights"/>
+    <testcase time="0.00700000000006185" classname="logistic_bin_outcome" name="logistic_bin_outcome_works_with_weights"/>
+    <testcase time="0.00199999999995271" classname="logistic_bin_outcome" name="logistic_bin_outcome_works_with_weights"/>
+    <testcase time="0.00200000000006639" classname="logistic_bin_outcome" name="logistic_bin_outcome_works_with_weights"/>
+  </testsuite>
+  <testsuite name="make_model_string_data" timestamp="2023-06-30T19:32:15Z" hostname="49dc38828495" tests="45" skipped="5" failures="0" errors="0" time="0.447">
+    <testcase time="0.0309999999999491" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00600000000008549" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00499999999999545" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00700000000006185" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00999999999999091" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_full_borrowing">
+      <skipped message="Reason: On CRAN ('test-make_model_string_data.R:20:3')"/>
+    </testcase>
+    <testcase time="0.02800000000002" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.0080000000000382" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00799999999992451" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00600000000008549" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00899999999990087" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00600000000008549" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00900000000001455" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00599999999997181" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.0109999999999673" classname="make_model_string_data" name="make_model_string_data_works_with_exponential_survival_and_BDB">
+      <skipped message="Reason: On CRAN ('test-make_model_string_data.R:44:3')"/>
+    </testcase>
+    <testcase time="0.0310000000000628" classname="make_model_string_data" name="make_model_string_data_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_data" name="make_model_string_data_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_data" name="make_model_string_data_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.0080000000000382" classname="make_model_string_data" name="make_model_string_data_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00700000000006185" classname="make_model_string_data" name="make_model_string_data_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00599999999997181" classname="make_model_string_data" name="make_model_string_data_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00700000000006185" classname="make_model_string_data" name="make_model_string_data_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00599999999997181" classname="make_model_string_data" name="make_model_string_data_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.0109999999999673" classname="make_model_string_data" name="make_model_string_data_works_with_weibull_survival_and_BDB_and_covariates">
+      <skipped message="Reason: On CRAN ('test-make_model_string_data.R:77:3')"/>
+    </testcase>
+    <testcase time="0.0299999999999727" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00600000000008549" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00700000000006185" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00700000000006185" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00900000000001455" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.0109999999999673" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_BDB_and_covariates">
+      <skipped message="Reason: On CRAN ('test-make_model_string_data.R:105:3')"/>
+    </testcase>
+    <testcase time="0.0299999999999727" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_weights"/>
+    <testcase time="0.0080000000000382" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_weights"/>
+    <testcase time="0.00599999999997181" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_weights"/>
+    <testcase time="0.00700000000006185" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_weights"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_weights"/>
+    <testcase time="0.00700000000006185" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_weights"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_weights"/>
+    <testcase time="0.00599999999997181" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_weights"/>
+    <testcase time="0.00600000000008549" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_weights"/>
+    <testcase time="0.0109999999999673" classname="make_model_string_data" name="make_model_string_data_works_with_binary_outcome_and_weights">
+      <skipped message="Reason: On CRAN ('test-make_model_string_data.R:134:3')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="make_model_string_functions" timestamp="2023-06-30T19:32:15Z" hostname="49dc38828495" tests="16" skipped="4" failures="0" errors="0" time="0.182">
+    <testcase time="0.0339999999999918" classname="make_model_string_functions" name="make_model_string_functions_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.000999999999976353" classname="make_model_string_functions" name="make_model_string_functions_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00900000000001455" classname="make_model_string_functions" name="make_model_string_functions_works_with_exponential_survival_and_full_borrowing">
+      <skipped message="Reason: On CRAN ('test-make_model_string_functions.R:15:3')"/>
+    </testcase>
+    <testcase time="0.0289999999999964" classname="make_model_string_functions" name="make_model_string_functions_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00200000000006639" classname="make_model_string_functions" name="make_model_string_functions_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00900000000001455" classname="make_model_string_functions" name="make_model_string_functions_works_with_exponential_survival_and_BDB">
+      <skipped message="Reason: On CRAN ('test-make_model_string_functions.R:33:3')"/>
+    </testcase>
+    <testcase time="0.0289999999999964" classname="make_model_string_functions" name="make_model_string_functions_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00199999999995271" classname="make_model_string_functions" name="make_model_string_functions_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.000999999999976353" classname="make_model_string_functions" name="make_model_string_functions_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00300000000004275" classname="make_model_string_functions" name="make_model_string_functions_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.000999999999976353" classname="make_model_string_functions" name="make_model_string_functions_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00200000000006639" classname="make_model_string_functions" name="make_model_string_functions_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00999999999999091" classname="make_model_string_functions" name="make_model_string_functions_works_with_weibull_survival_and_BDB_and_covariates">
+      <skipped message="Reason: On CRAN ('test-make_model_string_functions.R:64:3')"/>
+    </testcase>
+    <testcase time="0.0380000000000109" classname="make_model_string_functions" name="make_model_string_functions_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00199999999995271" classname="make_model_string_functions" name="make_model_string_functions_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00999999999999091" classname="make_model_string_functions" name="make_model_string_functions_works_with_binary_outcome_and_BDB_and_covariates">
+      <skipped message="Reason: On CRAN ('test-make_model_string_functions.R:86:3')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="make_model_string_model" timestamp="2023-06-30T19:32:16Z" hostname="49dc38828495" tests="25" skipped="4" failures="0" errors="0" time="0.213">
+    <testcase time="0.0370000000000346" classname="make_model_string_model" name="make_model_string_model_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00199999999995271" classname="make_model_string_model" name="make_model_string_model_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00300000000004275" classname="make_model_string_model" name="make_model_string_model_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00199999999995271" classname="make_model_string_model" name="make_model_string_model_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00999999999999091" classname="make_model_string_model" name="make_model_string_model_works_with_exponential_survival_and_full_borrowing">
+      <skipped message="Reason: On CRAN ('test-make_model_string_model.R:17:3')"/>
+    </testcase>
+    <testcase time="0.0299999999999727" classname="make_model_string_model" name="make_model_string_model_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00200000000006639" classname="make_model_string_model" name="make_model_string_model_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.000999999999976353" classname="make_model_string_model" name="make_model_string_model_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00200000000006639" classname="make_model_string_model" name="make_model_string_model_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.000999999999976353" classname="make_model_string_model" name="make_model_string_model_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00999999999999091" classname="make_model_string_model" name="make_model_string_model_works_with_exponential_survival_and_BDB">
+      <skipped message="Reason: On CRAN ('test-make_model_string_model.R:38:3')"/>
+    </testcase>
+    <testcase time="0.0330000000000155" classname="make_model_string_model" name="make_model_string_model_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.000999999999976353" classname="make_model_string_model" name="make_model_string_model_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00199999999995271" classname="make_model_string_model" name="make_model_string_model_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00200000000006639" classname="make_model_string_model" name="make_model_string_model_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00599999999997181" classname="make_model_string_model" name="make_model_string_model_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00199999999995271" classname="make_model_string_model" name="make_model_string_model_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00999999999999091" classname="make_model_string_model" name="make_model_string_model_works_with_weibull_survival_and_BDB_and_covariates">
+      <skipped message="Reason: On CRAN ('test-make_model_string_model.R:69:3')"/>
+    </testcase>
+    <testcase time="0.0370000000000346" classname="make_model_string_model" name="make_model_string_model_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00200000000006639" classname="make_model_string_model" name="make_model_string_model_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00199999999995271" classname="make_model_string_model" name="make_model_string_model_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00199999999995271" classname="make_model_string_model" name="make_model_string_model_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00200000000006639" classname="make_model_string_model" name="make_model_string_model_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00199999999995271" classname="make_model_string_model" name="make_model_string_model_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00999999999999091" classname="make_model_string_model" name="make_model_string_model_works_with_binary_outcome_and_BDB_and_covariates">
+      <skipped message="Reason: On CRAN ('test-make_model_string_model.R:95:3')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="make_model_string_parameters" timestamp="2023-06-30T19:32:16Z" hostname="49dc38828495" tests="17" skipped="4" failures="0" errors="0" time="112.613">
+    <testcase time="0.0410000000000537" classname="make_model_string_parameters" name="make_model_string_parameters_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00900000000001455" classname="make_model_string_parameters" name="make_model_string_parameters_works_with_exponential_survival_and_full_borrowing">
+      <skipped message="Reason: On CRAN ('test-make_model_string_parameters.R:14:3')"/>
+    </testcase>
+    <testcase time="0.0349999999999682" classname="make_model_string_parameters" name="make_model_string_parameters_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00900000000001455" classname="make_model_string_parameters" name="make_model_string_parameters_works_with_exponential_survival_and_BDB">
+      <skipped message="Reason: On CRAN ('test-make_model_string_parameters.R:31:3')"/>
+    </testcase>
+    <testcase time="0.0389999999999873" classname="make_model_string_parameters" name="make_model_string_parameters_works_with_weibull_survival_and_BDB"/>
+    <testcase time="0.0120000000000573" classname="make_model_string_parameters" name="make_model_string_parameters_works_with_weibull_survival_and_BDB">
+      <skipped message="Reason: On CRAN ('test-make_model_string_parameters.R:57:3')"/>
+    </testcase>
+    <testcase time="0.0339999999999918" classname="make_model_string_parameters" name="make_model_string_parameters_works_with_binary_outcome_and_BDB"/>
+    <testcase time="0.0109999999999673" classname="make_model_string_parameters" name="make_model_string_parameters_works_with_binary_outcome_and_BDB">
+      <skipped message="Reason: On CRAN ('test-make_model_string_parameters.R:78:3')"/>
+    </testcase>
+    <testcase time="14.547" classname="make_model_string_parameters" name="the_STAN_code_is_correctly_generated_when_limits_are_placed_in_the_treatment_parameters"/>
+    <testcase time="36.528" classname="make_model_string_parameters" name="the_STAN_code_is_correctly_generated_when_limits_are_placed_in_the_borrowing_parameters"/>
+    <testcase time="0.00799999999992451" classname="make_model_string_parameters" name="the_STAN_code_is_correctly_generated_when_limits_are_placed_in_the_borrowing_parameters"/>
+    <testcase time="14.6320000000001" classname="make_model_string_parameters" name="the_STAN_code_is_correctly_generated_when_limits_are_placed_in_the_outcome_parameters"/>
+    <testcase time="0.0629999999999882" classname="make_model_string_parameters" name="the_STAN_code_is_correctly_generated_when_limits_are_placed_in_the_outcome_parameters"/>
+    <testcase time="23.354" classname="make_model_string_parameters" name="the_STAN_code_is_correctly_generated_when_limits_are_placed_in_the_covariate_parameters"/>
+    <testcase time="0.00799999999992451" classname="make_model_string_parameters" name="the_STAN_code_is_correctly_generated_when_limits_are_placed_in_the_covariate_parameters"/>
+    <testcase time="23.275" classname="make_model_string_parameters" name="the_STAN_code_is_correctly_generated_when_limits_are_placed_in_the_covariate_parameters"/>
+    <testcase time="0.0080000000000382" classname="make_model_string_parameters" name="the_STAN_code_is_correctly_generated_when_limits_are_placed_in_the_covariate_parameters"/>
+  </testsuite>
+  <testsuite name="make_model_string_transformed_parameters" timestamp="2023-06-30T19:34:08Z" hostname="49dc38828495" tests="16" skipped="4" failures="0" errors="0" time="0.26">
+    <testcase time="0.0330000000000155" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.0080000000000382" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.0130000000000337" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_exponential_survival_and_full_borrowing">
+      <skipped message="Reason: On CRAN ('test-make_model_string_transformed_parameters.R:16:3')"/>
+    </testcase>
+    <testcase time="0.0369999999999209" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.0080000000000382" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00700000000006185" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.0119999999999436" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_exponential_survival_and_BDB">
+      <skipped message="Reason: On CRAN ('test-make_model_string_transformed_parameters.R:35:3')"/>
+    </testcase>
+    <testcase time="0.0389999999999873" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00700000000006185" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.00699999999994816" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.0120000000000573" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_weibull_survival_and_BDB_and_covariates">
+      <skipped message="Reason: On CRAN ('test-make_model_string_transformed_parameters.R:63:3')"/>
+    </testcase>
+    <testcase time="0.0430000000000064" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.00799999999992451" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.0080000000000382" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.0109999999999673" classname="make_model_string_transformed_parameters" name="make_model_string_transf_param_works_with_binary_outcome_and_BDB_and_covariates">
+      <skipped message="Reason: On CRAN ('test-make_model_string_transformed_parameters.R:86:3')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="mcmc_sample-analysis" timestamp="2023-06-30T19:34:09Z" hostname="49dc38828495" tests="27" skipped="24" failures="0" errors="0" time="0.725">
+    <testcase time="0.0520000000000209" classname="mcmc_sample_analysis" name="mcmc_sample.default_default_method_throws_error"/>
+    <testcase time="0.0230000000000246" classname="mcmc_sample_analysis" name="mcmc_sample.default_default_method_throws_error"/>
+    <testcase time="0.02699999999993" classname="mcmc_sample_analysis" name="mcmc_sample_handles_Analysis_objects_not_ready_to_sample"/>
+    <testcase time="0.0130000000000337" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_full_borrowing_exponential_dist">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:38:3')"/>
+    </testcase>
+    <testcase time="0.0289999999999964" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_no_borrowing_exponential_dist">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:65:3')"/>
+    </testcase>
+    <testcase time="0.02800000000002" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_full_borrowing_exponential_dist_one_covariate">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:97:3')"/>
+    </testcase>
+    <testcase time="0.0270000000000437" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_no_borrowing_exponential_dist_one_covariate">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:130:3')"/>
+    </testcase>
+    <testcase time="0.0279999999999063" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_full_borrowing_exponential_dist_two_covariates">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:162:3')"/>
+    </testcase>
+    <testcase time="0.0310000000000628" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_no_borrowing_exponential_dist_two_covariates">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:197:3')"/>
+    </testcase>
+    <testcase time="0.0289999999999964" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_full_borrowing_Weibull_dist">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:233:3')"/>
+    </testcase>
+    <testcase time="0.0259999999999536" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_no_borrowing_Weibull_dist">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:269:3')"/>
+    </testcase>
+    <testcase time="0.0289999999999964" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_full_borrowing_weibull_dist_one_covariate">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:305:3')"/>
+    </testcase>
+    <testcase time="0.02800000000002" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_no_borrowing_Weibull_dist_one_covariate">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:342:3')"/>
+    </testcase>
+    <testcase time="0.02800000000002" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_full_borrowing_Weibull_dist_two_covariates">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:379:3')"/>
+    </testcase>
+    <testcase time="0.0259999999999536" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_no_borrowing_Weibull_dist_two_covariates">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:419:3')"/>
+    </testcase>
+    <testcase time="0.0250000000000909" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_full_borrowing_binomial_dist">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:460:3')"/>
+    </testcase>
+    <testcase time="0.02699999999993" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_no_borrowing_binomial_dist">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:491:3')"/>
+    </testcase>
+    <testcase time="0.0240000000000009" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_full_borrowing_binomial_dist_one_covariate">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:522:3')"/>
+    </testcase>
+    <testcase time="0.0230000000000246" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_no_borrowing_binomial_dist_one_covariate">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:555:3')"/>
+    </testcase>
+    <testcase time="0.0240000000000009" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_full_borrowing_binomial_dist_two_covariates">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:587:3')"/>
+    </testcase>
+    <testcase time="0.0249999999999773" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_no_borrowing_binomial_dist_two_covariates">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:622:3')"/>
+    </testcase>
+    <testcase time="0.0249999999999773" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_exponential_BDB_conservative_borrowing">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:658:3')"/>
+    </testcase>
+    <testcase time="0.0230000000000246" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_exponential_BDB_aggressive_borrowing">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:688:3')"/>
+    </testcase>
+    <testcase time="0.0249999999999773" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_Weibull_BDB_conservative_borrowing">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:718:3')"/>
+    </testcase>
+    <testcase time="0.0320000000000391" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_Weibull_BDB_aggressive_borrowing">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:749:3')"/>
+    </testcase>
+    <testcase time="0.0249999999999773" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_logistic_regression_BDB_conservative_borrowing">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:781:3')"/>
+    </testcase>
+    <testcase time="0.0230000000000246" classname="mcmc_sample_analysis" name="mcmc_sample_for_Analysis_works_for_logistic_regression_BDB_aggressive_borrowing">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-analysis.R:807:3')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="mcmc_sample-simulation" timestamp="2023-06-30T19:34:10Z" hostname="49dc38828495" tests="1" skipped="1" failures="0" errors="0" time="0.871">
+    <testcase time="0.870999999999981" classname="mcmc_sample_simulation" name="mcmc_sample.Simulation_creates_an_object_of_class_MCMCSimulationResult">
+      <skipped message="Reason: On CRAN ('test-mcmc_sample-simulation.R:87:3')"/>
+    </testcase>
+  </testsuite>
+  <testsuite name="normal_prior" timestamp="2023-06-30T19:34:10Z" hostname="49dc38828495" tests="8" skipped="2" failures="0" errors="0" time="0.171">
+    <testcase time="0.0389999999999873" classname="normal_prior" name="Normal_priors_are_rendering_correctly"/>
+    <testcase time="0.00900000000001455" classname="normal_prior" name="Normal_priors_are_rendering_correctly"/>
+    <testcase time="0.0109999999999673" classname="normal_prior" name="Normal_priors_are_rendering_correctly"/>
+    <testcase time="0.0110000000000809" classname="normal_prior" name="Normal_priors_are_rendering_correctly"/>
+    <testcase time="0.0159999999999627" classname="normal_prior" name="Normal_priors_are_rendering_correctly"/>
+    <testcase time="0.0180000000000291" classname="normal_prior" name="show_works_for_NormalPrior">
+      <skipped message="Reason: On CRAN ('test-normal_prior.R:20:3')"/>
+    </testcase>
+    <testcase time="0.0349999999999682" classname="normal_prior" name="plot_works_for_NormalPrior">
+      <skipped message="Reason: On CRAN ('test-normal_prior.R:24:3')"/>
+    </testcase>
+    <testcase time="0.0320000000000391" classname="normal_prior" name="constraints_work_for_NormalPrior"/>
+  </testsuite>
+  <testsuite name="poisson_prior" timestamp="2023-06-30T19:34:10Z" hostname="49dc38828495" tests="7" skipped="2" failures="0" errors="0" time="0.16">
+    <testcase time="0.0279999999999063" classname="poisson_prior" name="Poisson_priors_are_rendering_correctly"/>
+    <testcase time="0.0080000000000382" classname="poisson_prior" name="Poisson_priors_are_rendering_correctly"/>
+    <testcase time="0.0080000000000382" classname="poisson_prior" name="Poisson_priors_are_rendering_correctly"/>
+    <testcase time="0.0149999999999864" classname="poisson_prior" name="Poisson_priors_are_rendering_correctly"/>
+    <testcase time="0.0190000000000055" classname="poisson_prior" name="show_works_for_PoissonPrior">
+      <skipped message="Reason: On CRAN ('test-poisson_prior.R:19:3')"/>
+    </testcase>
+    <testcase time="0.0359999999999445" classname="poisson_prior" name="plot_works_for_PoissonPrior">
+      <skipped message="Reason: On CRAN ('test-poisson_prior.R:23:3')"/>
+    </testcase>
+    <testcase time="0.0460000000000491" classname="poisson_prior" name="constraints_work_for_PoissonPrior"/>
+  </testsuite>
+  <testsuite name="prepare_stan_data_inputs" timestamp="2023-06-30T19:34:11Z" hostname="49dc38828495" tests="15" skipped="0" failures="0" errors="0" time="0.207">
+    <testcase time="0.0289999999999964" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.00699999999994816" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_works_with_exponential_survival_and_full_borrowing"/>
+    <testcase time="0.0200000000000955" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.00699999999994816" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_works_with_exponential_survival_and_BDB"/>
+    <testcase time="0.0209999999999582" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.0080000000000382" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_works_with_weibull_survival_and_BDB_and_covariates"/>
+    <testcase time="0.0209999999999582" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.0080000000000382" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_works_with_binary_outcome_and_BDB_and_covariates"/>
+    <testcase time="0.0209999999999582" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_returns_correct_matrix_dimensions_for_X"/>
+    <testcase time="0.0100000000001046" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_returns_correct_matrix_dimensions_for_X"/>
+    <testcase time="0.00999999999999091" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_returns_correct_matrix_dimensions_for_X"/>
+    <testcase time="0.00999999999999091" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_returns_correct_matrix_dimensions_for_X"/>
+    <testcase time="0.0199999999999818" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_works_with_weights"/>
+    <testcase time="0.00699999999994816" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_works_with_weights"/>
+    <testcase time="0.0080000000000382" classname="prepare_stan_data_inputs" name="prepare_stan_data_inputs_works_with_weights"/>
+  </testsuite>
+  <testsuite name="sim_borrowing_list" timestamp="2023-06-30T19:34:11Z" hostname="49dc38828495" tests="13" skipped="0" failures="0" errors="0" time="0.184">
+    <testcase time="0.0339999999999918" classname="sim_borrowing_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.01400000000001" classname="sim_borrowing_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.01400000000001" classname="sim_borrowing_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0169999999999391" classname="sim_borrowing_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0160000000000764" classname="sim_borrowing_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0169999999999391" classname="sim_borrowing_list" name="Correct_inputs_successfully_produce_SimBorrowingList_"/>
+    <testcase time="0.0230000000000246" classname="sim_borrowing_list" name="Borrowing_guide_is_produced_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_borrowing_list" name="Borrowing_guide_is_produced_correctly"/>
+    <testcase time="0.00700000000006185" classname="sim_borrowing_list" name="Borrowing_guide_is_produced_correctly"/>
+    <testcase time="0.0109999999999673" classname="sim_borrowing_list" name="Borrowing_guide_is_produced_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_borrowing_list" name="Borrowing_guide_is_produced_correctly"/>
+    <testcase time="0.0080000000000382" classname="sim_borrowing_list" name="Borrowing_guide_is_produced_correctly"/>
+    <testcase time="0.0189999999998918" classname="sim_borrowing_list" name="get_vars_for_sim_borrowing_list_works"/>
+  </testsuite>
+  <testsuite name="sim_covariate_list" timestamp="2023-06-30T19:34:11Z" hostname="49dc38828495" tests="13" skipped="0" failures="0" errors="0" time="0.172">
+    <testcase time="0.02900000000011" classname="sim_covariate_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0149999999999864" classname="sim_covariate_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.01299999999992" classname="sim_covariate_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0149999999999864" classname="sim_covariate_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0130000000000337" classname="sim_covariate_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.01400000000001" classname="sim_covariate_list" name="Correct_inputs_successfully_produce_SimCovariateList_"/>
+    <testcase time="0.0190000000000055" classname="sim_covariate_list" name="Covariate_guide_is_produced_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariate_list" name="Covariate_guide_is_produced_correctly"/>
+    <testcase time="0.00700000000006185" classname="sim_covariate_list" name="Covariate_guide_is_produced_correctly"/>
+    <testcase time="0.0180000000000291" classname="sim_covariate_list" name="Covariate_guide_is_produced_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariate_list" name="Covariate_guide_is_produced_correctly"/>
+    <testcase time="0.00700000000006185" classname="sim_covariate_list" name="Covariate_guide_is_produced_correctly"/>
+    <testcase time="0.0179999999999154" classname="sim_covariate_list" name="get_vars_for_sim_covariate_list_works"/>
+  </testsuite>
+  <testsuite name="sim_covariates" timestamp="2023-06-30T19:34:11Z" hostname="49dc38828495" tests="108" skipped="0" failures="0" errors="0" time="0.404">
+    <testcase time="0.0190000000000055" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.000999999999976353" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.000999999999976353" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.0109999999999673" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.000999999999976353" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.000999999999976353" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00799999999992451" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00999999999999091" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.00599999999997181" classname="sim_covariates" name="SimCovariates_objects_created_correctly"/>
+    <testcase time="0.0119999999999436" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.0130000000000337" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.0149999999999864" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.0040000000000191" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00299999999992906" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00299999999992906" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.0139999999998963" classname="sim_covariates" name="Invalid_sim_covariate_covariates_inputs_are_caught"/>
+    <testcase time="0.0120000000000573" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00199999999995271" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00299999999992906" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00299999999992906" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00299999999992906" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.0130000000000337" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.0040000000000191" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00299999999992906" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00499999999999545" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00299999999992906" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00200000000006639" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00299999999992906" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.0040000000000191" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.01400000000001" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00399999999990541" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00299999999992906" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.0040000000000191" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00299999999992906" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.0040000000000191" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00299999999992906" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.0040000000000191" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00300000000004275" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.00399999999990541" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+    <testcase time="0.0149999999999864" classname="sim_covariates" name="Invalid_sim_covariate_matrix_inputs_are_caught"/>
+  </testsuite>
+  <testsuite name="sim_data_list" timestamp="2023-06-30T19:34:12Z" hostname="49dc38828495" tests="11" skipped="0" failures="0" errors="0" time="0.179">
+    <testcase time="0.0330000000000155" classname="sim_data_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.01400000000001" classname="sim_data_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.01400000000001" classname="sim_data_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0149999999999864" classname="sim_data_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.01400000000001" classname="sim_data_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.01400000000001" classname="sim_data_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.01400000000001" classname="sim_data_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.01400000000001" classname="sim_data_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0149999999999864" classname="sim_data_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0130000000000337" classname="sim_data_list" name="Correct_inputs_successfully_produce_SimDataList_"/>
+    <testcase time="0.0190000000000055" classname="sim_data_list" name="N_datasets_per_param_is_correct"/>
+  </testsuite>
+  <testsuite name="sim_outcome_list" timestamp="2023-06-30T19:34:12Z" hostname="49dc38828495" tests="13" skipped="0" failures="0" errors="0" time="0.201">
+    <testcase time="0.0330000000000155" classname="sim_outcome_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0209999999999582" classname="sim_outcome_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0149999999999864" classname="sim_outcome_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0170000000000528" classname="sim_outcome_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0199999999999818" classname="sim_outcome_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0180000000000291" classname="sim_outcome_list" name="Correct_inputs_successfully_produce_SimOutcomeList_"/>
+    <testcase time="0.0209999999999582" classname="sim_outcome_list" name="Outcome_guide_is_produced_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_outcome_list" name="Outcome_guide_is_produced_correctly"/>
+    <testcase time="0.00700000000006185" classname="sim_outcome_list" name="Outcome_guide_is_produced_correctly"/>
+    <testcase time="0.0159999999999627" classname="sim_outcome_list" name="Outcome_guide_is_produced_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_outcome_list" name="Outcome_guide_is_produced_correctly"/>
+    <testcase time="0.00699999999994816" classname="sim_outcome_list" name="Outcome_guide_is_produced_correctly"/>
+    <testcase time="0.0220000000000482" classname="sim_outcome_list" name="get_vars_for_sim_outcome_list_works"/>
+  </testsuite>
+  <testsuite name="sim_samplesize" timestamp="2023-06-30T19:34:12Z" hostname="49dc38828495" tests="9" skipped="0" failures="0" errors="0" time="0.113">
+    <testcase time="0.0249999999999773" classname="sim_samplesize" name="sim_samplesize_is_catching_incorrect_inputs"/>
+    <testcase time="0.0119999999999436" classname="sim_samplesize" name="sim_samplesize_is_catching_incorrect_inputs"/>
+    <testcase time="0.0180000000000291" classname="sim_samplesize" name="sim_samplesize_is_catching_incorrect_inputs"/>
+    <testcase time="0.0130000000000337" classname="sim_samplesize" name="sim_samplesize_is_catching_incorrect_inputs"/>
+    <testcase time="0.01299999999992" classname="sim_samplesize" name="sim_samplesize_is_catching_incorrect_inputs"/>
+    <testcase time="0.0110000000000809" classname="sim_samplesize" name="sim_samplesize_is_producing_the_correct_counts"/>
+    <testcase time="0.00699999999994816" classname="sim_samplesize" name="sim_samplesize_is_producing_the_correct_counts"/>
+    <testcase time="0.0080000000000382" classname="sim_samplesize" name="sim_samplesize_is_producing_the_correct_counts"/>
+    <testcase time="0.00599999999997181" classname="sim_samplesize" name="sim_samplesize_is_producing_the_correct_counts"/>
+  </testsuite>
+  <testsuite name="sim_treatment_list" timestamp="2023-06-30T19:34:12Z" hostname="49dc38828495" tests="13" skipped="0" failures="0" errors="0" time="0.154">
+    <testcase time="0.0270000000000437" classname="sim_treatment_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0109999999999673" classname="sim_treatment_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0130000000000337" classname="sim_treatment_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0149999999999864" classname="sim_treatment_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.01400000000001" classname="sim_treatment_list" name="Incorrect_inputs_lead_to_errors"/>
+    <testcase time="0.0119999999999436" classname="sim_treatment_list" name="Correct_inputs_successfully_produce_SimTreatmentList_"/>
+    <testcase time="0.0170000000000528" classname="sim_treatment_list" name="Treatment_guide_is_produced_correctly"/>
+    <testcase time="0.00199999999995271" classname="sim_treatment_list" name="Treatment_guide_is_produced_correctly"/>
+    <testcase time="0.00599999999997181" classname="sim_treatment_list" name="Treatment_guide_is_produced_correctly"/>
+    <testcase time="0.00900000000001455" classname="sim_treatment_list" name="Treatment_guide_is_produced_correctly"/>
+    <testcase time="0.00200000000006639" classname="sim_treatment_list" name="Treatment_guide_is_produced_correctly"/>
+    <testcase time="0.00699999999994816" classname="sim_treatment_list" name="Treatment_guide_is_produced_correctly"/>
+    <testcase time="0.0190000000000055" classname="sim_treatment_list" name="get_vars_for_sim_treatment_list_works"/>
+  </testsuite>
+  <testsuite name="simvar_class" timestamp="2023-06-30T19:34:12Z" hostname="49dc38828495" tests="18" skipped="0" failures="0" errors="0" time="0.098">
+    <testcase time="0.0199999999999818" classname="simvar_class" name="cont_var_functions_correctly"/>
+    <testcase time="0.00200000000006639" classname="simvar_class" name="cont_var_functions_correctly"/>
+    <testcase time="0.00199999999995271" classname="simvar_class" name="cont_var_functions_correctly"/>
+    <testcase time="0.00999999999999091" classname="simvar_class" name="cont_var_functions_correctly"/>
+    <testcase time="0.00200000000006639" classname="simvar_class" name="cont_var_functions_correctly"/>
+    <testcase time="0.00899999999990087" classname="simvar_class" name="cont_var_functions_correctly"/>
+    <testcase time="0.0120000000000573" classname="simvar_class" name="bin_var_functions_correctly"/>
+    <testcase time="0.00199999999995271" classname="simvar_class" name="bin_var_functions_correctly"/>
+    <testcase time="0.00100000000009004" classname="simvar_class" name="bin_var_functions_correctly"/>
+    <testcase time="0.00199999999995271" classname="simvar_class" name="bin_var_functions_correctly"/>
+    <testcase time="0.00199999999995271" classname="simvar_class" name="bin_var_functions_correctly"/>
+    <testcase time="0.00300000000004275" classname="simvar_class" name="bin_var_functions_correctly"/>
+    <testcase time="0.000999999999976353" classname="simvar_class" name="bin_var_functions_correctly"/>
+    <testcase time="0.00200000000006639" classname="simvar_class" name="bin_var_functions_correctly"/>
+    <testcase time="0.00199999999995271" classname="simvar_class" name="bin_var_functions_correctly"/>
+    <testcase time="0.0130000000000337" classname="simvar_class" name="bin_var_functions_correctly"/>
+    <testcase time="0.00299999999992906" classname="simvar_class" name="bin_var_functions_correctly"/>
+    <testcase time="0.00999999999999091" classname="simvar_class" name="bin_var_functions_correctly"/>
+  </testsuite>
+  <testsuite name="treatment_details" timestamp="2023-06-30T19:34:12Z" hostname="49dc38828495" tests="5" skipped="0" failures="0" errors="0" time="0.075">
+    <testcase time="0.0220000000000482" classname="treatment_details" name="treatment_details_works_when_inputs_are_correct"/>
+    <testcase time="0.00199999999995271" classname="treatment_details" name="treatment_details_works_when_inputs_are_correct"/>
+    <testcase time="0.0200000000000955" classname="treatment_details" name="treatment_details_fails_fails_for_invalid_prior_and_flag_specification"/>
+    <testcase time="0.0119999999999436" classname="treatment_details" name="treatment_details_fails_fails_for_invalid_prior_and_flag_specification"/>
+    <testcase time="0.0190000000000055" classname="treatment_details" name="get_vars_works_for_treatment_details"/>
+  </testsuite>
+  <testsuite name="trim_data_matrix" timestamp="2023-06-30T19:34:12Z" hostname="49dc38828495" tests="6" skipped="0" failures="0" errors="0" time="0.075">
+    <testcase time="0.0330000000000155" classname="trim_data_matrix" name="data_matrix_trimming_works_with_BDB"/>
+    <testcase time="0.00199999999995271" classname="trim_data_matrix" name="data_matrix_trimming_works_with_BDB"/>
+    <testcase time="0.0149999999999864" classname="trim_data_matrix" name="data_matrix_trimming_works_with_Full_Borrowing"/>
+    <testcase time="0.00200000000006639" classname="trim_data_matrix" name="data_matrix_trimming_works_with_Full_Borrowing"/>
+    <testcase time="0.0209999999999582" classname="trim_data_matrix" name="data_matrix_trimming_works_with_No_Borrowing"/>
+    <testcase time="0.00200000000006639" classname="trim_data_matrix" name="data_matrix_trimming_works_with_No_Borrowing"/>
+  </testsuite>
+  <testsuite name="uniform_prior" timestamp="2023-06-30T19:34:12Z" hostname="49dc38828495" tests="9" skipped="2" failures="0" errors="0" time="0.147">
+    <testcase time="0.0190000000000055" classname="uniform_prior" name="Uniform_priors_are_rendering_correctly"/>
+    <testcase time="0.00899999999990087" classname="uniform_prior" name="Uniform_priors_are_rendering_correctly"/>
+    <testcase time="0.0080000000000382" classname="uniform_prior" name="Uniform_priors_are_rendering_correctly"/>
+    <testcase time="0.00700000000006185" classname="uniform_prior" name="Uniform_priors_are_rendering_correctly"/>
+    <testcase time="0.00799999999992451" classname="uniform_prior" name="Uniform_priors_are_rendering_correctly"/>
+    <testcase time="0.0149999999999864" classname="uniform_prior" name="Uniform_priors_are_rendering_correctly"/>
+    <testcase time="0.0180000000000291" classname="uniform_prior" name="show_works_for_UniformPrior">
+      <skipped message="Reason: On CRAN ('test-uniform_prior.R:21:3')"/>
+    </testcase>
+    <testcase time="0.0339999999999918" classname="uniform_prior" name="plot_works_for_UniformPrior">
+      <skipped message="Reason: On CRAN ('test-uniform_prior.R:26:3')"/>
+    </testcase>
+    <testcase time="0.0289999999999964" classname="uniform_prior" name="constraints_work_for_UniformPrior"/>
+  </testsuite>
+  <testsuite name="weib_ph_surv_dist" timestamp="2023-06-30T19:34:13Z" hostname="49dc38828495" tests="10" skipped="0" failures="0" errors="0" time="0.101">
+    <testcase time="0.0199999999999818" classname="weib_ph_surv_dist" name="Weibull_survival_distributions_are_rendering_correctly"/>
+    <testcase time="0.00600000000008549" classname="weib_ph_surv_dist" name="Weibull_survival_distributions_are_rendering_correctly"/>
+    <testcase time="0.00699999999994816" classname="weib_ph_surv_dist" name="Weibull_survival_distributions_are_rendering_correctly"/>
+    <testcase time="0.00999999999999091" classname="weib_ph_surv_dist" name="Weibull_survival_distributions_are_rendering_correctly"/>
+    <testcase time="0.0240000000000009" classname="weib_ph_surv_dist" name="get_vars_works_for_WeibullPHSurvDist"/>
+    <testcase time="0.00999999999999091" classname="weib_ph_surv_dist" name="get_vars_works_for_WeibullPHSurvDist"/>
+    <testcase time="0.01400000000001" classname="weib_ph_surv_dist" name="weib_ph_surv_dist_works_with_weights"/>
+    <testcase time="0.00599999999997181" classname="weib_ph_surv_dist" name="weib_ph_surv_dist_works_with_weights"/>
+    <testcase time="0.00200000000006639" classname="weib_ph_surv_dist" name="weib_ph_surv_dist_works_with_weights"/>
+    <testcase time="0.00199999999995271" classname="weib_ph_surv_dist" name="weib_ph_surv_dist_works_with_weights"/>
+  </testsuite>
+</testsuites>
