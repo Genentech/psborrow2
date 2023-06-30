@@ -1,4 +1,3 @@
-
 #' @rdname mcmc_sample
 setMethod(
   "mcmc_sample",
