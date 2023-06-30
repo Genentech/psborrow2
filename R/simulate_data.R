@@ -58,12 +58,12 @@ covariance_matrix <- function(diag, upper_tri) {
 #' @export
 #'
 #' @examples
-#' corr_covs <- add_covariates(
+#' corr_covs <- baseline_covariates(
 #'   names = c("b1", "b2"),
 #'   means_int = c(5, 25),
 #'   covariance_int = covariance_matrix(diag = c(1, 1), upper_tri = 0.4)
 #' )
-add_covariates <- function(names, means_int, means_ext = means_int, covariance_int, covariance_ext = covariance_int) {
+baseline_covariates <- function(names, means_int, means_ext = means_int, covariance_int, covariance_ext = covariance_int) {
   assert_character(names)
   n <- length(names)
   assert_numeric(means_int, finite = TRUE, len = n, any.missing = FALSE)
@@ -111,7 +111,7 @@ add_covariates <- function(names, means_int, means_ext = means_int, covariance_i
 #' @param n_trt_int Number of internal treated patients
 #' @param n_ctrl_int Number of internal control patients
 #' @param n_ctrl_ext Number of external control patients
-#' @param covariates List of correlated covariates objects, see [add_covariates()]
+#' @param covariates List of correlated covariates objects, see [baseline_covariates()]
 #' @param transformations List of named transformation functions.
 #'
 #' @details
@@ -136,7 +136,7 @@ add_covariates <- function(names, means_int, means_ext = means_int, covariance_i
 #'   n_trt_int = 100,
 #'   n_ctrl_int = 50,
 #'   n_ctrl_ext = 100,
-#'   covariates = add_covariates(
+#'   covariates = baseline_covariates(
 #'     c("b1", "b2", "b3"),
 #'     means_int = c(0, 0, 0),
 #'     covariance_int = covariance_matrix(c(1, 1, 1), c(.8, .3, .8))
@@ -153,6 +153,7 @@ create_baseline_object <- function(n_trt_int, n_ctrl_int, n_ctrl_ext, covariates
   assert_integerish(n_ctrl_ext, len = 1, lower = 1)
 
   if (!missing(covariates)) {
+    if (is(covariates, "CorrelatedCovariates")) covariates <- list(covariates)
     assert_list(covariates)
   } else {
     covariates <- list(.correlated_covariates())
@@ -258,6 +259,7 @@ setValidity("BaselineObject", function(object) {
 #' @return A numeric vector containing quantiles based on the data
 #'  generating distribution.
 #' @export
+#' @importFrom stats pnorm
 #'
 get_quantiles <- function(object, var) {
   assert_class(object, "BaselineDataFrame")

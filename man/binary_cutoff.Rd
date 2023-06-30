@@ -23,9 +23,9 @@ Binary Cut-Off Transformation
 \examples{
 # Creates a simple function, where `data` is a `BaselineDataFrame`:
 function(data) {
- ext <- data$ext == 0
- q <- get_quantiles(data, name)
- ifelse(ext, q > int_cutoff, q > ext_cutoff)
+  ext <- data$ext == 0
+  q <- get_quantiles(data, name)
+  ifelse(ext, q > int_cutoff, q > ext_cutoff)
 }
 
 }

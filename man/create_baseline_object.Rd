@@ -19,7 +19,7 @@ create_baseline_object(
 
 \item{n_ctrl_ext}{Number of external control patients}
 
-\item{covariates}{List of correlated covariates objects, see \code{\link[=add_covariates]{add_covariates()}}}
+\item{covariates}{List of correlated covariates objects, see \code{\link[=baseline_covariates]{baseline_covariates()}}}
 
 \item{transformations}{List of named transformation functions.}
 }
@@ -48,15 +48,15 @@ bl_biomarkers <- create_baseline_object(
   n_trt_int = 100,
   n_ctrl_int = 50,
   n_ctrl_ext = 100,
-  covariates = add_covariates(
-   c("b1", "b2", "b3"),
-   means_int = c(0, 0, 0),
-   covariance_int = covariance_matrix(c(1, 1, 1), c(.8, .3, .8))
+  covariates = baseline_covariates(
+    c("b1", "b2", "b3"),
+    means_int = c(0, 0, 0),
+    covariance_int = covariance_matrix(c(1, 1, 1), c(.8, .3, .8))
   ),
- transformations = list(
-  exp_b1 = function(data) exp(data$b1),
-  b2 = binary_cutoff("b2", int_cutoff = 0.7, ext_cutoff = 0.5)
- )
+  transformations = list(
+    exp_b1 = function(data) exp(data$b1),
+    b2 = binary_cutoff("b2", int_cutoff = 0.7, ext_cutoff = 0.5)
+  )
 )
 
 }
