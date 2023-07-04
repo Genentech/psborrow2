@@ -248,6 +248,16 @@ setValidity("BaselineObject", function(object) {
   if (is.null(msg)) TRUE else msg
 })
 
+# show method
+setMethod(
+  f = "show",
+  signature = "BaselineDataFrame",
+  definition = function(object) {
+    cat("Simulated Baseline Data")
+    cat("\n")
+    print.data.frame(object)
+  }
+)
 
 #' Get Quantiles of Random Data
 #'
