@@ -1,4 +1,3 @@
-
 #' @rdname mcmc_sample
 setMethod(
   "mcmc_sample",
@@ -248,7 +247,8 @@ setMethod(
           iter_warmup = iter_warmup,
           iter_sampling = iter_sampling,
           chains = chains,
-          verbose = verbose
+          verbose = verbose,
+          ...
         )
 
         draws <- mcmc_results$draws()
