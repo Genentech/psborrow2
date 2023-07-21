@@ -1,3 +1,5 @@
+skip_on_cran()
+
 # Simulate a single matrix
 sim_single_matrix <- function(true_hr = 0.6,
                               drift_hr = 1.0,

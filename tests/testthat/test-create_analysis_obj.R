@@ -1,5 +1,6 @@
-# Build some valid inputs ----
+skip_on_cran()
 
+# Build some valid inputs ----
 ac <- add_covariates(
   c("cov1", "cov2"),
   normal_prior(0, 1000)
