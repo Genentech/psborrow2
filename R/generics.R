@@ -85,3 +85,13 @@ setGeneric("get_results", function(object) standardGeneric("get_results"))
 #' @export
 #'
 setGeneric("get_cmd_stan_models", function(object) standardGeneric("get_cmd_stan_models"))
+
+#' Generate Data from Object
+#'
+#' @param x object
+#' @param ... Other arguments passed to methods
+#'
+#' @rdname generate
+#'
+#' @export
+setGeneric("generate", function(x, ...) standardGeneric("generate"))
