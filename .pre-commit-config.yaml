@@ -7,10 +7,10 @@ repos:
     hooks:
       - id: style-files
         args: []
-      # - id: roxygenize
-      #   additional_dependencies:
-      #     - knitr
-      #     - cmdstanr
+      - id: roxygenize
+        additional_dependencies:
+          - knitr
+          - stan-dev/cmdstanr@*release
       # codemeta must be above use-tidy-description when both are used
       # -   id: codemeta-description-updated
       - id: use-tidy-description
