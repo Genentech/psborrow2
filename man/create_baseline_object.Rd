@@ -24,15 +24,16 @@ create_baseline_object(
 \item{transformations}{List of named transformation functions.}
 }
 \value{
-A \code{BaselineObject}
+A \link{BaselineObject}
 }
 \description{
 Create Baseline Data Simulation Object
 }
 \details{
 Transformation functions are evaluated in order and create or overwrite a column
-in the data.frame with that name. The function should take a \link{BaselineDataFrame}
-object and return a vector with length identical to the total number of patients.
+in the data.frame with that name. The function should take a \code{data.frame} (specifically
+a \code{BaselineDataFrame} object from \code{generate(BaselineObject)}) and return a vector with
+length identical to the total number of patients.
 The \verb{@BaselineObject} slot may be accessed directly or with \code{\link[=get_quantiles]{get_quantiles()}} to
 create transformations. See \code{\link[=binary_cutoff]{binary_cutoff()}}
 }

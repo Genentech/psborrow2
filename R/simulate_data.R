@@ -1,5 +1,3 @@
-
-
 #' Create Covariance Matrix
 #'
 #' @param diag Diagonal entries of the covariance matrix
@@ -54,7 +52,7 @@ covariance_matrix <- function(diag, upper_tri) {
 #' @param covariance_ext variance-covariance matrix for generating multivariate normal data for external patients.
 #' Must be square matrix with same number of rows and `length(names)`
 #'
-#' @return `BaselineObject` to build simulated dataset
+#' @return [BaselineObject] to build simulated dataset
 #' @export
 #'
 #' @examples
@@ -63,7 +61,11 @@ covariance_matrix <- function(diag, upper_tri) {
 #'   means_int = c(5, 25),
 #'   covariance_int = covariance_matrix(diag = c(1, 1), upper_tri = 0.4)
 #' )
-baseline_covariates <- function(names, means_int, means_ext = means_int, covariance_int, covariance_ext = covariance_int) {
+baseline_covariates <- function(names,
+                                means_int,
+                                means_ext = means_int,
+                                covariance_int,
+                                covariance_ext = covariance_int) {
   assert_character(names)
   n <- length(names)
   assert_numeric(means_int, finite = TRUE, len = n, any.missing = FALSE)
@@ -95,6 +97,14 @@ baseline_covariates <- function(names, means_int, means_ext = means_int, covaria
 
 # BaselineObject -----
 
+#' `BaselineObject` class for data simulation
+#'
+#' @slot n_trt_int integer. Number of internal treated patients
+#' @slot n_ctrl_int integer. Number of internal control patients
+#' @slot n_ctrl_ext integer. Number of external control patients
+#' @slot covariates list. List of correlated covariates objects, see [baseline_covariates()]
+#' @slot transformations list. List of named transformation functions.
+#'
 .baseline_object <- setClass(
   "BaselineObject",
   slots = c(
@@ -116,12 +126,13 @@ baseline_covariates <- function(names, means_int, means_ext = means_int, covaria
 #'
 #' @details
 #' Transformation functions are evaluated in order and create or overwrite a column
-#' in the data.frame with that name. The function should take a [BaselineDataFrame]
-#' object and return a vector with length identical to the total number of patients.
+#' in the data.frame with that name. The function should take a `data.frame` (specifically
+#' a `BaselineDataFrame` object from `generate(BaselineObject)`) and return a vector with
+#' length identical to the total number of patients.
 #' The `@BaselineObject` slot may be accessed directly or with [get_quantiles()] to
 #' create transformations. See [binary_cutoff()]
 #'
-#' @return A `BaselineObject`
+#' @return A [BaselineObject]
 #' @export
 #'
 #' @examples
@@ -177,7 +188,9 @@ create_baseline_object <- function(n_trt_int, n_ctrl_int, n_ctrl_ext, covariates
 
 #' @importFrom generics generate
 #' @importFrom mvtnorm rmvnorm
+# nolint start
 generate.BaselineObject <- function(x, ...) {
+  # nolint end
   arm_data <- data.frame(
     patid = seq_len(x@n_trt_int + x@n_ctrl_int + x@n_ctrl_ext),
     ext = rep(c(0, 1), times = c(x@n_trt_int + x@n_ctrl_int, x@n_ctrl_ext)),
@@ -218,6 +231,30 @@ generate.BaselineObject <- function(x, ...) {
 }
 
 
+#' Generate Data for a `BaselineObject`
+#'
+#' @param x a `BaselineObject` object created by [create_baseline_object]
+#' @param ... additional parameters are ignored
+#'
+#' @return A [BaselineDataFrame][psborrow2::BaselineDataFrame-class] object
+#' @export
+#'
+#' @examples
+#' bl_biomarkers <- create_baseline_object(
+#'   n_trt_int = 100,
+#'   n_ctrl_int = 50,
+#'   n_ctrl_ext = 100,
+#'   covariates = baseline_covariates(
+#'     c("b1", "b2", "b3"),
+#'     means_int = c(0, 0, 0),
+#'     covariance_int = covariance_matrix(c(1, 1, 1), c(.8, .3, .8))
+#'   ),
+#'   transformations = list(
+#'     exp_b1 = function(data) exp(data$b1),
+#'     b2 = binary_cutoff("b2", int_cutoff = 0.7, ext_cutoff = 0.5)
+#'   )
+#' )
+#' generate(bl_biomarkers)
 setMethod(
   f = "generate",
   signature = "BaselineObject",

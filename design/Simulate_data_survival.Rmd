@@ -18,7 +18,6 @@ For survival we need to specify in addition:
    - treatment effect HR
 
 ```{r}
-
 # each of these builds up the object
 # nothing needs to generate any data
 #
@@ -29,11 +28,11 @@ For survival we need to specify in addition:
 
 
 baseline_obj %>%
-  generate() %>%
   design_matrx(~ sex + trt + ext) %>%
   linear_predictor(betas = c(sex = 0.3, trt = 1, ext = 1.1)) %>%
   simulate_survival(hazard_model = weibull_ph(shape = 1, scale = 0.9)) %>%
-  survival_matrix()
+  survival_matrix() %>% # think of better name....
+  generate(n = 100)
 
 generate(baseline_obj()) %>%
   mutate(age2 = age^2) %>%

@@ -26,7 +26,7 @@ Must be square matrix with same number of rows and \code{length(names)}}
 Must be square matrix with same number of rows and \code{length(names)}}
 }
 \value{
-\code{BaselineObject} to build simulated dataset
+\link{BaselineObject} to build simulated dataset
 }
 \description{
 Set parameters to generate correlated multivariate normal data for internal and external patients.

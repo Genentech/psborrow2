@@ -4,7 +4,10 @@
 \alias{check_cmdstanr}
 \title{Check Stan}
 \usage{
-check_cmdstanr()
+check_cmdstanr(check_sampling = FALSE)
+}
+\arguments{
+\item{check_sampling}{Compile and sample from the "logistic" example model.}
 }
 \description{
 Check whether \code{cmdstanr} is available and prints version and logistic example.
