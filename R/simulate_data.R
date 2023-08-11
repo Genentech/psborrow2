@@ -1,5 +1,3 @@
-
-
 #' Create Covariance Matrix
 #'
 #' @param diag Diagonal entries of the covariance matrix
