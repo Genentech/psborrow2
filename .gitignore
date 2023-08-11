@@ -24,6 +24,7 @@ temp_w
 templates/
 tmp.*
 vignettes/*.html
+vignettes/*.md
 coverage.*
 .vscode/
 /doc/
