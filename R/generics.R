@@ -1,4 +1,3 @@
-
 #' Plot Prior Objects
 #'
 #' Plot prior distributions as densities. Continuous distributions are plotted as curves and
