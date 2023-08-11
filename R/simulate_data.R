@@ -52,7 +52,7 @@ covariance_matrix <- function(diag, upper_tri) {
 #' @param covariance_ext variance-covariance matrix for generating multivariate normal data for external patients.
 #' Must be square matrix with same number of rows and `length(names)`
 #'
-#' @return [BaselineObject] to build simulated dataset
+#' @return [BaselineObject][BaselineObject-class] to build simulated dataset
 #' @export
 #'
 #' @examples
@@ -132,7 +132,7 @@ baseline_covariates <- function(names,
 #' The `@BaselineObject` slot may be accessed directly or with [get_quantiles()] to
 #' create transformations. See [binary_cutoff()]
 #'
-#' @return A [BaselineObject]
+#' @return A [BaselineObject][BaselineObject-class]
 #' @export
 #'
 #' @examples

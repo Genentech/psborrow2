@@ -24,7 +24,7 @@ create_baseline_object(
 \item{transformations}{List of named transformation functions.}
 }
 \value{
-A \link{BaselineObject}
+A \link[=BaselineObject-class]{BaselineObject}
 }
 \description{
 Create Baseline Data Simulation Object
