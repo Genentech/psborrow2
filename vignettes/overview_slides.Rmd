@@ -530,7 +530,7 @@ Gamma distribution with rate and scale of 0.001:
 
 ```{r}
 bdb_borrowing <- borrowing_details(
-  method = "BDB",
+  method = "BDB_HCP",
   ext_flag_col = "ext",
   tau_prior = gamma_prior(alpha = 0.001, beta = 0.001)
 )
@@ -603,7 +603,7 @@ analysis_object <- create_analysis_obj(
     baseline_prior = normal_prior(0, 10000)
   ),
   borrowing = borrowing_details(
-    method = "BDB",
+    method = "BDB_HCP",
     ext_flag_col = "ext",
     tau_prior = gamma_prior(alpha = 0.001, beta = 0.001)
   ),
@@ -793,7 +793,7 @@ analysis_object_ps <- create_analysis_obj(
     normal_prior(0, 10000)
   ),
   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
-  borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
+  borrowing = borrowing_details("BDB_HCP", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
 ```
@@ -871,7 +871,7 @@ trt_from_anls <- function(borrowing, adjustment = NULL) {
   med <- quant[quant$variable == "HR_trt", "50%"][[1]]
   tibble(
     adjustment = ifelse(is.null(adjustment), "No adjustment", "Regression adjustment for PS categories"),
-    borrowing = ifelse(borrowing@method != "BDB",
+    borrowing = ifelse(borrowing@method != "BDB_HCP",
       borrowing@method,
       paste0(
         borrowing@method,
@@ -889,8 +889,8 @@ trt_from_anls <- function(borrowing, adjustment = NULL) {
 
 # Make relevant outputs
 no_borrow <- borrowing_details(method = "No borrowing", ext_flag_col = "ext")
-bdb_borrow <- borrowing_details(method = "BDB", ext_flag_col = "ext", tau_prior = gamma_prior(0.001, 0.001))
-bdb_borrow_agg <- borrowing_details(method = "BDB", ext_flag_col = "ext", tau_prior = gamma_prior(1, 0.001))
+bdb_borrow <- borrowing_details(method = "BDB_HCP", ext_flag_col = "ext", tau_prior = gamma_prior(0.001, 0.001))
+bdb_borrow_agg <- borrowing_details(method = "BDB_HCP", ext_flag_col = "ext", tau_prior = gamma_prior(1, 0.001))
 full_borrow <- borrowing_details(method = "Full borrowing", ext_flag_col = "ext")
 adj_ps <- add_covariates(
   c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
@@ -1176,8 +1176,8 @@ my_borrowing_list <- sim_borrowing_list(
   list(
     "No borrowing" = borrowing_details("No borrowing", "ext"),
     "Full borrowing" = borrowing_details("Full borrowing", "ext"),
-    "BDB - conservative" = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
-    "BDB - aggressive" = borrowing_details("BDB", "ext", gamma_prior(1, 0.001))
+    "BDB - conservative" = borrowing_details("BDB_HCP", "ext", gamma_prior(0.001, 0.001)),
+    "BDB - aggressive" = borrowing_details("BDB_HCP", "ext", gamma_prior(1, 0.001))
   )
 )
 ```

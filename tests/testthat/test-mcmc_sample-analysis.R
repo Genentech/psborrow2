@@ -449,7 +449,7 @@ test_that("mcmc_sample for Analysis works for exponential BDB, conservative borr
       cens_var = "cnsr",
       normal_prior(0, 100000)
     ),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_details("BDB_HCP",
       ext_flag_col = "ext",
       tau_prior = gamma_prior(0.001, 0.001)
     ),
@@ -480,7 +480,7 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, aggressive borrowing"
       shape_prior = normal_prior(0, 100000),
       baseline_prior = normal_prior(0, 100000)
     ),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_details("BDB_HCP",
       ext_flag_col = "ext",
       tau_prior = gamma_prior(1, 0.001)
     ),
@@ -506,7 +506,7 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressiv
   bin_bdb_aggressive <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = logistic_bin_outcome("resp", normal_prior(0, 100000)),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_details("BDB_HCP",
       ext_flag_col = "ext",
       tau_prior = gamma_prior(1, 0.001)
     ),

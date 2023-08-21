@@ -4,7 +4,7 @@
 #' set hyperprior for commensurability parameter tau.
 #'
 #' @param method character. The type of borrowing to perform. It
-#' must be one of: `'BDB'`, `'Full borrowing'`, or `'No borrowing'`. See _Details_ for
+#' must be one of: `'BDB_HCP'`, `'Full borrowing'`, or `'No borrowing'`. See _Details_ for
 #' more information.
 #' @param ext_flag_col character. The name of the column in
 #' the data matrix that corresponds to the external control flag (`1`/`0` or
@@ -19,11 +19,12 @@
 #' The `method` argument specifies the type of borrowing that will be
 #' implemented. There are currently three types of borrowing that are supported:
 #'
-#' - \emph{'BDB'} for Bayesian Dynamic Borrowing. In Bayesian Dynamic
-#' Borrowing, external control information is borrowed to the extent that the
+#' - \emph{'BDB_HCP'} for Bayesian Dynamic Borrowing with the
+#' Hierarchical Commensurate Prior approach. In this approach,
+#' external control information is borrowed to the extent that the
 #' outcomes (i.e., log hazard rates or log odds) are similar between
 #' external and internal control populations. See
-#' \href{https://doi.org/10.1002/pst.1589}{Viele et. al. 2014}.
+#' \href{https://doi.org/10.1111/j.1541-0420.2011.01564.x}{Hobbs et al 2011}.
 #' - \emph{'Full borrowing'} for pooling of historical and concurrent controls.
 #' There is no distinction between patients in the internal and external
 #' control arms. While the `ext_flag_col` must still be specified, it is not
@@ -72,7 +73,7 @@
 #'
 #' @examples
 #' sb <- borrowing_details(
-#'   method = "BDB",
+#'   method = "BDB_HCP",
 #'   ext_flag_col = "ext",
 #'   tau_prior = gamma_prior(0.001, 0.001)
 #' )
@@ -80,12 +81,17 @@
 borrowing_details <- function(method,
                               ext_flag_col,
                               tau_prior = NULL) {
+  # Throw error for older scripts where 'BDB' was an option
+  if (method == "BDB") {
+    stop("'BDB' has been replaced with 'BDB_HCP'. Please update your scripts.")
+  }
+
   # Additional checks and neater errors than in class definition
-  assert_choice(method, c("Full borrowing", "No borrowing", "BDB"))
+  assert_choice(method, c("Full borrowing", "No borrowing", "BDB_HCP"))
   assert_string(ext_flag_col)
 
-  if (method == "BDB") {
-    if (is.null(tau_prior)) stop("When method='BDB', tau_prior must be specified")
+  if (method == "BDB_HCP") {
+    if (is.null(tau_prior)) stop("When method='BDB_HCP', tau_prior must be specified")
     assert_class(tau_prior, "Prior")
     if (!parse_constraint(tau_prior)["lower"] >= 0) stop("tau distribution must be bounded >=0")
     data_stan_code <- "matrix[N,2] Z;"

@@ -93,7 +93,7 @@ anls <- create_analysis_obj(
     baseline_prior = normal_prior(0, 1000)
   ),
   borrowing = borrowing_details(
-    "BDB",
+    "BDB_HCP",
     "ext",
     exponential_prior(.001)
   ),
@@ -151,7 +151,7 @@ sim_object <- create_simulation_obj(
   outcome = logistic_bin_outcome("ep", normal_prior(0, 1000)),
   borrowing = sim_borrowing_list(list(
     full_borrowing = borrowing_details("Full borrowing", "ext"),
-    bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
+    bdb = borrowing_details("BDB_HCP", "ext", exponential_prior(0.0001))
   )),
   treatment = treatment_details("trt", normal_prior(0, 1000))
 )

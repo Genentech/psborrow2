@@ -24,13 +24,13 @@ test_that("borrowing_details works as expected for full borrowing", {
 
 test_that("borrowing_details works as expected for BDB", {
   bdb <- borrowing_details(
-    "BDB",
+    "BDB_HCP",
     "ext",
     gamma_prior(.1, .1)
   )
 
   expect_class(bdb, "Borrowing")
-  expect_equal(bdb@method, "BDB")
+  expect_equal(bdb@method, "BDB_HCP")
   expect_class(bdb@tau_prior, "GammaPrior")
   expect_equal(bdb@ext_flag_col, "ext")
 })
@@ -50,13 +50,14 @@ test_that("borrowing_details gives expected errors", {
     "missing, with no default"
   )
 
-  expect_error(borrowing_details("BDB"), "missing, with no default")
+  expect_error(borrowing_details("BDB_HCP"), "missing, with no default")
+  expect_error(borrowing_details("BDB"), "replaced")
 })
 
 test_that("get_vars works for borrowing_details", {
   expect_identical(
     get_vars(borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext_fl",
       gamma_prior(.1, .1)
     )),
@@ -67,7 +68,7 @@ test_that("get_vars works for borrowing_details", {
 test_that("borrowing_details checks tau prior limits", {
   expect_error(
     borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext_fl",
       uniform_prior(-10, 10)
     ),
@@ -75,7 +76,7 @@ test_that("borrowing_details checks tau prior limits", {
   )
   expect_error(
     borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext_fl",
       normal_prior(0, 10000)
     ),

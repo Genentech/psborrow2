@@ -203,8 +203,8 @@ my_borrowing_list <- sim_borrowing_list(
   list(
     "No borrowing" = borrowing_details("No borrowing", "ext"),
     "Full borrowing" = borrowing_details("Full borrowing", "ext"),
-    "BDB - conservative" = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
-    "BDB - aggressive" = borrowing_details("BDB", "ext", gamma_prior(1, 0.001))
+    "BDB - conservative" = borrowing_details("BDB_HCP", "ext", gamma_prior(0.001, 0.001)),
+    "BDB - aggressive" = borrowing_details("BDB_HCP", "ext", gamma_prior(1, 0.001))
   )
 )
 

@@ -5,7 +5,7 @@ test_that("data matrix trimming works with BDB", {
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 1000)),
     treatment = treatment_details("trt", trt_prior = normal_prior(0, 1000)),
     borrowing = borrowing_details(
-      method = "BDB",
+      method = "BDB_HCP",
       ext_flag_col = "ext",
       tau_prior = exponential_prior(0.001)
     )

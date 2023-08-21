@@ -164,7 +164,7 @@ parse_constraint <- function(object) {
 #'     baseline_prior = normal_prior(0, 1000)
 #'   ),
 #'   borrowing = borrowing_details(
-#'     "BDB",
+#'     "BDB_HCP",
 #'     "ext",
 #'     exponential_prior(.001)
 #'   ),
@@ -195,7 +195,7 @@ rename_draws_covariates <- function(draws, analysis) {
 variable_dictionary <- function(analysis_obj) {
   assert_class(analysis_obj, "Analysis")
   is_tte <- isTRUE(inherits(analysis_obj@outcome, "TimeToEvent"))
-  is_bdb <- isTRUE(analysis_obj@borrowing@method == "BDB")
+  is_bdb <- isTRUE(analysis_obj@borrowing@method == "BDB_HCP")
   is_weib <- is_tte && isTRUE(inherits(analysis_obj@outcome, "WeibullPHSurvDist"))
   has_covs <- !is.null(analysis_obj@covariates)
 

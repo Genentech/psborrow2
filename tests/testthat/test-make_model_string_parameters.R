@@ -19,7 +19,7 @@ test_that("make_model_string_parameters works with exponential survival and BDB"
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
     borrowing = borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext",
       exponential_prior(0.001)
     ),
@@ -45,7 +45,7 @@ test_that("make_model_string_parameters works with weibull survival and BDB", {
       normal_prior(0, 100)
     ),
     borrowing = borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext",
       exponential_prior(0.001)
     ),
@@ -66,7 +66,7 @@ test_that("make_model_string_parameters works with binary outcome and BDB", {
     ),
     outcome = logistic_bin_outcome("cnsr", normal_prior(0, 100)),
     borrowing = borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext",
       exponential_prior(0.001)
     ),
@@ -95,7 +95,7 @@ test_that("the STAN code is correctly generated when limits are placed in the bo
   stan_model_string_cauchy <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_details("BDB_HCP",
       ext_flag_col = "ext",
       tau_prior = half_cauchy_prior(10, 20)
     ),
@@ -105,7 +105,7 @@ test_that("the STAN code is correctly generated when limits are placed in the bo
   stan_model_string_normal <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_details("BDB_HCP",
       ext_flag_col = "ext",
       tau_prior = half_normal_prior(10, 20)
     ),

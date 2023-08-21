@@ -26,7 +26,7 @@ make_model_string_model <- function(analysis_obj) {
 
   ### Linear predictor
   has_covariates <- !is.null(analysis_obj@covariates)
-  is_bdb <- analysis_obj@borrowing@method == "BDB"
+  is_bdb <- analysis_obj@borrowing@method == "BDB_HCP"
 
   if (has_covariates && is_bdb) {
     linear_predictor <- h_glue("
@@ -67,8 +67,8 @@ make_model_string_model <- function(analysis_obj) {
     covariate_prior <- ""
   }
 
-  ### Add in tau and alphas if method = BDB
-  if (analysis_obj@borrowing@method == "BDB") {
+  ### Add in tau and alphas if method = BDB_HCP
+  if (analysis_obj@borrowing@method == "BDB_HCP") {
     tau_prior <- get_prior_string(analysis_obj@borrowing@tau_prior)
     alpha_2_prior <- get_prior_string(analysis_obj@outcome@baseline_prior)
 
@@ -78,7 +78,7 @@ make_model_string_model <- function(analysis_obj) {
       sigma = 1 / tau;
       alpha[2] ~ {{alpha_2_prior}} ;
       alpha[1] ~ normal(alpha[2], sqrt(sigma)) ;")
-  } else if (analysis_obj@borrowing@method != "BDB") {
+  } else if (analysis_obj@borrowing@method != "BDB_HCP") {
     alpha_prior <- get_prior_string(analysis_obj@outcome@baseline_prior)
     borrowing_string <- h_glue("alpha ~ {{alpha_prior}} ;")
   } else {
