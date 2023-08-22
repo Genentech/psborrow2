@@ -1,4 +1,3 @@
-
 #' Check Data Matrix for Required Columns
 #'
 #' Check that an `Analysis` object's `data_matrix` has all the required variables.
