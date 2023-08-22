@@ -15,7 +15,7 @@
 #'   data_matrix = example_matrix,
 #'   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
 #'   borrowing = borrowing_details(
-#'     "BDB",
+#'     "BDB_HCP",
 #'     "ext",
 #'     exponential_prior(0.001)
 #'   ),
@@ -43,7 +43,7 @@ prepare_stan_data_inputs <- function(analysis_obj) {
   }
 
   ## BDB additions
-  if (analysis_obj@borrowing@method == "BDB") {
+  if (analysis_obj@borrowing@method == "BDB_HCP") {
     data_in[["Z"]] <- cbind(
       1 - trimmed_data_matrix[, analysis_obj@borrowing@ext_flag_col],
       trimmed_data_matrix[, analysis_obj@borrowing@ext_flag_col]

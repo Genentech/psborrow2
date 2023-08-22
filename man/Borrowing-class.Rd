@@ -14,7 +14,7 @@ A class for defining borrowing details. Objects of class
 
 \describe{
 \item{\code{method}}{character. The type of borrowing to perform. It
-must be one of: \code{'BDB'}, \code{'Full borrowing'}, or \code{'No borrowing'}. See \code{?borrowing_details} for
+must be one of: \code{'BDB_HCP'}, \code{'Full borrowing'}, or \code{'No borrowing'}. See \code{?borrowing_details} for
 more information.}
 
 \item{\code{ext_flag_col}}{character. The name of the column in

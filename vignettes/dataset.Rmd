@@ -192,7 +192,7 @@ how to call it):
 * "No borrowing": This is the internal trial comparison without any external
 data
 * "Full borrowing": This is pooling of the external and internal control arms
-* "BDB": Bayesian dynamic borrowing
+* "BDB_HCP": Bayesian dynamic borrowing with the hierarchical commensurate prior
 
 The column name for the external control column flag in our matrix
 is also required and passed to `ext_flag_col`.
@@ -215,7 +215,7 @@ vignette, see `vignette('prior_distributions', package = 'psborrow2')`.
 
 ```{r borrowing-details}
 borrowing <- borrowing_details(
-  method = "BDB",
+  method = "BDB_HCP",
   ext_flag_col = "ext",
   tau_prior = gamma_prior(0.001, 0.001)
 )

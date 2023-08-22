@@ -223,7 +223,7 @@ IPTW + commensurate prior approach.
 analysis_iptw_bdb <- create_analysis_obj(
   data_matrix = example_matrix_att,
   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
-  borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
+  borrowing = borrowing_details("BDB_HCP", "ext", gamma_prior(0.01, 0.01)),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
 
@@ -277,7 +277,7 @@ result_bdb <- mcmc_sample(
   create_analysis_obj(
     data_matrix = example_matrix_att,
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
-    borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
+    borrowing = borrowing_details("BDB_HCP", "ext", gamma_prior(0.01, 0.01)),
     treatment = treatment_details("trt", normal_prior(0, 10000))
   )
 )
@@ -295,7 +295,7 @@ models <- list(
   "ATT Weights" = result_att,
   "IPTW + BDB" = result_iptw_bdb,
   "Matching 1:1" = result_match,
-  "BDB" = result_bdb
+  "BDB_HCP" = result_bdb
 )
 ```
 

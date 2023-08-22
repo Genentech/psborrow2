@@ -4,7 +4,7 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_borrowing_list(
       borrowing_details(
-        method = "BDB",
+        method = "BDB_HCP",
         ext_flag_col = "ext",
         tau_prior = exponential_prior(0.001)
       )
@@ -26,7 +26,7 @@ test_that("Incorrect inputs lead to errors", {
     sim_borrowing_list(
       list(
         borrowing_details(
-          method = "BDB",
+          method = "BDB_HCP",
           ext_flag_col = "ext",
           tau_prior = exponential_prior(0.001)
         )
@@ -40,7 +40,7 @@ test_that("Incorrect inputs lead to errors", {
     sim_borrowing_list(
       list(
         bdb = borrowing_details(
-          method = "BDB",
+          method = "BDB_HCP",
           ext_flag_col = "ext",
           tau_prior = exponential_prior(0.001)
         ),
@@ -58,7 +58,7 @@ test_that("Incorrect inputs lead to errors", {
     sim_borrowing_list(
       list(
         scenario_1 = borrowing_details(
-          method = "BDB",
+          method = "BDB_HCP",
           ext_flag_col = "ext",
           tau_prior = exponential_prior(0.001)
         ),
@@ -76,8 +76,8 @@ test_that("Correct inputs successfully produce `SimBorrowingList`", {
   expect_class(
     sim_borrowing_list(
       list(
-        "BDB" = borrowing_details(
-          method = "BDB",
+        "BDB_HCP" = borrowing_details(
+          method = "BDB_HCP",
           ext_flag_col = "ext",
           tau_prior = exponential_prior(0.001)
         ),
@@ -95,8 +95,8 @@ test_that("Correct inputs successfully produce `SimBorrowingList`", {
 test_that("Borrowing `guide` is produced correctly", {
   borrowing_obj1 <- sim_borrowing_list(
     list(
-      "BDB" = borrowing_details(
-        method = "BDB",
+      "BDB_HCP" = borrowing_details(
+        method = "BDB_HCP",
         ext_flag_col = "ext",
         tau_prior = exponential_prior(0.001)
       ),
@@ -109,15 +109,15 @@ test_that("Borrowing `guide` is produced correctly", {
 
   expect_equal(
     borrowing_obj1@guide$borrowing_scenario,
-    c("BDB", "Full borrowing")
+    c("BDB_HCP", "Full borrowing")
   )
   expect_class(borrowing_obj1@guide, "data.frame")
   expect_equal(colnames(borrowing_obj1@guide), "borrowing_scenario")
 
   borrowing_obj2 <- sim_borrowing_list(
     list(
-      "BDB" = borrowing_details(
-        method = "BDB",
+      "BDB_HCP" = borrowing_details(
+        method = "BDB_HCP",
         ext_flag_col = "ext",
         tau_prior = exponential_prior(0.001)
       ),
@@ -131,7 +131,7 @@ test_that("Borrowing `guide` is produced correctly", {
 
   expect_equal(
     borrowing_obj2@guide$borrowing_scenario,
-    c("BDB", "Full borrowing", "No borrowing")
+    c("BDB_HCP", "Full borrowing", "No borrowing")
   )
   expect_class(borrowing_obj2@guide, "data.frame")
   expect_equal(colnames(borrowing_obj2@guide), "borrowing_scenario")
@@ -141,8 +141,8 @@ test_that("Borrowing `guide` is produced correctly", {
 test_that("get_vars for `sim_borrowing_list` works", {
   borrowing_obj <- sim_borrowing_list(
     list(
-      "BDB" = borrowing_details(
-        method = "BDB",
+      "BDB_HCP" = borrowing_details(
+        method = "BDB_HCP",
         ext_flag_col = "ext",
         tau_prior = exponential_prior(0.001)
       ),

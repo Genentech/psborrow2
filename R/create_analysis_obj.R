@@ -33,7 +33,7 @@
 #'     baseline_prior = normal_prior(0, 1000)
 #'   ),
 #'   borrowing = borrowing_details(
-#'     "BDB",
+#'     "BDB_HCP",
 #'     "ext",
 #'     exponential_prior(.001)
 #'   ),

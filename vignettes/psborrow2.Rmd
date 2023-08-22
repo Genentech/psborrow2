@@ -29,13 +29,14 @@ arms remains the gold standard for evaluating the efficacy of a novel therapy,
 one may want to leverage relevant existing external control data to inform the
 study outcome. External control data can help increase study power and thereby
 shorten trial duration or reduce the number of subjects needed. However,
-analysis of external control data can also introduce bias. One method for
-incorporating external control data to mitigate bias is **Bayesian dynamic
-borrowing (BDB)**, in which external control data is borrowed to the extent
-that the external and RCT control arms have similar outcomes
-(Viele et. al. 2014).
+analysis of external control data can also introduce bias. 
 
-Implementing BDB is computationally involved and requires Markov chain Monte
+One class of methods for incorporating external control data to mitigate bias 
+are **Bayesian dynamic borrowing (BDB)** methods. These methods are dynamic 
+because the extent of borrowing depends on the data.[^1]
+
+Implementing BDB methods can be computationally involved and require
+Markov chain Monte
 Carlo (MCMC) sampling methods, which in turn may require knowledge
 of MCMC sampling software. To overcome these technical barriers and
 we developed `psborrow2` using `cmdstanr`, an R package which facilitates
@@ -50,10 +51,21 @@ handles the MCMC sampling on behalf of the user
 (e.g. full borrowing, no borrowing, BDB) and other trial and BDB
 characteristics in a unified way
 
-Right now, `psborrow2` supports time-to-event endpoints as well as
-binary endpoints.
+Right now, `psborrow2` supports time-to-event endpoints (Weibull,
+exponential) as well as binary endpoints.
 
-## Analyze your own data
+## Hierarchical commensurate prior approach
+Currently, `psborrow2` supports only the hierarchical commensurate prior 
+approach.[^2] In this approach, the extent of borrowing is determined by 
+the commensurability of the outcomes between the external control arm 
+and the internal control arm. 
+
+`psborrow2` can also incorporate individual patient-level weights passed by 
+the user (e.g., that result from inverse probability of trial weights) and 
+used in the hierarchical commensurate prior model. This approach has been 
+outlined previously.[^3]
+
+## Analyzing your own data
 
 `psborrow2` can implement BDB in a scenario wherein a two-arm RCT is
 supplemented with external data on the control arm. Three arms are required to
@@ -70,14 +82,15 @@ a novel therapy is often the standard of care, for which data exists from
 electronic health care records or from previous phase III registrational trials.
 
 Refer to the "dataset" vignette for more information on
-how to implement BDB analyses on your own data:
-`vignette('dataset', package = 'psborrow2')`
+how to implement BDB analyses on your own data: 
+[https://genentech.github.io/psborrow2/main/articles/dataset.html](https://genentech.github.io/psborrow2/main/articles/dataset.html)
 
 ## Conduct a simulation study
 
 Refer to the "simulation study" vignette for more information on
 how to create a simulation study involving BDB and other innovative trial
-designs: `vignette('simulation_study', package = 'psborrow2')`
+designs: 
+[https://genentech.github.io/psborrow2/main/articles/simulation_study.html](https://genentech.github.io/psborrow2/main/articles/simulation_study.html)
 
 ## Additional information
 `psborrow2` is the successor to
@@ -86,9 +99,21 @@ While the core functionality has been replicated in `psborrow2` such that there
 is no longer any reason to prefer `psborrow`, we cite it here
 for posterity.
 
-## References
-Viele, K., Berry, S., Neuenschwander, B., Amzal, B., Chen, F.,
-Enas, N., Hobbs, B., Ibrahim, J.G., Kinnersley, N., Lindborg, S., Micallef,
-S., Roychoudhury, S. and Thompson, L. (2014),
-Use of historical control data for assessing treatment effects in clinical trials.
-__Pharmaceut. Statist., 13: 41--54__. \doi{10.1002/pst.1589}
+## Bibliography
+[^1]:
+    Viele K, Berry S, Neuenschwander B, Amzal B, Chen F, Enas N, Hobbs B,
+    Ibrahim JG, Kinnersley N, Lindborg S, Micallef S. Use of historical control
+    data for assessing treatment effects in clinical trials. Pharmaceutical
+    statistics. 2014 Jan;13(1):41-54. [https://doi.org/10.1002/pst.1589](https://doi.org/10.1002/pst.1589)
+
+[^2]:
+    Hobbs BP, Carlin BP, Mandrekar SJ, Sargent DJ. Hierarchical commensurate and 
+    power prior models for adaptive incorporation of historical information in 
+    clinical trials. Biometrics. 2011 Sep;67(3):1047-56.
+    [https://doi.org/10.1111/j.1541-0420.2011.01564.x](https://doi.org/10.1111/j.1541-0420.2011.01564.x)
+  
+[^3]:
+    Wang X, Suttner L, Jemielita T, Li X. Propensity score-integrated 
+    Bayesian prior approaches for augmented control designs: a simulation study. 
+    Journal of Biopharmaceutical Statistics. 2022 Jan 2;32(1):170-90.
+    [https://doi.org/10.1080/10543406.2021.2011743](https://doi.org/10.1080/10543406.2021.2011743)

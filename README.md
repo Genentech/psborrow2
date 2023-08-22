@@ -10,7 +10,7 @@ maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https
 
 ## Overview
 
-`psborrow2` is an R package that for conducting Bayesian Dynamic Borrowing (BDB)
+`psborrow2` is an R package for conducting Bayesian Dynamic Borrowing (BDB)
 analyses and simulation studies.[^1] [^2]
 `psborrow2` has two main objectives:
 
@@ -50,11 +50,10 @@ Please note that this package requires [`cmdstanr`](https://mc-stan.org/cmdstanr
 
 ## Vignettes
 
-To learn how to use the `psborrow2` R package, refer to the package vignettes:
+To learn how to use the `psborrow2` R package, refer to the vignettes on the 
+package website:
 
-```r
-browseVignettes("psborrow2")
-```
+[https://genentech.github.io/psborrow2/main/articles/index.html](https://genentech.github.io/psborrow2/main/articles/index.html)
 
 ## Bibliography
 

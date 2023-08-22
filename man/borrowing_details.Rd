@@ -8,7 +8,7 @@ borrowing_details(method, ext_flag_col, tau_prior = NULL)
 }
 \arguments{
 \item{method}{character. The type of borrowing to perform. It
-must be one of: \code{'BDB'}, \code{'Full borrowing'}, or \code{'No borrowing'}. See \emph{Details} for
+must be one of: \code{'BDB_HCP'}, \code{'Full borrowing'}, or \code{'No borrowing'}. See \emph{Details} for
 more information.}
 
 \item{ext_flag_col}{character. The name of the column in
@@ -32,11 +32,12 @@ set hyperprior for commensurability parameter tau.
 The \code{method} argument specifies the type of borrowing that will be
 implemented. There are currently three types of borrowing that are supported:
 \itemize{
-\item \emph{'BDB'} for Bayesian Dynamic Borrowing. In Bayesian Dynamic
-Borrowing, external control information is borrowed to the extent that the
+\item \emph{'BDB_HCP'} for Bayesian Dynamic Borrowing with the
+Hierarchical Commensurate Prior approach. In this approach,
+external control information is borrowed to the extent that the
 outcomes (i.e., log hazard rates or log odds) are similar between
 external and internal control populations. See
-\href{https://doi.org/10.1002/pst.1589}{Viele et. al. 2014}.
+\href{https://doi.org/10.1111/j.1541-0420.2011.01564.x}{Hobbs et al 2011}.
 \item \emph{'Full borrowing'} for pooling of historical and concurrent controls.
 There is no distinction between patients in the internal and external
 control arms. While the \code{ext_flag_col} must still be specified, it is not
@@ -78,7 +79,7 @@ will lead to more borrowing.
 }
 \examples{
 sb <- borrowing_details(
-  method = "BDB",
+  method = "BDB_HCP",
   ext_flag_col = "ext",
   tau_prior = gamma_prior(0.001, 0.001)
 )

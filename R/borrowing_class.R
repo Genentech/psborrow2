@@ -8,7 +8,7 @@ setClassUnion("PriorOrNULL", c("Prior", "NULL"))
 #' [borrowing_details()].
 #'
 #' @slot method character. The type of borrowing to perform. It
-#' must be one of: `'BDB'`, `'Full borrowing'`, or `'No borrowing'`. See `?borrowing_details` for
+#' must be one of: `'BDB_HCP'`, `'Full borrowing'`, or `'No borrowing'`. See `?borrowing_details` for
 #' more information.
 #' @slot ext_flag_col character. The name of the column in
 #' the data matrix that corresponds to the external control flag (`1`/`0` or
@@ -32,9 +32,9 @@ setClassUnion("PriorOrNULL", c("Prior", "NULL"))
     data_stan_code = ""
   ),
   validity = function(object) {
-    assert_choice(object@method, c("Full borrowing", "No borrowing", "BDB"))
-    if (object@method != "BDB" && !is.null(object@tau_prior)) {
-      return("no need to specify tau prior when method is not BDB")
+    assert_choice(object@method, c("Full borrowing", "No borrowing", "BDB_HCP"))
+    if (object@method != "BDB_HCP" && !is.null(object@tau_prior)) {
+      return("no need to specify tau prior when method is not BDB_HCP")
     }
     assert_string(object@data_stan_code)
     return(TRUE)

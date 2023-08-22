@@ -22,7 +22,7 @@
 #'     baseline_prior = normal_prior(0, 1000)
 #'   ),
 #'   borrowing = borrowing_details(
-#'     "BDB",
+#'     "BDB_HCP",
 #'     "ext",
 #'     exponential_prior(.001)
 #'   ),
@@ -41,7 +41,7 @@ trim_data_matrix <- function(analysis_obj) {
     seq_len(NROW(analysis_obj@data_matrix))
   }
 
-  required_cols <- if (analysis_obj@borrowing@method != "BDB") {
+  required_cols <- if (analysis_obj@borrowing@method != "BDB_HCP") {
     setdiff(get_vars(analysis_obj), get_vars(analysis_obj@borrowing))
   } else {
     get_vars(analysis_obj)

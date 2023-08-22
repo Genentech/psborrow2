@@ -60,7 +60,7 @@ test_that("rename_draws_covariates works as expected", {
     ),
     outcome = logistic_bin_outcome("cnsr", normal_prior(0, 1000)),
     borrowing = borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext",
       exponential_prior(0.001)
     ),
@@ -111,7 +111,7 @@ test_that("variable_dictionary works as expected for logistic and BDB", {
     ),
     outcome = logistic_bin_outcome("cnsr", normal_prior(0, 1000)),
     borrowing = borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext",
       exponential_prior(0.001)
     ),

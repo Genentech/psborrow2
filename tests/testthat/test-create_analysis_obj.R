@@ -22,7 +22,7 @@ bd_nb <- borrowing_details(
   ext_flag_col = "ext"
 )
 bd_db <- borrowing_details(
-  method = "BDB",
+  method = "BDB_HCP",
   ext_flag_col = "ext",
   tau_prior = half_cauchy_prior(0, .0001)
 )
@@ -185,7 +185,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       outcome = esd,
       treatment = td,
       borrowing = borrowing_details(
-        method = "BDB",
+        method = "BDB_HCP",
         ext_flag_col = "tira",
         tau_prior = gamma_prior(.001, .001)
       )

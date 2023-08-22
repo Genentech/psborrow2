@@ -19,7 +19,7 @@ test_that("prepare_stan_data_inputs works with exponential survival and BDB", {
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
     borrowing = borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext",
       exponential_prior(0.001)
     ),
@@ -45,7 +45,7 @@ test_that("prepare_stan_data_inputs works with weibull survival and BDB and cova
       normal_prior(0, 1000)
     ),
     borrowing = borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext",
       exponential_prior(0.001)
     ),
@@ -66,7 +66,7 @@ test_that("prepare_stan_data_inputs works with binary outcome and BDB and covari
     ),
     outcome = logistic_bin_outcome("cnsr", normal_prior(0, 100)),
     borrowing = borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext",
       exponential_prior(0.001)
     ),
@@ -87,7 +87,7 @@ test_that("prepare_stan_data_inputs returns correct matrix dimensions for X", {
     ),
     outcome = logistic_bin_outcome("cnsr", normal_prior(0, 100)),
     borrowing = borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext",
       exponential_prior(0.001)
     ),
@@ -106,7 +106,7 @@ test_that("prepare_stan_data_inputs returns correct matrix dimensions for X", {
     ),
     outcome = logistic_bin_outcome("cnsr", normal_prior(0, 100)),
     borrowing = borrowing_details(
-      "BDB",
+      "BDB_HCP",
       "ext",
       exponential_prior(0.001)
     ),

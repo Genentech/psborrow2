@@ -112,7 +112,7 @@ exp_outcome <- exp_surv_dist(
 ?borrowing_details
 
 bdb_borrowing <- borrowing_details(
-  method = "BDB",
+  method = "BDB_HCP",
   ext_flag_col = "ext",
   tau_prior = gamma_prior(0.001, 0.001)
 )
@@ -263,7 +263,7 @@ anls_ps_bdb <- create_analysis_obj(
     normal_prior(0, 10000)
   ),
   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
-  borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
+  borrowing = borrowing_details("BDB_HCP", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
 
