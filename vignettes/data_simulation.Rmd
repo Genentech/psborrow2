@@ -1,5 +1,5 @@
 ---
-title: "Data_Simulation"
+title: "8. Data Simulation"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Data_Simulation}
