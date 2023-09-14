@@ -2,7 +2,7 @@
 title: "8. Data Simulation"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data_Simulation}
+  %\VignetteIndexEntry{8. Data Simulation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
