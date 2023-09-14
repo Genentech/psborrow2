@@ -185,7 +185,6 @@ create_baseline_object <- function(n_trt_int, n_ctrl_int, n_ctrl_ext, covariates
   )
 }
 
-
 #' @importFrom generics generate
 #' @importFrom mvtnorm rmvnorm
 # nolint start
@@ -355,6 +354,6 @@ binary_cutoff <- function(name, int_cutoff, ext_cutoff) {
   function(data) {
     ext <- data$ext == 0
     q <- get_quantiles(data, name)
-    ifelse(ext, q > int_cutoff, q > ext_cutoff)
+    as.integer(ifelse(ext, q > int_cutoff, q > ext_cutoff))
   }
 }
