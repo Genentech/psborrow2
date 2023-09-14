@@ -25,3 +25,7 @@ test_that("plot works for BernoulliPrior", {
     plot(bernoulli_prior(0.7))
   )
 })
+
+test_that("constraints work for BernoulliPrior", {
+  expect_equal(eval_constraints(bernoulli_prior(theta = 0.99)), "<lower=0, upper=1>")
+})
