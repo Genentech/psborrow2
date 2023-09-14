@@ -1,8 +1,11 @@
-Apache License
-==============
+Copyright (c) 2023, Genentech, Inc.
 
-_Version 2.0, January 2004_
-_&lt;<http://www.apache.org/licenses/>&gt;_
+Permission is hereby granted, free of charge, to any person obtaining a copy 
+of this software and associated documentation files (the "Software"), to deal 
+in the Software without restriction, including without limitation in teh rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the 
+Software, and to permit persons to whom the Software is furnished to do so, subject to 
+the following conditions (Apache License, version 2.0):
 
 ### Terms and Conditions for use, reproduction, and distribution
 
