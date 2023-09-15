@@ -61,10 +61,10 @@ browseVignettes("psborrow2")
 [^1]:
     Lewis CJ, Sarkar S, Zhu J, Carlin BP. Borrowing from historical control data
     in cancer drug development: a cautionary tale and practical guidelines.
-    Statistics in biopharmaceutical research. 2019 Jan 2;11(1):67-78. https://doi.org/10.1080/19466315.2018.1497533
+    Statistics in biopharmaceutical research. 2019 Jan 2;11(1):67-78.
 
 [^2]:
     Viele K, Berry S, Neuenschwander B, Amzal B, Chen F, Enas N, Hobbs B,
     Ibrahim JG, Kinnersley N, Lindborg S, Micallef S. Use of historical control
     data for assessing treatment effects in clinical trials. Pharmaceutical
-    statistics. 2014 Jan;13(1):41-54. https://doi.org/10.1002/pst.1589
+    statistics. 2014 Jan;13(1):41-54.
