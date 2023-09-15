@@ -52,13 +52,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/develop">develop</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -98,10 +91,10 @@ Gravestock and Matt Secrest</h4>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">psborrow2</span><span class="op">)</span></span></code></pre></div>
 <p>Propensity scores (PS) methods offer various ways to adjust analyses
 for differences in groups of patients.</p>
-<p><span class="citation">Austin (<a href="#ref-austin2013" role="doc-biblioref">2013</a>)</span> discusses various approaches for
+<p><span class="citation">Austin (<a href="#ref-austin2013">2013</a>)</span> discusses various approaches for
 using PS with survival analyses to obtain effect measures similar to
 randomized controlled trials.</p>
-<p><span class="citation">Wang et al. (<a href="#ref-wang2021" role="doc-biblioref">2021</a>)</span> discuss using PS for IPTW,
+<p><span class="citation">Wang et al. (<a href="#ref-wang2021">2021</a>)</span> discuss using PS for IPTW,
 matching and stratification in combination with a Bayesian analysis.
 These methods allow for the separation of the design and analysis into
 two stages, which may be attractive in a regulatory setting.</p>
@@ -162,13 +155,13 @@ object, for the “covariate adjustment” PS approach:</p>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 finished in 4.3 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 4.6 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 4.8 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 4.6 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 4.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 4.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 4.4 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 4.6 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 18.9 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 4.4 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 18.0 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="alternative-ps-weights-with-weightit">Alternative PS Weights with <code>WeightIt</code><a class="anchor" aria-label="anchor" href="#alternative-ps-weights-with-weightit"></a>
@@ -189,7 +182,7 @@ average treatment effect among the treated (ATT).</p>
 <span>  method <span class="op">=</span> <span class="st">"gbm"</span>,</span>
 <span>  estimand <span class="op">=</span> <span class="st">"ATT"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: No stop.method was provided. Using "es.mean".</span></span>
+<span><span class="co">#&gt; Warning: No `criterion` was provided. Using "smd.mean"FALSETRUE.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">weightit_model</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                  <span style="text-decoration: underline;">Summary of weights</span></span></span>
 <span><span class="co">#&gt; </span></span>
@@ -199,7 +192,7 @@ average treatment effect among the treated (ATT).</p>
 <span><span class="co">#&gt; treated 1.0000      ||                       1.0000</span></span>
 <span><span class="co">#&gt; control 0.0826 |---------------------------| 5.8966</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; - <span style="font-style: italic;">Units with 5 most extreme weights by group</span>:</span></span>
+<span><span class="co">#&gt; - <span style="font-style: italic;">Units with the 5 most extreme weights by group</span>:</span></span>
 <span><span class="co">#&gt;                                            </span></span>
 <span><span class="co">#&gt;               5      4      3      2      1</span></span>
 <span><span class="co">#&gt;  treated      1      1      1      1      1</span></span>
@@ -225,14 +218,9 @@ for more details. We can use the <code>cobalt</code> package to assess
 balance with <code><a href="https://ngreifer.github.io/cobalt/reference/bal.plot.html" class="external-link">bal.plot()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ngreifer.github.io/cobalt/" class="external-link">cobalt</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt;  cobalt (Version 4.4.1, Build Date: 2022-11-03)</span></span>
+<span><span class="co">#&gt;  cobalt (Version 4.5.1, Build Date: 2023-04-27)</span></span>
 <span><span class="fu"><a href="https://ngreifer.github.io/cobalt/reference/bal.plot.html" class="external-link">bal.plot</a></span><span class="op">(</span><span class="va">weightit_model</span><span class="op">)</span></span>
-<span><span class="co">#&gt; No 'var.name' was provided. Displaying balance for prop.score.</span></span>
-<span><span class="co">#&gt; Warning: The following aesthetics were dropped during statistical transformation: <span style="color: #00BB00;">weight</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> This can happen when ggplot fails to infer the correct grouping structure in</span></span>
-<span><span class="co">#&gt;   the data.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Did you forget to specify a `group` aesthetic or to convert a numerical</span></span>
-<span><span class="co">#&gt;   variable into a factor?</span></span></code></pre></div>
+<span><span class="co">#&gt; No `var.name` was provided. Displaying balance for prop.score.</span></span></code></pre></div>
 <p><img src="propensity_scores_files/figure-html/balplot-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>The PS values can be copied into the data set and the analysis object
 can be constructed as before.</p>
@@ -262,8 +250,8 @@ can be constructed as before.</p>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 finished in 2.7 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 2.4 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 2.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 2.7 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 2.5 seconds.</span></span>
 <span><span class="co">#&gt; Chain 4 finished in 2.6 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
@@ -347,17 +335,17 @@ external. For simplicity let’s try a 1:1 nearest matching approach.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Summary of Balance for Matched Data:</span></span>
 <span><span class="co">#&gt;          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean</span></span>
-<span><span class="co">#&gt; distance        0.2898        0.2675          0.1503     1.1938     0.035</span></span>
-<span><span class="co">#&gt; cov1            0.6300        0.4700          0.3314          .     0.160</span></span>
-<span><span class="co">#&gt; cov2            0.3700        0.2900          0.1657          .     0.080</span></span>
-<span><span class="co">#&gt; cov3            0.7600        0.6400          0.2810          .     0.120</span></span>
-<span><span class="co">#&gt; cov4            0.4600        0.4300          0.0602          .     0.030</span></span>
+<span><span class="co">#&gt; distance        0.2898        0.2845          0.0355     1.1082    0.0075</span></span>
+<span><span class="co">#&gt; cov1            0.6300        0.6800         -0.1036          .    0.0500</span></span>
+<span><span class="co">#&gt; cov2            0.3700        0.3900         -0.0414          .    0.0200</span></span>
+<span><span class="co">#&gt; cov3            0.7600        0.7600          0.0000          .    0.0000</span></span>
+<span><span class="co">#&gt; cov4            0.4600        0.4600          0.0000          .    0.0000</span></span>
 <span><span class="co">#&gt;          eCDF Max Std. Pair Dist.</span></span>
-<span><span class="co">#&gt; distance     0.13          0.1503</span></span>
-<span><span class="co">#&gt; cov1         0.16          0.7871</span></span>
-<span><span class="co">#&gt; cov2         0.08          0.6628</span></span>
-<span><span class="co">#&gt; cov3         0.12          0.2810</span></span>
-<span><span class="co">#&gt; cov4         0.03          0.5417</span></span>
+<span><span class="co">#&gt; distance     0.07          0.0355</span></span>
+<span><span class="co">#&gt; cov1         0.05          0.1036</span></span>
+<span><span class="co">#&gt; cov2         0.02          0.1243</span></span>
+<span><span class="co">#&gt; cov3         0.00          0.0000</span></span>
+<span><span class="co">#&gt; cov4         0.00          0.0000</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Sample Sizes:</span></span>
 <span><span class="co">#&gt;           Control Treated</span></span>
@@ -396,14 +384,14 @@ you can extract the data for use in <code>psborrow2</code>.</p>
 <span><span class="va">result_match</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_match</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 1.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 1.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 1.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 1.2 seconds.</span></span>
 <span><span class="co">#&gt; Chain 3 finished in 1.2 seconds.</span></span>
 <span><span class="co">#&gt; Chain 4 finished in 1.1 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
 <span><span class="co">#&gt; Mean chain execution time: 1.1 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 4.8 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Total execution time: 4.9 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="combined-weighting-and-dynamic-borrowing">Combined Weighting and Dynamic Borrowing<a class="anchor" aria-label="anchor" href="#combined-weighting-and-dynamic-borrowing"></a>
@@ -426,14 +414,14 @@ commensurate prior approach.</p>
 <span><span class="va">result_iptw_bdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_iptw_bdb</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 5.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 4.4 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 5.3 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 5.6 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 5.6 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 5.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 5.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 4.8 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 5.1 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 20.7 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 5.5 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 22.3 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="fixed-weights">Fixed Weights<a class="anchor" aria-label="anchor" href="#fixed-weights"></a>
@@ -458,14 +446,14 @@ set the power parameter <span class="math inline">\(\alpha =
 <span><span class="va">result_pp01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_pp01</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 3.0 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 3.1 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 3.0 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 3.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 3.2 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 2.9 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 3.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 3.1 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
 <span><span class="co">#&gt; Mean chain execution time: 3.1 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 12.8 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Total execution time: 12.6 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reference-models">Reference Models<a class="anchor" aria-label="anchor" href="#reference-models"></a>
@@ -488,13 +476,13 @@ BDB model without weights.</p>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 finished in 2.3 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 2.3 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 2.1 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 2.3 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 2.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 2.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 2.4 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 2.2 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 9.3 seconds.</span></span>
+<span><span class="co">#&gt; Mean chain execution time: 2.3 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 9.5 seconds.</span></span>
 <span></span>
 <span><span class="va">result_none</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
@@ -510,14 +498,14 @@ BDB model without weights.</p>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 1.0 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 1.2 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 1.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 1.0 seconds.</span></span>
 <span><span class="co">#&gt; Chain 3 finished in 1.0 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 1.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 1.1 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
 <span><span class="co">#&gt; Mean chain execution time: 1.1 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 4.4 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 4.5 seconds.</span></span>
 <span></span>
 <span><span class="va">result_bdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
@@ -532,14 +520,14 @@ BDB model without weights.</p>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 4.7 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 5.0 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 4.7 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 5.3 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 5.3 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 4.9 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 4.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 5.0 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 4.9 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 20.0 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 5.0 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 20.5 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="comparison-of-results">Comparison of Results<a class="anchor" aria-label="anchor" href="#comparison-of-results"></a>
@@ -577,10 +565,10 @@ and specify summary statistics.</p>
 <tr class="odd">
 <td align="left">No borrowing</td>
 <td align="left">HR_trt</td>
-<td align="right">0.896</td>
+<td align="right">0.895</td>
 <td align="right">0.876</td>
 <td align="right">0.181</td>
-<td align="right">0.636</td>
+<td align="right">0.632</td>
 <td align="right">1.220</td>
 </tr>
 <tr class="even">
@@ -596,55 +584,55 @@ and specify summary statistics.</p>
 <td align="left">Power Prior 01</td>
 <td align="left">HR_trt</td>
 <td align="right">0.635</td>
-<td align="right">0.626</td>
+<td align="right">0.627</td>
 <td align="right">0.106</td>
 <td align="right">0.476</td>
-<td align="right">0.822</td>
+<td align="right">0.821</td>
 </tr>
 <tr class="even">
 <td align="left">PS Groups</td>
 <td align="left">HR_trt</td>
 <td align="right">0.720</td>
 <td align="right">0.715</td>
-<td align="right">0.095</td>
-<td align="right">0.573</td>
-<td align="right">0.884</td>
+<td align="right">0.096</td>
+<td align="right">0.571</td>
+<td align="right">0.886</td>
 </tr>
 <tr class="odd">
 <td align="left">ATT Weights</td>
 <td align="left">HR_trt</td>
-<td align="right">0.893</td>
-<td align="right">0.885</td>
+<td align="right">0.894</td>
+<td align="right">0.886</td>
 <td align="right">0.127</td>
-<td align="right">0.698</td>
-<td align="right">1.116</td>
+<td align="right">0.703</td>
+<td align="right">1.117</td>
 </tr>
 <tr class="even">
 <td align="left">IPTW + BDB</td>
 <td align="left">HR_trt</td>
-<td align="right">0.893</td>
+<td align="right">0.895</td>
 <td align="right">0.879</td>
-<td align="right">0.162</td>
-<td align="right">0.655</td>
-<td align="right">1.180</td>
+<td align="right">0.163</td>
+<td align="right">0.656</td>
+<td align="right">1.185</td>
 </tr>
 <tr class="odd">
 <td align="left">Matching 1:1</td>
 <td align="left">HR_trt</td>
-<td align="right">0.857</td>
-<td align="right">0.847</td>
-<td align="right">0.141</td>
-<td align="right">0.645</td>
-<td align="right">1.106</td>
+<td align="right">0.792</td>
+<td align="right">0.782</td>
+<td align="right">0.128</td>
+<td align="right">0.599</td>
+<td align="right">1.016</td>
 </tr>
 <tr class="even">
 <td align="left">BDB</td>
 <td align="left">HR_trt</td>
 <td align="right">0.871</td>
-<td align="right">0.854</td>
-<td align="right">0.174</td>
-<td align="right">0.619</td>
-<td align="right">1.185</td>
+<td align="right">0.853</td>
+<td align="right">0.175</td>
+<td align="right">0.618</td>
+<td align="right">1.184</td>
 </tr>
 </tbody>
 </table>

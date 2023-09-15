@@ -35,13 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/develop">develop</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -122,6 +115,16 @@
           <code><a href="GammaPrior-class.html">GammaPrior-class</a></code> <code><a href="GammaPrior-class.html">.gamma_prior</a></code> 
         </dt>
         <dd><code>GammaPrior</code> Class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="HalfCauchyPrior-class.html">HalfCauchyPrior-class</a></code> <code><a href="HalfCauchyPrior-class.html">.half_cauchy_prior</a></code> 
+        </dt>
+        <dd><code>HalfCauchyPrior</code> Class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="HalfNormalPrior-class.html">HalfNormalPrior-class</a></code> <code><a href="HalfNormalPrior-class.html">.half_normal_prior</a></code> 
+        </dt>
+        <dd><code>HalfNormalPrior</code> Class</dd>
       </dl><dl><dt>
           
           <code><a href="LogisticBinaryOutcome-class.html">LogisticBinaryOutcome-class</a></code> <code><a href="LogisticBinaryOutcome-class.html">.logistic_bin_outcome</a></code> 
@@ -289,6 +292,11 @@
         <dd>Compile MCMC sampler using STAN and create simulation object</dd>
       </dl><dl><dt>
           
+          <code><a href="eval_constraints.html">eval_constraints()</a></code> 
+        </dt>
+        <dd>Evaluate constraints</dd>
+      </dl><dl><dt>
+          
           <code><a href="example_matrix.html">example_matrix</a></code> 
         </dt>
         <dd>Example data matrix</dd>
@@ -339,6 +347,16 @@
         <dd>Get Variables</dd>
       </dl><dl><dt>
           
+          <code><a href="half_cauchy_prior.html">half_cauchy_prior()</a></code> 
+        </dt>
+        <dd>Prior half-cauchy distribution</dd>
+      </dl><dl><dt>
+          
+          <code><a href="half_normal_prior.html">half_normal_prior()</a></code> 
+        </dt>
+        <dd>Prior half-normal distribution</dd>
+      </dl><dl><dt>
+          
           <code><a href="logistic_bin_outcome.html">logistic_bin_outcome()</a></code> 
         </dt>
         <dd>Bernoulli distribution with logit parametrization</dd>
@@ -386,10 +404,10 @@
           
           <code><a href="parse_constraint.html">parse_constraint()</a></code> 
         </dt>
-        <dd>Extract Upper and Lower Bounds from Constraint String</dd>
+        <dd>Extract Upper and Lower Bounds from a Prior object</dd>
       </dl><dl><dt>
           
-          <code><a href="plot.html">plot(<i>&lt;Prior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;NormalPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;BernoulliPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;BetaPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;CauchyPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;ExponentialPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;GammaPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;PoissonPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;UniformPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> 
+          <code><a href="plot.html">plot(<i>&lt;Prior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;NormalPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;BernoulliPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;BetaPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;CauchyPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;ExponentialPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;GammaPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;HalfCauchyPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;HalfNormalPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;PoissonPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;UniformPrior&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> 
         </dt>
         <dd>Plot Prior Objects</dd>
       </dl><dl><dt>

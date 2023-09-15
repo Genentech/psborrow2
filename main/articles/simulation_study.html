@@ -52,13 +52,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/develop">develop</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -137,8 +130,8 @@ scenarios (e.g., true HR of 1.0 and true HR of 0.8). Each scenario is
 arranged as a list of matrices that were generated according to that
 data generation scenario.</p>
 <center>
-<div class="figure">
-<img src="data_list.jpg" style="width:80.0%" alt=""><p class="caption">Figure 1</p>
+<div class="float">
+<img src="data_list.jpg" style="width:80.0%" alt="Figure 1"><div class="figcaption">Figure 1</div>
 </div>
 </center>
 <p>We’ll use the <code>simsurv</code> package to generate survival data
@@ -201,13 +194,13 @@ matrix.</p>
 <span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">sim_single_matrix</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span>, hr <span class="op">=</span> <span class="fl">0.5</span>, drift_hr <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#      id ext trt      time status cnsr</span></span>
-<span><span class="co"># [1,]  1   0   0 13.511389      1    0</span></span>
-<span><span class="co"># [2,]  2   0   0 11.652988      1    0</span></span>
-<span><span class="co"># [3,]  3   0   0  5.505998      1    0</span></span>
-<span><span class="co"># [4,]  4   0   0 17.489336      1    0</span></span>
-<span><span class="co"># [5,]  5   0   0 20.547556      1    0</span></span>
-<span><span class="co"># [6,]  6   0   0  2.859826      1    0</span></span></code></pre></div>
+<span><span class="co">#      id ext trt       time status cnsr</span></span>
+<span><span class="co"># [1,]  1   0   0  3.0924520      1    0</span></span>
+<span><span class="co"># [2,]  2   0   0  1.3281708      1    0</span></span>
+<span><span class="co"># [3,]  3   0   0 25.9723241      1    0</span></span>
+<span><span class="co"># [4,]  4   0   0  0.3350302      1    0</span></span>
+<span><span class="co"># [5,]  5   0   0  0.6937833      1    0</span></span>
+<span><span class="co"># [6,]  6   0   0  7.1229844      1    0</span></span></code></pre></div>
 <p>Using this function, let’s simulate a list of lists of matrices with
 four scenarios:</p>
 <ul>
@@ -532,7 +525,7 @@ object. Instead, it returns a class unique to simulation study results:
 <span><span class="co"># [1] "MCMCSimulationResult"</span></span>
 <span><span class="co"># attr(,"package")</span></span>
 <span><span class="co"># [1] "psborrow2"</span></span></code></pre></div>
-<p>This evaluation took about 15.3 minutes. Let’s look at the
+<p>This evaluation took about 14.6 minutes. Let’s look at the
 performance of our simulation study by extracting the data.frame that
 summarizes results, <code><a href="../reference/get_results.html">get_results()</a></code>:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
@@ -546,19 +539,19 @@ summarizes results, <code><a href="../reference/get_results.html">get_results()<
 <span><span class="co"># 5     0.6       No drift HR  1                  100          default</span></span>
 <span><span class="co"># 6     1.0       No drift HR  2                  100          default</span></span>
 <span><span class="co">#   borrowing_scenario covariate_scenario treatment_scenario   mse_mean</span></span>
-<span><span class="co"># 1       No borrowing      No adjustment            default 0.05800176</span></span>
-<span><span class="co"># 2       No borrowing      No adjustment            default 0.13074879</span></span>
-<span><span class="co"># 3       No borrowing      No adjustment            default 0.04597869</span></span>
-<span><span class="co"># 4       No borrowing      No adjustment            default 0.12651258</span></span>
-<span><span class="co"># 5     Full borrowing      No adjustment            default 0.02020501</span></span>
-<span><span class="co"># 6     Full borrowing      No adjustment            default 0.05046406</span></span>
+<span><span class="co"># 1       No borrowing      No adjustment            default 0.05957157</span></span>
+<span><span class="co"># 2       No borrowing      No adjustment            default 0.13155107</span></span>
+<span><span class="co"># 3       No borrowing      No adjustment            default 0.04747871</span></span>
+<span><span class="co"># 4       No borrowing      No adjustment            default 0.12865600</span></span>
+<span><span class="co"># 5     Full borrowing      No adjustment            default 0.02033351</span></span>
+<span><span class="co"># 6     Full borrowing      No adjustment            default 0.05067211</span></span>
 <span><span class="co">#    bias_mean null_coverage true_coverage</span></span>
-<span><span class="co"># 1 0.05900659          0.56          0.96</span></span>
-<span><span class="co"># 2 0.03669141          0.97          0.97</span></span>
-<span><span class="co"># 3 0.01031734          0.42          0.96</span></span>
-<span><span class="co"># 4 0.02528194          0.94          0.94</span></span>
-<span><span class="co"># 5 0.02199620          0.10          0.96</span></span>
-<span><span class="co"># 6 0.01225166          0.97          0.97</span></span></code></pre></div>
+<span><span class="co"># 1 0.06379999          0.53          0.96</span></span>
+<span><span class="co"># 2 0.03894101          0.96          0.96</span></span>
+<span><span class="co"># 3 0.01517944          0.47          0.95</span></span>
+<span><span class="co"># 4 0.03225091          0.95          0.95</span></span>
+<span><span class="co"># 5 0.02193270          0.10          0.96</span></span>
+<span><span class="co"># 6 0.01079782          0.97          0.97</span></span></code></pre></div>
 <p>Let’s quickly visualize the results using <code>ggplot2</code>. We
 will first load <code>ggplot2</code> and factorize our borrowing
 scenarios:</p>
