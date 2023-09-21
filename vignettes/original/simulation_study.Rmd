@@ -72,7 +72,7 @@ matrices that were generated according to that data generation scenario.
 
 </center>
 
-We'll use the `simsurv` package to generate survival data and we'll 
+We'll use the `simsurv` package to generate survival data and we'll
 then put it in a similar format. In this example, we'll vary
 two data generation parameters: true HR and drift HR (the HR comparing
 external to internal controls). Suppose we have a function,
@@ -138,7 +138,7 @@ sim_single_matrix <- function(n = 500, # n simulated pts
 head(sim_single_matrix(n = 500, hr = 0.5, drift_hr = 1.2))
 ```
 
-Using this function, let's simulate a list of lists of matrices with four 
+Using this function, let's simulate a list of lists of matrices with four
 scenarios:
 
 - True HR = 0.6, drift HR = 1.0
@@ -199,7 +199,7 @@ your simulation study, `psborrow2` needs to know how the simulation parameters
 differ. That is the purpose of the argument `guide`, which is a `data.frame`
 that distinguishes the simulation study parameters. Three columns are required
 in `guide`, though many more can be provided. The three required columns are:
-  
+
 * The true treatment effect (in our case a HR)
 * The true drift effect (in our case a HR). Drift effects >1 will mean
 that the external control arm experiences greater hazard than the internal
@@ -231,7 +231,7 @@ true drift effect, and index of the `data_list` items, respectively.
 For our study, these are `"true_hr"`, `"drift_hr"`, and `"id"`.
 
 Putting it all together, we can create an object of class `SimDataList`:
-  
+
 ```{r}
 my_sim_data_list <- sim_data_list(
   data_list = my_data_list,
@@ -267,7 +267,7 @@ my_sim_out
 evaluate. This can be either a single object of class `Borrowing` or
 a list of objects created with `sim_borrowing_list()`. For the sake of example,
 let's assume we are interested in comparing four borrowing scenarios:
-  
+
 * No borrowing
 * BDB, conservative hyperprior
 * BDB, aggressive hyperprior
@@ -475,4 +475,3 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
   scale_y_continuous(breaks = seq(0, 1, .1), limits = c(0, 1)) +
   geom_hline(aes(yintercept = 0.80), linetype = 2)
 ```
-
