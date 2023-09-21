@@ -10,19 +10,10 @@ bibliography: references.bib
 link-citations: yes
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.width = 8,
-  fig.height = 4,
-  fig.align = "center",
-  messages = FALSE,
-  warnings = FALSE
-)
-```
 
-```{r load, message=FALSE}
+
+
+```r
 library(psborrow2)
 ```
 
@@ -45,14 +36,16 @@ outcome and being in the internal/external group.
 The simplest approach for calculating PS is a logistic generalized linear model. First, let's load some demo data from
 `psborrow2`.
 
-```{r data}
+
+```r
 example_dataframe <- as.data.frame(example_matrix)
 example_dataframe$int <- 1 - example_dataframe$ext
 ```
 
 Let's now fit a logistic generalized linear model and add the PS as an additional covariate.
 
-```{r glm}
+
+```r
 ps_model <- glm(int ~ cov1 + cov2 + cov3 + cov4,
   data = example_dataframe,
   family = binomial
@@ -71,19 +64,12 @@ levels(example_dataframe$ps_cat_) <- c(
 )
 ```
 
-```{r include = FALSE}
-example_matrix_ps <- create_data_matrix(
-  example_dataframe,
-  outcome = c("time", "cnsr"),
-  trt_flag_col = "trt",
-  ext_flag_col = "ext",
-  covariates = ~ ps_cat_ + ps
-)
-```
+
 
 The calculated PS can be included as a covariate in the analysis object, for the "covariate adjustment" PS approach:
 
-```{r analysis_obj}
+
+```r
 analysis_ps_cuts <- create_analysis_obj(
   data_matrix = example_matrix_ps,
   covariates = add_covariates(
@@ -94,8 +80,22 @@ analysis_ps_cuts <- create_analysis_obj(
   borrowing = borrowing_details("Full borrowing", "ext"),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
+#> Inputs look good.
+#> NOTE: dropping column `ext` for full borrowing.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
 
 result_ps_cuts <- mcmc_sample(analysis_ps_cuts)
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 8.0 seconds.
+#> Chain 2 finished in 3.7 seconds.
+#> Chain 3 finished in 4.7 seconds.
+#> Chain 4 finished in 4.9 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 5.3 seconds.
+#> Total execution time: 22.5 seconds.
 ```
 
 
@@ -106,7 +106,8 @@ weights with a number of different methods, such as generalized boosted modeling
 In addition, weights can be calculated differently for different estimands. Here, we specifying
 `estimand = "ATT"`, to calculate weights for estimating the average treatment effect among the treated (ATT).
 
-```{r WeightIt}
+
+```r
 library(WeightIt)
 
 weightit_model <- weightit(
@@ -115,7 +116,34 @@ weightit_model <- weightit(
   method = "gbm",
   estimand = "ATT"
 )
+#> Warning: No `criterion` was provided. Using "smd.mean"FALSETRUE.
 summary(weightit_model)
+#>                  Summary of weights
+#> 
+#> - Weight ranges:
+#> 
+#>            Min                                  Max
+#> treated 1.0000      ||                       1.0000
+#> control 0.0826 |---------------------------| 5.8966
+#> 
+#> - Units with the 5 most extreme weights by group:
+#>                                            
+#>               5      4      3      2      1
+#>  treated      1      1      1      1      1
+#>             195    158    465    438    371
+#>  control 2.7924 2.7924 5.8966 5.8966 5.8966
+#> 
+#> - Weight statistics:
+#> 
+#>         Coef of Var  MAD Entropy # Zeros
+#> treated       0.000 0.00     0.0       0
+#> control       1.582 0.82     0.6       0
+#> 
+#> - Effective Sample Sizes:
+#> 
+#>            Control Treated
+#> Unweighted  350.       150
+#> Weighted    100.09     150
 ```
 
 Another useful package is [cobalt](https://cran.r-project.org/package=cobalt), which provides tools for
@@ -123,14 +151,20 @@ assessing balance between groups after weighting or matching. It is compatible w
 See the [vignette](https://cran.r-project.org/web/packages/cobalt/vignettes/cobalt.html) for more details.
 We can use the `cobalt` package to assess balance with `bal.plot()`.
 
-```{r balplot}
+
+```r
 library(cobalt)
+#>  cobalt (Version 4.5.1, Build Date: 2023-04-27)
 bal.plot(weightit_model)
+#> No `var.name` was provided. Displaying balance for prop.score.
 ```
+
+<img src="figure/propensity_scores-balplot-1.png" alt="plot of chunk balplot" style="display: block; margin: auto;" />
 
 The PS values can be copied into the data set and the analysis object can be constructed as before.
 
-```{r covs}
+
+```r
 example_dataframe$att <- weightit_model$weights
 
 example_matrix_att <- create_data_matrix(
@@ -147,8 +181,22 @@ analysis_att <- create_analysis_obj(
   borrowing = borrowing_details("Full borrowing", "ext"),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
+#> Inputs look good.
+#> NOTE: dropping column `ext` for full borrowing.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
 
 result_att <- mcmc_sample(analysis_att)
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 2.5 seconds.
+#> Chain 2 finished in 3.0 seconds.
+#> Chain 3 finished in 3.5 seconds.
+#> Chain 4 finished in 2.3 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 2.8 seconds.
+#> Total execution time: 11.6 seconds.
 ```
 
 
@@ -160,30 +208,104 @@ A variety of matching methods, including PS matching are implemented in the
 As described in the [Getting Started vignette](https://cran.r-project.org/web/packages/MatchIt/vignettes/MatchIt.html),
 it can be useful to check the imbalance before matching.
 
-```{r matchit}
+
+```r
 library(MatchIt)
+#> 
+#> Attaching package: 'MatchIt'
+#> The following object is masked from 'package:cobalt':
+#> 
+#>     lalonde
 # No matching; constructing a pre-match matchit object
 no_match <- matchit(trt ~ cov1 + cov2 + cov3 + cov4,
   data = example_dataframe,
   method = NULL, distance = "glm"
 )
 summary(no_match)
+#> 
+#> Call:
+#> matchit(formula = trt ~ cov1 + cov2 + cov3 + cov4, data = example_dataframe, 
+#>     method = NULL, distance = "glm")
+#> 
+#> Summary of Balance for All Data:
+#>          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
+#> distance        0.2898        0.1776          0.7585     1.5831    0.2328
+#> cov1            0.6300        0.7150         -0.1761          .    0.0850
+#> cov2            0.3700        0.4625         -0.1916          .    0.0925
+#> cov3            0.7600        0.4475          0.7317          .    0.3125
+#> cov4            0.4600        0.2250          0.4715          .    0.2350
+#>          eCDF Max
+#> distance   0.3375
+#> cov1       0.0850
+#> cov2       0.0925
+#> cov3       0.3125
+#> cov4       0.2350
+#> 
+#> Sample Sizes:
+#>           Control Treated
+#> All           400     100
+#> Matched       400     100
+#> Unmatched       0       0
+#> Discarded       0       0
 ```
 
 Here we are matching treated to untreated to select the most comparable control group, regardless of whether they are
 internal or external. For simplicity let's try a 1:1 nearest matching approach.
 
-```{r matchit11}
+
+```r
 match_11 <- matchit(trt ~ cov1 + cov2 + cov3 + cov4,
   data = example_dataframe,
   method = "nearest", distance = "glm"
 )
 summary(match_11)
+#> 
+#> Call:
+#> matchit(formula = trt ~ cov1 + cov2 + cov3 + cov4, data = example_dataframe, 
+#>     method = "nearest", distance = "glm")
+#> 
+#> Summary of Balance for All Data:
+#>          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
+#> distance        0.2898        0.1776          0.7585     1.5831    0.2328
+#> cov1            0.6300        0.7150         -0.1761          .    0.0850
+#> cov2            0.3700        0.4625         -0.1916          .    0.0925
+#> cov3            0.7600        0.4475          0.7317          .    0.3125
+#> cov4            0.4600        0.2250          0.4715          .    0.2350
+#>          eCDF Max
+#> distance   0.3375
+#> cov1       0.0850
+#> cov2       0.0925
+#> cov3       0.3125
+#> cov4       0.2350
+#> 
+#> Summary of Balance for Matched Data:
+#>          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
+#> distance        0.2898        0.2845          0.0355     1.1082    0.0075
+#> cov1            0.6300        0.6800         -0.1036          .    0.0500
+#> cov2            0.3700        0.3900         -0.0414          .    0.0200
+#> cov3            0.7600        0.7600          0.0000          .    0.0000
+#> cov4            0.4600        0.4600          0.0000          .    0.0000
+#>          eCDF Max Std. Pair Dist.
+#> distance     0.07          0.0355
+#> cov1         0.05          0.1036
+#> cov2         0.02          0.1243
+#> cov3         0.00          0.0000
+#> cov4         0.00          0.0000
+#> 
+#> Sample Sizes:
+#>           Control Treated
+#> All           400     100
+#> Matched       100     100
+#> Unmatched     300       0
+#> Discarded       0       0
 ```
 
-```{r matchit_jitter}
+
+```r
 plot(match_11, type = "jitter", interactive = FALSE)
 ```
+
+<img src="figure/propensity_scores-matchit_jitter-1.png" alt="plot of chunk matchit_jitter" style="display: block; margin: auto;" />
 
 Determining whether the balance after matching is appropriate is beyond the scope of this vignette. You can read more in
 the [MatchIt Assessing Balance](https://cran.r-project.org/web/packages/MatchIt/vignettes/assessing-balance.html)
@@ -191,7 +313,8 @@ vignette. Again the `cobalt` package can be useful here.
 
 However, if you are happy with the results of the matching procedure, you can extract the data for use in `psborrow2`.
 
-```{r trimmed_mat}
+
+```r
 example_matrix_match <- create_data_matrix(
   data = example_dataframe[match_11$weights == 1, ],
   ext_flag_col = "ext",
@@ -200,15 +323,30 @@ example_matrix_match <- create_data_matrix(
 )
 ```
 
-```{r}
+
+```r
 analysis_match <- create_analysis_obj(
   data_matrix = example_matrix_match,
   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
   borrowing = borrowing_details("Full borrowing", "ext"),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
+#> Inputs look good.
+#> NOTE: dropping column `ext` for full borrowing.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
 
 result_match <- mcmc_sample(analysis_match)
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 1.1 seconds.
+#> Chain 2 finished in 1.0 seconds.
+#> Chain 3 finished in 1.1 seconds.
+#> Chain 4 finished in 1.1 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 1.1 seconds.
+#> Total execution time: 4.7 seconds.
 ```
 
 
@@ -219,15 +357,29 @@ is equivalent to fixed power prior weights. This allows for the combination of m
 IPTW + commensurate prior approach.
 
 
-```{r}
+
+```r
 analysis_iptw_bdb <- create_analysis_obj(
   data_matrix = example_matrix_att,
   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
+#> Inputs look good.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
 
 result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb)
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 6.6 seconds.
+#> Chain 2 finished in 6.4 seconds.
+#> Chain 3 finished in 4.6 seconds.
+#> Chain 4 finished in 4.5 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 5.5 seconds.
+#> Total execution time: 22.5 seconds.
 ```
 
 
@@ -236,7 +388,8 @@ result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb)
 We can also use weights to specify a fixed power prior model. Here we set the power parameter $\alpha = 0.1$
 for the external controls.
 
-```{r}
+
+```r
 example_matrix_pp01 <- cbind(example_matrix, pp_alpha = ifelse(example_matrix[, "ext"] == 1, 0.1, 1))
 
 analysis_pp01 <- create_analysis_obj(
@@ -245,8 +398,22 @@ analysis_pp01 <- create_analysis_obj(
   borrowing = borrowing_details("Full borrowing", "ext"),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
+#> Inputs look good.
+#> NOTE: dropping column `ext` for full borrowing.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
 
 result_pp01 <- mcmc_sample(analysis_pp01)
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 3.1 seconds.
+#> Chain 2 finished in 2.7 seconds.
+#> Chain 3 finished in 3.8 seconds.
+#> Chain 4 finished in 9.5 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 4.8 seconds.
+#> Total execution time: 19.5 seconds.
 ```
 
 
@@ -254,7 +421,8 @@ result_pp01 <- mcmc_sample(analysis_pp01)
 
 For comparison, we also fit a full borrowing, a no borrowing, and a BDB model without weights.
 
-```{r}
+
+```r
 result_full <- mcmc_sample(
   create_analysis_obj(
     data_matrix = example_matrix,
@@ -263,6 +431,20 @@ result_full <- mcmc_sample(
     treatment = treatment_details("trt", normal_prior(0, 10000))
   )
 )
+#> Inputs look good.
+#> NOTE: dropping column `ext` for full borrowing.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 16.8 seconds.
+#> Chain 2 finished in 4.4 seconds.
+#> Chain 3 finished in 4.6 seconds.
+#> Chain 4 finished in 4.4 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 7.5 seconds.
+#> Total execution time: 30.5 seconds.
 
 result_none <- mcmc_sample(
   create_analysis_obj(
@@ -272,6 +454,20 @@ result_none <- mcmc_sample(
     treatment = treatment_details("trt", normal_prior(0, 10000))
   )
 )
+#> Inputs look good.
+#> NOTE: excluding `ext` == `1`/`TRUE` for no borrowing.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 1.4 seconds.
+#> Chain 2 finished in 1.8 seconds.
+#> Chain 3 finished in 1.3 seconds.
+#> Chain 4 finished in 1.3 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 1.5 seconds.
+#> Total execution time: 6.2 seconds.
 
 result_bdb <- mcmc_sample(
   create_analysis_obj(
@@ -281,12 +477,26 @@ result_bdb <- mcmc_sample(
     treatment = treatment_details("trt", normal_prior(0, 10000))
   )
 )
+#> Inputs look good.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 6.0 seconds.
+#> Chain 2 finished in 5.2 seconds.
+#> Chain 3 finished in 5.0 seconds.
+#> Chain 4 finished in 12.2 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 7.1 seconds.
+#> Total execution time: 28.8 seconds.
 ```
 
 
 # Comparison of Results
 
-```{r}
+
+```r
 models <- list(
   "No borrowing" = result_none,
   "Full borrowing" = result_full,
@@ -300,7 +510,8 @@ models <- list(
 ```
 
 We can use `summary()` to extract the variable of interest and specify summary statistics.
-```{r}
+
+```r
 results_table <- do.call(rbind, lapply(
   models,
   function(i) i$summary("HR_trt", c("mean", "median", "sd", "quantile2"))
@@ -308,9 +519,23 @@ results_table <- do.call(rbind, lapply(
 knitr::kable(cbind(models = names(models), results_table), digits = 3)
 ```
 
+
+
+|models         |variable |  mean| median|    sd|    q5|   q95|
+|:--------------|:--------|-----:|------:|-----:|-----:|-----:|
+|No borrowing   |HR_trt   | 0.896|  0.877| 0.181| 0.635| 1.221|
+|Full borrowing |HR_trt   | 0.388|  0.386| 0.049| 0.312| 0.473|
+|Power Prior 01 |HR_trt   | 0.634|  0.625| 0.105| 0.475| 0.819|
+|PS Groups      |HR_trt   | 0.720|  0.715| 0.095| 0.573| 0.885|
+|ATT Weights    |HR_trt   | 0.894|  0.887| 0.127| 0.699| 1.116|
+|IPTW + BDB     |HR_trt   | 0.895|  0.881| 0.164| 0.654| 1.186|
+|Matching 1:1   |HR_trt   | 0.793|  0.783| 0.128| 0.601| 1.020|
+|BDB            |HR_trt   | 0.874|  0.855| 0.175| 0.623| 1.188|
+
 We can extract a `draws` object from each model and plot the posterior distribution of the
 treatment hazard ratio.
-```{r plots, fig.height=8, fig.width=8}
+
+```r
 plot(density(models[[1]]$draws("HR_trt")),
   col = 1, xlim = c(0, 2), ylim = c(0, 9), lwd = 2,
   xlab = "HR_trt",
@@ -321,6 +546,8 @@ for (i in 2:8) {
 }
 legend("topright", col = seq_along(models), lty = seq_along(models), legend = names(models))
 ```
+
+<img src="figure/propensity_scores-plots-1.png" alt="plot of chunk plots" style="display: block; margin: auto;" />
 
 Here we see no borrowing and full borrowing at the extremes and the other methods in between.
 
