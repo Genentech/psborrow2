@@ -85,7 +85,7 @@ distribution:
 plot(uninformative_normal)
 ```
 
-<img src="figure/prior_distributions-unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
+<img src="figure-prior_distributions-unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
 
 `plot()` chooses the default axes for you, but you can change these to
 make differences more obvious. Let's compare
@@ -102,4 +102,4 @@ plot(aggressive_tau, xlim = c(0, 2000), col = "blue", ylim = c(0, 1e-03))
 plot(conservative_tau, xlim = c(0, 2000), col = "red", add = TRUE)
 ```
 
-<img src="figure/prior_distributions-unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
+<img src="figure-prior_distributions-unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />

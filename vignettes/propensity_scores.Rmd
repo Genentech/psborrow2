@@ -87,15 +87,15 @@ analysis_ps_cuts <- create_analysis_obj(
 
 result_ps_cuts <- mcmc_sample(analysis_ps_cuts)
 #> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 8.0 seconds.
-#> Chain 2 finished in 3.7 seconds.
-#> Chain 3 finished in 4.7 seconds.
-#> Chain 4 finished in 4.9 seconds.
-#> 
+#>
+#> Chain 1 finished in 7.2 seconds.
+#> Chain 2 finished in 8.4 seconds.
+#> Chain 3 finished in 16.1 seconds.
+#> Chain 4 finished in 12.2 seconds.
+#>
 #> All 4 chains finished successfully.
-#> Mean chain execution time: 5.3 seconds.
-#> Total execution time: 22.5 seconds.
+#> Mean chain execution time: 11.0 seconds.
+#> Total execution time: 44.4 seconds.
 ```
 
 
@@ -119,28 +119,28 @@ weightit_model <- weightit(
 #> Warning: No `criterion` was provided. Using "smd.mean"FALSETRUE.
 summary(weightit_model)
 #>                  Summary of weights
-#> 
+#>
 #> - Weight ranges:
-#> 
+#>
 #>            Min                                  Max
 #> treated 1.0000      ||                       1.0000
 #> control 0.0826 |---------------------------| 5.8966
-#> 
+#>
 #> - Units with the 5 most extreme weights by group:
-#>                                            
+#>
 #>               5      4      3      2      1
 #>  treated      1      1      1      1      1
 #>             195    158    465    438    371
 #>  control 2.7924 2.7924 5.8966 5.8966 5.8966
-#> 
+#>
 #> - Weight statistics:
-#> 
+#>
 #>         Coef of Var  MAD Entropy # Zeros
 #> treated       0.000 0.00     0.0       0
 #> control       1.582 0.82     0.6       0
-#> 
+#>
 #> - Effective Sample Sizes:
-#> 
+#>
 #>            Control Treated
 #> Unweighted  350.       150
 #> Weighted    100.09     150
@@ -159,7 +159,7 @@ bal.plot(weightit_model)
 #> No `var.name` was provided. Displaying balance for prop.score.
 ```
 
-<img src="figure/propensity_scores-balplot-1.png" alt="plot of chunk balplot" style="display: block; margin: auto;" />
+<img src="figure-propensity_scores-balplot-1.png" alt="plot of chunk balplot" style="display: block; margin: auto;" />
 
 The PS values can be copied into the data set and the analysis object can be constructed as before.
 
@@ -188,15 +188,15 @@ analysis_att <- create_analysis_obj(
 
 result_att <- mcmc_sample(analysis_att)
 #> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 2.5 seconds.
-#> Chain 2 finished in 3.0 seconds.
-#> Chain 3 finished in 3.5 seconds.
-#> Chain 4 finished in 2.3 seconds.
-#> 
+#>
+#> Chain 1 finished in 5.1 seconds.
+#> Chain 2 finished in 3.8 seconds.
+#> Chain 3 finished in 5.4 seconds.
+#> Chain 4 finished in 5.9 seconds.
+#>
 #> All 4 chains finished successfully.
-#> Mean chain execution time: 2.8 seconds.
-#> Total execution time: 11.6 seconds.
+#> Mean chain execution time: 5.0 seconds.
+#> Total execution time: 20.6 seconds.
 ```
 
 
@@ -211,10 +211,10 @@ it can be useful to check the imbalance before matching.
 
 ```r
 library(MatchIt)
-#> 
+#>
 #> Attaching package: 'MatchIt'
 #> The following object is masked from 'package:cobalt':
-#> 
+#>
 #>     lalonde
 # No matching; constructing a pre-match matchit object
 no_match <- matchit(trt ~ cov1 + cov2 + cov3 + cov4,
@@ -222,11 +222,11 @@ no_match <- matchit(trt ~ cov1 + cov2 + cov3 + cov4,
   method = NULL, distance = "glm"
 )
 summary(no_match)
-#> 
+#>
 #> Call:
-#> matchit(formula = trt ~ cov1 + cov2 + cov3 + cov4, data = example_dataframe, 
+#> matchit(formula = trt ~ cov1 + cov2 + cov3 + cov4, data = example_dataframe,
 #>     method = NULL, distance = "glm")
-#> 
+#>
 #> Summary of Balance for All Data:
 #>          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
 #> distance        0.2898        0.1776          0.7585     1.5831    0.2328
@@ -240,7 +240,7 @@ summary(no_match)
 #> cov2       0.0925
 #> cov3       0.3125
 #> cov4       0.2350
-#> 
+#>
 #> Sample Sizes:
 #>           Control Treated
 #> All           400     100
@@ -259,11 +259,11 @@ match_11 <- matchit(trt ~ cov1 + cov2 + cov3 + cov4,
   method = "nearest", distance = "glm"
 )
 summary(match_11)
-#> 
+#>
 #> Call:
-#> matchit(formula = trt ~ cov1 + cov2 + cov3 + cov4, data = example_dataframe, 
+#> matchit(formula = trt ~ cov1 + cov2 + cov3 + cov4, data = example_dataframe,
 #>     method = "nearest", distance = "glm")
-#> 
+#>
 #> Summary of Balance for All Data:
 #>          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
 #> distance        0.2898        0.1776          0.7585     1.5831    0.2328
@@ -277,7 +277,7 @@ summary(match_11)
 #> cov2       0.0925
 #> cov3       0.3125
 #> cov4       0.2350
-#> 
+#>
 #> Summary of Balance for Matched Data:
 #>          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
 #> distance        0.2898        0.2845          0.0355     1.1082    0.0075
@@ -291,7 +291,7 @@ summary(match_11)
 #> cov2         0.02          0.1243
 #> cov3         0.00          0.0000
 #> cov4         0.00          0.0000
-#> 
+#>
 #> Sample Sizes:
 #>           Control Treated
 #> All           400     100
@@ -305,7 +305,7 @@ summary(match_11)
 plot(match_11, type = "jitter", interactive = FALSE)
 ```
 
-<img src="figure/propensity_scores-matchit_jitter-1.png" alt="plot of chunk matchit_jitter" style="display: block; margin: auto;" />
+<img src="figure-propensity_scores-matchit_jitter-1.png" alt="plot of chunk matchit_jitter" style="display: block; margin: auto;" />
 
 Determining whether the balance after matching is appropriate is beyond the scope of this vignette. You can read more in
 the [MatchIt Assessing Balance](https://cran.r-project.org/web/packages/MatchIt/vignettes/assessing-balance.html)
@@ -338,15 +338,15 @@ analysis_match <- create_analysis_obj(
 
 result_match <- mcmc_sample(analysis_match)
 #> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 1.1 seconds.
-#> Chain 2 finished in 1.0 seconds.
-#> Chain 3 finished in 1.1 seconds.
-#> Chain 4 finished in 1.1 seconds.
-#> 
+#>
+#> Chain 1 finished in 1.5 seconds.
+#> Chain 2 finished in 1.8 seconds.
+#> Chain 3 finished in 1.5 seconds.
+#> Chain 4 finished in 1.6 seconds.
+#>
 #> All 4 chains finished successfully.
-#> Mean chain execution time: 1.1 seconds.
-#> Total execution time: 4.7 seconds.
+#> Mean chain execution time: 1.6 seconds.
+#> Total execution time: 6.6 seconds.
 ```
 
 
@@ -371,15 +371,15 @@ analysis_iptw_bdb <- create_analysis_obj(
 
 result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb)
 #> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 6.6 seconds.
-#> Chain 2 finished in 6.4 seconds.
-#> Chain 3 finished in 4.6 seconds.
-#> Chain 4 finished in 4.5 seconds.
-#> 
+#>
+#> Chain 1 finished in 13.4 seconds.
+#> Chain 2 finished in 16.1 seconds.
+#> Chain 3 finished in 8.0 seconds.
+#> Chain 4 finished in 7.4 seconds.
+#>
 #> All 4 chains finished successfully.
-#> Mean chain execution time: 5.5 seconds.
-#> Total execution time: 22.5 seconds.
+#> Mean chain execution time: 11.2 seconds.
+#> Total execution time: 45.3 seconds.
 ```
 
 
@@ -405,15 +405,15 @@ analysis_pp01 <- create_analysis_obj(
 
 result_pp01 <- mcmc_sample(analysis_pp01)
 #> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 3.1 seconds.
-#> Chain 2 finished in 2.7 seconds.
-#> Chain 3 finished in 3.8 seconds.
-#> Chain 4 finished in 9.5 seconds.
-#> 
+#>
+#> Chain 1 finished in 4.1 seconds.
+#> Chain 2 finished in 4.3 seconds.
+#> Chain 3 finished in 4.6 seconds.
+#> Chain 4 finished in 8.0 seconds.
+#>
 #> All 4 chains finished successfully.
-#> Mean chain execution time: 4.8 seconds.
-#> Total execution time: 19.5 seconds.
+#> Mean chain execution time: 5.3 seconds.
+#> Total execution time: 21.5 seconds.
 ```
 
 
@@ -436,15 +436,15 @@ result_full <- mcmc_sample(
 #> Stan program compiled successfully!
 #> Ready to go! Now call `mcmc_sample()`.
 #> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 16.8 seconds.
-#> Chain 2 finished in 4.4 seconds.
-#> Chain 3 finished in 4.6 seconds.
-#> Chain 4 finished in 4.4 seconds.
-#> 
+#>
+#> Chain 1 finished in 3.5 seconds.
+#> Chain 2 finished in 3.6 seconds.
+#> Chain 3 finished in 3.2 seconds.
+#> Chain 4 finished in 2.4 seconds.
+#>
 #> All 4 chains finished successfully.
-#> Mean chain execution time: 7.5 seconds.
-#> Total execution time: 30.5 seconds.
+#> Mean chain execution time: 3.2 seconds.
+#> Total execution time: 13.1 seconds.
 
 result_none <- mcmc_sample(
   create_analysis_obj(
@@ -459,15 +459,15 @@ result_none <- mcmc_sample(
 #> Stan program compiled successfully!
 #> Ready to go! Now call `mcmc_sample()`.
 #> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 1.4 seconds.
-#> Chain 2 finished in 1.8 seconds.
-#> Chain 3 finished in 1.3 seconds.
-#> Chain 4 finished in 1.3 seconds.
-#> 
+#>
+#> Chain 1 finished in 1.3 seconds.
+#> Chain 2 finished in 1.3 seconds.
+#> Chain 3 finished in 1.2 seconds.
+#> Chain 4 finished in 1.2 seconds.
+#>
 #> All 4 chains finished successfully.
-#> Mean chain execution time: 1.5 seconds.
-#> Total execution time: 6.2 seconds.
+#> Mean chain execution time: 1.3 seconds.
+#> Total execution time: 5.2 seconds.
 
 result_bdb <- mcmc_sample(
   create_analysis_obj(
@@ -481,15 +481,15 @@ result_bdb <- mcmc_sample(
 #> Stan program compiled successfully!
 #> Ready to go! Now call `mcmc_sample()`.
 #> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 6.0 seconds.
-#> Chain 2 finished in 5.2 seconds.
-#> Chain 3 finished in 5.0 seconds.
-#> Chain 4 finished in 12.2 seconds.
-#> 
+#>
+#> Chain 1 finished in 6.7 seconds.
+#> Chain 2 finished in 7.1 seconds.
+#> Chain 3 finished in 7.7 seconds.
+#> Chain 4 finished in 7.7 seconds.
+#>
 #> All 4 chains finished successfully.
-#> Mean chain execution time: 7.1 seconds.
-#> Total execution time: 28.8 seconds.
+#> Mean chain execution time: 7.3 seconds.
+#> Total execution time: 29.4 seconds.
 ```
 
 
@@ -523,14 +523,14 @@ knitr::kable(cbind(models = names(models), results_table), digits = 3)
 
 |models         |variable |  mean| median|    sd|    q5|   q95|
 |:--------------|:--------|-----:|------:|-----:|-----:|-----:|
-|No borrowing   |HR_trt   | 0.896|  0.877| 0.181| 0.635| 1.221|
-|Full borrowing |HR_trt   | 0.388|  0.386| 0.049| 0.312| 0.473|
-|Power Prior 01 |HR_trt   | 0.634|  0.625| 0.105| 0.475| 0.819|
-|PS Groups      |HR_trt   | 0.720|  0.715| 0.095| 0.573| 0.885|
-|ATT Weights    |HR_trt   | 0.894|  0.887| 0.127| 0.699| 1.116|
-|IPTW + BDB     |HR_trt   | 0.895|  0.881| 0.164| 0.654| 1.186|
-|Matching 1:1   |HR_trt   | 0.793|  0.783| 0.128| 0.601| 1.020|
-|BDB            |HR_trt   | 0.874|  0.855| 0.175| 0.623| 1.188|
+|No borrowing   |HR_trt   | 0.897|  0.878| 0.183| 0.635| 1.224|
+|Full borrowing |HR_trt   | 0.388|  0.385| 0.049| 0.311| 0.473|
+|Power Prior 01 |HR_trt   | 0.634|  0.624| 0.105| 0.478| 0.821|
+|PS Groups      |HR_trt   | 0.720|  0.714| 0.095| 0.571| 0.883|
+|ATT Weights    |HR_trt   | 0.894|  0.886| 0.127| 0.700| 1.119|
+|IPTW + BDB     |HR_trt   | 0.894|  0.880| 0.161| 0.657| 1.178|
+|Matching 1:1   |HR_trt   | 0.794|  0.783| 0.128| 0.605| 1.022|
+|BDB            |HR_trt   | 0.873|  0.855| 0.175| 0.620| 1.190|
 
 We can extract a `draws` object from each model and plot the posterior distribution of the
 treatment hazard ratio.
@@ -547,7 +547,7 @@ for (i in 2:8) {
 legend("topright", col = seq_along(models), lty = seq_along(models), legend = names(models))
 ```
 
-<img src="figure/propensity_scores-plots-1.png" alt="plot of chunk plots" style="display: block; margin: auto;" />
+<img src="figure-propensity_scores-plots-1.png" alt="plot of chunk plots" style="display: block; margin: auto;" />
 
 Here we see no borrowing and full borrowing at the extremes and the other methods in between.
 

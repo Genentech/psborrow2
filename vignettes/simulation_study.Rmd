@@ -129,13 +129,13 @@ sim_single_matrix <- function(n = 500, # n simulated pts
 
 ```r
 head(sim_single_matrix(n = 500, hr = 0.5, drift_hr = 1.2))
-#      id ext trt       time status cnsr
-# [1,]  1   0   0 10.1064470      1    0
-# [2,]  2   0   0 10.8196190      1    0
-# [3,]  3   0   0 20.5424122      1    0
-# [4,]  4   0   0 16.4291712      1    0
-# [5,]  5   0   0  8.7275857      1    0
-# [6,]  6   0   0  0.2065971      1    0
+#      id ext trt      time status cnsr
+# [1,]  1   0   0 12.316713      1    0
+# [2,]  2   0   0 18.337455      1    0
+# [3,]  3   0   0  8.261258      1    0
+# [4,]  4   0   0 13.727587      1    0
+# [5,]  5   0   0  3.448558      1    0
+# [6,]  6   0   0  1.533699      1    0
 ```
 
 Using this function, let's simulate a list of lists of matrices with four
@@ -286,17 +286,17 @@ my_sim_out <- exp_surv_dist(
 )
 
 my_sim_out
-# Outcome object with class ExponentialSurvDist 
-# 
+# Outcome object with class ExponentialSurvDist
+#
 # Outcome variables:
-# time_var cens_var 
-#   "time"   "cnsr" 
-# 
+# time_var cens_var
+#   "time"   "cnsr"
+#
 # Baseline prior:
 # Normal Distribution
 # Parameters:
 #  Stan  R    Value
-#  mu    mean    0 
+#  mu    mean    0
 #  sigma sd   1000
 ```
 
@@ -357,14 +357,14 @@ my_sim_treat <- treatment_details("trt", normal_prior(0, 1000))
 
 my_sim_treat
 # Treatment object
-# 
-# Treatment flag column: trt 
-# 
+#
+# Treatment flag column: trt
+#
 # Treatment effect prior:
 # Normal Distribution
 # Parameters:
 #  Stan  R    Value
-#  mu    mean    0 
+#  mu    mean    0
 #  sigma sd   1000
 ```
 
@@ -482,7 +482,7 @@ class(simulation_res)
 # [1] "psborrow2"
 ```
 
-This evaluation took about 19.8
+This evaluation took about 33.3
 minutes. Let's look at the performance of our simulation study by extracting the data.frame
 that summarizes results, `get_results()`:
 
@@ -549,7 +549,7 @@ ggplot(simulation_res_df) +
   scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))
 ```
 
-<img src="figure/simulation_study-unnamed-chunk-20-1.png" alt="plot of chunk unnamed-chunk-20" style="display: block; margin: auto;" />
+<img src="figure-simulation_study-unnamed-chunk-20-1.png" alt="plot of chunk unnamed-chunk-20" style="display: block; margin: auto;" />
 
 ### Type I error
 
@@ -572,7 +572,7 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
   geom_hline(aes(yintercept = 0.05), linetype = 2)
 ```
 
-<img src="figure/simulation_study-unnamed-chunk-21-1.png" alt="plot of chunk unnamed-chunk-21" style="display: block; margin: auto;" />
+<img src="figure-simulation_study-unnamed-chunk-21-1.png" alt="plot of chunk unnamed-chunk-21" style="display: block; margin: auto;" />
 
 ### Power
 
@@ -594,4 +594,4 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
   geom_hline(aes(yintercept = 0.80), linetype = 2)
 ```
 
-<img src="figure/simulation_study-unnamed-chunk-22-1.png" alt="plot of chunk unnamed-chunk-22" style="display: block; margin: auto;" />
+<img src="figure-simulation_study-unnamed-chunk-22-1.png" alt="plot of chunk unnamed-chunk-22" style="display: block; margin: auto;" />
