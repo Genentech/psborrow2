@@ -24,4 +24,4 @@ devel
 ^dev$
 ^\.pre-commit-config\.yaml$
 ^vignettes/original$
-vignettes/Makefile
+^vignettes/Makefile$
