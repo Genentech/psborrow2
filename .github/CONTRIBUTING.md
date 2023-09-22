@@ -118,7 +118,7 @@ The package maintainer also reserves the rights to manually adjust the criteria 
 If you have any further questions regarding contribution - please reach out to the repository maintainer!
 
 <!-- urls -->
-[url_pkgdown]: https://genentech.github.io/psborrow2/index.html
-[url_getting_started]: https://genentech.github.io/psborrow2/articles/psborrow2.html
-[url_articles]: https://genentech.github.io/psborrow2/articles/index.html
-[url_license]: https://genentech.github.io/psborrow2/LICENSE-text.html
+[url_pkgdown]: https://genentech.github.io/psborrow2/main/index.html
+[url_getting_started]: https://genentech.github.io/psborrow2/main/articles/psborrow2.html
+[url_articles]: https://genentech.github.io/psborrow2/main/articles/index.html
+[url_license]: http://www.apache.org/licenses/LICENSE-2.0

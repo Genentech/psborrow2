@@ -1,3 +1,5 @@
+skip_on_cran()
+
 # Simulate a single matrix
 sim_single_matrix <- function(true_hr = 0.6,
                               drift_hr = 1.0,
@@ -362,7 +364,7 @@ test_that("`create_simulation_obj()` does not create deep copies", {
   for (i in 1:so@n_combos) {
     analysis_list <- so@analysis_obj_list[[i]]
     data_matrix_list <- so@data_matrix_list@data_list[[
-    so@guide[[so@data_matrix_list@index]][i]
+      so@guide[[so@data_matrix_list@index]][i]
     ]]
     expect_equal(
       NROW(analysis_list),
