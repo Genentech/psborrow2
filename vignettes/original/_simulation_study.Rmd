@@ -80,23 +80,22 @@ external to internal controls). Suppose we have a function,
 
 That is:
 
-```{r class.source = "fold-hide"}
+```{r, class.source = "fold-hide"}
 library(simsurv)
 # function to create a single matrix
-sim_single_matrix <- function(n = 500, # n simulated pts
-                              prob = c(
-                                0.1, # proportion internal control
-                                0.2, # proportion internal treated
-                                0.7
-                              ), # proportion external control
-                              hr = 0.70, # true HR for the treatment
-                              drift_hr = 1.0 # HR of external/internal
-) {
+sim_single_matrix <- function(
+    n = 500, # n simulated pts
+    prob = c(
+      0.1, # proportion internal control
+      0.2, # proportion internal treated
+      0.7
+    ), # proportion external control
+    hr = 0.70, # true HR for the treatment
+    drift_hr = 1.0) { # HR of external/internal
   # checks
   if (sum(prob) != 1.0) {
     stop("prob must sum to 1")
   }
-
   # data frame with the subject IDs and treatment group
   df_ids <- data.frame(
     id = 1:n,
@@ -110,7 +109,6 @@ sim_single_matrix <- function(n = 500, # n simulated pts
       rep(0L, n * prob[3])
     )
   )
-
   # simulated event times
   df_surv <- simsurv(
     lambdas = 0.1,
@@ -122,9 +120,7 @@ sim_single_matrix <- function(n = 500, # n simulated pts
     x = df_ids,
     maxt = 50
   )
-
   df_surv$censor <- 1 - df_surv$status
-
   # merge the simulated event times into data frame
   df <- merge(df_ids, df_surv)
   df <- df[, c("id", "ext", "trt", "eventtime", "status", "censor")]
