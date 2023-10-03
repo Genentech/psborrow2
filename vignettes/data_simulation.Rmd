@@ -1,0 +1,120 @@
+---
+title: "8. Data Simulation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{8. Data Simulation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+This vignette will show the internal functions for generating data that can be used in simulation studies.
+
+
+```r
+library(psborrow2)
+#> Loading required package: cmdstanr
+#> This is cmdstanr version 0.6.0
+#> - CmdStanR documentation and vignettes: mc-stan.org/cmdstanr
+#> - CmdStan path: /Users/gravesti/.cmdstan/cmdstan-2.33.1
+#> - CmdStan version: 2.33.1
+```
+
+## Generating Baseline Data
+
+First we define how to generate baseline data for our study. In its simplest form we only need to define how many
+patients are in the arms: treated internal, control internal, control external.
+
+
+```r
+simple_baseline <- create_baseline_object(
+  n_trt_int = 100,
+  n_ctrl_int = 50,
+  n_ctrl_ext = 100
+)
+#> Error in create_baseline_object(n_trt_int = 100, n_ctrl_int = 50, n_ctrl_ext = 100): could not find function "create_baseline_object"
+```
+
+This object defines how the data will be created. To actually generate a sample, use `generate()` to produce a
+`data.frame`.
+
+
+```r
+generate(simple_baseline)
+#> Error in generate(simple_baseline): could not find function "generate"
+```
+
+Often we are interested in some additional covariates. Internally the package uses multivariate normal distributions,
+so we need to specify the mean and (co-)variance. We have the option to specify different distribution parameters
+for the internal and external arms. The internal arms are assumed to be randomized and therefore come from the same
+distribution. If no external parameters are specified, the internal ones are used for both.
+
+
+```r
+with_age <- create_baseline_object(
+  n_trt_int = 100,
+  n_ctrl_int = 50,
+  n_ctrl_ext = 100,
+  covariates = baseline_covariates(
+    names = "age",
+    means_int = 55,
+    covariance_int = covariance_matrix(5)
+  )
+)
+#> Error in create_baseline_object(n_trt_int = 100, n_ctrl_int = 50, n_ctrl_ext = 100, : could not find function "create_baseline_object"
+generate(with_age)
+#> Error in generate(with_age): could not find function "generate"
+```
+
+In a more complex setting, we can generate correlated baseline covariates.
+
+```r
+with_age_score <- create_baseline_object(
+  n_trt_int = 100,
+  n_ctrl_int = 50,
+  n_ctrl_ext = 100,
+  covariates = baseline_covariates(
+    names = c("age", "score"),
+    means_int = c(55, 5),
+    means_ext = c(60, 5),
+    covariance_int = covariance_matrix(c(5, 1))
+  )
+)
+#> Error in create_baseline_object(n_trt_int = 100, n_ctrl_int = 50, n_ctrl_ext = 100, : could not find function "create_baseline_object"
+data_age_score <- generate(with_age_score)
+#> Error in generate(with_age_score): could not find function "generate"
+```
+
+
+```r
+plot(
+  x = data_age_score$age,
+  y = data_age_score$score,
+  col = data_age_score$trt + 1,
+  pch = data_age_score$ext * 16,
+  xlab = "Age",
+  ylab = "Score"
+)
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'data_age_score' not found
+legend(
+  "topright",
+  legend = c("internal treated", "internal control", "external control"),
+  col = c(2, 1, 1),
+  pch = c(0, 0, 16)
+)
+#> Error in (function (s, units = "user", cex = NULL, font = NULL, vfont = NULL, : plot.new has not been called yet
+```
+
+Finally, we have the option to transform non-normal covariates, such as with binary cut-offs.
+These can be added to existing objects and can use built-in functions or used defined.
+
+```r
+with_age_score@transformations <- list(
+  score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7),
+  score_rounded = function(data) round(data$score)
+)
+#> Error in binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7): could not find function "binary_cutoff"
+generate(with_age_score)
+#> Error in generate(with_age_score): could not find function "generate"
+```
