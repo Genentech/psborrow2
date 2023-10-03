@@ -27,76 +27,10 @@ library(psborrow2)
 ```
 
 Propensity scores (PS) methods offer various ways to adjust analyses for differences in groups of patients.
-
 @austin2013 discusses various approaches for using PS with survival analyses to obtain effect measures similar to
-randomized controlled trials.
-
-@wang2021 discuss using PS for IPTW, matching and stratification in combination with a Bayesian analysis. These methods
-allow for the separation of the design and analysis into two stages, which may be attractive in a regulatory setting.
-
+randomized controlled trials. @wang2021 discuss using PS for IPTW, matching and stratification in combination with a Bayesian analysis.
+These methods allow for the separation of the design and analysis into two stages, which may be attractive in a regulatory setting.
 Another approach is the direct inclusion of the PS as a covariate in the outcome model.
-
-## Propensity Score Calculation
-
-Propensity scores are the probabilities that an observation belongs to one group or another, in this setting the
-internal or external patients. The PS models are fitted based on baseline covariates that could be confounders between
-outcome and being in the internal/external group.
-
-The simplest approach for calculating PS is a logistic generalized linear model. First, let's load some demo data from
-`psborrow2`.
-
-```{r data}
-example_dataframe <- as.data.frame(example_matrix)
-example_dataframe$int <- 1 - example_dataframe$ext
-```
-
-Let's now fit a logistic generalized linear model and add the PS as an additional covariate.
-
-```{r glm}
-ps_model <- glm(int ~ cov1 + cov2 + cov3 + cov4,
-  data = example_dataframe,
-  family = binomial
-)
-ps <- predict(ps_model, type = "response")
-example_dataframe$ps <- ps
-
-example_dataframe$ps_cat_ <- cut(
-  example_dataframe$ps,
-  breaks = 5,
-  include.lowest = TRUE
-)
-levels(example_dataframe$ps_cat_) <- c(
-  "ref", "low",
-  "low_med", "high_med", "high"
-)
-```
-
-```{r include = FALSE}
-example_matrix_ps <- create_data_matrix(
-  example_dataframe,
-  outcome = c("time", "cnsr"),
-  trt_flag_col = "trt",
-  ext_flag_col = "ext",
-  covariates = ~ ps_cat_ + ps
-)
-```
-
-The calculated PS can be included as a covariate in the analysis object, for the "covariate adjustment" PS approach:
-
-```{r analysis_obj}
-analysis_ps_cuts <- create_analysis_obj(
-  data_matrix = example_matrix_ps,
-  covariates = add_covariates(
-    c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
-    priors = normal_prior(0, 10000)
-  ),
-  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
-  borrowing = borrowing_details("Full borrowing", "ext"),
-  treatment = treatment_details("trt", normal_prior(0, 10000))
-)
-
-result_ps_cuts <- mcmc_sample(analysis_ps_cuts)
-```
 
 
 ## Alternative PS Weights with `WeightIt`
@@ -108,6 +42,9 @@ In addition, weights can be calculated differently for different estimands. Here
 
 ```{r WeightIt}
 library(WeightIt)
+
+example_dataframe <- as.data.frame(example_matrix)
+example_dataframe$int <- 1 - example_dataframe$ext
 
 weightit_model <- weightit(
   int ~ cov1 + cov2 + cov3 + cov4,
@@ -126,6 +63,12 @@ We can use the `cobalt` package to assess balance with `bal.plot()`.
 ```{r balplot}
 library(cobalt)
 bal.plot(weightit_model)
+```
+
+"Love plots" can also be generated that compare the populations before and after weighting:
+
+```{r loveplot}
+love.plot(weightit_model, stars = "std")
 ```
 
 The PS values can be copied into the data set and the analysis object can be constructed as before.

@@ -18,13 +18,9 @@ library(psborrow2)
 ```
 
 Propensity scores (PS) methods offer various ways to adjust analyses for differences in groups of patients.
-
 @austin2013 discusses various approaches for using PS with survival analyses to obtain effect measures similar to
-randomized controlled trials.
-
-@wang2021 discuss using PS for IPTW, matching and stratification in combination with a Bayesian analysis. These methods
-allow for the separation of the design and analysis into two stages, which may be attractive in a regulatory setting.
-
+randomized controlled trials. @wang2021 discuss using PS for IPTW, matching and stratification in combination with a Bayesian analysis.
+These methods allow for the separation of the design and analysis into two stages, which may be attractive in a regulatory setting.
 Another approach is the direct inclusion of the PS as a covariate in the outcome model.
 
 ## Propensity Score Calculation
@@ -109,6 +105,9 @@ In addition, weights can be calculated differently for different estimands. Here
 
 ```r
 library(WeightIt)
+
+example_dataframe <- as.data.frame(example_matrix)
+example_dataframe$int <- 1 - example_dataframe$ext
 
 weightit_model <- weightit(
   int ~ cov1 + cov2 + cov3 + cov4,
