@@ -118,10 +118,13 @@ create_simulation_obj <- function(data_matrix_list,
   ## Data matrices all have external flags, treatment flags, and covariates
   search_cols <- get_vars(simulation_obj)
 
-  for (datalist_i in seq_along(simulation_obj@data_matrix_list@data_list)) {
-    for (data_j in seq_along(datalist_i)) {
-      if (!all(search_cols %in% colnames(data_j))) {
-        which_not_in <- search_cols[which(!search_cols %in% colnames(data_j))]
+  for (i in seq_along(simulation_obj@data_matrix_list@data_list)) {
+    for (j in seq_along(simulation_obj@data_matrix_list@data_list[[i]])) {
+      if (!all(search_cols %in% colnames(simulation_obj@data_matrix_list@data_list[[i]][[j]]))) {
+        which_not_in <- search_cols[
+          which(!search_cols %in%
+            colnames(simulation_obj@data_matrix_list@data_list[[i]][[j]]))
+        ]
         stop(
           "The following columns were specified in the simulation but ",
           "are missing in some simulated data matrices: '",
