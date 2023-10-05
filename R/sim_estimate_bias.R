@@ -9,6 +9,7 @@
 #' @details
 #' Bias will be calculated as (true_effect - median_estimated_effect)
 #'
+#' @noRd
 #' @examples
 #' base_mat <- matrix(
 #'   c(
