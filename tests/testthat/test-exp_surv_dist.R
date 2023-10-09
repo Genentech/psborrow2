@@ -1,6 +1,6 @@
 test_that("Exponential survival distributions are rendering correctly", {
   # Make exponential survival distribution
-  surv_dist <- exp_surv_dist(
+  surv_dist <- outcome_surv_exponential(
     time_var = "time",
     cens_var = "cens",
     baseline_prior = normal_prior(0, 1000)
@@ -12,14 +12,14 @@ test_that("Exponential survival distributions are rendering correctly", {
   expect_equal(surv_dist@param_priors, list())
 
   # Errors
-  expect_error(exp_surv_dist(),
+  expect_error(outcome_surv_exponential(),
     regexp = 'argument \"time_var\" is missing, with no default'
   )
 })
 
 test_that("get_vars works for ExponentialSurvDist", {
   expect_identical(
-    get_vars(exp_surv_dist(
+    get_vars(outcome_surv_exponential(
       time_var = "TIME",
       cens_var = "CENS",
       normal_prior(0, 100)
@@ -28,7 +28,7 @@ test_that("get_vars works for ExponentialSurvDist", {
   )
 
   expect_identical(
-    get_vars(exp_surv_dist(
+    get_vars(outcome_surv_exponential(
       time_var = "TIME",
       cens_var = "CENS",
       weight_var = "W",
@@ -38,8 +38,8 @@ test_that("get_vars works for ExponentialSurvDist", {
   )
 })
 
-test_that("exp_surv_dist works with weights", {
-  result <- exp_surv_dist(
+test_that("outcome_surv_exponential works with weights", {
+  result <- outcome_surv_exponential(
     time_var = "time",
     cens_var = "cens",
     normal_prior(0, 1000),

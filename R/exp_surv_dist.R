@@ -3,7 +3,7 @@
 #' A class for defining a time-to-event survival analysis with an
 #' exponential survival distribution.
 #' Objects of class `ExponentialSurvDist` should not be created directly
-#' but by the constructor [exp_surv_dist()].
+#' but by the constructor [outcome_surv_exponential()].
 #'
 #' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
 #' Empty string for `ExponentialSurvDist`.
@@ -20,7 +20,7 @@
 #' specifying prior distribution for the baseline outcome.
 #' @include outcome_class.R
 #' @family outcome
-.exp_surv_dist <- setClass(
+.outcome_surv_exponential <- setClass(
   "ExponentialSurvDist",
   contains = "TimeToEvent",
   prototype = list(
@@ -65,18 +65,18 @@
 #' @family outcome models
 #'
 #' @examples
-#' es <- exp_surv_dist(
+#' es <- outcome_surv_exponential(
 #'   time_var = "time",
 #'   cens_var = "cens",
 #'   baseline_prior = normal_prior(0, 1000)
 #' )
-exp_surv_dist <- function(time_var, cens_var, baseline_prior, weight_var = "") {
+outcome_surv_exponential <- function(time_var, cens_var, baseline_prior, weight_var = "") {
   assert_string(time_var)
   assert_string(cens_var)
   assert_string(weight_var)
   assert_class(baseline_prior, "Prior")
   has_weight <- isTRUE(weight_var != "")
-  .exp_surv_dist(
+  .outcome_surv_exponential(
     time_var = time_var,
     cens_var = cens_var,
     baseline_prior = baseline_prior,

@@ -64,7 +64,7 @@ my_borrowing_list <- sim_borrowing_list(
 
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
-  outcome = exp_surv_dist("time",
+  outcome = outcome_surv_exponential("time",
     "cnsr",
     baseline_prior = normal_prior(0, 10000)
   ),

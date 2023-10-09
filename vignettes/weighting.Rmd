@@ -117,7 +117,7 @@ logistic_psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
       ext_flag_col = "ext",
     ),
     treatment = treatment_details("trt", normal_prior(0, 100)),
-    outcome = logistic_bin_outcome("resp",
+    outcome = outcome_bin_logistic("resp",
       baseline_prior = normal_prior(0, 1000),
       weight_var = "w"
     )
@@ -268,7 +268,7 @@ psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
       ext_flag_col = "ext",
     ),
     treatment = treatment_details("trt", normal_prior(0, 100)),
-    outcome = exp_surv_dist("eventtime", "censor",
+    outcome = outcome_surv_exponential("eventtime", "censor",
       baseline_prior = normal_prior(0, 1000),
       weight_var = "w"
     )

@@ -219,7 +219,7 @@ my_borrowing_list <- sim_borrowing_list(
 
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
-  outcome = exp_surv_dist("time", "cnsr", baseline_prior = normal_prior(0, 10000)),
+  outcome = outcome_surv_exponential("time", "cnsr", baseline_prior = normal_prior(0, 10000)),
   borrowing = my_borrowing_list,
   treatment = treatment_details(trt_flag_col = "trt", trt_prior = normal_prior(0, 10000))
 )

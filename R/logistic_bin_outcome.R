@@ -3,7 +3,7 @@
 #' A class for defining a logistic regression with a binary outcome
 #' to be translated to Stan code.
 #' Objects of class `LogisticBinaryOutcome` should not be created directly but by
-#' the constructor [logistic_bin_outcome()].
+#' the constructor [outcome_bin_logistic()].
 #'
 #' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
 #' Empty string for `LogisticBinaryOutcome`.
@@ -19,7 +19,7 @@
 #' specifying prior distribution for the baseline outcome.
 #' @include outcome_class.R helpers.R
 #' @family outcome
-.logistic_bin_outcome <- setClass(
+.outcome_bin_logistic <- setClass(
   "LogisticBinaryOutcome",
   contains = "BinaryOutcome",
   prototype = list(
@@ -61,18 +61,18 @@
 #' @family outcome models
 #'
 #' @examples
-#' lg <- logistic_bin_outcome(
+#' lg <- outcome_bin_logistic(
 #'   binary_var = "response",
 #'   baseline_prior = normal_prior(0, 1000)
 #' )
-logistic_bin_outcome <- function(binary_var,
+outcome_bin_logistic <- function(binary_var,
                                  baseline_prior,
                                  weight_var = "") {
   assert_string(binary_var)
   assert_string(weight_var)
   assert_class(baseline_prior, "Prior")
   has_weight <- isTRUE(weight_var != "")
-  .logistic_bin_outcome(
+  .outcome_bin_logistic(
     binary_var = binary_var,
     baseline_prior = baseline_prior,
     weight_var = weight_var,

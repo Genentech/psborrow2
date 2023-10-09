@@ -344,7 +344,7 @@ setMethod(
 ### Classes for Piecewise exponential survival
 
 ```{r}
-.piecewise_exp_surv_dist <- setClass(
+.piecewise_outcome_surv_exponential <- setClass(
   "PiecewiseExponentialSurvDist",
   contains = "TimeToEvent",
   slots = c(
@@ -370,20 +370,20 @@ setMethod(
 #' @family outcome models
 #'
 #' @examples
-#' es <- piecewise_exp_surv_dist(
+#' es <- piecewise_outcome_surv_exponential(
 #'   time_var = "time",
 #'   cens_var = "cens",
 #'   baseline_prior = normal_prior(0, 1000),
 #'   start_times = c(0, 10, 20)
 #' )
-piecewise_exp_surv_dist <- function(time_var, cens_var, start_times, baseline_prior, weight_var = "") {
+piecewise_outcome_surv_exponential <- function(time_var, cens_var, start_times, baseline_prior, weight_var = "") {
   assert_string(time_var)
   assert_string(cens_var)
   assert_string(weight_var)
   assert_numeric(start_times, lower = 0, finite = TRUE, any.missing = FALSE, min.len = 1, sorted = TRUE)
   assert_class(baseline_prior, "Prior")
   has_weight <- isTRUE(weight_var != "")
-  .piecewise_exp_surv_dist(
+  .piecewise_outcome_surv_exponential(
     time_var = time_var,
     cens_var = cens_var,
     baseline_prior = baseline_prior,

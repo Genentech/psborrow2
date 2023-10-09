@@ -3,7 +3,7 @@
 #' A class for defining a time-to-event survival analysis with a
 #' Weibull proportional hazards survival distribution.
 #' Objects of class `WeibullPHSurvDist` should not be created directly
-#' but by the constructor [weib_ph_surv_dist()].
+#' but by the constructor [outcome_surv_weibull_ph()].
 #'
 #' @slot function_stan_code character. Stan function code block containing text to interpolate into Stan model.
 #' @slot param_stan_code character. Stan parameter code block containing text to interpolate into Stan model.
@@ -20,7 +20,7 @@
 #' @include normal_prior.R
 #' @include exponential_prior.R
 #' @family outcome
-.weib_ph_surv_dist <- setClass(
+.outcome_surv_weibull_ph <- setClass(
   "WeibullPHSurvDist",
   contains = "TimeToEvent",
   prototype = list(
@@ -90,13 +90,13 @@
 #' @family outcome models
 #'
 #' @examples
-#' ws <- weib_ph_surv_dist(
+#' ws <- outcome_surv_weibull_ph(
 #'   time_var = "time",
 #'   cens_var = "cens",
 #'   shape_prior = exponential_prior(1),
 #'   baseline_prior = normal_prior(0, 1000)
 #' )
-weib_ph_surv_dist <- function(time_var,
+outcome_surv_weibull_ph <- function(time_var,
                               cens_var,
                               shape_prior,
                               baseline_prior,
@@ -107,7 +107,7 @@ weib_ph_surv_dist <- function(time_var,
   assert_class(shape_prior, "Prior")
   assert_class(baseline_prior, "Prior")
   has_weight <- isTRUE(weight_var != "")
-  .weib_ph_surv_dist(
+  .outcome_surv_weibull_ph(
     time_var = time_var,
     cens_var = cens_var,
     weight_var = weight_var,
