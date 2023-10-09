@@ -8,7 +8,7 @@ test_that("Weibull survival distributions are rendering correctly", {
   )
 
   # Expect correct class
-  expect_class(surv_dist, "WeibullPHSurvDist")
+  expect_class(surv_dist, "OutcomeSurvWeibullPH")
   expect_equal(surv_dist@n_param, 1L)
   expect_true(is(surv_dist@param_priors$shape_weibull, "Prior"))
 
@@ -18,7 +18,7 @@ test_that("Weibull survival distributions are rendering correctly", {
   )
 })
 
-test_that("get_vars works for WeibullPHSurvDist", {
+test_that("get_vars works for OutcomeSurvWeibullPH", {
   expect_identical(
     get_vars(outcome_surv_weibull_ph(
       time_var = "TIME",
@@ -49,7 +49,7 @@ test_that("outcome_surv_weibull_ph works with weights", {
     normal_prior(0, 1000),
     weight_var = "w"
   )
-  expect_class(result, "WeibullPHSurvDist")
+  expect_class(result, "OutcomeSurvWeibullPH")
   expect_equal(result@weight_var, "w")
   expect_string(
     result@likelihood_stan_code,

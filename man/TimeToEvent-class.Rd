@@ -33,9 +33,9 @@ specifying prior distribution for the baseline outcome.}
 \seealso{
 Other outcome: 
 \code{\link{BinaryOutcome-class}},
-\code{\link{ExponentialSurvDist-class}},
-\code{\link{LogisticBinaryOutcome-class}},
 \code{\link{Outcome-class}},
-\code{\link{WeibullPHSurvDist-class}}
+\code{\link{OutcomeBinaryLogistic-class}},
+\code{\link{OutcomeSurvExponential-class}},
+\code{\link{OutcomeSurvWeibullPH-class}}
 }
 \concept{outcome}

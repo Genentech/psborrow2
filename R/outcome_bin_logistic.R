@@ -1,26 +1,26 @@
-#' `LogisticBinaryOutcome` class
+#' `OutcomeBinaryLogistic` class
 #'
 #' A class for defining a logistic regression with a binary outcome
 #' to be translated to Stan code.
-#' Objects of class `LogisticBinaryOutcome` should not be created directly but by
+#' Objects of class `OutcomeBinaryLogistic` should not be created directly but by
 #' the constructor [outcome_bin_logistic()].
 #'
 #' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
-#' Empty string for `LogisticBinaryOutcome`.
+#' Empty string for `OutcomeBinaryLogistic`.
 #' @slot param_stan_code character. stan parameter code block containing text to interpolate into stan model.
-#' Empty string for `LogisticBinaryOutcome`.
+#' Empty string for `OutcomeBinaryLogistic`.
 #' @slot likelihood_stan_code character. stan model likelihood code block containing text
 #' to interpolate into stan model.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate (0).
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
-#' Empty for `LogisticBinaryOutcome`.
-#' @slot binary_var character. Variable used for outcome in `LogisticBinaryOutcome` objects.
+#' Empty for `OutcomeBinaryLogistic`.
+#' @slot binary_var character. Variable used for outcome in `OutcomeBinaryLogistic` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @include outcome_class.R helpers.R
 #' @family outcome
 .outcome_bin_logistic <- setClass(
-  "LogisticBinaryOutcome",
+  "OutcomeBinaryLogistic",
   contains = "BinaryOutcome",
   prototype = list(
     n_param = 0L,
@@ -56,7 +56,7 @@
 #' these borrowing methods refers to the log odds for the
 #' internal control arm.
 #'
-#' @return Object of class [`LogisticBinaryOutcome`][LogisticBinaryOutcome-class].
+#' @return Object of class [`OutcomeBinaryLogistic`][OutcomeBinaryLogistic-class].
 #' @export
 #' @family outcome models
 #'

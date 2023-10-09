@@ -1,4 +1,4 @@
-test_that("LogisticBinaryOutcome distribution is rendering correctly", {
+test_that("OutcomeBinaryLogistic distribution is rendering correctly", {
   # Binomial endpoint class
   bin_endpoint <- outcome_bin_logistic(
     binary_var = "response",
@@ -6,7 +6,7 @@ test_that("LogisticBinaryOutcome distribution is rendering correctly", {
   )
 
   # Expect correct class
-  expect_class(bin_endpoint, "LogisticBinaryOutcome")
+  expect_class(bin_endpoint, "OutcomeBinaryLogistic")
   expect_equal(bin_endpoint@n_param, 0L)
 
   # Errors
@@ -15,7 +15,7 @@ test_that("LogisticBinaryOutcome distribution is rendering correctly", {
   )
 })
 
-test_that("get_vars works for LogisticBinaryOutcome", {
+test_that("get_vars works for OutcomeBinaryLogistic", {
   expect_identical(
     get_vars(outcome_bin_logistic(
       binary_var = "response",
@@ -40,7 +40,7 @@ test_that("outcome_bin_logistic works with weights", {
     baseline_prior = normal_prior(0, 1000),
     weight_var = "w"
   )
-  expect_class(result, "LogisticBinaryOutcome")
+  expect_class(result, "OutcomeBinaryLogistic")
   expect_equal(result@weight_var, "w")
   expect_string(
     result@likelihood_stan_code,

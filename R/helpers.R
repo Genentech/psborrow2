@@ -196,7 +196,7 @@ variable_dictionary <- function(analysis_obj) {
   assert_class(analysis_obj, "Analysis")
   is_tte <- isTRUE(inherits(analysis_obj@outcome, "TimeToEvent"))
   is_bdb <- isTRUE(analysis_obj@borrowing@method == "BDB")
-  is_weib <- is_tte && isTRUE(inherits(analysis_obj@outcome, "WeibullPHSurvDist"))
+  is_weib <- is_tte && isTRUE(inherits(analysis_obj@outcome, "OutcomeSurvWeibullPH"))
   has_covs <- !is.null(analysis_obj@covariates)
 
   covariates <- if (has_covs) {

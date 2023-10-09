@@ -1,19 +1,19 @@
-#' `ExponentialSurvDist` Class
+#' `OutcomeSurvExponential` Class
 #'
 #' A class for defining a time-to-event survival analysis with an
 #' exponential survival distribution.
-#' Objects of class `ExponentialSurvDist` should not be created directly
+#' Objects of class `OutcomeSurvExponential` should not be created directly
 #' but by the constructor [outcome_surv_exponential()].
 #'
 #' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
-#' Empty string for `ExponentialSurvDist`.
+#' Empty string for `OutcomeSurvExponential`.
 #' @slot param_stan_code character. stan parameter code block containing text to interpolate into stan model.
-#' Empty string for `ExponentialSurvDist`.
+#' Empty string for `OutcomeSurvExponential`.
 #' @slot likelihood_stan_code character. stan model likelihood code block containing text
 #' to interpolate into stan model.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate (0).
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
-#' Empty for `ExponentialSurvDist`.
+#' Empty for `OutcomeSurvExponential`.
 #' @slot time_var character. Variable used for time in `TimeToEvent` objects.
 #' @slot cens_var character. Variable used for censoring in `TimeToEvent` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
@@ -21,7 +21,7 @@
 #' @include outcome_class.R
 #' @family outcome
 .outcome_surv_exponential <- setClass(
-  "ExponentialSurvDist",
+  "OutcomeSurvExponential",
   contains = "TimeToEvent",
   prototype = list(
     n_param = 0L,
@@ -60,7 +60,7 @@
 #' - \emph{'Full borrowing'} or \emph{'No borrowing'}: the `baseline_prior` for
 #' these borrowing methods refers to the log hazard rate for the
 #' internal control arm.
-#' @return Object of class [`ExponentialSurvDist`][ExponentialSurvDist-class].
+#' @return Object of class [`OutcomeSurvExponential`][OutcomeSurvExponential-class].
 #' @export
 #' @family outcome models
 #'

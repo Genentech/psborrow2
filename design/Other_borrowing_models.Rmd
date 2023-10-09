@@ -222,7 +222,7 @@ code.
 ```{r}
 setMethod(
   "make_model_string_model",
-  signature("BDB", "PiecewiseExponentialSurvDist", "Analysis"),
+  signature("BDB", "PiecewiseOutcomeSurvExponential", "Analysis"),
   function(borrowing, outcome, analysis_obj) {
     ### Treatment prior
     beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
@@ -286,7 +286,7 @@ setMethod(
 
 setMethod(
   "make_model_string_model",
-  signature("No_Borrowing", "PiecewiseExponentialSurvDist", "Analysis"),
+  signature("No_Borrowing", "PiecewiseOutcomeSurvExponential", "Analysis"),
   function(borrowing, outcome, analysis_obj) {
     ### Treatment prior
     beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
@@ -345,7 +345,7 @@ setMethod(
 
 ```{r}
 .piecewise_outcome_surv_exponential <- setClass(
-  "PiecewiseExponentialSurvDist",
+  "PiecewiseOutcomeSurvExponential",
   contains = "TimeToEvent",
   slots = c(
     start_times = "numeric",
@@ -365,7 +365,7 @@ setMethod(
 #' @param baseline_prior `Prior`. Object of class `Prior` specifying prior distribution for the baseline outcome.
 #' @param start_times numeric. A vector of times to define periods.
 #'
-#' @return Object of class [`PiecewiseExponentialSurvDist`][PiecewiseExponentialSurvDist-class].
+#' @return Object of class [`PiecewiseOutcomeSurvExponential`][PiecewiseOutcomeSurvExponential-class].
 #' @export
 #' @family outcome models
 #'

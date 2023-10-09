@@ -1,8 +1,8 @@
-#' `WeibullPHSurvDist` Class
+#' `OutcomeSurvWeibullPH` Class
 #'
 #' A class for defining a time-to-event survival analysis with a
 #' Weibull proportional hazards survival distribution.
-#' Objects of class `WeibullPHSurvDist` should not be created directly
+#' Objects of class `OutcomeSurvWeibullPH` should not be created directly
 #' but by the constructor [outcome_surv_weibull_ph()].
 #'
 #' @slot function_stan_code character. Stan function code block containing text to interpolate into Stan model.
@@ -21,7 +21,7 @@
 #' @include exponential_prior.R
 #' @family outcome
 .outcome_surv_weibull_ph <- setClass(
-  "WeibullPHSurvDist",
+  "OutcomeSurvWeibullPH",
   contains = "TimeToEvent",
   prototype = list(
     n_param = 1L,
@@ -85,7 +85,7 @@
 #' these borrowing methods refers to the log hazard rate for the
 #' internal control arm.
 #'
-#' @return Object of class [`WeibullPHSurvDist`][WeibullPHSurvDist-class].
+#' @return Object of class [`OutcomeSurvWeibullPH`][OutcomeSurvWeibullPH-class].
 #' @export
 #' @family outcome models
 #'

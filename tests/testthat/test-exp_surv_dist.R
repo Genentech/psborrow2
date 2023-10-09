@@ -7,7 +7,7 @@ test_that("Exponential survival distributions are rendering correctly", {
   )
 
   # Expect correct class
-  expect_class(surv_dist, "ExponentialSurvDist")
+  expect_class(surv_dist, "OutcomeSurvExponential")
   expect_equal(surv_dist@n_param, 0L)
   expect_equal(surv_dist@param_priors, list())
 
@@ -17,7 +17,7 @@ test_that("Exponential survival distributions are rendering correctly", {
   )
 })
 
-test_that("get_vars works for ExponentialSurvDist", {
+test_that("get_vars works for OutcomeSurvExponential", {
   expect_identical(
     get_vars(outcome_surv_exponential(
       time_var = "TIME",
@@ -45,7 +45,7 @@ test_that("outcome_surv_exponential works with weights", {
     normal_prior(0, 1000),
     weight_var = "w"
   )
-  expect_class(result, "ExponentialSurvDist")
+  expect_class(result, "OutcomeSurvExponential")
   expect_equal(result@weight_var, "w")
   expect_string(
     result@likelihood_stan_code,
