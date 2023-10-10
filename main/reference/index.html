@@ -35,13 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/develop">develop</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -77,6 +70,16 @@
           <code><a href="Analysis-class.html">Analysis-class</a></code> <code><a href="Analysis-class.html">.analysis_obj</a></code> 
         </dt>
         <dd><code>Analysis</code> Class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="BaselineDataFrame-class.html">BaselineDataFrame-class</a></code> <code><a href="BaselineDataFrame-class.html">.baseline_dataframe</a></code> 
+        </dt>
+        <dd>Baseline Data Frame Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="BaselineObject-class.html">BaselineObject-class</a></code> <code><a href="BaselineObject-class.html">.baseline_object</a></code> 
+        </dt>
+        <dd><code>BaselineObject</code> class for data simulation</dd>
       </dl><dl><dt>
           
           <code><a href="BernoulliPrior-class.html">BernoulliPrior-class</a></code> <code><a href="BernoulliPrior-class.html">.bernoulli_prior</a></code> 
@@ -244,6 +247,11 @@
         <dd>Add Covariates for Model Adjustment</dd>
       </dl><dl><dt>
           
+          <code><a href="baseline_covariates.html">baseline_covariates()</a></code> 
+        </dt>
+        <dd>Specify Correlated Baseline Covariates</dd>
+      </dl><dl><dt>
+          
           <code><a href="bernoulli_prior.html">bernoulli_prior()</a></code> 
         </dt>
         <dd>Prior bernoulli distribution</dd>
@@ -257,6 +265,11 @@
           <code><a href="bin_var.html">bin_var()</a></code> 
         </dt>
         <dd>Create binary covariate</dd>
+      </dl><dl><dt>
+          
+          <code><a href="binary_cutoff.html">binary_cutoff()</a></code> 
+        </dt>
+        <dd>Binary Cut-Off Transformation</dd>
       </dl><dl><dt>
           
           <code><a href="borrowing_details.html">borrowing_details()</a></code> 
@@ -284,9 +297,19 @@
         <dd>Create continuous covariate</dd>
       </dl><dl><dt>
           
+          <code><a href="covariance_matrix.html">covariance_matrix()</a></code> 
+        </dt>
+        <dd>Create Covariance Matrix</dd>
+      </dl><dl><dt>
+          
           <code><a href="create_analysis_obj.html">create_analysis_obj()</a></code> 
         </dt>
         <dd>Compile MCMC sampler using STAN and create analysis object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="create_baseline_object.html">create_baseline_object()</a></code> 
+        </dt>
+        <dd>Create Baseline Data Simulation Object</dd>
       </dl><dl><dt>
           
           <code><a href="create_data_matrix.html">create_data_matrix()</a></code> 
@@ -329,6 +352,16 @@
         <dd>Prior gamma distribution</dd>
       </dl><dl><dt>
           
+          <code><a href="generate-BaselineObject-method.html">generate(<i>&lt;BaselineObject&gt;</i>)</a></code> 
+        </dt>
+        <dd>Generate Data for a <code>BaselineObject</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="generate.html">generate()</a></code> 
+        </dt>
+        <dd>Generate Data from Object</dd>
+      </dl><dl><dt>
+          
           <code><a href="get_cmd_stan_models.html">get_cmd_stan_models()</a></code> 
         </dt>
         <dd>Get <code>CmdStanModel</code> objects for <code>MCMCSimulationResults</code></dd>
@@ -342,6 +375,11 @@
           <code><a href="get_prior_string.html">get_prior_string()</a></code> 
         </dt>
         <dd>Get Stan code for a <code>Prior</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_quantiles.html">get_quantiles()</a></code> 
+        </dt>
+        <dd>Get Quantiles of Random Data</dd>
       </dl><dl><dt>
           
           <code><a href="get_results.html">get_results()</a></code> 

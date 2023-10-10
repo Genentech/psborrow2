@@ -52,13 +52,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/develop">develop</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/psborrow2/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -97,79 +90,14 @@ Gravestock and Matt Secrest</h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">psborrow2</span><span class="op">)</span></span></code></pre></div>
 <p>Propensity scores (PS) methods offer various ways to adjust analyses
-for differences in groups of patients.</p>
-<p><span class="citation">Austin (<a href="#ref-austin2013">2013</a>)</span> discusses various approaches for
+for differences in groups of patients. <span class="citation">Austin (<a href="#ref-austin2013">2013</a>)</span> discusses various approaches for
 using PS with survival analyses to obtain effect measures similar to
-randomized controlled trials.</p>
-<p><span class="citation">Wang et al. (<a href="#ref-wang2021">2021</a>)</span> discuss using PS for IPTW,
+randomized controlled trials. <span class="citation">Wang et al. (<a href="#ref-wang2021">2021</a>)</span> discuss using PS for IPTW,
 matching and stratification in combination with a Bayesian analysis.
 These methods allow for the separation of the design and analysis into
-two stages, which may be attractive in a regulatory setting.</p>
-<p>Another approach is the direct inclusion of the PS as a covariate in
-the outcome model.</p>
-<div class="section level3">
-<h3 id="propensity-score-calculation">Propensity Score Calculation<a class="anchor" aria-label="anchor" href="#propensity-score-calculation"></a>
-</h3>
-<p>Propensity scores are the probabilities that an observation belongs
-to one group or another, in this setting the internal or external
-patients. The PS models are fitted based on baseline covariates that
-could be confounders between outcome and being in the internal/external
-group.</p>
-<p>The simplest approach for calculating PS is a logistic generalized
-linear model. First, let’s load some demo data from
-<code>psborrow2</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">example_dataframe</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">example_matrix</span><span class="op">)</span></span>
-<span><span class="va">example_dataframe</span><span class="op">$</span><span class="va">int</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">example_dataframe</span><span class="op">$</span><span class="va">ext</span></span></code></pre></div>
-<p>Let’s now fit a logistic generalized linear model and add the PS as
-an additional covariate.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ps_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">int</span> <span class="op">~</span> <span class="va">cov1</span> <span class="op">+</span> <span class="va">cov2</span> <span class="op">+</span> <span class="va">cov3</span> <span class="op">+</span> <span class="va">cov4</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">example_dataframe</span>,</span>
-<span>  family <span class="op">=</span> <span class="va">binomial</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">ps_model</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span>
-<span><span class="va">example_dataframe</span><span class="op">$</span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">ps</span></span>
-<span></span>
-<span><span class="va">example_dataframe</span><span class="op">$</span><span class="va">ps_cat_</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span></span>
-<span>  <span class="va">example_dataframe</span><span class="op">$</span><span class="va">ps</span>,</span>
-<span>  breaks <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  include.lowest <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">example_dataframe</span><span class="op">$</span><span class="va">ps_cat_</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"ref"</span>, <span class="st">"low"</span>,</span>
-<span>  <span class="st">"low_med"</span>, <span class="st">"high_med"</span>, <span class="st">"high"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p>The calculated PS can be included as a covariate in the analysis
-object, for the “covariate adjustment” PS approach:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">analysis_ps_cuts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
-<span>  data_matrix <span class="op">=</span> <span class="va">example_matrix_ps</span>,</span>
-<span>  covariates <span class="op">=</span> <span class="fu"><a href="../reference/add_covariates.html">add_covariates</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ps_cat_low"</span>, <span class="st">"ps_cat_low_med"</span>, <span class="st">"ps_cat_high_med"</span>, <span class="st">"ps_cat_high"</span><span class="op">)</span>,</span>
-<span>    priors <span class="op">=</span> <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Inputs look good.</span></span>
-<span><span class="co">#&gt; NOTE: dropping column `ext` for full borrowing.</span></span>
-<span><span class="co">#&gt; Stan program compiled successfully!</span></span>
-<span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span>
-<span></span>
-<span><span class="va">result_ps_cuts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_ps_cuts</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 4.3 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 4.4 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 4.4 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 4.4 seconds.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 4.4 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 18.0 seconds.</span></span></code></pre></div>
-</div>
+two stages, which may be attractive in a regulatory setting. Another
+approach is the direct inclusion of the PS as a covariate in the outcome
+model.</p>
 <div class="section level3">
 <h3 id="alternative-ps-weights-with-weightit">Alternative PS Weights with <code>WeightIt</code><a class="anchor" aria-label="anchor" href="#alternative-ps-weights-with-weightit"></a>
 </h3>
@@ -180,8 +108,11 @@ different methods, such as generalized boosted modeling
 differently for different estimands. Here, we specifying
 <code>estimand = "ATT"</code>, to calculate weights for estimating the
 average treatment effect among the treated (ATT).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ngreifer.github.io/WeightIt/" class="external-link">WeightIt</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">example_dataframe</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">example_matrix</span><span class="op">)</span></span>
+<span><span class="va">example_dataframe</span><span class="op">$</span><span class="va">int</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">example_dataframe</span><span class="op">$</span><span class="va">ext</span></span>
 <span></span>
 <span><span class="va">weightit_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ngreifer.github.io/WeightIt/reference/weightit.html" class="external-link">weightit</a></span><span class="op">(</span></span>
 <span>  <span class="va">int</span> <span class="op">~</span> <span class="va">cov1</span> <span class="op">+</span> <span class="va">cov2</span> <span class="op">+</span> <span class="va">cov3</span> <span class="op">+</span> <span class="va">cov4</span>,</span>
@@ -223,15 +154,20 @@ matching. It is compatible with many matching and weighting packages.
 See the <a href="https://cran.r-project.org/web/packages/cobalt/vignettes/cobalt.html" class="external-link">vignette</a>
 for more details. We can use the <code>cobalt</code> package to assess
 balance with <code><a href="https://ngreifer.github.io/cobalt/reference/bal.plot.html" class="external-link">bal.plot()</a></code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ngreifer.github.io/cobalt/" class="external-link">cobalt</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt;  cobalt (Version 4.5.1, Build Date: 2023-04-27)</span></span>
 <span><span class="fu"><a href="https://ngreifer.github.io/cobalt/reference/bal.plot.html" class="external-link">bal.plot</a></span><span class="op">(</span><span class="va">weightit_model</span><span class="op">)</span></span>
 <span><span class="co">#&gt; No `var.name` was provided. Displaying balance for prop.score.</span></span></code></pre></div>
 <p><img src="propensity_scores_files/figure-html/balplot-1.png" width="768" style="display: block; margin: auto;"></p>
+<p>“Love plots” can also be generated that compare the populations
+before and after weighting:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ngreifer.github.io/cobalt/reference/love.plot.html" class="external-link">love.plot</a></span><span class="op">(</span><span class="va">weightit_model</span>, stars <span class="op">=</span> <span class="st">"std"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="propensity_scores_files/figure-html/loveplot-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>The PS values can be copied into the data set and the analysis object
 can be constructed as before.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_dataframe</span><span class="op">$</span><span class="va">att</span> <span class="op">&lt;-</span> <span class="va">weightit_model</span><span class="op">$</span><span class="va">weights</span></span>
 <span></span>
 <span><span class="va">example_matrix_att</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_data_matrix.html">create_data_matrix</a></span><span class="op">(</span></span>
@@ -256,14 +192,14 @@ can be constructed as before.</p>
 <span><span class="va">result_att</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_att</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 2.7 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 2.7 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 2.5 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 2.6 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 2.5 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 2.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 2.2 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 2.5 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 2.6 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 10.8 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 2.4 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 9.9 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="matching-with-matchit">Matching with <code>MatchIt</code><a class="anchor" aria-label="anchor" href="#matching-with-matchit"></a>
@@ -274,7 +210,7 @@ package.</p>
 <p>As described in the <a href="https://cran.r-project.org/web/packages/MatchIt/vignettes/MatchIt.html" class="external-link">Getting
 Started vignette</a>, it can be useful to check the imbalance before
 matching.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kosukeimai.github.io/MatchIt/" class="external-link">MatchIt</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'MatchIt'</span></span>
@@ -315,7 +251,7 @@ matching.</p>
 <p>Here we are matching treated to untreated to select the most
 comparable control group, regardless of whether they are internal or
 external. For simplicity let’s try a 1:1 nearest matching approach.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">match_11</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://kosukeimai.github.io/MatchIt/reference/matchit.html" class="external-link">matchit</a></span><span class="op">(</span><span class="va">trt</span> <span class="op">~</span> <span class="va">cov1</span> <span class="op">+</span> <span class="va">cov2</span> <span class="op">+</span> <span class="va">cov3</span> <span class="op">+</span> <span class="va">cov4</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">example_dataframe</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"nearest"</span>, distance <span class="op">=</span> <span class="st">"glm"</span></span>
@@ -360,7 +296,7 @@ external. For simplicity let’s try a 1:1 nearest matching approach.</p>
 <span><span class="co">#&gt; Matched       100     100</span></span>
 <span><span class="co">#&gt; Unmatched     300       0</span></span>
 <span><span class="co">#&gt; Discarded       0       0</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span><span class="va">match_11</span>, type <span class="op">=</span> <span class="st">"jitter"</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="propensity_scores_files/figure-html/matchit_jitter-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>Determining whether the balance after matching is appropriate is
@@ -369,14 +305,14 @@ Assessing Balance</a> vignette. Again the <code>cobalt</code> package
 can be useful here.</p>
 <p>However, if you are happy with the results of the matching procedure,
 you can extract the data for use in <code>psborrow2</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_matrix_match</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_data_matrix.html">create_data_matrix</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">example_dataframe</span><span class="op">[</span><span class="va">match_11</span><span class="op">$</span><span class="va">weights</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span>,</span>
 <span>  ext_flag_col <span class="op">=</span> <span class="st">"ext"</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span><span class="op">)</span>,</span>
 <span>  trt_flag_col <span class="op">=</span> <span class="st">"trt"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">analysis_match</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>  data_matrix <span class="op">=</span> <span class="va">example_matrix_match</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -391,14 +327,14 @@ you can extract the data for use in <code>psborrow2</code>.</p>
 <span><span class="va">result_match</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_match</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 1.1 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 1.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 1.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 1.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 1.2 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 0.9 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 1.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 1.0 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 1.1 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 4.9 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 1.0 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 4.4 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="combined-weighting-and-dynamic-borrowing">Combined Weighting and Dynamic Borrowing<a class="anchor" aria-label="anchor" href="#combined-weighting-and-dynamic-borrowing"></a>
@@ -407,7 +343,7 @@ you can extract the data for use in <code>psborrow2</code>.</p>
 from each observation. This is equivalent to fixed power prior weights.
 This allows for the combination of models, such as an IPTW +
 commensurate prior approach.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">analysis_iptw_bdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>  data_matrix <span class="op">=</span> <span class="va">example_matrix_att</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span>, weight_var <span class="op">=</span> <span class="st">"att"</span><span class="op">)</span>,</span>
@@ -421,14 +357,14 @@ commensurate prior approach.</p>
 <span><span class="va">result_iptw_bdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_iptw_bdb</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 5.6 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 5.8 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 5.8 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 4.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 4.2 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 4.6 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 4.3 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 4.7 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 5.5 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 22.3 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 4.5 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 18.2 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="fixed-weights">Fixed Weights<a class="anchor" aria-label="anchor" href="#fixed-weights"></a>
@@ -436,7 +372,7 @@ commensurate prior approach.</p>
 <p>We can also use weights to specify a fixed power prior model. Here we
 set the power parameter <span class="math inline">\(\alpha =
 0.1\)</span> for the external controls.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_matrix_pp01</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">example_matrix</span>, pp_alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">example_matrix</span><span class="op">[</span>, <span class="st">"ext"</span><span class="op">]</span> <span class="op">==</span> <span class="fl">1</span>, <span class="fl">0.1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">analysis_pp01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
@@ -453,21 +389,21 @@ set the power parameter <span class="math inline">\(\alpha =
 <span><span class="va">result_pp01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_pp01</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 3.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 2.9 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 3.1 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 3.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 2.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 2.5 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 2.7 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 2.6 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 3.1 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 12.6 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 2.6 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 10.9 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reference-models">Reference Models<a class="anchor" aria-label="anchor" href="#reference-models"></a>
 </h3>
 <p>For comparison, we also fit a full borrowing, a no borrowing, and a
 BDB model without weights.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>    data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span>
@@ -482,14 +418,14 @@ BDB model without weights.</p>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 2.3 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 2.0 seconds.</span></span>
 <span><span class="co">#&gt; Chain 2 finished in 2.1 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 2.4 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 2.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 2.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 2.0 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 2.3 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 9.5 seconds.</span></span>
+<span><span class="co">#&gt; Mean chain execution time: 2.0 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 8.4 seconds.</span></span>
 <span></span>
 <span><span class="va">result_none</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
@@ -505,14 +441,14 @@ BDB model without weights.</p>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 1.1 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 1.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 1.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 0.9 seconds.</span></span>
 <span><span class="co">#&gt; Chain 3 finished in 1.0 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 1.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 1.0 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 1.1 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 4.5 seconds.</span></span>
+<span><span class="co">#&gt; Mean chain execution time: 1.0 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 4.1 seconds.</span></span>
 <span></span>
 <span><span class="va">result_bdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
@@ -527,24 +463,23 @@ BDB model without weights.</p>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 5.3 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 4.9 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 4.8 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 5.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 4.5 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 4.3 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 4.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 5.2 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 5.0 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 20.5 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 4.5 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 18.4 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="comparison-of-results">Comparison of Results<a class="anchor" aria-label="anchor" href="#comparison-of-results"></a>
 </h2>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="st">"No borrowing"</span> <span class="op">=</span> <span class="va">result_none</span>,</span>
 <span>  <span class="st">"Full borrowing"</span> <span class="op">=</span> <span class="va">result_full</span>,</span>
 <span>  <span class="st">"Power Prior 01"</span> <span class="op">=</span> <span class="va">result_pp01</span>,</span>
-<span>  <span class="st">"PS Groups"</span> <span class="op">=</span> <span class="va">result_ps_cuts</span>,</span>
 <span>  <span class="st">"ATT Weights"</span> <span class="op">=</span> <span class="va">result_att</span>,</span>
 <span>  <span class="st">"IPTW + BDB"</span> <span class="op">=</span> <span class="va">result_iptw_bdb</span>,</span>
 <span>  <span class="st">"Matching 1:1"</span> <span class="op">=</span> <span class="va">result_match</span>,</span>
@@ -552,7 +487,7 @@ BDB model without weights.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We can use <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> to extract the variable of interest
 and specify summary statistics.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
 <span>  <span class="va">models</span>,</span>
 <span>  <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="va">i</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="st">"HR_trt"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"sd"</span>, <span class="st">"quantile2"</span><span class="op">)</span><span class="op">)</span></span>
@@ -572,86 +507,77 @@ and specify summary statistics.</p>
 <tr class="odd">
 <td align="left">No borrowing</td>
 <td align="left">HR_trt</td>
-<td align="right">0.895</td>
-<td align="right">0.876</td>
-<td align="right">0.181</td>
-<td align="right">0.632</td>
-<td align="right">1.220</td>
+<td align="right">0.897</td>
+<td align="right">0.877</td>
+<td align="right">0.180</td>
+<td align="right">0.638</td>
+<td align="right">1.218</td>
 </tr>
 <tr class="even">
 <td align="left">Full borrowing</td>
 <td align="left">HR_trt</td>
 <td align="right">0.388</td>
-<td align="right">0.386</td>
+<td align="right">0.385</td>
 <td align="right">0.049</td>
-<td align="right">0.311</td>
+<td align="right">0.313</td>
 <td align="right">0.473</td>
 </tr>
 <tr class="odd">
 <td align="left">Power Prior 01</td>
 <td align="left">HR_trt</td>
-<td align="right">0.635</td>
-<td align="right">0.627</td>
-<td align="right">0.106</td>
-<td align="right">0.476</td>
-<td align="right">0.821</td>
+<td align="right">0.634</td>
+<td align="right">0.625</td>
+<td align="right">0.105</td>
+<td align="right">0.477</td>
+<td align="right">0.820</td>
 </tr>
 <tr class="even">
-<td align="left">PS Groups</td>
-<td align="left">HR_trt</td>
-<td align="right">0.720</td>
-<td align="right">0.715</td>
-<td align="right">0.096</td>
-<td align="right">0.571</td>
-<td align="right">0.886</td>
-</tr>
-<tr class="odd">
 <td align="left">ATT Weights</td>
 <td align="left">HR_trt</td>
-<td align="right">0.894</td>
-<td align="right">0.886</td>
-<td align="right">0.127</td>
-<td align="right">0.703</td>
-<td align="right">1.117</td>
-</tr>
-<tr class="even">
-<td align="left">IPTW + BDB</td>
-<td align="left">HR_trt</td>
 <td align="right">0.895</td>
-<td align="right">0.879</td>
-<td align="right">0.163</td>
-<td align="right">0.656</td>
-<td align="right">1.185</td>
+<td align="right">0.888</td>
+<td align="right">0.127</td>
+<td align="right">0.698</td>
+<td align="right">1.115</td>
 </tr>
 <tr class="odd">
-<td align="left">Matching 1:1</td>
+<td align="left">IPTW + BDB</td>
 <td align="left">HR_trt</td>
-<td align="right">0.792</td>
-<td align="right">0.782</td>
-<td align="right">0.128</td>
-<td align="right">0.599</td>
-<td align="right">1.016</td>
+<td align="right">0.893</td>
+<td align="right">0.879</td>
+<td align="right">0.162</td>
+<td align="right">0.653</td>
+<td align="right">1.180</td>
 </tr>
 <tr class="even">
+<td align="left">Matching 1:1</td>
+<td align="left">HR_trt</td>
+<td align="right">0.794</td>
+<td align="right">0.784</td>
+<td align="right">0.129</td>
+<td align="right">0.600</td>
+<td align="right">1.023</td>
+</tr>
+<tr class="odd">
 <td align="left">BDB</td>
 <td align="left">HR_trt</td>
 <td align="right">0.871</td>
 <td align="right">0.853</td>
-<td align="right">0.175</td>
-<td align="right">0.618</td>
-<td align="right">1.184</td>
+<td align="right">0.174</td>
+<td align="right">0.619</td>
+<td align="right">1.185</td>
 </tr>
 </tbody>
 </table>
 <p>We can extract a <code>draws</code> object from each model and plot
 the posterior distribution of the treatment hazard ratio.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="st">"HR_trt"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  col <span class="op">=</span> <span class="fl">1</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">9</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="st">"HR_trt"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Posterior Hazard Ratio"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="st">"HR_trt"</span><span class="op">)</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">i</span>, lty <span class="op">=</span> <span class="va">i</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">models</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">models</span><span class="op">)</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">models</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
