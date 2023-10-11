@@ -32,7 +32,6 @@ randomized controlled trials. @wang2021 discuss using PS for IPTW, matching and 
 These methods allow for the separation of the design and analysis into two stages, which may be attractive in a regulatory setting.
 Another approach is the direct inclusion of the PS as a covariate in the outcome model.
 
-
 ## Alternative PS Weights with `WeightIt`
 
 The [`WeightIt`](https://cran.r-project.org/package=WeightIt) package can calculate PS and other balancing
@@ -234,7 +233,6 @@ models <- list(
   "No borrowing" = result_none,
   "Full borrowing" = result_full,
   "Power Prior 01" = result_pp01,
-  "PS Groups" = result_ps_cuts,
   "ATT Weights" = result_att,
   "IPTW + BDB" = result_iptw_bdb,
   "Matching 1:1" = result_match,
@@ -259,7 +257,7 @@ plot(density(models[[1]]$draws("HR_trt")),
   xlab = "HR_trt",
   main = "Posterior Hazard Ratio"
 )
-for (i in 2:8) {
+for (i in 2:7) {
   lines(density(models[[i]]$draws("HR_trt")), col = i, lty = i, lwd = 2)
 }
 legend("topright", col = seq_along(models), lty = seq_along(models), legend = names(models))
