@@ -23,7 +23,6 @@ randomized controlled trials. @wang2021 discuss using PS for IPTW, matching and 
 These methods allow for the separation of the design and analysis into two stages, which may be attractive in a regulatory setting.
 Another approach is the direct inclusion of the PS as a covariate in the outcome model.
 
-
 ## Alternative PS Weights with `WeightIt`
 
 The [`WeightIt`](https://cran.r-project.org/package=WeightIt) package can calculate PS and other balancing
@@ -120,20 +119,10 @@ analysis_att <- create_analysis_obj(
 )
 #> Inputs look good.
 #> NOTE: dropping column `ext` for full borrowing.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
+#> Error: CmdStan path has not been set yet. See ?set_cmdstan_path.
 
 result_att <- mcmc_sample(analysis_att)
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 2.4 seconds.
-#> Chain 2 finished in 2.8 seconds.
-#> Chain 3 finished in 2.7 seconds.
-#> Chain 4 finished in 2.9 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 2.7 seconds.
-#> Total execution time: 11.2 seconds.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'analysis_att' not found
 ```
 
 
@@ -270,20 +259,10 @@ analysis_match <- create_analysis_obj(
 )
 #> Inputs look good.
 #> NOTE: dropping column `ext` for full borrowing.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
+#> Error: CmdStan path has not been set yet. See ?set_cmdstan_path.
 
 result_match <- mcmc_sample(analysis_match)
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 1.1 seconds.
-#> Chain 2 finished in 1.4 seconds.
-#> Chain 3 finished in 1.3 seconds.
-#> Chain 4 finished in 1.1 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 1.2 seconds.
-#> Total execution time: 5.2 seconds.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'analysis_match' not found
 ```
 
 
@@ -303,20 +282,10 @@ analysis_iptw_bdb <- create_analysis_obj(
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
 #> Inputs look good.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
+#> Error: CmdStan path has not been set yet. See ?set_cmdstan_path.
 
 result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb)
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 4.8 seconds.
-#> Chain 2 finished in 5.3 seconds.
-#> Chain 3 finished in 5.2 seconds.
-#> Chain 4 finished in 5.3 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 5.2 seconds.
-#> Total execution time: 20.8 seconds.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'analysis_iptw_bdb' not found
 ```
 
 
@@ -337,20 +306,10 @@ analysis_pp01 <- create_analysis_obj(
 )
 #> Inputs look good.
 #> NOTE: dropping column `ext` for full borrowing.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
+#> Error: CmdStan path has not been set yet. See ?set_cmdstan_path.
 
 result_pp01 <- mcmc_sample(analysis_pp01)
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 2.7 seconds.
-#> Chain 2 finished in 2.6 seconds.
-#> Chain 3 finished in 2.9 seconds.
-#> Chain 4 finished in 2.7 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 2.7 seconds.
-#> Total execution time: 11.1 seconds.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'analysis_pp01' not found
 ```
 
 
@@ -370,18 +329,7 @@ result_full <- mcmc_sample(
 )
 #> Inputs look good.
 #> NOTE: dropping column `ext` for full borrowing.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 2.0 seconds.
-#> Chain 2 finished in 2.1 seconds.
-#> Chain 3 finished in 2.1 seconds.
-#> Chain 4 finished in 1.9 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 2.0 seconds.
-#> Total execution time: 8.4 seconds.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': CmdStan path has not been set yet. See ?set_cmdstan_path.
 
 result_none <- mcmc_sample(
   create_analysis_obj(
@@ -393,18 +341,7 @@ result_none <- mcmc_sample(
 )
 #> Inputs look good.
 #> NOTE: excluding `ext` == `1`/`TRUE` for no borrowing.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 1.0 seconds.
-#> Chain 2 finished in 0.9 seconds.
-#> Chain 3 finished in 1.0 seconds.
-#> Chain 4 finished in 1.0 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 1.0 seconds.
-#> Total execution time: 4.1 seconds.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': CmdStan path has not been set yet. See ?set_cmdstan_path.
 
 result_bdb <- mcmc_sample(
   create_analysis_obj(
@@ -415,18 +352,7 @@ result_bdb <- mcmc_sample(
   )
 )
 #> Inputs look good.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 4.2 seconds.
-#> Chain 2 finished in 4.6 seconds.
-#> Chain 3 finished in 4.4 seconds.
-#> Chain 4 finished in 4.6 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 4.5 seconds.
-#> Total execution time: 18.2 seconds.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': CmdStan path has not been set yet. See ?set_cmdstan_path.
 ```
 
 
@@ -438,13 +364,12 @@ models <- list(
   "No borrowing" = result_none,
   "Full borrowing" = result_full,
   "Power Prior 01" = result_pp01,
-  "PS Groups" = result_ps_cuts,
   "ATT Weights" = result_att,
   "IPTW + BDB" = result_iptw_bdb,
   "Matching 1:1" = result_match,
   "BDB" = result_bdb
 )
-#> Error in eval(expr, envir, enclos): object 'result_ps_cuts' not found
+#> Error in eval(expr, envir, enclos): object 'result_none' not found
 ```
 
 We can use `summary()` to extract the variable of interest and specify summary statistics.
@@ -469,7 +394,7 @@ plot(density(models[[1]]$draws("HR_trt")),
   main = "Posterior Hazard Ratio"
 )
 #> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'models' not found
-for (i in 2:8) {
+for (i in 2:7) {
   lines(density(models[[i]]$draws("HR_trt")), col = i, lty = i, lwd = 2)
 }
 #> Error in eval(expr, envir, enclos): object 'models' not found
