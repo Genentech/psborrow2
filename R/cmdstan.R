@@ -27,7 +27,7 @@ check_cmdstanr <- function(check_sampling = FALSE) {
 #' @describeIn check_cmdstanr Check if the `CmdStan` command line tools are available.
 #' @export
 check_cmdstan <- function() {
-  if (isFALSE(cmdstanr::cmdstan_version(FALSE))) {
+  if (is.null(cmdstanr::cmdstan_version(FALSE))) {
     return(FALSE)
   }
   if (!file.exists(file.path(cmdstanr::cmdstan_path(), "make"))) {

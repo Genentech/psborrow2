@@ -1,3 +1,5 @@
+skip_if_not(check_cmdstan())
+
 test_that("check_cmdstanr runs as expected", {
   expect_output(
     check_cmdstanr(check_sampling = FALSE),
