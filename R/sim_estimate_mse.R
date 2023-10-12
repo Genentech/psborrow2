@@ -9,6 +9,7 @@
 #' @details
 #' MSE will be calculated as (true_effect - median_estimated_effect) ^ 2
 #'
+#' @noRd
 #' @examples
 #' base_mat <- matrix(
 #'   c(

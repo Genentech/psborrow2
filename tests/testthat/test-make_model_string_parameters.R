@@ -79,6 +79,7 @@ test_that("make_model_string_parameters works with binary outcome and BDB", {
 })
 
 test_that("the STAN code is correctly generated when limits are placed in the treatment parameters", {
+  skip_if_not(check_cmdstan())
   stan_model_string <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
@@ -92,6 +93,7 @@ test_that("the STAN code is correctly generated when limits are placed in the tr
 })
 
 test_that("the STAN code is correctly generated when limits are placed in the borrowing parameters", {
+  skip_if_not(check_cmdstan())
   stan_model_string_cauchy <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
@@ -117,6 +119,7 @@ test_that("the STAN code is correctly generated when limits are placed in the bo
 })
 
 test_that("the STAN code is correctly generated when limits are placed in the outcome parameters", {
+  skip_if_not(check_cmdstan())
   stan_model_string <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", uniform_prior(0, 10)),
@@ -130,6 +133,7 @@ test_that("the STAN code is correctly generated when limits are placed in the ou
 })
 
 test_that("the STAN code is correctly generated when limits are placed in the outcome parameters", {
+  skip_if_not(check_cmdstan())
   stan_model_string <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = exp_surv_dist("time", "cnsr", uniform_prior(0, 10)),
@@ -144,6 +148,7 @@ test_that("the STAN code is correctly generated when limits are placed in the ou
 
 
 test_that("the STAN code is correctly generated when limits are placed in the covariate parameters", {
+  skip_if_not(check_cmdstan())
   anls_obj <- create_analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates("cov1", uniform_prior(0, 10)),

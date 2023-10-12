@@ -1,3 +1,5 @@
+skip_if_not(check_cmdstan())
+
 # Error checking----
 test_that("mcmc_sample.default() default method throws error", {
   df_wrong_input <- data.frame(a = 2:4, b = 3:5)

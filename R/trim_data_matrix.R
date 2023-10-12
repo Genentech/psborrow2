@@ -7,7 +7,7 @@
 #' as created through `.create_analysis_obj()`.
 #'
 #' @return Trimmed data matrix
-#'
+#' @noRd
 #' @examples
 #'
 #' anls <- create_analysis_obj(
