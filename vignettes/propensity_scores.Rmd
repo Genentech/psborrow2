@@ -233,7 +233,6 @@ models <- list(
   "No borrowing" = result_none,
   "Full borrowing" = result_full,
   "Power Prior 01" = result_pp01,
-  "PS Groups" = result_ps_cuts,
   "ATT Weights" = result_att,
   "IPTW + BDB" = result_iptw_bdb,
   "Matching 1:1" = result_match,
@@ -258,7 +257,7 @@ plot(density(models[[1]]$draws("HR_trt")),
   xlab = "HR_trt",
   main = "Posterior Hazard Ratio"
 )
-for (i in 2:8) {
+for (i in 2:7) {
   lines(density(models[[i]]$draws("HR_trt")), col = i, lty = i, lwd = 2)
 }
 legend("topright", col = seq_along(models), lty = seq_along(models), legend = names(models))
