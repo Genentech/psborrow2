@@ -123,7 +123,7 @@ create_simulation_obj <- function(data_matrix_list,
       if (!all(search_cols %in% colnames(simulation_obj@data_matrix_list@data_list[[i]][[j]]))) {
         which_not_in <- search_cols[
           which(!search_cols %in%
-            colnames(simulation_obj@data_matrix_list@data_list[[i]][[j]]))
+                  colnames(simulation_obj@data_matrix_list@data_list[[i]][[j]]))
         ]
         stop(
           "The following columns were specified in the simulation but ",
