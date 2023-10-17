@@ -62,3 +62,14 @@ test_that("outcome_surv_exponential works with weights", {
     fixed = "vector[N] time;\nvector[N] cens;\nvector[N] weight;"
   )
 })
+
+test_that("exp_surv_dist() throws error", {
+  expect_error(exp_surv_dist(),
+    regexp = "deprecated"
+  )
+
+  expect_error(exp_surv_dist(a = 2),
+    regexp = "deprecated"
+  )
+
+})

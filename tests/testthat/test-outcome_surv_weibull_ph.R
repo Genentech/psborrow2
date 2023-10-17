@@ -66,3 +66,14 @@ test_that("outcome_surv_weibull_ph works with weights", {
     fixed = "vector[N] time;\nvector[N] cens;\nvector[N] weight;"
   )
 })
+
+test_that("weib_ph_surv_dist() throws error", {
+  expect_error(weib_ph_surv_dist(),
+    regexp = "deprecated"
+  )
+
+  expect_error(weib_ph_surv_dist(a = 2),
+    regexp = "deprecated"
+  )
+
+})

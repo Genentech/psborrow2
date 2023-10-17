@@ -51,3 +51,15 @@ test_that("outcome_bin_logistic works with weights", {
     fixed = "array[N] int y;\nvector[N] weight;"
   )
 })
+
+
+test_that("outcome_bin_logistic() throws error", {
+  expect_error(outcome_bin_logistic(),
+    regexp = "deprecated"
+  )
+
+  expect_error(outcome_bin_logistic(a = 2),
+    regexp = "deprecated"
+  )
+
+})
