@@ -1,4 +1,3 @@
-
 test_that("Incorrect inputs lead to errors", {
   # At the bottom is a list of outcome objects
   expect_error(

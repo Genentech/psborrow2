@@ -97,10 +97,10 @@
 #'   baseline_prior = normal_prior(0, 1000)
 #' )
 outcome_surv_weibull_ph <- function(time_var,
-                              cens_var,
-                              shape_prior,
-                              baseline_prior,
-                              weight_var = "") {
+                                    cens_var,
+                                    shape_prior,
+                                    baseline_prior,
+                                    weight_var = "") {
   assert_string(time_var)
   assert_string(cens_var)
   assert_string(weight_var)
@@ -136,9 +136,9 @@ outcome_surv_weibull_ph <- function(time_var,
 }
 
 #' Legacy function for the Weibull proportional Hazards survival distribution
-#' 
+#'
 #' Please use `outcome_surv_weibull_ph()` instead.
-#' 
+#'
 #' @export
 weib_ph_surv_dist <- function(...) {
   stop("`weib_ph_surv_dist()` is deprecated. Use `outcome_surv_weibull_ph()` instead.")

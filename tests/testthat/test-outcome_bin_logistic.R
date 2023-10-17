@@ -61,5 +61,4 @@ test_that("logistic_bin_outcome() throws error", {
   expect_error(logistic_bin_outcome(a = 2),
     regexp = "deprecated"
   )
-
 })

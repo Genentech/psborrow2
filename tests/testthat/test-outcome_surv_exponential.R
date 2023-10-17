@@ -71,5 +71,4 @@ test_that("exp_surv_dist() throws error", {
   expect_error(exp_surv_dist(a = 2),
     regexp = "deprecated"
   )
-
 })

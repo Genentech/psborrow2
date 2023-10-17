@@ -75,5 +75,4 @@ test_that("weib_ph_surv_dist() throws error", {
   expect_error(weib_ph_surv_dist(a = 2),
     regexp = "deprecated"
   )
-
 })
