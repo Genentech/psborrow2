@@ -21,7 +21,7 @@
   validity = function(object) {
     # Covariates are named
     if (is.null(names(object@covariates)) |
-          any(names(object@covariates) == "")) {
+      any(names(object@covariates) == "")) {
       return("All covariates must be named")
     }
     if (!all(sapply(object@covariates, is, "SimVar"))) {
@@ -33,9 +33,9 @@
 
     # Covariance matrices are square, symmetric, correct length
     if (!all(dim(object@covariance_internal) == rep(length(object@covariates), 2)) ||
-          !all(dim(object@covariance_external) == rep(length(object@covariates), 2)) ||
-          !isSymmetric(object@covariance_internal) ||
-          !isSymmetric(object@covariance_external)) {
+      !all(dim(object@covariance_external) == rep(length(object@covariates), 2)) ||
+      !isSymmetric(object@covariance_internal) ||
+      !isSymmetric(object@covariance_external)) {
       return(paste0(
         "Covariance matrices must be symmetric square matrices width ",
         "height and width equal to the number of covariates (",
@@ -45,7 +45,7 @@
 
     # Matrices are semi definite
     if (!matrixcalc::is.positive.semi.definite(object@covariance_internal) ||
-          !matrixcalc::is.positive.semi.definite(object@covariance_external)) {
+      !matrixcalc::is.positive.semi.definite(object@covariance_external)) {
       return(paste0(
         "Covariance matrices must be semi positive definite. ",
         "Try using a different matrix or finding the nearest ",

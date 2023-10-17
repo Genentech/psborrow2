@@ -69,12 +69,12 @@ setMethod(
     cat("Data: Matrix with", nrow(object@data_matrix), "observations \n")
     cat(
       "    - ", sum(object@data_matrix[, get_vars(object@treatment)] == 0 &
-                      object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 0),
+        object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 0),
       " internal controls\n"
     )
     cat(
       "    - ", sum(object@data_matrix[, get_vars(object@treatment)] == 0 &
-                      object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 1),
+        object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 1),
       " external controls", ifelse(object@borrowing@method == "No borrowing",
         " (ignored in this analysis)\n",
         "\n"
@@ -82,7 +82,7 @@ setMethod(
     )
     cat(
       "    - ", sum(object@data_matrix[, get_vars(object@treatment)] == 1 &
-                      object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 0),
+        object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 0),
       " internal experimental\n\n"
     )
 

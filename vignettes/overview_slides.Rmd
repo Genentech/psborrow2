@@ -1019,15 +1019,16 @@ Suppose we have a list of lists of simulated data called
 ```{r, include = FALSE}
 library(simsurv)
 # function to create a single matrix
-sim_single_matrix <- function(n = 500, # n simulated pts
-  prob = c(
-    0.1, # proportion internal control
-    0.2, # proportion internal treated
-    0.7
-  ), # proportion external control
-  hr = 0.70, # true HR for the treatment
-  inherent_drift_hr = 1.0 # HR of external/internal
-) {
+sim_single_matrix <- function(
+    n = 500, # n simulated pts
+    prob = c(
+      0.1, # proportion internal control
+      0.2, # proportion internal treated
+      0.7
+    ), # proportion external control
+    hr = 0.70, # true HR for the treatment
+    inherent_drift_hr = 1.0 # HR of external/internal
+    ) {
   # checks
   if (sum(prob) != 1.0) {
     stop("prob must sum to 1")
