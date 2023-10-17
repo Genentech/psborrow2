@@ -24,7 +24,7 @@ analysis_object <- create_analysis_obj(
     covariates = c("cov1", "cov2"),
     priors = normal_prior(0, 1000)
   ),
-  outcome = exp_surv_dist(
+  outcome = outcome_surv_exponential(
     "time",
     "cnsr",
     baseline_prior = normal_prior(0, 1000)

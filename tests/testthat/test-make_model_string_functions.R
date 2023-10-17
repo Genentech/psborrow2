@@ -1,7 +1,7 @@
 test_that("make_model_string_functions works with exponential survival and full borrowing", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 1000)),
+    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 1000)),
     borrowing = borrowing_details(
       "Full borrowing",
       "ext"
@@ -18,7 +18,7 @@ test_that("make_model_string_functions works with exponential survival and full 
 test_that("make_model_string_functions works with exponential survival and BDB", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 1000)),
+    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 1000)),
     borrowing = borrowing_details(
       "BDB",
       "ext",
@@ -40,7 +40,7 @@ test_that("make_model_string_functions works with weibull survival and BDB and c
       c("cov1", "cov2"),
       normal_prior(0, 1000)
     ),
-    outcome = weib_ph_surv_dist(
+    outcome = outcome_surv_weibull_ph(
       "time",
       "cnsr",
       normal_prior(0, 1000),
@@ -71,7 +71,7 @@ test_that("make_model_string_functions works with binary outcome and BDB and cov
       c("cov1", "cov2"),
       normal_prior(0, 1000)
     ),
-    outcome = logistic_bin_outcome("cnsr", normal_prior(0, 1000)),
+    outcome = outcome_bin_logistic("cnsr", normal_prior(0, 1000)),
     borrowing = borrowing_details(
       "BDB",
       "ext",
