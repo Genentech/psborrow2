@@ -1,26 +1,26 @@
-#' `LogisticBinaryOutcome` class
+#' `OutcomeBinaryLogistic` class
 #'
 #' A class for defining a logistic regression with a binary outcome
 #' to be translated to Stan code.
-#' Objects of class `LogisticBinaryOutcome` should not be created directly but by
-#' the constructor [logistic_bin_outcome()].
+#' Objects of class `OutcomeBinaryLogistic` should not be created directly but by
+#' the constructor [outcome_bin_logistic()].
 #'
 #' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
-#' Empty string for `LogisticBinaryOutcome`.
+#' Empty string for `OutcomeBinaryLogistic`.
 #' @slot param_stan_code character. stan parameter code block containing text to interpolate into stan model.
-#' Empty string for `LogisticBinaryOutcome`.
+#' Empty string for `OutcomeBinaryLogistic`.
 #' @slot likelihood_stan_code character. stan model likelihood code block containing text
 #' to interpolate into stan model.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate (0).
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
-#' Empty for `LogisticBinaryOutcome`.
-#' @slot binary_var character. Variable used for outcome in `LogisticBinaryOutcome` objects.
+#' Empty for `OutcomeBinaryLogistic`.
+#' @slot binary_var character. Variable used for outcome in `OutcomeBinaryLogistic` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @include outcome_class.R helpers.R
 #' @family outcome
-.logistic_bin_outcome <- setClass(
-  "LogisticBinaryOutcome",
+.outcome_bin_logistic <- setClass(
+  "OutcomeBinaryLogistic",
   contains = "BinaryOutcome",
   prototype = list(
     n_param = 0L,
@@ -56,23 +56,23 @@
 #' these borrowing methods refers to the log odds for the
 #' internal control arm.
 #'
-#' @return Object of class [`LogisticBinaryOutcome`][LogisticBinaryOutcome-class].
+#' @return Object of class [`OutcomeBinaryLogistic`][OutcomeBinaryLogistic-class].
 #' @export
 #' @family outcome models
 #'
 #' @examples
-#' lg <- logistic_bin_outcome(
+#' lg <- outcome_bin_logistic(
 #'   binary_var = "response",
 #'   baseline_prior = normal_prior(0, 1000)
 #' )
-logistic_bin_outcome <- function(binary_var,
+outcome_bin_logistic <- function(binary_var,
                                  baseline_prior,
                                  weight_var = "") {
   assert_string(binary_var)
   assert_string(weight_var)
   assert_class(baseline_prior, "Prior")
   has_weight <- isTRUE(weight_var != "")
-  .logistic_bin_outcome(
+  .outcome_bin_logistic(
     binary_var = binary_var,
     baseline_prior = baseline_prior,
     weight_var = weight_var,
@@ -88,4 +88,14 @@ logistic_bin_outcome <- function(binary_var,
       weight = if (has_weight) "vector[N] weight;" else ""
     )
   )
+}
+
+
+#' Legacy function for binary logistic regression
+#'
+#' Please use `outcome_bin_logistic()` instead.
+#'
+#' @export
+logistic_bin_outcome <- function(...) {
+  stop("`logistic_bin_outcome()` is deprecated. Use `outcome_bin_logistic()` instead.")
 }

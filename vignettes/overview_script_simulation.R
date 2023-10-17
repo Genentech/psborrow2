@@ -49,13 +49,13 @@ library(broom)
 
 # Function to create a single matrix
 sim_single_matrix <- function(n = 500, # n simulated pts
-                              prop = c(
-                                0.1, # proportion internal control
-                                0.2, # proportion internal treated
-                                0.7 # proportion external control
-                              ),
-                              hr = 0.70, # true HR for the treatment
-                              inherent_drift_hr = 1.0 # HR of external/internal
+  prop = c(
+    0.1, # proportion internal control
+    0.2, # proportion internal treated
+    0.7 # proportion external control
+  ),
+  hr = 0.70, # true HR for the treatment
+  inherent_drift_hr = 1.0 # HR of external/internal
 ) {
   # Checks
   if (!all.equal(sum(prop), 1)) {
@@ -219,7 +219,7 @@ my_borrowing_list <- sim_borrowing_list(
 
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
-  outcome = exp_surv_dist("time", "cnsr", baseline_prior = normal_prior(0, 10000)),
+  outcome = outcome_surv_exponential("time", "cnsr", baseline_prior = normal_prior(0, 10000)),
   borrowing = my_borrowing_list,
   treatment = treatment_details(trt_flag_col = "trt", trt_prior = normal_prior(0, 10000))
 )

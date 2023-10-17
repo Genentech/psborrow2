@@ -39,7 +39,7 @@ depending on the analysis:
 * beta coefficients (e.g. log hazard ratios or log odds ratios) for all
 coefficients, passed to `add_covariates()`
 * ancillary parameters for outcome distributions, such as the shape parameter
-for the Weibull survival distribution, passed to `weib_ph_surv_dist()`
+for the Weibull survival distribution, passed to `outcome_surv_weibull_ph()`
 * log effect estimates (e.g. hazard ratios or odds ratios) for the primary
 contrast between treatments, passed to `treatment_details()`
 * baseline outcome rates or odds, passed to `borrowing_details()`

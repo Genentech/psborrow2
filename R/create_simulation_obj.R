@@ -6,7 +6,7 @@
 #' with `sim_covariate()`, a single `Covariate` object created by `add_covariates()`,
 #' or `NULL` (no covariate adjustment).
 #' @param outcome `SimOutcomeList` or `Outcome`. List of `Outcome` objects created with
-#' `sim_outcome()`, or single `Outcome` object (e.g., created by `exp_surv_dist()`).
+#' `sim_outcome()`, or single `Outcome` object (e.g., created by `outcome_surv_exponential()`).
 #' @param borrowing `SimBorrowingList` or `Borrowing`. List of `Borrowing` objects created
 #' with `sim_borrowing()`, or a single `Borrowing` object created by `borrowing_details()`.
 #' @param treatment `SimTreatmentList` or `Treatment`. List of `Treatment` objects created
@@ -63,7 +63,7 @@
 #'
 #' sim_object <- create_simulation_obj(
 #'   data_matrix_list = sdl,
-#'   outcome = logistic_bin_outcome("ep", normal_prior(0, 1000)),
+#'   outcome = outcome_bin_logistic("ep", normal_prior(0, 1000)),
 #'   borrowing = sim_borrowing_list(list(
 #'     full_borrowing = borrowing_details("Full borrowing", "ext"),
 #'     bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
@@ -121,7 +121,7 @@ create_simulation_obj <- function(data_matrix_list,
       if (!all(search_cols %in% colnames(simulation_obj@data_matrix_list@data_list[[i]][[j]]))) {
         which_not_in <- search_cols[
           which(!search_cols %in%
-            colnames(simulation_obj@data_matrix_list@data_list[[i]][[j]]))
+                  colnames(simulation_obj@data_matrix_list@data_list[[i]][[j]]))
         ]
         stop(
           "The following columns were specified in the simulation but ",

@@ -8,9 +8,9 @@
 #' for each parameter variation.
 #'
 #' @include outcome_class.R
-#' @include exp_surv_dist.R
-#' @include weib_ph_surv_dist.R
-#' @include logistic_bin_outcome.R
+#' @include outcome_surv_exponential.R
+#' @include outcome_surv_weibull_ph.R
+#' @include outcome_bin_logistic.R
 .sim_outcome_list <- setClass(
   "SimOutcomeList",
   slots = c(
@@ -19,9 +19,9 @@
   ),
   validity = function(object) {
     if (!all(vapply(object@outcome_list,
-      function(item) is(item, "Outcome"),
-      FUN.VALUE = logical(1)
-    ))) {
+          function(item) is(item, "Outcome"),
+          FUN.VALUE = logical(1)
+        ))) {
       return("`outcome_list` must be a list of `Outcome` objects.")
     }
     if (is.null(names(object@outcome_list))) {
@@ -52,7 +52,7 @@
 #'
 #' outcome_scenarios <- sim_outcome_list(
 #'   list(
-#'     "Exponential" = exp_surv_dist("time", "cnsr", normal_prior(0, 10000))
+#'     "Exponential" = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000))
 #'   )
 #' )
 #'

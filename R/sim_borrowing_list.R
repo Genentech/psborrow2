@@ -17,9 +17,9 @@
   ),
   validity = function(object) {
     if (!all(vapply(object@borrowing_list,
-      function(item) is(item, "Borrowing"),
-      FUN.VALUE = logical(1)
-    ))) {
+          function(item) is(item, "Borrowing"),
+          FUN.VALUE = logical(1)
+        ))) {
       return("`borrowing_list` must be a list of `Borrowing` objects.")
     }
     if (is.null(names(object@borrowing_list))) {

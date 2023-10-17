@@ -18,9 +18,9 @@
   ),
   validity = function(object) {
     if (!all(vapply(object@covariate_list,
-      function(item) is(item, "CovariatesOrNULL"),
-      FUN.VALUE = logical(1)
-    ))) {
+          function(item) is(item, "CovariatesOrNULL"),
+          FUN.VALUE = logical(1)
+        ))) {
       return("`covariate_list` must be a list of `Covariate` objects (or `NULL`)")
     }
     if (is.null(names(object@covariate_list))) {

@@ -17,7 +17,7 @@ setClassUnion("CmdStanModelOrNULL", c("CmdStanModel", "NULL"))
 #' @slot covariates `Covariate`. Object of class `Covariate` as output by
 #' the function `covariate_details()`.
 #' @slot outcome `Outcome`. Object of class `Outcome` as output by
-#' `exp_surv_dist()`, `weib_ph_surv_dist()`, or `logistic_bin_outcome()`.
+#' `outcome_surv_exponential()`, `outcome_surv_weibull_ph()`, or `outcome_bin_logistic()`.
 #' @slot borrowing `Borrowing`. Object of class `Borrowing` as output by
 #' `borrowing_details()`.
 #' @slot treatment `Treatment`. Object of class `Treatment` as output by
@@ -69,12 +69,12 @@ setMethod(
     cat("Data: Matrix with", nrow(object@data_matrix), "observations \n")
     cat(
       "    - ", sum(object@data_matrix[, get_vars(object@treatment)] == 0 &
-        object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 0),
+                      object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 0),
       " internal controls\n"
     )
     cat(
       "    - ", sum(object@data_matrix[, get_vars(object@treatment)] == 0 &
-        object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 1),
+                      object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 1),
       " external controls", ifelse(object@borrowing@method == "No borrowing",
         " (ignored in this analysis)\n",
         "\n"
@@ -82,7 +82,7 @@ setMethod(
     )
     cat(
       "    - ", sum(object@data_matrix[, get_vars(object@treatment)] == 1 &
-        object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 0),
+                      object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 0),
       " internal experimental\n\n"
     )
 
