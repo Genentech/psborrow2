@@ -53,12 +53,12 @@ test_that("outcome_bin_logistic works with weights", {
 })
 
 
-test_that("outcome_bin_logistic() throws error", {
-  expect_error(outcome_bin_logistic(),
+test_that("logistic_bin_outcome() throws error", {
+  expect_error(logistic_bin_outcome(),
     regexp = "deprecated"
   )
 
-  expect_error(outcome_bin_logistic(a = 2),
+  expect_error(logistic_bin_outcome(a = 2),
     regexp = "deprecated"
   )
 
