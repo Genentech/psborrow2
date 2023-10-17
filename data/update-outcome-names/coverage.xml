@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.70219690805533" branch-rate="0" lines-covered="863" lines-valid="1229" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-10-17 15:57:38.113576">
+<coverage line-rate="0.70219690805533" branch-rate="0" lines-covered="863" lines-valid="1229" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-10-17 21:50:47.145648">
   <sources>
     <source>/__w/psborrow2/psborrow2/psborrow2</source>
   </sources>
@@ -371,42 +371,42 @@
           <methods>
             <method name="check_data_matrix_has_columns" signature="" line-rate="0.9375" branch-rate="0" complexity="0">
               <lines>
+                <line number="36" hits="20" branch="false"/>
                 <line number="37" hits="20" branch="false"/>
                 <line number="38" hits="20" branch="false"/>
-                <line number="39" hits="20" branch="false"/>
-                <line number="41" hits="20" branch="false"/>
-                <line number="42" hits="1" branch="false"/>
-                <line number="45" hits="20" branch="false"/>
-                <line number="46" hits="0" branch="false"/>
-                <line number="49" hits="20" branch="false"/>
-                <line number="50" hits="1" branch="false"/>
-                <line number="52" hits="20" branch="false"/>
-                <line number="53" hits="2" branch="false"/>
-                <line number="56" hits="20" branch="false"/>
+                <line number="40" hits="20" branch="false"/>
+                <line number="41" hits="1" branch="false"/>
+                <line number="44" hits="20" branch="false"/>
+                <line number="45" hits="0" branch="false"/>
+                <line number="48" hits="20" branch="false"/>
+                <line number="49" hits="1" branch="false"/>
+                <line number="51" hits="20" branch="false"/>
+                <line number="52" hits="2" branch="false"/>
+                <line number="55" hits="20" branch="false"/>
+                <line number="56" hits="4" branch="false"/>
                 <line number="57" hits="4" branch="false"/>
                 <line number="58" hits="4" branch="false"/>
                 <line number="59" hits="4" branch="false"/>
-                <line number="60" hits="4" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
+            <line number="36" hits="20" branch="false"/>
             <line number="37" hits="20" branch="false"/>
             <line number="38" hits="20" branch="false"/>
-            <line number="39" hits="20" branch="false"/>
-            <line number="41" hits="20" branch="false"/>
-            <line number="42" hits="1" branch="false"/>
-            <line number="45" hits="20" branch="false"/>
-            <line number="46" hits="0" branch="false"/>
-            <line number="49" hits="20" branch="false"/>
-            <line number="50" hits="1" branch="false"/>
-            <line number="52" hits="20" branch="false"/>
-            <line number="53" hits="2" branch="false"/>
-            <line number="56" hits="20" branch="false"/>
+            <line number="40" hits="20" branch="false"/>
+            <line number="41" hits="1" branch="false"/>
+            <line number="44" hits="20" branch="false"/>
+            <line number="45" hits="0" branch="false"/>
+            <line number="48" hits="20" branch="false"/>
+            <line number="49" hits="1" branch="false"/>
+            <line number="51" hits="20" branch="false"/>
+            <line number="52" hits="2" branch="false"/>
+            <line number="55" hits="20" branch="false"/>
+            <line number="56" hits="4" branch="false"/>
             <line number="57" hits="4" branch="false"/>
             <line number="58" hits="4" branch="false"/>
             <line number="59" hits="4" branch="false"/>
-            <line number="60" hits="4" branch="false"/>
           </lines>
         </class>
         <class name="cmdstan.R" filename="R/cmdstan.R" line-rate="0.714285714285714" branch-rate="0" complexity="0">
