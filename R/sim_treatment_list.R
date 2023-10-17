@@ -17,9 +17,9 @@
   ),
   validity = function(object) {
     if (!all(vapply(object@treatment_list,
-      function(item) is(item, "Treatment"),
-      FUN.VALUE = logical(1)
-    ))) {
+          function(item) is(item, "Treatment"),
+          FUN.VALUE = logical(1)
+        ))) {
       return("`treatment_list` must be a list of `Treatment` objects.")
     }
     if (is.null(names(object@treatment_list))) {
