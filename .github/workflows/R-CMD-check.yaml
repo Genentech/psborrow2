@@ -8,6 +8,5 @@ on:
 
 name: R-CMD-check
 
-jobs:
-  R-CMD-check:
-    echo "R version ${{ matrix.config.r }}"
+steps:
+  - run: echo "Running on ${{ matrix.config.os }}"
