@@ -48,4 +48,8 @@ jobs:
           Rscript -e "install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/', getOption('repos')))"
           Rscript -e "cmdstanr::install_cmdstan()"
 
+      - name: Install other misc development packages
+        run: | 
+          Rscript -e "options(warn=2); install.packages(c('survival','survminer','simsurv','flexsurv','bayesplot','posterior','table1','broom','ggplot2','gt','gtsummary','dplyr','tidyselect','WeightIt','cobalt','MatchIt','BayesPPD'))
+      
       - uses: r-lib/actions/check-r-package@v2
