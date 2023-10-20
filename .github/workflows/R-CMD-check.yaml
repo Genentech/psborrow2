@@ -8,5 +8,7 @@ on:
 
 name: R-CMD-check
 
-steps:
-  - run: echo "Running on ${{ matrix.config.os }}"
+jobs:
+  R-CMD-check:
+    steps:
+      - run: echo "Running on ${{ matrix.config.os }}"
