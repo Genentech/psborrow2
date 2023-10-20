@@ -12,9 +12,6 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-    steps:
-      - run: echo "Running on ${{ matrix.config.os }}"
-      - run: echo "GitHub token ${{ secrets.GITHUB_TOKEN }}"
     strategy:
       fail-fast: false
       matrix:
@@ -25,3 +22,8 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+    steps:
+      - run: echo "Running on ${{ matrix.config.os }}"
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: rcmdcheck
