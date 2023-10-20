@@ -43,4 +43,9 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y texlive-fonts-extra
 
+      - name: Install and unpack cmdstanr 
+        run: |
+          Rscript -e "install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/'', getOption('repos')))"
+          Rscript -e "cmdstanr::install_cmdstan()"
+
       - uses: r-lib/actions/check-r-package@v2
