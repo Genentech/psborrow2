@@ -42,3 +42,5 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y texlive-fonts-extra
+
+      - uses: r-lib/actions/check-r-package@v2
