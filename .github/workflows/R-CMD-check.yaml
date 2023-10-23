@@ -50,6 +50,6 @@ jobs:
 
       - name: Install other misc development packages
         run: | 
-          Rscript -e "options(warn=2); install.packages(c('survival','survminer','simsurv','flexsurv','bayesplot','posterior','table1','broom','ggplot2','gt','gtsummary','dplyr','tidyselect','WeightIt','cobalt','MatchIt','BayesPPD'))"
+          Rscript -e "options(warn=2); install.packages(c('survival','ggsurvfit','simsurv','flexsurv','bayesplot','posterior','table1','broom','ggplot2','gt','gtsummary','dplyr','tidyselect','WeightIt','cobalt','MatchIt','BayesPPD'))"
       
       - uses: r-lib/actions/check-r-package@v2
