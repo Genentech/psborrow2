@@ -358,7 +358,7 @@ It looks like we have 50 patients in our internal control,
 
 Let's start by exploring the three arms descriptively:
 
-```{r message = FALSE, eval = TRUE, echo = FALSE, fig.align = "center", fig.dim = c(7, 4)}
+```{r}
 library(survival)
 library(ggsurvfit)
 km_fit <- survfit2(Surv(time = time, event = 1 - cnsr) ~ trt + ext, example_dataframe)
