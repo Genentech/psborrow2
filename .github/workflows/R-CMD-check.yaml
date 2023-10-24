@@ -37,11 +37,12 @@ jobs:
         with:
           extra-packages: rcmdcheck
 
-      - name: Install system dependencies
+      - name: Install system dependencies Linux
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update -y
           sudo apt-get install -y texlive-fonts-extra
+     - name: Install system dependencies Windows
         if: runner.os == 'Windows'
         run: |
           choco install -y rtools
