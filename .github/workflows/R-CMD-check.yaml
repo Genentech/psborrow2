@@ -46,7 +46,7 @@ jobs:
       - name: Install and unpack cmdstanr 
         run: |
           Rscript -e "install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/', getOption('repos')))"
-          Rscript -e "cmdstanr::install_cmdstan()"
           Rscript -e "cmdstanr::check_cmdstan_toolchain(fix = TRUE)"
+          Rscript -e "cmdstanr::install_cmdstan()"
 
       - uses: r-lib/actions/check-r-package@v2
