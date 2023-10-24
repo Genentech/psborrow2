@@ -59,6 +59,7 @@ Suggests:
     bayesplot,
     matrixcalc,
     simsurv,
+    ggsurvfit,
     WeightIt,
     MatchIt,
     BayesPPD,
