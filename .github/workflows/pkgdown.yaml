@@ -33,6 +33,12 @@ jobs:
           extra-packages: any::pkgdown, local::.
           needs: website
 
+      - name: Install and unpack cmdstanr 
+        run: |
+          Rscript -e "install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/', getOption('repos')))"
+          Rscript -e "cmdstanr::check_cmdstan_toolchain(fix = TRUE)"
+          Rscript -e "cmdstanr::install_cmdstan()"
+
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = TRUE, install = TRUE)
         shell: Rscript {0}
