@@ -1,186 +1,351 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/404.html</loc>
+    <loc>https://genentech.github.io/psborrow2/404.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/CODE_OF_CONDUCT.html</loc>
+    <loc>https://genentech.github.io/psborrow2/LICENSE.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/CONTRIBUTING.html</loc>
+    <loc>https://genentech.github.io/psborrow2/articles/data_simulation.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/LICENSE.html</loc>
+    <loc>https://genentech.github.io/psborrow2/articles/dataset.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/PULL_REQUEST_TEMPLATE.html</loc>
+    <loc>https://genentech.github.io/psborrow2/articles/index.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/authors.html</loc>
+    <loc>https://genentech.github.io/psborrow2/articles/overview_slides.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/index.html</loc>
+    <loc>https://genentech.github.io/psborrow2/articles/prior_distributions.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/news/index.html</loc>
+    <loc>https://genentech.github.io/psborrow2/articles/propensity_scores.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Analysis-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/articles/psborrow2.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/BernoulliPrior-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/articles/simulation_study.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/BetaPrior-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/articles/weighting.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/BinaryOutcome-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/authors.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Borrowing-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/index.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/CauchyPrior-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/news/index.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Covariates-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/Analysis-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/ExponentialPrior-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/BaselineDataFrame-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/ExponentialSurvDist-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/BaselineObject-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/GammaPrior-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/BernoulliPrior-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/LogisticBinaryOutcome-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/BetaPrior-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/NormalPrior-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/BinaryOutcome-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Outcome-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/Borrowing-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/PoissonPrior-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/CauchyPrior-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Prior-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/Covariates-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/TimeToEvent-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/ExponentialPrior-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/Treatment-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/GammaPrior-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/UniformPrior-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/HalfCauchyPrior-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/WeibullPHSurvDist-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/HalfNormalPrior-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/add_covariates.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/MCMCSimulationResult-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/bernoulli_prior.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/NormalPrior-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/beta_prior.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/Outcome-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/borrowing_details.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/OutcomeBinaryLogistic-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/cauchy_prior.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/OutcomeSurvExponential-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/check_cmdstanr.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/OutcomeSurvWeibullPH-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/check_data_matrix_has_columns.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/PoissonPrior-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/create_analysis_obj.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/Prior-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/create_data_matrix.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/SimBorrowingList-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/example_matrix.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/SimCovariateList-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/exp_surv_dist.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/SimCovariates-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/exponential_prior.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/SimDataList-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/gamma_prior.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/SimOutcomeList-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/get_vars.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/SimSampleSize-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/index.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/SimTreatmentList-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/logistic_bin_outcome.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/SimVar-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/make_model_string_data.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/SimVarBin-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/make_model_string_functions.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/SimVarCont-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/make_model_string_model.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/Simulation-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/make_model_string_parameters.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/TimeToEvent-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/make_model_string_transf_param.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/Treatment-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/mcmc_sample.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/UniformPrior-class.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/normal_prior.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/add_covariates.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/plot.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/baseline_covariates.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/plot_pdf.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/bernoulli_prior.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/plot_pmf.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/beta_prior.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/poisson_prior.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/bin_var.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/prepare_stan_data_inputs.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/binary_cutoff.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/rename_draws_covariates.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/borrowing_details.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/treatment_details.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/cauchy_prior.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/trim_data_matrix.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/check_cmdstanr.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/uniform_prior.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/check_data_matrix_has_columns.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/variable_dictionary.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/cont_var.html</loc>
   </url>
   <url>
-    <loc>improved-waffle-bf365a9a.pages.github.io/reference/weib_ph_surv_dist.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/covariance_matrix.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/create_analysis_obj.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/create_baseline_object.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/create_data_matrix.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/create_simulation_obj.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/eval_constraints.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/example_matrix.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/example_surv.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/exponential_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/gamma_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/generate-BaselineObject-method.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/generate.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/get_cmd_stan_models.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/get_covariate_constraints.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/get_prior_string.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/get_quantiles.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/get_results.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/get_vars.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/half_cauchy_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/half_normal_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/make_analysis_object_list.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/make_model_string_data.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/make_model_string_functions.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/make_model_string_model.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/make_model_string_parameters.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/make_model_string_transf_param.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/mcmc_sample.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/normal_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/outcome_bin_logistic.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/outcome_surv_exponential.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/outcome_surv_weibull_ph.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/parse_constraint.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/plot.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/plot_pdf.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/plot_pmf.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/poisson_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/prepare_stan_data_inputs.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/rename_draws_covariates.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/show_guide.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_borrowing_list.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_covariate_list.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_covariates.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_covariates_summ.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_data_list.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_estimate_bias.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_estimate_mse.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_is_null_effect_covered.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_is_true_effect_covered.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_outcome_list.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_samplesize.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/sim_treatment_list.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/treatment_details.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/trim_data_matrix.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/uniform_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/variable_dictionary.html</loc>
   </url>
 </urlset>
