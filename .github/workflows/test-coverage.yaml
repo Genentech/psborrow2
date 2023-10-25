@@ -2,9 +2,9 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-    branches: [main, master, test-new-gha]
+    branches: [main, master]
   pull_request:
-    branches: [main, master, test-new-gha]
+    branches: [main, master]
 
 name: test-coverage
 
@@ -31,7 +31,7 @@ jobs:
           Rscript -e "install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/', getOption('repos')))"
           Rscript -e "cmdstanr::check_cmdstan_toolchain(fix = TRUE)"
           Rscript -e "cmdstanr::install_cmdstan()"
-          
+
       - name: Test coverage
         run: covr::codecov(quiet = FALSE)
         shell: Rscript {0}
