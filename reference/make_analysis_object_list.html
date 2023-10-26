@@ -132,7 +132,7 @@ created by <code>psborrow2:::.simulation_obj()</code>.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sim_object</span> <span class="op">&lt;-</span> <span class="fu">psborrow2</span><span class="fu">:::</span><span class="fu"><a href="Simulation-class.html">.simulation_obj</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data_matrix_list <span class="op">=</span> <span class="va">sdl</span>,</span></span>
-<span class="r-in"><span>  outcome <span class="op">=</span> <span class="fu"><a href="sim_outcome_list.html">sim_outcome_list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>default <span class="op">=</span> <span class="fu"><a href="outcome_bin_logistic.html">outcome_bin_logistic</a></span><span class="op">(</span><span class="st">"ep"</span>, <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  outcome <span class="op">=</span> <span class="fu"><a href="sim_outcome_list.html">sim_outcome_list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>default <span class="op">=</span> <span class="fu"><a href="logistic_bin_outcome.html">logistic_bin_outcome</a></span><span class="op">(</span><span class="st">"ep"</span>, <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  covariate <span class="op">=</span> <span class="fu"><a href="sim_covariate_list.html">sim_covariate_list</a></span><span class="op">(</span>covariate_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`No adjustment` <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  borrowing <span class="op">=</span> <span class="fu"><a href="sim_borrowing_list.html">sim_borrowing_list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    full_borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span></span>
@@ -160,7 +160,7 @@ created by <code>psborrow2:::.simulation_obj()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]][[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis Object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: OutcomeBinaryLogistic </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: LogisticBinaryOutcome </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome variable: ep </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Borrowing method: Full borrowing </span>
@@ -178,7 +178,7 @@ created by <code>psborrow2:::.simulation_obj()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]][[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis Object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: OutcomeBinaryLogistic </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: LogisticBinaryOutcome </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome variable: ep </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Borrowing method: Full borrowing </span>
@@ -198,7 +198,7 @@ created by <code>psborrow2:::.simulation_obj()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]][[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis Object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: OutcomeBinaryLogistic </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: LogisticBinaryOutcome </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome variable: ep </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Borrowing method: Full borrowing </span>
@@ -216,7 +216,7 @@ created by <code>psborrow2:::.simulation_obj()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]][[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis Object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: OutcomeBinaryLogistic </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: LogisticBinaryOutcome </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome variable: ep </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Borrowing method: Full borrowing </span>
@@ -236,7 +236,7 @@ created by <code>psborrow2:::.simulation_obj()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]][[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis Object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: OutcomeBinaryLogistic </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: LogisticBinaryOutcome </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome variable: ep </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Borrowing method: BDB </span>
@@ -254,7 +254,7 @@ created by <code>psborrow2:::.simulation_obj()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]][[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis Object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: OutcomeBinaryLogistic </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: LogisticBinaryOutcome </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome variable: ep </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Borrowing method: BDB </span>
@@ -274,7 +274,7 @@ created by <code>psborrow2:::.simulation_obj()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]][[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis Object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: OutcomeBinaryLogistic </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: LogisticBinaryOutcome </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome variable: ep </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Borrowing method: BDB </span>
@@ -292,7 +292,7 @@ created by <code>psborrow2:::.simulation_obj()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]][[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis Object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: OutcomeBinaryLogistic </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: LogisticBinaryOutcome </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome variable: ep </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Borrowing method: BDB </span>

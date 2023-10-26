@@ -180,7 +180,7 @@ can be constructed as before.</p>
 <span></span>
 <span><span class="va">analysis_att</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>  data_matrix <span class="op">=</span> <span class="va">example_matrix_att</span>,</span>
-<span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span>, weight_var <span class="op">=</span> <span class="st">"att"</span><span class="op">)</span>,</span>
+<span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span>, weight_var <span class="op">=</span> <span class="st">"att"</span><span class="op">)</span>,</span>
 <span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>  treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -192,14 +192,14 @@ can be constructed as before.</p>
 <span><span class="va">result_att</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_att</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 3.4 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 2.9 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 2.6 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 3.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 2.2 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 2.3 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 2.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 2.3 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 3.0 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 12.5 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 2.3 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 9.5 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="matching-with-matchit">Matching with <code>MatchIt</code><a class="anchor" aria-label="anchor" href="#matching-with-matchit"></a>
@@ -315,7 +315,7 @@ you can extract the data for use in <code>psborrow2</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">analysis_match</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>  data_matrix <span class="op">=</span> <span class="va">example_matrix_match</span>,</span>
-<span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>  treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -327,14 +327,14 @@ you can extract the data for use in <code>psborrow2</code>.</p>
 <span><span class="va">result_match</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_match</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 1.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 1.4 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 1.3 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 1.3 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 1.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 0.9 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 1.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 1.1 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 1.3 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 5.4 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 1.1 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 4.7 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="combined-weighting-and-dynamic-borrowing">Combined Weighting and Dynamic Borrowing<a class="anchor" aria-label="anchor" href="#combined-weighting-and-dynamic-borrowing"></a>
@@ -346,7 +346,7 @@ commensurate prior approach.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">analysis_iptw_bdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>  data_matrix <span class="op">=</span> <span class="va">example_matrix_att</span>,</span>
-<span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span>, weight_var <span class="op">=</span> <span class="st">"att"</span><span class="op">)</span>,</span>
+<span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span>, weight_var <span class="op">=</span> <span class="st">"att"</span><span class="op">)</span>,</span>
 <span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -357,14 +357,14 @@ commensurate prior approach.</p>
 <span><span class="va">result_iptw_bdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_iptw_bdb</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 5.8 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 4.9 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 5.9 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 5.7 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 4.5 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 4.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 4.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 4.3 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 5.6 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 22.6 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 4.3 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 17.5 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="fixed-weights">Fixed Weights<a class="anchor" aria-label="anchor" href="#fixed-weights"></a>
@@ -377,7 +377,7 @@ set the power parameter <span class="math inline">\(\alpha =
 <span></span>
 <span><span class="va">analysis_pp01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>  data_matrix <span class="op">=</span> <span class="va">example_matrix_pp01</span>,</span>
-<span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span>, weight_var <span class="op">=</span> <span class="st">"pp_alpha"</span><span class="op">)</span>,</span>
+<span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span>, weight_var <span class="op">=</span> <span class="st">"pp_alpha"</span><span class="op">)</span>,</span>
 <span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>  treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -389,14 +389,14 @@ set the power parameter <span class="math inline">\(\alpha =
 <span><span class="va">result_pp01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">analysis_pp01</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 3.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 3.7 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 2.9 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 2.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 2.6 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 3.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 2.7 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 2.5 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 3.1 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 12.9 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 2.7 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 11.2 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reference-models">Reference Models<a class="anchor" aria-label="anchor" href="#reference-models"></a>
@@ -407,7 +407,7 @@ BDB model without weights.</p>
 <code class="sourceCode R"><span><span class="va">result_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>    data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span>
-<span>    outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    outcome <span class="op">=</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>    treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
@@ -418,19 +418,19 @@ BDB model without weights.</p>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 2.5 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 2.5 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 2.4 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 2.5 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 1.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 1.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 1.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 1.9 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 2.5 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 10.2 seconds.</span></span>
+<span><span class="co">#&gt; Mean chain execution time: 1.8 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 7.5 seconds.</span></span>
 <span></span>
 <span><span class="va">result_none</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>    data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span>
-<span>    outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    outcome <span class="op">=</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"No borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>    treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
@@ -441,19 +441,19 @@ BDB model without weights.</p>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 1.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 1.1 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 1.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 1.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 0.9 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 0.9 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 1.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 1.0 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 1.2 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 4.9 seconds.</span></span>
+<span><span class="co">#&gt; Mean chain execution time: 1.0 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 4.1 seconds.</span></span>
 <span></span>
 <span><span class="va">result_bdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>    data_matrix <span class="op">=</span> <span class="va">example_matrix_att</span>,</span>
-<span>    outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    outcome <span class="op">=</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
@@ -463,14 +463,14 @@ BDB model without weights.</p>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 4.8 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 5.6 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 4.8 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 finished in 4.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 4.5 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 4.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 4.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 4.0 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 5.0 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 20.2 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 4.2 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 16.9 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="comparison-of-results">Comparison of Results<a class="anchor" aria-label="anchor" href="#comparison-of-results"></a>
@@ -507,64 +507,64 @@ and specify summary statistics.</p>
 <tr class="odd">
 <td align="left">No borrowing</td>
 <td align="left">HR_trt</td>
-<td align="right">0.898</td>
-<td align="right">0.878</td>
-<td align="right">0.182</td>
-<td align="right">0.637</td>
+<td align="right">0.897</td>
+<td align="right">0.879</td>
+<td align="right">0.181</td>
+<td align="right">0.634</td>
 <td align="right">1.220</td>
 </tr>
 <tr class="even">
 <td align="left">Full borrowing</td>
 <td align="left">HR_trt</td>
 <td align="right">0.388</td>
-<td align="right">0.386</td>
-<td align="right">0.050</td>
+<td align="right">0.385</td>
+<td align="right">0.049</td>
 <td align="right">0.311</td>
-<td align="right">0.474</td>
+<td align="right">0.472</td>
 </tr>
 <tr class="odd">
 <td align="left">Power Prior 01</td>
 <td align="left">HR_trt</td>
-<td align="right">0.635</td>
-<td align="right">0.626</td>
+<td align="right">0.633</td>
+<td align="right">0.625</td>
 <td align="right">0.106</td>
-<td align="right">0.477</td>
-<td align="right">0.823</td>
+<td align="right">0.475</td>
+<td align="right">0.822</td>
 </tr>
 <tr class="even">
 <td align="left">ATT Weights</td>
 <td align="left">HR_trt</td>
 <td align="right">0.894</td>
 <td align="right">0.886</td>
-<td align="right">0.127</td>
-<td align="right">0.699</td>
-<td align="right">1.115</td>
+<td align="right">0.129</td>
+<td align="right">0.696</td>
+<td align="right">1.119</td>
 </tr>
 <tr class="odd">
 <td align="left">IPTW + BDB</td>
 <td align="left">HR_trt</td>
-<td align="right">0.893</td>
-<td align="right">0.877</td>
-<td align="right">0.164</td>
-<td align="right">0.652</td>
-<td align="right">1.183</td>
+<td align="right">0.894</td>
+<td align="right">0.879</td>
+<td align="right">0.163</td>
+<td align="right">0.654</td>
+<td align="right">1.182</td>
 </tr>
 <tr class="even">
 <td align="left">Matching 1:1</td>
 <td align="left">HR_trt</td>
-<td align="right">0.791</td>
-<td align="right">0.781</td>
+<td align="right">0.792</td>
+<td align="right">0.783</td>
 <td align="right">0.129</td>
-<td align="right">0.597</td>
+<td align="right">0.598</td>
 <td align="right">1.019</td>
 </tr>
 <tr class="odd">
 <td align="left">BDB</td>
 <td align="left">HR_trt</td>
-<td align="right">0.871</td>
-<td align="right">0.853</td>
+<td align="right">0.873</td>
+<td align="right">0.854</td>
 <td align="right">0.175</td>
-<td align="right">0.619</td>
+<td align="right">0.620</td>
 <td align="right">1.187</td>
 </tr>
 </tbody>

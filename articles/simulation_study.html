@@ -195,12 +195,12 @@ matrix.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">sim_single_matrix</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span>, hr <span class="op">=</span> <span class="fl">0.5</span>, drift_hr <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#      id ext trt       time status cnsr</span></span>
-<span><span class="co"># [1,]  1   0   0  0.6986958      1    0</span></span>
-<span><span class="co"># [2,]  2   0   0  1.2183913      1    0</span></span>
-<span><span class="co"># [3,]  3   0   0 17.3903433      1    0</span></span>
-<span><span class="co"># [4,]  4   0   0  5.9271431      1    0</span></span>
-<span><span class="co"># [5,]  5   0   0  3.8568144      1    0</span></span>
-<span><span class="co"># [6,]  6   0   0  1.1262283      1    0</span></span></code></pre></div>
+<span><span class="co"># [1,]  1   0   0  0.3299371      1    0</span></span>
+<span><span class="co"># [2,]  2   0   0 12.7542019      1    0</span></span>
+<span><span class="co"># [3,]  3   0   0 15.9001559      1    0</span></span>
+<span><span class="co"># [4,]  4   0   0 10.8246712      1    0</span></span>
+<span><span class="co"># [5,]  5   0   0  5.1545299      1    0</span></span>
+<span><span class="co"># [6,]  6   0   0 29.7555375      1    0</span></span></code></pre></div>
 <p>Using this function, let’s simulate a list of lists of matrices with
 four scenarios:</p>
 <ul>
@@ -327,19 +327,19 @@ items, respectively. For our study, these are <code>"true_hr"</code>,
 </h3>
 <p><code>outcome</code> is where you pass information on the study
 outcomes. You can pass either a single <code>Outcome</code> class object
-(e.g., as produced by <code><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential()</a></code>), or a
-list of <code>Outcome</code> class objects passed to
+(e.g., as produced by <code><a href="../reference/exp_surv_dist.html">exp_surv_dist()</a></code>), or a list of
+<code>Outcome</code> class objects passed to
 <code><a href="../reference/sim_outcome_list.html">sim_outcome_list()</a></code>. For our example, let’s just use a
 single exponential distribution.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_sim_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">my_sim_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span></span>
 <span>  time_var <span class="op">=</span> <span class="st">"time"</span>,</span>
 <span>  cens_var <span class="op">=</span> <span class="st">"cnsr"</span>,</span>
 <span>  baseline_prior <span class="op">=</span> <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">my_sim_out</span></span>
-<span><span class="co"># Outcome object with class OutcomeSurvExponential </span></span>
+<span><span class="co"># Outcome object with class ExponentialSurvDist </span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># Outcome variables:</span></span>
 <span><span class="co"># time_var cens_var </span></span>
@@ -525,7 +525,7 @@ object. Instead, it returns a class unique to simulation study results:
 <span><span class="co"># [1] "MCMCSimulationResult"</span></span>
 <span><span class="co"># attr(,"package")</span></span>
 <span><span class="co"># [1] "psborrow2"</span></span></code></pre></div>
-<p>This evaluation took about 15.5 minutes. Let’s look at the
+<p>This evaluation took about 13.4 minutes. Let’s look at the
 performance of our simulation study by extracting the data.frame that
 summarizes results, <code><a href="../reference/get_results.html">get_results()</a></code>:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">

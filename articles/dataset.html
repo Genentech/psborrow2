@@ -256,14 +256,13 @@ tibble, you can easily create a suitable matrix with the
 <p><code>psborrow2</code> currently supports three outcomes:</p>
 <ul>
 <li>Time-to-event with exponential distribution (constant hazard),
-created with <code><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential()</a></code>
+created with <code><a href="../reference/exp_surv_dist.html">exp_surv_dist()</a></code>
 </li>
 <li>Time-to-event with Weibull distribution and proportional hazards
-parametrization, created with
-<code><a href="../reference/outcome_surv_weibull_ph.html">outcome_surv_weibull_ph()</a></code>
+parametrization, created with <code><a href="../reference/weib_ph_surv_dist.html">weib_ph_surv_dist()</a></code>
 </li>
 <li>Binary endpoints with a Bernoulli distribution and using logistic
-regression, created with <code><a href="../reference/outcome_bin_logistic.html">outcome_bin_logistic()</a></code>
+regression, created with <code><a href="../reference/logistic_bin_outcome.html">logistic_bin_outcome()</a></code>
 </li>
 </ul>
 <p>After we select which outcome and distribution we want, we need to
@@ -276,13 +275,13 @@ we’ll specify an uninformative prior:
 <p>For our example, let’s conduct a time-to-event analysis using the
 exponential distribution.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span></span>
 <span>  time_var <span class="op">=</span> <span class="st">"time"</span>,</span>
 <span>  cens_var <span class="op">=</span> <span class="st">"cnsr"</span>,</span>
 <span>  baseline_prior <span class="op">=</span> <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">outcome</span></span>
-<span><span class="co"># Outcome object with class OutcomeSurvExponential </span></span>
+<span><span class="co"># Outcome object with class ExponentialSurvDist </span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># Outcome variables:</span></span>
 <span><span class="co"># time_var cens_var </span></span>
@@ -408,14 +407,14 @@ objects</a>. Note that running this may take a few minutes.</p>
 <span><span class="op">)</span></span>
 <span><span class="co"># Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co"># </span></span>
-<span><span class="co"># Chain 1 finished in 23.4 seconds.</span></span>
-<span><span class="co"># Chain 2 finished in 24.8 seconds.</span></span>
-<span><span class="co"># Chain 3 finished in 25.3 seconds.</span></span>
-<span><span class="co"># Chain 4 finished in 21.4 seconds.</span></span>
+<span><span class="co"># Chain 1 finished in 18.7 seconds.</span></span>
+<span><span class="co"># Chain 2 finished in 19.8 seconds.</span></span>
+<span><span class="co"># Chain 3 finished in 20.4 seconds.</span></span>
+<span><span class="co"># Chain 4 finished in 17.1 seconds.</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># All 4 chains finished successfully.</span></span>
-<span><span class="co"># Mean chain execution time: 23.7 seconds.</span></span>
-<span><span class="co"># Total execution time: 95.3 seconds.</span></span></code></pre></div>
+<span><span class="co"># Mean chain execution time: 19.0 seconds.</span></span>
+<span><span class="co"># Total execution time: 76.4 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 class="tabset" id="summarizing-results">Summarizing results<a class="anchor" aria-label="anchor" href="#summarizing-results"></a>

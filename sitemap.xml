@@ -73,6 +73,9 @@
     <loc>https://genentech.github.io/psborrow2/reference/ExponentialPrior-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/ExponentialSurvDist-class.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/GammaPrior-class.html</loc>
   </url>
   <url>
@@ -82,6 +85,9 @@
     <loc>https://genentech.github.io/psborrow2/reference/HalfNormalPrior-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/LogisticBinaryOutcome-class.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/MCMCSimulationResult-class.html</loc>
   </url>
   <url>
@@ -89,15 +95,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/Outcome-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/OutcomeBinaryLogistic-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/OutcomeSurvExponential-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/OutcomeSurvWeibullPH-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/PoissonPrior-class.html</loc>
@@ -146,6 +143,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/UniformPrior-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/WeibullPHSurvDist-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/add_covariates.html</loc>
@@ -205,6 +205,9 @@
     <loc>https://genentech.github.io/psborrow2/reference/example_surv.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/exp_surv_dist.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/exponential_prior.html</loc>
   </url>
   <url>
@@ -244,6 +247,9 @@
     <loc>https://genentech.github.io/psborrow2/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/logistic_bin_outcome.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/make_analysis_object_list.html</loc>
   </url>
   <url>
@@ -266,15 +272,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/normal_prior.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/outcome_bin_logistic.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/outcome_surv_exponential.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/outcome_surv_weibull_ph.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/parse_constraint.html</loc>
@@ -347,5 +344,8 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/variable_dictionary.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/weib_ph_surv_dist.html</loc>
   </url>
 </urlset>
