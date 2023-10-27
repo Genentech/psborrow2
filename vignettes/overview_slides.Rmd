@@ -360,9 +360,9 @@ Let's start by exploring the three arms descriptively:
 
 ```{r message = FALSE, echo = FALSE, fig.align = "center", fig.dim = c(7, 4)}
 library(survival)
-library(survminer)
-km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt + ext, example_dataframe)
-ggsurvplot(fit = km_fit, data = example_dataframe, palette = "Set1")
+library(ggsurvfit)
+km_fit <- survfit2(Surv(time = time, event = 1 - cnsr) ~ trt + ext, example_dataframe)
+ggsurvfit(km_fit)
 ```
 <br>
 Wow, the external control population looks quite different from the internal
