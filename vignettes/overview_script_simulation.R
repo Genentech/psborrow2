@@ -48,16 +48,15 @@ library(broom)
 # that will simulate data for a single matrix.
 
 # Function to create a single matrix
-sim_single_matrix <- function(
-    n = 500, # n simulated pts
-    prop = c(
-      0.1, # proportion internal control
-      0.2, # proportion internal treated
-      0.7 # proportion external control
-    ),
-    hr = 0.70, # true HR for the treatment
-    inherent_drift_hr = 1.0 # HR of external/internal
-    ) {
+sim_single_matrix <- function(n = 500, # n simulated pts
+                              prop = c(
+                                0.1, # proportion internal control
+                                0.2, # proportion internal treated
+                                0.7 # proportion external control
+                              ),
+                              hr = 0.70, # true HR for the treatment
+                              inherent_drift_hr = 1.0 # HR of external/internal
+) {
   # Checks
   if (!all.equal(sum(prop), 1)) {
     stop("prop must sum to 1")
