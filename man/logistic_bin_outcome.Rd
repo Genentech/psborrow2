@@ -6,6 +6,9 @@
 \usage{
 logistic_bin_outcome(...)
 }
+\arguments{
+\item{...}{Deprecated arguments to \code{logistic_bin_outcome}.}
+}
 \description{
 Please use \code{outcome_bin_logistic()} instead.
 }

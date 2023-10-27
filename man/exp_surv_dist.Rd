@@ -6,6 +6,9 @@
 \usage{
 exp_surv_dist(...)
 }
+\arguments{
+\item{...}{Deprecated arguments to \code{exp_surv_dist()}.}
+}
 \description{
 Please use \code{outcome_surv_exponential()} instead.
 }

@@ -6,6 +6,9 @@
 \usage{
 weib_ph_surv_dist(...)
 }
+\arguments{
+\item{...}{Deprecated arguments to \code{weib_ph_surv_dist()}.}
+}
 \description{
 Please use \code{outcome_surv_weibull_ph()} instead.
 }

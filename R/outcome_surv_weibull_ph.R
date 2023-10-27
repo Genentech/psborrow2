@@ -138,7 +138,7 @@ outcome_surv_weibull_ph <- function(time_var,
 #' Legacy function for the Weibull proportional Hazards survival distribution
 #'
 #' Please use `outcome_surv_weibull_ph()` instead.
-#'
+#' @param ... Deprecated arguments to `weib_ph_surv_dist()`.
 #' @export
 weib_ph_surv_dist <- function(...) {
   stop("`weib_ph_surv_dist()` is deprecated. Use `outcome_surv_weibull_ph()` instead.")
