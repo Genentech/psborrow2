@@ -107,5 +107,9 @@ outcome_surv_exponential <- function(time_var, cens_var, baseline_prior, weight_
 #' @param ... Deprecated arguments to `exp_surv_dist()`.
 #' @export
 exp_surv_dist <- function(...) {
-  stop("`exp_surv_dist()` is deprecated. Use `outcome_surv_exponential()` instead.")
+  .Defunct(
+    "outcome_surv_exponential",
+    "psborrow2",
+    "`exp_surv_dist()` is deprecated. Use `outcome_surv_exponential()` instead."
+  )
 }

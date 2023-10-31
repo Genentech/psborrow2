@@ -97,5 +97,9 @@ outcome_bin_logistic <- function(binary_var,
 #' @param ... Deprecated arguments to `logistic_bin_outcome`.
 #' @export
 logistic_bin_outcome <- function(...) {
-  stop("`logistic_bin_outcome()` is deprecated. Use `outcome_bin_logistic()` instead.")
+  .Defunct(
+    "outcome_bin_logistic",
+    "psborrow2",
+    "`logistic_bin_outcome()` is deprecated. Use `outcome_bin_logistic()` instead."
+  )
 }

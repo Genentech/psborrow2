@@ -141,5 +141,9 @@ outcome_surv_weibull_ph <- function(time_var,
 #' @param ... Deprecated arguments to `weib_ph_surv_dist()`.
 #' @export
 weib_ph_surv_dist <- function(...) {
-  stop("`weib_ph_surv_dist()` is deprecated. Use `outcome_surv_weibull_ph()` instead.")
+  .Defunct(
+    "outcome_surv_weibull_ph",
+    "psborrow2",   
+    "`weib_ph_surv_dist()` is deprecated. Use `outcome_surv_weibull_ph()` instead."
+  )
 }
