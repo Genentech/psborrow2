@@ -93,12 +93,12 @@ plot(normal_prior(0, 10000), xlim = c(-100, 100), ylim = c(0, 1))
 ############################################################
 
 # psborrow2 currently supports 3 outcomes:
-?exp_surv_dist
-?weib_ph_surv_dist
-?logistic_bin_outcome
+?outcome_surv_exponential
+?outcome_surv_weibull_ph
+?outcome_bin_logistic
 
 # Create an exponential survival distribution Outcome object
-exp_outcome <- exp_surv_dist(
+exp_outcome <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
   baseline_prior = normal_prior(0, 10000)
@@ -233,7 +233,7 @@ anls_ps_no_borrow <- create_analysis_obj(
     c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
     normal_prior(0, 10000)
   ),
-  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
   borrowing = borrowing_details("No borrowing", "ext"),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
@@ -262,7 +262,7 @@ anls_ps_bdb <- create_analysis_obj(
     c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
     normal_prior(0, 10000)
   ),
-  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )

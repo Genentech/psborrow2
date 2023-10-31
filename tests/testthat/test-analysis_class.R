@@ -5,7 +5,7 @@ test_that("get_vars works for Analysis", {
       c("cov1", "cov2"),
       normal_prior(0, 1000)
     ),
-    outcome = exp_surv_dist(
+    outcome = outcome_surv_exponential(
       time_var = "time",
       cens_var = "cnsr",
       baseline_prior = normal_prior(0, 1000)
@@ -38,7 +38,7 @@ test_that("show works for Analysis", {
       c("cov1", "cov2"),
       normal_prior(0, 1000)
     ),
-    outcome = exp_surv_dist(
+    outcome = outcome_surv_exponential(
       time_var = "time",
       cens_var = "cnsr",
       baseline_prior = normal_prior(0, 1000)
@@ -58,7 +58,7 @@ test_that("show works for Analysis", {
 test_that("show works without covariates", {
   object <- .analysis_obj(
     data_matrix = example_matrix,
-    outcome = exp_surv_dist(
+    outcome = outcome_surv_exponential(
       time_var = "time",
       cens_var = "cnsr",
       baseline_prior = normal_prior(0, 1000)
@@ -79,7 +79,7 @@ test_that("show works without covariates", {
 test_that("show works with no borrowing", {
   object <- .analysis_obj(
     data_matrix = example_matrix,
-    outcome = exp_surv_dist(
+    outcome = outcome_surv_exponential(
       time_var = "time",
       cens_var = "cnsr",
       baseline_prior = normal_prior(0, 1000)

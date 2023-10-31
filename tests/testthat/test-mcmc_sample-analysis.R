@@ -15,7 +15,7 @@ test_that("mcmc_sample handles Analysis objects not ready to sample", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates(c("cov1", "cov2"), normal_prior(0, 1000)),
-    outcome = exp_surv_dist(
+    outcome = outcome_surv_exponential(
       time_var = "time",
       cens_var = "cnsr",
       normal_prior(0, 1000)
@@ -44,7 +44,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, exponential dist",
 
   full_exp_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
+    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100000)),
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext"
     ),
@@ -71,7 +71,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, exponential dist", {
 
   no_exp_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
+    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100000)),
     borrowing = borrowing_details("No borrowing",
       ext_flag_col = "ext"
     ),
@@ -103,7 +103,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, exponential dist, 
   full_exp_bayes_c1_ao <- create_analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates("cov1", normal_prior(0, 100000)),
-    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
+    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100000)),
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext"
     ),
@@ -138,7 +138,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, exponential dist, tw
       c("cov1", "cov2"),
       normal_prior(0, 100000)
     ),
-    outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100000)),
+    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100000)),
     borrowing = borrowing_details("No borrowing",
       ext_flag_col = "ext"
     ),
@@ -170,7 +170,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, Weibull dist", {
 
   full_weib_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = weib_ph_surv_dist(
+    outcome = outcome_surv_weibull_ph(
       "time",
       "cnsr",
       normal_prior(0, 100000),
@@ -206,7 +206,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist", {
 
   no_weib_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = weib_ph_surv_dist(
+    outcome = outcome_surv_weibull_ph(
       "time",
       "cnsr",
       normal_prior(0, 100000),
@@ -243,7 +243,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, weibull dist, one 
   full_weib_bayes_c1_ao <- create_analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates("cov1", normal_prior(0, 100000)),
-    outcome = weib_ph_surv_dist(
+    outcome = outcome_surv_weibull_ph(
       "time",
       "cnsr",
       normal_prior(0, 100000),
@@ -283,7 +283,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist, two co
       c("cov1", "cov2"),
       normal_prior(0, 100000)
     ),
-    outcome = weib_ph_surv_dist(
+    outcome = outcome_surv_weibull_ph(
       "time",
       "cnsr",
       normal_prior(0, 100000),
@@ -320,7 +320,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, binomial dist", {
 
   full_bin_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = logistic_bin_outcome("resp", normal_prior(0, 100000)),
+    outcome = outcome_bin_logistic("resp", normal_prior(0, 100000)),
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext"
     ),
@@ -351,7 +351,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, binomial dist", {
 
   no_bin_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = logistic_bin_outcome("resp", normal_prior(0, 100000)),
+    outcome = outcome_bin_logistic("resp", normal_prior(0, 100000)),
     borrowing = borrowing_details("No borrowing",
       ext_flag_col = "ext"
     ),
@@ -383,7 +383,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, binomial dist, one
   full_bin_bayes_c1_ao <- create_analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates("cov1", normal_prior(0, 100000)),
-    outcome = logistic_bin_outcome("resp", normal_prior(0, 100000)),
+    outcome = outcome_bin_logistic("resp", normal_prior(0, 100000)),
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext"
     ),
@@ -418,7 +418,7 @@ test_that("mcmc_sample for Analysis works for no borrowing, binomial dist, two c
       c("cov1", "cov2"),
       normal_prior(0, 100000)
     ),
-    outcome = logistic_bin_outcome("resp", normal_prior(0, 100000)),
+    outcome = outcome_bin_logistic("resp", normal_prior(0, 100000)),
     borrowing = borrowing_details("No borrowing",
       ext_flag_col = "ext"
     ),
@@ -444,7 +444,7 @@ test_that("mcmc_sample for Analysis works for exponential BDB, conservative borr
   skip_on_ci()
   exp_bdb_conservative <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = exp_surv_dist(
+    outcome = outcome_surv_exponential(
       time_var = "time",
       cens_var = "cnsr",
       normal_prior(0, 100000)
@@ -474,7 +474,7 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, aggressive borrowing"
   skip_on_ci()
   weib_bdb_aggressive <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = weib_ph_surv_dist(
+    outcome = outcome_surv_weibull_ph(
       time_var = "time",
       cens_var = "cnsr",
       shape_prior = normal_prior(0, 100000),
@@ -505,7 +505,7 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressiv
   skip_on_ci()
   bin_bdb_aggressive <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = logistic_bin_outcome("resp", normal_prior(0, 100000)),
+    outcome = outcome_bin_logistic("resp", normal_prior(0, 100000)),
     borrowing = borrowing_details("BDB",
       ext_flag_col = "ext",
       tau_prior = gamma_prior(1, 0.001)
