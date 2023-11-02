@@ -6,7 +6,7 @@
 #' @param covariates `Covariates`. Object of class [`Covariates`][Covariates-class] as output by
 #' the function [`add_covariates()`].
 #' @param outcome `Outcome`. Object of class [`Outcome`][Outcome-class] as output by
-#' [`exp_surv_dist()`], [`weib_ph_surv_dist()`], or [`logistic_bin_outcome()`].
+#' [`outcome_surv_exponential()`], [`outcome_surv_weibull_ph()`], or [`outcome_bin_logistic()`].
 #' @param borrowing `Borrowing`. Object of class [`Borrowing`][Borrowing-class] as output by
 #' [`borrowing_details()`].
 #' @param treatment `Treatment`. Object of class [`Treatment`][Treatment-class] as output by
@@ -28,7 +28,7 @@
 #'       covariates = c("cov1", "cov2"),
 #'       priors = normal_prior(0, 1000)
 #'     ),
-#'     outcome = exp_surv_dist(
+#'     outcome = outcome_surv_exponential(
 #'       "time",
 #'       "cnsr",
 #'       baseline_prior = normal_prior(0, 1000)

@@ -360,9 +360,9 @@ Let's start by exploring the three arms descriptively:
 
 ```{r message = FALSE, echo = FALSE, fig.align = "center", fig.dim = c(7, 4)}
 library(survival)
-library(survminer)
-km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt + ext, example_dataframe)
-ggsurvplot(fit = km_fit, data = example_dataframe, palette = "Set1")
+library(ggsurvfit)
+km_fit <- survfit2(Surv(time = time, event = 1 - cnsr) ~ trt + ext, example_dataframe)
+ggsurvfit(km_fit)
 ```
 <br>
 Wow, the external control population looks quite different from the internal
@@ -423,8 +423,8 @@ gt(
       "and treatment arm and external control arm flags."
     ),
     "outcome", paste0(
-      "Object of class Outcome as output by exp_surv_dist(), ",
-      "weib_ph_surv_dist(), or logistic_bin_outcome()."
+      "Object of class Outcome as output by outcome_surv_exponential(), ",
+      "outcome_surv_weibull_ph(), or outcome_bin_logistic()."
     ),
     "borrowing", "Object of class Borrowing as output by borrowing_details().",
     "treatment", "Object of class Treatment as output by treatment_details()."
@@ -449,9 +449,9 @@ outcomes supported by `psborrow2`, each of which has a constructor:
 gt(
   tribble(
     ~Constructor, ~Description,
-    "exp_surv_dist()", "Exponential survival distribution",
-    "weib_ph_surv_dist()", "Weibull survival distribution (proportional hazards formulation)",
-    "logistic_bin_outcome()", "Bernoulli distribution with logit parametrization"
+    "outcome_surv_exponential()", "Exponential survival distribution",
+    "outcome_surv_weibull_ph()", "Weibull survival distribution (proportional hazards formulation)",
+    "outcome_bin_logistic()", "Bernoulli distribution with logit parametrization"
   )
 ) %>%
   tab_style(
@@ -462,17 +462,17 @@ gt(
   )
 ```
 
-## Arguments to `exp_surv_dist()`
+## Arguments to `outcome_surv_exponential()`
 
 ```{r eval = FALSE}
-exp_surv_dist(
+outcome_surv_exponential(
   time_var,
   cens_var,
   baseline_prior
 )
 ```
 
-The first two arguments to `exp_surv_dist()` are straightforward:
+The first two arguments to `outcome_surv_exponential()` are straightforward:
 
 - `time_var`, Name of time variable column in model matrix
 - `cens_var`, Name of the censorship variable flag in model matrix
@@ -484,12 +484,12 @@ control arm.
 
 ##
 
-Let's create our outcome object with `exp_surv_dist()` using an uninformative
+Let's create our outcome object with `outcome_surv_exponential()` using an uninformative
 Normal prior distribution for the log hazard rate of the external control
 arm.
 
 ```{r}
-exp_outcome <- exp_surv_dist(
+exp_outcome <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
   baseline_prior = normal_prior(0, 10000)
@@ -597,7 +597,7 @@ We can do this in one function call as well:
 ```{r message = FALSE}
 analysis_object <- create_analysis_obj(
   data_matrix = example_matrix,
-  outcome = exp_surv_dist(
+  outcome = outcome_surv_exponential(
     time_var = "time",
     cens_var = "cnsr",
     baseline_prior = normal_prior(0, 10000)
@@ -792,7 +792,7 @@ analysis_object_ps <- create_analysis_obj(
     c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
     normal_prior(0, 10000)
   ),
-  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
@@ -1208,7 +1208,7 @@ Now, let's create a `Simulation` object:
 ```{r}
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
-  outcome = exp_surv_dist("time",
+  outcome = outcome_surv_exponential("time",
     "cnsr",
     baseline_prior = normal_prior(0, 10000)
   ),

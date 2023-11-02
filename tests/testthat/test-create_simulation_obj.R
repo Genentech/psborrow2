@@ -57,7 +57,7 @@ valid_borrowing <- sim_borrowing_list(
 
 # Valid outcome list
 valid_outcome <- sim_outcome_list(
-  list(standard_outcome = exp_surv_dist(
+  list(standard_outcome = outcome_surv_exponential(
     time_var = "eventtime",
     cens_var = "censor",
     baseline_prior = normal_prior(0, 1000)
@@ -103,7 +103,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
   expect_error(
     create_simulation_obj(
       data_matrix_list = valid_data_list,
-      outcome = list(exp_surv_dist("eventtime", "censor", normal_prior(0, 1000))),
+      outcome = list(outcome_surv_exponential("eventtime", "censor", normal_prior(0, 1000))),
       borrowing = valid_borrowing,
       treatment = valid_treatment
     ),
@@ -171,7 +171,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
     create_simulation_obj(
       data_matrix_list = valid_data_list,
       covariate = valid_covariate,
-      outcome = exp_surv_dist("eventtime", "censor", normal_prior(0, 100)),
+      outcome = outcome_surv_exponential("eventtime", "censor", normal_prior(0, 100)),
       borrowing = valid_borrowing,
       treatment = valid_treatment
     ),
@@ -221,7 +221,7 @@ test_that("`create_simulation_obj()` catches incorrect column names", {
     create_simulation_obj(
       data_matrix_list = valid_data_list,
       outcome = sim_outcome_list(
-        list(basic = exp_surv_dist(
+        list(basic = outcome_surv_exponential(
           "eventtime",
           "wrong_censor",
           normal_prior(0, 1000)
@@ -298,12 +298,12 @@ test_that("`create_simulation_obj()` correctly gets number of combinations", {
     data_matrix_list = valid_data_list,
     covariate = valid_covariate,
     outcome = sim_outcome_list(list(
-      exp = exp_surv_dist(
+      exp = outcome_surv_exponential(
         time_var = "eventtime",
         cens_var = "censor",
         normal_prior(0, 1000)
       ),
-      weib = weib_ph_surv_dist(
+      weib = outcome_surv_weibull_ph(
         time_var = "eventtime",
         cens_var = "censor",
         normal_prior(0, 1000),

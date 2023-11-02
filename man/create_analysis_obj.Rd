@@ -22,7 +22,7 @@ control arm flags.}
 the function \code{\link[=add_covariates]{add_covariates()}}.}
 
 \item{outcome}{\code{Outcome}. Object of class \code{\link[=Outcome-class]{Outcome}} as output by
-\code{\link[=exp_surv_dist]{exp_surv_dist()}}, \code{\link[=weib_ph_surv_dist]{weib_ph_surv_dist()}}, or \code{\link[=logistic_bin_outcome]{logistic_bin_outcome()}}.}
+\code{\link[=outcome_surv_exponential]{outcome_surv_exponential()}}, \code{\link[=outcome_surv_weibull_ph]{outcome_surv_weibull_ph()}}, or \code{\link[=outcome_bin_logistic]{outcome_bin_logistic()}}.}
 
 \item{borrowing}{\code{Borrowing}. Object of class \code{\link[=Borrowing-class]{Borrowing}} as output by
 \code{\link[=borrowing_details]{borrowing_details()}}.}
@@ -47,7 +47,7 @@ if (check_cmdstan()) {
       covariates = c("cov1", "cov2"),
       priors = normal_prior(0, 1000)
     ),
-    outcome = exp_surv_dist(
+    outcome = outcome_surv_exponential(
       "time",
       "cnsr",
       baseline_prior = normal_prior(0, 1000)

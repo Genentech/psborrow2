@@ -55,7 +55,7 @@
 #'
 #' sim_object <- psborrow2:::.simulation_obj(
 #'   data_matrix_list = sdl,
-#'   outcome = sim_outcome_list(list(default = logistic_bin_outcome("ep", normal_prior(0, 1000)))),
+#'   outcome = sim_outcome_list(list(default = outcome_bin_logistic("ep", normal_prior(0, 1000)))),
 #'   covariate = sim_covariate_list(covariate_list = list(`No adjustment` = NULL)),
 #'   borrowing = sim_borrowing_list(list(
 #'     full_borrowing = borrowing_details("Full borrowing", "ext"),

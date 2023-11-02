@@ -5,7 +5,7 @@
     Output
       Analysis Object
       
-      Outcome model: ExponentialSurvDist 
+      Outcome model: OutcomeSurvExponential 
       Outcome variables: time cnsr 
       
       Borrowing method: Full borrowing 
@@ -29,7 +29,7 @@
     Output
       Analysis Object
       
-      Outcome model: ExponentialSurvDist 
+      Outcome model: OutcomeSurvExponential 
       Outcome variables: time cnsr 
       
       Borrowing method: Full borrowing 
@@ -51,7 +51,7 @@
     Output
       Analysis Object
       
-      Outcome model: ExponentialSurvDist 
+      Outcome model: OutcomeSurvExponential 
       Outcome variables: time cnsr 
       
       Borrowing method: No borrowing 

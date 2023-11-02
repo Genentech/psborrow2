@@ -36,7 +36,7 @@ setMethod(
 #'       covariates = c("cov1", "cov2"),
 #'       priors = normal_prior(0, 1000)
 #'     ),
-#'     outcome = weib_ph_surv_dist(
+#'     outcome = outcome_surv_weibull_ph(
 #'       "time",
 #'       "cnsr",
 #'       shape_prior = normal_prior(0, 1000),
@@ -172,6 +172,7 @@ setMethod(
 #'   index = "index"
 #' )
 #'
+<<<<<<< HEAD
 #' if (check_cmdstan()) {
 #'   sim_object <- create_simulation_obj(
 #'     data_matrix_list = sdl,
@@ -182,6 +183,17 @@ setMethod(
 #'     )),
 #'     treatment = treatment_details("trt", normal_prior(0, 1000))
 #'   )
+=======
+#' sim_object <- create_simulation_obj(
+#'   data_matrix_list = sdl,
+#'   outcome = outcome_bin_logistic("ep", normal_prior(0, 1000)),
+#'   borrowing = sim_borrowing_list(list(
+#'     full_borrowing = borrowing_details("Full borrowing", "ext"),
+#'     bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
+#'   )),
+#'   treatment = treatment_details("trt", normal_prior(0, 1000))
+#' )
+>>>>>>> main
 #'
 #'   mcmc_sample(sim_object, chains = 1, iter_warmup = 500L, iter_sampling = 1000L)
 #' }

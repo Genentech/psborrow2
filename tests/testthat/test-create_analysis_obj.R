@@ -33,18 +33,18 @@ td <- treatment_details(
   half_normal_prior(0, 1000)
 )
 
-esd <- exp_surv_dist(
+esd <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
   baseline_prior = normal_prior(0, 1000)
 )
-wpsd <- weib_ph_surv_dist(
+wpsd <- outcome_surv_weibull_ph(
   time_var = "time",
   cens_var = "cnsr",
   shape_prior = normal_prior(0, 1000),
   baseline_prior = normal_prior(0, 1000)
 )
-lbo <- logistic_bin_outcome(
+lbo <- outcome_bin_logistic(
   binary_var = "resp",
   baseline_prior = normal_prior(0, 1000)
 )
@@ -147,7 +147,7 @@ test_that("Columns in analysis_obj should be in matrix", {
     create_analysis_obj(
       data_matrix = example_matrix,
       covariates = ac,
-      outcome = exp_surv_dist("time", "cens", normal_prior(0, 1000)),
+      outcome = outcome_surv_exponential("time", "cens", normal_prior(0, 1000)),
       treatment = td,
       borrowing = bd_fb
     ),
@@ -158,7 +158,7 @@ test_that("Columns in analysis_obj should be in matrix", {
     create_analysis_obj(
       data_matrix = example_matrix,
       covariates = ac,
-      outcome = logistic_bin_outcome("response", normal_prior(0, 1000)),
+      outcome = outcome_bin_logistic("response", normal_prior(0, 1000)),
       treatment = td,
       borrowing = bd_fb
     ),
