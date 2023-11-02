@@ -9,6 +9,7 @@
 #' Stan data {} block.
 #'
 #' @include create_analysis_obj.R
+#' @noRd
 #'
 #' @examples
 #' anls_obj <- create_analysis_obj(

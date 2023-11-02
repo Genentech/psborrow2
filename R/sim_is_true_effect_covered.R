@@ -8,6 +8,7 @@
 #' to search for the true effect.
 #'
 #' @return 1L if the effect is contained within the quantiles, else 0L
+#' @noRd
 #' @examples
 #' base_mat <- matrix(
 #'   c(

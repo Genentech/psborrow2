@@ -2,16 +2,29 @@
 % Please edit documentation in R/cmdstan.R
 \name{check_cmdstanr}
 \alias{check_cmdstanr}
+\alias{check_cmdstan}
 \title{Check Stan}
 \usage{
 check_cmdstanr(check_sampling = FALSE)
+
+check_cmdstan()
 }
 \arguments{
 \item{check_sampling}{Compile and sample from the "logistic" example model.}
 }
+\value{
+\code{check_cmdstanr()} prints results from checks.
+
+\code{check_cmdstan()} returns \code{TRUE} if \code{CmdStan} seems to be installed, otherwise \code{FALSE}
+}
 \description{
 Check whether \code{cmdstanr} is available and prints version and logistic example.
 }
+\section{Functions}{
+\itemize{
+\item \code{check_cmdstan()}: Check if the \code{CmdStan} command line tools are available.
+
+}}
 \examples{
 check_cmdstanr()
 }

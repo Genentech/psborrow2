@@ -76,6 +76,7 @@ valid_treatment <- sim_treatment_list(
 )
 
 # Valid simulation object
+skip_if_not(check_cmdstan())
 valid_sim_obj <- create_simulation_obj(
   data_matrix_list = valid_data_list,
   outcome = valid_outcome,

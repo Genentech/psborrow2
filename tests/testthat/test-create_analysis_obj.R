@@ -1,4 +1,5 @@
 skip_on_cran()
+skip_if_not(check_cmdstan())
 
 # Build some valid inputs ----
 ac <- add_covariates(
