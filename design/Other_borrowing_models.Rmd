@@ -222,7 +222,7 @@ code.
 ```{r}
 setMethod(
   "make_model_string_model",
-  signature("BDB", "PiecewiseExponentialSurvDist", "Analysis"),
+  signature("BDB", "PiecewiseOutcomeSurvExponential", "Analysis"),
   function(borrowing, outcome, analysis_obj) {
     ### Treatment prior
     beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
@@ -286,7 +286,7 @@ setMethod(
 
 setMethod(
   "make_model_string_model",
-  signature("No_Borrowing", "PiecewiseExponentialSurvDist", "Analysis"),
+  signature("No_Borrowing", "PiecewiseOutcomeSurvExponential", "Analysis"),
   function(borrowing, outcome, analysis_obj) {
     ### Treatment prior
     beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
@@ -344,8 +344,8 @@ setMethod(
 ### Classes for Piecewise exponential survival
 
 ```{r}
-.piecewise_exp_surv_dist <- setClass(
-  "PiecewiseExponentialSurvDist",
+.piecewise_outcome_surv_exponential <- setClass(
+  "PiecewiseOutcomeSurvExponential",
   contains = "TimeToEvent",
   slots = c(
     start_times = "numeric",
@@ -365,25 +365,25 @@ setMethod(
 #' @param baseline_prior `Prior`. Object of class `Prior` specifying prior distribution for the baseline outcome.
 #' @param start_times numeric. A vector of times to define periods.
 #'
-#' @return Object of class [`PiecewiseExponentialSurvDist`][PiecewiseExponentialSurvDist-class].
+#' @return Object of class [`PiecewiseOutcomeSurvExponential`][PiecewiseOutcomeSurvExponential-class].
 #' @export
 #' @family outcome models
 #'
 #' @examples
-#' es <- piecewise_exp_surv_dist(
+#' es <- piecewise_outcome_surv_exponential(
 #'   time_var = "time",
 #'   cens_var = "cens",
 #'   baseline_prior = normal_prior(0, 1000),
 #'   start_times = c(0, 10, 20)
 #' )
-piecewise_exp_surv_dist <- function(time_var, cens_var, start_times, baseline_prior, weight_var = "") {
+piecewise_outcome_surv_exponential <- function(time_var, cens_var, start_times, baseline_prior, weight_var = "") {
   assert_string(time_var)
   assert_string(cens_var)
   assert_string(weight_var)
   assert_numeric(start_times, lower = 0, finite = TRUE, any.missing = FALSE, min.len = 1, sorted = TRUE)
   assert_class(baseline_prior, "Prior")
   has_weight <- isTRUE(weight_var != "")
-  .piecewise_exp_surv_dist(
+  .piecewise_outcome_surv_exponential(
     time_var = time_var,
     cens_var = cens_var,
     baseline_prior = baseline_prior,

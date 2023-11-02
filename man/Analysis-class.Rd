@@ -21,7 +21,7 @@ control arm flags.}
 the function \code{covariate_details()}.}
 
 \item{\code{outcome}}{\code{Outcome}. Object of class \code{Outcome} as output by
-\code{exp_surv_dist()}, \code{weib_ph_surv_dist()}, or \code{logistic_bin_outcome()}.}
+\code{outcome_surv_exponential()}, \code{outcome_surv_weibull_ph()}, or \code{outcome_bin_logistic()}.}
 
 \item{\code{borrowing}}{\code{Borrowing}. Object of class \code{Borrowing} as output by
 \code{borrowing_details()}.}

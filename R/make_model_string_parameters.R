@@ -10,7 +10,7 @@
 #' @examples
 #' anls_obj <- psborrow2:::.analysis_obj(
 #'   data_matrix = example_matrix,
-#'   outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 100)),
+#'   outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100)),
 #'   borrowing = borrowing_details(
 #'     "Full borrowing",
 #'     "ext"

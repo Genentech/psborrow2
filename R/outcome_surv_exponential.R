@@ -1,27 +1,27 @@
-#' `ExponentialSurvDist` Class
+#' `OutcomeSurvExponential` Class
 #'
 #' A class for defining a time-to-event survival analysis with an
 #' exponential survival distribution.
-#' Objects of class `ExponentialSurvDist` should not be created directly
-#' but by the constructor [exp_surv_dist()].
+#' Objects of class `OutcomeSurvExponential` should not be created directly
+#' but by the constructor [outcome_surv_exponential()].
 #'
 #' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
-#' Empty string for `ExponentialSurvDist`.
+#' Empty string for `OutcomeSurvExponential`.
 #' @slot param_stan_code character. stan parameter code block containing text to interpolate into stan model.
-#' Empty string for `ExponentialSurvDist`.
+#' Empty string for `OutcomeSurvExponential`.
 #' @slot likelihood_stan_code character. stan model likelihood code block containing text
 #' to interpolate into stan model.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate (0).
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
-#' Empty for `ExponentialSurvDist`.
+#' Empty for `OutcomeSurvExponential`.
 #' @slot time_var character. Variable used for time in `TimeToEvent` objects.
 #' @slot cens_var character. Variable used for censoring in `TimeToEvent` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @include outcome_class.R
 #' @family outcome
-.exp_surv_dist <- setClass(
-  "ExponentialSurvDist",
+.outcome_surv_exponential <- setClass(
+  "OutcomeSurvExponential",
   contains = "TimeToEvent",
   prototype = list(
     n_param = 0L,
@@ -60,23 +60,23 @@
 #' - \emph{'Full borrowing'} or \emph{'No borrowing'}: the `baseline_prior` for
 #' these borrowing methods refers to the log hazard rate for the
 #' internal control arm.
-#' @return Object of class [`ExponentialSurvDist`][ExponentialSurvDist-class].
+#' @return Object of class [`OutcomeSurvExponential`][OutcomeSurvExponential-class].
 #' @export
 #' @family outcome models
 #'
 #' @examples
-#' es <- exp_surv_dist(
+#' es <- outcome_surv_exponential(
 #'   time_var = "time",
 #'   cens_var = "cens",
 #'   baseline_prior = normal_prior(0, 1000)
 #' )
-exp_surv_dist <- function(time_var, cens_var, baseline_prior, weight_var = "") {
+outcome_surv_exponential <- function(time_var, cens_var, baseline_prior, weight_var = "") {
   assert_string(time_var)
   assert_string(cens_var)
   assert_string(weight_var)
   assert_class(baseline_prior, "Prior")
   has_weight <- isTRUE(weight_var != "")
-  .exp_surv_dist(
+  .outcome_surv_exponential(
     time_var = time_var,
     cens_var = cens_var,
     baseline_prior = baseline_prior,
@@ -98,5 +98,18 @@ exp_surv_dist <- function(time_var, cens_var, baseline_prior, weight_var = "") {
       {{weight}}",
       weight = if (has_weight) "vector[N] weight;" else ""
     )
+  )
+}
+
+#' Legacy function for the exponential survival distribution
+#'
+#' Please use `outcome_surv_exponential()` instead.
+#' @param ... Deprecated arguments to `exp_surv_dist()`.
+#' @export
+exp_surv_dist <- function(...) {
+  .Defunct(
+    "outcome_surv_exponential",
+    "psborrow2",
+    "`exp_surv_dist()` is deprecated. Use `outcome_surv_exponential()` instead."
   )
 }
