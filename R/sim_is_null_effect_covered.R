@@ -7,6 +7,7 @@
 #' to search for the null effect.
 #'
 #' @return 1L if the null effect (1.0) is contained within the quantiles, else 0L
+#' @noRd
 #' @examples
 #' base_mat <- matrix(
 #'   c(
@@ -53,7 +54,7 @@
 #'
 #' x <- create_simulation_obj(
 #'   data_matrix_list = sdl,
-#'   outcome = logistic_bin_outcome("ep", normal_prior(0, 1000)),
+#'   outcome = outcome_bin_logistic("ep", normal_prior(0, 1000)),
 #'   borrowing = sim_borrowing_list(list(
 #'     full_borrowing = borrowing_details("Full borrowing", "ext"),
 #'     bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))

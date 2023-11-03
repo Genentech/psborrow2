@@ -55,7 +55,7 @@ valid_borrowing <- sim_borrowing_list(
 
 # Valid outcome list
 valid_outcome <- sim_outcome_list(
-  list(standard_outcome = exp_surv_dist(
+  list(standard_outcome = outcome_surv_exponential(
     time_var = "eventtime",
     cens_var = "censor",
     baseline_prior = normal_prior(0, 1000)
@@ -76,6 +76,7 @@ valid_treatment <- sim_treatment_list(
 )
 
 # Valid simulation object
+skip_if_not(check_cmdstan())
 valid_sim_obj <- create_simulation_obj(
   data_matrix_list = valid_data_list,
   outcome = valid_outcome,

@@ -9,6 +9,7 @@
 #' @details
 #' MSE will be calculated as (true_effect - median_estimated_effect) ^ 2
 #'
+#' @noRd
 #' @examples
 #' base_mat <- matrix(
 #'   c(
@@ -55,7 +56,7 @@
 #'
 #' x <- create_simulation_obj(
 #'   data_matrix_list = sdl,
-#'   outcome = logistic_bin_outcome("ep", normal_prior(0, 1000)),
+#'   outcome = outcome_bin_logistic("ep", normal_prior(0, 1000)),
 #'   borrowing = sim_borrowing_list(list(
 #'     full_borrowing = borrowing_details("Full borrowing", "ext"),
 #'     bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))

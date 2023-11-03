@@ -273,13 +273,12 @@ my_sim_data_list
 ## `outcome`
 
 `outcome` is where you pass information on the study outcomes. You can pass
-either a single `Outcome` class object (e.g., as produced by `exp_surv_dist()`),
+either a single `Outcome` class object (e.g., as produced by `outcome_surv_exponential()`),
 or a list of `Outcome` class objects passed to `sim_outcome_list()`. For our
 example, let's just use a single exponential distribution.
 
-
-```r
-my_sim_out <- exp_surv_dist(
+```{r}
+my_sim_out <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
   baseline_prior = normal_prior(0, 1000)

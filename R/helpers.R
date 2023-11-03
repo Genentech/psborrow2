@@ -152,31 +152,33 @@ parse_constraint <- function(object) {
 #' @export
 #'
 #' @examples
-#' analysis_object <- create_analysis_obj(
-#'   data_matrix = example_matrix,
-#'   covariates = add_covariates(
-#'     covariates = c("cov1", "cov2"),
-#'     priors = normal_prior(0, 1000)
-#'   ),
-#'   outcome = exp_surv_dist(
-#'     "time",
-#'     "cnsr",
-#'     baseline_prior = normal_prior(0, 1000)
-#'   ),
-#'   borrowing = borrowing_details(
-#'     "BDB",
-#'     "ext",
-#'     exponential_prior(.001)
-#'   ),
-#'   treatment = treatment_details(
-#'     "trt",
-#'     normal_prior(0, 1000)
+#' if (check_cmdstan()) {
+#'   analysis_object <- create_analysis_obj(
+#'     data_matrix = example_matrix,
+#'     covariates = add_covariates(
+#'       covariates = c("cov1", "cov2"),
+#'       priors = normal_prior(0, 1000)
+#'     ),
+#'     outcome = outcome_surv_exponential(
+#'       "time",
+#'       "cnsr",
+#'       baseline_prior = normal_prior(0, 1000)
+#'     ),
+#'     borrowing = borrowing_details(
+#'       "BDB",
+#'       "ext",
+#'       exponential_prior(.001)
+#'     ),
+#'     treatment = treatment_details(
+#'       "trt",
+#'       normal_prior(0, 1000)
+#'     )
 #'   )
-#' )
-#' samples <- mcmc_sample(analysis_object)
-#' draws <- samples$draws()
-#' renamed_draws <- rename_draws_covariates(draws, analysis_object)
-#' summary(renamed_draws)
+#'   samples <- mcmc_sample(analysis_object)
+#'   draws <- samples$draws()
+#'   renamed_draws <- rename_draws_covariates(draws, analysis_object)
+#'   summary(renamed_draws)
+#' }
 rename_draws_covariates <- function(draws, analysis) {
   assert_class(draws, "draws")
   assert_class(analysis, "Analysis")
@@ -196,7 +198,7 @@ variable_dictionary <- function(analysis_obj) {
   assert_class(analysis_obj, "Analysis")
   is_tte <- isTRUE(inherits(analysis_obj@outcome, "TimeToEvent"))
   is_bdb <- isTRUE(analysis_obj@borrowing@method == "BDB")
-  is_weib <- is_tte && isTRUE(inherits(analysis_obj@outcome, "WeibullPHSurvDist"))
+  is_weib <- is_tte && isTRUE(inherits(analysis_obj@outcome, "OutcomeSurvWeibullPH"))
   has_covs <- !is.null(analysis_obj@covariates)
 
   covariates <- if (has_covs) {

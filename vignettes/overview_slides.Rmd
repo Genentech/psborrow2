@@ -1691,7 +1691,12 @@ It looks like we have 50 patients in our internal control,
 
 Let's start by exploring the three arms descriptively:
 
-<img src="figure-overview_slides-unnamed-chunk-15-1.png" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" />
+```{r message = FALSE, echo = FALSE, fig.align = "center", fig.dim = c(7, 4)}
+library(survival)
+library(survminer)
+km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt + ext, example_dataframe)
+ggsurvplot(fit = km_fit, data = example_dataframe, palette = "Set1")
+```
 <br>
 Wow, the external control population looks quite different from the internal
 control population!
@@ -2196,12 +2201,29 @@ create_analysis_obj(
 )
 ```
 
-<!--html_preserve--><div id="pkabfvefvw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#pkabfvefvw table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+```{r echo = FALSE}
+gt(
+  tribble(
+    ~Argument, ~Description,
+    "data_matrix", paste0(
+      "The data matrix, including all relevant outcome variables,",
+      "and treatment arm and external control arm flags."
+    ),
+    "outcome", paste0(
+      "Object of class Outcome as output by exp_surv_dist(), ",
+      "weib_ph_surv_dist(), or logistic_bin_outcome()."
+    ),
+    "borrowing", "Object of class Borrowing as output by borrowing_details().",
+    "treatment", "Object of class Treatment as output by treatment_details()."
+  )
+) %>%
+  tab_style(
+    locations = cells_body(columns = "Argument"),
+    style = list(
+      cell_text(weight = "bold")
+    )
+  )
+```
 
 #pkabfvefvw thead, #pkabfvefvw tbody, #pkabfvefvw tfoot, #pkabfvefvw tr, #pkabfvefvw td, #pkabfvefvw th {
   border-style: none;
@@ -2666,471 +2688,26 @@ outcomes supported by `psborrow2`, each of which has a constructor:
 
 <br>
 
-<!--html_preserve--><div id="bumhdwymmq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#bumhdwymmq table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#bumhdwymmq thead, #bumhdwymmq tbody, #bumhdwymmq tfoot, #bumhdwymmq tr, #bumhdwymmq td, #bumhdwymmq th {
-  border-style: none;
-}
-
-#bumhdwymmq p {
-  margin: 0;
-  padding: 0;
-}
-
-#bumhdwymmq .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#bumhdwymmq .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#bumhdwymmq .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#bumhdwymmq .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#bumhdwymmq .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#bumhdwymmq .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#bumhdwymmq .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#bumhdwymmq .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#bumhdwymmq .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#bumhdwymmq .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#bumhdwymmq .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#bumhdwymmq .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#bumhdwymmq .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#bumhdwymmq .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#bumhdwymmq .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#bumhdwymmq .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#bumhdwymmq .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#bumhdwymmq .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#bumhdwymmq .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#bumhdwymmq .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#bumhdwymmq .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#bumhdwymmq .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#bumhdwymmq .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#bumhdwymmq .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#bumhdwymmq .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#bumhdwymmq .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#bumhdwymmq .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#bumhdwymmq .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#bumhdwymmq .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#bumhdwymmq .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#bumhdwymmq .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#bumhdwymmq .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#bumhdwymmq .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#bumhdwymmq .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#bumhdwymmq .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#bumhdwymmq .gt_left {
-  text-align: left;
-}
-
-#bumhdwymmq .gt_center {
-  text-align: center;
-}
-
-#bumhdwymmq .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#bumhdwymmq .gt_font_normal {
-  font-weight: normal;
-}
-
-#bumhdwymmq .gt_font_bold {
-  font-weight: bold;
-}
-
-#bumhdwymmq .gt_font_italic {
-  font-style: italic;
-}
-
-#bumhdwymmq .gt_super {
-  font-size: 65%;
-}
-
-#bumhdwymmq .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#bumhdwymmq .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#bumhdwymmq .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#bumhdwymmq .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#bumhdwymmq .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#bumhdwymmq .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#bumhdwymmq .gt_indent_5 {
-  text-indent: 25px;
-}
-</style>
-<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-  <thead>
-
-    <tr class="gt_col_headings">
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Constructor">Constructor</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Description">Description</th>
-    </tr>
-  </thead>
-  <tbody class="gt_table_body">
-    <tr><td headers="Constructor" class="gt_row gt_left" style="font-weight: bold;">exp_surv_dist()</td>
-<td headers="Description" class="gt_row gt_left">Exponential survival distribution</td></tr>
-    <tr><td headers="Constructor" class="gt_row gt_left" style="font-weight: bold;">weib_ph_surv_dist()</td>
-<td headers="Description" class="gt_row gt_left">Weibull survival distribution (proportional hazards formulation)</td></tr>
-    <tr><td headers="Constructor" class="gt_row gt_left" style="font-weight: bold;">logistic_bin_outcome()</td>
-<td headers="Description" class="gt_row gt_left">Bernoulli distribution with logit parametrization</td></tr>
-  </tbody>
-
-
-</table>
-</div><!--/html_preserve-->
+```{r, echo = FALSE}
+gt(
+  tribble(
+    ~Constructor, ~Description,
+    "exp_surv_dist()", "Exponential survival distribution",
+    "weib_ph_surv_dist()", "Weibull survival distribution (proportional hazards formulation)",
+    "logistic_bin_outcome()", "Bernoulli distribution with logit parametrization"
+  )
+) %>%
+  tab_style(
+    locations = cells_body(columns = "Constructor"),
+    style = list(
+      cell_text(weight = "bold")
+    )
+  )
+```
 
 ## Arguments to `exp_surv_dist()`
 
-
-```r
+```{r eval = FALSE}
 exp_surv_dist(
   time_var,
   cens_var,
@@ -3138,7 +2715,7 @@ exp_surv_dist(
 )
 ```
 
-The first two arguments to `exp_surv_dist()` are straightforward:
+The first two arguments to `outcome_surv_exponential()` are straightforward:
 
 - `time_var`, Name of time variable column in model matrix
 - `cens_var`, Name of the censorship variable flag in model matrix
@@ -3150,12 +2727,11 @@ control arm.
 
 ##
 
-Let's create our outcome object with `exp_surv_dist()` using an uninformative
+Let's create our outcome object with `outcome_surv_exponential()` using an uninformative
 Normal prior distribution for the log hazard rate of the external control
 arm.
 
-
-```r
+```{r}
 exp_outcome <- exp_surv_dist(
   time_var = "time",
   cens_var = "cnsr",
@@ -3288,7 +2864,7 @@ We can do this in one function call as well:
 ```r
 analysis_object <- create_analysis_obj(
   data_matrix = example_matrix,
-  outcome = exp_surv_dist(
+  outcome = outcome_surv_exponential(
     time_var = "time",
     cens_var = "cnsr",
     baseline_prior = normal_prior(0, 10000)
@@ -3978,7 +3554,7 @@ analysis_object_ps <- create_analysis_obj(
     c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
     normal_prior(0, 10000)
   ),
-  outcome = exp_surv_dist("time", "cnsr", normal_prior(0, 10000)),
+  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
@@ -4707,7 +4283,7 @@ Now, let's create a `Simulation` object:
 ```r
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
-  outcome = exp_surv_dist("time",
+  outcome = outcome_surv_exponential("time",
     "cnsr",
     baseline_prior = normal_prior(0, 10000)
   ),

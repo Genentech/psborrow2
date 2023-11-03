@@ -22,7 +22,7 @@ with \code{sim_covariate()}, a single \code{Covariate} object created by \code{a
 or \code{NULL} (no covariate adjustment).}
 
 \item{outcome}{\code{SimOutcomeList} or \code{Outcome}. List of \code{Outcome} objects created with
-\code{sim_outcome()}, or single \code{Outcome} object (e.g., created by \code{exp_surv_dist()}).}
+\code{sim_outcome()}, or single \code{Outcome} object (e.g., created by \code{outcome_surv_exponential()}).}
 
 \item{borrowing}{\code{SimBorrowingList} or \code{Borrowing}. List of \code{Borrowing} objects created
 with \code{sim_borrowing()}, or a single \code{Borrowing} object created by \code{borrowing_details()}.}
@@ -83,13 +83,15 @@ sdl <- sim_data_list(
   index = "index"
 )
 
-sim_object <- create_simulation_obj(
-  data_matrix_list = sdl,
-  outcome = logistic_bin_outcome("ep", normal_prior(0, 1000)),
-  borrowing = sim_borrowing_list(list(
-    full_borrowing = borrowing_details("Full borrowing", "ext"),
-    bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
-  )),
-  treatment = treatment_details("trt", normal_prior(0, 1000))
-)
+if (check_cmdstan()) {
+  sim_object <- create_simulation_obj(
+    data_matrix_list = sdl,
+    outcome = outcome_bin_logistic("ep", normal_prior(0, 1000)),
+    borrowing = sim_borrowing_list(list(
+      full_borrowing = borrowing_details("Full borrowing", "ext"),
+      bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
+    )),
+    treatment = treatment_details("trt", normal_prior(0, 1000))
+  )
+}
 }
