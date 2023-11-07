@@ -7,7 +7,7 @@
 #' @return list of lists of `Analysis` objects
 #'
 #' @include create_simulation_obj.R
-#'
+#' @noRd
 #' @examples
 #'
 #' base_mat <- matrix(
@@ -90,23 +90,23 @@ make_analysis_object_list <- function(simulation_obj,
 
     # Objects needed for `create_analysis_obj()`
     covariates <- simulation_obj@covariate@covariate_list[[
-    guide_row[["covariate_scenario"]]
+      guide_row[["covariate_scenario"]]
     ]]
 
     outcome <- simulation_obj@outcome@outcome_list[[
-    guide_row[["outcome_scenario"]]
+      guide_row[["outcome_scenario"]]
     ]]
 
     borrowing <- simulation_obj@borrowing@borrowing_list[[
-    guide_row[["borrowing_scenario"]]
+      guide_row[["borrowing_scenario"]]
     ]]
 
     treatment <- simulation_obj@treatment@treatment_list[[
-    guide_row[["treatment_scenario"]]
+      guide_row[["treatment_scenario"]]
     ]]
 
     data_matrix_list <- simulation_obj@data_matrix_list@data_list[[
-    guide_row[[simulation_obj@data_matrix_list@index]]
+      guide_row[[simulation_obj@data_matrix_list@index]]
     ]]
 
     analysis_obj_list[[i]] <- lapply(

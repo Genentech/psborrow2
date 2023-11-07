@@ -7,6 +7,7 @@
 #' to search for the null effect.
 #'
 #' @return 1L if the null effect (1.0) is contained within the quantiles, else 0L
+#' @noRd
 #' @examples
 #' base_mat <- matrix(
 #'   c(

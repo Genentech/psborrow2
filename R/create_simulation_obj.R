@@ -61,15 +61,17 @@
 #'   index = "index"
 #' )
 #'
-#' sim_object <- create_simulation_obj(
-#'   data_matrix_list = sdl,
-#'   outcome = outcome_bin_logistic("ep", normal_prior(0, 1000)),
-#'   borrowing = sim_borrowing_list(list(
-#'     full_borrowing = borrowing_details("Full borrowing", "ext"),
-#'     bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
-#'   )),
-#'   treatment = treatment_details("trt", normal_prior(0, 1000))
-#' )
+#' if (check_cmdstan()) {
+#'   sim_object <- create_simulation_obj(
+#'     data_matrix_list = sdl,
+#'     outcome = outcome_bin_logistic("ep", normal_prior(0, 1000)),
+#'     borrowing = sim_borrowing_list(list(
+#'       full_borrowing = borrowing_details("Full borrowing", "ext"),
+#'       bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
+#'     )),
+#'     treatment = treatment_details("trt", normal_prior(0, 1000))
+#'   )
+#' }
 #' @export
 create_simulation_obj <- function(data_matrix_list,
                                   covariate = NULL,
