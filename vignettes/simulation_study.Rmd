@@ -82,8 +82,8 @@ sim_single_matrix <- function(n = 500, # n simulated pts
                                 0.7
                               ), # proportion external control
                               hr = 0.70, # true HR for the treatment
-                              drift_hr = 1.0 # HR of external/internal
-) {
+                              drift_hr = 1.0, # HR of external/internal
+                              ...) {
   # checks
   if (sum(prob) != 1.0) {
     stop("prob must sum to 1")
@@ -112,7 +112,8 @@ sim_single_matrix <- function(n = 500, # n simulated pts
       ext = log(drift_hr)
     ),
     x = df_ids,
-    maxt = 50
+    maxt = 50,
+    ...
   )
 
   df_surv$censor <- 1 - df_surv$status
@@ -130,12 +131,12 @@ sim_single_matrix <- function(n = 500, # n simulated pts
 ```r
 head(sim_single_matrix(n = 500, hr = 0.5, drift_hr = 1.2))
 #      id ext trt      time status cnsr
-# [1,]  1   0   0 12.316713      1    0
-# [2,]  2   0   0 18.337455      1    0
-# [3,]  3   0   0  8.261258      1    0
-# [4,]  4   0   0 13.727587      1    0
-# [5,]  5   0   0  3.448558      1    0
-# [6,]  6   0   0  1.533699      1    0
+# [1,]  1   0   0  2.339763      1    0
+# [2,]  2   0   0 18.286644      1    0
+# [3,]  3   0   0 19.146830      1    0
+# [4,]  4   0   0  1.366114      1    0
+# [5,]  5   0   0 10.424151      1    0
+# [6,]  6   0   0 15.515215      1    0
 ```
 
 Using this function, let's simulate a list of lists of matrices with four
@@ -277,7 +278,8 @@ either a single `Outcome` class object (e.g., as produced by `outcome_surv_expon
 or a list of `Outcome` class objects passed to `sim_outcome_list()`. For our
 example, let's just use a single exponential distribution.
 
-```{r}
+
+```r
 my_sim_out <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
@@ -285,17 +287,17 @@ my_sim_out <- outcome_surv_exponential(
 )
 
 my_sim_out
-# Outcome object with class ExponentialSurvDist
-#
+# Outcome object with class OutcomeSurvExponential 
+# 
 # Outcome variables:
-# time_var cens_var
-#   "time"   "cnsr"
-#
+# time_var cens_var 
+#   "time"   "cnsr" 
+# 
 # Baseline prior:
 # Normal Distribution
 # Parameters:
 #  Stan  R    Value
-#  mu    mean    0
+#  mu    mean    0 
 #  sigma sd   1000
 ```
 
@@ -356,14 +358,14 @@ my_sim_treat <- treatment_details("trt", normal_prior(0, 1000))
 
 my_sim_treat
 # Treatment object
-#
-# Treatment flag column: trt
-#
+# 
+# Treatment flag column: trt 
+# 
 # Treatment effect prior:
 # Normal Distribution
 # Parameters:
 #  Stan  R    Value
-#  mu    mean    0
+#  mu    mean    0 
 #  sigma sd   1000
 ```
 
@@ -481,7 +483,7 @@ class(simulation_res)
 # [1] "psborrow2"
 ```
 
-This evaluation took about 33.3
+This evaluation took about 20.2
 minutes. Let's look at the performance of our simulation study by extracting the data.frame
 that summarizes results, `get_results()`:
 
