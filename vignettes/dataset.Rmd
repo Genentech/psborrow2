@@ -183,24 +183,25 @@ so we'll specify an uninformative prior: `normal_prior(0, 1000)`.
 For our example, let's conduct a time-to-event analysis using the exponential
 distribution.
 
-```{r exp-surv-dist}
+
+```r
 outcome <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
   baseline_prior = normal_prior(0, 1000)
 )
 outcome
-# Outcome object with class ExponentialSurvDist
-#
+# Outcome object with class OutcomeSurvExponential 
+# 
 # Outcome variables:
-# time_var cens_var
-#   "time"   "cnsr"
-#
+# time_var cens_var 
+#   "time"   "cnsr" 
+# 
 # Baseline prior:
 # Normal Distribution
 # Parameters:
 #  Stan  R    Value
-#  mu    mean    0
+#  mu    mean    0 
 #  sigma sd   1000
 ```
 
@@ -242,10 +243,10 @@ borrowing <- borrowing_details(
   tau_prior = gamma_prior(0.001, 0.001)
 )
 borrowing
-# Borrowing object using BDB
-#
-# External control flag: ext
-#
+# Borrowing object using BDB 
+# 
+# External control flag: ext 
+# 
 # Commensurability parameter prior:
 # Gamma Distribution
 # Parameters:
@@ -270,14 +271,14 @@ treatment <- treatment_details(
 )
 treatment
 # Treatment object
-#
-# Treatment flag column: trt
-#
+# 
+# Treatment flag column: trt 
+# 
 # Treatment effect prior:
 # Normal Distribution
 # Parameters:
 #  Stan  R    Value
-#  mu    mean    0
+#  mu    mean    0 
 #  sigma sd   1000
 ```
 
@@ -320,15 +321,15 @@ results <- mcmc_sample(anls_obj,
   seed = 112233
 )
 # Running MCMC with 4 sequential chains...
-#
-# Chain 1 finished in 34.6 seconds.
-# Chain 2 finished in 31.5 seconds.
-# Chain 3 finished in 37.0 seconds.
-# Chain 4 finished in 37.9 seconds.
-#
+# 
+# Chain 1 finished in 24.2 seconds.
+# Chain 2 finished in 20.5 seconds.
+# Chain 3 finished in 20.6 seconds.
+# Chain 4 finished in 23.9 seconds.
+# 
 # All 4 chains finished successfully.
-# Mean chain execution time: 35.3 seconds.
-# Total execution time: 141.5 seconds.
+# Mean chain execution time: 22.3 seconds.
+# Total execution time: 89.7 seconds.
 ```
 
 # Summarizing results{.tabset}
@@ -381,7 +382,7 @@ draws <- results$draws()
 print(draws)
 # # A draws_array: 50000 iterations, 4 chains, and 6 variables
 # , , variable = lp__
-#
+# 
 #          chain
 # iteration     1     2     3     4
 #         1 -1616 -1616 -1616 -1616
@@ -389,9 +390,9 @@ print(draws)
 #         3 -1616 -1617 -1619 -1617
 #         4 -1616 -1618 -1619 -1618
 #         5 -1617 -1617 -1617 -1617
-#
+# 
 # , , variable = beta_trt
-#
+# 
 #          chain
 # iteration     1      2      3      4
 #         1 -0.20 -0.009 -0.022 -0.109
@@ -399,9 +400,9 @@ print(draws)
 #         3 -0.16 -0.082  0.027  0.092
 #         4 -0.24 -0.319 -0.092  0.226
 #         5 -0.30 -0.081 -0.012 -0.439
-#
+# 
 # , , variable = tau
-#
+# 
 #          chain
 # iteration    1    2    3    4
 #         1 1.62 1.14 1.94 2.58
@@ -409,9 +410,9 @@ print(draws)
 #         3 0.48 1.90 0.61 1.12
 #         4 1.46 0.48 0.18 0.48
 #         5 0.33 1.64 0.32 2.15
-#
+# 
 # , , variable = alpha[1]
-#
+# 
 #          chain
 # iteration    1    2    3    4
 #         1 -3.4 -3.4 -3.5 -3.4
@@ -419,7 +420,7 @@ print(draws)
 #         3 -3.4 -3.4 -3.7 -3.5
 #         4 -3.3 -3.4 -3.6 -3.6
 #         5 -3.3 -3.5 -3.5 -3.2
-#
+# 
 # # ... with 49995 more iterations, and 2 more variables
 ```
 
@@ -492,11 +493,11 @@ summarize_draws(draws, ~ quantile(.x, probs = c(0.1, 0.9)))
 # # A tibble: 6 × 3
 #   variable                                `10%`     `90%`
 #   <chr>                                   <num>     <num>
-# 1 lp__                               -1620.     -1616.
+# 1 lp__                               -1620.     -1616.   
 # 2 treatment log HR                      -0.408      0.100
-# 3 commensurability parameter             0.0172     3.22
-# 4 baseline log hazard rate, internal    -3.57      -3.15
-# 5 baseline log hazard rate, external    -2.47      -2.33
+# 3 commensurability parameter             0.0172     3.22 
+# 4 baseline log hazard rate, internal    -3.57      -3.15 
+# 5 baseline log hazard rate, external    -2.47      -2.33 
 # 6 treatment HR                           0.665      1.11
 ```
 
@@ -507,7 +508,7 @@ standard error for quantiles of a variable of interest:
 ```r
 vm <- extract_variable_matrix(draws, "treatment HR")
 mcse_quantile(x = vm, probs = c(0.1, 0.5, 0.9))
-#  mcse_q10  mcse_q50  mcse_q90
+#  mcse_q10  mcse_q50  mcse_q90 
 # 0.0006465 0.0006845 0.0012300
 ```
 
