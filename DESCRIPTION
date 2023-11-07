@@ -45,7 +45,8 @@ Imports:
     posterior,
     generics,
     Matrix,
-    mvtnorm
+    mvtnorm,
+    future
 Suggests:
     survival,
     flexsurv,

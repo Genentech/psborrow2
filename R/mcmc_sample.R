@@ -243,53 +243,71 @@ setMethod(
       true_coverage <- null_coverage <- vector(mode = "integer", length = n_sim)
       bias <- mse <- vector(mode = "numeric", length = n_sim)
 
+      sim_futures <- list()
       for (j in 1:n_sim) {
         anls_obj <- x@analysis_obj_list[[i]][[j]]
+        sim_futures[[j]] <- future(
+          packages = "psborrow2",
+          seed = TRUE,
+          expr = {
+            keep <- list()
 
-        mcmc_results <- mcmc_sample(
-          anls_obj,
-          iter_warmup = iter_warmup,
-          iter_sampling = iter_sampling,
-          chains = chains,
-          verbose = verbose,
-          ...
-        )
+            mcmc_results <- mcmc_sample(
+              anls_obj,
+              iter_warmup = iter_warmup,
+              iter_sampling = iter_sampling,
+              chains = chains,
+              verbose = verbose,
+              ...
+            )
 
-        draws <- mcmc_results$draws()
+            draws <- mcmc_results$draws()
 
-        # Coverage
-        true_coverage[j] <- sim_is_true_effect_covered(
-          draws,
-          true_effect,
-          posterior_quantiles
-        )
+            # Coverage
+            keep$true_coverage <- sim_is_true_effect_covered(
+              draws,
+              true_effect,
+              posterior_quantiles
+            )
 
-        null_coverage[j] <- sim_is_null_effect_covered(
-          draws,
-          posterior_quantiles
-        )
+            keep$null_coverage <- sim_is_null_effect_covered(
+              draws,
+              posterior_quantiles
+            )
 
-        # Bias
-        bias[j] <- sim_estimate_bias(
-          draws,
-          true_effect
-        )
+            # Bias
+            keep$bias <- sim_estimate_bias(
+              draws,
+              true_effect
+            )
 
-        # MSE
-        mse[j] <- sim_estimate_mse(
-          draws,
-          true_effect
-        )
+            # MSE
+            keep$mse <- sim_estimate_mse(
+              draws,
+              true_effect
+            )
 
-        # Save draws if desired
-        if (keep_cmd_stan_models) {
-          cmd_stan_models_out[[i]][[j]] <- mcmc_results
-        } else {
-          for (file in mcmc_results$output_files()) {
-            file.remove(file)
+            # Save draws if desired
+            if (keep_cmd_stan_models) {
+              keep$cmd_stan_models_out <- mcmc_results
+            } else {
+              for (file in mcmc_results$output_files()) {
+                file.remove(file)
+              }
+              rm(mcmc_results)
+            }
+            keep
           }
-          rm(mcmc_results)
-        }
+        )
+      }
+
+      for (j in 1:n_sim) {
+        sim_result <- value(sim_futures[[j]])
+        true_coverage[j] <- sim_result$true_coverage
+        null_coverage[j] <- sim_result$null_coverage
+        bias[j] <- sim_result$bias
+        mse[j] <- sim_result$mse
+        if (keep_cmd_stan_models) cmd_stan_models_out[[i]][[j]] <- keep$cmd_stan_models_out
       }
 
       # Add simulation study results
