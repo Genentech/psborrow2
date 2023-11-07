@@ -5,7 +5,7 @@
 #'
 #' @return the variance of the log OR or HR
 #'
-#'
+#' @noRd
 #' @examples
 #' base_mat <- matrix(
 #'   c(
