@@ -33,7 +33,6 @@ simple_baseline <- create_baseline_object(
   n_ctrl_int = 50,
   n_ctrl_ext = 100
 )
-#> Error in create_baseline_object(n_trt_int = 100, n_ctrl_int = 50, n_ctrl_ext = 100): could not find function "create_baseline_object"
 ```
 
 This object defines how the data will be created. To actually generate a sample, use `generate()` to produce a
@@ -42,7 +41,15 @@ This object defines how the data will be created. To actually generate a sample,
 
 ```r
 generate(simple_baseline)
-#> Error in generate(simple_baseline): could not find function "generate"
+#> Simulated Baseline Data
+#>   patid ext trt
+#> 1     1   0   1
+#> 2     2   0   1
+#> 3     3   0   1
+#> 4     4   0   1
+#> 5     5   0   1
+#> 6     6   0   1
+#>  [ reached 'max' / getOption("max.print") -- omitted 244 rows ]
 ```
 
 Often we are interested in some additional covariates. Internally the package uses multivariate normal distributions,
@@ -62,9 +69,15 @@ with_age <- create_baseline_object(
     covariance_int = covariance_matrix(5)
   )
 )
-#> Error in create_baseline_object(n_trt_int = 100, n_ctrl_int = 50, n_ctrl_ext = 100, : could not find function "create_baseline_object"
 generate(with_age)
-#> Error in generate(with_age): could not find function "generate"
+#> Simulated Baseline Data
+#>   patid ext trt      age
+#> 1     1   0   1 57.19040
+#> 2     2   0   1 51.82042
+#> 3     3   0   1 54.45392
+#> 4     4   0   1 54.13287
+#> 5     5   0   1 55.47348
+#>  [ reached 'max' / getOption("max.print") -- omitted 245 rows ]
 ```
 
 In a more complex setting, we can generate correlated baseline covariates.
@@ -81,9 +94,7 @@ with_age_score <- create_baseline_object(
     covariance_int = covariance_matrix(c(5, 1))
   )
 )
-#> Error in create_baseline_object(n_trt_int = 100, n_ctrl_int = 50, n_ctrl_ext = 100, : could not find function "create_baseline_object"
 data_age_score <- generate(with_age_score)
-#> Error in generate(with_age_score): could not find function "generate"
 ```
 
 
@@ -96,15 +107,15 @@ plot(
   xlab = "Age",
   ylab = "Score"
 )
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'data_age_score' not found
 legend(
   "topright",
   legend = c("internal treated", "internal control", "external control"),
   col = c(2, 1, 1),
   pch = c(0, 0, 16)
 )
-#> Error in (function (s, units = "user", cex = NULL, font = NULL, vfont = NULL, : plot.new has not been called yet
 ```
+
+![plot of chunk unnamed-chunk-6](figure-data_simulation-unnamed-chunk-6-1.png)
 
 Finally, we have the option to transform non-normal covariates, such as with binary cut-offs.
 These can be added to existing objects and can use built-in functions or used defined.
@@ -114,7 +125,10 @@ with_age_score@transformations <- list(
   score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7),
   score_rounded = function(data) round(data$score)
 )
-#> Error in binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7): could not find function "binary_cutoff"
 generate(with_age_score)
-#> Error in generate(with_age_score): could not find function "generate"
+#> Simulated Baseline Data
+#>   patid ext trt      age    score score_high score_rounded
+#> 1     1   0   1 54.34637 3.393556          0             3
+#> 2     2   0   1 55.69678 6.827766          1             7
+#>  [ reached 'max' / getOption("max.print") -- omitted 248 rows ]
 ```
