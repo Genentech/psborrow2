@@ -15,9 +15,9 @@ This vignette will show the internal functions for generating data that can be u
 ```r
 library(psborrow2)
 #> Loading required package: cmdstanr
-#> This is cmdstanr version 0.6.0
+#> This is cmdstanr version 0.5.2
 #> - CmdStanR documentation and vignettes: mc-stan.org/cmdstanr
-#> - CmdStan path: /Users/gravesti/.cmdstan/cmdstan-2.33.1
+#> - CmdStan path: /Users/secrestm/.cmdstan/cmdstan-2.33.1
 #> - CmdStan version: 2.33.1
 ```
 
@@ -69,14 +69,15 @@ with_age <- create_baseline_object(
     covariance_int = covariance_matrix(5)
   )
 )
+set.seed(123)
 generate(with_age)
 #> Simulated Baseline Data
 #>   patid ext trt      age
-#> 1     1   0   1 57.19040
-#> 2     2   0   1 51.82042
-#> 3     3   0   1 54.45392
-#> 4     4   0   1 54.13287
-#> 5     5   0   1 55.47348
+#> 1     1   0   1 53.74674
+#> 2     2   0   1 54.48531
+#> 3     3   0   1 58.48538
+#> 4     4   0   1 55.15766
+#> 5     5   0   1 55.28910
 #>  [ reached 'max' / getOption("max.print") -- omitted 245 rows ]
 ```
 
@@ -125,10 +126,11 @@ with_age_score@transformations <- list(
   score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7),
   score_rounded = function(data) round(data$score)
 )
+set.seed(123)
 generate(with_age_score)
 #> Simulated Baseline Data
 #>   patid ext trt      age    score score_high score_rounded
-#> 1     1   0   1 54.34637 3.393556          0             3
-#> 2     2   0   1 55.69678 6.827766          1             7
+#> 1     1   0   1 53.74674 4.769823          0             5
+#> 2     2   0   1 58.48538 5.070508          0             5
 #>  [ reached 'max' / getOption("max.print") -- omitted 248 rows ]
 ```

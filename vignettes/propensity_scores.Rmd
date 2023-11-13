@@ -20,7 +20,7 @@ library(psborrow2)
 Propensity scores (PS) methods offer various ways to adjust analyses for differences in groups of patients.
 @austin2013 discusses various approaches for using PS with survival analyses to obtain effect measures similar to
 randomized controlled trials. @wang2021 discuss using PS for IPTW, matching and stratification in combination with a Bayesian analysis.
-These methods allow for the separation of the design and analysis into two stages, which may be attractive in a regulatory setting. 
+These methods allow for the separation of the design and analysis into two stages, which may be attractive in a regulatory setting.
 Another approach is the direct inclusion of the PS as a covariate in the outcome model.
 
 ## Alternative PS Weights with `WeightIt`
@@ -86,7 +86,10 @@ bal.plot(weightit_model)
 #> No `var.name` was provided. Displaying balance for prop.score.
 ```
 
-<img src="figure-propensity_scores-balplot-1.png" alt="plot of chunk balplot" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="figure-propensity_scores-balplot-1.png" alt="plot of chunk balplot"  />
+<p class="caption">plot of chunk balplot</p>
+</div>
 
 "Love plots" can also be generated that compare the populations before and after weighting:
 
@@ -95,9 +98,69 @@ bal.plot(weightit_model)
 love.plot(weightit_model, stars = "std")
 ```
 
-<img src="figure-propensity_scores-loveplot-1.png" alt="plot of chunk loveplot" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="figure-propensity_scores-loveplot-1.png" alt="plot of chunk loveplot"  />
+<p class="caption">plot of chunk loveplot</p>
+</div>
 
 The PS values can be copied into the data set and the analysis object can be constructed as before.
+
+
+```
+#> Inputs look good.
+#> NOTE: dropping column `ext` for full borrowing.
+#> In file included from /var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpPXf4YK/model-a0b2661c9eca.hpp:1:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/src/stan/model/model_header.hpp:4:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math.hpp:19:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/rev.hpp:10:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/rev/fun.hpp:200:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor.hpp:16:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor/integrate_ode_rk45.hpp:6:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor/ode_rk45.hpp:9:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint.hpp:76:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint/integrate/observer_collection.hpp:23:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function.hpp:30:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function/detail/prologue.hpp:17:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function/function_base.hpp:21:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index.hpp:29:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index/stl_type_index.hpp:47:
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:132:33: warning: 'unary_function<const std::error_category *, unsigned lon
+#> g>' is deprecated [-Wdeprecated-declarations]
+#>         struct hash_base : std::unary_function<T, std::size_t> {};
+#>                                 ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:692:18: note: in instantiation of template class 'boost::hash_detail::hash_base<const std::error_category *>' requested here
+#>         : public boost::hash_detail::hash_base<T*>
+#>                  ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:420:24: note: in instantiation of template class 'boost::hash<const std::error_category *>' requested here
+#>         boost::hash<T> hasher;
+#>                        ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:551:9: note: in instantiation of function template specialization 'boost::hash_combine<const std::error_category *>' requested here
+#>         hash_combine(seed, &v.category());
+#>         ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h:23:29: note: 'unary_function<const std::error_category *, unsigned long>' has been explicitly marked deprecated here
+#> struct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function
+#>                             ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:850:41: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
+#> #    define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
+#>                                         ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:835:49: note: expanded from macro '_LIBCPP_DEPRECATED'
+#> #      define _LIBCPP_DEPRECATED __attribute__((deprecated))
+#>                                                 ^
+#> 1 warning generated.
+#> ld: warning: duplicate -rpath '/Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/tbb' ignored
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 2.7 seconds.
+#> Chain 2 finished in 2.5 seconds.
+#> Chain 3 finished in 2.2 seconds.
+#> Chain 4 finished in 2.4 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 2.4 seconds.
+#> Total execution time: 10.0 seconds.
+```
 
 
 ```r
@@ -117,22 +180,8 @@ analysis_att <- create_analysis_obj(
   borrowing = borrowing_details("Full borrowing", "ext"),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
-#> Inputs look good.
-#> NOTE: dropping column `ext` for full borrowing.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
 
-result_att <- mcmc_sample(analysis_att)
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 2.9 seconds.
-#> Chain 2 finished in 2.4 seconds.
-#> Chain 3 finished in 2.6 seconds.
-#> Chain 4 finished in 2.7 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 2.6 seconds.
-#> Total execution time: 11.0 seconds.
+result_att <- mcmc_sample(analysis_att, seed = 123)
 ```
 
 
@@ -241,7 +290,10 @@ summary(match_11)
 plot(match_11, type = "jitter", interactive = FALSE)
 ```
 
-<img src="figure-propensity_scores-matchit_jitter-1.png" alt="plot of chunk matchit_jitter" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="figure-propensity_scores-matchit_jitter-1.png" alt="plot of chunk matchit_jitter"  />
+<p class="caption">plot of chunk matchit_jitter</p>
+</div>
 
 Determining whether the balance after matching is appropriate is beyond the scope of this vignette. You can read more in
 the [MatchIt Assessing Balance](https://cran.r-project.org/web/packages/MatchIt/vignettes/assessing-balance.html)
@@ -260,29 +312,71 @@ example_matrix_match <- create_data_matrix(
 ```
 
 
-```r
+```
+#> Inputs look good.
+#> NOTE: dropping column `ext` for full borrowing.
+#> In file included from /var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpPXf4YK/model-a0b27143c821.hpp:1:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/src/stan/model/model_header.hpp:4:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math.hpp:19:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/rev.hpp:10:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/rev/fun.hpp:200:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor.hpp:16:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor/integrate_ode_rk45.hpp:6:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor/ode_rk45.hpp:9:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint.hpp:76:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint/integrate/observer_collection.hpp:23:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function.hpp:30:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function/detail/prologue.hpp:17:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function/function_base.hpp:21:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index.hpp:29:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index/stl_type_index.hpp:47:
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:132:33: warning: 'unary_function<const std::error_category *, unsigned lon
+#> g>' is deprecated [-Wdeprecated-declarations]
+#>         struct hash_base : std::unary_function<T, std::size_t> {};
+#>                                 ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:692:18: note: in instantiation of template class 'boost::hash_detail::hash_base<const std::error_category *>' requested here
+#>         : public boost::hash_detail::hash_base<T*>
+#>                  ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:420:24: note: in instantiation of template class 'boost::hash<const std::error_category *>' requested here
+#>         boost::hash<T> hasher;
+#>                        ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:551:9: note: in instantiation of function template specialization 'boost::hash_combine<const std::error_category *>' requested here
+#>         hash_combine(seed, &v.category());
+#>         ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h:23:29: note: 'unary_function<const std::error_category *, unsigned long>' has been explicitly marked deprecated here
+#> struct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function
+#>                             ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:850:41: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
+#> #    define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
+#>                                         ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:835:49: note: expanded from macro '_LIBCPP_DEPRECATED'
+#> #      define _LIBCPP_DEPRECATED __attribute__((deprecated))
+#>                                                 ^
+#> 1 warning generated.
+#> ld: warning: duplicate -rpath '/Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/tbb' ignored
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 1.0 seconds.
+#> Chain 2 finished in 0.9 seconds.
+#> Chain 3 finished in 0.8 seconds.
+#> Chain 4 finished in 1.0 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 0.9 seconds.
+#> Total execution time: 3.9 seconds.
+```
+
+``{r, eval = FALSE}
 analysis_match <- create_analysis_obj(
   data_matrix = example_matrix_match,
   outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
   borrowing = borrowing_details("Full borrowing", "ext"),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
-#> Inputs look good.
-#> NOTE: dropping column `ext` for full borrowing.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
 
-result_match <- mcmc_sample(analysis_match)
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 1.0 seconds.
-#> Chain 2 finished in 1.1 seconds.
-#> Chain 3 finished in 1.1 seconds.
-#> Chain 4 finished in 1.0 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 1.1 seconds.
-#> Total execution time: 4.5 seconds.
+result_match <- mcmc_sample(analysis_match, seed = 123)
 ```
 
 
@@ -294,6 +388,63 @@ IPTW + commensurate prior approach.
 
 
 
+```
+#> Inputs look good.
+#> In file included from /var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpPXf4YK/model-a0b23a698296.hpp:1:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/src/stan/model/model_header.hpp:4:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math.hpp:19:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/rev.hpp:10:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/rev/fun.hpp:200:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor.hpp:16:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor/integrate_ode_rk45.hpp:6:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor/ode_rk45.hpp:9:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint.hpp:76:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint/integrate/observer_collection.hpp:23:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function.hpp:30:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function/detail/prologue.hpp:17:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function/function_base.hpp:21:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index.hpp:29:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index/stl_type_index.hpp:47:
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:132:33: warning: 'unary_function<const std::error_category *, unsigned lon
+#> g>' is deprecated [-Wdeprecated-declarations]
+#>         struct hash_base : std::unary_function<T, std::size_t> {};
+#>                                 ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:692:18: note: in instantiation of template class 'boost::hash_detail::hash_base<const std::error_category *>' requested here
+#>         : public boost::hash_detail::hash_base<T*>
+#>                  ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:420:24: note: in instantiation of template class 'boost::hash<const std::error_category *>' requested here
+#>         boost::hash<T> hasher;
+#>                        ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:551:9: note: in instantiation of function template specialization 'boost::hash_combine<const std::error_category *>' requested here
+#>         hash_combine(seed, &v.category());
+#>         ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h
+#> :23:29: note: 'unary_function<const std::error_category *, unsigned long>' has been explicitly marked deprecated here
+#> struct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function
+#>                             ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:850:41: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
+#> #    define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
+#>                                         ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:835:49: note: expanded from macro '_LIBCPP_DEPRECATED'
+#> #      define _LIBCPP_DEPRECATED __attribute__((deprecated))
+#>                                                 ^
+#> 1 warning generated.
+#> ld: warning: duplicate -rpath '/Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/tbb' ignored
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 3.9 seconds.
+#> Chain 2 finished in 3.8 seconds.
+#> Chain 3 finished in 4.3 seconds.
+#> Chain 4 finished in 4.0 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 4.0 seconds.
+#> Total execution time: 16.4 seconds.
+```
+
+
 ```r
 analysis_iptw_bdb <- create_analysis_obj(
   data_matrix = example_matrix_att,
@@ -301,21 +452,8 @@ analysis_iptw_bdb <- create_analysis_obj(
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
-#> Inputs look good.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
 
-result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb)
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 5.2 seconds.
-#> Chain 2 finished in 4.7 seconds.
-#> Chain 3 finished in 5.5 seconds.
-#> Chain 4 finished in 5.9 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 5.3 seconds.
-#> Total execution time: 21.7 seconds.
+result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb, seed = 123)
 ```
 
 
@@ -323,6 +461,24 @@ result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb)
 
 We can also use weights to specify a fixed power prior model. Here we set the power parameter $\alpha = 0.1$
 for the external controls.
+
+
+```
+#> Inputs look good.
+#> NOTE: dropping column `ext` for full borrowing.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 2.2 seconds.
+#> Chain 2 finished in 2.4 seconds.
+#> Chain 3 finished in 2.2 seconds.
+#> Chain 4 finished in 2.1 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 2.2 seconds.
+#> Total execution time: 9.1 seconds.
+```
 
 
 ```r
@@ -334,28 +490,99 @@ analysis_pp01 <- create_analysis_obj(
   borrowing = borrowing_details("Full borrowing", "ext"),
   treatment = treatment_details("trt", normal_prior(0, 10000))
 )
-#> Inputs look good.
-#> NOTE: dropping column `ext` for full borrowing.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
 
-result_pp01 <- mcmc_sample(analysis_pp01)
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 3.1 seconds.
-#> Chain 2 finished in 3.5 seconds.
-#> Chain 3 finished in 4.5 seconds.
-#> Chain 4 finished in 2.8 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 3.5 seconds.
-#> Total execution time: 14.1 seconds.
+result_pp01 <- mcmc_sample(analysis_pp01, seed = 123)
 ```
+
 
 
 ## Reference Models
 
 For comparison, we also fit a full borrowing, a no borrowing, and a BDB model without weights.
+
+
+```
+#> Inputs look good.
+#> NOTE: dropping column `ext` for full borrowing.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 2.0 seconds.
+#> Chain 2 finished in 1.7 seconds.
+#> Chain 3 finished in 1.9 seconds.
+#> Chain 4 finished in 1.7 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 1.8 seconds.
+#> Total execution time: 7.5 seconds.
+#> Inputs look good.
+#> NOTE: excluding `ext` == `1`/`TRUE` for no borrowing.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 1.0 seconds.
+#> Chain 2 finished in 0.8 seconds.
+#> Chain 3 finished in 0.8 seconds.
+#> Chain 4 finished in 0.8 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 0.9 seconds.
+#> Total execution time: 3.7 seconds.
+#> Inputs look good.
+#> In file included from /var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpPXf4YK/model-a0b2216444.hpp:1:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/src/stan/model/model_header.hpp:4:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math.hpp:19:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/rev.hpp:10:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/rev/fun.hpp:200:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor.hpp:16:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor/integrate_ode_rk45.hpp:6:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor/ode_rk45.hpp:9:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint.hpp:76:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint/integrate/observer_collection.hpp:23:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function.hpp:30:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function/detail/prologue.hpp:17:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function/function_base.hpp:21:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index.hpp:29:
+#> In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index/stl_type_index.hpp:47:
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:132:33: warning: 'unary_function<const std::error_category *, unsigned long>
+#> ' is deprecated [-Wdeprecated-declarations]
+#>         struct hash_base : std::unary_function<T, std::size_t> {};
+#>                                 ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:692:18: note: in instantiation of template class 'boost::hash_detail::hash_base<const std::error_category *>' requested here
+#>         : public boost::hash_detail::hash_base<T*>
+#>                  ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:420:24: note: in instantiation of template class 'boost::hash<const std::error_category *>' requested here
+#>         boost::hash<T> hasher;
+#>                        ^
+#> /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:551:9: note: in instantiation of function template specialization 'boost::hash_combine<const std::error_category *>' requested here
+#>         hash_combine(seed, &v.category());
+#>         ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h:23:29: note: 'unary_function<const std::error_category *, unsigned long>' has been explicitly marked deprecated here
+#> struct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function
+#>                             ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:850:41: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
+#> #    define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
+#>                                         ^
+#> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:835:49: note: expanded from macro '_LIBCPP_DEPRECATED'
+#> #      define _LIBCPP_DEPRECATED __attribute__((deprecated))
+#>                                                 ^
+#> 1 warning generated.
+#> ld: warning: duplicate -rpath '/Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/tbb' ignored
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+#> Running MCMC with 4 sequential chains...
+#> 
+#> Chain 1 finished in 3.6 seconds.
+#> Chain 2 finished in 4.1 seconds.
+#> Chain 3 finished in 3.2 seconds.
+#> Chain 4 finished in 3.7 seconds.
+#> 
+#> All 4 chains finished successfully.
+#> Mean chain execution time: 3.6 seconds.
+#> Total execution time: 14.9 seconds.
+```
 
 
 ```r
@@ -365,22 +592,9 @@ result_full <- mcmc_sample(
     outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
     borrowing = borrowing_details("Full borrowing", "ext"),
     treatment = treatment_details("trt", normal_prior(0, 10000))
-  )
+  ),
+  seed = 123
 )
-#> Inputs look good.
-#> NOTE: dropping column `ext` for full borrowing.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 2.3 seconds.
-#> Chain 2 finished in 2.2 seconds.
-#> Chain 3 finished in 2.3 seconds.
-#> Chain 4 finished in 2.0 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 2.2 seconds.
-#> Total execution time: 9.2 seconds.
 
 result_none <- mcmc_sample(
   create_analysis_obj(
@@ -388,22 +602,9 @@ result_none <- mcmc_sample(
     outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
     borrowing = borrowing_details("No borrowing", "ext"),
     treatment = treatment_details("trt", normal_prior(0, 10000))
-  )
+  ),
+  seed = 123
 )
-#> Inputs look good.
-#> NOTE: excluding `ext` == `1`/`TRUE` for no borrowing.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 1.1 seconds.
-#> Chain 2 finished in 1.3 seconds.
-#> Chain 3 finished in 1.0 seconds.
-#> Chain 4 finished in 1.0 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 1.1 seconds.
-#> Total execution time: 4.7 seconds.
 
 result_bdb <- mcmc_sample(
   create_analysis_obj(
@@ -411,21 +612,9 @@ result_bdb <- mcmc_sample(
     outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
     borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
     treatment = treatment_details("trt", normal_prior(0, 10000))
-  )
+  ),
+  seed = 123
 )
-#> Inputs look good.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
-#> Running MCMC with 4 sequential chains...
-#> 
-#> Chain 1 finished in 5.1 seconds.
-#> Chain 2 finished in 6.9 seconds.
-#> Chain 3 finished in 4.6 seconds.
-#> Chain 4 finished in 5.7 seconds.
-#> 
-#> All 4 chains finished successfully.
-#> Mean chain execution time: 5.6 seconds.
-#> Total execution time: 22.6 seconds.
 ```
 
 
@@ -458,13 +647,15 @@ knitr::kable(cbind(models = names(models), results_table), digits = 3)
 
 |models         |variable |  mean| median|    sd|    q5|   q95|
 |:--------------|:--------|-----:|------:|-----:|-----:|-----:|
-|No borrowing   |HR_trt   | 0.896|  0.875| 0.183| 0.636| 1.225|
-|Full borrowing |HR_trt   | 0.387|  0.385| 0.049| 0.310| 0.472|
-|Power Prior 01 |HR_trt   | 0.635|  0.626| 0.107| 0.478| 0.823|
-|ATT Weights    |HR_trt   | 0.894|  0.887| 0.127| 0.698| 1.113|
-|IPTW + BDB     |HR_trt   | 0.897|  0.882| 0.163| 0.658| 1.188|
-|Matching 1:1   |HR_trt   | 0.793|  0.782| 0.128| 0.600| 1.018|
-|BDB            |HR_trt   | 0.872|  0.854| 0.175| 0.619| 1.186|
+|No borrowing   |HR_trt   | 0.896|  0.879| 0.179| 0.635| 1.214|
+|Full borrowing |HR_trt   | 0.387|  0.385| 0.049| 0.311| 0.471|
+|Power Prior 01 |HR_trt   | 0.633|  0.625| 0.106| 0.475| 0.819|
+|ATT Weights    |HR_trt   | 0.893|  0.884| 0.127| 0.700| 1.114|
+|IPTW + BDB     |HR_trt   | 0.893|  0.877| 0.164| 0.654| 1.186|
+|Matching 1:1   |HR_trt   | 0.796|  0.785| 0.130| 0.601| 1.028|
+|BDB            |HR_trt   | 0.873|  0.855| 0.176| 0.620| 1.190|
+
+
 
 We can extract a `draws` object from each model and plot the posterior distribution of the
 treatment hazard ratio.
@@ -481,7 +672,10 @@ for (i in 2:7) {
 legend("topright", col = seq_along(models), lty = seq_along(models), legend = names(models))
 ```
 
-<img src="figure-propensity_scores-plots-1.png" alt="plot of chunk plots" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="figure-propensity_scores-plots-1.png" alt="plot of chunk plots"  />
+<p class="caption">plot of chunk plots</p>
+</div>
 
 Here we see no borrowing and full borrowing at the extremes and the other methods in between.
 

@@ -129,14 +129,15 @@ sim_single_matrix <- function(n = 500, # n simulated pts
 
 
 ```r
+set.seed(123)
 head(sim_single_matrix(n = 500, hr = 0.5, drift_hr = 1.2))
 #      id ext trt      time status cnsr
-# [1,]  1   0   0  2.339763      1    0
-# [2,]  2   0   0 18.286644      1    0
-# [3,]  3   0   0 19.146830      1    0
-# [4,]  4   0   0  1.366114      1    0
-# [5,]  5   0   0 10.424151      1    0
-# [6,]  6   0   0 15.515215      1    0
+# [1,]  1   0   0  8.179722      1    0
+# [2,]  2   0   0  6.884286      1    0
+# [3,]  3   0   0  2.348331      1    0
+# [4,]  4   0   0 17.898011      1    0
+# [5,]  5   0   0  3.870353      1    0
+# [6,]  6   0   0  6.795403      1    0
 ```
 
 Using this function, let's simulate a list of lists of matrices with four
@@ -483,7 +484,7 @@ class(simulation_res)
 # [1] "psborrow2"
 ```
 
-This evaluation took about 20.2
+This evaluation took about 15.1
 minutes. Let's look at the performance of our simulation study by extracting the data.frame
 that summarizes results, `get_results()`:
 
@@ -550,7 +551,10 @@ ggplot(simulation_res_df) +
   scale_fill_manual(values = c("#EF798A", "#F7A9A8", "#7D82B8", "#613F75"))
 ```
 
-<img src="figure-simulation_study-unnamed-chunk-20-1.png" alt="plot of chunk unnamed-chunk-20" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="figure-simulation_study-unnamed-chunk-20-1.png" alt="plot of chunk unnamed-chunk-20"  />
+<p class="caption">plot of chunk unnamed-chunk-20</p>
+</div>
 
 ### Type I error
 
@@ -573,7 +577,10 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
   geom_hline(aes(yintercept = 0.05), linetype = 2)
 ```
 
-<img src="figure-simulation_study-unnamed-chunk-21-1.png" alt="plot of chunk unnamed-chunk-21" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="figure-simulation_study-unnamed-chunk-21-1.png" alt="plot of chunk unnamed-chunk-21"  />
+<p class="caption">plot of chunk unnamed-chunk-21</p>
+</div>
 
 ### Power
 
@@ -595,4 +602,7 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
   geom_hline(aes(yintercept = 0.80), linetype = 2)
 ```
 
-<img src="figure-simulation_study-unnamed-chunk-22-1.png" alt="plot of chunk unnamed-chunk-22" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="figure-simulation_study-unnamed-chunk-22-1.png" alt="plot of chunk unnamed-chunk-22"  />
+<p class="caption">plot of chunk unnamed-chunk-22</p>
+</div>

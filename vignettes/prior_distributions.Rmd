@@ -14,9 +14,9 @@ vignette: >
 ```r
 library(psborrow2)
 # Loading required package: cmdstanr
-# This is cmdstanr version 0.6.0
+# This is cmdstanr version 0.5.2
 # - CmdStanR documentation and vignettes: mc-stan.org/cmdstanr
-# - CmdStan path: /Users/gravesti/.cmdstan/cmdstan-2.33.1
+# - CmdStan path: /Users/secrestm/.cmdstan/cmdstan-2.33.1
 # - CmdStan version: 2.33.1
 ```
 
@@ -85,7 +85,10 @@ distribution:
 plot(uninformative_normal)
 ```
 
-<img src="figure-prior_distributions-unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="figure-prior_distributions-unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3"  />
+<p class="caption">plot of chunk unnamed-chunk-3</p>
+</div>
 
 `plot()` chooses the default axes for you, but you can change these to
 make differences more obvious. Let's compare
@@ -102,4 +105,7 @@ plot(aggressive_tau, xlim = c(0, 2000), col = "blue", ylim = c(0, 1e-03))
 plot(conservative_tau, xlim = c(0, 2000), col = "red", add = TRUE)
 ```
 
-<img src="figure-prior_distributions-unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="figure-prior_distributions-unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4"  />
+<p class="caption">plot of chunk unnamed-chunk-4</p>
+</div>
