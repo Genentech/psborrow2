@@ -123,7 +123,7 @@ logistic_psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
     )
   )
 
-  mcmc_logistic_psb2 <- mcmc_sample(logistic_psb2, chains = 1, verbose = FALSE)
+  mcmc_logistic_psb2 <- mcmc_sample(logistic_psb2, chains = 1, verbose = FALSE, seed = 123)
   mcmc_summary <- mcmc_logistic_psb2$summary(
     variables = c("alpha", "beta_trt", "beta[1]", "beta[2]"),
     mean,
@@ -274,7 +274,7 @@ psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
     )
   )
 
-  mcmc_exp_psb2 <- mcmc_sample(exp_psb2, chains = 1, verbose = FALSE)
+  mcmc_exp_psb2 <- mcmc_sample(exp_psb2, chains = 1, verbose = FALSE, seed = 123)
   mcmc_summary <- mcmc_exp_psb2$summary(
     variables = c("alpha", "beta_trt", "beta[1]", "beta[2]"),
     mean,

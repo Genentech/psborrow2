@@ -242,7 +242,7 @@ treatment
 Now that we have thought through each of the inputs to `create_analysis_obj()`,
 let's create an analysis object:
 
-```{r anls-obj}
+```{r anls-obj-no-echo, echo = FALSE}
 anls_obj <- create_analysis_obj(
   data_matrix = example_matrix,
   outcome = outcome,
@@ -250,6 +250,16 @@ anls_obj <- create_analysis_obj(
   treatment = treatment
 )
 ```
+```{r anls-obj-no-eval, eval = FALSE}
+anls_obj <- create_analysis_obj(
+  data_matrix = example_matrix,
+  outcome = outcome,
+  borrowing = borrowing,
+  treatment = treatment
+)
+```
+
+
 
 The Stan model compiled successfully and informed us that we are
 ready to begin sampling.
@@ -263,7 +273,16 @@ that are passed to
 [`CmdStanModel` objects](https://mc-stan.org/cmdstanr/reference/model-method-sample.html).
 Note that running this may take a few minutes.
 
-```{r res}
+```{r res-no-echo, echo = FALSE}
+results <- mcmc_sample(anls_obj,
+  iter_warmup = 2000,
+  iter_sampling = 50000,
+  chains = 4,
+  seed = 112233
+)
+```
+
+```{r res-no-eval, eval = FALSE}
 results <- mcmc_sample(anls_obj,
   iter_warmup = 2000,
   iter_sampling = 50000,

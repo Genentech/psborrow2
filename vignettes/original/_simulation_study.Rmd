@@ -136,6 +136,7 @@ sim_single_matrix <- function(n = 500, # n simulated pts
 
 
 ```{r}
+set.seed(123)
 head(sim_single_matrix(n = 500, hr = 0.5, drift_hr = 1.2))
 ```
 

@@ -630,7 +630,8 @@ results <- mcmc_sample(
   analysis_object,
   iter_warmup = 1000,
   iter_sampling = 1000,
-  chains = 1
+  chains = 1,
+  seed = 123
 )
 ```
 
@@ -639,7 +640,8 @@ results <- mcmc_sample(
   analysis_object,
   iter_warmup = 1000,
   iter_sampling = 1000,
-  chains = 1
+  chains = 1,
+  seed = 123
 )
 ```
 
@@ -802,7 +804,8 @@ analysis_object_ps <- create_analysis_obj(
 results_ps <- mcmc_sample(analysis_object_ps,
   iter_warmup = 1000,
   iter_sampling = 1000,
-  chains = 1
+  chains = 1,
+  seed = 123
 )
 ```
 
@@ -810,7 +813,8 @@ results_ps <- mcmc_sample(analysis_object_ps,
 results_ps <- mcmc_sample(analysis_object_ps,
   iter_warmup = 1000,
   iter_sampling = 1000,
-  chains = 1
+  chains = 1,
+  seed = 123
 )
 ```
 
@@ -863,7 +867,7 @@ trt_from_anls <- function(borrowing, adjustment = NULL) {
     treatment = trt_details,
     borrowing = borrowing
   )
-  res <- mcmc_sample(anls, iter_warmup = 1000, iter_sampling = 1000, chains = 4L)
+  res <- mcmc_sample(anls, iter_warmup = 1000, iter_sampling = 1000, chains = 4L, seed = 123)
   draws <- res$draws()
   quant <- summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
   lci <- quant[quant$variable == "HR_trt", "2.5%"][[1]]
@@ -1232,7 +1236,8 @@ simulation_res <- mcmc_sample(
   simulation_obj,
   iter_warmup = 1000,
   iter_sampling = 1000,
-  chains = 1
+  chains = 1,
+  seed = 123
 )
 ```
 
@@ -1241,7 +1246,8 @@ simulation_res <- mcmc_sample(
   simulation_obj,
   iter_warmup = 1000,
   iter_sampling = 1000,
-  chains = 1
+  chains = 1,
+  seed = 123
 )
 ```
 
