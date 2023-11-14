@@ -396,8 +396,7 @@ Instead, it returns a class unique to simulation study results:
 class(simulation_res)
 ```
 
-This evaluation took about `r format(round(as.numeric(difftime(en, st, units = "min")), 1), nsmall=1)`
-minutes. Let's look at the performance of our simulation study by extracting the data.frame
+Let's look at the performance of our simulation study by extracting the data.frame
 that summarizes results, `get_results()`:
 
 ```{r}
