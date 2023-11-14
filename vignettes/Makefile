@@ -3,7 +3,7 @@ OBJS = $(patsubst original/_%, %, $(SRCS))
 
 build: $(OBJS)
 
-clean: 
+.clean:
 	rm -f $(OBJS)
 	rm -rf figure-*
 
