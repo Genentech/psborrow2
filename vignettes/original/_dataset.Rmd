@@ -242,7 +242,7 @@ treatment
 Now that we have thought through each of the inputs to `create_analysis_obj()`,
 let's create an analysis object:
 
-```{r anls-obj-no-echo, echo = FALSE, message = FALSE}
+```{r anls-obj-no-echo, include = FALSE}
 anls_obj <- create_analysis_obj(
   data_matrix = example_matrix,
   outcome = outcome,
