@@ -9,3 +9,6 @@ build: $(OBJS)
 
 %.Rmd: original/_%.Rmd
 	Rscript -e "knitr::opts_chunk[['set']]('fig.path' = 'figure-$*-'); knitr::knit('original/_$*.Rmd', output = '$*.Rmd')"
+
+.PHONY: rebuild
+rebuild: .clean build
