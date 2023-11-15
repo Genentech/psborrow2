@@ -145,6 +145,7 @@ summary(match_11)
 ```
 
 ```{r matchit_jitter}
+set.seed(123)
 plot(match_11, type = "jitter", interactive = FALSE)
 ```
 
