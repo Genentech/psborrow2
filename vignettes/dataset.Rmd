@@ -288,50 +288,7 @@ Now that we have thought through each of the inputs to `create_analysis_obj()`,
 let's create an analysis object:
 
 
-```
-# Inputs look good.
-# In file included from /var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/Rtmp9tjjNO/model-18d866f67ab9.hpp:1:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/src/stan/model/model_header.hpp:4:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math.hpp:19:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/rev.hpp:10:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/rev/fun.hpp:200:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor.hpp:16:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor/integrate_ode_rk45.hpp:6:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/stan/math/prim/functor/ode_rk45.hpp:9:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint.hpp:76:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint/integrate/observer_collection.hpp:23:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function.hpp:30:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function/detail/prologue.hpp:17:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/function/function_base.hpp:21:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index.hpp:29:
-# In file included from /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index/stl_type_index.hpp:47:
-# /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:132:33: warning: 'unary_function<const std::error_category *, unsigned lon
-# g>' is deprecated [-Wdeprecated-declarations]
-#         struct hash_base : std::unary_function<T, std::size_t> {};
-#                                 ^
-# /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:692:18: note: in instantiation of template class 'boost::hash_detail::hash_base<const std::error_category *>' requested here
-#         : public boost::hash_detail::hash_base<T*>
-#                  ^
-# /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:420:24: note: in instantiation of template class 'boost::hash<const std::error_category *>' requested here
-#         boost::hash<T> hasher;
-#                        ^
-# /Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:551:9: note: in instantiation of function template specialization 'boost::hash_combine<const std::error_category *>' requested here
-#         hash_combine(seed, &v.category());
-#         ^
-# /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h:23:29: note: 'unary_function<const std::error_category *, unsigned long>' has been explicitly marked deprecated here
-# struct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function
-#                             ^
-# /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:850:41: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
-# #    define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
-#                                         ^
-# /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:835:49: note: expanded from macro '_LIBCPP_DEPRECATED'
-# #      define _LIBCPP_DEPRECATED __attribute__((deprecated))
-#                                                 ^
-# 1 warning generated.
-# ld: warning: duplicate -rpath '/Users/secrestm/.cmdstan/cmdstan-2.33.1/stan/lib/stan_math/lib/tbb' ignored
-# Stan program compiled successfully!
-# Ready to go! Now call `mcmc_sample()`.
-```
+
 
 ```r
 anls_obj <- create_analysis_obj(
@@ -357,18 +314,6 @@ that are passed to
 Note that running this may take a few minutes.
 
 
-```
-# Running MCMC with 4 sequential chains...
-# 
-# Chain 1 finished in 25.1 seconds.
-# Chain 2 finished in 20.0 seconds.
-# Chain 3 finished in 20.9 seconds.
-# Chain 4 finished in 22.4 seconds.
-# 
-# All 4 chains finished successfully.
-# Mean chain execution time: 22.1 seconds.
-# Total execution time: 88.7 seconds.
-```
 
 
 ```r

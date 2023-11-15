@@ -484,8 +484,7 @@ class(simulation_res)
 # [1] "psborrow2"
 ```
 
-This evaluation took about 15.1
-minutes. Let's look at the performance of our simulation study by extracting the data.frame
+Let's look at the performance of our simulation study by extracting the data.frame
 that summarizes results, `get_results()`:
 
 
