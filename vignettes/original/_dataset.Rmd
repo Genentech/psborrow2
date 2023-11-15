@@ -247,9 +247,11 @@ anls_obj <- create_analysis_obj(
   data_matrix = example_matrix,
   outcome = outcome,
   borrowing = borrowing,
-  treatment = treatment
+  treatment = treatment,
+  quiet = TRUE
 )
 ```
+
 ```{r anls-obj-no-eval, eval = FALSE}
 anls_obj <- create_analysis_obj(
   data_matrix = example_matrix,
