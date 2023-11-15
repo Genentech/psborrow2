@@ -13,7 +13,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r knitr, include = FALSE}
+```{r knitr, echo = FALSE, message = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   fig.align = "center",
@@ -48,7 +48,7 @@ The model has a treatment indicator and two covariates, `resp ~ trt + cov1 + cov
 
 ### glm
 
-```{r glm_logistic, include = FALSE}
+```{r glm_logistic, echo = FALSE, message = FALSE}
 logistic_glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   logistic_glm <- glm(
     resp ~ trt + cov1 + cov2,
@@ -92,7 +92,7 @@ logistic_glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 
 ### BayesPPD
 
-```{r bayesppd_logistic, include = FALSE}
+```{r bayesppd_logistic, echo = FALSE, message = FALSE}
 logistic_ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   logistic_ppd <- glm.fixed.a0(
     data.type = "Bernoulli",
@@ -155,7 +155,7 @@ logistic_ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 
 ### psborrow2
 
-```{r psb2_logistic, include = FALSE}
+```{r psb2_logistic, echo = FALSE, message = FALSE}
 logistic_psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   logistic_psb2 <- create_analysis_obj(
     data_matrix = as.matrix(cbind(
@@ -315,7 +315,7 @@ glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 })
 ```
 
-```{r bayesppd_Exp, include = FALSE}
+```{r bayesppd_Exp, echo = FALSE, message = FALSE}
 ## BayesPPD
 ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   exp_ppd <- glm.fixed.a0(
@@ -378,7 +378,7 @@ ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 ```
 
 
-```{r psborrow2_Exp, include = FALSE}
+```{r psborrow2_Exp, echo = FALSE, message = FALSE}
 ## psborrow2
 psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   exp_psb2 <- create_analysis_obj(

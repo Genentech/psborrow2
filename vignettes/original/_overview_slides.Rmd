@@ -11,7 +11,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r, echo = FALSE, message = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = ">"
@@ -24,7 +24,7 @@ slides slide {
 }
 ```
 
-```{r psborrow2, include = FALSE}
+```{r psborrow2, echo = FALSE, message = FALSE}
 library(psborrow2)
 ```
 
@@ -324,7 +324,7 @@ head(example_matrix[, c("ext", "trt", "time", "cnsr")])
 * `time` is the time to event or censorship
 * `cnsr = 1` if a patient's follow-up was censored, else `csnr = 0`
 
-```{r include = FALSE}
+```{r echo = FALSE, message = FALSE}
 example_dataframe <- as.data.frame(example_matrix)
 ```
 
@@ -625,7 +625,7 @@ print(analysis_object)
 The `Analysis` object suggests calling `mcmc_sample()`
 as a next step. We'll follow that advice!
 
-```{r include = FALSE}
+```{r echo = FALSE, message = FALSE}
 results <- mcmc_sample(
   analysis_object,
   iter_warmup = 1000,
@@ -678,7 +678,7 @@ summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975))) %>%
 
 <br>
 
-```{r include = FALSE}
+```{r echo = FALSE, message = FALSE}
 color_scheme_set("blue")
 ```
 
@@ -733,13 +733,13 @@ We'll make a new matrix called `example_matrix_ps` which has 5 categories of
 propensity score levels with approximately the same number of patients
 in each.
 
-```{r include = FALSE}
+```{r echo = FALSE, message = FALSE}
 ps <- predict(ps_model, type = "response")
 example_dataframe$ps <- ps
 ```
 
 
-```{r, include = FALSE}
+```{r, echo = FALSE, message = FALSE}
 example_dataframe$ps_cat_ <- cut(
   example_dataframe$ps,
   breaks = 5,
@@ -751,7 +751,7 @@ levels(example_dataframe$ps_cat_) <- c(
 )
 ```
 
-```{r include = FALSE}
+```{r echo = FALSE, message = FALSE}
 example_matrix_ps <- create_data_matrix(
   example_dataframe,
   outcome = c("time", "cnsr"),
@@ -800,7 +800,7 @@ analysis_object_ps <- create_analysis_obj(
 )
 ```
 
-```{r include = FALSE}
+```{r echo = FALSE, message = FALSE}
 results_ps <- mcmc_sample(analysis_object_ps,
   iter_warmup = 1000,
   iter_sampling = 1000,
@@ -855,7 +855,7 @@ mcmc_hist(draws_ps, c("treatment HR")) +
 
 ## Summary of analyses
 
-```{r include = FALSE}
+```{r echo = FALSE, message = FALSE}
 # Function to help evaluate all combinations of adjustment and borrowing
 trt_from_anls <- function(borrowing, adjustment = NULL) {
   require(posterior)
@@ -1020,7 +1020,7 @@ HR of 1.0 and true HR of 0.8).
 Suppose we have a list of lists of simulated data called
 `my_data_list`:
 
-```{r, include = FALSE}
+```{r, echo = FALSE, message = FALSE}
 library(simsurv)
 # function to create a single matrix
 sim_single_matrix <- function(
@@ -1129,7 +1129,7 @@ my_sim_data_guide <- expand.grid(
 )
 ```
 
-```{r include = FALSE}
+```{r echo = FALSE, message = FALSE}
 my_sim_data_guide$id <- seq(1, NROW(my_sim_data_guide))
 ```
 
@@ -1231,7 +1231,7 @@ simulation_obj <- create_simulation_obj(
 As with `Analysis` objects, the next step for us with `Simulation` objects
 is to call `mcmc_sample()`:
 
-```{r include = FALSE}
+```{r echo = FALSE, message = FALSE}
 simulation_res <- mcmc_sample(
   simulation_obj,
   iter_warmup = 1000,
@@ -1266,7 +1266,7 @@ Let's get a useful `data.frame` of results by calling `get_results`:
 simulation_res_df <- get_results(simulation_res)
 ```
 
-```{r include = FALSE}
+```{r echo = FALSE, message = FALSE}
 simulation_res_df$borrowing_scenario <- factor(simulation_res_df$borrowing_scenario,
   levels = c(
     "No borrowing",

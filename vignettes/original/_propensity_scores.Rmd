@@ -10,7 +10,7 @@ bibliography: references.bib
 link-citations: yes
 ---
 
-```{r setup, include = FALSE}
+```{r setup, echo = FALSE, message = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -72,7 +72,7 @@ love.plot(weightit_model, stars = "std")
 
 The PS values can be copied into the data set and the analysis object can be constructed as before.
 
-```{r covs-no-echo, include = FALSE}
+```{r covs-no-echo, echo = FALSE, message = FALSE}
 example_dataframe$att <- weightit_model$weights
 
 example_matrix_att <- create_data_matrix(
@@ -164,7 +164,7 @@ example_matrix_match <- create_data_matrix(
 )
 ```
 
-```{r, include = FALSE}
+```{r, echo = FALSE, message = FALSE}
 analysis_match <- create_analysis_obj(
   data_matrix = example_matrix_match,
   outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
@@ -194,7 +194,7 @@ is equivalent to fixed power prior weights. This allows for the combination of m
 IPTW + commensurate prior approach.
 
 
-```{r, include = FALSE}
+```{r, echo = FALSE, message = FALSE}
 analysis_iptw_bdb <- create_analysis_obj(
   data_matrix = example_matrix_att,
   outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
@@ -222,7 +222,7 @@ result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb, seed = 123)
 We can also use weights to specify a fixed power prior model. Here we set the power parameter $\alpha = 0.1$
 for the external controls.
 
-```{r, include = FALSE}
+```{r, echo = FALSE, message = FALSE}
 example_matrix_pp01 <- cbind(example_matrix, pp_alpha = ifelse(example_matrix[, "ext"] == 1, 0.1, 1))
 
 analysis_pp01 <- create_analysis_obj(
@@ -254,7 +254,7 @@ result_pp01 <- mcmc_sample(analysis_pp01, seed = 123)
 
 For comparison, we also fit a full borrowing, a no borrowing, and a BDB model without weights.
 
-```{r, include = FALSE}
+```{r, echo = FALSE, message = FALSE}
 result_full <- mcmc_sample(
   create_analysis_obj(
     data_matrix = example_matrix,

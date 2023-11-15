@@ -12,7 +12,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r, echo = FALSE, message = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#",
@@ -362,7 +362,7 @@ specifies the quantiles for null coverage and true coverage. For instance,
 95% credible coverage would be estimated with
 `posterior_quantiles = c(0.025, 0.975)`, the default argument.
 
-```{r, include = FALSE, message = FALSE}
+```{r, echo = FALSE, message = FALSE, message = FALSE}
 st <- Sys.time()
 simulation_res <- mcmc_sample(
   simulation_obj,
