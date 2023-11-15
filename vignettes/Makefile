@@ -3,12 +3,5 @@ OBJS = $(patsubst original/_%, %, $(SRCS))
 
 build: $(OBJS)
 
-.clean:
-	rm -f $(OBJS)
-	rm -rf figure-*
-
 %.Rmd: original/_%.Rmd
 	Rscript -e "knitr::opts_chunk[['set']]('fig.path' = 'figure-$*-'); knitr::knit('original/_$*.Rmd', output = '$*.Rmd')"
-
-.PHONY: rebuild
-rebuild: .clean build
