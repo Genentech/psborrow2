@@ -242,7 +242,7 @@ treatment
 Now that we have thought through each of the inputs to `create_analysis_obj()`,
 let's create an analysis object:
 
-```{r anls-obj-no-echo, echo = FALSE}
+```{r anls-obj-no-echo, echo = FALSE, message = FALSE}
 anls_obj <- create_analysis_obj(
   data_matrix = example_matrix,
   outcome = outcome,
@@ -273,7 +273,7 @@ that are passed to
 [`CmdStanModel` objects](https://mc-stan.org/cmdstanr/reference/model-method-sample.html).
 Note that running this may take a few minutes.
 
-```{r res-no-echo, echo = FALSE}
+```{r res-no-echo, echo = FALSE, message = FALSE}
 results <- mcmc_sample(anls_obj,
   iter_warmup = 2000,
   iter_sampling = 50000,
