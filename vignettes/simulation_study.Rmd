@@ -388,17 +388,20 @@ combinations of parameters. Let's create a simulation object of class
 `Simulation`:
 
 
+
+
 ```r
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
   outcome = my_sim_out,
   borrowing = my_borrowing_list,
-  treatment = my_sim_treat
+  treatment = my_sim_treat,
+  quiet = TRUE
 )
 
 simulation_obj
-# Simulation object with  16  combinations and  1600  analyses ready to sample.  This is a lot of combinations/analyses! Consider breaking the  study into different simulation objects. Or if you  prefer to use these combinations, call `mcmc_sample()` next.
 ```
+
 
 While we get a warning about the size of the simulation study, we are not worried
 because we are limiting our MCMC samples below in this example.
@@ -469,6 +472,7 @@ simulation_res <- mcmc_sample(
   seed = 112233
 )
 ```
+
 
 
 ***Note*** unlike an analysis on a single dataset, `mcmc_sample()` does not
@@ -551,8 +555,8 @@ ggplot(simulation_res_df) +
 ```
 
 <div class="figure" style="text-align: center">
-<img src="figure-simulation_study-unnamed-chunk-20-1.png" alt="plot of chunk unnamed-chunk-20"  />
-<p class="caption">plot of chunk unnamed-chunk-20</p>
+<img src="figure-simulation_study-unnamed-chunk-23-1.png" alt="plot of chunk unnamed-chunk-23"  />
+<p class="caption">plot of chunk unnamed-chunk-23</p>
 </div>
 
 ### Type I error
@@ -577,8 +581,8 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 1.0, ]) +
 ```
 
 <div class="figure" style="text-align: center">
-<img src="figure-simulation_study-unnamed-chunk-21-1.png" alt="plot of chunk unnamed-chunk-21"  />
-<p class="caption">plot of chunk unnamed-chunk-21</p>
+<img src="figure-simulation_study-unnamed-chunk-24-1.png" alt="plot of chunk unnamed-chunk-24"  />
+<p class="caption">plot of chunk unnamed-chunk-24</p>
 </div>
 
 ### Power
@@ -602,6 +606,6 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
 ```
 
 <div class="figure" style="text-align: center">
-<img src="figure-simulation_study-unnamed-chunk-22-1.png" alt="plot of chunk unnamed-chunk-22"  />
-<p class="caption">plot of chunk unnamed-chunk-22</p>
+<img src="figure-simulation_study-unnamed-chunk-25-1.png" alt="plot of chunk unnamed-chunk-25"  />
+<p class="caption">plot of chunk unnamed-chunk-25</p>
 </div>
