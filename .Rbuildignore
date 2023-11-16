@@ -23,3 +23,5 @@ devel
 ^Meta$
 ^dev$
 ^\.pre-commit-config\.yaml$
+^vignettes/original$
+^vignettes/Makefile$
