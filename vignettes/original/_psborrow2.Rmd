@@ -11,7 +11,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#"
+)
+options(rmarkdown.html_vignette.check_title = FALSE)
+```
 
 In this vignette, you'll learn about the scope of `psborrow2` and where to find
 additional information on how to implement analyses in `psborrow2`.

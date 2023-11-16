@@ -7,18 +7,18 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options("max.print" = 20)
+```
 
 This vignette will show the internal functions for generating data that can be used in simulation studies.
 
-
-```r
+```{r setup}
 library(psborrow2)
-#> Loading required package: cmdstanr
-#> This is cmdstanr version 0.5.2
-#> - CmdStanR documentation and vignettes: mc-stan.org/cmdstanr
-#> - CmdStan path: /Users/secrestm/.cmdstan/cmdstan-2.33.1
-#> - CmdStan version: 2.33.1
 ```
 
 ## Generating Baseline Data
@@ -26,8 +26,7 @@ library(psborrow2)
 First we define how to generate baseline data for our study. In its simplest form we only need to define how many
 patients are in the arms: treated internal, control internal, control external.
 
-
-```r
+```{r}
 simple_baseline <- create_baseline_object(
   n_trt_int = 100,
   n_ctrl_int = 50,
@@ -38,18 +37,8 @@ simple_baseline <- create_baseline_object(
 This object defines how the data will be created. To actually generate a sample, use `generate()` to produce a
 `data.frame`.
 
-
-```r
+```{r}
 generate(simple_baseline)
-#> Simulated Baseline Data
-#>   patid ext trt
-#> 1     1   0   1
-#> 2     2   0   1
-#> 3     3   0   1
-#> 4     4   0   1
-#> 5     5   0   1
-#> 6     6   0   1
-#>  [ reached 'max' / getOption("max.print") -- omitted 244 rows ]
 ```
 
 Often we are interested in some additional covariates. Internally the package uses multivariate normal distributions,
@@ -57,8 +46,7 @@ so we need to specify the mean and (co-)variance. We have the option to specify 
 for the internal and external arms. The internal arms are assumed to be randomized and therefore come from the same
 distribution. If no external parameters are specified, the internal ones are used for both.
 
-
-```r
+```{r}
 with_age <- create_baseline_object(
   n_trt_int = 100,
   n_ctrl_int = 50,
@@ -71,19 +59,10 @@ with_age <- create_baseline_object(
 )
 set.seed(123)
 generate(with_age)
-#> Simulated Baseline Data
-#>   patid ext trt      age
-#> 1     1   0   1 53.74674
-#> 2     2   0   1 54.48531
-#> 3     3   0   1 58.48538
-#> 4     4   0   1 55.15766
-#> 5     5   0   1 55.28910
-#>  [ reached 'max' / getOption("max.print") -- omitted 245 rows ]
 ```
 
 In a more complex setting, we can generate correlated baseline covariates.
-
-```r
+```{r}
 with_age_score <- create_baseline_object(
   n_trt_int = 100,
   n_ctrl_int = 50,
@@ -98,8 +77,7 @@ with_age_score <- create_baseline_object(
 data_age_score <- generate(with_age_score)
 ```
 
-
-```r
+```{r}
 plot(
   x = data_age_score$age,
   y = data_age_score$score,
@@ -116,21 +94,13 @@ legend(
 )
 ```
 
-![plot of chunk unnamed-chunk-6](figure-data_simulation-unnamed-chunk-6-1.png)
-
 Finally, we have the option to transform non-normal covariates, such as with binary cut-offs.
 These can be added to existing objects and can use built-in functions or used defined.
-
-```r
+```{r}
 with_age_score@transformations <- list(
   score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7),
   score_rounded = function(data) round(data$score)
 )
 set.seed(123)
 generate(with_age_score)
-#> Simulated Baseline Data
-#>   patid ext trt      age    score score_high score_rounded
-#> 1     1   0   1 53.74674 4.769823          0             5
-#> 2     2   0   1 58.48538 5.070508          0             5
-#>  [ reached 'max' / getOption("max.print") -- omitted 248 rows ]
 ```

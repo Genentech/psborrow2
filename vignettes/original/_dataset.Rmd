@@ -13,7 +13,19 @@ editor_options:
   chunk_output_type: console
 ---
 
-
+```{r knitr, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.align = "center",
+  fig.width = 5,
+  fig.height = 3,
+  dpi = 120,
+  comment = "#"
+)
+options(rmarkdown.html_vignette.check_title = FALSE)
+output_hook <- knitr::knit_hooks$get("output")
+output_null <- function(x, options) return(NULL)
+```
 
 In this vignette, you'll learn how to conduct Bayesian dynamic borrowing (BDB)
 analyses using `psborrow2`.
@@ -29,8 +41,7 @@ and the external program. More information can be found in the
 [`cmdstanr` vignette](https://mc-stan.org/cmdstanr/articles/cmdstanr.html).
 
 The short version is:
-
-```r
+```{r install-cmdstan-2, eval=FALSE}
 # Install the cmdstanr package
 install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
 library(cmdstanr)
@@ -41,8 +52,7 @@ install_cmdstan(cores = 2)
 ```
 
 Now you're ready to start with `psborrow2`.
-
-```r
+```{r dependencies, message = FALSE}
 library(psborrow2)
 ```
 
@@ -107,8 +117,7 @@ you can easily create a suitable matrix with the `psborrow2` helper function
 `create_data_matrix()`.
 
 #### Creating a data matrix with `create_data_matrix()`
-
-```r
+```{r, eval = require(survival)}
 # Start with data.frame
 diabetic_df <- survival::diabetic
 
@@ -125,31 +134,15 @@ diabetes_matrix <- create_data_matrix(
   ext_flag_col = "external",
   covariates = ~ age + laser + risk
 )
-# Call `add_covariates()` with `covariates =  c("age", "laserargon", "risk") `
 
 head(diabetes_matrix)
-#    time cens trt external age laserargon risk
-# 1 46.23    1   0        0  28          1    9
-# 2 46.23    1   1        0  28          1    9
-# 3 42.50    1   1        0  12          0    8
-# 4 31.30    0   0        0  12          0    6
-# 5 42.27    1   1        0   9          0   11
-# 6 42.27    1   0        0   9          0   11
 ```
 
 #### `psborrow2` example matrix
 Let's look at the first few rows of the example matrix:
 
-
-```r
+```{r example-matrix}
 head(example_matrix)
-#      id ext trt cov4 cov3 cov2 cov1       time status cnsr resp
-# [1,]  1   0   0    1    1    1    0  2.4226411      1    0    1
-# [2,]  2   0   0    1    1    0    1 50.0000000      0    1    1
-# [3,]  3   0   0    0    0    0    1  0.9674372      1    0    1
-# [4,]  4   0   0    1    1    0    1 14.5774738      1    0    1
-# [5,]  5   0   0    1    1    0    0 50.0000000      0    1    0
-# [6,]  6   0   0    1    1    0    1 50.0000000      0    1    0
 ```
 
 The column definitions are below:
@@ -183,26 +176,13 @@ so we'll specify an uninformative prior: `normal_prior(0, 1000)`.
 For our example, let's conduct a time-to-event analysis using the exponential
 distribution.
 
-
-```r
+```{r exp-surv-dist}
 outcome <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
   baseline_prior = normal_prior(0, 1000)
 )
 outcome
-# Outcome object with class OutcomeSurvExponential 
-# 
-# Outcome variables:
-# time_var cens_var 
-#   "time"   "cnsr" 
-# 
-# Baseline prior:
-# Normal Distribution
-# Parameters:
-#  Stan  R    Value
-#  mu    mean    0 
-#  sigma sd   1000
 ```
 
 ## 3. `borrowing`
@@ -235,25 +215,13 @@ in this example.
 ***Note***: Prior distributions are outlined in greater detail in a separate
 vignette, see `vignette('prior_distributions', package = 'psborrow2')`.
 
-
-```r
+```{r borrowing-details}
 borrowing <- borrowing_details(
   method = "BDB",
   ext_flag_col = "ext",
   tau_prior = gamma_prior(0.001, 0.001)
 )
 borrowing
-# Borrowing object using BDB 
-# 
-# External control flag: ext 
-# 
-# Commensurability parameter prior:
-# Gamma Distribution
-# Parameters:
-#  Stan  R     Value
-#  alpha shape 0.001
-#  beta  rate  0.001
-# Constraints: <lower=0>
 ```
 
 ## 3. `treatment`
@@ -263,23 +231,12 @@ specify the column for the treatment flag in `trt_flag_col`. In addition, we
 need to specify the prior on the effect estimate, `trt_prior`. We'll use
 another uninformative normal distribution for the prior on the treatment effect:
 
-
-```r
+```{r treatment-details}
 treatment <- treatment_details(
   trt_flag_col = "trt",
   trt_prior = normal_prior(0, 1000)
 )
 treatment
-# Treatment object
-# 
-# Treatment flag column: trt 
-# 
-# Treatment effect prior:
-# Normal Distribution
-# Parameters:
-#  Stan  R    Value
-#  mu    mean    0 
-#  sigma sd   1000
 ```
 
 ## Application
@@ -287,10 +244,11 @@ treatment
 Now that we have thought through each of the inputs to `create_analysis_obj()`,
 let's create an analysis object:
 
+```{r, echo = FALSE}
+knitr::knit_hooks$set(output = output_null)
+```
 
-
-
-```r
+```{r}
 anls_obj <- create_analysis_obj(
   data_matrix = example_matrix,
   outcome = outcome,
@@ -300,7 +258,9 @@ anls_obj <- create_analysis_obj(
   )
 ```
 
-
+```{r echo = FALSE}
+knitr::knit_hooks$set(output = output_hook)
+```
 
 
 
@@ -316,10 +276,11 @@ that are passed to
 [`CmdStanModel` objects](https://mc-stan.org/cmdstanr/reference/model-method-sample.html).
 Note that running this may take a few minutes.
 
+```{r echo = FALSE}
+knitr::knit_hooks$set(output = output_null)
+```
 
-
-
-```r
+```{r}
 results <- mcmc_sample(anls_obj,
   iter_warmup = 2000,
   iter_sampling = 50000,
@@ -328,7 +289,9 @@ results <- mcmc_sample(anls_obj,
   )
 ```
 
-
+```{r echo = FALSE}
+knitr::knit_hooks$set(output = output_hook)
+```
 
 # Summarizing results{.tabset}
 
@@ -338,19 +301,8 @@ the
 For instance, we can see a see a summary of the posterior distribution samples
 with `results$summary()`:
 
-
-```r
+```{r res-summary}
 results$summary()
-# # A tibble: 6 × 10
-#   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
-#   <chr>        <num>     <num>  <num>  <num>       <num>    <num> <num>    <num>
-# 1 lp__     -1618.    -1618.    1.50   1.29   -1621.      -1.62e+3  1.00   71314.
-# 2 beta_trt    -0.155    -0.158 0.199  0.198     -0.477    1.74e-1  1.00   85216.
-# 3 tau          1.21      0.506 1.92   0.693      0.00418  4.74e+0  1.00   81024.
-# 4 alpha[1]    -3.36     -3.35  0.161  0.161     -3.63    -3.10e+0  1.00   86029.
-# 5 alpha[2]    -2.40     -2.40  0.0557 0.0557    -2.49    -2.31e+0  1.00  132062.
-# 6 HR_trt       0.873     0.854 0.176  0.168      0.620    1.19e+0  1.00   85216.
-# # ℹ 1 more variable: ess_tail <num>
 ```
 
 The summary includes information for several parameter estimates
@@ -358,15 +310,8 @@ from our BDB model. Because it may not be immediately clear what the parameters
 from the Stan model refer to, `psborrow2` has a function which returns a
 variable dictionary from the analysis object to help interpret these parameters:
 
-
-```r
+```{r data-dict}
 variable_dictionary(anls_obj)
-#   Stan_variable                        Description
-# 1           tau         commensurability parameter
-# 2      alpha[1] baseline log hazard rate, internal
-# 3      alpha[2] baseline log hazard rate, external
-# 4      beta_trt                   treatment log HR
-# 5        HR_trt                       treatment HR
 ```
 
 We can also capture all of the draws by calling `results$draws()`, which
@@ -374,52 +319,9 @@ returns an object of class `draws`. `draws` objects are
 common in many MCMC sampling software packages and allow us to leverage
 packages such as `posterior` and `bayesplot`.
 
-
-```r
+```{r draws}
 draws <- results$draws()
 print(draws)
-# # A draws_array: 50000 iterations, 4 chains, and 6 variables
-# , , variable = lp__
-# 
-#          chain
-# iteration     1     2     3     4
-#         1 -1616 -1616 -1616 -1616
-#         2 -1616 -1616 -1618 -1618
-#         3 -1616 -1617 -1619 -1617
-#         4 -1616 -1618 -1619 -1618
-#         5 -1617 -1617 -1617 -1617
-# 
-# , , variable = beta_trt
-# 
-#          chain
-# iteration     1      2      3      4
-#         1 -0.20 -0.009 -0.022 -0.109
-#         2 -0.31 -0.092 -0.167 -0.305
-#         3 -0.16 -0.082  0.027  0.092
-#         4 -0.24 -0.319 -0.092  0.226
-#         5 -0.30 -0.081 -0.012 -0.439
-# 
-# , , variable = tau
-# 
-#          chain
-# iteration    1    2    3    4
-#         1 1.62 1.14 1.94 2.58
-#         2 0.84 1.03 1.32 0.23
-#         3 0.48 1.90 0.61 1.12
-#         4 1.46 0.48 0.18 0.48
-#         5 0.33 1.64 0.32 2.15
-# 
-# , , variable = alpha[1]
-# 
-#          chain
-# iteration    1    2    3    4
-#         1 -3.4 -3.4 -3.5 -3.4
-#         2 -3.3 -3.4 -3.5 -3.4
-#         3 -3.4 -3.4 -3.7 -3.5
-#         4 -3.3 -3.4 -3.6 -3.6
-#         5 -3.3 -3.5 -3.5 -3.2
-# 
-# # ... with 49995 more iterations, and 2 more variables
 ```
 
 `psborrow2` also has a function to rename variables in `draws`
@@ -427,20 +329,9 @@ objects to be more interpretable, `rename_draws_covariates()`. This function
 uses the `variable_dictionary` labels. Let's use it here to make the results
 easier to interpret:
 
-
-```r
+```{r rename-draws}
 draws <- rename_draws_covariates(draws, anls_obj)
 summary(draws)
-# # A tibble: 6 × 10
-#   variable          mean   median     sd    mad       q5      q95  rhat ess_bulk
-#   <chr>            <num>    <num>  <num>  <num>    <num>    <num> <num>    <num>
-# 1 lp__          -1.62e+3 -1.62e+3 1.50   1.29   -1.62e+3 -1.62e+3  1.00   71314.
-# 2 treatment lo… -1.55e-1 -1.58e-1 0.199  0.198  -4.77e-1  1.74e-1  1.00   85216.
-# 3 commensurabi…  1.21e+0  5.06e-1 1.92   0.693   4.18e-3  4.74e+0  1.00   81024.
-# 4 baseline log… -3.36e+0 -3.35e+0 0.161  0.161  -3.63e+0 -3.10e+0  1.00   86029.
-# 5 baseline log… -2.40e+0 -2.40e+0 0.0557 0.0557 -2.49e+0 -2.31e+0  1.00  132062.
-# 6 treatment HR   8.73e-1  8.54e-1 0.176  0.168   6.20e-1  1.19e+0  1.00   85216.
-# # ℹ 1 more variable: ess_tail <num>
 ```
 
 ## Using `bayesplot`
@@ -451,21 +342,14 @@ variable we are interested in by plotting histograms of the draws with the
 function `mcmc_hist()`. Let's do that for the Hazard ratio for the treatment
 effect and for our commensurability parameter, tau.
 
-
-```r
+```{r mcmc-hist, message = FALSE, eval = requireNamespace("bayesplot")}
 bayesplot::mcmc_hist(draws, c("treatment HR", "commensurability parameter"))
 ```
-
-<div class="figure" style="text-align: center">
-<img src="figure-dataset-mcmc-hist-1.png" alt="plot of chunk mcmc-hist"  />
-<p class="caption">plot of chunk mcmc-hist</p>
-</div>
 
 We can see other plots that help us understand and diagnose problems with
 the MCMC sampler, such as trace and rank plots:
 
-
-```r
+```{r mcmc-trace, fig.width=6, fig.height=3.6, dpi = 100, eval = requireNamespace("bayesplot")}
 bayesplot::color_scheme_set("mix-blue-pink")
 
 bayesplot::mcmc_trace(
@@ -474,11 +358,6 @@ bayesplot::mcmc_trace(
   n_warmup = 1000
 )
 ```
-
-<div class="figure" style="text-align: center">
-<img src="figure-dataset-mcmc-trace-1.png" alt="plot of chunk mcmc-trace"  />
-<p class="caption">plot of chunk mcmc-trace</p>
-</div>
 
 Many other functions are outlined in the
 [`bayesplot` vignettes](https://mc-stan.org/bayesplot/).
@@ -490,30 +369,17 @@ which provides many other tools for analyzing MCMC draw data. For instance, we
 can use the `summarize_draws()` function to derive 80% credible intervals
 for all parameters:
 
-
-```r
+```{r posterior-summ, message = FALSE}
 library(posterior)
 summarize_draws(draws, ~ quantile(.x, probs = c(0.1, 0.9)))
-# # A tibble: 6 × 3
-#   variable                                `10%`     `90%`
-#   <chr>                                   <num>     <num>
-# 1 lp__                               -1620.     -1616.   
-# 2 treatment log HR                      -0.408      0.100
-# 3 commensurability parameter             0.0172     3.22 
-# 4 baseline log hazard rate, internal    -3.57      -3.15 
-# 5 baseline log hazard rate, external    -2.47      -2.33 
-# 6 treatment HR                           0.665      1.11
 ```
 
 Another useful application of the `posterior` package is the evaluation of the Monte Carlo
 standard error for quantiles of a variable of interest:
 
-
-```r
+```{r mcse-mean}
 vm <- extract_variable_matrix(draws, "treatment HR")
 mcse_quantile(x = vm, probs = c(0.1, 0.5, 0.9))
-#  mcse_q10  mcse_q50  mcse_q90 
-# 0.0006465 0.0006845 0.0012300
 ```
 
 `posterior` contains many other helpful functions, as outlined in their
