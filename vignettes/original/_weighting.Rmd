@@ -23,6 +23,8 @@ knitr::opts_chunk$set(
   comment = "#"
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
+output_hook <- knitr::knit_hooks$get("output")
+output_null <- function(x, options) return(NULL)
 ```
 
 # Introduction
@@ -48,28 +50,11 @@ The model has a treatment indicator and two covariates, `resp ~ trt + cov1 + cov
 
 ### glm
 
-```{r glm_logistic, echo = FALSE, message = FALSE}
-logistic_glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
-  logistic_glm <- glm(
-    resp ~ trt + cov1 + cov2,
-    data = as.data.frame(example_matrix),
-    family = binomial,
-    weights = ifelse(example_matrix[, "ext"] == 1, w, 1)
-  )
-  glm_summary <- summary(logistic_glm)$coef
-  ci <- confint(logistic_glm)
-  data.frame(
-    fitter = "glm",
-    borrowing = w,
-    variable = c("(Intercept)", "trt", "cov1", "cov2"),
-    estimate = glm_summary[, "Estimate"],
-    lower = ci[, 1],
-    upper = ci[, 2]
-  )
-})
+```{r, echo = FALSE}
+knitr::knit_hooks$set(output = output_null)
 ```
 
-```{r glm_logistic-no-eval, eval = FALSE}
+```{r glm_logistic, message = FALSE, warning = FALSE}
 logistic_glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   logistic_glm <- glm(
     resp ~ trt + cov1 + cov2,
@@ -92,38 +77,7 @@ logistic_glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 
 ### BayesPPD
 
-```{r bayesppd_logistic, echo = FALSE, message = FALSE}
-logistic_ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
-  logistic_ppd <- glm.fixed.a0(
-    data.type = "Bernoulli",
-    data.link = "Logistic",
-    y = example_matrix[example_matrix[, "ext"] == 0, ][, "resp"],
-    x = example_matrix[example_matrix[, "ext"] == 0, ][, c("trt", "cov1", "cov2")],
-    historical = list(list(
-      y0 = example_matrix[example_matrix[, "ext"] == 1, ][, "resp"],
-      x0 = example_matrix[example_matrix[, "ext"] == 1, ][, c("cov1", "cov2")],
-      a0 = w
-    )),
-    lower.limits = rep(-100, 5),
-    upper.limits = rep(100, 5),
-    slice.widths = rep(1, 5),
-    nMC = 10000,
-    nBI = 1000
-  )[[1]]
-  ci <- apply(logistic_ppd, 2, quantile, probs = c(0.025, 0.975))
-  data.frame(
-    fitter = "BayesPPD",
-    borrowing = w,
-    variable = c("(Intercept)", "trt", "cov1", "cov2"),
-    estimate = colMeans(logistic_ppd),
-    lower = ci[1, ],
-    upper = ci[2, ]
-  )
-})
-```
-
-
-```{r bayesppd_logistic-no-eval, eval = FALSE}
+```{r bayesppd_logistic}
 logistic_ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   logistic_ppd <- glm.fixed.a0(
     data.type = "Bernoulli",
@@ -155,7 +109,8 @@ logistic_ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 
 ### psborrow2
 
-```{r psb2_logistic, echo = FALSE, message = FALSE}
+
+```{r psb2_logistic}
 logistic_psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   logistic_psb2 <- create_analysis_obj(
     data_matrix = as.matrix(cbind(
@@ -172,7 +127,8 @@ logistic_psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
     outcome = outcome_bin_logistic("resp",
       baseline_prior = normal_prior(0, 1000),
       weight_var = "w"
-    )
+    ),
+    quiet = TRUE
   )
 
   mcmc_logistic_psb2 <- mcmc_sample(logistic_psb2, chains = 1, verbose = FALSE, seed = 123)
@@ -193,43 +149,8 @@ logistic_psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 })
 ```
 
-
-```{r psb2_logistic-no-eval, eval = FALSE}
-logistic_psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
-  logistic_psb2 <- create_analysis_obj(
-    data_matrix = as.matrix(cbind(
-      example_matrix,
-      w = ifelse(example_matrix[, "ext"] == 1, w, 1)
-    )),
-    covariates = add_covariates(c("cov1", "cov2"),
-      priors = normal_prior(0, 100)
-    ),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext",
-    ),
-    treatment = treatment_details("trt", normal_prior(0, 100)),
-    outcome = outcome_bin_logistic("resp",
-      baseline_prior = normal_prior(0, 1000),
-      weight_var = "w"
-    )
-  )
-
-  mcmc_logistic_psb2 <- mcmc_sample(logistic_psb2, chains = 1, verbose = FALSE, seed = 123)
-  mcmc_summary <- mcmc_logistic_psb2$summary(
-    variables = c("alpha", "beta_trt", "beta[1]", "beta[2]"),
-    mean,
-    ~ quantile(.x, probs = c(0.025, 0.975))
-  )
-
-  data.frame(
-    fitter = "psborrow2",
-    borrowing = w,
-    variable = c("(Intercept)", "trt", "cov1", "cov2"),
-    estimate = mcmc_summary$mean,
-    lower = mcmc_summary$`2.5%`,
-    upper = mcmc_summary$`97.5%`
-  )
-})
+```{r, echo = FALSE}
+knitr::knit_hooks$set(output = output_hook)
 ```
 
 ### Results
@@ -274,6 +195,7 @@ equal to 0, 0.25, 0.5, 0.75, 1. The internal treated and control patients have w
 The model has a treatment indicator and two covariates, `eventtime ~ trt + cov1 + cov2`.
 
 ```{r surv_data}
+set.seed(123)
 sim_data_exp <- cbind(
   simsurv::simsurv(
     dist = "exponential",
@@ -315,7 +237,7 @@ glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 })
 ```
 
-```{r bayesppd_Exp, echo = FALSE, message = FALSE}
+```{r bayesppd_Exp}
 ## BayesPPD
 ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   exp_ppd <- glm.fixed.a0(
@@ -346,39 +268,11 @@ ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 })
 ```
 
-```{r bayesppd_Exp-no-eval, eval = FALSE}
-## BayesPPD
-ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
-  exp_ppd <- glm.fixed.a0(
-    data.type = "Exponential",
-    data.link = "Log",
-    y = sim_data_exp[sim_data_exp$ext == 0, ]$eventtime,
-    x = as.matrix(sim_data_exp[sim_data_exp$ext == 0, c("trt", "cov1", "cov2")]),
-    historical = list(list(
-      y0 = sim_data_exp[sim_data_exp$ext == 1, ]$eventtime,
-      x0 = as.matrix(sim_data_exp[sim_data_exp$ext == 1, c("cov1", "cov2")]),
-      a0 = w
-    )),
-    lower.limits = rep(-100, 5),
-    upper.limits = rep(100, 5),
-    slice.widths = rep(1, 5),
-    nMC = 10000,
-    nBI = 1000
-  )[[1]]
-  ci <- apply(exp_ppd, 2, quantile, probs = c(0.025, 0.975))
-  data.frame(
-    fitter = "BayesPPD",
-    borrowing = w,
-    variable = c("(Intercept)", "trt", "cov1", "cov2"),
-    estimate = colMeans(exp_ppd),
-    lower = ci[1, ],
-    upper = ci[2, ]
-  )
-})
+```{r, echo = FALSE}
+knitr::knit_hooks$set(output = output_null)
 ```
 
-
-```{r psborrow2_Exp, echo = FALSE, message = FALSE}
+```{r psborrow2_Exp}
 ## psborrow2
 psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   exp_psb2 <- create_analysis_obj(
@@ -393,7 +287,8 @@ psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
     outcome = outcome_surv_exponential("eventtime", "censor",
       baseline_prior = normal_prior(0, 1000),
       weight_var = "w"
-    )
+    ),
+    quiet = TRUE
   )
 
   mcmc_exp_psb2 <- mcmc_sample(exp_psb2, chains = 1, verbose = FALSE, seed = 123)
@@ -413,44 +308,10 @@ psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   )
 })
 ```
-
-
-```{r psborrow2_Exp-no-eval, eval = FALSE}
-## psborrow2
-psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
-  exp_psb2 <- create_analysis_obj(
-    data_matrix = as.matrix(cbind(sim_data_exp, w = ifelse(example_matrix[, "ext"] == 1, w, 1))),
-    covariates = add_covariates(c("cov1", "cov2"),
-      priors = normal_prior(0, 100)
-    ),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext",
-    ),
-    treatment = treatment_details("trt", normal_prior(0, 100)),
-    outcome = outcome_surv_exponential("eventtime", "censor",
-      baseline_prior = normal_prior(0, 1000),
-      weight_var = "w"
-    )
-  )
-
-  mcmc_exp_psb2 <- mcmc_sample(exp_psb2, chains = 1, verbose = FALSE, seed = 123)
-  mcmc_summary <- mcmc_exp_psb2$summary(
-    variables = c("alpha", "beta_trt", "beta[1]", "beta[2]"),
-    mean,
-    ~ quantile(.x, probs = c(0.025, 0.975))
-  )
-
-  data.frame(
-    fitter = "psborrow2",
-    borrowing = w,
-    variable = c("(Intercept)", "trt", "cov1", "cov2"),
-    estimate = mcmc_summary$mean,
-    lower = mcmc_summary$`2.5%`,
-    upper = mcmc_summary$`97.5%`
-  )
-})
+  
+```{r}
+knitr::knit_hooks$set(output = output_hook)
 ```
-
 
 ### Results
 
