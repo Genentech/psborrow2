@@ -90,9 +90,9 @@ and Isaac Gravestock</h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">psborrow2</span><span class="op">)</span></span>
 <span><span class="co"># Loading required package: cmdstanr</span></span>
-<span><span class="co"># This is cmdstanr version 0.6.1</span></span>
+<span><span class="co"># This is cmdstanr version 0.5.2</span></span>
 <span><span class="co"># - CmdStanR documentation and vignettes: mc-stan.org/cmdstanr</span></span>
-<span><span class="co"># - CmdStan path: /home/runner/.cmdstan/cmdstan-2.33.1</span></span>
+<span><span class="co"># - CmdStan path: /Users/secrestm/.cmdstan/cmdstan-2.33.1</span></span>
 <span><span class="co"># - CmdStan version: 2.33.1</span></span></code></pre></div>
 <p>In this vignette, you’ll learn how to specify prior distributions in
 <code>psborrow2</code>.</p>
@@ -110,7 +110,7 @@ all coefficients, passed to <code><a href="../reference/add_covariates.html">add
 </li>
 <li>ancillary parameters for outcome distributions, such as the shape
 parameter for the Weibull survival distribution, passed to
-<code><a href="../reference/weib_ph_surv_dist.html">weib_ph_surv_dist()</a></code>
+<code><a href="../reference/outcome_surv_weibull_ph.html">outcome_surv_weibull_ph()</a></code>
 </li>
 <li>log effect estimates (e.g. hazard ratios or odds ratios) for the
 primary contrast between treatments, passed to
@@ -162,7 +162,11 @@ these scenarios, you can call <code><a href="../reference/plot.html">plot()</a><
 visualize the distribution:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span><span class="va">uninformative_normal</span><span class="op">)</span></span></code></pre></div>
-<p><img src="prior_distributions_files/figure-html/unnamed-chunk-3-1.png" width="600" style="display: block; margin: auto;"></p>
+<div class="figure" style="text-align: center">
+<img src="figure-prior_distributions-unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3"><p class="caption">
+plot of chunk unnamed-chunk-3
+</p>
+</div>
 <p><code><a href="../reference/plot.html">plot()</a></code> chooses the default axes for you, but you can
 change these to make differences more obvious. Let’s compare a
 conservative <code>gamma(0.001, 0.001)</code> hyperprior distribution on
@@ -175,7 +179,11 @@ analysis):</p>
 <span><span class="va">aggressive_tau</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.001</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span><span class="va">aggressive_tau</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2000</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"blue"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1e-03</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span><span class="va">conservative_tau</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2000</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="prior_distributions_files/figure-html/unnamed-chunk-4-1.png" width="600" style="display: block; margin: auto;"></p>
+<div class="figure" style="text-align: center">
+<img src="figure-prior_distributions-unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4"><p class="caption">
+plot of chunk unnamed-chunk-4
+</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

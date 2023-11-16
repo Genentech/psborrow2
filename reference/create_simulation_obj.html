@@ -87,7 +87,7 @@ or <code>NULL</code> (no covariate adjustment).</p></dd>
 
 <dt>outcome</dt>
 <dd><p><code>SimOutcomeList</code> or <code>Outcome</code>. List of <code>Outcome</code> objects created with
-<code>sim_outcome()</code>, or single <code>Outcome</code> object (e.g., created by <code><a href="exp_surv_dist.html">exp_surv_dist()</a></code>).</p></dd>
+<code>sim_outcome()</code>, or single <code>Outcome</code> object (e.g., created by <code><a href="outcome_surv_exponential.html">outcome_surv_exponential()</a></code>).</p></dd>
 
 
 <dt>borrowing</dt>
@@ -157,15 +157,17 @@ with <code>sim_treatment()</code> or a single <code>Treatment</code> object crea
 <span class="r-in"><span>  index <span class="op">=</span> <span class="st">"index"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">sim_object</span> <span class="op">&lt;-</span> <span class="fu">create_simulation_obj</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data_matrix_list <span class="op">=</span> <span class="va">sdl</span>,</span></span>
-<span class="r-in"><span>  outcome <span class="op">=</span> <span class="fu"><a href="logistic_bin_outcome.html">logistic_bin_outcome</a></span><span class="op">(</span><span class="st">"ep"</span>, <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  borrowing <span class="op">=</span> <span class="fu"><a href="sim_borrowing_list.html">sim_borrowing_list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    full_borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    bdb <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="exponential_prior.html">exponential_prior</a></span><span class="op">(</span><span class="fl">0.0001</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="check_cmdstanr.html">check_cmdstan</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">sim_object</span> <span class="op">&lt;-</span> <span class="fu">create_simulation_obj</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data_matrix_list <span class="op">=</span> <span class="va">sdl</span>,</span></span>
+<span class="r-in"><span>    outcome <span class="op">=</span> <span class="fu"><a href="outcome_bin_logistic.html">outcome_bin_logistic</a></span><span class="op">(</span><span class="st">"ep"</span>, <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    borrowing <span class="op">=</span> <span class="fu"><a href="sim_borrowing_list.html">sim_borrowing_list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      full_borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      bdb <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="exponential_prior.html">exponential_prior</a></span><span class="op">(</span><span class="fl">0.0001</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

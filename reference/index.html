@@ -117,11 +117,6 @@
         <dd><code>ExponentialPrior</code> Class</dd>
       </dl><dl><dt>
           
-          <code><a href="ExponentialSurvDist-class.html">ExponentialSurvDist-class</a></code> <code><a href="ExponentialSurvDist-class.html">.exp_surv_dist</a></code> 
-        </dt>
-        <dd><code>ExponentialSurvDist</code> Class</dd>
-      </dl><dl><dt>
-          
           <code><a href="GammaPrior-class.html">GammaPrior-class</a></code> <code><a href="GammaPrior-class.html">.gamma_prior</a></code> 
         </dt>
         <dd><code>GammaPrior</code> Class</dd>
@@ -137,11 +132,6 @@
         <dd><code>HalfNormalPrior</code> Class</dd>
       </dl><dl><dt>
           
-          <code><a href="LogisticBinaryOutcome-class.html">LogisticBinaryOutcome-class</a></code> <code><a href="LogisticBinaryOutcome-class.html">.logistic_bin_outcome</a></code> 
-        </dt>
-        <dd><code>LogisticBinaryOutcome</code> class</dd>
-      </dl><dl><dt>
-          
           <code><a href="MCMCSimulationResult-class.html">MCMCSimulationResult-class</a></code> <code><a href="MCMCSimulationResult-class.html">.mcmc_simulation_result</a></code> 
         </dt>
         <dd><code>MCMCSimulationResult</code> Class</dd>
@@ -155,6 +145,21 @@
           <code><a href="Outcome-class.html">Outcome-class</a></code> 
         </dt>
         <dd><code>Outcome</code> class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="OutcomeBinaryLogistic-class.html">OutcomeBinaryLogistic-class</a></code> <code><a href="OutcomeBinaryLogistic-class.html">.outcome_bin_logistic</a></code> 
+        </dt>
+        <dd><code>OutcomeBinaryLogistic</code> class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="OutcomeSurvExponential-class.html">OutcomeSurvExponential-class</a></code> <code><a href="OutcomeSurvExponential-class.html">.outcome_surv_exponential</a></code> 
+        </dt>
+        <dd><code>OutcomeSurvExponential</code> Class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="OutcomeSurvWeibullPH-class.html">OutcomeSurvWeibullPH-class</a></code> <code><a href="OutcomeSurvWeibullPH-class.html">.outcome_surv_weibull_ph</a></code> 
+        </dt>
+        <dd><code>OutcomeSurvWeibullPH</code> Class</dd>
       </dl><dl><dt>
           
           <code><a href="PoissonPrior-class.html">PoissonPrior-class</a></code> <code><a href="PoissonPrior-class.html">.poisson_prior</a></code> 
@@ -237,11 +242,6 @@
         <dd><code>UniformPrior</code> Class</dd>
       </dl><dl><dt>
           
-          <code><a href="WeibullPHSurvDist-class.html">WeibullPHSurvDist-class</a></code> <code><a href="WeibullPHSurvDist-class.html">.weib_ph_surv_dist</a></code> 
-        </dt>
-        <dd><code>WeibullPHSurvDist</code> Class</dd>
-      </dl><dl><dt>
-          
           <code><a href="add_covariates.html">add_covariates()</a></code> 
         </dt>
         <dd>Add Covariates for Model Adjustment</dd>
@@ -282,7 +282,7 @@
         <dd>Prior cauchy distribution</dd>
       </dl><dl><dt>
           
-          <code><a href="check_cmdstanr.html">check_cmdstanr()</a></code> 
+          <code><a href="check_cmdstanr.html">check_cmdstanr()</a></code> <code><a href="check_cmdstanr.html">check_cmdstan()</a></code> 
         </dt>
         <dd>Check Stan</dd>
       </dl><dl><dt>
@@ -339,7 +339,7 @@
           
           <code><a href="exp_surv_dist.html">exp_surv_dist()</a></code> 
         </dt>
-        <dd>Exponential survival distribution</dd>
+        <dd>Legacy function for the exponential survival distribution</dd>
       </dl><dl><dt>
           
           <code><a href="exponential_prior.html">exponential_prior()</a></code> 
@@ -404,12 +404,7 @@
           
           <code><a href="logistic_bin_outcome.html">logistic_bin_outcome()</a></code> 
         </dt>
-        <dd>Bernoulli distribution with logit parametrization</dd>
-      </dl><dl><dt>
-          
-          <code><a href="make_analysis_object_list.html">make_analysis_object_list()</a></code> 
-        </dt>
-        <dd>Make list of analysis objects for class <code>Simulation</code></dd>
+        <dd>Legacy function for binary logistic regression</dd>
       </dl><dl><dt>
           
           <code><a href="make_model_string_data.html">make_model_string_data()</a></code> 
@@ -447,6 +442,21 @@
         <dd>Prior normal distribution</dd>
       </dl><dl><dt>
           
+          <code><a href="outcome_bin_logistic.html">outcome_bin_logistic()</a></code> 
+        </dt>
+        <dd>Bernoulli distribution with logit parametrization</dd>
+      </dl><dl><dt>
+          
+          <code><a href="outcome_surv_exponential.html">outcome_surv_exponential()</a></code> 
+        </dt>
+        <dd>Exponential survival distribution</dd>
+      </dl><dl><dt>
+          
+          <code><a href="outcome_surv_weibull_ph.html">outcome_surv_weibull_ph()</a></code> 
+        </dt>
+        <dd>Weibull survival distribution (proportional hazards formulation)</dd>
+      </dl><dl><dt>
+          
           <code><a href="parse_constraint.html">parse_constraint()</a></code> 
         </dt>
         <dd>Extract Upper and Lower Bounds from a Prior object</dd>
@@ -470,11 +480,6 @@
           <code><a href="poisson_prior.html">poisson_prior()</a></code> 
         </dt>
         <dd>Prior poisson distribution</dd>
-      </dl><dl><dt>
-          
-          <code><a href="prepare_stan_data_inputs.html">prepare_stan_data_inputs()</a></code> 
-        </dt>
-        <dd>Prepare Stan data inputs</dd>
       </dl><dl><dt>
           
           <code><a href="rename_draws_covariates.html">rename_draws_covariates()</a></code> 
@@ -513,26 +518,6 @@ in a <code>SimCovariates</code> object created by <code><a href="../reference/si
         <dd>Input generated data for a simulation study</dd>
       </dl><dl><dt>
           
-          <code><a href="sim_estimate_bias.html">sim_estimate_bias()</a></code> 
-        </dt>
-        <dd>What is the bias for a given model</dd>
-      </dl><dl><dt>
-          
-          <code><a href="sim_estimate_mse.html">sim_estimate_mse()</a></code> 
-        </dt>
-        <dd>What is the MSE for a given model</dd>
-      </dl><dl><dt>
-          
-          <code><a href="sim_is_null_effect_covered.html">sim_is_null_effect_covered()</a></code> 
-        </dt>
-        <dd>Do the posterior quantiles contain a value of 1.0?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="sim_is_true_effect_covered.html">sim_is_true_effect_covered()</a></code> 
-        </dt>
-        <dd>Do the posterior quantiles contain the true treatment effect?</dd>
-      </dl><dl><dt>
-          
           <code><a href="sim_outcome_list.html">sim_outcome_list()</a></code> 
         </dt>
         <dd>Input outcome details for a simulation study</dd>
@@ -553,11 +538,6 @@ in a <code>SimCovariates</code> object created by <code><a href="../reference/si
         <dd>Specify Treatment Details</dd>
       </dl><dl><dt>
           
-          <code><a href="trim_data_matrix.html">trim_data_matrix()</a></code> 
-        </dt>
-        <dd>Trim model matrix to just include relevant columns</dd>
-      </dl><dl><dt>
-          
           <code><a href="uniform_prior.html">uniform_prior()</a></code> 
         </dt>
         <dd>Prior uniform distribution</dd>
@@ -570,7 +550,7 @@ in a <code>SimCovariates</code> object created by <code><a href="../reference/si
           
           <code><a href="weib_ph_surv_dist.html">weib_ph_surv_dist()</a></code> 
         </dt>
-        <dd>Weibull survival distribution (proportional hazards formulation)</dd>
+        <dd>Legacy function for the Weibull proportional Hazards survival distribution</dd>
       </dl></div>
   </main></div>
 

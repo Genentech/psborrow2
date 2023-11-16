@@ -87,7 +87,7 @@ the function <code><a href="add_covariates.html">add_covariates()</a></code>.</p
 
 <dt>outcome</dt>
 <dd><p><code>Outcome</code>. Object of class <code><a href="Outcome-class.html">Outcome</a></code> as output by
-<code><a href="exp_surv_dist.html">exp_surv_dist()</a></code>, <code><a href="weib_ph_surv_dist.html">weib_ph_surv_dist()</a></code>, or <code><a href="logistic_bin_outcome.html">logistic_bin_outcome()</a></code>.</p></dd>
+<code><a href="outcome_surv_exponential.html">outcome_surv_exponential()</a></code>, <code><a href="outcome_surv_weibull_ph.html">outcome_surv_weibull_ph()</a></code>, or <code><a href="outcome_bin_logistic.html">outcome_bin_logistic()</a></code>.</p></dd>
 
 
 <dt>borrowing</dt>
@@ -114,27 +114,29 @@ the default)</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">anls</span> <span class="op">&lt;-</span> <span class="fu">create_analysis_obj</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span></span>
-<span class="r-in"><span>  covariates <span class="op">=</span> <span class="fu"><a href="add_covariates.html">add_covariates</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cov1"</span>, <span class="st">"cov2"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    priors <span class="op">=</span> <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  outcome <span class="op">=</span> <span class="fu"><a href="exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="st">"time"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"cnsr"</span>,</span></span>
-<span class="r-in"><span>    baseline_prior <span class="op">=</span> <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="st">"BDB"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"ext"</span>,</span></span>
-<span class="r-in"><span>    <span class="fu"><a href="exponential_prior.html">exponential_prior</a></span><span class="op">(</span><span class="fl">.001</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="st">"trt"</span>,</span></span>
-<span class="r-in"><span>    <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="check_cmdstanr.html">check_cmdstan</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">anls</span> <span class="op">&lt;-</span> <span class="fu">create_analysis_obj</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span></span>
+<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="add_covariates.html">add_covariates</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cov1"</span>, <span class="st">"cov2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      priors <span class="op">=</span> <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    outcome <span class="op">=</span> <span class="fu"><a href="outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"time"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"cnsr"</span>,</span></span>
+<span class="r-in"><span>      baseline_prior <span class="op">=</span> <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"BDB"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"ext"</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="exponential_prior.html">exponential_prior</a></span><span class="op">(</span><span class="fl">.001</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"trt"</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Inputs look good.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Stan program compiled successfully!</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Ready to go! Now call `mcmc_sample()`.</span>

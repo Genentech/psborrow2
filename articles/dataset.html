@@ -256,13 +256,14 @@ tibble, you can easily create a suitable matrix with the
 <p><code>psborrow2</code> currently supports three outcomes:</p>
 <ul>
 <li>Time-to-event with exponential distribution (constant hazard),
-created with <code><a href="../reference/exp_surv_dist.html">exp_surv_dist()</a></code>
+created with <code><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential()</a></code>
 </li>
 <li>Time-to-event with Weibull distribution and proportional hazards
-parametrization, created with <code><a href="../reference/weib_ph_surv_dist.html">weib_ph_surv_dist()</a></code>
+parametrization, created with
+<code><a href="../reference/outcome_surv_weibull_ph.html">outcome_surv_weibull_ph()</a></code>
 </li>
 <li>Binary endpoints with a Bernoulli distribution and using logistic
-regression, created with <code><a href="../reference/logistic_bin_outcome.html">logistic_bin_outcome()</a></code>
+regression, created with <code><a href="../reference/outcome_bin_logistic.html">outcome_bin_logistic()</a></code>
 </li>
 </ul>
 <p>After we select which outcome and distribution we want, we need to
@@ -275,13 +276,13 @@ we’ll specify an uninformative prior:
 <p>For our example, let’s conduct a time-to-event analysis using the
 exponential distribution.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exp_surv_dist.html">exp_surv_dist</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span></span>
 <span>  time_var <span class="op">=</span> <span class="st">"time"</span>,</span>
 <span>  cens_var <span class="op">=</span> <span class="st">"cnsr"</span>,</span>
 <span>  baseline_prior <span class="op">=</span> <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">outcome</span></span>
-<span><span class="co"># Outcome object with class ExponentialSurvDist </span></span>
+<span><span class="co"># Outcome object with class OutcomeSurvExponential </span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># Outcome variables:</span></span>
 <span><span class="co"># time_var cens_var </span></span>
@@ -381,11 +382,9 @@ treatment effect:</p>
 <span>  data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="va">outcome</span>,</span>
 <span>  borrowing <span class="op">=</span> <span class="va">borrowing</span>,</span>
-<span>  treatment <span class="op">=</span> <span class="va">treatment</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co"># Inputs look good.</span></span>
-<span><span class="co"># Stan program compiled successfully!</span></span>
-<span><span class="co"># Ready to go! Now call `mcmc_sample()`.</span></span></code></pre></div>
+<span>  treatment <span class="op">=</span> <span class="va">treatment</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>The Stan model compiled successfully and informed us that we are
 ready to begin sampling.</p>
 </div>
@@ -404,17 +403,7 @@ objects</a>. Note that running this may take a few minutes.</p>
 <span>  iter_sampling <span class="op">=</span> <span class="fl">50000</span>,</span>
 <span>  chains <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">112233</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co"># Running MCMC with 4 sequential chains...</span></span>
-<span><span class="co"># </span></span>
-<span><span class="co"># Chain 1 finished in 18.7 seconds.</span></span>
-<span><span class="co"># Chain 2 finished in 19.8 seconds.</span></span>
-<span><span class="co"># Chain 3 finished in 20.4 seconds.</span></span>
-<span><span class="co"># Chain 4 finished in 17.1 seconds.</span></span>
-<span><span class="co"># </span></span>
-<span><span class="co"># All 4 chains finished successfully.</span></span>
-<span><span class="co"># Mean chain execution time: 19.0 seconds.</span></span>
-<span><span class="co"># Total execution time: 76.4 seconds.</span></span></code></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 class="tabset" id="summarizing-results">Summarizing results<a class="anchor" aria-label="anchor" href="#summarizing-results"></a>
@@ -425,16 +414,16 @@ website</a>. For instance, we can see a see a summary of the posterior
 distribution samples with <code>results$summary()</code>:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co"># <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
+<span><span class="co"># # A tibble: 6 × 10</span></span>
 <span><span class="co">#   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk</span></span>
-<span><span class="co">#   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span></span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">1</span> lp__     -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">618.</span>    -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">618.</span>    1.50   1.29   -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">621.</span>      -<span style="color: #BB0000;">1.62</span><span style="color: #949494;">e</span>+3  1.00   <span style="text-decoration: underline;">71</span>635.</span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">2</span> beta_trt    -<span style="color: #BB0000;">0.156</span>    -<span style="color: #BB0000;">0.159</span> 0.199  0.199     -<span style="color: #BB0000;">0.480</span>    1.76<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  1.00   <span style="text-decoration: underline;">89</span>655.</span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">3</span> tau          1.21      0.507 1.91   0.693      0.004<span style="text-decoration: underline;">41</span>  4.74<span style="color: #949494;">e</span>+0  1.00   <span style="text-decoration: underline;">81</span>335.</span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">4</span> alpha[1]    -<span style="color: #BB0000;">3.36</span>     -<span style="color: #BB0000;">3.35</span>  0.162  0.162     -<span style="color: #BB0000;">3.63</span>    -<span style="color: #BB0000;">3.10</span><span style="color: #949494;">e</span>+0  1.00   <span style="text-decoration: underline;">88</span>895.</span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">5</span> alpha[2]    -<span style="color: #BB0000;">2.40</span>     -<span style="color: #BB0000;">2.40</span>  0.055<span style="text-decoration: underline;">4</span> 0.055<span style="text-decoration: underline;">3</span>    -<span style="color: #BB0000;">2.49</span>    -<span style="color: #BB0000;">2.31</span><span style="color: #949494;">e</span>+0  1.00  <span style="text-decoration: underline;">130</span>460.</span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">6</span> HR_trt       0.873     0.853 0.177  0.168      0.619    1.19<span style="color: #949494;">e</span>+0  1.00   <span style="text-decoration: underline;">89</span>655.</span></span>
-<span><span class="co"># <span style="color: #949494;"># ℹ 1 more variable: ess_tail &lt;num&gt;</span></span></span></code></pre></div>
+<span><span class="co">#   &lt;chr&gt;        &lt;num&gt;     &lt;num&gt;  &lt;num&gt;  &lt;num&gt;       &lt;num&gt;    &lt;num&gt; &lt;num&gt;    &lt;num&gt;</span></span>
+<span><span class="co"># 1 lp__     -1618.    -1618.    1.50   1.29   -1621.      -1.62e+3  1.00   71314.</span></span>
+<span><span class="co"># 2 beta_trt    -0.155    -0.158 0.199  0.198     -0.477    1.74e-1  1.00   85216.</span></span>
+<span><span class="co"># 3 tau          1.21      0.506 1.92   0.693      0.00418  4.74e+0  1.00   81024.</span></span>
+<span><span class="co"># 4 alpha[1]    -3.36     -3.35  0.161  0.161     -3.63    -3.10e+0  1.00   86029.</span></span>
+<span><span class="co"># 5 alpha[2]    -2.40     -2.40  0.0557 0.0557    -2.49    -2.31e+0  1.00  132062.</span></span>
+<span><span class="co"># 6 HR_trt       0.873     0.854 0.176  0.168      0.620    1.19e+0  1.00   85216.</span></span>
+<span><span class="co"># # ℹ 1 more variable: ess_tail &lt;num&gt;</span></span></code></pre></div>
 <p>The summary includes information for several parameter estimates from
 our BDB model. Because it may not be immediately clear what the
 parameters from the Stan model refer to, <code>psborrow2</code> has a
@@ -461,41 +450,41 @@ sampling software packages and allow us to leverage packages such as
 <span><span class="co"># </span></span>
 <span><span class="co">#          chain</span></span>
 <span><span class="co"># iteration     1     2     3     4</span></span>
-<span><span class="co">#         1 -1616 -1620 -1617 -1617</span></span>
-<span><span class="co">#         2 -1618 -1623 -1620 -1616</span></span>
-<span><span class="co">#         3 -1619 -1618 -1619 -1617</span></span>
-<span><span class="co">#         4 -1619 -1616 -1618 -1618</span></span>
-<span><span class="co">#         5 -1619 -1618 -1618 -1619</span></span>
+<span><span class="co">#         1 -1616 -1616 -1616 -1616</span></span>
+<span><span class="co">#         2 -1616 -1616 -1618 -1618</span></span>
+<span><span class="co">#         3 -1616 -1617 -1619 -1617</span></span>
+<span><span class="co">#         4 -1616 -1618 -1619 -1618</span></span>
+<span><span class="co">#         5 -1617 -1617 -1617 -1617</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># , , variable = beta_trt</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co">#          chain</span></span>
-<span><span class="co"># iteration     1     2        3       4</span></span>
-<span><span class="co">#         1 -0.30 -0.44 -0.00048 -0.1973</span></span>
-<span><span class="co">#         2 -0.21 -0.29  0.16970 -0.1398</span></span>
-<span><span class="co">#         3 -0.17 -0.26 -0.52943 -0.0031</span></span>
-<span><span class="co">#         4 -0.32 -0.12 -0.43633 -0.2337</span></span>
-<span><span class="co">#         5 -0.23 -0.17 -0.43633  0.0925</span></span>
+<span><span class="co"># iteration     1      2      3      4</span></span>
+<span><span class="co">#         1 -0.20 -0.009 -0.022 -0.109</span></span>
+<span><span class="co">#         2 -0.31 -0.092 -0.167 -0.305</span></span>
+<span><span class="co">#         3 -0.16 -0.082  0.027  0.092</span></span>
+<span><span class="co">#         4 -0.24 -0.319 -0.092  0.226</span></span>
+<span><span class="co">#         5 -0.30 -0.081 -0.012 -0.439</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># , , variable = tau</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co">#          chain</span></span>
-<span><span class="co"># iteration      1     2     3     4</span></span>
-<span><span class="co">#         1 1.0410 0.650 0.048 2.445</span></span>
-<span><span class="co">#         2 2.4501 1.638 0.029 0.437</span></span>
-<span><span class="co">#         3 1.3336 3.267 2.406 1.552</span></span>
-<span><span class="co">#         4 0.0046 0.495 1.529 0.142</span></span>
-<span><span class="co">#         5 0.0108 0.064 1.529 0.044</span></span>
+<span><span class="co"># iteration    1    2    3    4</span></span>
+<span><span class="co">#         1 1.62 1.14 1.94 2.58</span></span>
+<span><span class="co">#         2 0.84 1.03 1.32 0.23</span></span>
+<span><span class="co">#         3 0.48 1.90 0.61 1.12</span></span>
+<span><span class="co">#         4 1.46 0.48 0.18 0.48</span></span>
+<span><span class="co">#         5 0.33 1.64 0.32 2.15</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># , , variable = alpha[1]</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co">#          chain</span></span>
 <span><span class="co"># iteration    1    2    3    4</span></span>
-<span><span class="co">#         1 -3.3 -3.3 -3.5 -3.4</span></span>
-<span><span class="co">#         2 -3.3 -3.2 -3.6 -3.3</span></span>
-<span><span class="co">#         3 -3.3 -3.3 -3.0 -3.4</span></span>
-<span><span class="co">#         4 -3.3 -3.4 -3.1 -3.5</span></span>
-<span><span class="co">#         5 -3.2 -3.5 -3.1 -3.4</span></span>
+<span><span class="co">#         1 -3.4 -3.4 -3.5 -3.4</span></span>
+<span><span class="co">#         2 -3.3 -3.4 -3.5 -3.4</span></span>
+<span><span class="co">#         3 -3.4 -3.4 -3.7 -3.5</span></span>
+<span><span class="co">#         4 -3.3 -3.4 -3.6 -3.6</span></span>
+<span><span class="co">#         5 -3.3 -3.5 -3.5 -3.2</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># # ... with 49995 more iterations, and 2 more variables</span></span></code></pre></div>
 <p><code>psborrow2</code> also has a function to rename variables in
@@ -506,16 +495,16 @@ results easier to interpret:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">draws</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_draws_covariates.html">rename_draws_covariates</a></span><span class="op">(</span><span class="va">draws</span>, <span class="va">anls_obj</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">draws</span><span class="op">)</span></span>
-<span><span class="co"># <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
+<span><span class="co"># # A tibble: 6 × 10</span></span>
 <span><span class="co">#   variable          mean   median     sd    mad       q5      q95  rhat ess_bulk</span></span>
-<span><span class="co">#   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span></span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">1</span> lp__          -<span style="color: #BB0000;">1.62</span><span style="color: #949494;">e</span>+3 -<span style="color: #BB0000;">1.62</span><span style="color: #949494;">e</span>+3 1.50   1.29   -<span style="color: #BB0000;">1.62</span><span style="color: #949494;">e</span>+3 -<span style="color: #BB0000;">1.62</span><span style="color: #949494;">e</span>+3  1.00   <span style="text-decoration: underline;">71</span>635.</span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">2</span> treatment lo… -<span style="color: #BB0000;">1.56</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> -<span style="color: #BB0000;">1.59</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.199  0.199  -<span style="color: #BB0000;">4.80</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  1.76<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  1.00   <span style="text-decoration: underline;">89</span>655.</span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">3</span> commensurabi…  1.21<span style="color: #949494;">e</span>+0  5.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 1.91   0.693   4.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  4.74<span style="color: #949494;">e</span>+0  1.00   <span style="text-decoration: underline;">81</span>335.</span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">4</span> baseline log… -<span style="color: #BB0000;">3.36</span><span style="color: #949494;">e</span>+0 -<span style="color: #BB0000;">3.35</span><span style="color: #949494;">e</span>+0 0.162  0.162  -<span style="color: #BB0000;">3.63</span><span style="color: #949494;">e</span>+0 -<span style="color: #BB0000;">3.10</span><span style="color: #949494;">e</span>+0  1.00   <span style="text-decoration: underline;">88</span>895.</span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">5</span> baseline log… -<span style="color: #BB0000;">2.40</span><span style="color: #949494;">e</span>+0 -<span style="color: #BB0000;">2.40</span><span style="color: #949494;">e</span>+0 0.055<span style="text-decoration: underline;">4</span> 0.055<span style="text-decoration: underline;">3</span> -<span style="color: #BB0000;">2.49</span><span style="color: #949494;">e</span>+0 -<span style="color: #BB0000;">2.31</span><span style="color: #949494;">e</span>+0  1.00  <span style="text-decoration: underline;">130</span>460.</span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">6</span> treatment HR   8.73<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  8.53<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span> 0.177  0.168   6.19<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  1.19<span style="color: #949494;">e</span>+0  1.00   <span style="text-decoration: underline;">89</span>655.</span></span>
-<span><span class="co"># <span style="color: #949494;"># ℹ 1 more variable: ess_tail &lt;num&gt;</span></span></span></code></pre></div>
+<span><span class="co">#   &lt;chr&gt;            &lt;num&gt;    &lt;num&gt;  &lt;num&gt;  &lt;num&gt;    &lt;num&gt;    &lt;num&gt; &lt;num&gt;    &lt;num&gt;</span></span>
+<span><span class="co"># 1 lp__          -1.62e+3 -1.62e+3 1.50   1.29   -1.62e+3 -1.62e+3  1.00   71314.</span></span>
+<span><span class="co"># 2 treatment lo… -1.55e-1 -1.58e-1 0.199  0.198  -4.77e-1  1.74e-1  1.00   85216.</span></span>
+<span><span class="co"># 3 commensurabi…  1.21e+0  5.06e-1 1.92   0.693   4.18e-3  4.74e+0  1.00   81024.</span></span>
+<span><span class="co"># 4 baseline log… -3.36e+0 -3.35e+0 0.161  0.161  -3.63e+0 -3.10e+0  1.00   86029.</span></span>
+<span><span class="co"># 5 baseline log… -2.40e+0 -2.40e+0 0.0557 0.0557 -2.49e+0 -2.31e+0  1.00  132062.</span></span>
+<span><span class="co"># 6 treatment HR   8.73e-1  8.54e-1 0.176  0.168   6.20e-1  1.19e+0  1.00   85216.</span></span>
+<span><span class="co"># # ℹ 1 more variable: ess_tail &lt;num&gt;</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="using-bayesplot">Using <code>bayesplot</code><a class="anchor" aria-label="anchor" href="#using-bayesplot"></a>
 </h3>
@@ -527,7 +516,11 @@ interested in by plotting histograms of the draws with the function
 treatment effect and for our commensurability parameter, tau.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-distributions.html" class="external-link">mcmc_hist</a></span><span class="op">(</span><span class="va">draws</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"treatment HR"</span>, <span class="st">"commensurability parameter"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="dataset_files/figure-html/mcmc-hist-1.png" width="600" style="display: block; margin: auto;"></p>
+<div class="figure" style="text-align: center">
+<img src="figure-dataset-mcmc-hist-1.png" alt="plot of chunk mcmc-hist"><p class="caption">
+plot of chunk mcmc-hist
+</p>
+</div>
 <p>We can see other plots that help us understand and diagnose problems
 with the MCMC sampler, such as trace and rank plots:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -538,7 +531,11 @@ with the MCMC sampler, such as trace and rank plots:</p>
 <span>  pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"treatment HR"</span>, <span class="st">"commensurability parameter"</span><span class="op">)</span>,</span>
 <span>  n_warmup <span class="op">=</span> <span class="fl">1000</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="dataset_files/figure-html/mcmc-trace-1.png" width="600" style="display: block; margin: auto;"></p>
+<div class="figure" style="text-align: center">
+<img src="figure-dataset-mcmc-trace-1.png" alt="plot of chunk mcmc-trace"><p class="caption">
+plot of chunk mcmc-trace
+</p>
+</div>
 <p>Many other functions are outlined in the <a href="https://mc-stan.org/bayesplot/" class="external-link"><code>bayesplot</code>
 vignettes</a>.</p>
 </div>
@@ -553,23 +550,23 @@ for all parameters:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/posterior/" class="external-link">posterior</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarize_draws</a></span><span class="op">(</span><span class="va">draws</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">.x</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
+<span><span class="co"># # A tibble: 6 × 3</span></span>
 <span><span class="co">#   variable                                `10%`     `90%`</span></span>
-<span><span class="co">#   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;num&gt;</span></span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">1</span> lp__                               -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">620.</span>     -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">616.</span>   </span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">2</span> treatment log HR                      -<span style="color: #BB0000;">0.409</span>      0.101</span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">3</span> commensurability parameter             0.017<span style="text-decoration: underline;">7</span>     3.21 </span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">4</span> baseline log hazard rate, internal    -<span style="color: #BB0000;">3.57</span>      -<span style="color: #BB0000;">3.15</span> </span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">5</span> baseline log hazard rate, external    -<span style="color: #BB0000;">2.47</span>      -<span style="color: #BB0000;">2.33</span> </span></span>
-<span><span class="co"># <span style="color: #BCBCBC;">6</span> treatment HR                           0.664      1.11</span></span></code></pre></div>
+<span><span class="co">#   &lt;chr&gt;                                   &lt;num&gt;     &lt;num&gt;</span></span>
+<span><span class="co"># 1 lp__                               -1620.     -1616.   </span></span>
+<span><span class="co"># 2 treatment log HR                      -0.408      0.100</span></span>
+<span><span class="co"># 3 commensurability parameter             0.0172     3.22 </span></span>
+<span><span class="co"># 4 baseline log hazard rate, internal    -3.57      -3.15 </span></span>
+<span><span class="co"># 5 baseline log hazard rate, external    -2.47      -2.33 </span></span>
+<span><span class="co"># 6 treatment HR                           0.665      1.11</span></span></code></pre></div>
 <p>Another useful application of the <code>posterior</code> package is
 the evaluation of the Monte Carlo standard error for quantiles of a
 variable of interest:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/posterior/reference/extract_variable_matrix.html" class="external-link">extract_variable_matrix</a></span><span class="op">(</span><span class="va">draws</span>, <span class="st">"treatment HR"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://mc-stan.org/posterior/reference/mcse_quantile.html" class="external-link">mcse_quantile</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">vm</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># mcse_q10 mcse_q50 mcse_q90 </span></span>
-<span><span class="co"># 0.000653 0.000654 0.001220</span></span></code></pre></div>
+<span><span class="co">#  mcse_q10  mcse_q50  mcse_q90 </span></span>
+<span><span class="co"># 0.0006465 0.0006845 0.0012300</span></span></code></pre></div>
 <p><code>posterior</code> contains many other helpful functions, as
 outlined in their <a href="https://cran.r-project.org/web/packages/posterior/vignettes/posterior.html" class="external-link">vignettes</a>.</p>
 </div>
