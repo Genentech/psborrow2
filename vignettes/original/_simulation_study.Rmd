@@ -22,6 +22,8 @@ knitr::opts_chunk$set(
   fig.align = "center"
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
+output_hook <- knitr::knit_hooks$get("output")
+output_null <- function(x, options) return(NULL)
 ```
 
 In this vignette, you'll learn how to use `psborrow2` to create a
@@ -330,15 +332,23 @@ $=$ `r NROW(my_sim_data_guide) * NROW(my_borrowing_list@guide)`
 combinations of parameters. Let's create a simulation object of class
 `Simulation`:
 
+```{r echo = FALSE}
+knitr::knit_hooks$set(output = output_null)
+```
+
 ```{r}
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
   outcome = my_sim_out,
   borrowing = my_borrowing_list,
-  treatment = my_sim_treat
+  treatment = my_sim_treat,
+  quiet = TRUE
 )
 
 simulation_obj
+```
+```{r echo = FALSE}
+knitr::knit_hooks$set(output = output_hook)
 ```
 
 While we get a warning about the size of the simulation study, we are not worried
@@ -362,20 +372,11 @@ specifies the quantiles for null coverage and true coverage. For instance,
 95% credible coverage would be estimated with
 `posterior_quantiles = c(0.025, 0.975)`, the default argument.
 
-```{r, echo = FALSE, message = FALSE, message = FALSE}
-st <- Sys.time()
-simulation_res <- mcmc_sample(
-  simulation_obj,
-  posterior_quantiles = c(0.025, 0.975),
-  iter_warmup = 400,
-  iter_sampling = 1000,
-  chains = 1L,
-  seed = 112233
-)
-en <- Sys.time()
+```{r echo = FALSE}
+knitr::knit_hooks$set(output = output_null)
 ```
 
-```{r, eval = FALSE}
+```{r}
 simulation_res <- mcmc_sample(
   simulation_obj,
   posterior_quantiles = c(0.025, 0.975),
@@ -386,6 +387,9 @@ simulation_res <- mcmc_sample(
 )
 ```
 
+```{r echo = FALSE}
+knitr::knit_hooks$set(output = output_hook)
+```
 
 ***Note*** unlike an analysis on a single dataset, `mcmc_sample()` does not
 return a `CmdStanModel` object when applied to a simulation study object.
