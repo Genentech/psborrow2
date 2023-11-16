@@ -23,6 +23,8 @@ knitr::opts_chunk$set(
   comment = "#"
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
+output_hook <- knitr::knit_hooks$get("output")
+output_null <- function(x, options) return(NULL)
 ```
 
 In this vignette, you'll learn how to conduct Bayesian dynamic borrowing (BDB)
@@ -242,25 +244,22 @@ treatment
 Now that we have thought through each of the inputs to `create_analysis_obj()`,
 let's create an analysis object:
 
-```{r anls-obj-no-echo, results = 'asis', echo = FALSE}
-suppressMessages({
-  anls_obj <- create_analysis_obj(
-    data_matrix = example_matrix,
-    outcome = outcome,
-    borrowing = borrowing,
-    treatment = treatment,
-    quiet = TRUE
-    )
-})
+```{r, echo = FALSE}
+knitr::knit_hooks$set(output = output_null)
 ```
 
-```{r anls-obj-no-eval, eval = FALSE}
+```{r}
 anls_obj <- create_analysis_obj(
   data_matrix = example_matrix,
   outcome = outcome,
   borrowing = borrowing,
-  treatment = treatment
-)
+  treatment = treatment,
+  quiet = TRUE
+  )
+```
+
+```{r echo = FALSE}
+knitr::knit_hooks$set(output = output_hook)
 ```
 
 
@@ -278,10 +277,7 @@ that are passed to
 Note that running this may take a few minutes.
 
 ```{r echo = FALSE}
-output_hook <- knitr::knit_hooks$get("output")
-knitr::knit_hooks$set(output = function(x, options) {
-  return(NULL)
-})
+knitr::knit_hooks$set(output = output_null)
 ```
 
 ```{r}
