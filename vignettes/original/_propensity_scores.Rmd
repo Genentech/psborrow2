@@ -20,6 +20,8 @@ knitr::opts_chunk$set(
   messages = FALSE,
   warnings = FALSE
 )
+output_hook <- knitr::knit_hooks$get("output")
+output_null <- function(x, options) return(NULL)
 ```
 
 ```{r load, message=FALSE}
@@ -72,7 +74,11 @@ love.plot(weightit_model, stars = "std")
 
 The PS values can be copied into the data set and the analysis object can be constructed as before.
 
-```{r covs-no-echo, echo = FALSE, message = FALSE}
+```{r, echo = FALSE}
+knitr::knit_hooks$set(output = output_null)
+```
+
+```{r}
 example_dataframe$att <- weightit_model$weights
 
 example_matrix_att <- create_data_matrix(
@@ -87,33 +93,16 @@ analysis_att <- create_analysis_obj(
   data_matrix = example_matrix_att,
   outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
   borrowing = borrowing_details("Full borrowing", "ext"),
-  treatment = treatment_details("trt", normal_prior(0, 10000))
+  treatment = treatment_details("trt", normal_prior(0, 10000)),
+  quiet = TRUE
 )
 
 result_att <- mcmc_sample(analysis_att, seed = 123)
 ```
 
-```{r covs-no-eval, eval= FALSE}
-example_dataframe$att <- weightit_model$weights
-
-example_matrix_att <- create_data_matrix(
-  example_dataframe,
-  ext_flag_col = "ext",
-  outcome = c("time", "cnsr"),
-  trt_flag_col = "trt",
-  weight_var = "att"
-)
-
-analysis_att <- create_analysis_obj(
-  data_matrix = example_matrix_att,
-  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
-  borrowing = borrowing_details("Full borrowing", "ext"),
-  treatment = treatment_details("trt", normal_prior(0, 10000))
-)
-
-result_att <- mcmc_sample(analysis_att, seed = 123)
+```{r, echo = FALSE}
+knitr::knit_hooks$set(output = output_hook)
 ```
-
 
 ## Matching with `MatchIt`
 
@@ -164,103 +153,70 @@ example_matrix_match <- create_data_matrix(
 )
 ```
 
-```{r, echo = FALSE, message = FALSE}
+```{r, echo = FALSE}
+knitr::knit_hooks$set(output = output_null)
+```
+
+```{r}
 analysis_match <- create_analysis_obj(
   data_matrix = example_matrix_match,
   outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
   borrowing = borrowing_details("Full borrowing", "ext"),
-  treatment = treatment_details("trt", normal_prior(0, 10000))
+  treatment = treatment_details("trt", normal_prior(0, 10000)),
+  quiet = TRUE
 )
 
 result_match <- mcmc_sample(analysis_match, seed = 123)
 ```
-
-```{r, eval = FALSE}
-analysis_match <- create_analysis_obj(
-  data_matrix = example_matrix_match,
-  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
-  borrowing = borrowing_details("Full borrowing", "ext"),
-  treatment = treatment_details("trt", normal_prior(0, 10000))
-)
-
-result_match <- mcmc_sample(analysis_match, seed = 123)
-```
-
-
 ## Combined Weighting and Dynamic Borrowing
 
 The models also support fixed weights on the likelihood contributions from each observation. This
 is equivalent to fixed power prior weights. This allows for the combination of models, such as an
 IPTW + commensurate prior approach.
 
-
-```{r, echo = FALSE, message = FALSE}
+```{r}
 analysis_iptw_bdb <- create_analysis_obj(
   data_matrix = example_matrix_att,
   outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
-  treatment = treatment_details("trt", normal_prior(0, 10000))
+  treatment = treatment_details("trt", normal_prior(0, 10000)),
+  quiet = TRUE
 )
 
 result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb, seed = 123)
 ```
-
-```{r, eval = FALSE}
-analysis_iptw_bdb <- create_analysis_obj(
-  data_matrix = example_matrix_att,
-  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
-  borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
-  treatment = treatment_details("trt", normal_prior(0, 10000))
-)
-
-result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb, seed = 123)
-```
-
 
 ## Fixed Weights
 
 We can also use weights to specify a fixed power prior model. Here we set the power parameter $\alpha = 0.1$
 for the external controls.
 
-```{r, echo = FALSE, message = FALSE}
+```{r}
 example_matrix_pp01 <- cbind(example_matrix, pp_alpha = ifelse(example_matrix[, "ext"] == 1, 0.1, 1))
 
 analysis_pp01 <- create_analysis_obj(
   data_matrix = example_matrix_pp01,
   outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000), weight_var = "pp_alpha"),
   borrowing = borrowing_details("Full borrowing", "ext"),
-  treatment = treatment_details("trt", normal_prior(0, 10000))
+  treatment = treatment_details("trt", normal_prior(0, 10000)),
+  quiet = TRUE
 )
 
 result_pp01 <- mcmc_sample(analysis_pp01, seed = 123)
 ```
-
-```{r, eval = FALSE}
-example_matrix_pp01 <- cbind(example_matrix, pp_alpha = ifelse(example_matrix[, "ext"] == 1, 0.1, 1))
-
-analysis_pp01 <- create_analysis_obj(
-  data_matrix = example_matrix_pp01,
-  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000), weight_var = "pp_alpha"),
-  borrowing = borrowing_details("Full borrowing", "ext"),
-  treatment = treatment_details("trt", normal_prior(0, 10000))
-)
-
-result_pp01 <- mcmc_sample(analysis_pp01, seed = 123)
-```
-
-
 
 ## Reference Models
 
 For comparison, we also fit a full borrowing, a no borrowing, and a BDB model without weights.
 
-```{r, echo = FALSE, message = FALSE}
+```{r}
 result_full <- mcmc_sample(
   create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
     borrowing = borrowing_details("Full borrowing", "ext"),
-    treatment = treatment_details("trt", normal_prior(0, 10000))
+    treatment = treatment_details("trt", normal_prior(0, 10000)),
+    quiet = TRUE
   ),
   seed = 123
 )
@@ -270,7 +226,8 @@ result_none <- mcmc_sample(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
     borrowing = borrowing_details("No borrowing", "ext"),
-    treatment = treatment_details("trt", normal_prior(0, 10000))
+    treatment = treatment_details("trt", normal_prior(0, 10000)),
+    quiet = TRUE
   ),
   seed = 123
 )
@@ -280,42 +237,15 @@ result_bdb <- mcmc_sample(
     data_matrix = example_matrix_att,
     outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
     borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
-    treatment = treatment_details("trt", normal_prior(0, 10000))
+    treatment = treatment_details("trt", normal_prior(0, 10000)),
+    quiet = TRUE
   ),
   seed = 123
 )
 ```
+```{r, echo = FALSE}
+knitr::knit_hooks$set(output = output_hook)
 
-```{r, eval = FALSE}
-result_full <- mcmc_sample(
-  create_analysis_obj(
-    data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
-    borrowing = borrowing_details("Full borrowing", "ext"),
-    treatment = treatment_details("trt", normal_prior(0, 10000))
-  ),
-  seed = 123
-)
-
-result_none <- mcmc_sample(
-  create_analysis_obj(
-    data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
-    borrowing = borrowing_details("No borrowing", "ext"),
-    treatment = treatment_details("trt", normal_prior(0, 10000))
-  ),
-  seed = 123
-)
-
-result_bdb <- mcmc_sample(
-  create_analysis_obj(
-    data_matrix = example_matrix_att,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
-    borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
-    treatment = treatment_details("trt", normal_prior(0, 10000))
-  ),
-  seed = 123
-)
 ```
 
 
