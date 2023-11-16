@@ -1,5 +1,5 @@
 ---
-title: "7. Comparison of Fixed Weights"
+title: "6. Comparison of Fixed Weights"
 author: "Matt Secrest and Isaac Gravestock"
 output:
   rmarkdown::html_vignette:
