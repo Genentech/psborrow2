@@ -226,7 +226,8 @@ setMethod(
       mcmc_simulation_result@results$null_coverage <-
       mcmc_simulation_result@results$bias_mean <-
       mcmc_simulation_result@results$mse_mean <-
-      rep(NA_real_, x@n_combos)
+      mcmc_simulation_result@results$trt_var <-
+      vector("list", x@n_combos)
 
     # MCMC sample
     for (i in 1:x@n_combos) {
@@ -241,7 +242,7 @@ setMethod(
 
       # Placeholder objects
       true_coverage <- null_coverage <- vector(mode = "integer", length = n_sim)
-      bias <- mse <- vector(mode = "numeric", length = n_sim)
+      bias <- mse <- var <- vector(mode = "numeric", length = n_sim)
 
       for (j in 1:n_sim) {
         anls_obj <- x@analysis_obj_list[[i]][[j]]
@@ -281,6 +282,9 @@ setMethod(
           true_effect
         )
 
+        # Variance of beta_trt
+        var[j] <- sim_estimate_effect_variance(draws)
+
         # Save draws if desired
         if (keep_cmd_stan_models) {
           cmd_stan_models_out[[i]][[j]] <- mcmc_results
@@ -293,10 +297,11 @@ setMethod(
       }
 
       # Add simulation study results
-      mcmc_simulation_result@results$true_coverage[[i]] <- mean(true_coverage)
-      mcmc_simulation_result@results$null_coverage[[i]] <- mean(null_coverage)
-      mcmc_simulation_result@results$bias_mean[[i]] <- mean(bias)
-      mcmc_simulation_result@results$mse_mean[[i]] <- mean(mse)
+      mcmc_simulation_result@results$true_coverage[[i]] <- true_coverage
+      mcmc_simulation_result@results$null_coverage[[i]] <- null_coverage
+      mcmc_simulation_result@results$bias_mean[[i]] <- bias
+      mcmc_simulation_result@results$mse_mean[[i]] <- mse
+      mcmc_simulation_result@results$trt_var[[i]] <- var
     }
 
     # Attach draws

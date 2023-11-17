@@ -121,6 +121,7 @@ Collate:
     'prepare_stan_data_inputs.R'
     'sim_covariates.R'
     'sim_estimate_bias.R'
+    'sim_estimate_effect_variance.R'
     'sim_estimate_mse.R'
     'sim_is_null_effect_covered.R'
     'sim_is_true_effect_covered.R'

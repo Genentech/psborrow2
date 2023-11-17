@@ -78,6 +78,7 @@ logistic_glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 ### BayesPPD
 
 ```{r bayesppd_logistic}
+set.seed(123)
 logistic_ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   logistic_ppd <- glm.fixed.a0(
     data.type = "Bernoulli",
@@ -239,6 +240,7 @@ glm_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
 
 ```{r bayesppd_Exp}
 ## BayesPPD
+set.seed(123)
 ppd_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   exp_ppd <- glm.fixed.a0(
     data.type = "Exponential",
