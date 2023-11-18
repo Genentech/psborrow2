@@ -44,7 +44,13 @@ setMethod(
   f = "get_results",
   signature = "MCMCSimulationResult",
   definition = function(object) {
-    return(object@results)
+    res <- object@results
+    res$trt_var <- vapply(res$trt_var, mean, double(1L))
+    res$mse_mean <- vapply(res$mse_mean, mean, double(1L))
+    res$bias_mean <- vapply(res$bias_mean, mean, double(1L))
+    res$null_coverage <- vapply(res$null_coverage, mean, double(1L))
+    res$true_coverage <- vapply(res$true_coverage, mean, double(1L))
+    return(res)
   }
 )
 
