@@ -2,7 +2,7 @@
 #'
 #' A class for defining half cauchy priors to be translated to Stan code.
 #' Objects of class `HalfCauchyPrior` should not be created directly but by
-#' the constructor [half_cauchy_prior()].
+#' the constructor [prior_half_cauchy()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for the half cauchy stan function parameters surrounded with
@@ -14,7 +14,7 @@
 #' @slot sigma numeric. Scale (>0).
 #' @include prior_class.R
 #' @family prior classes
-.half_cauchy_prior <- setClass(
+.prior_half_cauchy <- setClass(
   "HalfCauchyPrior",
   contains = "Prior",
   slots = c(
@@ -46,9 +46,9 @@
 #' @export
 #' @family priors
 #' @examples
-#' hcp <- half_cauchy_prior(1, 1)
-half_cauchy_prior <- function(mu, sigma) {
-  .half_cauchy_prior(mu = mu, sigma = sigma)
+#' hcp <- prior_half_cauchy(1, 1)
+prior_half_cauchy <- function(mu, sigma) {
+  .prior_half_cauchy(mu = mu, sigma = sigma)
 }
 
 # show ----
@@ -73,8 +73,8 @@ setMethod(
 # plot ----
 #' @rdname plot
 #' @examples
-#' plot(half_cauchy_prior(0, 1), xlim = c(-20, 20))
-#' plot(half_cauchy_prior(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
+#' plot(prior_half_cauchy(0, 1), xlim = c(-20, 20))
+#' plot(prior_half_cauchy(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
 setMethod(
   f = "plot",
   signature = c("HalfCauchyPrior", "missing"),
@@ -91,3 +91,17 @@ setMethod(
     callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )
+
+
+#' Legacy function for the half-cauchy prior
+#'
+#' Please use `prior_half_cauchy()` instead.
+#' @param ... Deprecated arguments to `half_cauchy_prior()`.
+#' @export
+half_cauchy_prior <- function(...) {
+  .Defunct(
+    "prior_half_cauchy",
+    "psborrow2",
+    "`half_cauchy_prior()` is deprecated. Use `prior_half_cauchy()` instead."
+  )
+}
