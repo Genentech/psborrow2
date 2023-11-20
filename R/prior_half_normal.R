@@ -1,8 +1,8 @@
-#' `HalfNormalPrior` Class
+#' `PriorHalfNormal` Class
 #'
 #' A class for defining half normal priors to be translated to Stan code.
-#' Objects of class `HalfNormalPrior` should not be created directly but by
-#' the constructor [half_prior_normal()].
+#' Objects of class `PriorHalfNormal` should not be created directly but by
+#' the constructor [prior_half_normal()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for the half normal stan function parameters surrounded with
@@ -14,8 +14,8 @@
 #' @slot sigma numeric. Scale (>0).
 #' @include prior_class.R
 #' @family prior classes
-.half_prior_normal <- setClass(
-  "HalfNormalPrior",
+.prior_half_normal <- setClass(
+  "PriorHalfNormal",
   contains = "Prior",
   slots = c(
     mu = "numeric",
@@ -42,19 +42,19 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/normal-distribution.html>
 #'
-#' @return Object of class [`HalfNormalPrior`][HalfNormalPrior-class].
+#' @return Object of class [`PriorHalfNormal`][PriorHalfNormal-class].
 #' @export
 #' @family priors
 #' @examples
-#' hcp <- half_prior_normal(1, 1)
-half_prior_normal <- function(mu, sigma) {
-  .half_prior_normal(mu = mu, sigma = sigma)
+#' hcp <- prior_half_normal(1, 1)
+prior_half_normal <- function(mu, sigma) {
+  .prior_half_normal(mu = mu, sigma = sigma)
 }
 
 # show ----
 setMethod(
   f = "show",
-  signature = "HalfNormalPrior",
+  signature = "PriorHalfNormal",
   definition = function(object) {
     cat("Half normal Distribution\n")
     cat("Parameters:\n")
@@ -73,11 +73,11 @@ setMethod(
 # plot ----
 #' @rdname plot
 #' @examples
-#' plot(half_prior_normal(0, 1), xlim = c(-20, 20))
-#' plot(half_prior_normal(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
+#' plot(prior_half_normal(0, 1), xlim = c(-20, 20))
+#' plot(prior_half_normal(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
 setMethod(
   f = "plot",
-  signature = c("HalfNormalPrior", "missing"),
+  signature = c("PriorHalfNormal", "missing"),
   definition = function(x, y, add = FALSE, ...) {
     limits <- stats::qnorm(c(0.5, 0.995), mean = x@mu, sd = x@sigma)
     density_fun <- function(values) {

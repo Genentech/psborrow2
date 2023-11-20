@@ -28,13 +28,13 @@ placeholders for poisson stan function parameters surrounded with
 \seealso{
 Other prior classes: 
 \code{\link{GammaPrior-class}},
-\code{\link{HalfNormalPrior-class}},
 \code{\link{Prior-class}},
 \code{\link{PriorBernoulli-class}},
 \code{\link{PriorBeta-class}},
 \code{\link{PriorCauchy-class}},
 \code{\link{PriorExponential-class}},
 \code{\link{PriorHalfCauchy-class}},
+\code{\link{PriorHalfNormal-class}},
 \code{\link{PriorNormal-class}},
 \code{\link{UniformPrior-class}}
 }

@@ -30,7 +30,7 @@ bd_db <- borrowing_details(
 
 td <- treatment_details(
   "trt",
-  half_prior_normal(0, 1000)
+  prior_half_normal(0, 1000)
 )
 
 esd <- outcome_surv_exponential(

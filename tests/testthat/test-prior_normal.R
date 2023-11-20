@@ -3,7 +3,7 @@ test_that("Normal priors are rendering correctly", {
   prior <- prior_normal(mu = 2, sigma = 3)
 
   # Expect correct class
-  expect_class(prior, "NormalPrior")
+  expect_class(prior, "PriorNormal")
   expect_equal(prior@mu, 2L)
   expect_equal(prior@sigma, 3L)
 
@@ -12,22 +12,22 @@ test_that("Normal priors are rendering correctly", {
 
   # Errors
   expect_error(prior_normal(mu = 2, sigma = -1),
-    regexp = "invalid class .NormalPrior. object: sigma must be >0"
+    regexp = "invalid class .PriorNormal. object: sigma must be >0"
   )
 })
 
-test_that("show works for NormalPrior", {
+test_that("show works for PriorNormal", {
   expect_snapshot_output(show(prior_normal(0, 0.8)))
 })
 
-test_that("plot works for NormalPrior", {
+test_that("plot works for PriorNormal", {
   vdiffr::expect_doppelganger(
     "prior_normal_plot",
     plot(prior_normal(0, 0.8))
   )
 })
 
-test_that("constraints work for NormalPrior", {
+test_that("constraints work for PriorNormal", {
   expect_equal(eval_constraints(prior_normal(2, 5)), "")
 })
 

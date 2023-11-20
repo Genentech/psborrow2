@@ -26,13 +26,13 @@ up <- uniform_prior(0, 1)
 \seealso{
 Other priors: 
 \code{\link{gamma_prior}()},
-\code{\link{half_prior_normal}()},
 \code{\link{poisson_prior}()},
 \code{\link{prior_bernoulli}()},
 \code{\link{prior_beta}()},
 \code{\link{prior_cauchy}()},
 \code{\link{prior_exponential}()},
 \code{\link{prior_half_cauchy}()},
+\code{\link{prior_half_normal}()},
 \code{\link{prior_normal}()}
 }
 \concept{priors}

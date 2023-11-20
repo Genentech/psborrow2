@@ -28,13 +28,13 @@ Prior constructor functions: \code{\link[=prior_bernoulli]{prior_bernoulli()}}, 
 
 Other prior classes: 
 \code{\link{GammaPrior-class}},
-\code{\link{HalfNormalPrior-class}},
 \code{\link{PoissonPrior-class}},
 \code{\link{PriorBernoulli-class}},
 \code{\link{PriorBeta-class}},
 \code{\link{PriorCauchy-class}},
 \code{\link{PriorExponential-class}},
 \code{\link{PriorHalfCauchy-class}},
+\code{\link{PriorHalfNormal-class}},
 \code{\link{PriorNormal-class}},
 \code{\link{UniformPrior-class}}
 }

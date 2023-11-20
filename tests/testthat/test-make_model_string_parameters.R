@@ -109,7 +109,7 @@ test_that("the STAN code is correctly generated when limits are placed in the bo
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
     borrowing = borrowing_details("BDB",
       ext_flag_col = "ext",
-      tau_prior = half_prior_normal(10, 20)
+      tau_prior = prior_half_normal(10, 20)
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )@model_string

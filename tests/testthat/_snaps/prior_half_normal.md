@@ -1,4 +1,4 @@
-# show works for HalfNormalPrior
+# show works for PriorHalfNormal
 
     Half normal Distribution
     Parameters:
