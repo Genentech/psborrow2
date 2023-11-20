@@ -30,3 +30,14 @@ test_that("plot works for NormalPrior", {
 test_that("constraints work for NormalPrior", {
   expect_equal(eval_constraints(prior_normal(2, 5)), "")
 })
+
+
+test_that("normal_prior() throws error", {
+  expect_error(normal_prior(),
+    regexp = "deprecated"
+  )
+
+  expect_error(normal_prior(0, 0.8),
+    regexp = "deprecated"
+  )
+})
