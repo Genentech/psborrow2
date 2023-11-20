@@ -1,4 +1,4 @@
-# show works for GammaPrior
+# show works for PriorGamma
 
     Gamma Distribution
     Parameters:

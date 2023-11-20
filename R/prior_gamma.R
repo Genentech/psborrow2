@@ -1,8 +1,8 @@
-#' `GammaPrior` Class
+#' `PriorGamma` Class
 #'
 #' A class for defining gamma priors to be translated to Stan code.
-#' Objects of class `GammaPrior` should not be created directly but by
-#' the constructor [gamma_prior()].
+#' Objects of class `PriorGamma` should not be created directly but by
+#' the constructor [prior_gamma()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for gamma stan function parameters surrounded with
@@ -14,8 +14,8 @@
 #' @slot beta numeric. Inverse scale (>=0).
 #' @include prior_class.R
 #' @family prior classes
-.gamma_prior <- setClass(
-  "GammaPrior",
+.prior_gamma <- setClass(
+  "PriorGamma",
   contains = "Prior",
   slots = c(
     alpha = "numeric",
@@ -42,20 +42,20 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/gamma-distribution.html>
 #'
-#' @return Object of class [`GammaPrior`][GammaPrior-class].
+#' @return Object of class [`PriorGamma`][PriorGamma-class].
 #' @export
 #' @family priors
 #' @examples
-#' gp <- gamma_prior(0.001, 0.001)
-gamma_prior <- function(alpha, beta) {
-  .gamma_prior(alpha = alpha, beta = beta)
+#' gp <- prior_gamma(0.001, 0.001)
+prior_gamma <- function(alpha, beta) {
+  .prior_gamma(alpha = alpha, beta = beta)
 }
 
 
 # show ----
 setMethod(
   f = "show",
-  signature = "GammaPrior",
+  signature = "PriorGamma",
   definition = function(object) {
     cat("Gamma Distribution\n")
     cat("Parameters:\n")
@@ -74,10 +74,10 @@ setMethod(
 # plot ----
 #' @rdname plot
 #' @examples
-#' plot(gamma_prior(0.1, 0.1))
+#' plot(prior_gamma(0.1, 0.1))
 setMethod(
   f = "plot",
-  signature = c("GammaPrior", "missing"),
+  signature = c("PriorGamma", "missing"),
   definition = function(x, y, add = FALSE, ...) {
     limits <- c(0, stats::qgamma(0.99, shape = x@alpha, rate = x@beta))
     density_fun <- function(values) stats::dgamma(values, shape = x@alpha, rate = x@beta)
@@ -85,3 +85,16 @@ setMethod(
     callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )
+
+#' Legacy function for the gamma prior
+#'
+#' Please use `prior_gamma()` instead.
+#' @param ... Deprecated arguments to `gamma_prior()`.
+#' @export
+gamma_prior <- function(...) {
+  .Defunct(
+    "prior_gamma",
+    "psborrow2",
+    "`gamma_prior()` is deprecated. Use `prior_gamma()` instead."
+  )
+}

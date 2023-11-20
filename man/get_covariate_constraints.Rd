@@ -22,7 +22,7 @@ psborrow2:::get_covariate_constraints(
     list(
       prior_normal(0, 10),
       beta_prior(0.3, 0.3),
-      gamma_prior(30, 1)
+      prior_gamma(30, 1)
     )
   )
 )

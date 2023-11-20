@@ -56,7 +56,7 @@ constructors below:
 * `beta_prior(alpha, beta)`
 * `prior_cauchy(mu, sigma)`
 * `prior_exponential(beta)`
-* `gamma_prior(alpha, beta)`
+* `prior_gamma(alpha, beta)`
 * `prior_normal(mu, sigma)`
 * `poisson_prior(lambda)`
 * `uniform_prior(alpha, beta)`
@@ -90,8 +90,8 @@ distribution with greater density at higher values of `tau` (which
 will lead to more borrowing in a BDB analysis):
 
 ```{r}
-conservative_tau <- gamma_prior(0.001, 0.001)
-aggressive_tau <- gamma_prior(1, 0.001)
+conservative_tau <- prior_gamma(0.001, 0.001)
+aggressive_tau <- prior_gamma(1, 0.001)
 plot(aggressive_tau, xlim = c(0, 2000), col = "blue", ylim = c(0, 1e-03))
 plot(conservative_tau, xlim = c(0, 2000), col = "red", add = TRUE)
 ```

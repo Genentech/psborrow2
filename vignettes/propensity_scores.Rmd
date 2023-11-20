@@ -284,7 +284,7 @@ IPTW + commensurate prior approach.
 analysis_iptw_bdb <- create_analysis_obj(
   data_matrix = example_matrix_att,
   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000), weight_var = "att"),
-  borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
+  borrowing = borrowing_details("BDB", "ext", prior_gamma(0.01, 0.01)),
   treatment = treatment_details("trt", prior_normal(0, 10000)),
   quiet = TRUE
 )
@@ -344,7 +344,7 @@ result_bdb <- mcmc_sample(
   create_analysis_obj(
     data_matrix = example_matrix_att,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
-    borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
+    borrowing = borrowing_details("BDB", "ext", prior_gamma(0.01, 0.01)),
     treatment = treatment_details("trt", prior_normal(0, 10000)),
     quiet = TRUE
   ),

@@ -453,7 +453,7 @@ test_that("mcmc_sample for Analysis works for exponential BDB, conservative borr
     ),
     borrowing = borrowing_details("BDB",
       ext_flag_col = "ext",
-      tau_prior = gamma_prior(0.001, 0.001)
+      tau_prior = prior_gamma(0.001, 0.001)
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
@@ -484,7 +484,7 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, aggressive borrowing"
     ),
     borrowing = borrowing_details("BDB",
       ext_flag_col = "ext",
-      tau_prior = gamma_prior(1, 0.001)
+      tau_prior = prior_gamma(1, 0.001)
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
@@ -510,7 +510,7 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressiv
     outcome = outcome_bin_logistic("resp", prior_normal(0, 100000)),
     borrowing = borrowing_details("BDB",
       ext_flag_col = "ext",
-      tau_prior = gamma_prior(1, 0.001)
+      tau_prior = prior_gamma(1, 0.001)
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )

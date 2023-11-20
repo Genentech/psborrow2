@@ -21,7 +21,7 @@ test_that("show works for PriorExponential", {
 
 test_that("plot works for PriorExponential", {
   vdiffr::expect_doppelganger(
-    "gamma_prior_plot",
+    "prior_gamma_plot",
     plot(prior_exponential(4))
   )
 })

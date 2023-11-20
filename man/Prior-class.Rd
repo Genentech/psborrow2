@@ -24,15 +24,15 @@ Stan constraint, e.g. \code{"<lower=0, upper=1>"}.}
 
 \seealso{
 Prior constructor functions: \code{\link[=prior_bernoulli]{prior_bernoulli()}}, \code{\link[=prior_beta]{prior_beta()}}, \code{\link[=prior_cauchy]{prior_cauchy()}}, \code{\link[=prior_half_cauchy]{prior_half_cauchy()}},
-\code{\link[=gamma_prior]{gamma_prior()}}, \code{\link[=prior_normal]{prior_normal()}}, \code{\link[=poisson_prior]{poisson_prior()}}, \code{\link[=uniform_prior]{uniform_prior()}}
+\code{\link[=prior_gamma]{prior_gamma()}}, \code{\link[=prior_normal]{prior_normal()}}, \code{\link[=poisson_prior]{poisson_prior()}}, \code{\link[=uniform_prior]{uniform_prior()}}
 
 Other prior classes: 
-\code{\link{GammaPrior-class}},
 \code{\link{PoissonPrior-class}},
 \code{\link{PriorBernoulli-class}},
 \code{\link{PriorBeta-class}},
 \code{\link{PriorCauchy-class}},
 \code{\link{PriorExponential-class}},
+\code{\link{PriorGamma-class}},
 \code{\link{PriorHalfCauchy-class}},
 \code{\link{PriorHalfNormal-class}},
 \code{\link{PriorNormal-class}},

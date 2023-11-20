@@ -188,7 +188,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       borrowing = borrowing_details(
         method = "BDB",
         ext_flag_col = "tira",
-        tau_prior = gamma_prior(.001, .001)
+        tau_prior = prior_gamma(.001, .001)
       )
     ),
     "The following specified variables were not found in `data_matrix`:\n  ext_flag_col: tira"

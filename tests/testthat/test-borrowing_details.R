@@ -26,12 +26,12 @@ test_that("borrowing_details works as expected for BDB", {
   bdb <- borrowing_details(
     "BDB",
     "ext",
-    gamma_prior(.1, .1)
+    prior_gamma(.1, .1)
   )
 
   expect_class(bdb, "Borrowing")
   expect_equal(bdb@method, "BDB")
-  expect_class(bdb@tau_prior, "GammaPrior")
+  expect_class(bdb@tau_prior, "PriorGamma")
   expect_equal(bdb@ext_flag_col, "ext")
 })
 
@@ -58,7 +58,7 @@ test_that("get_vars works for borrowing_details", {
     get_vars(borrowing_details(
       "BDB",
       "ext_fl",
-      gamma_prior(.1, .1)
+      prior_gamma(.1, .1)
     )),
     c(ext_flag_col = "ext_fl")
   )

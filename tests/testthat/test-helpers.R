@@ -12,7 +12,7 @@ test_that("parse_constraint works as expected", {
     parse_constraint(hcp),
     c(lower = 1, upper = Inf)
   )
-  tp <- gamma_prior(0.001, 0.001)
+  tp <- prior_gamma(0.001, 0.001)
   expect_equal(
     parse_constraint(tp),
     c(lower = 0, upper = Inf)
@@ -26,7 +26,7 @@ test_that("parse_constraint works as expected with prior list", {
     list(
       prior_normal(0, 10),
       prior_beta(0.3, 0.3),
-      gamma_prior(30, 1)
+      prior_gamma(30, 1)
     )
   )
   result <- get_covariate_constraints(object)
