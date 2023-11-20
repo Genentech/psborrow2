@@ -32,7 +32,7 @@ test_that("constraints work for PriorCauchy", {
 })
 
 
-test_that("prior_cauchy() throws error", {
+test_that("cauchy_prior() throws error", {
   expect_error(cauchy_prior(),
     regexp = "deprecated"
   )

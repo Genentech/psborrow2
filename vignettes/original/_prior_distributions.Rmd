@@ -52,8 +52,8 @@ See the documentation of these functions for more information.
 The currently supported prior distributions are created with the
 constructors below:
 
-* `bernoulli_prior(theta)`
-* `beta_prior(alpha, beta)`
+* `prior_bernoulli(theta)`
+* `prior_beta(alpha, beta)`
 * `prior_cauchy(mu, sigma)`
 * `prior_exponential(beta)`
 * `prior_gamma(alpha, beta)`

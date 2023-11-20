@@ -36,12 +36,12 @@ test_that("constraints work for PriorHalfNormal", {
 })
 
 
-test_that("normal_half_prior() throws error", {
-  expect_error(normal_half_prior(),
+test_that("half_normal_prior() throws error", {
+  expect_error(half_normal_prior(),
     regexp = "deprecated"
   )
 
-  expect_error(normal_half_prior(0, 0.8),
+  expect_error(half_normal_prior(0, 0.8),
     regexp = "deprecated"
   )
 })

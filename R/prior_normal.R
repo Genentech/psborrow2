@@ -104,12 +104,12 @@ normal_prior <- function(...) {
 #' Legacy function for the normal half prior
 #'
 #' Please use `prior_half_normal()` instead.
-#' @param ... Deprecated arguments to `normal_half_prior()`.
+#' @param ... Deprecated arguments to `half_normal_prior()`.
 #' @export
-normal_half_prior <- function(...) {
+half_normal_prior <- function(...) {
   .Defunct(
     "prior_half_normal",
     "psborrow2",
-    "`normal_half_prior()` is deprecated. Use `prior_half_normal()` instead."
+    "`half_normal_prior()` is deprecated. Use `prior_half_normal()` instead."
   )
 }
