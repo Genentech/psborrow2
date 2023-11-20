@@ -1,6 +1,6 @@
 test_that("Beta priors are rendering correctly", {
   # Make beta prior
-  prior <- beta_prior(alpha = 2, beta = 3)
+  prior <- prior_beta(alpha = 2, beta = 3)
 
   # Expect correct class
   expect_class(prior, "BetaPrior")
@@ -11,22 +11,32 @@ test_that("Beta priors are rendering correctly", {
   expect_equal(NROW(slotNames(prior)) - 3, prior@n_param)
 
   # Errors
-  expect_error(beta_prior(alpha = -1, beta = -2),
+  expect_error(prior_beta(alpha = -1, beta = -2),
     regexp = "invalid class .BetaPrior. object: Both alpha and beta must be >= 0"
   )
 })
 
 test_that("show works for BetaPrior", {
-  expect_snapshot_output(show(beta_prior(1.5, 0.8)))
+  expect_snapshot_output(show(prior_beta(1.5, 0.8)))
 })
 
 test_that("plot works for BetaPrior", {
   vdiffr::expect_doppelganger(
-    "beta_prior_plot",
-    plot(beta_prior(1.5, 0.8))
+    "prior_beta_plot",
+    plot(prior_beta(1.5, 0.8))
   )
 })
 
 test_that("constraints work for BetaPrior", {
-  expect_equal(eval_constraints(beta_prior(1.5, 0.8)), "<lower=0, upper=1>")
+  expect_equal(eval_constraints(prior_beta(1.5, 0.8)), "<lower=0, upper=1>")
+})
+
+test_that("beta_prior() throws error", {
+  expect_error(beta_prior(),
+    regexp = "deprecated"
+  )
+
+  expect_error(beta_prior(1.5, 0.8),
+    regexp = "deprecated"
+  )
 })

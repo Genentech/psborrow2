@@ -2,7 +2,7 @@
 #'
 #' A class for defining beta priors to be translated to Stan code.
 #' Objects of class `BetaPrior` should not be created directly but by
-#' the constructor [beta_prior()].
+#' the constructor [prior_beta()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for beta stan function parameters surrounded with
@@ -14,7 +14,7 @@
 #' @slot beta numeric. Shape (>=0).
 #' @include prior_class.R
 #' @family prior classes
-.beta_prior <- setClass(
+.prior_beta <- setClass(
   "BetaPrior",
   contains = "Prior",
   slots = c(
@@ -46,9 +46,9 @@
 #' @export
 #' @family priors
 #' @examples
-#' bp <- beta_prior(9, 235)
-beta_prior <- function(alpha, beta) {
-  .beta_prior(alpha = alpha, beta = beta)
+#' bp <- prior_beta(9, 235)
+prior_beta <- function(alpha, beta) {
+  .prior_beta(alpha = alpha, beta = beta)
 }
 
 # show ----
@@ -73,7 +73,7 @@ setMethod(
 # plot ----
 #' @rdname plot
 #' @examples
-#' plot(beta_prior(2, 2))
+#' plot(prior_beta(2, 2))
 setMethod(
   f = "plot",
   signature = c("BetaPrior", "missing"),
@@ -84,3 +84,17 @@ setMethod(
     callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )
+
+
+#' Legacy function for the beta prior
+#'
+#' Please use `prior_beta()` instead.
+#' @param ... Deprecated arguments to `prior_beta()`.
+#' @export
+beta_prior <- function(...) {
+  .Defunct(
+    "prior_beta",
+    "psborrow2",
+    "`beta_prior()` is deprecated. Use `prior_beta()` instead."
+  )
+}
