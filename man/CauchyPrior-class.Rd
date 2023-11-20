@@ -29,15 +29,15 @@ placeholders for cauchy stan function parameters surrounded with
 
 \seealso{
 Other prior classes: 
-\code{\link{BernoulliPrior-class}},
-\code{\link{BetaPrior-class}},
 \code{\link{ExponentialPrior-class}},
 \code{\link{GammaPrior-class}},
-\code{\link{HalfCauchyPrior-class}},
 \code{\link{HalfNormalPrior-class}},
 \code{\link{NormalPrior-class}},
 \code{\link{PoissonPrior-class}},
 \code{\link{Prior-class}},
+\code{\link{PriorBernoulli-class}},
+\code{\link{PriorBeta-class}},
+\code{\link{PriorHalfCauchy-class}},
 \code{\link{UniformPrior-class}}
 }
 \concept{prior classes}

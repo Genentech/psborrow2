@@ -23,14 +23,14 @@ ep <- exponential_prior(1)
 }
 \seealso{
 Other priors: 
-\code{\link{bernoulli_prior}()},
-\code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},
 \code{\link{gamma_prior}()},
-\code{\link{half_cauchy_prior}()},
 \code{\link{half_normal_prior}()},
 \code{\link{normal_prior}()},
 \code{\link{poisson_prior}()},
+\code{\link{prior_bernoulli}()},
+\code{\link{prior_beta}()},
+\code{\link{prior_half_cauchy}()},
 \code{\link{uniform_prior}()}
 }
 \concept{priors}

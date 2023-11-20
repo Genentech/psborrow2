@@ -1,4 +1,4 @@
-# show works for BetaPrior
+# show works for PriorBeta
 
     Beta Distribution
     Parameters:

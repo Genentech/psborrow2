@@ -3,7 +3,7 @@ test_that("Bernoulli priors are rendering correctly", {
   prior <- prior_bernoulli(theta = 0.99)
 
   # Expect correct class
-  expect_class(prior, "BernoulliPrior")
+  expect_class(prior, "PriorBernoulli")
   expect_equal(prior@theta, .99)
 
   # Expect N inputs correct
@@ -11,22 +11,22 @@ test_that("Bernoulli priors are rendering correctly", {
 
   # Errors
   expect_error(prior_bernoulli(1.2),
-    regexp = "invalid class .BernoulliPrior. object"
+    regexp = "invalid class .PriorBernoulli. object"
   )
 })
 
-test_that("show works for BernoulliPrior", {
+test_that("show works for PriorBernoulli", {
   expect_snapshot_output(show(prior_bernoulli(0.7)))
 })
 
-test_that("plot works for BernoulliPrior", {
+test_that("plot works for PriorBernoulli", {
   vdiffr::expect_doppelganger(
     "prior_bernoulli_plot",
     plot(prior_bernoulli(0.7))
   )
 })
 
-test_that("constraints work for BernoulliPrior", {
+test_that("constraints work for PriorBernoulli", {
   expect_equal(eval_constraints(prior_bernoulli(theta = 0.99)), "<lower=0, upper=1>")
 })
 

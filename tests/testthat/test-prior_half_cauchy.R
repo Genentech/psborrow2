@@ -3,7 +3,7 @@ test_that("Half Cauchy priors are rendering correctly", {
   object <- prior_half_cauchy(mu = 2, sigma = 3)
 
   # Expect correct class
-  expect_class(object, "HalfCauchyPrior")
+  expect_class(object, "PriorHalfCauchy")
   expect_equal(object@mu, 2L)
   expect_equal(object@sigma, 3L)
   expect_equal(psborrow2:::h_glue(object@constraint), "<lower=2>")
@@ -13,15 +13,15 @@ test_that("Half Cauchy priors are rendering correctly", {
 
   # Errors
   expect_error(prior_half_cauchy(mu = 2, sigma = -1),
-    regexp = "invalid class .HalfCauchyPrior. object: sigma must be >0"
+    regexp = "invalid class .PriorHalfCauchy. object: sigma must be >0"
   )
 })
 
-test_that("show works for HalfCauchyPrior", {
+test_that("show works for PriorHalfCauchy", {
   expect_snapshot_output(show(prior_half_cauchy(0, 0.8)))
 })
 
-test_that("plot works for HalfCauchyPrior", {
+test_that("plot works for PriorHalfCauchy", {
   vdiffr::expect_doppelganger(
     "prior_half_cauchy_plot",
     plot(prior_half_cauchy(0, 0.8))
@@ -29,7 +29,7 @@ test_that("plot works for HalfCauchyPrior", {
 })
 
 
-test_that("constraints work for HalfCauchyPrior", {
+test_that("constraints work for PriorHalfCauchy", {
   expect_equal(eval_constraints(prior_half_cauchy(2, 5)), "<lower=2>")
   expect_equal(eval_constraints(prior_half_cauchy(4, 5)), "<lower=4>")
   expect_equal(eval_constraints(prior_half_cauchy(200, 10000)), "<lower=200>")

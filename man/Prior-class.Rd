@@ -27,15 +27,15 @@ Prior constructor functions: \code{\link[=bernoulli_prior]{bernoulli_prior()}}, 
 \code{\link[=normal_prior]{normal_prior()}}, \code{\link[=poisson_prior]{poisson_prior()}}, \code{\link[=uniform_prior]{uniform_prior()}}
 
 Other prior classes: 
-\code{\link{BernoulliPrior-class}},
-\code{\link{BetaPrior-class}},
 \code{\link{CauchyPrior-class}},
 \code{\link{ExponentialPrior-class}},
 \code{\link{GammaPrior-class}},
-\code{\link{HalfCauchyPrior-class}},
 \code{\link{HalfNormalPrior-class}},
 \code{\link{NormalPrior-class}},
 \code{\link{PoissonPrior-class}},
+\code{\link{PriorBernoulli-class}},
+\code{\link{PriorBeta-class}},
+\code{\link{PriorHalfCauchy-class}},
 \code{\link{UniformPrior-class}}
 }
 \concept{prior classes}

@@ -1,4 +1,4 @@
-# show works for HalfCauchyPrior
+# show works for PriorHalfCauchy
 
     Half Cauchy Distribution
     Parameters:

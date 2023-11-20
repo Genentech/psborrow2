@@ -10,7 +10,7 @@ prior_bernoulli(theta)
 \item{theta}{numeric. Probability (in [0, 1]).}
 }
 \value{
-Object of class \code{\link[=BernoulliPrior-class]{BernoulliPrior}}.
+Object of class \code{\link[=PriorBernoulli-class]{PriorBernoulli}}.
 }
 \description{
 Prior bernoulli distribution
@@ -23,14 +23,14 @@ bp <- prior_bernoulli(0.23)
 }
 \seealso{
 Other priors: 
-\code{\link{beta_prior}()},
 \code{\link{cauchy_prior}()},
 \code{\link{exponential_prior}()},
 \code{\link{gamma_prior}()},
-\code{\link{half_cauchy_prior}()},
 \code{\link{half_normal_prior}()},
 \code{\link{normal_prior}()},
 \code{\link{poisson_prior}()},
+\code{\link{prior_beta}()},
+\code{\link{prior_half_cauchy}()},
 \code{\link{uniform_prior}()}
 }
 \concept{priors}

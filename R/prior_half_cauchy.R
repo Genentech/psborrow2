@@ -1,7 +1,7 @@
-#' `HalfCauchyPrior` Class
+#' `PriorHalfCauchy` Class
 #'
 #' A class for defining half cauchy priors to be translated to Stan code.
-#' Objects of class `HalfCauchyPrior` should not be created directly but by
+#' Objects of class `PriorHalfCauchy` should not be created directly but by
 #' the constructor [prior_half_cauchy()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
@@ -15,7 +15,7 @@
 #' @include prior_class.R
 #' @family prior classes
 .prior_half_cauchy <- setClass(
-  "HalfCauchyPrior",
+  "PriorHalfCauchy",
   contains = "Prior",
   slots = c(
     mu = "numeric",
@@ -42,7 +42,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/cauchy-distribution.html>
 #'
-#' @return Object of class [`HalfCauchyPrior`][HalfCauchyPrior-class].
+#' @return Object of class [`PriorHalfCauchy`][PriorHalfCauchy-class].
 #' @export
 #' @family priors
 #' @examples
@@ -54,7 +54,7 @@ prior_half_cauchy <- function(mu, sigma) {
 # show ----
 setMethod(
   f = "show",
-  signature = "HalfCauchyPrior",
+  signature = "PriorHalfCauchy",
   definition = function(object) {
     cat("Half Cauchy Distribution\n")
     cat("Parameters:\n")
@@ -77,7 +77,7 @@ setMethod(
 #' plot(prior_half_cauchy(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
 setMethod(
   f = "plot",
-  signature = c("HalfCauchyPrior", "missing"),
+  signature = c("PriorHalfCauchy", "missing"),
   definition = function(x, y, add = FALSE, ...) {
     limits <- stats::qcauchy(c(0.5, 0.995), location = x@mu, scale = x@sigma)
     density_fun <- function(values) {

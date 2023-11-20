@@ -1,7 +1,7 @@
-#' `BetaPrior` Class
+#' `PriorBeta` Class
 #'
 #' A class for defining beta priors to be translated to Stan code.
-#' Objects of class `BetaPrior` should not be created directly but by
+#' Objects of class `PriorBeta` should not be created directly but by
 #' the constructor [prior_beta()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
@@ -15,7 +15,7 @@
 #' @include prior_class.R
 #' @family prior classes
 .prior_beta <- setClass(
-  "BetaPrior",
+  "PriorBeta",
   contains = "Prior",
   slots = c(
     alpha = "numeric",
@@ -42,7 +42,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/beta-distribution.html>
 #'
-#' @return Object of class [`BetaPrior`][BetaPrior-class]
+#' @return Object of class [`PriorBeta`][PriorBeta-class]
 #' @export
 #' @family priors
 #' @examples
@@ -54,7 +54,7 @@ prior_beta <- function(alpha, beta) {
 # show ----
 setMethod(
   f = "show",
-  signature = "BetaPrior",
+  signature = "PriorBeta",
   definition = function(object) {
     cat("Beta Distribution\n")
     cat("Parameters:\n")
@@ -76,7 +76,7 @@ setMethod(
 #' plot(prior_beta(2, 2))
 setMethod(
   f = "plot",
-  signature = c("BetaPrior", "missing"),
+  signature = c("PriorBeta", "missing"),
   definition = function(x, y, add = FALSE, ...) {
     limits <- c(0, 1)
     density_fun <- function(values) stats::dbeta(values, shape1 = x@alpha, shape2 = x@beta)

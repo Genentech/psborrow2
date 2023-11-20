@@ -12,7 +12,7 @@ prior_beta(alpha, beta)
 \item{beta}{numeric. Shape (>=0).}
 }
 \value{
-Object of class \code{\link[=BetaPrior-class]{BetaPrior}}
+Object of class \code{\link[=PriorBeta-class]{PriorBeta}}
 }
 \description{
 Prior beta distribution
@@ -28,11 +28,11 @@ Other priors:
 \code{\link{cauchy_prior}()},
 \code{\link{exponential_prior}()},
 \code{\link{gamma_prior}()},
-\code{\link{half_cauchy_prior}()},
 \code{\link{half_normal_prior}()},
 \code{\link{normal_prior}()},
 \code{\link{poisson_prior}()},
 \code{\link{prior_bernoulli}()},
+\code{\link{prior_half_cauchy}()},
 \code{\link{uniform_prior}()}
 }
 \concept{priors}

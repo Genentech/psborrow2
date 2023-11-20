@@ -7,7 +7,7 @@
 bernoulli_prior(...)
 }
 \arguments{
-\item{...}{Deprecated arguments to \code{prior_bernoulli()}.}
+\item{...}{Deprecated arguments to \code{bernoulli_prior()}.}
 }
 \description{
 Please use \code{prior_bernoulli()} instead.

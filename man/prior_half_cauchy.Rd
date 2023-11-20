@@ -12,7 +12,7 @@ prior_half_cauchy(mu, sigma)
 \item{sigma}{numeric. Scale (>0).}
 }
 \value{
-Object of class \code{\link[=HalfCauchyPrior-class]{HalfCauchyPrior}}.
+Object of class \code{\link[=PriorHalfCauchy-class]{PriorHalfCauchy}}.
 }
 \description{
 Prior half-cauchy distribution

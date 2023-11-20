@@ -1,7 +1,7 @@
-#' `BernoulliPrior` Class
+#' `PriorBernoulli` Class
 #'
 #' A class for defining bernoulli priors to be translated to Stan code.
-#' Objects of class `BernoulliPrior` should not be created directly but by
+#' Objects of class `PriorBernoulli` should not be created directly but by
 #' the constructor [prior_bernoulli()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
@@ -14,7 +14,7 @@
 #' @include prior_class.R
 #' @family prior classes
 .prior_bernoulli <- setClass(
-  "BernoulliPrior",
+  "PriorBernoulli",
   contains = "Prior",
   slots = c(theta = "numeric"),
   prototype = list(
@@ -37,7 +37,7 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/bernoulli-distribution.html>
 #'
-#' @return Object of class [`BernoulliPrior`][BernoulliPrior-class].
+#' @return Object of class [`PriorBernoulli`][PriorBernoulli-class].
 #' @export
 #' @family priors
 #' @examples
@@ -49,7 +49,7 @@ prior_bernoulli <- function(theta) {
 # show ----
 setMethod(
   f = "show",
-  signature = "BernoulliPrior",
+  signature = "PriorBernoulli",
   definition = function(object) {
     cat("Bernoulli Distribution\n")
     cat("Parameters:\n")
@@ -70,7 +70,7 @@ setMethod(
 #' plot(prior_bernoulli(0.4), xlim = c(0, 15))
 setMethod(
   f = "plot",
-  signature = c("BernoulliPrior", "missing"),
+  signature = c("PriorBernoulli", "missing"),
   definition = function(x, y, add = FALSE, ...) {
     limits <- c(0, 1)
     density_fun <- function(values) stats::dbinom(values, prob = x@theta, size = 1)

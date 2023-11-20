@@ -7,7 +7,7 @@
 beta_prior(...)
 }
 \arguments{
-\item{...}{Deprecated arguments to \code{prior_beta()}.}
+\item{...}{Deprecated arguments to \code{beta_prior()}.}
 }
 \description{
 Please use \code{prior_beta()} instead.
