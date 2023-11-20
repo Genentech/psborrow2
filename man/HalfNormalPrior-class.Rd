@@ -3,12 +3,12 @@
 \docType{class}
 \name{HalfNormalPrior-class}
 \alias{HalfNormalPrior-class}
-\alias{.half_normal_prior}
+\alias{.half_prior_normal}
 \title{\code{HalfNormalPrior} Class}
 \description{
 A class for defining half normal priors to be translated to Stan code.
 Objects of class \code{HalfNormalPrior} should not be created directly but by
-the constructor \code{\link[=half_normal_prior]{half_normal_prior()}}.
+the constructor \code{\link[=half_prior_normal]{half_prior_normal()}}.
 }
 \section{Slots}{
 
@@ -30,7 +30,6 @@ prior, constraint is \code{mu}}
 \seealso{
 Other prior classes: 
 \code{\link{GammaPrior-class}},
-\code{\link{NormalPrior-class}},
 \code{\link{PoissonPrior-class}},
 \code{\link{Prior-class}},
 \code{\link{PriorBernoulli-class}},
@@ -38,6 +37,7 @@ Other prior classes:
 \code{\link{PriorCauchy-class}},
 \code{\link{PriorExponential-class}},
 \code{\link{PriorHalfCauchy-class}},
+\code{\link{PriorNormal-class}},
 \code{\link{UniformPrior-class}}
 }
 \concept{prior classes}

@@ -54,12 +54,12 @@
 #'
 #' x <- create_simulation_obj(
 #'   data_matrix_list = sdl,
-#'   outcome = outcome_bin_logistic("ep", normal_prior(0, 1000)),
+#'   outcome = outcome_bin_logistic("ep", prior_normal(0, 1000)),
 #'   borrowing = sim_borrowing_list(list(
 #'     full_borrowing = borrowing_details("Full borrowing", "ext"),
 #'     bdb = borrowing_details("BDB", "ext", prior_exponential(0.0001))
 #'   )),
-#'   treatment = treatment_details("trt", normal_prior(0, 1000))
+#'   treatment = treatment_details("trt", prior_normal(0, 1000))
 #' )
 #'
 #' \dontrun{

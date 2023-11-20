@@ -78,7 +78,7 @@ Collate:
     'prior_class.R'
     'covariate_class.R'
     'add_covariates.R'
-    'normal_prior.R'
+    'prior_normal.R'
     'treatment_class.R'
     'borrowing_class.R'
     'outcome_class.R'

@@ -178,7 +178,7 @@ we need to specify a prior distribution for the baseline event rate,
 `baseline_prior`. In this case, `baseline_prior` is
 a log hazard rate (for binary endpoints this represents the log
 odds instead). Let's assume we have no prior knowledge on this event rate,
-so we'll specify an uninformative prior: `normal_prior(0, 1000)`.
+so we'll specify an uninformative prior: `prior_normal(0, 1000)`.
 
 For our example, let's conduct a time-to-event analysis using the exponential
 distribution.
@@ -188,7 +188,7 @@ distribution.
 outcome <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
-  baseline_prior = normal_prior(0, 1000)
+  baseline_prior = prior_normal(0, 1000)
 )
 outcome
 # Outcome object with class OutcomeSurvExponential 
@@ -267,7 +267,7 @@ another uninformative normal distribution for the prior on the treatment effect:
 ```r
 treatment <- treatment_details(
   trt_flag_col = "trt",
-  trt_prior = normal_prior(0, 1000)
+  trt_prior = prior_normal(0, 1000)
 )
 treatment
 # Treatment object

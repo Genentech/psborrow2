@@ -57,7 +57,7 @@ constructors below:
 * `prior_cauchy(mu, sigma)`
 * `prior_exponential(beta)`
 * `gamma_prior(alpha, beta)`
-* `normal_prior(mu, sigma)`
+* `prior_normal(mu, sigma)`
 * `poisson_prior(lambda)`
 * `uniform_prior(alpha, beta)`
 
@@ -65,7 +65,7 @@ For example, we can create an uninformative normal distribution by specifying
 a normal prior centered around 0 with a very large standard deviation:
 
 ```{r}
-uninformative_normal <- normal_prior(0, 10000)
+uninformative_normal <- prior_normal(0, 10000)
 uninformative_normal
 ```
 

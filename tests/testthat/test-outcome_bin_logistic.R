@@ -2,7 +2,7 @@ test_that("OutcomeBinaryLogistic distribution is rendering correctly", {
   # Binomial endpoint class
   bin_endpoint <- outcome_bin_logistic(
     binary_var = "response",
-    baseline_prior = normal_prior(0, 1000)
+    baseline_prior = prior_normal(0, 1000)
   )
 
   # Expect correct class
@@ -19,7 +19,7 @@ test_that("get_vars works for OutcomeBinaryLogistic", {
   expect_identical(
     get_vars(outcome_bin_logistic(
       binary_var = "response",
-      baseline_prior = normal_prior(0, 1000)
+      baseline_prior = prior_normal(0, 1000)
     )),
     c(binary_var = "response")
   )
@@ -27,7 +27,7 @@ test_that("get_vars works for OutcomeBinaryLogistic", {
   expect_identical(
     get_vars(outcome_bin_logistic(
       binary_var = "response",
-      baseline_prior = normal_prior(0, 1000),
+      baseline_prior = prior_normal(0, 1000),
       weight_var = "w"
     )),
     c(binary_var = "response", weight_var = "w")
@@ -37,7 +37,7 @@ test_that("get_vars works for OutcomeBinaryLogistic", {
 test_that("outcome_bin_logistic works with weights", {
   result <- outcome_bin_logistic(
     binary_var = "response",
-    baseline_prior = normal_prior(0, 1000),
+    baseline_prior = prior_normal(0, 1000),
     weight_var = "w"
   )
   expect_class(result, "OutcomeBinaryLogistic")

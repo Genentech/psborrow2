@@ -17,7 +17,7 @@
 #' specifying prior distribution for the baseline outcome.
 #' @include outcome_class.R
 #' @include prior_class.R
-#' @include normal_prior.R
+#' @include prior_normal.R
 #' @include prior_exponential.R
 #' @family outcome
 .outcome_surv_weibull_ph <- setClass(
@@ -94,7 +94,7 @@
 #'   time_var = "time",
 #'   cens_var = "cens",
 #'   shape_prior = prior_exponential(1),
-#'   baseline_prior = normal_prior(0, 1000)
+#'   baseline_prior = prior_normal(0, 1000)
 #' )
 outcome_surv_weibull_ph <- function(time_var,
                                     cens_var,

@@ -60,21 +60,21 @@ valid_outcome <- sim_outcome_list(
   list(standard_outcome = outcome_surv_exponential(
     time_var = "eventtime",
     cens_var = "censor",
-    baseline_prior = normal_prior(0, 1000)
+    baseline_prior = prior_normal(0, 1000)
   ))
 )
 
 # Valid covariate list
 valid_covariate <- sim_covariate_list(
   list(
-    cov1 = add_covariates("cov1", normal_prior(0, 1000)),
+    cov1 = add_covariates("cov1", prior_normal(0, 1000)),
     `no covs` = NULL
   )
 )
 
 # Valid treatment list
 valid_treatment <- sim_treatment_list(
-  list(standard_tx = treatment_details(trt_flag_col = "trt", trt_prior = normal_prior(0, 1000)))
+  list(standard_tx = treatment_details(trt_flag_col = "trt", trt_prior = prior_normal(0, 1000)))
 )
 
 test_that("`create_simulation_obj()` input classes are correct", {
@@ -103,7 +103,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
   expect_error(
     create_simulation_obj(
       data_matrix_list = valid_data_list,
-      outcome = list(outcome_surv_exponential("eventtime", "censor", normal_prior(0, 1000))),
+      outcome = list(outcome_surv_exponential("eventtime", "censor", prior_normal(0, 1000))),
       borrowing = valid_borrowing,
       treatment = valid_treatment
     ),
@@ -127,7 +127,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
       borrowing = valid_borrowing,
       treatment = list(treatment = treatment_details(
         "trt",
-        trt_prior = normal_prior(0, 1000)
+        trt_prior = prior_normal(0, 1000)
       ))
     ),
     "Must inherit from class 'SimTreatmentList'"
@@ -159,7 +159,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
   expect_class(
     create_simulation_obj(
       data_matrix_list = valid_data_list,
-      covariate = add_covariates(c("cov1"), normal_prior(0, 100)),
+      covariate = add_covariates(c("cov1"), prior_normal(0, 100)),
       outcome = valid_outcome,
       borrowing = valid_borrowing,
       treatment = valid_treatment
@@ -171,7 +171,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
     create_simulation_obj(
       data_matrix_list = valid_data_list,
       covariate = valid_covariate,
-      outcome = outcome_surv_exponential("eventtime", "censor", normal_prior(0, 100)),
+      outcome = outcome_surv_exponential("eventtime", "censor", prior_normal(0, 100)),
       borrowing = valid_borrowing,
       treatment = valid_treatment
     ),
@@ -195,7 +195,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
       covariate = valid_covariate,
       outcome = valid_outcome,
       borrowing = valid_borrowing,
-      treatment = treatment_details("trt", normal_prior(0, 100))
+      treatment = treatment_details("trt", prior_normal(0, 100))
     ),
     "Simulation"
   )
@@ -207,7 +207,7 @@ test_that("`create_simulation_obj()` catches incorrect column names", {
       data_matrix_list = valid_data_list,
       covariate = sim_covariate_list(
         list(basic = add_covariates("wrong_cov",
-          priors = normal_prior(0, 1000)
+          priors = prior_normal(0, 1000)
         ))
       ),
       outcome = valid_outcome,
@@ -224,7 +224,7 @@ test_that("`create_simulation_obj()` catches incorrect column names", {
         list(basic = outcome_surv_exponential(
           "eventtime",
           "wrong_censor",
-          normal_prior(0, 1000)
+          prior_normal(0, 1000)
         ))
       ),
       borrowing = valid_borrowing,
@@ -256,7 +256,7 @@ test_that("`create_simulation_obj()` catches incorrect column names", {
       treatment = sim_treatment_list(
         list(treatment = treatment_details(
           "wrong_trt",
-          trt_prior = normal_prior(0, 1000)
+          trt_prior = prior_normal(0, 1000)
         ))
       )
     ),
@@ -301,13 +301,13 @@ test_that("`create_simulation_obj()` correctly gets number of combinations", {
       exp = outcome_surv_exponential(
         time_var = "eventtime",
         cens_var = "censor",
-        normal_prior(0, 1000)
+        prior_normal(0, 1000)
       ),
       weib = outcome_surv_weibull_ph(
         time_var = "eventtime",
         cens_var = "censor",
-        normal_prior(0, 1000),
-        normal_prior(0, 1000)
+        prior_normal(0, 1000),
+        prior_normal(0, 1000)
       )
     )),
     borrowing = valid_borrowing,

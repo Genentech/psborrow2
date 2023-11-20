@@ -121,9 +121,9 @@ example_matrix_att <- create_data_matrix(
 
 analysis_att <- create_analysis_obj(
   data_matrix = example_matrix_att,
-  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
+  outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000), weight_var = "att"),
   borrowing = borrowing_details("Full borrowing", "ext"),
-  treatment = treatment_details("trt", normal_prior(0, 10000)),
+  treatment = treatment_details("trt", prior_normal(0, 10000)),
   quiet = TRUE
 )
 
@@ -265,9 +265,9 @@ example_matrix_match <- create_data_matrix(
 ```r
 analysis_match <- create_analysis_obj(
   data_matrix = example_matrix_match,
-  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
+  outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
   borrowing = borrowing_details("Full borrowing", "ext"),
-  treatment = treatment_details("trt", normal_prior(0, 10000)),
+  treatment = treatment_details("trt", prior_normal(0, 10000)),
   quiet = TRUE
 )
 
@@ -283,9 +283,9 @@ IPTW + commensurate prior approach.
 ```r
 analysis_iptw_bdb <- create_analysis_obj(
   data_matrix = example_matrix_att,
-  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000), weight_var = "att"),
+  outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000), weight_var = "att"),
   borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
-  treatment = treatment_details("trt", normal_prior(0, 10000)),
+  treatment = treatment_details("trt", prior_normal(0, 10000)),
   quiet = TRUE
 )
 
@@ -303,9 +303,9 @@ example_matrix_pp01 <- cbind(example_matrix, pp_alpha = ifelse(example_matrix[, 
 
 analysis_pp01 <- create_analysis_obj(
   data_matrix = example_matrix_pp01,
-  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000), weight_var = "pp_alpha"),
+  outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000), weight_var = "pp_alpha"),
   borrowing = borrowing_details("Full borrowing", "ext"),
-  treatment = treatment_details("trt", normal_prior(0, 10000)),
+  treatment = treatment_details("trt", prior_normal(0, 10000)),
   quiet = TRUE
 )
 
@@ -321,9 +321,9 @@ For comparison, we also fit a full borrowing, a no borrowing, and a BDB model wi
 result_full <- mcmc_sample(
   create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
     borrowing = borrowing_details("Full borrowing", "ext"),
-    treatment = treatment_details("trt", normal_prior(0, 10000)),
+    treatment = treatment_details("trt", prior_normal(0, 10000)),
     quiet = TRUE
   ),
   seed = 123
@@ -332,9 +332,9 @@ result_full <- mcmc_sample(
 result_none <- mcmc_sample(
   create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
     borrowing = borrowing_details("No borrowing", "ext"),
-    treatment = treatment_details("trt", normal_prior(0, 10000)),
+    treatment = treatment_details("trt", prior_normal(0, 10000)),
     quiet = TRUE
   ),
   seed = 123
@@ -343,9 +343,9 @@ result_none <- mcmc_sample(
 result_bdb <- mcmc_sample(
   create_analysis_obj(
     data_matrix = example_matrix_att,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
     borrowing = borrowing_details("BDB", "ext", gamma_prior(0.01, 0.01)),
-    treatment = treatment_details("trt", normal_prior(0, 10000)),
+    treatment = treatment_details("trt", prior_normal(0, 10000)),
     quiet = TRUE
   ),
   seed = 123

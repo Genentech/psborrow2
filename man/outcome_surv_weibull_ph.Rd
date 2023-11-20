@@ -52,7 +52,7 @@ ws <- outcome_surv_weibull_ph(
   time_var = "time",
   cens_var = "cens",
   shape_prior = prior_exponential(1),
-  baseline_prior = normal_prior(0, 1000)
+  baseline_prior = prior_normal(0, 1000)
 )
 }
 \seealso{

@@ -20,7 +20,7 @@ psborrow2:::get_covariate_constraints(
   add_covariates(
     c("cov1", "cov2", "cov3"),
     list(
-      normal_prior(0, 10),
+      prior_normal(0, 10),
       beta_prior(0.3, 0.3),
       gamma_prior(30, 1)
     )

@@ -16,5 +16,5 @@ A string containing the Stan code sampling from specified distribution.
 Get Stan code for a \code{Prior}
 }
 \examples{
-psborrow2:::get_prior_string(normal_prior(0, 100))
+psborrow2:::get_prior_string(prior_normal(0, 100))
 }

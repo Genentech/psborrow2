@@ -2,7 +2,7 @@
 #'
 #' A class for defining half normal priors to be translated to Stan code.
 #' Objects of class `HalfNormalPrior` should not be created directly but by
-#' the constructor [half_normal_prior()].
+#' the constructor [half_prior_normal()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for the half normal stan function parameters surrounded with
@@ -14,7 +14,7 @@
 #' @slot sigma numeric. Scale (>0).
 #' @include prior_class.R
 #' @family prior classes
-.half_normal_prior <- setClass(
+.half_prior_normal <- setClass(
   "HalfNormalPrior",
   contains = "Prior",
   slots = c(
@@ -46,9 +46,9 @@
 #' @export
 #' @family priors
 #' @examples
-#' hcp <- half_normal_prior(1, 1)
-half_normal_prior <- function(mu, sigma) {
-  .half_normal_prior(mu = mu, sigma = sigma)
+#' hcp <- half_prior_normal(1, 1)
+half_prior_normal <- function(mu, sigma) {
+  .half_prior_normal(mu = mu, sigma = sigma)
 }
 
 # show ----
@@ -73,8 +73,8 @@ setMethod(
 # plot ----
 #' @rdname plot
 #' @examples
-#' plot(half_normal_prior(0, 1), xlim = c(-20, 20))
-#' plot(half_normal_prior(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
+#' plot(half_prior_normal(0, 1), xlim = c(-20, 20))
+#' plot(half_prior_normal(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
 setMethod(
   f = "plot",
   signature = c("HalfNormalPrior", "missing"),

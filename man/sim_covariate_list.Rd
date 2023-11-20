@@ -24,7 +24,7 @@ no adjustment. To specify no adjustment, pass \code{NULL} as a list item to \cod
 covariates <- sim_covariate_list(
   list(
     "No adjustment" = NULL,
-    "Covariates 1 and 2" = add_covariates(c("cov1", "cov2"), normal_prior(0, 1000))
+    "Covariates 1 and 2" = add_covariates(c("cov1", "cov2"), prior_normal(0, 1000))
   )
 )
 

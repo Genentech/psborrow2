@@ -284,7 +284,7 @@ example, let's just use a single exponential distribution.
 my_sim_out <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
-  baseline_prior = normal_prior(0, 1000)
+  baseline_prior = prior_normal(0, 1000)
 )
 
 my_sim_out
@@ -355,7 +355,7 @@ just use a single instance:
 
 
 ```r
-my_sim_treat <- treatment_details("trt", normal_prior(0, 1000))
+my_sim_treat <- treatment_details("trt", prior_normal(0, 1000))
 
 my_sim_treat
 # Treatment object

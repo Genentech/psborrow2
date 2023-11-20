@@ -5,7 +5,7 @@ test_that("Incorrect inputs lead to errors", {
     sim_covariate_list(
       add_covariates(
         c("cov1", "cov2"),
-        normal_prior(0, 1000)
+        prior_normal(0, 1000)
       )
     ),
     'should be or extend class "list"'
@@ -26,7 +26,7 @@ test_that("Incorrect inputs lead to errors", {
       list(
         add_covariates(
           c("cov1", "cov2"),
-          normal_prior(0, 1000)
+          prior_normal(0, 1000)
         )
       )
     ),
@@ -40,7 +40,7 @@ test_that("Incorrect inputs lead to errors", {
         no_adjustment = NULL,
         add_covariates(
           c("cov1", "cov2"),
-          normal_prior(0, 1000)
+          prior_normal(0, 1000)
         )
       )
     ),
@@ -54,7 +54,7 @@ test_that("Incorrect inputs lead to errors", {
         scenario_1 = NULL,
         scenario_1 = add_covariates(
           c("cov1", "cov2"),
-          normal_prior(0, 1000)
+          prior_normal(0, 1000)
         )
       )
     ),
@@ -69,7 +69,7 @@ test_that("Correct inputs successfully produce `SimCovariateList`", {
         "No adjustment" = NULL,
         "Full adjustment" = add_covariates(
           c("cov1", "cov2"),
-          normal_prior(0, 1000)
+          prior_normal(0, 1000)
         )
       )
     ),
@@ -83,7 +83,7 @@ test_that("Covariate `guide` is produced correctly", {
       "No adjustment" = NULL,
       "Full adjustment" = add_covariates(
         c("cov1", "cov2"),
-        normal_prior(0, 1000)
+        prior_normal(0, 1000)
       )
     )
   )
@@ -100,11 +100,11 @@ test_that("Covariate `guide` is produced correctly", {
       "No adjustment" = NULL,
       "Cov1 and cov2" = add_covariates(
         c("cov1", "cov2"),
-        normal_prior(0, 1000)
+        prior_normal(0, 1000)
       ),
       "Cov1 only" = add_covariates(
         c("cov1"),
-        normal_prior(0, 1000)
+        prior_normal(0, 1000)
       )
     )
   )
@@ -125,7 +125,7 @@ test_that("get_vars for `sim_covariate_list` works", {
       "No adjustment" = NULL,
       "Full adjustment" = add_covariates(
         c("cov1", "cov2"),
-        normal_prior(0, 1000)
+        prior_normal(0, 1000)
       )
     )
   )

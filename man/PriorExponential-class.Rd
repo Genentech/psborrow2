@@ -29,13 +29,13 @@ placeholders for exponential Stan function parameters surrounded with
 Other prior classes: 
 \code{\link{GammaPrior-class}},
 \code{\link{HalfNormalPrior-class}},
-\code{\link{NormalPrior-class}},
 \code{\link{PoissonPrior-class}},
 \code{\link{Prior-class}},
 \code{\link{PriorBernoulli-class}},
 \code{\link{PriorBeta-class}},
 \code{\link{PriorCauchy-class}},
 \code{\link{PriorHalfCauchy-class}},
+\code{\link{PriorNormal-class}},
 \code{\link{UniformPrior-class}}
 }
 \concept{prior classes}

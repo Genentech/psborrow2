@@ -50,7 +50,7 @@
 #'
 #' treatment_scenarios <- sim_treatment_list(
 #'   list(
-#'     "Standard" = treatment_details("trt", normal_prior(0, 1000))
+#'     "Standard" = treatment_details("trt", prior_normal(0, 1000))
 #'   )
 #' )
 #'

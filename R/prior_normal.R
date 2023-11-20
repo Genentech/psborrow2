@@ -1,8 +1,8 @@
-#' `NormalPrior` Class
+#' `PriorNormal` Class
 #'
 #' A class for defining normal priors to be translated to Stan code.
-#' Objects of class `NormalPrior` should not be created directly but by
-#' the constructor [normal_prior()].
+#' Objects of class `PriorNormal` should not be created directly but by
+#' the constructor [prior_normal()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for normal stan function parameters surrounded with
@@ -14,8 +14,8 @@
 #' @slot sigma numeric. Scale (>0).
 #' @include prior_class.R
 #' @family prior classes
-.normal_prior <- setClass(
-  "NormalPrior",
+.prior_normal <- setClass(
+  "PriorNormal",
   contains = "Prior",
   slots = c(
     mu = "numeric",
@@ -42,19 +42,19 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/normal-distribution.html>
 #'
-#' @return Object of class [`NormalPrior`][NormalPrior-class].
+#' @return Object of class [`PriorNormal`][PriorNormal-class].
 #' @export
 #' @family priors
 #' @examples
-#' np <- normal_prior(1, 1)
-normal_prior <- function(mu, sigma) {
-  .normal_prior(mu = mu, sigma = sigma)
+#' np <- prior_normal(1, 1)
+prior_normal <- function(mu, sigma) {
+  .prior_normal(mu = mu, sigma = sigma)
 }
 
 # show ----
 setMethod(
   f = "show",
-  signature = "NormalPrior",
+  signature = "PriorNormal",
   definition = function(object) {
     cat("Normal Distribution\n")
     cat("Parameters:\n")
@@ -73,10 +73,10 @@ setMethod(
 # plot ----
 #' @rdname plot
 #' @examples
-#' plot(normal_prior(1, 2))
+#' plot(prior_normal(1, 2))
 setMethod(
   f = "plot",
-  signature = c("NormalPrior", "missing"),
+  signature = c("PriorNormal", "missing"),
   definition = function(x, y, add = FALSE, ...) {
     limits <- stats::qnorm(c(0.005, 0.995), mean = x@mu, sd = x@sigma)
     density_fun <- function(values) stats::dnorm(values, mean = x@mu, sd = x@sigma)
@@ -84,3 +84,18 @@ setMethod(
     callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )
+
+
+
+#' Legacy function for the normal prior
+#'
+#' Please use `prior_normal()` instead.
+#' @param ... Deprecated arguments to `normal_prior()`.
+#' @export
+normal_prior <- function(...) {
+  .Defunct(
+    "prior_normal",
+    "psborrow2",
+    "`normal_prior()` is deprecated. Use `prior_normal()` instead."
+  )
+}

@@ -3,7 +3,7 @@ test_that("Incorrect inputs lead to errors", {
   # At the bottom is a list of Treatment objects
   expect_error(
     sim_treatment_list(
-      treatment_details("trt", normal_prior(0, 100))
+      treatment_details("trt", prior_normal(0, 100))
     ),
     'should be or extend class "list"'
   )
@@ -21,7 +21,7 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_treatment_list(
       list(
-        treatment_details("trt", normal_prior(0, 1000))
+        treatment_details("trt", prior_normal(0, 1000))
       )
     ),
     "`treatment_list` must be named"
@@ -31,8 +31,8 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_treatment_list(
       list(
-        uninformative = treatment_details("trt", normal_prior(0, 1000)),
-        treatment_details("trt", normal_prior(-50, 20))
+        uninformative = treatment_details("trt", prior_normal(0, 1000)),
+        treatment_details("trt", prior_normal(-50, 20))
       )
     ),
     "All items in `treatment_list` must be named"
@@ -42,8 +42,8 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_treatment_list(
       list(
-        scenario_1 = treatment_details("trt", normal_prior(0, 1000)),
-        scenario_1 = treatment_details("trt", normal_prior(-50, 20))
+        scenario_1 = treatment_details("trt", prior_normal(0, 1000)),
+        scenario_1 = treatment_details("trt", prior_normal(-50, 20))
       )
     ),
     "All names supplied to `treatment_list` must be unique"
@@ -54,8 +54,8 @@ test_that("Correct inputs successfully produce `SimTreatmentList`", {
   expect_class(
     sim_treatment_list(
       list(
-        uninformative = treatment_details("trt", normal_prior(0, 1000)),
-        informative = treatment_details("trt", normal_prior(-50, 20))
+        uninformative = treatment_details("trt", prior_normal(0, 1000)),
+        informative = treatment_details("trt", prior_normal(-50, 20))
       )
     ),
     "SimTreatmentList"
@@ -65,8 +65,8 @@ test_that("Correct inputs successfully produce `SimTreatmentList`", {
 test_that("Treatment `guide` is produced correctly", {
   treatment_obj1 <- sim_treatment_list(
     list(
-      "Uninformative" = treatment_details("trt", normal_prior(0, 1000)),
-      "Informative" = treatment_details("trt", normal_prior(-50, 20))
+      "Uninformative" = treatment_details("trt", prior_normal(0, 1000)),
+      "Informative" = treatment_details("trt", prior_normal(-50, 20))
     )
   )
 
@@ -79,9 +79,9 @@ test_that("Treatment `guide` is produced correctly", {
 
   treatment_obj2 <- sim_treatment_list(
     list(
-      "Uninformative" = treatment_details("trt", normal_prior(0, 1000)),
-      "Informative - protective" = treatment_details("trt", normal_prior(-50, 20)),
-      "Informative - adverse" = treatment_details("trt", normal_prior(50, 20))
+      "Uninformative" = treatment_details("trt", prior_normal(0, 1000)),
+      "Informative - protective" = treatment_details("trt", prior_normal(-50, 20)),
+      "Informative - adverse" = treatment_details("trt", prior_normal(50, 20))
     )
   )
 
@@ -96,8 +96,8 @@ test_that("Treatment `guide` is produced correctly", {
 test_that("get_vars for `sim_treatment_list` works", {
   treatment_obj <- sim_treatment_list(
     list(
-      "Uninformative" = treatment_details("trt", normal_prior(0, 1000)),
-      "Informative" = treatment_details("trt", normal_prior(-50, 20))
+      "Uninformative" = treatment_details("trt", prior_normal(0, 1000)),
+      "Informative" = treatment_details("trt", prior_normal(-50, 20))
     )
   )
 

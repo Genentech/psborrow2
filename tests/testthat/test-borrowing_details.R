@@ -38,14 +38,14 @@ test_that("borrowing_details works as expected for BDB", {
 
 test_that("borrowing_details gives expected errors", {
   expect_error(
-    borrowing_details("no Borrowing", normal_prior(0, 1)),
+    borrowing_details("no Borrowing", prior_normal(0, 1)),
     "Must be element of set"
   )
 
   expect_error(
     borrowing_details(
       "Full borrowing",
-      tau_prior = normal_prior(0, 1000)
+      tau_prior = prior_normal(0, 1000)
     ),
     "missing, with no default"
   )
@@ -77,7 +77,7 @@ test_that("borrowing_details checks tau prior limits", {
     borrowing_details(
       "BDB",
       "ext_fl",
-      normal_prior(0, 10000)
+      prior_normal(0, 10000)
     ),
     "tau distribution must be bounded >=0"
   )

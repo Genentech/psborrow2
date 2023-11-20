@@ -63,7 +63,7 @@
 #' @examples
 #' lg <- outcome_bin_logistic(
 #'   binary_var = "response",
-#'   baseline_prior = normal_prior(0, 1000)
+#'   baseline_prior = prior_normal(0, 1000)
 #' )
 outcome_bin_logistic <- function(binary_var,
                                  baseline_prior,
