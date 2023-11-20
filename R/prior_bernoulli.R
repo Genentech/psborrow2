@@ -2,7 +2,7 @@
 #'
 #' A class for defining bernoulli priors to be translated to Stan code.
 #' Objects of class `BernoulliPrior` should not be created directly but by
-#' the constructor [bernoulli_prior()].
+#' the constructor [prior_bernoulli()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for bernoulli stan function parameters surrounded with
@@ -13,7 +13,7 @@
 #' @slot theta numeric. Probability (in \[0, 1\]).
 #' @include prior_class.R
 #' @family prior classes
-.bernoulli_prior <- setClass(
+.prior_bernoulli <- setClass(
   "BernoulliPrior",
   contains = "Prior",
   slots = c(theta = "numeric"),
@@ -41,9 +41,9 @@
 #' @export
 #' @family priors
 #' @examples
-#' bp <- bernoulli_prior(0.23)
-bernoulli_prior <- function(theta) {
-  .bernoulli_prior(theta = theta)
+#' bp <- prior_bernoulli(0.23)
+prior_bernoulli <- function(theta) {
+  .prior_bernoulli(theta = theta)
 }
 
 # show ----
@@ -67,7 +67,7 @@ setMethod(
 # plot ----
 #' @rdname plot
 #' @examples
-#' plot(bernoulli_prior(0.4), xlim = c(0, 15))
+#' plot(prior_bernoulli(0.4), xlim = c(0, 15))
 setMethod(
   f = "plot",
   signature = c("BernoulliPrior", "missing"),
@@ -78,3 +78,16 @@ setMethod(
     callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )
+
+#' Legacy function for the bernoulli prior
+#'
+#' Please use `prior_bernoulli()` instead.
+#' @param ... Deprecated arguments to `prior_bernoulli()`.
+#' @export
+bernoulli_prior <- function(...) {
+  .Defunct(
+    "prior_bernoulli",
+    "psborrow2",
+    "`bernoulli_prior()` is deprecated. Use `prior_bernoulli()` instead."
+  )
+}
