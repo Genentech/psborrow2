@@ -12,7 +12,7 @@
 #' Stan constraint, e.g. `"<lower=0, upper=1>"`.
 #' @family prior classes
 #' @seealso Prior constructor functions: [prior_bernoulli()], [prior_beta()], [prior_cauchy()], [prior_half_cauchy()], 
-#' [prior_gamma()], [prior_normal()], [poisson_prior()], [uniform_prior()]
+#' [prior_gamma()], [prior_normal()], [prior_poisson()], [uniform_prior()]
 setClass(
   "Prior",
   slots = c(

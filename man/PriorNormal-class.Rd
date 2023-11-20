@@ -29,7 +29,6 @@ placeholders for normal stan function parameters surrounded with
 
 \seealso{
 Other prior classes: 
-\code{\link{PoissonPrior-class}},
 \code{\link{Prior-class}},
 \code{\link{PriorBernoulli-class}},
 \code{\link{PriorBeta-class}},
@@ -38,6 +37,7 @@ Other prior classes:
 \code{\link{PriorGamma-class}},
 \code{\link{PriorHalfCauchy-class}},
 \code{\link{PriorHalfNormal-class}},
+\code{\link{PriorPoisson-class}},
 \code{\link{UniformPrior-class}}
 }
 \concept{prior classes}

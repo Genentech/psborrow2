@@ -1,8 +1,8 @@
-#' `PoissonPrior` Class
+#' `PriorPoisson` Class
 #'
 #' A class for defining poisson priors to be translated to Stan code.
-#' Objects of class `PoissonPrior` should not be created directly but by
-#' the constructor [poisson_prior()].
+#' Objects of class `PriorPoisson` should not be created directly but by
+#' the constructor [prior_poisson()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for poisson stan function parameters surrounded with
@@ -13,8 +13,8 @@
 #' @slot lambda numeric. Rate (>0).
 #' @include prior_class.R
 #' @family prior classes
-.poisson_prior <- setClass(
-  "PoissonPrior",
+.prior_poisson <- setClass(
+  "PriorPoisson",
   contains = "Prior",
   slots = c(lambda = "numeric"),
   prototype = list(
@@ -37,19 +37,19 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/poisson.html>
 #'
-#' @return Object of class [`PoissonPrior`][PoissonPrior-class].
+#' @return Object of class [`PriorPoisson`][PriorPoisson-class].
 #' @export
 #' @family priors
 #' @examples
-#' pp <- poisson_prior(100)
-poisson_prior <- function(lambda) {
-  .poisson_prior(lambda = lambda)
+#' pp <- prior_poisson(100)
+prior_poisson <- function(lambda) {
+  .prior_poisson(lambda = lambda)
 }
 
 # show ----
 setMethod(
   f = "show",
-  signature = "PoissonPrior",
+  signature = "PriorPoisson",
   definition = function(object) {
     cat("Poisson Distribution\n")
     cat("Parameters:\n")
@@ -69,10 +69,10 @@ setMethod(
 
 #' @rdname plot
 #' @examples
-#' plot(poisson_prior(5), xlim = c(0, 15))
+#' plot(prior_poisson(5), xlim = c(0, 15))
 setMethod(
   f = "plot",
-  signature = c("PoissonPrior", "missing"),
+  signature = c("PriorPoisson", "missing"),
   definition = function(x, y, add = FALSE, ...) {
     limits <- stats::qpois(c(0.005, 0.995), lambda = x@lambda)
     density_fun <- function(values) stats::dpois(values, lambda = x@lambda)
@@ -80,3 +80,18 @@ setMethod(
     callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )
+
+
+
+#' Legacy function for the poisson prior
+#'
+#' Please use `prior_poisson()` instead.
+#' @param ... Deprecated arguments to `poisson_prior()`.
+#' @export
+poisson_prior <- function(...) {
+  .Defunct(
+    "prior_poisson",
+    "psborrow2",
+    "`poisson_prior()` is deprecated. Use `prior_poisson()` instead."
+  )
+}

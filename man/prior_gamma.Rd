@@ -25,7 +25,6 @@ gp <- prior_gamma(0.001, 0.001)
 }
 \seealso{
 Other priors: 
-\code{\link{poisson_prior}()},
 \code{\link{prior_bernoulli}()},
 \code{\link{prior_beta}()},
 \code{\link{prior_cauchy}()},
@@ -33,6 +32,7 @@ Other priors:
 \code{\link{prior_half_cauchy}()},
 \code{\link{prior_half_normal}()},
 \code{\link{prior_normal}()},
+\code{\link{prior_poisson}()},
 \code{\link{uniform_prior}()}
 }
 \concept{priors}

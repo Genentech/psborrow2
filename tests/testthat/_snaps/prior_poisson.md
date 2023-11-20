@@ -1,4 +1,4 @@
-# show works for PoissonPrior
+# show works for PriorPoisson
 
     Poisson Distribution
     Parameters:

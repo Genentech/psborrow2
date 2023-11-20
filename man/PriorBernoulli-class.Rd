@@ -27,7 +27,6 @@ placeholders for bernoulli stan function parameters surrounded with
 
 \seealso{
 Other prior classes: 
-\code{\link{PoissonPrior-class}},
 \code{\link{Prior-class}},
 \code{\link{PriorBeta-class}},
 \code{\link{PriorCauchy-class}},
@@ -36,6 +35,7 @@ Other prior classes:
 \code{\link{PriorHalfCauchy-class}},
 \code{\link{PriorHalfNormal-class}},
 \code{\link{PriorNormal-class}},
+\code{\link{PriorPoisson-class}},
 \code{\link{UniformPrior-class}}
 }
 \concept{prior classes}

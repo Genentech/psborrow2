@@ -54,7 +54,7 @@ constructors below:
 * `prior_exponential(beta)`
 * `prior_gamma(alpha, beta)`
 * `prior_normal(mu, sigma)`
-* `poisson_prior(lambda)`
+* `prior_poisson(lambda)`
 * `uniform_prior(alpha, beta)`
 
 For example, we can create an uninformative normal distribution by specifying
