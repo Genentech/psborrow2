@@ -82,7 +82,7 @@ setMethod(
 #' Legacy function for the bernoulli prior
 #'
 #' Please use `prior_bernoulli()` instead.
-#' @param ... Deprecated arguments to `prior_bernoulli()`.
+#' @param ... Deprecated arguments to `bernoulli_prior()`.
 #' @export
 bernoulli_prior <- function(...) {
   .Defunct(

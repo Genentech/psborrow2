@@ -89,7 +89,7 @@ setMethod(
 #' Legacy function for the beta prior
 #'
 #' Please use `prior_beta()` instead.
-#' @param ... Deprecated arguments to `prior_beta()`.
+#' @param ... Deprecated arguments to `beta_prior()`.
 #' @export
 beta_prior <- function(...) {
   .Defunct(
