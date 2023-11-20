@@ -55,7 +55,7 @@ constructors below:
 * `bernoulli_prior(theta)`
 * `beta_prior(alpha, beta)`
 * `prior_cauchy(mu, sigma)`
-* `exponential_prior(beta)`
+* `prior_exponential(beta)`
 * `gamma_prior(alpha, beta)`
 * `normal_prior(mu, sigma)`
 * `poisson_prior(lambda)`

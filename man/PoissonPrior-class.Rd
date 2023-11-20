@@ -27,7 +27,6 @@ placeholders for poisson stan function parameters surrounded with
 
 \seealso{
 Other prior classes: 
-\code{\link{ExponentialPrior-class}},
 \code{\link{GammaPrior-class}},
 \code{\link{HalfNormalPrior-class}},
 \code{\link{NormalPrior-class}},
@@ -35,6 +34,7 @@ Other prior classes:
 \code{\link{PriorBernoulli-class}},
 \code{\link{PriorBeta-class}},
 \code{\link{PriorCauchy-class}},
+\code{\link{PriorExponential-class}},
 \code{\link{PriorHalfCauchy-class}},
 \code{\link{UniformPrior-class}}
 }

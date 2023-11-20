@@ -79,11 +79,11 @@ test_that("Inputs classes are correct", {
     create_analysis_obj(
       data_matrix = example_matrix,
       covariates = ac,
-      outcome = exponential_prior(.001),
+      outcome = prior_exponential(.001),
       treatment = td,
       borrowing = bd_fb
     ),
-    "Must inherit from class 'Outcome', but has class 'ExponentialPrior'"
+    "Must inherit from class 'Outcome', but has class 'PriorExponential'"
   )
 
   # Treatment

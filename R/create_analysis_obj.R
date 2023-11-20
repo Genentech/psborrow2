@@ -36,7 +36,7 @@
 #'     borrowing = borrowing_details(
 #'       "BDB",
 #'       "ext",
-#'       exponential_prior(.001)
+#'       prior_exponential(.001)
 #'     ),
 #'     treatment = treatment_details(
 #'       "trt",

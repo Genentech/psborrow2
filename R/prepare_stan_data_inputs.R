@@ -18,7 +18,7 @@
 #'   borrowing = borrowing_details(
 #'     "BDB",
 #'     "ext",
-#'     exponential_prior(0.001)
+#'     prior_exponential(0.001)
 #'   ),
 #'   treatment = treatment_details("trt", normal_prior(0, 100))
 #' )

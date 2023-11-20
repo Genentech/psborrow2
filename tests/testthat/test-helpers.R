@@ -62,7 +62,7 @@ test_that("rename_draws_covariates works as expected", {
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
@@ -113,7 +113,7 @@ test_that("variable_dictionary works as expected for logistic and BDB", {
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )

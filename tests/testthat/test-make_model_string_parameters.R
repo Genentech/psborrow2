@@ -21,7 +21,7 @@ test_that("make_model_string_parameters works with exponential survival and BDB"
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
@@ -47,7 +47,7 @@ test_that("make_model_string_parameters works with weibull survival and BDB", {
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
@@ -68,7 +68,7 @@ test_that("make_model_string_parameters works with binary outcome and BDB", {
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )

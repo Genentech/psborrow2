@@ -27,7 +27,6 @@ Prior constructor functions: \code{\link[=prior_bernoulli]{prior_bernoulli()}}, 
 \code{\link[=gamma_prior]{gamma_prior()}}, \code{\link[=normal_prior]{normal_prior()}}, \code{\link[=poisson_prior]{poisson_prior()}}, \code{\link[=uniform_prior]{uniform_prior()}}
 
 Other prior classes: 
-\code{\link{ExponentialPrior-class}},
 \code{\link{GammaPrior-class}},
 \code{\link{HalfNormalPrior-class}},
 \code{\link{NormalPrior-class}},
@@ -35,6 +34,7 @@ Other prior classes:
 \code{\link{PriorBernoulli-class}},
 \code{\link{PriorBeta-class}},
 \code{\link{PriorCauchy-class}},
+\code{\link{PriorExponential-class}},
 \code{\link{PriorHalfCauchy-class}},
 \code{\link{UniformPrior-class}}
 }

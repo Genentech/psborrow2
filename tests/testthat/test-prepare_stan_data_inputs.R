@@ -21,7 +21,7 @@ test_that("prepare_stan_data_inputs works with exponential survival and BDB", {
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
@@ -47,7 +47,7 @@ test_that("prepare_stan_data_inputs works with weibull survival and BDB and cova
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
@@ -68,7 +68,7 @@ test_that("prepare_stan_data_inputs works with binary outcome and BDB and covari
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
@@ -89,7 +89,7 @@ test_that("prepare_stan_data_inputs returns correct matrix dimensions for X", {
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )
@@ -108,7 +108,7 @@ test_that("prepare_stan_data_inputs returns correct matrix dimensions for X", {
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
     treatment = treatment_details("trt", normal_prior(0, 1000))
   )

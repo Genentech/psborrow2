@@ -29,7 +29,6 @@ placeholders for cauchy stan function parameters surrounded with
 
 \seealso{
 Other prior classes: 
-\code{\link{ExponentialPrior-class}},
 \code{\link{GammaPrior-class}},
 \code{\link{HalfNormalPrior-class}},
 \code{\link{NormalPrior-class}},
@@ -37,6 +36,7 @@ Other prior classes:
 \code{\link{Prior-class}},
 \code{\link{PriorBernoulli-class}},
 \code{\link{PriorBeta-class}},
+\code{\link{PriorExponential-class}},
 \code{\link{PriorHalfCauchy-class}},
 \code{\link{UniformPrior-class}}
 }

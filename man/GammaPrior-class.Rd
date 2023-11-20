@@ -29,7 +29,6 @@ placeholders for gamma stan function parameters surrounded with
 
 \seealso{
 Other prior classes: 
-\code{\link{ExponentialPrior-class}},
 \code{\link{HalfNormalPrior-class}},
 \code{\link{NormalPrior-class}},
 \code{\link{PoissonPrior-class}},
@@ -37,6 +36,7 @@ Other prior classes:
 \code{\link{PriorBernoulli-class}},
 \code{\link{PriorBeta-class}},
 \code{\link{PriorCauchy-class}},
+\code{\link{PriorExponential-class}},
 \code{\link{PriorHalfCauchy-class}},
 \code{\link{UniformPrior-class}}
 }

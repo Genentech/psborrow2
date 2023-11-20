@@ -18,7 +18,7 @@
 #' @include outcome_class.R
 #' @include prior_class.R
 #' @include normal_prior.R
-#' @include exponential_prior.R
+#' @include prior_exponential.R
 #' @family outcome
 .outcome_surv_weibull_ph <- setClass(
   "OutcomeSurvWeibullPH",
@@ -53,7 +53,7 @@
          }"),
     param_stan_code = "real<lower=0> shape_weibull; ",
     param_priors = list(
-      shape_weibull = exponential_prior(beta = 0.0001)
+      shape_weibull = prior_exponential(beta = 0.0001)
     )
   ),
   validity = function(object) {
@@ -68,7 +68,7 @@
 #' @param cens_var character. Name of the censorship variable flag in model matrix
 #' @param weight_var character. Optional name of variable in model matrix for weighting the log likelihood.
 #' @param shape_prior `Prior` class object for the Weibull shape
-#' parameter. Default is `exponential_prior(beta = 0.0001)`.
+#' parameter. Default is `prior_exponential(beta = 0.0001)`.
 #' @param baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' See `Details` for more information.
@@ -93,7 +93,7 @@
 #' ws <- outcome_surv_weibull_ph(
 #'   time_var = "time",
 #'   cens_var = "cens",
-#'   shape_prior = exponential_prior(1),
+#'   shape_prior = prior_exponential(1),
 #'   baseline_prior = normal_prior(0, 1000)
 #' )
 outcome_surv_weibull_ph <- function(time_var,

@@ -1,8 +1,8 @@
-#' `ExponentialPrior` Class
+#' `PriorExponential` Class
 #'
 #' A class for defining exponential priors to be translated to Stan code.
-#' Objects of class `ExponentialPrior` should not be created directly but by
-#' the constructor [exponential_prior()].
+#' Objects of class `PriorExponential` should not be created directly but by
+#' the constructor [prior_exponential()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for exponential Stan function parameters surrounded with
@@ -13,8 +13,8 @@
 #' @slot beta numeric. Inverse scale (>0).
 #' @include prior_class.R
 #' @family prior classes
-.exponential_prior <- setClass(
-  "ExponentialPrior",
+.prior_exponential <- setClass(
+  "PriorExponential",
   contains = "Prior",
   slots = c(beta = "numeric"),
   prototype = list(
@@ -37,19 +37,19 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/exponential-distribution.html>
 #'
-#' @return Object of class [`ExponentialPrior`][ExponentialPrior-class].
+#' @return Object of class [`PriorExponential`][PriorExponential-class].
 #' @export
 #' @family priors
 #' @examples
-#' ep <- exponential_prior(1)
-exponential_prior <- function(beta) {
-  .exponential_prior(beta = beta)
+#' ep <- prior_exponential(1)
+prior_exponential <- function(beta) {
+  .prior_exponential(beta = beta)
 }
 
 # show ----
 setMethod(
   f = "show",
-  signature = "ExponentialPrior",
+  signature = "PriorExponential",
   definition = function(object) {
     cat("Exponential Distribution\n")
     cat("Parameters:\n")
@@ -68,10 +68,10 @@ setMethod(
 # plot ----
 #' @rdname plot
 #' @examples
-#' plot(exponential_prior(0.1))
+#' plot(prior_exponential(0.1))
 setMethod(
   f = "plot",
-  signature = c("ExponentialPrior", "missing"),
+  signature = c("PriorExponential", "missing"),
   definition = function(x, y, add = FALSE, ...) {
     limits <- stats::qexp(c(0.005, 0.995), rate = x@beta)
     density_fun <- function(values) stats::dexp(values, rate = x@beta)
@@ -79,3 +79,17 @@ setMethod(
     callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )
+
+
+#' Legacy function for the exponential prior
+#'
+#' Please use `prior_exponential()` instead.
+#' @param ... Deprecated arguments to `exponential_prior()`.
+#' @export
+exponential_prior <- function(...) {
+  .Defunct(
+    "prior_exponential",
+    "psborrow2",
+    "`exponential_prior()` is deprecated. Use `prior_exponential()` instead."
+  )
+}

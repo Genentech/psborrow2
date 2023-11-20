@@ -7,7 +7,7 @@ test_that("data matrix trimming works with BDB", {
     borrowing = borrowing_details(
       method = "BDB",
       ext_flag_col = "ext",
-      tau_prior = exponential_prior(0.001)
+      tau_prior = prior_exponential(0.001)
     )
   )
 

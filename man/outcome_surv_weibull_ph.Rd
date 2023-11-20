@@ -18,7 +18,7 @@ outcome_surv_weibull_ph(
 \item{cens_var}{character. Name of the censorship variable flag in model matrix}
 
 \item{shape_prior}{\code{Prior} class object for the Weibull shape
-parameter. Default is \code{exponential_prior(beta = 0.0001)}.}
+parameter. Default is \code{prior_exponential(beta = 0.0001)}.}
 
 \item{baseline_prior}{\code{Prior}. Object of class \code{Prior}
 specifying prior distribution for the baseline outcome.
@@ -51,7 +51,7 @@ internal control arm.
 ws <- outcome_surv_weibull_ph(
   time_var = "time",
   cens_var = "cens",
-  shape_prior = exponential_prior(1),
+  shape_prior = prior_exponential(1),
   baseline_prior = normal_prior(0, 1000)
 )
 }
