@@ -23,13 +23,13 @@ bp <- prior_bernoulli(0.23)
 }
 \seealso{
 Other priors: 
-\code{\link{cauchy_prior}()},
 \code{\link{exponential_prior}()},
 \code{\link{gamma_prior}()},
 \code{\link{half_normal_prior}()},
 \code{\link{normal_prior}()},
 \code{\link{poisson_prior}()},
 \code{\link{prior_beta}()},
+\code{\link{prior_cauchy}()},
 \code{\link{prior_half_cauchy}()},
 \code{\link{uniform_prior}()}
 }

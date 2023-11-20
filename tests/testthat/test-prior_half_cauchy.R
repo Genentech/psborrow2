@@ -40,7 +40,7 @@ test_that("half_cauchy_prior() throws error", {
     regexp = "deprecated"
   )
 
-  expect_error(half_cauchy_prior()(0, 0.8),
+  expect_error(half_cauchy_prior(0, 0.8),
     regexp = "deprecated"
   )
 })

@@ -25,7 +25,6 @@ hcp <- prior_half_cauchy(1, 1)
 }
 \seealso{
 Other priors: 
-\code{\link{cauchy_prior}()},
 \code{\link{exponential_prior}()},
 \code{\link{gamma_prior}()},
 \code{\link{half_normal_prior}()},
@@ -33,6 +32,7 @@ Other priors:
 \code{\link{poisson_prior}()},
 \code{\link{prior_bernoulli}()},
 \code{\link{prior_beta}()},
+\code{\link{prior_cauchy}()},
 \code{\link{uniform_prior}()}
 }
 \concept{priors}

@@ -7,7 +7,7 @@ test_that("h_glue works as expected", {
 })
 
 test_that("parse_constraint works as expected", {
-  hcp <- half_cauchy_prior(1, 100)
+  hcp <- prior_half_cauchy(1, 100)
   expect_equal(
     parse_constraint(hcp),
     c(lower = 1, upper = Inf)
@@ -25,7 +25,7 @@ test_that("parse_constraint works as expected with prior list", {
     c("cov1", "cov2", "cov3"),
     list(
       normal_prior(0, 10),
-      beta_prior(0.3, 0.3),
+      prior_beta(0.3, 0.3),
       gamma_prior(30, 1)
     )
   )

@@ -1,8 +1,8 @@
-#' `CauchyPrior` Class
+#' `PriorCauchy` Class
 #'
 #' A class for defining the cauchy priors to be translated to Stan code.
-#' Objects of class `CauchyPrior` should not be created directly but by
-#' the constructor [cauchy_prior()].
+#' Objects of class `PriorCauchy` should not be created directly but by
+#' the constructor [prior_cauchy()].
 #'
 #' @slot stan_code character. Stan implementation of the prior, with
 #' placeholders for cauchy stan function parameters surrounded with
@@ -14,8 +14,8 @@
 #' @slot sigma numeric. Scale (>0).
 #' @include prior_class.R
 #' @family prior classes
-.cauchy_prior <- setClass(
-  "CauchyPrior",
+.prior_cauchy <- setClass(
+  "PriorCauchy",
   contains = "Prior",
   slots = c(
     mu = "numeric",
@@ -42,19 +42,19 @@
 #' @details
 #' Stan reference <https://mc-stan.org/docs/functions-reference/cauchy-distribution.html>
 #'
-#' @return Object of class [`CauchyPrior`][CauchyPrior-class].
+#' @return Object of class [`PriorCauchy`][PriorCauchy-class].
 #' @export
 #' @family priors
 #' @examples
-#' cp <- cauchy_prior(1, 1)
-cauchy_prior <- function(mu, sigma) {
-  .cauchy_prior(mu = mu, sigma = sigma)
+#' cp <- prior_cauchy(1, 1)
+prior_cauchy <- function(mu, sigma) {
+  .prior_cauchy(mu = mu, sigma = sigma)
 }
 
 # show ----
 setMethod(
   f = "show",
-  signature = "CauchyPrior",
+  signature = "PriorCauchy",
   definition = function(object) {
     cat("Cauchy Distribution\n")
     cat("Parameters:\n")
@@ -73,11 +73,11 @@ setMethod(
 # plot ----
 #' @rdname plot
 #' @examples
-#' plot(cauchy_prior(0, 1), xlim = c(-20, 20))
-#' plot(cauchy_prior(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
+#' plot(prior_cauchy(0, 1), xlim = c(-20, 20))
+#' plot(prior_cauchy(0, 2), xlim = c(-20, 20), col = 2, add = TRUE)
 setMethod(
   f = "plot",
-  signature = c("CauchyPrior", "missing"),
+  signature = c("PriorCauchy", "missing"),
   definition = function(x, y, add = FALSE, ...) {
     limits <- stats::qcauchy(c(0.005, 0.995), location = x@mu, scale = x@sigma)
     density_fun <- function(values) stats::dcauchy(values, location = x@mu, scale = x@sigma)
@@ -85,3 +85,18 @@ setMethod(
     callNextMethod(default_limits = limits, density_fun = density_fun, dist_type = dist_type, add = add, ...)
   }
 )
+
+
+
+#' Legacy function for the cauchy prior
+#'
+#' Please use `prior_cauchy()` instead.
+#' @param ... Deprecated arguments to `cauchy_prior()`.
+#' @export
+cauchy_prior <- function(...) {
+  .Defunct(
+    "prior_cauchy",
+    "psborrow2",
+    "`cauchy_prior()` is deprecated. Use `prior_cauchy()` instead."
+  )
+}

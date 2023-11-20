@@ -86,7 +86,7 @@ test_that("the STAN code is correctly generated when limits are placed in the tr
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext"
     ),
-    treatment = treatment_details("trt", half_cauchy_prior(0, 20))
+    treatment = treatment_details("trt", prior_half_cauchy(0, 20))
   )@model_string
 
   expect_true(grepl("real<lower=0> beta_trt", stan_model_string))
@@ -99,7 +99,7 @@ test_that("the STAN code is correctly generated when limits are placed in the bo
     outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100000)),
     borrowing = borrowing_details("BDB",
       ext_flag_col = "ext",
-      tau_prior = half_cauchy_prior(10, 20)
+      tau_prior = prior_half_cauchy(10, 20)
     ),
     treatment = treatment_details("trt", normal_prior(0, 100000))
   )@model_string
