@@ -99,7 +99,7 @@ h_glue <- function(..., collapse = FALSE, collapse_sep = "\n") {
 #'     c("cov1", "cov2", "cov3"),
 #'     list(
 #'       prior_normal(0, 10),
-#'       beta_prior(0.3, 0.3),
+#'       prior_beta(0.3, 0.3),
 #'       prior_gamma(30, 1)
 #'     )
 #'   )
