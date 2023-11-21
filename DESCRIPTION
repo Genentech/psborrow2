@@ -1,7 +1,7 @@
 Type: Package
 Package: psborrow2
 Title: An R Package for Bayesian Dynamic Borrowing Simulation Study and Analysis
-Version: 0.0.2.0
+Version: 0.0.2
 Authors@R: c(
    person(
       given = "Matt",
@@ -69,8 +69,6 @@ Suggests:
     table1,
     gt,
     gtsummary
-Remotes:
-   github::stan-dev/cmdstanr@v0.5.2
 Language: en-US
 SystemRequirements: cmdstan
 Collate:
