@@ -1,12 +1,12 @@
 test_that("make_model_string_parameters works with exponential survival and full borrowing", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
     borrowing = borrowing_details(
       "Full borrowing",
       "ext"
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
   result <- psborrow2:::make_model_string_parameters(object)
@@ -17,13 +17,13 @@ test_that("make_model_string_parameters works with exponential survival and full
 test_that("make_model_string_parameters works with exponential survival and BDB", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
   result <- psborrow2:::make_model_string_parameters(object)
@@ -36,20 +36,20 @@ test_that("make_model_string_parameters works with weibull survival and BDB", {
     data_matrix = example_matrix,
     covariates = add_covariates(
       c("cov1", "cov2"),
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
     outcome = outcome_surv_weibull_ph(
       "time",
       "cnsr",
-      normal_prior(0, 1000),
-      normal_prior(0, 100)
+      prior_normal(0, 1000),
+      prior_normal(0, 100)
     ),
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
   result <- psborrow2:::make_model_string_parameters(object)
@@ -62,15 +62,15 @@ test_that("make_model_string_parameters works with binary outcome and BDB", {
     data_matrix = example_matrix,
     covariates = add_covariates(
       c("cov1", "cov2"),
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
-    outcome = outcome_bin_logistic("cnsr", normal_prior(0, 100)),
+    outcome = outcome_bin_logistic("cnsr", prior_normal(0, 100)),
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
   result <- psborrow2:::make_model_string_parameters(object)
@@ -82,11 +82,11 @@ test_that("the STAN code is correctly generated when limits are placed in the tr
   skip_if_not(check_cmdstan())
   stan_model_string <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext"
     ),
-    treatment = treatment_details("trt", half_cauchy_prior(0, 20))
+    treatment = treatment_details("trt", prior_half_cauchy(0, 20))
   )@model_string
 
   expect_true(grepl("real<lower=0> beta_trt", stan_model_string))
@@ -96,22 +96,22 @@ test_that("the STAN code is correctly generated when limits are placed in the bo
   skip_if_not(check_cmdstan())
   stan_model_string_cauchy <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
     borrowing = borrowing_details("BDB",
       ext_flag_col = "ext",
-      tau_prior = half_cauchy_prior(10, 20)
+      tau_prior = prior_half_cauchy(10, 20)
     ),
-    treatment = treatment_details("trt", normal_prior(0, 100000))
+    treatment = treatment_details("trt", prior_normal(0, 100000))
   )@model_string
 
   stan_model_string_normal <- create_analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
     borrowing = borrowing_details("BDB",
       ext_flag_col = "ext",
-      tau_prior = half_normal_prior(10, 20)
+      tau_prior = prior_half_normal(10, 20)
     ),
-    treatment = treatment_details("trt", normal_prior(0, 100000))
+    treatment = treatment_details("trt", prior_normal(0, 100000))
   )@model_string
 
   expect_true(grepl("real<lower=10> tau", stan_model_string_cauchy))
@@ -126,7 +126,7 @@ test_that("the STAN code is correctly generated when limits are placed in the ou
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext"
     ),
-    treatment = treatment_details("trt", normal_prior(0, 100000))
+    treatment = treatment_details("trt", prior_normal(0, 100000))
   )@model_string
 
   expect_true(grepl("real<lower=0,upper=10> alpha;", stan_model_string))
@@ -140,7 +140,7 @@ test_that("the STAN code is correctly generated when limits are placed in the ou
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext"
     ),
-    treatment = treatment_details("trt", normal_prior(0, 100000))
+    treatment = treatment_details("trt", prior_normal(0, 100000))
   )@model_string
 
   expect_true(grepl("real<lower=0,upper=10> alpha", stan_model_string))
@@ -152,11 +152,11 @@ test_that("the STAN code is correctly generated when limits are placed in the co
   anls_obj <- create_analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates("cov1", uniform_prior(0, 10)),
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext"
     ),
-    treatment = treatment_details("trt", normal_prior(0, 100000))
+    treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   inputs <- psborrow2:::prepare_stan_data_inputs(anls_obj)
@@ -176,11 +176,11 @@ test_that("the STAN code is correctly generated when limits are placed in the co
         uniform_prior(10, 20)
       )
     ),
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext"
     ),
-    treatment = treatment_details("trt", normal_prior(0, 100000))
+    treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   inputs <- psborrow2:::prepare_stan_data_inputs(anls_obj)

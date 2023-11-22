@@ -20,7 +20,7 @@
 #' @examples
 #' sta <- treatment_details(
 #'   trt_flag_col = "trt",
-#'   trt_prior = normal_prior(0, 1000)
+#'   trt_prior = prior_normal(0, 1000)
 #' )
 treatment_details <- function(trt_flag_col,
                               trt_prior) {

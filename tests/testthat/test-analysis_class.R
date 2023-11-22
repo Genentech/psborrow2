@@ -3,16 +3,16 @@ test_that("get_vars works for Analysis", {
     data_matrix = example_matrix,
     covariates = add_covariates(
       c("cov1", "cov2"),
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
     outcome = outcome_surv_exponential(
       time_var = "time",
       cens_var = "cnsr",
-      baseline_prior = normal_prior(0, 1000)
+      baseline_prior = prior_normal(0, 1000)
     ),
     treatment = treatment_details(
       "trt",
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
     borrowing = borrowing_details(
       method = "Full borrowing",
@@ -36,16 +36,16 @@ test_that("show works for Analysis", {
     data_matrix = example_matrix,
     covariates = add_covariates(
       c("cov1", "cov2"),
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
     outcome = outcome_surv_exponential(
       time_var = "time",
       cens_var = "cnsr",
-      baseline_prior = normal_prior(0, 1000)
+      baseline_prior = prior_normal(0, 1000)
     ),
     treatment = treatment_details(
       "trt",
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
     borrowing = borrowing_details(
       method = "Full borrowing",
@@ -61,11 +61,11 @@ test_that("show works without covariates", {
     outcome = outcome_surv_exponential(
       time_var = "time",
       cens_var = "cnsr",
-      baseline_prior = normal_prior(0, 1000)
+      baseline_prior = prior_normal(0, 1000)
     ),
     treatment = treatment_details(
       "trt",
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
     borrowing = borrowing_details(
       method = "Full borrowing",
@@ -82,11 +82,11 @@ test_that("show works with no borrowing", {
     outcome = outcome_surv_exponential(
       time_var = "time",
       cens_var = "cnsr",
-      baseline_prior = normal_prior(0, 1000)
+      baseline_prior = prior_normal(0, 1000)
     ),
     treatment = treatment_details(
       "trt",
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
     borrowing = borrowing_details(
       method = "No borrowing",

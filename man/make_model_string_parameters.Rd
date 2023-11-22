@@ -19,12 +19,12 @@ Create the Stan string encompassed by parameters \code{{}}
 \examples{
 anls_obj <- psborrow2:::.analysis_obj(
   data_matrix = example_matrix,
-  outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100)),
+  outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
   borrowing = borrowing_details(
     "Full borrowing",
     "ext"
   ),
-  treatment = treatment_details("trt", normal_prior(0, 100))
+  treatment = treatment_details("trt", prior_normal(0, 100))
 )
 
 psborrow2:::make_model_string_parameters(anls_obj)

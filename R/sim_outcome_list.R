@@ -52,7 +52,7 @@
 #'
 #' outcome_scenarios <- sim_outcome_list(
 #'   list(
-#'     "Exponential" = outcome_surv_exponential("time", "cnsr", normal_prior(0, 10000))
+#'     "Exponential" = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000))
 #'   )
 #' )
 #'

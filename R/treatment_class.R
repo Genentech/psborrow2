@@ -12,14 +12,14 @@
 #' prior distribution of the log effect estimate (log hazard ratio for
 #' time to event endpoints and log odds ratio for binary endpoints).
 #' @include prior_class.R
-#' @include normal_prior.R
+#' @include prior_normal.R
 .treatment_class <- setClass(
   "Treatment",
   slots = c(
     trt_flag_col = "character",
     trt_prior = "Prior"
   ),
-  prototype = c(trt_prior = normal_prior(0, 1000)),
+  prototype = c(trt_prior = prior_normal(0, 1000)),
   validity = function(object) {
     return(TRUE)
   }
@@ -43,7 +43,7 @@ setMethod(
 #' @examples
 #' get_vars(treatment_details(
 #'   trt_flag_col = "treat_fl",
-#'   trt_prior = normal_prior(0, 1000)
+#'   trt_prior = prior_normal(0, 1000)
 #' ))
 setMethod(
   f = "get_vars",

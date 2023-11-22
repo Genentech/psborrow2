@@ -18,8 +18,8 @@
 #' add_covariates(
 #'   covariates = c("a", "b"),
 #'   priors = list(
-#'     "a" = normal_prior(0, 1),
-#'     "b" = normal_prior(0, 2)
+#'     "a" = prior_normal(0, 1),
+#'     "b" = prior_normal(0, 2)
 #'   )
 #' )
 add_covariates <- function(covariates,

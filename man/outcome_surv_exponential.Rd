@@ -42,7 +42,7 @@ internal control arm.
 es <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cens",
-  baseline_prior = normal_prior(0, 1000)
+  baseline_prior = prior_normal(0, 1000)
 )
 }
 \seealso{

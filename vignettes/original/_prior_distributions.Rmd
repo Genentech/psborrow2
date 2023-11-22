@@ -52,20 +52,20 @@ See the documentation of these functions for more information.
 The currently supported prior distributions are created with the
 constructors below:
 
-* `bernoulli_prior(theta)`
-* `beta_prior(alpha, beta)`
-* `cauchy_prior(mu, sigma)`
-* `exponential_prior(beta)`
-* `gamma_prior(alpha, beta)`
-* `normal_prior(mu, sigma)`
-* `poisson_prior(lambda)`
+* `prior_bernoulli(theta)`
+* `prior_beta(alpha, beta)`
+* `prior_cauchy(mu, sigma)`
+* `prior_exponential(beta)`
+* `prior_gamma(alpha, beta)`
+* `prior_normal(mu, sigma)`
+* `prior_poisson(lambda)`
 * `uniform_prior(alpha, beta)`
 
 For example, we can create an uninformative normal distribution by specifying
 a normal prior centered around 0 with a very large standard deviation:
 
 ```{r}
-uninformative_normal <- normal_prior(0, 10000)
+uninformative_normal <- prior_normal(0, 10000)
 uninformative_normal
 ```
 
@@ -90,8 +90,8 @@ distribution with greater density at higher values of `tau` (which
 will lead to more borrowing in a BDB analysis):
 
 ```{r}
-conservative_tau <- gamma_prior(0.001, 0.001)
-aggressive_tau <- gamma_prior(1, 0.001)
+conservative_tau <- prior_gamma(0.001, 0.001)
+aggressive_tau <- prior_gamma(1, 0.001)
 plot(aggressive_tau, xlim = c(0, 2000), col = "blue", ylim = c(0, 1e-03))
 plot(conservative_tau, xlim = c(0, 2000), col = "red", add = TRUE)
 ```

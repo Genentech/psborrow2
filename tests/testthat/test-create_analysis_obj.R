@@ -4,13 +4,13 @@ skip_if_not(check_cmdstan())
 # Build some valid inputs ----
 ac <- add_covariates(
   c("cov1", "cov2"),
-  normal_prior(0, 1000)
+  prior_normal(0, 1000)
 )
 ac2 <- add_covariates(
   c("cov1", "cov2"),
   list(
-    cov1 = normal_prior(0, 1000),
-    cov2 = normal_prior(200, 20)
+    cov1 = prior_normal(0, 1000),
+    cov2 = prior_normal(200, 20)
   )
 )
 
@@ -25,28 +25,28 @@ bd_nb <- borrowing_details(
 bd_db <- borrowing_details(
   method = "BDB",
   ext_flag_col = "ext",
-  tau_prior = half_cauchy_prior(0, .0001)
+  tau_prior = prior_half_cauchy(0, .0001)
 )
 
 td <- treatment_details(
   "trt",
-  half_normal_prior(0, 1000)
+  prior_half_normal(0, 1000)
 )
 
 esd <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
-  baseline_prior = normal_prior(0, 1000)
+  baseline_prior = prior_normal(0, 1000)
 )
 wpsd <- outcome_surv_weibull_ph(
   time_var = "time",
   cens_var = "cnsr",
-  shape_prior = normal_prior(0, 1000),
-  baseline_prior = normal_prior(0, 1000)
+  shape_prior = prior_normal(0, 1000),
+  baseline_prior = prior_normal(0, 1000)
 )
 lbo <- outcome_bin_logistic(
   binary_var = "resp",
-  baseline_prior = normal_prior(0, 1000)
+  baseline_prior = prior_normal(0, 1000)
 )
 
 test_that("Inputs classes are correct", {
@@ -79,11 +79,11 @@ test_that("Inputs classes are correct", {
     create_analysis_obj(
       data_matrix = example_matrix,
       covariates = ac,
-      outcome = exponential_prior(.001),
+      outcome = prior_exponential(.001),
       treatment = td,
       borrowing = bd_fb
     ),
-    "Must inherit from class 'Outcome', but has class 'ExponentialPrior'"
+    "Must inherit from class 'Outcome', but has class 'PriorExponential'"
   )
 
   # Treatment
@@ -134,7 +134,7 @@ test_that("Columns in analysis_obj should be in matrix", {
     create_analysis_obj(
       data_matrix = example_matrix,
       covariates = add_covariates(c("cov9", "cov2"),
-        priors = normal_prior(0, 1000)
+        priors = prior_normal(0, 1000)
       ),
       outcome = esd,
       treatment = td,
@@ -147,7 +147,7 @@ test_that("Columns in analysis_obj should be in matrix", {
     create_analysis_obj(
       data_matrix = example_matrix,
       covariates = ac,
-      outcome = outcome_surv_exponential("time", "cens", normal_prior(0, 1000)),
+      outcome = outcome_surv_exponential("time", "cens", prior_normal(0, 1000)),
       treatment = td,
       borrowing = bd_fb
     ),
@@ -158,7 +158,7 @@ test_that("Columns in analysis_obj should be in matrix", {
     create_analysis_obj(
       data_matrix = example_matrix,
       covariates = ac,
-      outcome = outcome_bin_logistic("response", normal_prior(0, 1000)),
+      outcome = outcome_bin_logistic("response", prior_normal(0, 1000)),
       treatment = td,
       borrowing = bd_fb
     ),
@@ -172,7 +172,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       outcome = esd,
       treatment = treatment_details(
         trt_flag_col = "treat",
-        trt_prior = normal_prior(0, 100)
+        trt_prior = prior_normal(0, 100)
       ),
       borrowing = bd_fb
     ),
@@ -188,7 +188,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       borrowing = borrowing_details(
         method = "BDB",
         ext_flag_col = "tira",
-        tau_prior = gamma_prior(.001, .001)
+        tau_prior = prior_gamma(.001, .001)
       )
     ),
     "The following specified variables were not found in `data_matrix`:\n  ext_flag_col: tira"
