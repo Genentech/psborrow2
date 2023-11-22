@@ -20,8 +20,8 @@ borrow_scenarios <- sim_borrowing_list(
   list(
     "No borrowing" = borrowing_details("No borrowing", "ext"),
     "Full borrowing" = borrowing_details("Full borrowing", "ext"),
-    "BDB, uninformative prior" = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
-    "BDB, informative prior" = borrowing_details("BDB", "ext", gamma_prior(1, 0.001))
+    "BDB, uninformative prior" = borrowing_details("BDB", "ext", prior_gamma(0.001, 0.001)),
+    "BDB, informative prior" = borrowing_details("BDB", "ext", prior_gamma(1, 0.001))
   )
 )
 

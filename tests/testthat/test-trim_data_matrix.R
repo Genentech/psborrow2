@@ -1,13 +1,13 @@
 test_that("data matrix trimming works with BDB", {
   anls1 <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    covariates = add_covariates(covariates = "cov1", normal_prior(0, 1000)),
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 1000)),
-    treatment = treatment_details("trt", trt_prior = normal_prior(0, 1000)),
+    covariates = add_covariates(covariates = "cov1", prior_normal(0, 1000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
+    treatment = treatment_details("trt", trt_prior = prior_normal(0, 1000)),
     borrowing = borrowing_details(
       method = "BDB",
       ext_flag_col = "ext",
-      tau_prior = exponential_prior(0.001)
+      tau_prior = prior_exponential(0.001)
     )
   )
 
@@ -21,8 +21,8 @@ test_that("data matrix trimming works with BDB", {
 test_that("data matrix trimming works with Full Borrowing", {
   anls2 <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 1000)),
-    treatment = treatment_details("trt", trt_prior = normal_prior(0, 1000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
+    treatment = treatment_details("trt", trt_prior = prior_normal(0, 1000)),
     borrowing = borrowing_details(
       method = "Full borrowing",
       ext_flag_col = "ext"
@@ -39,9 +39,9 @@ test_that("data matrix trimming works with Full Borrowing", {
 test_that("data matrix trimming works with No Borrowing", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 1000)),
-    treatment = treatment_details("trt", trt_prior = normal_prior(0, 1000)),
-    covariates = add_covariates("cov1", normal_prior(0, 1000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
+    treatment = treatment_details("trt", trt_prior = prior_normal(0, 1000)),
+    covariates = add_covariates("cov1", prior_normal(0, 1000)),
     borrowing = borrowing_details(
       method = "No borrowing",
       ext_flag_col = "ext"

@@ -26,26 +26,26 @@ test_that("borrowing_details works as expected for BDB", {
   bdb <- borrowing_details(
     "BDB",
     "ext",
-    gamma_prior(.1, .1)
+    prior_gamma(.1, .1)
   )
 
   expect_class(bdb, "Borrowing")
   expect_equal(bdb@method, "BDB")
-  expect_class(bdb@tau_prior, "GammaPrior")
+  expect_class(bdb@tau_prior, "PriorGamma")
   expect_equal(bdb@ext_flag_col, "ext")
 })
 
 
 test_that("borrowing_details gives expected errors", {
   expect_error(
-    borrowing_details("no Borrowing", normal_prior(0, 1)),
+    borrowing_details("no Borrowing", prior_normal(0, 1)),
     "Must be element of set"
   )
 
   expect_error(
     borrowing_details(
       "Full borrowing",
-      tau_prior = normal_prior(0, 1000)
+      tau_prior = prior_normal(0, 1000)
     ),
     "missing, with no default"
   )
@@ -58,7 +58,7 @@ test_that("get_vars works for borrowing_details", {
     get_vars(borrowing_details(
       "BDB",
       "ext_fl",
-      gamma_prior(.1, .1)
+      prior_gamma(.1, .1)
     )),
     c(ext_flag_col = "ext_fl")
   )
@@ -77,7 +77,7 @@ test_that("borrowing_details checks tau prior limits", {
     borrowing_details(
       "BDB",
       "ext_fl",
-      normal_prior(0, 10000)
+      prior_normal(0, 10000)
     ),
     "tau distribution must be bounded >=0"
   )

@@ -57,8 +57,8 @@ my_borrowing_list <- sim_borrowing_list(
   list(
     "No borrowing" = borrowing_details("No borrowing", "ext"),
     "Full borrowing" = borrowing_details("Full borrowing", "ext"),
-    "BDB - conservative" = borrowing_details("BDB", "ext", gamma_prior(0.001, 0.001)),
-    "BDB - aggressive" = borrowing_details("BDB", "ext", gamma_prior(1, 0.001))
+    "BDB - conservative" = borrowing_details("BDB", "ext", prior_gamma(0.001, 0.001)),
+    "BDB - aggressive" = borrowing_details("BDB", "ext", prior_gamma(1, 0.001))
   )
 )
 
@@ -66,12 +66,12 @@ simulation_obj <- create_simulation_obj(
   my_sim_data_list,
   outcome = outcome_surv_exponential("time",
     "cnsr",
-    baseline_prior = normal_prior(0, 10000)
+    baseline_prior = prior_normal(0, 10000)
   ),
   borrowing = my_borrowing_list,
   treatment = treatment_details(
     trt_flag_col = "trt",
-    trt_prior = normal_prior(0, 10000)
+    trt_prior = prior_normal(0, 10000)
   )
 )
 

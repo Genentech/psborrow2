@@ -171,7 +171,7 @@ we need to specify a prior distribution for the baseline event rate,
 `baseline_prior`. In this case, `baseline_prior` is
 a log hazard rate (for binary endpoints this represents the log
 odds instead). Let's assume we have no prior knowledge on this event rate,
-so we'll specify an uninformative prior: `normal_prior(0, 1000)`.
+so we'll specify an uninformative prior: `prior_normal(0, 1000)`.
 
 For our example, let's conduct a time-to-event analysis using the exponential
 distribution.
@@ -180,7 +180,7 @@ distribution.
 outcome <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
-  baseline_prior = normal_prior(0, 1000)
+  baseline_prior = prior_normal(0, 1000)
 )
 outcome
 ```
@@ -205,8 +205,8 @@ parameter must be specified. This hyperprior determines
 between internal and external controls) how much borrowing of the external
 control group will be performed. Example hyperpriors include largely
 uninformative inverse gamma distributions
-e.g., `gamma_prior(alpha = .001, beta = .001)` as well as more
-informative distributions e.g., `gamma_prior(alpha = 1, beta = .001)`,
+e.g., `prior_gamma(alpha = .001, beta = .001)` as well as more
+informative distributions e.g., `prior_gamma(alpha = 1, beta = .001)`,
 though any distribution on the positive real line can be used. Distributions
 with more density at higher values (i.e., higher precision)
 will lead to more borrowing. We'll choose an uninformative gamma prior
@@ -219,7 +219,7 @@ vignette, see `vignette('prior_distributions', package = 'psborrow2')`.
 borrowing <- borrowing_details(
   method = "BDB",
   ext_flag_col = "ext",
-  tau_prior = gamma_prior(0.001, 0.001)
+  tau_prior = prior_gamma(0.001, 0.001)
 )
 borrowing
 ```
@@ -234,7 +234,7 @@ another uninformative normal distribution for the prior on the treatment effect:
 ```{r treatment-details}
 treatment <- treatment_details(
   trt_flag_col = "trt",
-  trt_prior = normal_prior(0, 1000)
+  trt_prior = prior_normal(0, 1000)
 )
 treatment
 ```

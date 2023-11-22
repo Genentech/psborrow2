@@ -57,6 +57,6 @@ Gets the data variable names from an object.
 \examples{
 get_vars(treatment_details(
   trt_flag_col = "treat_fl",
-  trt_prior = normal_prior(0, 1000)
+  trt_prior = prior_normal(0, 1000)
 ))
 }

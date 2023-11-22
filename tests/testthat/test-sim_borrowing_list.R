@@ -6,7 +6,7 @@ test_that("Incorrect inputs lead to errors", {
       borrowing_details(
         method = "BDB",
         ext_flag_col = "ext",
-        tau_prior = exponential_prior(0.001)
+        tau_prior = prior_exponential(0.001)
       )
     ),
     'should be or extend class "list"'
@@ -28,7 +28,7 @@ test_that("Incorrect inputs lead to errors", {
         borrowing_details(
           method = "BDB",
           ext_flag_col = "ext",
-          tau_prior = exponential_prior(0.001)
+          tau_prior = prior_exponential(0.001)
         )
       )
     ),
@@ -42,7 +42,7 @@ test_that("Incorrect inputs lead to errors", {
         bdb = borrowing_details(
           method = "BDB",
           ext_flag_col = "ext",
-          tau_prior = exponential_prior(0.001)
+          tau_prior = prior_exponential(0.001)
         ),
         borrowing_details(
           method = "Full borrowing",
@@ -60,7 +60,7 @@ test_that("Incorrect inputs lead to errors", {
         scenario_1 = borrowing_details(
           method = "BDB",
           ext_flag_col = "ext",
-          tau_prior = exponential_prior(0.001)
+          tau_prior = prior_exponential(0.001)
         ),
         scenario_1 = borrowing_details(
           method = "Full borrowing",
@@ -79,7 +79,7 @@ test_that("Correct inputs successfully produce `SimBorrowingList`", {
         "BDB" = borrowing_details(
           method = "BDB",
           ext_flag_col = "ext",
-          tau_prior = exponential_prior(0.001)
+          tau_prior = prior_exponential(0.001)
         ),
         "Full borrowing" = borrowing_details(
           method = "Full borrowing",
@@ -98,7 +98,7 @@ test_that("Borrowing `guide` is produced correctly", {
       "BDB" = borrowing_details(
         method = "BDB",
         ext_flag_col = "ext",
-        tau_prior = exponential_prior(0.001)
+        tau_prior = prior_exponential(0.001)
       ),
       "Full borrowing" = borrowing_details(
         method = "Full borrowing",
@@ -119,7 +119,7 @@ test_that("Borrowing `guide` is produced correctly", {
       "BDB" = borrowing_details(
         method = "BDB",
         ext_flag_col = "ext",
-        tau_prior = exponential_prior(0.001)
+        tau_prior = prior_exponential(0.001)
       ),
       "Full borrowing" = borrowing_details(
         method = "Full borrowing",
@@ -144,7 +144,7 @@ test_that("get_vars for `sim_borrowing_list` works", {
       "BDB" = borrowing_details(
         method = "BDB",
         ext_flag_col = "ext",
-        tau_prior = exponential_prior(0.001)
+        tau_prior = prior_exponential(0.001)
       ),
       "Full borrowing" = borrowing_details(
         method = "Full borrowing",

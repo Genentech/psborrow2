@@ -98,9 +98,9 @@ h_glue <- function(..., collapse = FALSE, collapse_sep = "\n") {
 #'   add_covariates(
 #'     c("cov1", "cov2", "cov3"),
 #'     list(
-#'       normal_prior(0, 10),
-#'       beta_prior(0.3, 0.3),
-#'       gamma_prior(30, 1)
+#'       prior_normal(0, 10),
+#'       prior_beta(0.3, 0.3),
+#'       prior_gamma(30, 1)
 #'     )
 #'   )
 #' )
@@ -124,7 +124,7 @@ get_covariate_constraints <- function(cov_obj) {
 #' @return
 #' A list with upper and lower bounds. Any unspecified bounds are set to `-Inf` or `Inf`.
 #' @examples
-#' np <- normal_prior(0, 100)
+#' np <- prior_normal(0, 100)
 #' psborrow2:::parse_constraint(np)
 parse_constraint <- function(object) {
   assert_class(object, "Prior")
@@ -157,21 +157,21 @@ parse_constraint <- function(object) {
 #'     data_matrix = example_matrix,
 #'     covariates = add_covariates(
 #'       covariates = c("cov1", "cov2"),
-#'       priors = normal_prior(0, 1000)
+#'       priors = prior_normal(0, 1000)
 #'     ),
 #'     outcome = outcome_surv_exponential(
 #'       "time",
 #'       "cnsr",
-#'       baseline_prior = normal_prior(0, 1000)
+#'       baseline_prior = prior_normal(0, 1000)
 #'     ),
 #'     borrowing = borrowing_details(
 #'       "BDB",
 #'       "ext",
-#'       exponential_prior(.001)
+#'       prior_exponential(.001)
 #'     ),
 #'     treatment = treatment_details(
 #'       "trt",
-#'       normal_prior(0, 1000)
+#'       prior_normal(0, 1000)
 #'     )
 #'   )
 #'   samples <- mcmc_sample(analysis_object)
@@ -242,7 +242,7 @@ variable_dictionary <- function(analysis_obj) {
 #'
 #' @return A string containing the Stan code sampling from specified distribution.
 #' @examples
-#' psborrow2:::get_prior_string(normal_prior(0, 100))
+#' psborrow2:::get_prior_string(prior_normal(0, 100))
 get_prior_string <- function(object) {
   assert_multi_class(object, c("Prior", "list"))
   if (is(object, "list")) {

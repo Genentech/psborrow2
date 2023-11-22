@@ -23,21 +23,21 @@ if (check_cmdstan()) {
     data_matrix = example_matrix,
     covariates = add_covariates(
       covariates = c("cov1", "cov2"),
-      priors = normal_prior(0, 1000)
+      priors = prior_normal(0, 1000)
     ),
     outcome = outcome_surv_exponential(
       "time",
       "cnsr",
-      baseline_prior = normal_prior(0, 1000)
+      baseline_prior = prior_normal(0, 1000)
     ),
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(.001)
+      prior_exponential(.001)
     ),
     treatment = treatment_details(
       "trt",
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     )
   )
   samples <- mcmc_sample(analysis_object)

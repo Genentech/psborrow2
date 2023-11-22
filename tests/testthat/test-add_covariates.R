@@ -3,9 +3,9 @@ test_that("add_covariates works for list of priors", {
   covs1 <- add_covariates(
     covariates = c("a", "b", "c"),
     priors = list(
-      a = normal_prior(0, 1000),
-      b = normal_prior(-5, 20),
-      c = normal_prior(-30, 1)
+      a = prior_normal(0, 1000),
+      b = prior_normal(-5, 20),
+      c = prior_normal(-30, 1)
     )
   )
 
@@ -16,7 +16,7 @@ test_that("add_covariates works for list of priors", {
 test_that("add_covariates works for a single prior", {
   covs2 <- add_covariates(
     covariates = c("a", "b", "c"),
-    priors = normal_prior(0, 1000)
+    priors = prior_normal(0, 1000)
   )
 
   expect_class(covs2, "Covariates")
@@ -27,7 +27,7 @@ test_that("add_covariates fails for invalid prior specification", {
   expect_error(
     add_covariates(
       covariates = c("a", "b"),
-      priors = list("a" = normal_prior(0, 20))
+      priors = list("a" = prior_normal(0, 20))
     ),
     "Either specify 1 prior distribution for all covariates, or specify a named list with 1 prior per covariate"
   )
@@ -36,8 +36,8 @@ test_that("add_covariates fails for invalid prior specification", {
     add_covariates(
       covariates = c("a", "c"),
       priors = list(
-        "a" = normal_prior(0, 20),
-        "b" = normal_prior(0, 10)
+        "a" = prior_normal(0, 20),
+        "b" = prior_normal(0, 10)
       )
     ),
     "If a list is provided to specify priors, one prior per covariate must be provided."
@@ -60,7 +60,7 @@ test_that("add_covariates fails for invalid prior specification", {
   )
 
   expect_error(
-    add_covariates(covariates = c(1, 2, 3), normal_prior(0, 1000)),
+    add_covariates(covariates = c(1, 2, 3), prior_normal(0, 1000)),
     "Must be of type 'character', not 'double'"
   )
 })
@@ -69,7 +69,7 @@ test_that("get_vars works for Covariates", {
   expect_identical(
     get_vars(add_covariates(
       covariates = c("a", "b", "c"),
-      priors = normal_prior(0, 1000)
+      priors = prior_normal(0, 1000)
     )),
     c("a", "b", "c")
   )
