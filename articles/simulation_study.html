@@ -337,7 +337,7 @@ single exponential distribution.</p>
 <code class="sourceCode R"><span><span class="va">my_sim_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span></span>
 <span>  time_var <span class="op">=</span> <span class="st">"time"</span>,</span>
 <span>  cens_var <span class="op">=</span> <span class="st">"cnsr"</span>,</span>
-<span>  baseline_prior <span class="op">=</span> <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span>
+<span>  baseline_prior <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">my_sim_out</span></span>
@@ -378,8 +378,8 @@ which we’ll create through the function
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    <span class="st">"No borrowing"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"No borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>    <span class="st">"Full borrowing"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
-<span>    <span class="st">"BDB - conservative"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="st">"BDB - aggressive"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="st">"BDB - conservative"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="st">"BDB - aggressive"</span> <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -413,7 +413,7 @@ instance of a class <code>Treatment</code>, or a list of these classes,
 created with <code><a href="../reference/sim_treatment_list.html">sim_treatment_list()</a></code>. Let’s just use a single
 instance:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_sim_treat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">my_sim_treat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">my_sim_treat</span></span>
 <span><span class="co"># Treatment object</span></span>

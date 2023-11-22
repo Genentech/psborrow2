@@ -171,20 +171,20 @@ treatment effect distribution excludes the true value.</p></li>
 <span class="r-in"><span>    data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span></span>
 <span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="add_covariates.html">add_covariates</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cov1"</span>, <span class="st">"cov2"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      priors <span class="op">=</span> <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      priors <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
 <span class="r-in"><span>    outcome <span class="op">=</span> <span class="fu"><a href="outcome_surv_weibull_ph.html">outcome_surv_weibull_ph</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      <span class="st">"time"</span>,</span></span>
 <span class="r-in"><span>      <span class="st">"cnsr"</span>,</span></span>
-<span class="r-in"><span>      shape_prior <span class="op">=</span> <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      baseline_prior <span class="op">=</span> <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      shape_prior <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      baseline_prior <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
 <span class="r-in"><span>    borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      <span class="st">"BDB"</span>,</span></span>
 <span class="r-in"><span>      <span class="st">"ext"</span>,</span></span>
-<span class="r-in"><span>      <span class="fu"><a href="exponential_prior.html">exponential_prior</a></span><span class="op">(</span><span class="fl">.001</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="prior_exponential.html">prior_exponential</a></span><span class="op">(</span><span class="fl">.001</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
-<span class="r-in"><span>    treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">mcmc_results</span> <span class="op">&lt;-</span> <span class="fu">mcmc_sample</span><span class="op">(</span><span class="va">anls</span><span class="op">)</span></span></span>
@@ -194,14 +194,14 @@ treatment effect distribution excludes the true value.</p></li>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Ready to go! Now call `mcmc_sample()`.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 4 sequential chains...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 17.5 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2 finished in 17.6 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 3 finished in 15.4 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 4 finished in 14.4 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 14.4 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2 finished in 15.7 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 3 finished in 18.2 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 4 finished in 19.3 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All 4 chains finished successfully.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mean chain execution time: 16.2 seconds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Total execution time: 65.3 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean chain execution time: 16.9 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total execution time: 67.9 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Simulation objects</span></span></span>
@@ -251,19 +251,19 @@ treatment effect distribution excludes the true value.</p></li>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="check_cmdstanr.html">check_cmdstan</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="va">sim_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_simulation_obj.html">create_simulation_obj</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    data_matrix_list <span class="op">=</span> <span class="va">sdl</span>,</span></span>
-<span class="r-in"><span>    outcome <span class="op">=</span> <span class="fu"><a href="outcome_bin_logistic.html">outcome_bin_logistic</a></span><span class="op">(</span><span class="st">"ep"</span>, <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    outcome <span class="op">=</span> <span class="fu"><a href="outcome_bin_logistic.html">outcome_bin_logistic</a></span><span class="op">(</span><span class="st">"ep"</span>, <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    borrowing <span class="op">=</span> <span class="fu"><a href="sim_borrowing_list.html">sim_borrowing_list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      full_borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      bdb <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="exponential_prior.html">exponential_prior</a></span><span class="op">(</span><span class="fl">0.0001</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      bdb <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="prior_exponential.html">prior_exponential</a></span><span class="op">(</span><span class="fl">0.0001</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu">mcmc_sample</span><span class="op">(</span><span class="va">sim_object</span>, chains <span class="op">=</span> <span class="fl">1</span>, iter_warmup <span class="op">=</span> <span class="fl">500L</span>, iter_sampling <span class="op">=</span> <span class="fl">1000L</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.4 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.5 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.4 seconds.</span>
@@ -275,16 +275,16 @@ treatment effect distribution excludes the true value.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 0.4 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 4.0 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 2.9 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 4.0 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 2.9 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 3.4 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 3.5 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running MCMC with 1 chain...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 3.7 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1 finished in 3.2 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> `MCMCSimulationResult` object.  Call `get_results()` to save outputs as a data.frame</span>
 </code></pre></div>
     </div>

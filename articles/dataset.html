@@ -272,14 +272,14 @@ specify a prior distribution for the baseline event rate,
 is a log hazard rate (for binary endpoints this represents the log odds
 instead). Let’s assume we have no prior knowledge on this event rate, so
 we’ll specify an uninformative prior:
-<code>normal_prior(0, 1000)</code>.</p>
+<code>prior_normal(0, 1000)</code>.</p>
 <p>For our example, let’s conduct a time-to-event analysis using the
 exponential distribution.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span></span>
 <span>  time_var <span class="op">=</span> <span class="st">"time"</span>,</span>
 <span>  cens_var <span class="op">=</span> <span class="st">"cnsr"</span>,</span>
-<span>  baseline_prior <span class="op">=</span> <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span>
+<span>  baseline_prior <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">outcome</span></span>
 <span><span class="co"># Outcome object with class OutcomeSurvExponential </span></span>
@@ -317,9 +317,9 @@ commensurability parameter must be specified. This hyperprior determines
 external controls) how much borrowing of the external control group will
 be performed. Example hyperpriors include largely uninformative inverse
 gamma distributions e.g.,
-<code>gamma_prior(alpha = .001, beta = .001)</code> as well as more
+<code>prior_gamma(alpha = .001, beta = .001)</code> as well as more
 informative distributions e.g.,
-<code>gamma_prior(alpha = 1, beta = .001)</code>, though any
+<code>prior_gamma(alpha = 1, beta = .001)</code>, though any
 distribution on the positive real line can be used. Distributions with
 more density at higher values (i.e., higher precision) will lead to more
 borrowing. We’ll choose an uninformative gamma prior in this
@@ -331,7 +331,7 @@ greater detail in a separate vignette, see
 <code class="sourceCode R"><span><span class="va">borrowing</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"BDB"</span>,</span>
 <span>  ext_flag_col <span class="op">=</span> <span class="st">"ext"</span>,</span>
-<span>  tau_prior <span class="op">=</span> <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span></span>
+<span>  tau_prior <span class="op">=</span> <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">borrowing</span></span>
 <span><span class="co"># Borrowing object using BDB </span></span>
@@ -358,7 +358,7 @@ treatment effect:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">treatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span></span>
 <span>  trt_flag_col <span class="op">=</span> <span class="st">"trt"</span>,</span>
-<span>  trt_prior <span class="op">=</span> <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span>
+<span>  trt_prior <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">treatment</span></span>
 <span><span class="co"># Treatment object</span></span>

@@ -131,20 +131,20 @@ dynamic borrowing (BDB), passed to <code><a href="../reference/borrowing_details
 <p>The currently supported prior distributions are created with the
 constructors below:</p>
 <ul>
-<li><code>bernoulli_prior(theta)</code></li>
-<li><code>beta_prior(alpha, beta)</code></li>
-<li><code>cauchy_prior(mu, sigma)</code></li>
-<li><code>exponential_prior(beta)</code></li>
-<li><code>gamma_prior(alpha, beta)</code></li>
-<li><code>normal_prior(mu, sigma)</code></li>
-<li><code>poisson_prior(lambda)</code></li>
+<li><code>prior_bernoulli(theta)</code></li>
+<li><code>prior_beta(alpha, beta)</code></li>
+<li><code>prior_cauchy(mu, sigma)</code></li>
+<li><code>prior_exponential(beta)</code></li>
+<li><code>prior_gamma(alpha, beta)</code></li>
+<li><code>prior_normal(mu, sigma)</code></li>
+<li><code>prior_poisson(lambda)</code></li>
 <li><code>uniform_prior(alpha, beta)</code></li>
 </ul>
 <p>For example, we can create an uninformative normal distribution by
 specifying a normal prior centered around 0 with a very large standard
 deviation:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">uninformative_normal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">uninformative_normal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span></span>
 <span><span class="va">uninformative_normal</span></span>
 <span><span class="co"># Normal Distribution</span></span>
 <span><span class="co"># Parameters:</span></span>
@@ -175,8 +175,8 @@ the commensurability parameter <code>tau</code> to an more aggressive
 values of <code>tau</code> (which will lead to more borrowing in a BDB
 analysis):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">conservative_tau</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span></span>
-<span><span class="va">aggressive_tau</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.001</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">conservative_tau</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span></span>
+<span><span class="va">aggressive_tau</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.001</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span><span class="va">aggressive_tau</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2000</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"blue"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1e-03</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span><span class="va">conservative_tau</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2000</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">

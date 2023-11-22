@@ -141,8 +141,8 @@ This hyperprior determines (along with the comparability of the outcomes
 between internal and external controls) how much borrowing of the external
 control group will be performed.
 Example hyperpriors include largely uninformative inverse gamma distributions
-[e.g., <code>gamma_prior(alpha = .001, beta = .001)</code>] as well as more
-informative distributions [e.g., <code>gamma_prior(alpha = 1, beta = .001</code>)],
+[e.g., <code>prior_gamma(alpha = .001, beta = .001)</code>] as well as more
+informative distributions [e.g., <code>prior_gamma(alpha = 1, beta = .001</code>)],
 though any distribution \(x \in (0, \infty)\) can be used. Distributions
 with more density at higher values of \(x\) (i.e., higher precision)
 will lead to more borrowing.</p>
@@ -163,7 +163,7 @@ Use of historical control data for assessing treatment effects in clinical trial
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sb</span> <span class="op">&lt;-</span> <span class="fu">borrowing_details</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="st">"BDB"</span>,</span></span>
 <span class="r-in"><span>  ext_flag_col <span class="op">=</span> <span class="st">"ext"</span>,</span></span>
-<span class="r-in"><span>  tau_prior <span class="op">=</span> <span class="fu"><a href="gamma_prior.html">gamma_prior</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  tau_prior <span class="op">=</span> <span class="fu"><a href="prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

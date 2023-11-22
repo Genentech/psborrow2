@@ -58,40 +58,16 @@
     <loc>https://genentech.github.io/psborrow2/reference/BaselineObject-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/psborrow2/reference/BernoulliPrior-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/BetaPrior-class.html</loc>
-  </url>
-  <url>
     <loc>https://genentech.github.io/psborrow2/reference/BinaryOutcome-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/Borrowing-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/psborrow2/reference/CauchyPrior-class.html</loc>
-  </url>
-  <url>
     <loc>https://genentech.github.io/psborrow2/reference/Covariates-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/psborrow2/reference/ExponentialPrior-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/GammaPrior-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/HalfCauchyPrior-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/HalfNormalPrior-class.html</loc>
-  </url>
-  <url>
     <loc>https://genentech.github.io/psborrow2/reference/MCMCSimulationResult-class.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/NormalPrior-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/Outcome-class.html</loc>
@@ -106,10 +82,34 @@
     <loc>https://genentech.github.io/psborrow2/reference/OutcomeSurvWeibullPH-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/psborrow2/reference/PoissonPrior-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/Prior-class.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/psborrow2/reference/Prior-class.html</loc>
+    <loc>https://genentech.github.io/psborrow2/reference/PriorBernoulli-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/PriorBeta-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/PriorCauchy-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/PriorExponential-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/PriorGamma-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/PriorHalfCauchy-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/PriorHalfNormal-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/PriorNormal-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/PriorPoisson-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/SimBorrowingList-class.html</loc>
@@ -299,6 +299,33 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/poisson_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/prior_bernoulli.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/prior_beta.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/prior_cauchy.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/prior_exponential.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/prior_gamma.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/prior_half_cauchy.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/prior_half_normal.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/prior_normal.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/prior_poisson.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/rename_draws_covariates.html</loc>

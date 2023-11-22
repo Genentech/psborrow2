@@ -119,21 +119,21 @@ the default)</p></dd>
 <span class="r-in"><span>    data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span></span>
 <span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="add_covariates.html">add_covariates</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cov1"</span>, <span class="st">"cov2"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      priors <span class="op">=</span> <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      priors <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
 <span class="r-in"><span>    outcome <span class="op">=</span> <span class="fu"><a href="outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      <span class="st">"time"</span>,</span></span>
 <span class="r-in"><span>      <span class="st">"cnsr"</span>,</span></span>
-<span class="r-in"><span>      baseline_prior <span class="op">=</span> <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      baseline_prior <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
 <span class="r-in"><span>    borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      <span class="st">"BDB"</span>,</span></span>
 <span class="r-in"><span>      <span class="st">"ext"</span>,</span></span>
-<span class="r-in"><span>      <span class="fu"><a href="exponential_prior.html">exponential_prior</a></span><span class="op">(</span><span class="fl">.001</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="prior_exponential.html">prior_exponential</a></span><span class="op">(</span><span class="fl">.001</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
 <span class="r-in"><span>    treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      <span class="st">"trt"</span>,</span></span>
-<span class="r-in"><span>      <span class="fu"><a href="normal_prior.html">normal_prior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
