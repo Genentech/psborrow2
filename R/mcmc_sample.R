@@ -258,13 +258,12 @@ setMethod(
       sim_futures <- list()
       for (j in 1:n_sim) {
         anls_obj <- x@analysis_obj_list[[i]][[j]]
-        if (!file.exists(anls_obj@model$exe_file())) anls_obj@model$compile()
 
         sim_futures[[j]] <- future(
           packages = "psborrow2",
           seed = TRUE,
           expr = {
-            keep <- list()
+            if (!file.exists(anls_obj@model$exe_file())) anls_obj@model$compile()
 
             mcmc_results <- mcmc_sample(
               anls_obj,
@@ -277,6 +276,7 @@ setMethod(
 
             draws <- mcmc_results$draws()
 
+            keep <- list()
             # Coverage
             keep$true_coverage <- sim_is_true_effect_covered(
               draws,
