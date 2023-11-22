@@ -300,7 +300,7 @@ setMethod(
             )
 
             # Variance of beta_trt
-            keep$var[j] <- sim_estimate_effect_variance(draws)
+            keep$var <- sim_estimate_effect_variance(draws)
 
             # Save draws if desired
             if (keep_cmd_stan_models) {
@@ -322,7 +322,7 @@ setMethod(
         null_coverage[j] <- sim_result$null_coverage
         bias[j] <- sim_result$bias
         mse[j] <- sim_result$mse
-        if (keep_cmd_stan_models) cmd_stan_models_out[[i]][[j]] <- keep$cmd_stan_models_out
+        if (keep_cmd_stan_models) cmd_stan_models_out[[i]][[j]] <- sim_result$cmd_stan_models_out
       }
 
       # Add simulation study results
