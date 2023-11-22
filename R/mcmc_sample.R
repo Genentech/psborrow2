@@ -258,6 +258,8 @@ setMethod(
       sim_futures <- list()
       for (j in 1:n_sim) {
         anls_obj <- x@analysis_obj_list[[i]][[j]]
+        if (!file.exists(anls_obj@model$exe_file())) anls_obj@model$compile()
+
         sim_futures[[j]] <- future(
           packages = "psborrow2",
           seed = TRUE,
