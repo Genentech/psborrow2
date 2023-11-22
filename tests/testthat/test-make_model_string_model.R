@@ -1,12 +1,12 @@
 test_that("make_model_string_model works with exponential survival and full borrowing", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
     borrowing = borrowing_details(
       "Full borrowing",
       "ext"
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
   result <- psborrow2:::make_model_string_model(object)
@@ -20,13 +20,13 @@ test_that("make_model_string_model works with exponential survival and full borr
 test_that("make_model_string_model works with exponential survival and BDB", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
   result <- psborrow2:::make_model_string_model(object)
@@ -43,20 +43,20 @@ test_that("make_model_string_model works with weibull survival and BDB and covar
     data_matrix = example_matrix,
     covariates = add_covariates(
       c("cov1", "cov2"),
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
     outcome = outcome_surv_weibull_ph(
       "time",
       "cnsr",
-      normal_prior(0, 1000),
-      normal_prior(0, 100)
+      prior_normal(0, 1000),
+      prior_normal(0, 100)
     ),
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
   result <- psborrow2:::make_model_string_model(object)
@@ -74,15 +74,15 @@ test_that("make_model_string_model works with binary outcome and BDB and covaria
     data_matrix = example_matrix,
     covariates = add_covariates(
       c("cov1", "cov2"),
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
-    outcome = outcome_bin_logistic("cnsr", normal_prior(0, 100)),
+    outcome = outcome_bin_logistic("cnsr", prior_normal(0, 100)),
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
   result <- psborrow2:::make_model_string_model(object)

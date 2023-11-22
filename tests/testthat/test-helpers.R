@@ -7,12 +7,12 @@ test_that("h_glue works as expected", {
 })
 
 test_that("parse_constraint works as expected", {
-  hcp <- half_cauchy_prior(1, 100)
+  hcp <- prior_half_cauchy(1, 100)
   expect_equal(
     parse_constraint(hcp),
     c(lower = 1, upper = Inf)
   )
-  tp <- gamma_prior(0.001, 0.001)
+  tp <- prior_gamma(0.001, 0.001)
   expect_equal(
     parse_constraint(tp),
     c(lower = 0, upper = Inf)
@@ -24,9 +24,9 @@ test_that("parse_constraint works as expected with prior list", {
   object <- add_covariates(
     c("cov1", "cov2", "cov3"),
     list(
-      normal_prior(0, 10),
-      beta_prior(0.3, 0.3),
-      gamma_prior(30, 1)
+      prior_normal(0, 10),
+      prior_beta(0.3, 0.3),
+      prior_gamma(30, 1)
     )
   )
   result <- get_covariate_constraints(object)
@@ -37,7 +37,7 @@ test_that("parse_constraint works as expected with prior list", {
 })
 
 test_that("parse_constraint works as expected with single prior", {
-  object <- add_covariates(c("cov1", "cov2", "cov3"), normal_prior(0, 100))
+  object <- add_covariates(c("cov1", "cov2", "cov3"), prior_normal(0, 100))
   result <- get_covariate_constraints(object)
   expect_equal(
     result,
@@ -56,15 +56,15 @@ test_that("rename_draws_covariates works as expected", {
     data_matrix = example_matrix,
     covariates = add_covariates(
       c("cov1", "cov2"),
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
-    outcome = outcome_bin_logistic("cnsr", normal_prior(0, 1000)),
+    outcome = outcome_bin_logistic("cnsr", prior_normal(0, 1000)),
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
   draws_object <- structure(
@@ -107,15 +107,15 @@ test_that("variable_dictionary works as expected for logistic and BDB", {
     data_matrix = example_matrix,
     covariates = add_covariates(
       c("cov1", "cov2"),
-      normal_prior(0, 1000)
+      prior_normal(0, 1000)
     ),
-    outcome = outcome_bin_logistic("cnsr", normal_prior(0, 1000)),
+    outcome = outcome_bin_logistic("cnsr", prior_normal(0, 1000)),
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(0.001)
+      prior_exponential(0.001)
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
   result <- variable_dictionary(object)
   expect_equal(
@@ -133,12 +133,12 @@ test_that("variable_dictionary works as expected for logistic and BDB", {
 test_that("variable_dictionary works as expected for exponential and no borrowing", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
-    outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 1000)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
     borrowing = borrowing_details(
       "Full borrowing",
       "ext"
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
   result <- variable_dictionary(object)
   expect_equal(
@@ -156,14 +156,14 @@ test_that("variable_dictionary includes shape parameter for Weibull PH", {
     outcome = outcome_surv_weibull_ph(
       "time",
       "cnsr",
-      normal_prior(0, 1000),
-      normal_prior(0, 1000)
+      prior_normal(0, 1000),
+      prior_normal(0, 1000)
     ),
     borrowing = borrowing_details(
       "Full borrowing",
       "ext"
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
   result <- variable_dictionary(object)
   expect_equal(

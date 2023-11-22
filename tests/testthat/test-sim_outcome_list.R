@@ -5,7 +5,7 @@ test_that("Incorrect inputs lead to errors", {
       outcome_surv_exponential(
         "time",
         "cnsr",
-        normal_prior(0, 1000)
+        prior_normal(0, 1000)
       )
     ),
     'should be or extend class "list"'
@@ -27,7 +27,7 @@ test_that("Incorrect inputs lead to errors", {
         outcome_surv_exponential(
           "time",
           "cnsr",
-          normal_prior(0, 1000)
+          prior_normal(0, 1000)
         )
       )
     ),
@@ -41,13 +41,13 @@ test_that("Incorrect inputs lead to errors", {
         exp = outcome_surv_exponential(
           "time",
           "cnsr",
-          normal_prior(0, 1000)
+          prior_normal(0, 1000)
         ),
         outcome_surv_weibull_ph(
           "time",
           "cnsr",
-          normal_prior(0, 1000),
-          normal_prior(0, 1000)
+          prior_normal(0, 1000),
+          prior_normal(0, 1000)
         )
       )
     ),
@@ -61,13 +61,13 @@ test_that("Incorrect inputs lead to errors", {
         scenario_1 = outcome_surv_exponential(
           "time",
           "cnsr",
-          normal_prior(0, 1000)
+          prior_normal(0, 1000)
         ),
         scenario_1 = outcome_surv_weibull_ph(
           "time",
           "cnsr",
-          normal_prior(0, 1000),
-          normal_prior(0, 1000)
+          prior_normal(0, 1000),
+          prior_normal(0, 1000)
         )
       )
     ),
@@ -82,14 +82,14 @@ test_that("Correct inputs successfully produce `SimOutcomeList`", {
         "Weibull uninformative" = outcome_surv_weibull_ph(
           "time",
           "cnsr",
-          normal_prior(0, 1000),
-          normal_prior(0, 1000)
+          prior_normal(0, 1000),
+          prior_normal(0, 1000)
         ),
         "Weibull increasing hazard" = outcome_surv_weibull_ph(
           "time",
           "cnsr",
-          normal_prior(5, 2),
-          normal_prior(0, 1000)
+          prior_normal(5, 2),
+          prior_normal(0, 1000)
         )
       )
     ),
@@ -104,14 +104,14 @@ test_that("Outcome `guide` is produced correctly", {
       "Weibull uninformative" = outcome_surv_weibull_ph(
         "time",
         "cnsr",
-        normal_prior(0, 1000),
-        normal_prior(0, 1000)
+        prior_normal(0, 1000),
+        prior_normal(0, 1000)
       ),
       "Weibull increasing hazard" = outcome_surv_weibull_ph(
         "time",
         "cnsr",
-        normal_prior(5, 2),
-        normal_prior(0, 1000)
+        prior_normal(5, 2),
+        prior_normal(0, 1000)
       )
     )
   )
@@ -128,19 +128,19 @@ test_that("Outcome `guide` is produced correctly", {
       "Weibull uninformative" = outcome_surv_weibull_ph(
         "time",
         "cnsr",
-        normal_prior(0, 1000),
-        normal_prior(0, 1000)
+        prior_normal(0, 1000),
+        prior_normal(0, 1000)
       ),
       "Weibull increasing hazard" = outcome_surv_weibull_ph(
         "time",
         "cnsr",
-        normal_prior(5, 2),
-        normal_prior(0, 1000)
+        prior_normal(5, 2),
+        prior_normal(0, 1000)
       ),
       "Exponential" = outcome_surv_exponential(
         "time",
         "cnsr",
-        normal_prior(0, 1000)
+        prior_normal(0, 1000)
       )
     )
   )
@@ -160,14 +160,14 @@ test_that("get_vars for `sim_outcome_list` works", {
       "Weibull uninformative" = outcome_surv_weibull_ph(
         "time",
         "cnsr",
-        normal_prior(0, 1000),
-        normal_prior(0, 1000)
+        prior_normal(0, 1000),
+        prior_normal(0, 1000)
       ),
       "Weibull increasing hazard" = outcome_surv_weibull_ph(
         "time",
         "cnsr",
-        normal_prior(5, 2),
-        normal_prior(0, 1000)
+        prior_normal(5, 2),
+        prior_normal(0, 1000)
       )
     )
   )

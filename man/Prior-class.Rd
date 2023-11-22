@@ -23,19 +23,19 @@ Stan constraint, e.g. \code{"<lower=0, upper=1>"}.}
 }}
 
 \seealso{
-Prior constructor functions: \code{\link[=bernoulli_prior]{bernoulli_prior()}}, \code{\link[=beta_prior]{beta_prior()}}, \code{\link[=cauchy_prior]{cauchy_prior()}}, \code{\link[=gamma_prior]{gamma_prior()}},
-\code{\link[=normal_prior]{normal_prior()}}, \code{\link[=poisson_prior]{poisson_prior()}}, \code{\link[=uniform_prior]{uniform_prior()}}
+Prior constructor functions: \code{\link[=prior_bernoulli]{prior_bernoulli()}}, \code{\link[=prior_beta]{prior_beta()}}, \code{\link[=prior_cauchy]{prior_cauchy()}}, \code{\link[=prior_half_cauchy]{prior_half_cauchy()}},
+\code{\link[=prior_gamma]{prior_gamma()}}, \code{\link[=prior_normal]{prior_normal()}}, \code{\link[=prior_poisson]{prior_poisson()}}, \code{\link[=uniform_prior]{uniform_prior()}}
 
 Other prior classes: 
-\code{\link{BernoulliPrior-class}},
-\code{\link{BetaPrior-class}},
-\code{\link{CauchyPrior-class}},
-\code{\link{ExponentialPrior-class}},
-\code{\link{GammaPrior-class}},
-\code{\link{HalfCauchyPrior-class}},
-\code{\link{HalfNormalPrior-class}},
-\code{\link{NormalPrior-class}},
-\code{\link{PoissonPrior-class}},
+\code{\link{PriorBernoulli-class}},
+\code{\link{PriorBeta-class}},
+\code{\link{PriorCauchy-class}},
+\code{\link{PriorExponential-class}},
+\code{\link{PriorGamma-class}},
+\code{\link{PriorHalfCauchy-class}},
+\code{\link{PriorHalfNormal-class}},
+\code{\link{PriorNormal-class}},
+\code{\link{PriorPoisson-class}},
 \code{\link{UniformPrior-class}}
 }
 \concept{prior classes}
