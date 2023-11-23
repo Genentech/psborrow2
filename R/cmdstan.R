@@ -5,7 +5,7 @@
 #'
 #' @return `check_cmdstanr()` prints results from checks.
 #' @export
-#'
+#' @importFrom utils packageVersion
 #' @examples
 #' check_cmdstanr()
 check_cmdstanr <- function(check_sampling = FALSE) {
