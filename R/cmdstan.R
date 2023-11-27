@@ -5,12 +5,20 @@
 #'
 #' @return `check_cmdstanr()` prints results from checks.
 #' @export
-#'
+#' @importFrom utils packageVersion
 #' @examples
 #' check_cmdstanr()
 check_cmdstanr <- function(check_sampling = FALSE) {
+  if (requireNamespace("cmdstanr", quietly = TRUE)) {
+    cat("cmdstanr is installed.\n")
+    cat("cmdstanr version: \n")
+    cat(format(packageVersion("cmdstanr")), "\n")
+  } else {
+    cat("cmdstanr is not installed. \n")
+  }
+
   cat("cmdstan version: \n")
-  print(cmdstan_version())
+  cat(cmdstan_version(error_on_NA = FALSE), "\n")
 
   cat("Example program:\n")
   print_example_program(example = c("logistic"))
