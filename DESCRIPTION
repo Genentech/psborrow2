@@ -48,6 +48,7 @@ Imports:
     mvtnorm,
     future
 Suggests:
+    cmdstanr,
     survival,
     flexsurv,
     testthat (>= 3.0),
@@ -70,6 +71,7 @@ Suggests:
     table1,
     gt,
     gtsummary
+Additional_repositories: https://mc-stan.org/r-packages/
 Language: en-US
 SystemRequirements: cmdstan
 Collate:
