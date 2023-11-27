@@ -103,3 +103,26 @@ test_that("mcmc_sample.Simulation() creates an object of class `MCMCSimulationRe
   expect_class(mcmc_model_results[[1]][[1]], "CmdStanMCMC")
   expect_equal(sum(is.na(result_df$coverage)), 0)
 })
+
+test_that("mcmc_sample.Simulation() works with future plan multisession", {
+  skip_on_cran()
+  skip_on_ci()
+  library(future)
+  plan(multisession, workers = 2)
+  mcmc_res <- mcmc_sample(
+    valid_sim_obj,
+    keep_cmd_stan_models = TRUE,
+    chains = 1,
+    iter_sampling = 1000
+  )
+  result_df <- get_results(mcmc_res)
+  mcmc_model_results <- get_cmd_stan_models(mcmc_res)
+
+  expect_class(mcmc_res, "MCMCSimulationResult")
+  expect_class(result_df, "data.frame")
+  expect_class(mcmc_model_results, "list")
+  expect_class(mcmc_model_results[[1]], "list")
+  expect_class(mcmc_model_results[[1]][[1]], "CmdStanMCMC")
+  expect_equal(sum(is.na(result_df$coverage)), 0)
+  plan(sequential)
+})
