@@ -502,20 +502,20 @@ head(simulation_res_df)
 # 4     1.0 Moderate drift HR  4                  100          default
 # 5     0.6       No drift HR  1                  100          default
 # 6     1.0       No drift HR  2                  100          default
-#   borrowing_scenario covariate_scenario treatment_scenario    trt_var
-# 1       No borrowing      No adjustment            default 0.06383754
-# 2       No borrowing      No adjustment            default 0.06233316
-# 3       No borrowing      No adjustment            default 0.06306555
-# 4       No borrowing      No adjustment            default 0.06333808
-# 5     Full borrowing      No adjustment            default 0.02648792
-# 6     Full borrowing      No adjustment            default 0.02573194
-#     mse_mean  bias_mean null_coverage true_coverage
-# 1 0.05915273 0.06270199          0.58          0.96
-# 2 0.13032971 0.03916893          0.96          0.96
-# 3 0.04724394 0.01524864          0.44          0.96
-# 4 0.13079915 0.03571795          0.95          0.95
-# 5 0.02027734 0.02150292          0.10          0.96
-# 6 0.05067948 0.01040672          0.97          0.97
+#   borrowing_scenario covariate_scenario treatment_scenario trt_var   mse_mean
+# 1       No borrowing      No adjustment            default       0 0.05915273
+# 2       No borrowing      No adjustment            default       0 0.13032971
+# 3       No borrowing      No adjustment            default       0 0.04724394
+# 4       No borrowing      No adjustment            default       0 0.13079915
+# 5     Full borrowing      No adjustment            default       0 0.02027734
+# 6     Full borrowing      No adjustment            default       0 0.05067948
+#    bias_mean null_coverage true_coverage
+# 1 0.06270199          0.58          0.96
+# 2 0.03916893          0.96          0.96
+# 3 0.01524864          0.44          0.96
+# 4 0.03571795          0.95          0.95
+# 5 0.02150292          0.10          0.96
+# 6 0.01040672          0.97          0.97
 ```
 
 Let's quickly visualize the results using `ggplot2`. We will first
