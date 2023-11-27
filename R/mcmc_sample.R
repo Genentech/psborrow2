@@ -34,20 +34,20 @@ setMethod(
 #'     data_matrix = example_matrix,
 #'     covariates = add_covariates(
 #'       covariates = c("cov1", "cov2"),
-#'       priors = normal_prior(0, 1000)
+#'       priors = prior_normal(0, 1000)
 #'     ),
 #'     outcome = outcome_surv_weibull_ph(
 #'       "time",
 #'       "cnsr",
-#'       shape_prior = normal_prior(0, 1000),
-#'       baseline_prior = normal_prior(0, 1000)
+#'       shape_prior = prior_normal(0, 1000),
+#'       baseline_prior = prior_normal(0, 1000)
 #'     ),
 #'     borrowing = borrowing_details(
 #'       "BDB",
 #'       "ext",
-#'       exponential_prior(.001)
+#'       prior_exponential(.001)
 #'     ),
-#'     treatment = treatment_details("trt", normal_prior(0, 1000))
+#'     treatment = treatment_details("trt", prior_normal(0, 1000))
 #'   )
 #'
 #'   mcmc_results <- mcmc_sample(anls)
@@ -175,15 +175,26 @@ setMethod(
 #' if (check_cmdstan()) {
 #'   sim_object <- create_simulation_obj(
 #'     data_matrix_list = sdl,
-#'     outcome = outcome_bin_logistic("ep", normal_prior(0, 1000)),
+#'     outcome = outcome_bin_logistic("ep", prior_normal(0, 1000)),
 #'     borrowing = sim_borrowing_list(list(
 #'       full_borrowing = borrowing_details("Full borrowing", "ext"),
-#'       bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
+#'       bdb = borrowing_details("BDB", "ext", prior_exponential(0.0001))
 #'     )),
-#'     treatment = treatment_details("trt", normal_prior(0, 1000))
+#'     treatment = treatment_details("trt", prior_normal(0, 1000))
 #'   )
 #'
 #'   mcmc_sample(sim_object, chains = 1, iter_warmup = 500L, iter_sampling = 1000L)
+#' }
+#' \dontrun{
+#' library(future)
+#' # Use two separate R processes
+#' plan("multisession", workers = 2)
+#'
+#' # and two parallel threads in each.
+#' mcmc_sample(sim_object, chains = 1, iter_warmup = 500L, iter_sampling = 1000L, parallel_chains = 2)
+#'
+#' # Tidy up processes when finished
+#' plan("sequential")
 #' }
 setMethod(
   "mcmc_sample",
@@ -244,56 +255,76 @@ setMethod(
       true_coverage <- null_coverage <- vector(mode = "integer", length = n_sim)
       bias <- mse <- var <- vector(mode = "numeric", length = n_sim)
 
+      sim_futures <- list()
       for (j in 1:n_sim) {
         anls_obj <- x@analysis_obj_list[[i]][[j]]
 
-        mcmc_results <- mcmc_sample(
-          anls_obj,
-          iter_warmup = iter_warmup,
-          iter_sampling = iter_sampling,
-          chains = chains,
-          verbose = verbose,
-          ...
-        )
+        sim_futures[[j]] <- future(
+          packages = "psborrow2",
+          seed = TRUE,
+          expr = {
+            if (!file.exists(anls_obj@model$exe_file())) anls_obj@model$compile()
 
-        draws <- mcmc_results$draws()
+            mcmc_results <- mcmc_sample(
+              anls_obj,
+              iter_warmup = iter_warmup,
+              iter_sampling = iter_sampling,
+              chains = chains,
+              verbose = verbose,
+              ...
+            )
 
-        # Coverage
-        true_coverage[j] <- sim_is_true_effect_covered(
-          draws,
-          true_effect,
-          posterior_quantiles
-        )
+            draws <- mcmc_results$draws()
 
-        null_coverage[j] <- sim_is_null_effect_covered(
-          draws,
-          posterior_quantiles
-        )
+            keep <- list()
+            # Coverage
+            keep$true_coverage <- sim_is_true_effect_covered(
+              draws,
+              true_effect,
+              posterior_quantiles
+            )
 
-        # Bias
-        bias[j] <- sim_estimate_bias(
-          draws,
-          true_effect
-        )
+            keep$null_coverage <- sim_is_null_effect_covered(
+              draws,
+              posterior_quantiles
+            )
 
-        # MSE
-        mse[j] <- sim_estimate_mse(
-          draws,
-          true_effect
-        )
+            # Bias
+            keep$bias <- sim_estimate_bias(
+              draws,
+              true_effect
+            )
 
-        # Variance of beta_trt
-        var[j] <- sim_estimate_effect_variance(draws)
+            # MSE
+            keep$mse <- sim_estimate_mse(
+              draws,
+              true_effect
+            )
 
-        # Save draws if desired
-        if (keep_cmd_stan_models) {
-          cmd_stan_models_out[[i]][[j]] <- mcmc_results
-        } else {
-          for (file in mcmc_results$output_files()) {
-            file.remove(file)
+            # Variance of beta_trt
+            keep$var <- sim_estimate_effect_variance(draws)
+
+            # Save draws if desired
+            if (keep_cmd_stan_models) {
+              keep$cmd_stan_models_out <- mcmc_results
+            } else {
+              for (file in mcmc_results$output_files()) {
+                file.remove(file)
+              }
+              rm(mcmc_results)
+            }
+            keep
           }
-          rm(mcmc_results)
-        }
+        )
+      }
+
+      for (j in 1:n_sim) {
+        sim_result <- value(sim_futures[[j]])
+        true_coverage[j] <- sim_result$true_coverage
+        null_coverage[j] <- sim_result$null_coverage
+        bias[j] <- sim_result$bias
+        mse[j] <- sim_result$mse
+        if (keep_cmd_stan_models) cmd_stan_models_out[[i]][[j]] <- sim_result$cmd_stan_models_out
       }
 
       # Add simulation study results

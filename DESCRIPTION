@@ -45,7 +45,8 @@ Imports:
     posterior,
     generics,
     Matrix,
-    mvtnorm
+    mvtnorm,
+    future
 Suggests:
     survival,
     flexsurv,
@@ -76,15 +77,12 @@ Collate:
     'prior_class.R'
     'covariate_class.R'
     'add_covariates.R'
-    'normal_prior.R'
+    'prior_normal.R'
     'treatment_class.R'
     'borrowing_class.R'
     'outcome_class.R'
     'analysis_class.R'
-    'bernoulli_prior.R'
-    'beta_prior.R'
     'borrowing_details.R'
-    'cauchy_prior.R'
     'check_data_matrix_has_columns.R'
     'cmdstan.R'
     'create_analysis_obj.R'
@@ -93,7 +91,7 @@ Collate:
     'sim_treatment_list.R'
     'helpers.R'
     'outcome_bin_logistic.R'
-    'exponential_prior.R'
+    'prior_exponential.R'
     'outcome_surv_weibull_ph.R'
     'outcome_surv_exponential.R'
     'sim_outcome_list.R'
@@ -103,9 +101,6 @@ Collate:
     'simulation_class.R'
     'create_simulation_obj.R'
     'data.R'
-    'gamma_prior.R'
-    'half_cauchy_prior.R'
-    'half_normal_prior.R'
     'make_analysis_object_list.R'
     'make_model_string_data.R'
     'make_model_string_functions.R'
@@ -115,8 +110,14 @@ Collate:
     'mcmc_sample.R'
     'mcmc_simulation_result.R'
     'package.R'
-    'poisson_prior.R'
     'prepare_stan_data_inputs.R'
+    'prior_bernoulli.R'
+    'prior_beta.R'
+    'prior_cauchy.R'
+    'prior_gamma.R'
+    'prior_half_cauchy.R'
+    'prior_half_normal.R'
+    'prior_poisson.R'
     'sim_covariates.R'
     'sim_estimate_bias.R'
     'sim_estimate_effect_variance.R'

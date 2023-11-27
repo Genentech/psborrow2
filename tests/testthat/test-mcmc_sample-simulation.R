@@ -48,7 +48,7 @@ valid_data_list <- sim_data_list(
 # Valid borrowing list
 valid_borrowing <- sim_borrowing_list(
   list(
-    bdb = borrowing_details(method = "BDB", ext_flag_col = "ext", tau_prior = exponential_prior(0.0001)),
+    bdb = borrowing_details(method = "BDB", ext_flag_col = "ext", tau_prior = prior_exponential(0.0001)),
     full = borrowing_details(method = "Full borrowing", ext_flag_col = "ext")
   )
 )
@@ -58,21 +58,21 @@ valid_outcome <- sim_outcome_list(
   list(standard_outcome = outcome_surv_exponential(
     time_var = "eventtime",
     cens_var = "censor",
-    baseline_prior = normal_prior(0, 1000)
+    baseline_prior = prior_normal(0, 1000)
   ))
 )
 
 # Valid covariate list
 valid_covariate <- sim_covariate_list(
   list(
-    cov1 = add_covariates("cov1", normal_prior(0, 1000)),
+    cov1 = add_covariates("cov1", prior_normal(0, 1000)),
     `no covs` = NULL
   )
 )
 
 # Valid treatment list
 valid_treatment <- sim_treatment_list(
-  list(standard_tx = treatment_details(trt_flag_col = "trt", trt_prior = normal_prior(0, 1000)))
+  list(standard_tx = treatment_details(trt_flag_col = "trt", trt_prior = prior_normal(0, 1000)))
 )
 
 # Valid simulation object
@@ -102,4 +102,27 @@ test_that("mcmc_sample.Simulation() creates an object of class `MCMCSimulationRe
   expect_class(mcmc_model_results[[1]], "list")
   expect_class(mcmc_model_results[[1]][[1]], "CmdStanMCMC")
   expect_equal(sum(is.na(result_df$coverage)), 0)
+})
+
+test_that("mcmc_sample.Simulation() works with future plan multisession", {
+  skip_on_cran()
+  skip_on_ci()
+  library(future)
+  plan(multisession, workers = 2)
+  mcmc_res <- mcmc_sample(
+    valid_sim_obj,
+    keep_cmd_stan_models = TRUE,
+    chains = 1,
+    iter_sampling = 1000
+  )
+  result_df <- get_results(mcmc_res)
+  mcmc_model_results <- get_cmd_stan_models(mcmc_res)
+
+  expect_class(mcmc_res, "MCMCSimulationResult")
+  expect_class(result_df, "data.frame")
+  expect_class(mcmc_model_results, "list")
+  expect_class(mcmc_model_results[[1]], "list")
+  expect_class(mcmc_model_results[[1]][[1]], "CmdStanMCMC")
+  expect_equal(sum(is.na(result_df$coverage)), 0)
+  plan(sequential)
 })

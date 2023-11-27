@@ -53,8 +53,8 @@
 #' between internal and external controls) how much borrowing of the external
 #' control group will be performed.
 #' Example hyperpriors include largely uninformative inverse gamma distributions
-#' \[e.g., `gamma_prior(alpha = .001, beta = .001)`\] as well as more
-#' informative distributions \[e.g., `gamma_prior(alpha = 1, beta = .001`)\],
+#' \[e.g., `prior_gamma(alpha = .001, beta = .001)`\] as well as more
+#' informative distributions \[e.g., `prior_gamma(alpha = 1, beta = .001`)\],
 #' though any distribution \eqn{x \in (0, \infty)} can be used. Distributions
 #' with more density at higher values of \eqn{x} (i.e., higher precision)
 #' will lead to more borrowing.
@@ -74,7 +74,7 @@
 #' sb <- borrowing_details(
 #'   method = "BDB",
 #'   ext_flag_col = "ext",
-#'   tau_prior = gamma_prior(0.001, 0.001)
+#'   tau_prior = prior_gamma(0.001, 0.001)
 #' )
 #'
 borrowing_details <- function(method,

@@ -109,14 +109,14 @@ logistic_psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
       w = ifelse(example_matrix[, "ext"] == 1, w, 1)
     )),
     covariates = add_covariates(c("cov1", "cov2"),
-      priors = normal_prior(0, 100)
+      priors = prior_normal(0, 100)
     ),
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext",
     ),
-    treatment = treatment_details("trt", normal_prior(0, 100)),
+    treatment = treatment_details("trt", prior_normal(0, 100)),
     outcome = outcome_bin_logistic("resp",
-      baseline_prior = normal_prior(0, 1000),
+      baseline_prior = prior_normal(0, 1000),
       weight_var = "w"
     ),
     quiet = TRUE
@@ -312,14 +312,14 @@ psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
   exp_psb2 <- create_analysis_obj(
     data_matrix = as.matrix(cbind(sim_data_exp, w = ifelse(example_matrix[, "ext"] == 1, w, 1))),
     covariates = add_covariates(c("cov1", "cov2"),
-      priors = normal_prior(0, 100)
+      priors = prior_normal(0, 100)
     ),
     borrowing = borrowing_details("Full borrowing",
       ext_flag_col = "ext",
     ),
-    treatment = treatment_details("trt", normal_prior(0, 100)),
+    treatment = treatment_details("trt", prior_normal(0, 100)),
     outcome = outcome_surv_exponential("eventtime", "censor",
-      baseline_prior = normal_prior(0, 1000),
+      baseline_prior = prior_normal(0, 1000),
       weight_var = "w"
     ),
     quiet = TRUE

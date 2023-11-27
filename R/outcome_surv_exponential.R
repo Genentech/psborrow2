@@ -68,7 +68,7 @@
 #' es <- outcome_surv_exponential(
 #'   time_var = "time",
 #'   cens_var = "cens",
-#'   baseline_prior = normal_prior(0, 1000)
+#'   baseline_prior = prior_normal(0, 1000)
 #' )
 outcome_surv_exponential <- function(time_var, cens_var, baseline_prior, weight_var = "") {
   assert_string(time_var)

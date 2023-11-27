@@ -14,13 +14,13 @@
 #' @examples
 #' anls_obj <- create_analysis_obj(
 #'   data_matrix = example_matrix,
-#'   outcome = outcome_surv_exponential("time", "cnsr", normal_prior(0, 100)),
+#'   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
 #'   borrowing = borrowing_details(
 #'     "BDB",
 #'     "ext",
-#'     exponential_prior(0.001)
+#'     prior_exponential(0.001)
 #'   ),
-#'   treatment = treatment_details("trt", normal_prior(0, 100))
+#'   treatment = treatment_details("trt", prior_normal(0, 100))
 #' )
 #'
 #' data_in <- psborrow2:::prepare_stan_data_inputs(anls_obj)

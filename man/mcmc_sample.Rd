@@ -85,20 +85,20 @@ if (check_cmdstan()) {
     data_matrix = example_matrix,
     covariates = add_covariates(
       covariates = c("cov1", "cov2"),
-      priors = normal_prior(0, 1000)
+      priors = prior_normal(0, 1000)
     ),
     outcome = outcome_surv_weibull_ph(
       "time",
       "cnsr",
-      shape_prior = normal_prior(0, 1000),
-      baseline_prior = normal_prior(0, 1000)
+      shape_prior = prior_normal(0, 1000),
+      baseline_prior = prior_normal(0, 1000)
     ),
     borrowing = borrowing_details(
       "BDB",
       "ext",
-      exponential_prior(.001)
+      prior_exponential(.001)
     ),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
   mcmc_results <- mcmc_sample(anls)
@@ -151,14 +151,25 @@ sdl <- sim_data_list(
 if (check_cmdstan()) {
   sim_object <- create_simulation_obj(
     data_matrix_list = sdl,
-    outcome = outcome_bin_logistic("ep", normal_prior(0, 1000)),
+    outcome = outcome_bin_logistic("ep", prior_normal(0, 1000)),
     borrowing = sim_borrowing_list(list(
       full_borrowing = borrowing_details("Full borrowing", "ext"),
-      bdb = borrowing_details("BDB", "ext", exponential_prior(0.0001))
+      bdb = borrowing_details("BDB", "ext", prior_exponential(0.0001))
     )),
-    treatment = treatment_details("trt", normal_prior(0, 1000))
+    treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
   mcmc_sample(sim_object, chains = 1, iter_warmup = 500L, iter_sampling = 1000L)
+}
+\dontrun{
+library(future)
+# Use two separate R processes
+plan("multisession", workers = 2)
+
+# and two parallel threads in each.
+mcmc_sample(sim_object, chains = 1, iter_warmup = 500L, iter_sampling = 1000L, parallel_chains = 2)
+
+# Tidy up processes when finished
+plan("sequential")
 }
 }

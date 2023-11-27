@@ -3,8 +3,8 @@ test_that("Weibull survival distributions are rendering correctly", {
   surv_dist <- outcome_surv_weibull_ph(
     time_var = "time",
     cens_var = "cens",
-    normal_prior(0, 1000),
-    normal_prior(0, 1000)
+    prior_normal(0, 1000),
+    prior_normal(0, 1000)
   )
 
   # Expect correct class
@@ -23,8 +23,8 @@ test_that("get_vars works for OutcomeSurvWeibullPH", {
     get_vars(outcome_surv_weibull_ph(
       time_var = "TIME",
       cens_var = "CENS",
-      normal_prior(0, 1000),
-      normal_prior(0, 1000)
+      prior_normal(0, 1000),
+      prior_normal(0, 1000)
     )),
     c(time_var = "TIME", cens_var = "CENS")
   )
@@ -33,8 +33,8 @@ test_that("get_vars works for OutcomeSurvWeibullPH", {
     get_vars(outcome_surv_weibull_ph(
       time_var = "TIME",
       cens_var = "CENS",
-      normal_prior(0, 1000),
-      normal_prior(0, 1000),
+      prior_normal(0, 1000),
+      prior_normal(0, 1000),
       weight_var = "W"
     )),
     c(time_var = "TIME", cens_var = "CENS", weight_var = "W")
@@ -45,8 +45,8 @@ test_that("outcome_surv_weibull_ph works with weights", {
   result <- outcome_surv_weibull_ph(
     time_var = "time",
     cens_var = "cens",
-    normal_prior(0, 1000),
-    normal_prior(0, 1000),
+    prior_normal(0, 1000),
+    prior_normal(0, 1000),
     weight_var = "w"
   )
   expect_class(result, "OutcomeSurvWeibullPH")
