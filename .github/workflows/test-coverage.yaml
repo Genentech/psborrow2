@@ -23,10 +23,10 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::covr, cmdstanr
+          extra-packages: any::covr, github::stan-dev/cmdstanr
           needs: coverage
 
-      - name: Install and unpack cmdstanr 
+      - name: Install and unpack cmdstan
         run: |
           Rscript -e "cmdstanr::check_cmdstan_toolchain(fix = TRUE)"
           Rscript -e "cmdstanr::install_cmdstan()"
