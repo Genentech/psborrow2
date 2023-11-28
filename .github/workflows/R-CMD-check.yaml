@@ -35,7 +35,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: rcmdcheck, github::stan-dev/cmdstanr
+          extra-packages: rcmdcheck, github::stan-dev/cmdstanr@v0.5.2
 
       - name: Install system dependencies on Linux
         if: runner.os == 'Linux'
