@@ -1,7 +1,7 @@
 Type: Package
 Package: psborrow2
 Title: An R Package for Bayesian Dynamic Borrowing Simulation Study and Analysis
-Version: 0.0.2.0
+Version: 0.0.2
 Authors@R: c(
    person(
       given = "Matt",
@@ -32,8 +32,7 @@ Description: `psborrow2` is an R package for complex, innovative trial designs u
 License: Apache License (>= 2)
 Encoding: UTF-8
 Depends:
-    R (>= 3.5.0),
-    cmdstanr
+    R (>= 3.5.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Config/testthat/edition: 3
@@ -48,6 +47,7 @@ Imports:
     mvtnorm,
     future
 Suggests:
+    cmdstanr,
     survival,
     flexsurv,
     testthat (>= 3.0),
@@ -70,8 +70,7 @@ Suggests:
     table1,
     gt,
     gtsummary
-Remotes:
-   github::stan-dev/cmdstanr@v0.5.2
+Additional_repositories: https://mc-stan.org/r-packages/
 Language: en-US
 SystemRequirements: cmdstan
 Collate:

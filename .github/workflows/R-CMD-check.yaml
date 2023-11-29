@@ -35,7 +35,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: rcmdcheck
+          extra-packages: rcmdcheck, github::stan-dev/cmdstanr
 
       - name: Install system dependencies on Linux
         if: runner.os == 'Linux'
@@ -43,9 +43,8 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y texlive-fonts-extra
 
-      - name: Install and unpack cmdstanr 
+      - name: Install and unpack cmdstan
         run: |
-          Rscript -e "install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/', getOption('repos')))"
           Rscript -e "cmdstanr::check_cmdstan_toolchain(fix = TRUE)"
           Rscript -e "cmdstanr::install_cmdstan()"
 
