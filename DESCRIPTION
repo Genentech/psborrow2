@@ -32,8 +32,7 @@ Description: `psborrow2` is an R package for complex, innovative trial designs u
 License: Apache License (>= 2)
 Encoding: UTF-8
 Depends:
-    R (>= 3.5.0),
-    cmdstanr
+    R (>= 3.5.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Config/testthat/edition: 3
