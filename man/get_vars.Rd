@@ -10,6 +10,7 @@
 \alias{get_vars,Borrowing-method}
 \alias{get_vars,TimeToEvent-method}
 \alias{get_vars,BinaryOutcome-method}
+\alias{get_vars,ContinuousOutcome-method}
 \alias{get_vars,Analysis-method}
 \alias{get_vars,NULL-method}
 \alias{get_vars,SimTreatmentList-method}
@@ -30,6 +31,8 @@ get_vars(object)
 \S4method{get_vars}{TimeToEvent}(object)
 
 \S4method{get_vars}{BinaryOutcome}(object)
+
+\S4method{get_vars}{ContinuousOutcome}(object)
 
 \S4method{get_vars}{Analysis}(object)
 

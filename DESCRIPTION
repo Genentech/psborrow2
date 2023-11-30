@@ -32,7 +32,8 @@ Description: `psborrow2` is an R package for complex, innovative trial designs u
 License: Apache License (>= 2)
 Encoding: UTF-8
 Depends:
-    R (>= 3.5.0)
+    R (>= 3.5.0),
+    cmdstanr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Config/testthat/edition: 3
@@ -110,13 +111,14 @@ Collate:
     'make_model_string_transf_params.R'
     'mcmc_sample.R'
     'mcmc_simulation_result.R'
+    'prior_half_cauchy.R'
+    'outcome_cont_normal.R'
     'package.R'
     'prepare_stan_data_inputs.R'
     'prior_bernoulli.R'
     'prior_beta.R'
     'prior_cauchy.R'
     'prior_gamma.R'
-    'prior_half_cauchy.R'
     'prior_half_normal.R'
     'prior_poisson.R'
     'sim_covariates.R'

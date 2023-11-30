@@ -81,6 +81,42 @@ setClass(
   contains = "Outcome"
 )
 
+#' `ContinuousOutcome` class
+#' @slot function_stan_code character. Code to include in the Stan functions program block.
+#' @slot param_stan_code character. Code to include in the Stan parameters program block.
+#' @slot likelihood_stan_code character. Code defining the likelihood to include in the Stan model program block.
+#' @slot data_stan_code character. Code to include in the Stan data program block.
+#' @slot n_param integer. Number of ancillary parameters for the model to estimate.
+#' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
+#' @slot continuous_var character. Variable used for outcome in `ContinuousOutcome` objects.
+#' @slot baseline_prior `Prior`. Object of class `Prior`
+#' specifying prior distribution for the baseline outcome.
+#' @family outcome
+setClass(
+  "ContinuousOutcome",
+  slots = c(
+    function_stan_code = "character",
+    param_stan_code = "character",
+    likelihood_stan_code = "character",
+    data_stan_code = "character",
+    n_param = "integer",
+    param_priors = "list",
+    continuous_var = "character",
+    weight_var = "character",
+    baseline_prior = "Prior"
+  ),
+  prototype = list(
+    n_param = 0L,
+    function_stan_code = "",
+    param_stan_code = "",
+    likelihood_stan_code = "",
+    weight_var = "",
+    data_stan_code = "array[N] int y;",
+    baseline_prior = NULL
+  ),
+  contains = "Outcome"
+)
+
 # show ----
 setMethod(
   f = "show",
@@ -123,5 +159,16 @@ setMethod(
   definition = function(object) {
     weight_var <- if (object@weight_var != "") object@weight_var
     c(binary_var = object@binary_var, weight_var = weight_var)
+  }
+)
+
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "ContinuousOutcome",
+  definition = function(object) {
+    weight_var <- if (object@weight_var != "") object@weight_var
+    c(continuous_var = object@continuous_var, weight_var = weight_var)
   }
 )

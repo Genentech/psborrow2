@@ -45,6 +45,7 @@ lg <- outcome_bin_logistic(
 }
 \seealso{
 Other outcome models: 
+\code{\link{outcome_cont_normal}()},
 \code{\link{outcome_surv_exponential}()},
 \code{\link{outcome_surv_weibull_ph}()}
 }

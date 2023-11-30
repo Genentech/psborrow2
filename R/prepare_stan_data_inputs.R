@@ -41,6 +41,8 @@ prepare_stan_data_inputs <- function(analysis_obj) {
     data_in[["cens"]] <- trimmed_data_matrix[, analysis_obj@outcome@cens_var]
   } else if (is(analysis_obj@outcome, "BinaryOutcome")) {
     data_in[["y"]] <- trimmed_data_matrix[, analysis_obj@outcome@binary_var]
+  } else if (is(analysis_obj@outcome, "ContinuousOutcome")) {
+    data_in[["y"]] <- trimmed_data_matrix[, analysis_obj@outcome@continuous_var]
   }
 
   ## BDB additions
