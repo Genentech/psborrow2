@@ -118,23 +118,31 @@ create_analysis_obj <- function(data_matrix,
   analysis_obj@model_string <- stan_model_string
 
   # Compile model
-  stan_file <- write_stan_file(analysis_obj@model_string)
-  if (!quiet) {
-    analysis_obj@model <- cmdstan_model(stan_file)
-  } else if (quiet) {
-    suppressMessages(
-      analysis_obj@model <- cmdstan_model(stan_file)
+  if (is_cmdstanr_available()) {
+    stan_file <- cmdstanr::write_stan_file(analysis_obj@model_string)
+    if (!quiet) {
+      analysis_obj@model <- cmdstanr::cmdstan_model(stan_file)
+    } else if (quiet) {
+      suppressMessages(
+        analysis_obj@model <- cmdstanr::cmdstan_model(stan_file)
+      )
+    }
+
+    if (!quiet) {
+      message("Stan program compiled successfully!")
+    }
+
+    # Prepare data inputs
+    analysis_obj@ready_to_sample <- TRUE
+    if (!quiet) {
+      message("Ready to go! Now call `mcmc_sample()`.")
+    }
+  } else {
+    warning(
+      "Stan program could not be compiled as cmdstanr is not available.",
+      call. = FALSE
     )
-  }
-
-  if (!quiet) {
-    message("Stan program compiled successfully!")
-  }
-
-  # Prepare data inputs
-  analysis_obj@ready_to_sample <- TRUE
-  if (!quiet) {
-    message("Ready to go! Now call `mcmc_sample()`.")
+    analysis_obj@ready_to_sample <- FALSE
   }
 
   return(analysis_obj)
