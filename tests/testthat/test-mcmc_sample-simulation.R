@@ -75,6 +75,69 @@ valid_treatment <- sim_treatment_list(
   list(standard_tx = treatment_details(trt_flag_col = "trt", trt_prior = prior_normal(0, 1000)))
 )
 
+# Tests when cmdstanr/CmdStan are not available ------------
+test_that("mcmc_sample.Simulation behaves gracefully when cmdstanr is not available", {
+  skip_if(is_cmdstanr_available())
+
+  data_list <- sim_data_list(
+    list(list(sim_single_matrix(true_hr = 0.6))),
+    data.frame(true_hr = 0.6, drift_hr = 1.0, index = 1),
+    effect = "true_hr",
+    drift = "drift_hr",
+    index = "index"
+  )
+  borrowing <- sim_borrowing_list(list(full = borrowing_details(method = "Full borrowing", ext_flag_col = "ext")))
+  outcome <- sim_outcome_list(
+    list(standard_outcome = outcome_surv_exponential(
+      time_var = "eventtime",
+      cens_var = "censor",
+      baseline_prior = prior_normal(0, 1000)
+    ))
+  )
+  covariate <- sim_covariate_list(list(cov1 = add_covariates("cov1", prior_normal(0, 1000)), `no covs` = NULL))
+
+  treatment <- sim_treatment_list(
+    list(standard_tx = treatment_details(trt_flag_col = "trt", trt_prior = prior_normal(0, 1000)))
+  )
+
+  expect_warning(
+    sim_obj <- create_simulation_obj(
+      data_matrix_list = data_list,
+      outcome = outcome,
+      borrowing = borrowing,
+      treatment = treatment
+    ),
+    "could not be compiled"
+  )
+  expect_class(sim_obj, "Simulation")
+  expect_warning(
+    result <- mcmc_sample(sim_obj),
+    "is not ready for sampling and unexpected results may occur"
+  )
+  expect_class(result, "MCMCSimulationResult")
+  expect_equal(
+    get_results(result),
+    data.frame(
+      true_hr = 0.6,
+      drift_hr = 1,
+      index = 1,
+      n_datasets_per_param = 1L,
+      outcome_scenario = "standard_outcome",
+      borrowing_scenario = "full",
+      covariate_scenario = "No adjustment",
+      treatment_scenario = "standard_tx",
+      trt_var = 0,
+      mse_mean = NA_real_,
+      bias_mean = NA_real_,
+      null_coverage = NA_real_,
+      true_coverage = NA_real_
+    )
+  )
+})
+
+
+# Further tests if cmdstanr/CmdStan are available ------------
+
 # Valid simulation object
 skip_if_not(check_cmdstan())
 valid_sim_obj <- create_simulation_obj(

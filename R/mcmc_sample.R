@@ -69,7 +69,12 @@ setMethod(
     assert_numeric(chains)
     assert_flag(verbose)
 
-    if (!isTRUE(x@ready_to_sample)) stop("Cannot sample object. Create object using `create_analysis_obj()`")
+    if (!isTRUE(x@ready_to_sample)) {
+      stop(
+        "Cannot sample object. Check cmdstanr is installed and create object using `create_analysis_obj()`",
+        call. = FALSE
+      )
+    }
 
     if (verbose) {
       x@model$sample(
@@ -258,64 +263,79 @@ setMethod(
       sim_futures <- list()
       for (j in 1:n_sim) {
         anls_obj <- x@analysis_obj_list[[i]][[j]]
+        if (!anls_obj@ready_to_sample) {
+          warning(
+            "Model x@analysis_obj_list[[", i, "]][[", j, "]]) is not ready ",
+            "for sampling and unexpected results may occur. ",
+            "Please check cmdstanr is installed and recreate objects.",
+            immediate. = TRUE,
+            call. = FALSE
+          )
+          sim_futures[[j]] <- future(expr = list(
+            true_coverage = NA,
+            null_coverage = NA,
+            bias = NA,
+            mse = NA
+          ))
+        } else {
+          sim_futures[[j]] <- future(
+            packages = "psborrow2",
+            seed = TRUE,
+            expr = {
+              if (!file.exists(anls_obj@model$exe_file())) anls_obj@model$compile()
 
-        sim_futures[[j]] <- future(
-          packages = "psborrow2",
-          seed = TRUE,
-          expr = {
-            if (!file.exists(anls_obj@model$exe_file())) anls_obj@model$compile()
+              mcmc_results <- mcmc_sample(
+                anls_obj,
+                iter_warmup = iter_warmup,
+                iter_sampling = iter_sampling,
+                chains = chains,
+                verbose = verbose,
+                ...
+              )
 
-            mcmc_results <- mcmc_sample(
-              anls_obj,
-              iter_warmup = iter_warmup,
-              iter_sampling = iter_sampling,
-              chains = chains,
-              verbose = verbose,
-              ...
-            )
+              draws <- mcmc_results$draws()
 
-            draws <- mcmc_results$draws()
+              keep <- list()
+              # Coverage
+              keep$true_coverage <- sim_is_true_effect_covered(
+                draws,
+                true_effect,
+                posterior_quantiles
+              )
 
-            keep <- list()
-            # Coverage
-            keep$true_coverage <- sim_is_true_effect_covered(
-              draws,
-              true_effect,
-              posterior_quantiles
-            )
+              keep$null_coverage <- sim_is_null_effect_covered(
+                draws,
+                posterior_quantiles
+              )
 
-            keep$null_coverage <- sim_is_null_effect_covered(
-              draws,
-              posterior_quantiles
-            )
+              # Bias
+              keep$bias <- sim_estimate_bias(
+                draws,
+                true_effect
+              )
 
-            # Bias
-            keep$bias <- sim_estimate_bias(
-              draws,
-              true_effect
-            )
+              # MSE
+              keep$mse <- sim_estimate_mse(
+                draws,
+                true_effect
+              )
 
-            # MSE
-            keep$mse <- sim_estimate_mse(
-              draws,
-              true_effect
-            )
+              # Variance of beta_trt
+              keep$var <- sim_estimate_effect_variance(draws)
 
-            # Variance of beta_trt
-            keep$var <- sim_estimate_effect_variance(draws)
-
-            # Save draws if desired
-            if (keep_cmd_stan_models) {
-              keep$cmd_stan_models_out <- mcmc_results
-            } else {
-              for (file in mcmc_results$output_files()) {
-                file.remove(file)
+              # Save draws if desired
+              if (keep_cmd_stan_models) {
+                keep$cmd_stan_models_out <- mcmc_results
+              } else {
+                for (file in mcmc_results$output_files()) {
+                  file.remove(file)
+                }
+                rm(mcmc_results)
               }
-              rm(mcmc_results)
+              keep
             }
-            keep
-          }
-        )
+          )
+        }
       }
 
       for (j in 1:n_sim) {

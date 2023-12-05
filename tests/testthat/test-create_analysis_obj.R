@@ -1,5 +1,4 @@
-skip_on_cran()
-skip_if_not(check_cmdstan())
+# Tests which work without cmdstanr/CmdStan ------
 
 # Build some valid inputs ----
 ac <- add_covariates(
@@ -194,6 +193,41 @@ test_that("Columns in analysis_obj should be in matrix", {
     "The following specified variables were not found in `data_matrix`:\n  ext_flag_col: tira"
   )
 })
+
+
+test_that("create_analysis_obj behaves gracefully if cmdstanr is unavailable", {
+  skip_if(is_cmdstanr_available())
+
+  expect_warning(
+    object <- create_analysis_obj(
+      data_matrix = example_matrix,
+      outcome = outcome_surv_exponential(
+        time_var = "time",
+        cens_var = "cnsr",
+        prior_normal(0, 100000)
+      ),
+      borrowing = borrowing_details(
+        "BDB",
+        ext_flag_col = "ext",
+        tau_prior = prior_gamma(0.001, 0.001)
+      ),
+      treatment = treatment_details("trt", prior_normal(0, 100000))
+    ),
+    "could not be compiled",
+    fixed = TRUE
+  )
+
+  expect_false(object@ready_to_sample)
+
+  expect_equal(
+    get_vars(object),
+    c(time_var = "time", cens_var = "cnsr", ext_flag_col = "ext", trt_flag_col = "trt")
+  )
+})
+
+# Tests which require cmdstanr/CmdStan ------
+skip_on_cran()
+skip_if_not(check_cmdstan())
 
 # Test All combinations
 borrowing_list <- list(bd_fb, bd_nb, bd_db)
