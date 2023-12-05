@@ -30,7 +30,6 @@ setClassUnion("CmdStanModelOrNULL", c("CmdStanModel", "NULL"))
 #' @include outcome_class.R
 #' @include borrowing_class.R
 #' @include treatment_class.R
-#' @import cmdstanr
 .analysis_obj <- setClass(
   "Analysis",
   slots = c(

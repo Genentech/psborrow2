@@ -1,3 +1,37 @@
+test_that("mcmc_sample gracefully fails if cmdstanr is unavailable", {
+  skip_if(is_cmdstanr_available())
+
+  expect_warning(
+    object <- create_analysis_obj(
+      data_matrix = example_matrix,
+      outcome = outcome_surv_exponential(
+        time_var = "time",
+        cens_var = "cnsr",
+        prior_normal(0, 100000)
+      ),
+      borrowing = borrowing_details(
+        "BDB",
+        ext_flag_col = "ext",
+        tau_prior = prior_gamma(0.001, 0.001)
+      ),
+      treatment = treatment_details("trt", prior_normal(0, 100000))
+    )
+  )
+
+  expect_error(
+    result <- mcmc_sample(
+      object,
+      iter_warmup = 800,
+      iter_sampling = 800,
+      chains = 1
+    ),
+    regexp = "Cannot sample object",
+    fixed = TRUE
+  )
+})
+
+
+
 skip_if_not(check_cmdstan())
 
 # Error checking----
