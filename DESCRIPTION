@@ -29,11 +29,12 @@ Description: `psborrow2` is an R package for complex, innovative trial designs u
    other trial and borrowing characteristics (e.g. sample size, covariates) in
    a unified way; and second, `psborrow2` provides a user-friendly interface for applying BDB
    on the study results handles the MCMC sampling on behalf of the user.
+URL: https://github.com/Genentech/psborrow2, https://genentech.github.io/psborrow2/
+BugReports: https://github.com/Genentech/psborrow2/issues
 License: Apache License (>= 2)
 Encoding: UTF-8
 Depends:
-    R (>= 3.5.0),
-    cmdstanr
+    R (>= 3.5.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Config/testthat/edition: 3
