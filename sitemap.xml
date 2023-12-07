@@ -64,6 +64,9 @@
     <loc>https://genentech.github.io/psborrow2/reference/Borrowing-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/ContinuousOutcome-class.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/Covariates-class.html</loc>
   </url>
   <url>
@@ -74,6 +77,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/OutcomeBinaryLogistic-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/OutcomeContinuousNormal-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/OutcomeSurvExponential-class.html</loc>
@@ -278,6 +284,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/outcome_bin_logistic.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/outcome_cont_normal.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/outcome_surv_exponential.html</loc>
