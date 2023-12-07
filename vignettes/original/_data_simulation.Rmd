@@ -17,7 +17,7 @@ options("max.print" = 20)
 
 This vignette will show the internal functions for generating data that can be used in simulation studies.
 
-```{r setup}
+```{r setup, message = FALSE}
 library(psborrow2)
 ```
 

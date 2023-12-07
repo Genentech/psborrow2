@@ -275,7 +275,8 @@ setMethod(
             true_coverage = NA,
             null_coverage = NA,
             bias = NA,
-            mse = NA
+            mse = NA,
+            var = NA
           ))
         } else {
           sim_futures[[j]] <- future(
@@ -344,6 +345,7 @@ setMethod(
         null_coverage[j] <- sim_result$null_coverage
         bias[j] <- sim_result$bias
         mse[j] <- sim_result$mse
+        var[j] <- sim_result$var
         if (keep_cmd_stan_models) cmd_stan_models_out[[i]][[j]] <- sim_result$cmd_stan_models_out
       }
 

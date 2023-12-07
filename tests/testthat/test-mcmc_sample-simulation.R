@@ -165,12 +165,14 @@ test_that("mcmc_sample.Simulation() creates an object of class `MCMCSimulationRe
   expect_class(mcmc_model_results[[1]], "list")
   expect_class(mcmc_model_results[[1]][[1]], "CmdStanMCMC")
   expect_equal(sum(is.na(result_df$coverage)), 0)
+  expect_numeric(unlist(mcmc_res@results$trt_var), lower = 0.005, len = 8)
 })
 
 test_that("mcmc_sample.Simulation() works with future plan multisession", {
   skip_on_cran()
   skip_on_ci()
   library(future)
+  set.seed(2023)
   plan(multisession, workers = 2)
   mcmc_res <- mcmc_sample(
     valid_sim_obj,

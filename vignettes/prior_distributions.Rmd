@@ -13,11 +13,6 @@ vignette: >
 
 ```r
 library(psborrow2)
-# Loading required package: cmdstanr
-# This is cmdstanr version 0.5.2
-# - CmdStanR documentation and vignettes: mc-stan.org/cmdstanr
-# - CmdStan path: /Users/secrestm/.cmdstan/cmdstan-2.33.1
-# - CmdStan version: 2.33.1
 ```
 
 
