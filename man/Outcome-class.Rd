@@ -10,7 +10,9 @@
 \seealso{
 Other outcome: 
 \code{\link{BinaryOutcome-class}},
+\code{\link{ContinuousOutcome-class}},
 \code{\link{OutcomeBinaryLogistic-class}},
+\code{\link{OutcomeContinuousNormal-class}},
 \code{\link{OutcomeSurvExponential-class}},
 \code{\link{OutcomeSurvWeibullPH-class}},
 \code{\link{TimeToEvent-class}}

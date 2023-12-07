@@ -43,6 +43,12 @@ borrowing and propensity-score adjustment/weighting methods.
 You can install the latest version of `psborrow2` with:
 
 ```r
+install.packages('psborrow2', repos = c('https://genentech.r-universe.dev', 'https://cloud.r-project.org'))
+```
+
+or
+
+```r
 remotes::install_github("Genentech/psborrow2")
 ```
 
