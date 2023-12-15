@@ -11,7 +11,7 @@
 .borrowing_full <- setClass(
    "BorrowingFull",
    prototype = list(
-      data_stan_code = "" #@TODO update STAN code here
+      data_stan_code = ""
    ),
    contains = "Borrowing"
 )

@@ -15,7 +15,7 @@
       ext_flag_col = "character"
    ),
    prototype = list(
-      data_stan_code = "" #@TODO update STAN code here
+      data_stan_code = ""
    ),
    contains = "Borrowing"
 )
