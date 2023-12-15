@@ -1,18 +1,18 @@
-#' `HierarchicalCommensurateBorrowing` class
+#' `BorrowingHierarchicalCommensurate` class
 #' 
 #' A class for defining details of dynamic borrowing 
 #' using the hierarchical Bayesian model with a commensurability 
-#' parameter. Objects of class `HierarchicalCommensurateBorrowing`
+#' parameter. Objects of class `BorrowingHierarchicalCommensurate`
 #' should not be created directly but by the constructor
-#' [hierarchical_commensurate_borrowing()].
+#' [borrowing_hierarchical_commensurate()].
 #' 
 #' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @slot tau_prior Prior. Prior for the commensurability parameter.
 #' @slot data_stan_code string. Stan code that will be interpolated into the model.
 #' @include borrowing_class.R
 #' @family borrowing classes
-.hierarchical_commensurate_borrowing <- setClass(
-   "HierarchicalCommensurateBorrowing",
+.borrowing_hierarchical_commensurate <- setClass(
+   "BorrowingHierarchicalCommensurate",
    slots = c(
       ext_flag_col = "character",
       tau_prior = "Prior"
@@ -72,22 +72,22 @@
 #'  Hierarchical commensurate and power prior models for adaptive incorporation of historical information in clinical trials.
 #'  __Biometrics, 67: 1047--1056__. \doi{10.1111/j.1541-0420.2011.01564.x}
 #' 
-#' @return Object of class [`HierarchicalCommensurateBorrowing`][HierarchicalCommensurateBorrowing-class].
+#' @return Object of class [`BorrowingHierarchicalCommensurate`][BorrowingHierarchicalCommensurate-class].
 #' @include borrowing_class.R
 #' 
 #' @examples
-#' db <- hierarchical_commensurate_borrowing(
+#' db <- borrowing_hierarchical_commensurate(
 #'    ext_flag_col = "ext",
 #'    tau_prior = gamma_prior(0.0001, 0.0001)
 #' )
-hierarchical_commensurate_borrowing <- function(ext_flag_col, tau_prior) {
-   .hierarchical_commensurate_borrowing(ext_flag_col = ext_flag_col, tau_prior = tau_prior)
+borrowing_hierarchical_commensurate <- function(ext_flag_col, tau_prior) {
+   .borrowing_hierarchical_commensurate(ext_flag_col = ext_flag_col, tau_prior = tau_prior)
 }
 
 # show ----
 setMethod(
   f = "show",
-  signature = "HierarchicalCommensurateBorrowing",
+  signature = "BorrowingHierarchicalCommensurate",
   definition = function(object) {
     cat("Borrowing object using the hierarchical commensurate prior approach\n\n")
     cat("External control flag:", object@ext_flag_col, "\n\n")

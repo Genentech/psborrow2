@@ -19,7 +19,7 @@ should not be created directly but by the constructor
 
 \seealso{
 Other borrowing classes: 
-\code{\link{HierarchicalCommensurateBorrowing-class}},
+\code{\link{BorrowingHierarchicalCommensurate-class}},
 \code{\link{NoBorrowing-class}}
 }
 \concept{borrowing classes}
