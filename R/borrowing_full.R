@@ -48,3 +48,12 @@ setMethod(
     cat("Borrowing object using the `full borrowing` approach\n\n")
    }
 )
+
+# get_vars ----
+setMethod(
+  f = "get_vars",
+  signature = "BorrowingFull",
+  definition = function(object) {
+    c()
+  }
+)

@@ -25,3 +25,12 @@ test_that("borrowing_none requires ext_flag_col", {
     "\"ext_flag_col\" is missing, with no default"
   )
 })
+
+test_that("get_vars works for borrowing_none", {
+  expect_identical(
+    get_vars(borrowing_none(
+      "ext_fl"
+    )),
+    c(ext_flag_col = "ext_fl")
+  )
+})

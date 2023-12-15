@@ -22,3 +22,13 @@ test_that("borrowing_hierarchical_commensurate requires the ext flag col", {
     "\"ext_flag_col\" is missing, with no default"
   )
 })
+
+test_that("get_vars works for borrowing_hierarchical_commensurate", {
+  expect_identical(
+    get_vars(borrowing_hierarchical_commensurate(
+      "ext_fl",
+      prior_gamma(.1, .1)
+    )),
+    c(ext_flag_col = "ext_fl")
+  )
+})

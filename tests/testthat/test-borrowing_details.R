@@ -1,20 +1,3 @@
-test_that("borrowing_details gives expected errors", {
-  expect_error(
-    borrowing_details("no Borrowing", prior_normal(0, 1)),
-    "Must be element of set"
-  )
-
-  expect_error(
-    borrowing_details(
-      "Full borrowing",
-      tau_prior = prior_normal(0, 1000)
-    ),
-    "missing, with no default"
-  )
-
-  expect_error(borrowing_details("BDB"), "missing, with no default")
-})
-
 test_that("get_vars works for borrowing_details", {
   expect_identical(
     get_vars(borrowing_details(

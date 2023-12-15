@@ -11,3 +11,10 @@ test_that("borrowing_full rejects all arguments", {
     "unused argument"
   )
 })
+
+test_that("get_vars works for borrowing_full", {
+  expect_identical(
+    get_vars(borrowing_full()),
+    c()
+  )
+})

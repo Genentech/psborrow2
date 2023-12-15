@@ -56,3 +56,12 @@ setMethod(
     cat("External control flag:", object@ext_flag_col, "\n\n")
    }
 )
+
+# get_vars ----
+setMethod(
+  f = "get_vars",
+  signature = "BorrowingNone",
+  definition = function(object) {
+    c(ext_flag_col = object@ext_flag_col)
+  }
+)

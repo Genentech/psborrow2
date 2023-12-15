@@ -95,3 +95,12 @@ setMethod(
     show(object@tau_prior)
    }
 )
+
+# get_vars ----
+setMethod(
+  f = "get_vars",
+  signature = "BorrowingHierarchicalCommensurate",
+  definition = function(object) {
+    c(ext_flag_col = object@ext_flag_col)
+  }
+)
