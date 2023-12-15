@@ -297,31 +297,31 @@ setMethod(
 
               keep <- list()
               # Coverage
-              keep$true_coverage <- sim_is_true_effect_covered(
+              keep$true_coverage <- psborrow2:::sim_is_true_effect_covered(
                 draws,
                 true_effect,
                 posterior_quantiles
               )
 
-              keep$null_coverage <- sim_is_null_effect_covered(
+              keep$null_coverage <- psborrow2:::sim_is_null_effect_covered(
                 draws,
                 posterior_quantiles
               )
 
               # Bias
-              keep$bias <- sim_estimate_bias(
+              keep$bias <- psborrow2:::sim_estimate_bias(
                 draws,
                 true_effect
               )
 
               # MSE
-              keep$mse <- sim_estimate_mse(
+              keep$mse <- psborrow2:::sim_estimate_mse(
                 draws,
                 true_effect
               )
 
               # Variance of beta_trt
-              keep$var <- sim_estimate_effect_variance(draws)
+              keep$var <- psborrow2:::sim_estimate_effect_variance(draws)
 
               # Save draws if desired
               if (keep_cmd_stan_models) {
