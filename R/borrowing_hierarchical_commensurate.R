@@ -18,9 +18,15 @@
       tau_prior = "Prior"
    ),
    prototype = list(
-      data_stan_code = "" #@TODO update STAN code here
+      data_stan_code = "matrix[N,2] Z;"
    ),
-   contains = "Borrowing"
+   contains = "Borrowing",
+   validity = function(object) {
+    if (parse_constraint(object@tau_prior)["lower"] < 0) {
+      return("tau distribution must be bounded >=0")
+    }
+    return(TRUE)
+  }
 )
 
 #' Hierarchical commensurate borrowing
@@ -81,6 +87,8 @@
 #'    tau_prior = gamma_prior(0.0001, 0.0001)
 #' )
 borrowing_hierarchical_commensurate <- function(ext_flag_col, tau_prior) {
+   assert_class(tau_prior, "Prior")
+   assert_string(ext_flag_col)
    .borrowing_hierarchical_commensurate(ext_flag_col = ext_flag_col, tau_prior = tau_prior)
 }
 

@@ -32,3 +32,20 @@ test_that("get_vars works for borrowing_hierarchical_commensurate", {
     c(ext_flag_col = "ext_fl")
   )
 })
+
+test_that("borrowing_hierarchical_commensurate checks tau prior limits", {
+  expect_error(
+    borrowing_hierarchical_commensurate(
+      "ext_fl",
+      uniform_prior(-10, 10)
+    ),
+    "tau distribution must be bounded >=0"
+  )
+  expect_error(
+    borrowing_hierarchical_commensurate(
+      "ext_fl",
+      prior_normal(0, 10000)
+    ),
+    "tau distribution must be bounded >=0"
+  )
+})
