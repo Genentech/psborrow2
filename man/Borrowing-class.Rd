@@ -3,28 +3,15 @@
 \docType{class}
 \name{Borrowing-class}
 \alias{Borrowing-class}
-\alias{.borrowing_class}
 \title{\code{Borrowing} Class}
 \description{
 A class for defining borrowing details. Objects of class
-\code{Borrowing} should not be created directly but by the constructor
-\code{\link[=borrowing_details]{borrowing_details()}}.
+\code{Borrowing} should not be created directly but by the constructors
+\code{\link[=hierarchical_commensurate_borrowing(), no_borrowing(), full_borrowing]{hierarchical_commensurate_borrowing(), no_borrowing(), full_borrowing()}}.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{method}}{character. The type of borrowing to perform. It
-must be one of: \code{'BDB'}, \code{'Full borrowing'}, or \code{'No borrowing'}. See \code{?borrowing_details} for
-more information.}
-
-\item{\code{ext_flag_col}}{character. The name of the column in
-the data matrix that corresponds to the external control flag (\code{1}/\code{0} or
-\code{TRUE}/\code{FALSE}). This identifies a patient as belonging to the external
-control cohort.}
-
-\item{\code{tau_prior}}{\code{Prior}. Object of class \code{Prior} defining the hyperprior on the
-"commensurability parameter". See \code{?borrowing_details} for more information.}
-
 \item{\code{data_stan_code}}{string. Code to include in the Stan data program block.}
 }}
 

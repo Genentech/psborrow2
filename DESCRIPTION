@@ -104,6 +104,7 @@ Collate:
     'simulation_class.R'
     'create_simulation_obj.R'
     'data.R'
+    'hierarchical_commensurate_borrowing.R'
     'make_analysis_object_list.R'
     'make_model_string_data.R'
     'make_model_string_functions.R'

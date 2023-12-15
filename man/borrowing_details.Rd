@@ -10,5 +10,5 @@ borrowing_details(...)
 \item{...}{Deprecated arguments to \code{borrowing_details}.}
 }
 \description{
-Please use one of \code{hierarchical_borrowing()}, \code{no_borrowing()}, or \code{full_borrowing()} instead.
+Please use one of \code{hierarchical_commensurate_borrowing()}, \code{no_borrowing()}, or \code{full_borrowing()} instead.
 }
