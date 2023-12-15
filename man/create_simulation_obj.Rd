@@ -25,7 +25,8 @@ or \code{NULL} (no covariate adjustment).}
 \code{sim_outcome()}, or single \code{Outcome} object (e.g., created by \code{outcome_surv_exponential()}).}
 
 \item{borrowing}{\code{SimBorrowingList} or \code{Borrowing}. List of \code{Borrowing} objects created
-with \code{sim_borrowing()}, or a single \code{Borrowing} object created by \code{borrowing_details()}.}
+with \code{sim_borrowing()}, or a single \code{Borrowing} object created by \code{borrowing_full()},
+\code{borrowing_none()}, or \code{borrowing_hierarchical_commensurate()}.}
 
 \item{treatment}{\code{SimTreatmentList} or \code{Treatment}. List of \code{Treatment} objects created
 with \code{sim_treatment()} or a single \code{Treatment} object created by \code{treatment_details()}.}
@@ -88,7 +89,7 @@ if (check_cmdstan()) {
     data_matrix_list = sdl,
     outcome = outcome_bin_logistic("ep", prior_normal(0, 1000)),
     borrowing = sim_borrowing_list(list(
-      full_borrowing = borrowing_details("Full borrowing", "ext"),
+      full_borrowing = borrowing_full(),
       bdb = borrowing_hierarchical_commensurate("ext", prior_exponential(0.0001))
     )),
     treatment = treatment_details("trt", prior_normal(0, 1000))

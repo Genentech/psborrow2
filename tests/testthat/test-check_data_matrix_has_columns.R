@@ -11,10 +11,7 @@ test_that("check_data_matrix() catches errors", {
       "trt",
       prior_normal(0, 1000)
     ),
-    borrowing = borrowing_details(
-      "Full borrowing",
-      ext_flag_col = "ext"
-    )
+    borrowing = borrowing_full()
   )
 
   expect_null(psborrow2:::check_data_matrix_has_columns(anls_full))

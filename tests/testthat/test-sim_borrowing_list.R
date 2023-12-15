@@ -41,10 +41,7 @@ test_that("Incorrect inputs lead to errors", {
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
-        borrowing_details(
-          method = "Full borrowing",
-          "ext"
-        )
+        borrowing_full()
       )
     ),
     "All items in `borrowing_list` must be named"
@@ -58,10 +55,7 @@ test_that("Incorrect inputs lead to errors", {
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
-        scenario_1 = borrowing_details(
-          method = "Full borrowing",
-          "ext"
-        )
+        scenario_1 = borrowing_full()
       )
     ),
     "All names supplied to `borrowing_list` must be unique"
@@ -76,10 +70,7 @@ test_that("Correct inputs successfully produce `SimBorrowingList`", {
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
-        "Full borrowing" = borrowing_details(
-          method = "Full borrowing",
-          "ext"
-        )
+        "Full borrowing" = borrowing_full()
       )
     ),
     "SimBorrowingList"
@@ -94,10 +85,7 @@ test_that("Borrowing `guide` is produced correctly", {
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),
-      "Full borrowing" = borrowing_details(
-        method = "Full borrowing",
-        "ext"
-      )
+      "Full borrowing" = borrowing_full()
     )
   )
 
@@ -114,11 +102,8 @@ test_that("Borrowing `guide` is produced correctly", {
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),
-      "Full borrowing" = borrowing_details(
-        method = "Full borrowing",
-        "ext"
-      ),
-      "No borrowing" = borrowing_details(method = "No borrowing", "ext")
+      "Full borrowing" = borrowing_full(),
+      "No borrowing" = borrowing_none("ext")
     )
   )
 
@@ -138,10 +123,7 @@ test_that("get_vars for `sim_borrowing_list` works", {
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),
-      "Full borrowing" = borrowing_details(
-        method = "Full borrowing",
-        "ext"
-      )
+      "Full borrowing" = borrowing_full()
     )
   )
 

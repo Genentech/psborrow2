@@ -19,7 +19,7 @@ setClassUnion("CmdStanModelOrNULL", c("CmdStanModel", "NULL"))
 #' @slot outcome `Outcome`. Object of class `Outcome` as output by
 #' `outcome_surv_exponential()`, `outcome_surv_weibull_ph()`, or `outcome_bin_logistic()`.
 #' @slot borrowing `Borrowing`. Object of class `Borrowing` as output by
-#' `borrowing_details()`.
+#' `borrowing_full()`, `borrowing_none()`, or `borrowing_hierarchical_commensurate()`.
 #' @slot treatment `Treatment`. Object of class `Treatment` as output by
 #' `treatment_details()`.
 #' @slot model_string character. The string that contains the full
@@ -74,7 +74,7 @@ setMethod(
     cat(
       "    - ", sum(object@data_matrix[, get_vars(object@treatment)] == 0 &
         object@data_matrix[, get_vars(object@borrowing)["ext_flag_col"]] == 1),
-      " external controls", ifelse(object@borrowing@method == "No borrowing",
+      " external controls", ifelse(is(object@borrowing, "BorrowingNone"),
         " (ignored in this analysis)\n",
         "\n"
       )

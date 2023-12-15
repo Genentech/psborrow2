@@ -2,10 +2,7 @@ test_that("make_model_string_data works with exponential survival and full borro
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
-    borrowing = borrowing_details(
-      "Full borrowing",
-      "ext"
-    ),
+    borrowing = borrowing_full(),
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 

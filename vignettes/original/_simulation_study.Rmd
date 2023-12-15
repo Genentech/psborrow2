@@ -284,8 +284,8 @@ which we'll create through the function `sim_borrowing_list()`.
 ```{r}
 my_borrowing_list <- sim_borrowing_list(
   list(
-    "No borrowing" = borrowing_details("No borrowing", "ext"),
-    "Full borrowing" = borrowing_details("Full borrowing", "ext"),
+    "No borrowing" = borrowing_none("ext"),
+    "Full borrowing" = borrowing_full(),
     "BDB - conservative" = borrowing_hierarchical_commensurate("ext", prior_gamma(0.001, 0.001)),
     "BDB - aggressive" = borrowing_hierarchical_commensurate("ext", prior_gamma(1, 0.001))
   )

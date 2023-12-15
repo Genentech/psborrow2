@@ -8,7 +8,8 @@
 #' @param outcome `SimOutcomeList` or `Outcome`. List of `Outcome` objects created with
 #' `sim_outcome()`, or single `Outcome` object (e.g., created by `outcome_surv_exponential()`).
 #' @param borrowing `SimBorrowingList` or `Borrowing`. List of `Borrowing` objects created
-#' with `sim_borrowing()`, or a single `Borrowing` object created by `borrowing_details()`.
+#' with `sim_borrowing()`, or a single `Borrowing` object created by `borrowing_full()`, 
+#' `borrowing_none()`, or `borrowing_hierarchical_commensurate()`.
 #' @param treatment `SimTreatmentList` or `Treatment`. List of `Treatment` objects created
 #' with `sim_treatment()` or a single `Treatment` object created by `treatment_details()`.
 #' @param quiet logical. Whether to print messages (`quiet = FALSE`) or not
@@ -66,7 +67,7 @@
 #'     data_matrix_list = sdl,
 #'     outcome = outcome_bin_logistic("ep", prior_normal(0, 1000)),
 #'     borrowing = sim_borrowing_list(list(
-#'       full_borrowing = borrowing_details("Full borrowing", "ext"),
+#'       full_borrowing = borrowing_full(),
 #'       bdb = borrowing_hierarchical_commensurate("ext", prior_exponential(0.0001))
 #'     )),
 #'     treatment = treatment_details("trt", prior_normal(0, 1000))

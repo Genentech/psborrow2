@@ -51,7 +51,7 @@ valid_data_list <- sim_data_list(
 valid_borrowing <- sim_borrowing_list(
   list(
     bdb = borrowing_hierarchical_commensurate(ext_flag_col = "ext", tau_prior = prior_exponential(0.0001)),
-    full = borrowing_details(method = "Full borrowing", ext_flag_col = "ext")
+    full = borrowing_full()
   )
 )
 
@@ -114,7 +114,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
     create_simulation_obj(
       data_matrix_list = valid_data_list,
       outcome = valid_outcome,
-      borrowing = list(borrowing_details("Full borrowing", "ext")),
+      borrowing = list(borrowing_full()),
       treatment = valid_treatment
     ),
     "Must inherit from class 'SimBorrowingList'"
@@ -183,7 +183,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
       data_matrix_list = valid_data_list,
       covariate = valid_covariate,
       outcome = valid_outcome,
-      borrowing = borrowing_details("Full borrowing", "ext"),
+      borrowing = borrowing_full(),
       treatment = valid_treatment
     ),
     "Simulation"
@@ -238,8 +238,7 @@ test_that("`create_simulation_obj()` catches incorrect column names", {
       data_matrix_list = valid_data_list,
       outcome = valid_outcome,
       borrowing = sim_borrowing_list(
-        list(normal = borrowing_details(
-          "Full borrowing",
+        list(normal = borrowing_none(
           "wrong_ext"
         ))
       ),

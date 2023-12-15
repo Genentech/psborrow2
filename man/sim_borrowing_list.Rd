@@ -8,7 +8,7 @@ sim_borrowing_list(borrowing_list)
 }
 \arguments{
 \item{borrowing_list}{named list of objects of class \code{Borrowing} created
-by \code{borrowing_details()}.}
+by \code{borrowing_full()}, \code{borrowing_none()}, or \code{borrowing_hierarchical_commensurate()}.}
 }
 \description{
 A function for defining which borrowing scenarios should be evaluated as
@@ -18,8 +18,8 @@ part of a simulation study.
 
 borrow_scenarios <- sim_borrowing_list(
   list(
-    "No borrowing" = borrowing_details("No borrowing", "ext"),
-    "Full borrowing" = borrowing_details("Full borrowing", "ext"),
+    "No borrowing" = borrowing_none("ext"),
+    "Full borrowing" = borrowing_full(),
     "BDB, uninformative prior" = borrowing_hierarchical_commensurate("ext", prior_gamma(0.001, 0.001)),
     "BDB, informative prior" = borrowing_hierarchical_commensurate("ext", prior_gamma(1, 0.001))
   )

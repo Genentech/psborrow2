@@ -25,7 +25,7 @@ the function \code{\link[=add_covariates]{add_covariates()}}.}
 \code{\link[=outcome_surv_exponential]{outcome_surv_exponential()}}, \code{\link[=outcome_surv_weibull_ph]{outcome_surv_weibull_ph()}}, or \code{\link[=outcome_bin_logistic]{outcome_bin_logistic()}}.}
 
 \item{borrowing}{\code{Borrowing}. Object of class \code{\link[=Borrowing-class]{Borrowing}} as output by
-\code{\link[=borrowing_details]{borrowing_details()}}.}
+\code{\link[=borrowing_full]{borrowing_full()}}, \code{\link[=borrowing_none]{borrowing_none()}}, and \code{\link[=borrowing_hierarchical_commensurate]{borrowing_hierarchical_commensurate()}}.}
 
 \item{treatment}{\code{Treatment}. Object of class \code{\link[=Treatment-class]{Treatment}} as output by
 \code{\link[=treatment_details]{treatment_details()}}.}

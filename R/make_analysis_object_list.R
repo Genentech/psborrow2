@@ -58,7 +58,7 @@
 #'   outcome = sim_outcome_list(list(default = outcome_bin_logistic("ep", prior_normal(0, 1000)))),
 #'   covariate = sim_covariate_list(covariate_list = list(`No adjustment` = NULL)),
 #'   borrowing = sim_borrowing_list(list(
-#'     full_borrowing = borrowing_details("Full borrowing", "ext"),
+#'     full_borrowing = borrowing_full(),
 #'     bdb = borrowing_hierarchical_commensurate("ext", prior_exponential(0.0001))
 #'   )),
 #'   treatment = sim_treatment_list(list(default = treatment_details("trt", prior_normal(0, 1000))))

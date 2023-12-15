@@ -8,7 +8,9 @@
 #' for each parameter variation.
 #'
 #' @include borrowing_class.R
-#' @include borrowing_details.R
+#' @include borrowing_full.R
+#' @include borrowing_none.R
+#' @include borrowing_hierarchical_commensurate.R
 .sim_borrowing_list <- setClass(
   "SimBorrowingList",
   slots = c(
@@ -41,7 +43,7 @@
 #' part of a simulation study.
 #'
 #' @param borrowing_list named list of objects of class `Borrowing` created
-#' by `borrowing_details()`.
+#' by `borrowing_full()`, `borrowing_none()`, or `borrowing_hierarchical_commensurate()`.
 #'
 #' @export
 #'
@@ -51,8 +53,8 @@
 #'
 #' borrow_scenarios <- sim_borrowing_list(
 #'   list(
-#'     "No borrowing" = borrowing_details("No borrowing", "ext"),
-#'     "Full borrowing" = borrowing_details("Full borrowing", "ext"),
+#'     "No borrowing" = borrowing_none("ext"),
+#'     "Full borrowing" = borrowing_full(),
 #'     "BDB, uninformative prior" = borrowing_hierarchical_commensurate("ext", prior_gamma(0.001, 0.001)),
 #'     "BDB, informative prior" = borrowing_hierarchical_commensurate("ext", prior_gamma(1, 0.001))
 #'   )

@@ -13,12 +13,8 @@ ac2 <- add_covariates(
   )
 )
 
-bd_fb <- borrowing_details(
-  method = "Full borrowing",
-  ext_flag_col = "ext"
-)
-bd_nb <- borrowing_details(
-  method = "No borrowing",
+bd_fb <- borrowing_full()
+bd_nb <- borrowing_none(
   ext_flag_col = "ext"
 )
 bd_db <- borrowing_hierarchical_commensurate(
