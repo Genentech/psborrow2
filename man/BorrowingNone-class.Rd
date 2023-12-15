@@ -17,6 +17,8 @@ should not be created directly but by the constructor
 \item{\code{ext_flag_col}}{character. Name of the external flag column in the matrix.}
 
 \item{\code{data_stan_code}}{string. Stan code that will be interpolated into the model.}
+
+\item{\code{method_name}}{string. The name of the method.}
 }}
 
 \seealso{

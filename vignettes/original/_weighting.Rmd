@@ -121,7 +121,7 @@ logistic_psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
     covariates = add_covariates(c("cov1", "cov2"),
       priors = prior_normal(0, 100)
     ),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100)),
     outcome = outcome_bin_logistic("resp",
       baseline_prior = prior_normal(0, 1000),
@@ -280,7 +280,7 @@ psb_reslist <- lapply(c(0, 0.25, 0.5, 0.75, 1), function(w) {
     covariates = add_covariates(c("cov1", "cov2"),
       priors = prior_normal(0, 100)
     ),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100)),
     outcome = outcome_surv_exponential("eventtime", "censor",
       baseline_prior = prior_normal(0, 1000),

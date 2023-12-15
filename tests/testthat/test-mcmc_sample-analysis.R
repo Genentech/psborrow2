@@ -59,7 +59,7 @@ test_that("mcmc_sample handles Analysis objects not ready to sample", {
       "trt",
       prior_normal(0, 1000)
     ),
-    borrowing = borrowing_full()
+    borrowing = borrowing_full("ext")
   )
   expect_error(mcmc_sample(object), "Cannot sample object.")
 })
@@ -77,7 +77,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, exponential dist",
   full_exp_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
@@ -134,7 +134,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, exponential dist, 
     data_matrix = example_matrix,
     covariates = add_covariates("cov1", prior_normal(0, 100000)),
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
@@ -204,7 +204,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, Weibull dist", {
       prior_normal(0, 100000),
       prior_normal(0, 100000)
     ),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
@@ -275,7 +275,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, weibull dist, one 
       prior_normal(0, 100000),
       prior_normal(0, 100000)
     ),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
@@ -345,7 +345,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, binomial dist", {
   full_bin_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_bin_logistic("resp", prior_normal(0, 100000)),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
@@ -406,7 +406,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, binomial dist, one
     data_matrix = example_matrix,
     covariates = add_covariates("cov1", prior_normal(0, 100000)),
     outcome = outcome_bin_logistic("resp", prior_normal(0, 100000)),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 

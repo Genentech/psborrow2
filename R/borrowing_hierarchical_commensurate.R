@@ -9,6 +9,7 @@
 #' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @slot tau_prior Prior. Prior for the commensurability parameter.
 #' @slot data_stan_code string. Stan code that will be interpolated into the model.
+#' @slot method_name string. The name of the method.
 #' @include borrowing_class.R
 #' @family borrowing classes
 .borrowing_hierarchical_commensurate <- setClass(
@@ -18,7 +19,8 @@
       tau_prior = "Prior"
    ),
    prototype = list(
-      data_stan_code = "matrix[N,2] Z;"
+      data_stan_code = "matrix[N,2] Z;",
+      method_name = "Bayesian dynamic borrowing with the hierarchical commensurate prior"
    ),
    contains = "Borrowing",
    validity = function(object) {
@@ -102,13 +104,4 @@ setMethod(
     cat("Commensurability parameter prior:\n")
     show(object@tau_prior)
    }
-)
-
-# get_vars ----
-setMethod(
-  f = "get_vars",
-  signature = "BorrowingHierarchicalCommensurate",
-  definition = function(object) {
-    c(ext_flag_col = object@ext_flag_col)
-  }
 )

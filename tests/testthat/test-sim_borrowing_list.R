@@ -41,7 +41,7 @@ test_that("Incorrect inputs lead to errors", {
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
-        borrowing_full()
+        borrowing_full("ext")
       )
     ),
     "All items in `borrowing_list` must be named"
@@ -55,7 +55,7 @@ test_that("Incorrect inputs lead to errors", {
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
-        scenario_1 = borrowing_full()
+        scenario_1 = borrowing_full("ext")
       )
     ),
     "All names supplied to `borrowing_list` must be unique"
@@ -70,7 +70,7 @@ test_that("Correct inputs successfully produce `SimBorrowingList`", {
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
-        "Full borrowing" = borrowing_full()
+        "Full borrowing" = borrowing_full("ext")
       )
     ),
     "SimBorrowingList"
@@ -85,7 +85,7 @@ test_that("Borrowing `guide` is produced correctly", {
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),
-      "Full borrowing" = borrowing_full()
+      "Full borrowing" = borrowing_full("ext")
     )
   )
 
@@ -102,7 +102,7 @@ test_that("Borrowing `guide` is produced correctly", {
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),
-      "Full borrowing" = borrowing_full(),
+      "Full borrowing" = borrowing_full("ext"),
       "No borrowing" = borrowing_none("ext")
     )
   )
@@ -123,7 +123,7 @@ test_that("get_vars for `sim_borrowing_list` works", {
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),
-      "Full borrowing" = borrowing_full()
+      "Full borrowing" = borrowing_full("ext")
     )
   )
 

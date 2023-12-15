@@ -51,7 +51,7 @@ valid_data_list <- sim_data_list(
 valid_borrowing <- sim_borrowing_list(
   list(
     bdb = borrowing_hierarchical_commensurate(ext_flag_col = "ext", tau_prior = prior_exponential(0.0001)),
-    full = borrowing_full()
+    full = borrowing_full("ext")
   )
 )
 
@@ -114,7 +114,7 @@ test_that("`create_simulation_obj()` input classes are correct", {
     create_simulation_obj(
       data_matrix_list = valid_data_list,
       outcome = valid_outcome,
-      borrowing = list(borrowing_full()),
+      borrowing = list(borrowing_full("ext")),
       treatment = valid_treatment
     ),
     "Must inherit from class 'SimBorrowingList'"
@@ -183,7 +183,7 @@ test_that("`create_simulation_obj()` correct inputs create `Simulation` object",
       data_matrix_list = valid_data_list,
       covariate = valid_covariate,
       outcome = valid_outcome,
-      borrowing = borrowing_full(),
+      borrowing = borrowing_full("ext"),
       treatment = valid_treatment
     ),
     "Simulation"

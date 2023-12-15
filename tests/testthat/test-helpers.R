@@ -132,7 +132,7 @@ test_that("variable_dictionary works as expected for exponential and no borrowin
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
   result <- variable_dictionary(object)
@@ -154,7 +154,7 @@ test_that("variable_dictionary includes shape parameter for Weibull PH", {
       prior_normal(0, 1000),
       prior_normal(0, 1000)
     ),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
   result <- variable_dictionary(object)

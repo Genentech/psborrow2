@@ -57,7 +57,7 @@ setMethod(
     outcome_vars <- get_vars(object@outcome)
     cat("Outcome", ifelse(length(outcome_vars) > 1, "variables:", "variable:"), outcome_vars, "\n\n")
 
-    cat("Borrowing method:", object@borrowing@method, "\n")
+    cat("Borrowing method:", object@borrowing@method_name, "\n")
     cat("External flag:", get_vars(object@borrowing), "\n\n")
 
     cat("Treatment variable:", get_vars(object@treatment), "\n\n")

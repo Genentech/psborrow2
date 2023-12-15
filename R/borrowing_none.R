@@ -7,6 +7,7 @@
 #' 
 #' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @slot data_stan_code string. Stan code that will be interpolated into the model.
+#' @slot method_name string. The name of the method.
 #' @include borrowing_class.R
 #' @family borrowing classes
 .borrowing_none <- setClass(
@@ -15,7 +16,8 @@
       ext_flag_col = "character"
    ),
    prototype = list(
-      data_stan_code = ""
+      data_stan_code = "",
+      method_name = "No borrowing"
    ),
    contains = "Borrowing"
 )
@@ -47,22 +49,3 @@ borrowing_none <- function(ext_flag_col) {
    assert_string(ext_flag_col)
    .borrowing_none(ext_flag_col = ext_flag_col)
 }
-
-# show ----
-setMethod(
-  f = "show",
-  signature = "BorrowingNone",
-  definition = function(object) {
-    cat("Borrowing object using the `no borrowing` approach\n\n")
-    cat("External control flag:", object@ext_flag_col, "\n\n")
-   }
-)
-
-# get_vars ----
-setMethod(
-  f = "get_vars",
-  signature = "BorrowingNone",
-  definition = function(object) {
-    c(ext_flag_col = object@ext_flag_col)
-  }
-)

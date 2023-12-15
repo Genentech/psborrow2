@@ -14,7 +14,7 @@ test_that("get_vars works for Analysis", {
       "trt",
       prior_normal(0, 1000)
     ),
-    borrowing = borrowing_full()
+    borrowing = borrowing_full("ext")
   )
   expect_equal(
     get_vars(object),
@@ -44,7 +44,7 @@ test_that("show works for Analysis", {
       "trt",
       prior_normal(0, 1000)
     ),
-    borrowing = borrowing_full()
+    borrowing = borrowing_full("ext")
   )
   expect_snapshot(show(object))
 })
@@ -61,7 +61,7 @@ test_that("show works without covariates", {
       "trt",
       prior_normal(0, 1000)
     ),
-    borrowing = borrowing_full()
+    borrowing = borrowing_full("ext")
   )
   expect_snapshot(show(object))
 })

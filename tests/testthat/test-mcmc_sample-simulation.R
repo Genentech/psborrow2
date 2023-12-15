@@ -49,7 +49,7 @@ valid_data_list <- sim_data_list(
 valid_borrowing <- sim_borrowing_list(
   list(
     bdb = borrowing_hierarchical_commensurate(ext_flag_col = "ext", tau_prior = prior_exponential(0.0001)),
-    full = borrowing_full()
+    full = borrowing_full("ext")
   )
 )
 
@@ -86,7 +86,7 @@ test_that("mcmc_sample.Simulation behaves gracefully when cmdstanr is not availa
     drift = "drift_hr",
     index = "index"
   )
-  borrowing <- sim_borrowing_list(list(full = borrowing_full()))
+  borrowing <- sim_borrowing_list(list(full = borrowing_full("ext")))
   outcome <- sim_outcome_list(
     list(standard_outcome = outcome_surv_exponential(
       time_var = "eventtime",

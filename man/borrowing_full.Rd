@@ -4,7 +4,7 @@
 \alias{borrowing_full}
 \title{Full borrowing}
 \usage{
-borrowing_full()
+borrowing_full(ext_flag_col)
 }
 \arguments{
 \item{ext_flag_col}{character. Name of the external flag column in the matrix.}
@@ -29,5 +29,5 @@ contains the flag indicating a patient is from the external control cohort.
 }
 }
 \examples{
-db <- borrowing_full()
+db <- borrowing_full("ext")
 }

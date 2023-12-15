@@ -20,6 +20,8 @@ should not be created directly but by the constructor
 \item{\code{tau_prior}}{Prior. Prior for the commensurability parameter.}
 
 \item{\code{data_stan_code}}{string. Stan code that will be interpolated into the model.}
+
+\item{\code{method_name}}{string. The name of the method.}
 }}
 
 \seealso{

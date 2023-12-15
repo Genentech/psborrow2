@@ -20,7 +20,7 @@ Create the Stan string encompassed by parameters \code{{}}
 anls_obj <- psborrow2:::.analysis_obj(
   data_matrix = example_matrix,
   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-  borrowing = borrowing_full(),
+  borrowing = borrowing_full("ext"),
   treatment = treatment_details("trt", prior_normal(0, 100))
 )
 

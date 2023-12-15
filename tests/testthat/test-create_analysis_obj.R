@@ -13,7 +13,7 @@ ac2 <- add_covariates(
   )
 )
 
-bd_fb <- borrowing_full()
+bd_fb <- borrowing_full("ext")
 bd_nb <- borrowing_none(
   ext_flag_col = "ext"
 )

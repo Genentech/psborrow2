@@ -22,7 +22,7 @@ test_that("data matrix trimming works with Full Borrowing", {
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
     treatment = treatment_details("trt", trt_prior = prior_normal(0, 1000)),
-    borrowing = borrowing_full()
+    borrowing = borrowing_full("ext")
   )
 
   anls2_trim <- psborrow2:::trim_data_matrix(anls2)

@@ -5,13 +5,19 @@
 #' should not be created directly but by the constructor
 #' [borrowing_full()].
 #' 
+#' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @slot data_stan_code string. Stan code that will be interpolated into the model.
+#' @slot method_name string. The name of the method.
 #' @include borrowing_class.R
 #' @family borrowing classes
 .borrowing_full <- setClass(
    "BorrowingFull",
+   slots = c(
+      ext_flag_col = "character"
+   ),
    prototype = list(
-      data_stan_code = ""
+      data_stan_code = "",
+      method_name = "Full borrowing"
    ),
    contains = "Borrowing"
 )
@@ -35,9 +41,9 @@
 #' @include borrowing_class.R
 #' 
 #' @examples
-#' db <- borrowing_full()
-borrowing_full <- function() {
-   .borrowing_full()
+#' db <- borrowing_full("ext")
+borrowing_full <- function(ext_flag_col) {
+   .borrowing_full(ext_flag_col = ext_flag_col)
 }
 
 # show ----
@@ -46,6 +52,7 @@ setMethod(
   signature = "BorrowingFull",
   definition = function(object) {
     cat("Borrowing object using the `full borrowing` approach\n\n")
+    cat("External control flag:", object@ext_flag_col, "\n\n")
    }
 )
 
@@ -54,6 +61,6 @@ setMethod(
   f = "get_vars",
   signature = "BorrowingFull",
   definition = function(object) {
-    c()
+    c(ext_flag_col = object@ext_flag_col)
   }
 )

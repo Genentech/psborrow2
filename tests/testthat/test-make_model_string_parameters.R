@@ -2,7 +2,7 @@ test_that("make_model_string_parameters works with exponential survival and full
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
@@ -77,7 +77,7 @@ test_that("the STAN code is correctly generated when limits are placed in the tr
   stan_model_string <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_half_cauchy(0, 20))
   )@model_string
 
@@ -115,7 +115,7 @@ test_that("the STAN code is correctly generated when limits are placed in the ou
   stan_model_string <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", uniform_prior(0, 10)),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )@model_string
 
@@ -127,7 +127,7 @@ test_that("the STAN code is correctly generated when limits are placed in the ou
   stan_model_string <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", uniform_prior(0, 10)),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )@model_string
 
@@ -141,7 +141,7 @@ test_that("the STAN code is correctly generated when limits are placed in the co
     data_matrix = example_matrix,
     covariates = add_covariates("cov1", uniform_prior(0, 10)),
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
@@ -163,7 +163,7 @@ test_that("the STAN code is correctly generated when limits are placed in the co
       )
     ),
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
-    borrowing = borrowing_full(),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
