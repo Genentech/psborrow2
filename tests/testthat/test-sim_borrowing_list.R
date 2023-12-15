@@ -3,8 +3,7 @@ test_that("Incorrect inputs lead to errors", {
   # At the bottom is a list of borrowing objects
   expect_error(
     sim_borrowing_list(
-      borrowing_details(
-        method = "BDB",
+      borrowing_hierarchical_commensurate(
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       )
@@ -25,8 +24,7 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_borrowing_list(
       list(
-        borrowing_details(
-          method = "BDB",
+        borrowing_hierarchical_commensurate(
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         )
@@ -39,8 +37,7 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_borrowing_list(
       list(
-        bdb = borrowing_details(
-          method = "BDB",
+        bdb = borrowing_hierarchical_commensurate(
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
@@ -57,8 +54,7 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_borrowing_list(
       list(
-        scenario_1 = borrowing_details(
-          method = "BDB",
+        scenario_1 = borrowing_hierarchical_commensurate(
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
@@ -76,8 +72,7 @@ test_that("Correct inputs successfully produce `SimBorrowingList`", {
   expect_class(
     sim_borrowing_list(
       list(
-        "BDB" = borrowing_details(
-          method = "BDB",
+        "BDB" = borrowing_hierarchical_commensurate(
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
@@ -95,8 +90,7 @@ test_that("Correct inputs successfully produce `SimBorrowingList`", {
 test_that("Borrowing `guide` is produced correctly", {
   borrowing_obj1 <- sim_borrowing_list(
     list(
-      "BDB" = borrowing_details(
-        method = "BDB",
+      "BDB" = borrowing_hierarchical_commensurate(
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),
@@ -116,8 +110,7 @@ test_that("Borrowing `guide` is produced correctly", {
 
   borrowing_obj2 <- sim_borrowing_list(
     list(
-      "BDB" = borrowing_details(
-        method = "BDB",
+      "BDB" = borrowing_hierarchical_commensurate(
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),
@@ -141,8 +134,7 @@ test_that("Borrowing `guide` is produced correctly", {
 test_that("get_vars for `sim_borrowing_list` works", {
   borrowing_obj <- sim_borrowing_list(
     list(
-      "BDB" = borrowing_details(
-        method = "BDB",
+      "BDB" = borrowing_hierarchical_commensurate(
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),

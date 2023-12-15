@@ -9,8 +9,7 @@ test_that("mcmc_sample gracefully fails if cmdstanr is unavailable", {
         cens_var = "cnsr",
         prior_normal(0, 100000)
       ),
-      borrowing = borrowing_details(
-        "BDB",
+      borrowing = borrowing_hierarchical_commensurate(
         ext_flag_col = "ext",
         tau_prior = prior_gamma(0.001, 0.001)
       ),
@@ -485,7 +484,7 @@ test_that("mcmc_sample for Analysis works for exponential BDB, conservative borr
       cens_var = "cnsr",
       prior_normal(0, 100000)
     ),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       ext_flag_col = "ext",
       tau_prior = prior_gamma(0.001, 0.001)
     ),
@@ -516,7 +515,7 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, aggressive borrowing"
       shape_prior = prior_normal(0, 100000),
       baseline_prior = prior_normal(0, 100000)
     ),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       ext_flag_col = "ext",
       tau_prior = prior_gamma(1, 0.001)
     ),
@@ -542,7 +541,7 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressiv
   bin_bdb_aggressive <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_bin_logistic("resp", prior_normal(0, 100000)),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       ext_flag_col = "ext",
       tau_prior = prior_gamma(1, 0.001)
     ),

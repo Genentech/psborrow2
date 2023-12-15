@@ -53,8 +53,8 @@
 #'   list(
 #'     "No borrowing" = borrowing_details("No borrowing", "ext"),
 #'     "Full borrowing" = borrowing_details("Full borrowing", "ext"),
-#'     "BDB, uninformative prior" = borrowing_details("BDB", "ext", prior_gamma(0.001, 0.001)),
-#'     "BDB, informative prior" = borrowing_details("BDB", "ext", prior_gamma(1, 0.001))
+#'     "BDB, uninformative prior" = borrowing_hierarchical_commensurate("ext", prior_gamma(0.001, 0.001)),
+#'     "BDB, informative prior" = borrowing_hierarchical_commensurate("ext", prior_gamma(1, 0.001))
 #'   )
 #' )
 #'

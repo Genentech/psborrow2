@@ -78,10 +78,10 @@
 #'
 #' The `baseline_prior` argument specifies the prior distribution for the
 #' baseline log hazard rate. The interpretation of the `baseline_prior` differs
-#' slightly between methods selected in `borrowing_details()`:
-#' - \emph{'BDB'}: the `baseline_prior` for Bayesian Dynamic Borrowing refers
-#' to the log hazard rate of the external control arm.
-#' - \emph{'Full borrowing'} or \emph{'No borrowing'}: the `baseline_prior` for
+#' slightly between borrowing methods selected.
+#' - \emph{Dynamic borrowing using `borrowing_hierarchical_commensurate()`}: the `baseline_prior` for Bayesian Dynamic Borrowing 
+#' refers to the log hazard rate of the external control arm.
+#' - \emph{Full borrowing} or \emph{No borrowing} using `borrowing_full()` or `borrowing_none()`: the `baseline_prior` for
 #' these borrowing methods refers to the log hazard rate for the
 #' internal control arm.
 #'

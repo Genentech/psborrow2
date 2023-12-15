@@ -21,8 +21,7 @@
 #'     "cnsr",
 #'     baseline_prior = prior_normal(0, 1000)
 #'   ),
-#'   borrowing = borrowing_details(
-#'     "BDB",
+#'   borrowing = borrowing_hierarchical_commensurate(
 #'     "ext",
 #'     prior_exponential(.001)
 #'   ),
@@ -41,7 +40,7 @@ trim_data_matrix <- function(analysis_obj) {
     seq_len(NROW(analysis_obj@data_matrix))
   }
 
-  required_cols <- if (analysis_obj@borrowing@method != "BDB") {
+  required_cols <- if (!is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate")) {
     setdiff(get_vars(analysis_obj), get_vars(analysis_obj@borrowing))
   } else {
     get_vars(analysis_obj)

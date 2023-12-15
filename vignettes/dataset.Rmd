@@ -207,19 +207,18 @@ outcome
 
 ## 3. `borrowing`
 
-`psborrow2` supports three different borrowing methods which are specified in
-the `method` argument of `borrowing_details()` (see the code example below
-how to call it):
+`psborrow2` supports three different borrowing methods, each of which has its own class:
 
-* "No borrowing": This is the internal trial comparison without any external
-data
-* "Full borrowing": This is pooling of the external and internal control arms
-* "BDB": Bayesian dynamic borrowing
+* ***No borrowing***: This is the internal trial comparison without any external
+data. Use `borrowing_none()` to specify this.
+* ***Full borrowing***: This is pooling of the external and internal control arms. Use 
+`borrowing_full()` to specify this.
+* ***Bayesian dynamic borrowing with the hierarchical commensurate prior***: This borrowing is as described in [Hobbs et al. (2011)](https://doi.org/10.1111/j.1541-0420.2011.01564.x) and uses the hierarchical commensurate prior. Use `borrowing_hierarchical_commensurate()` to specify this.
 
 The column name for the external control column flag in our matrix
 is also required and passed to `ext_flag_col`.
 
-Finally, for BDB only, the hyperprior distribution on the commensurability
+Finally, for dynamic borrowing only, the hyperprior distribution on the commensurability
 parameter must be specified. This hyperprior determines
 (along with the comparability of the outcomes
 between internal and external controls) how much borrowing of the external
@@ -237,8 +236,7 @@ vignette, see `vignette('prior_distributions', package = 'psborrow2')`.
 
 
 ```r
-borrowing <- borrowing_details(
-  method = "BDB",
+borrowing <- borrowing_hierarchical_commensurate(
   ext_flag_col = "ext",
   tau_prior = prior_gamma(0.001, 0.001)
 )

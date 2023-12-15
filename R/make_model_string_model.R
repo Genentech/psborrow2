@@ -26,7 +26,7 @@ make_model_string_model <- function(analysis_obj) {
 
   ### Linear predictor
   has_covariates <- !is.null(analysis_obj@covariates)
-  is_bdb <- analysis_obj@borrowing@method == "BDB"
+  is_bdb <- is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate")
 
   if (has_covariates && is_bdb) {
     linear_predictor <- h_glue("
@@ -68,7 +68,7 @@ make_model_string_model <- function(analysis_obj) {
   }
 
   ### Add in tau and alphas if method = BDB
-  if (analysis_obj@borrowing@method == "BDB") {
+  if (is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate")) {
     tau_prior <- get_prior_string(analysis_obj@borrowing@tau_prior)
     alpha_2_prior <- get_prior_string(analysis_obj@outcome@baseline_prior)
 
@@ -78,7 +78,7 @@ make_model_string_model <- function(analysis_obj) {
       sigma = 1 / tau;
       alpha[2] ~ {{alpha_2_prior}} ;
       alpha[1] ~ normal(alpha[2], sqrt(sigma)) ;")
-  } else if (analysis_obj@borrowing@method != "BDB") {
+  } else if (!is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate")) {
     alpha_prior <- get_prior_string(analysis_obj@outcome@baseline_prior)
     borrowing_string <- h_glue("alpha ~ {{alpha_prior}} ;")
   } else {

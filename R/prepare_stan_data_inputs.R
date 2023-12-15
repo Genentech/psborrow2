@@ -15,8 +15,7 @@
 #' anls_obj <- create_analysis_obj(
 #'   data_matrix = example_matrix,
 #'   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-#'   borrowing = borrowing_details(
-#'     "BDB",
+#'   borrowing = borrowing_hierarchical_commensurate(
 #'     "ext",
 #'     prior_exponential(0.001)
 #'   ),
@@ -46,7 +45,7 @@ prepare_stan_data_inputs <- function(analysis_obj) {
   }
 
   ## BDB additions
-  if (analysis_obj@borrowing@method == "BDB") {
+  if (is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate")) {
     data_in[["Z"]] <- cbind(
       1 - trimmed_data_matrix[, analysis_obj@borrowing@ext_flag_col],
       trimmed_data_matrix[, analysis_obj@borrowing@ext_flag_col]

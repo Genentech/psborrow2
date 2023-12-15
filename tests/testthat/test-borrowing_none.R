@@ -1,6 +1,6 @@
 test_that("borrowing_details is truly deprecated", {
   expect_error(
-    borrowing_details(method = "BDB", ext_flag_col = "ext_fl", tau_prior = prior_gamma(.1, .1)),
+    borrowing_hierarchical_commensurate(ext_flag_col = "ext_fl", tau_prior = prior_gamma(.1, .1)),
     "deprecated"
   )
 })

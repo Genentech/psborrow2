@@ -48,7 +48,7 @@ valid_data_list <- sim_data_list(
 # Valid borrowing list
 valid_borrowing <- sim_borrowing_list(
   list(
-    bdb = borrowing_details(method = "BDB", ext_flag_col = "ext", tau_prior = prior_exponential(0.0001)),
+    bdb = borrowing_hierarchical_commensurate(ext_flag_col = "ext", tau_prior = prior_exponential(0.0001)),
     full = borrowing_details(method = "Full borrowing", ext_flag_col = "ext")
   )
 )

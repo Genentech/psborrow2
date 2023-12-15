@@ -59,8 +59,7 @@ test_that("rename_draws_covariates works as expected", {
       prior_normal(0, 1000)
     ),
     outcome = outcome_bin_logistic("cnsr", prior_normal(0, 1000)),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),
@@ -110,8 +109,7 @@ test_that("variable_dictionary works as expected for logistic and BDB", {
       prior_normal(0, 1000)
     ),
     outcome = outcome_bin_logistic("cnsr", prior_normal(0, 1000)),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),

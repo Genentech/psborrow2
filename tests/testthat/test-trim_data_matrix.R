@@ -4,8 +4,7 @@ test_that("data matrix trimming works with BDB", {
     covariates = add_covariates(covariates = "cov1", prior_normal(0, 1000)),
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
     treatment = treatment_details("trt", trt_prior = prior_normal(0, 1000)),
-    borrowing = borrowing_details(
-      method = "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       ext_flag_col = "ext",
       tau_prior = prior_exponential(0.001)
     )
