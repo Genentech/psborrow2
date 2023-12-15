@@ -1,7 +1,7 @@
 test_that("borrowing_full works as expected for no borrowing", {
   nb <- borrowing_full("ext")
   expect_class(nb, "Borrowing")
-  expect_class(nb, "BorrowingFull") 
+  expect_class(nb, "BorrowingFull")
   expect_equal(nb@ext_flag_col, "ext")
 })
 
@@ -12,9 +12,11 @@ test_that("borrowing_full rejects the tau prior", {
   )
 })
 
-test_that("get_vars works for borrowing_full", {
+test_that("get_vars works for borrowing_none", {
   expect_identical(
-    get_vars(borrowing_full("ext")),
-    c()
+    get_vars(borrowing_full(
+      "ext_fl"
+    )),
+    c(ext_flag_col = "ext_fl")
   )
 })
