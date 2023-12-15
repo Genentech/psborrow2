@@ -12,8 +12,7 @@
 .no_borrowing <- setClass(
    "NoBorrowing",
    slots = c(
-      ext_flag_col = "character",
-      tau_prior = "Prior"
+      ext_flag_col = "character"
    ),
    prototype = list(
       data_stan_code = "" #@TODO update STAN code here

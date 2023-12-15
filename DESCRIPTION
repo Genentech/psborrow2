@@ -86,6 +86,7 @@ Collate:
     'outcome_class.R'
     'analysis_class.R'
     'borrowing_details.R'
+    'borrowing_full.R'
     'check_data_matrix_has_columns.R'
     'cmdstan.R'
     'create_analysis_obj.R'
