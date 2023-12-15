@@ -1,16 +1,16 @@
-#' `NoBorrowing` class
+#' `BorrowingNone` class
 #' 
 #' A class for defining details for "No borrowing" methods. 
-#' Objects of class `NoBorrowing`
+#' Objects of class `BorrowingNone`
 #' should not be created directly but by the constructor
-#' [no_borrowing()].
+#' [borrowing_none()].
 #' 
 #' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @slot data_stan_code string. Stan code that will be interpolated into the model.
 #' @include borrowing_class.R
 #' @family borrowing classes
-.no_borrowing <- setClass(
-   "NoBorrowing",
+.borrowing_none <- setClass(
+   "BorrowingNone",
    slots = c(
       ext_flag_col = "character"
    ),
@@ -36,21 +36,21 @@
 #' The `ext_flag_col` argument refers to the column in the data matrix that
 #' contains the flag indicating a patient is from the external control cohort.
 #' 
-#' @return Object of class [`NoBorrowing`][NoBorrowing-class].
+#' @return Object of class [`BorrowingNone`][BorrowingNone-class].
 #' @include borrowing_class.R
 #' 
 #' @examples
-#' db <- no_borrowing(
+#' db <- borrowing_none(
 #'    ext_flag_col = "ext"
 #' )
-no_borrowing <- function(ext_flag_col) {
-   .no_borrowing(ext_flag_col = ext_flag_col)
+borrowing_none <- function(ext_flag_col) {
+   .borrowing_none(ext_flag_col = ext_flag_col)
 }
 
 # show ----
 setMethod(
   f = "show",
-  signature = "NoBorrowing",
+  signature = "BorrowingNone",
   definition = function(object) {
     cat("Borrowing object using the `no borrowing` approach\n\n")
     cat("External control flag:", object@ext_flag_col, "\n\n")
