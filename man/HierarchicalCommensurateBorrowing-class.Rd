@@ -22,4 +22,8 @@ should not be created directly but by the constructor
 \item{\code{data_stan_code}}{string. Stan code that will be interpolated into the model.}
 }}
 
+\seealso{
+Other borrowing classes: 
+\code{\link{NoBorrowing-class}}
+}
 \concept{borrowing classes}
