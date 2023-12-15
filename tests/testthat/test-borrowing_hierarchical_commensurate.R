@@ -8,3 +8,17 @@ test_that("borrowing_hierarchical_commensurate works as expected for no borrowin
   expect_equal(nb@ext_flag_col, "ext")
   expect_equal(nb@tau_prior, prior_gamma(alpha = .001, beta = .001))  
 })
+
+test_that("borrowing_hierarchical_commensurate requires the tau prior", {
+  expect_error(
+    borrowing_hierarchical_commensurate(ext_flag_col = "ext"),
+    "\"tau_prior\" is missing, with no default"
+  )
+})
+
+test_that("borrowing_hierarchical_commensurate requires the ext flag col", {
+  expect_error(
+    borrowing_hierarchical_commensurate(tau_prior = prior_gamma(alpha = .001, beta = .001)),
+    "\"ext_flag_col\" is missing, with no default"
+  )
+})

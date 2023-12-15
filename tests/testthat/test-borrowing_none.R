@@ -12,3 +12,16 @@ test_that("borrowing_none works as expected for no borrowing", {
   expect_equal(nb@ext_flag_col, "ext")
 })
 
+test_that("borrowing_none rejects the tau prior", {
+  expect_error(
+    borrowing_none(ext_flag_col = "ext", prior_normal(0, 1)),
+    "unused argument"
+  )
+})
+
+test_that("borrowing_none requires ext_flag_col", {
+  expect_error(
+    borrowing_none(),
+    "\"ext_flag_col\" is missing, with no default"
+  )
+})
