@@ -33,6 +33,7 @@ fb <- borrowing_full("ext")
 }
 \seealso{
 Other borrowing classes: 
+\code{\link{Borrowing-class}},
 \code{\link{BorrowingFull-class}},
 \code{\link{BorrowingNone-class}},
 \code{\link{borrowing_hierarchical_commensurate}()},

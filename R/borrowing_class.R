@@ -6,6 +6,7 @@
 #'
 #' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.
+#' @family borrowing classes
 setClass(
   "Borrowing",
   slots = c(

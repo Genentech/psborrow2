@@ -17,3 +17,12 @@ A class for defining borrowing details. Objects of class
 \item{\code{method_name}}{string. The name of the method.}
 }}
 
+\seealso{
+Other borrowing classes: 
+\code{\link{BorrowingFull-class}},
+\code{\link{BorrowingNone-class}},
+\code{\link{borrowing_full}()},
+\code{\link{borrowing_hierarchical_commensurate}()},
+\code{\link{borrowing_none}()}
+}
+\concept{borrowing classes}

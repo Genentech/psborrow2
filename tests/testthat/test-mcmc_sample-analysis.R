@@ -20,8 +20,8 @@ test_that("mcmc_sample gracefully fails if cmdstanr is unavailable", {
   expect_error(
     result <- mcmc_sample(
       object,
-      iter_warmup = 800,
-      iter_sampling = 800,
+      iter_warmup = 2000,
+      iter_sampling = 2000,
       chains = 1
     ),
     regexp = "Cannot sample object",
@@ -82,8 +82,8 @@ test_that("mcmc_sample for Analysis works for full borrowing, exponential dist",
   )
 
   full_exp_bayes <- mcmc_sample(full_exp_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_exp_bayes, "CmdStanMCMC")
@@ -109,8 +109,8 @@ test_that("mcmc_sample for Analysis works for no borrowing, exponential dist", {
   )
 
   no_exp_bayes <- mcmc_sample(no_exp_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_exp_bayes, "CmdStanMCMC")
@@ -139,8 +139,8 @@ test_that("mcmc_sample for Analysis works for full borrowing, exponential dist, 
   )
 
   full_exp_bayes_c1 <- mcmc_sample(full_exp_bayes_c1_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_exp_bayes_c1, "CmdStanMCMC")
@@ -174,8 +174,8 @@ test_that("mcmc_sample for Analysis works for no borrowing, exponential dist, tw
   )
 
   no_exp_bayes_c2 <- mcmc_sample(no_exp_bayes_c2_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_exp_bayes_c2, "CmdStanMCMC")
@@ -209,8 +209,8 @@ test_that("mcmc_sample for Analysis works for full borrowing, Weibull dist", {
   )
 
   full_weib_bayes <- mcmc_sample(full_weib_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_weib_bayes, "CmdStanMCMC")
@@ -245,8 +245,8 @@ test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist", {
   )
 
   no_weib_bayes <- mcmc_sample(no_weib_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_weib_bayes, "CmdStanMCMC")
@@ -280,8 +280,8 @@ test_that("mcmc_sample for Analysis works for full borrowing, weibull dist, one 
   )
 
   full_weib_bayes_c1 <- mcmc_sample(full_weib_bayes_c1_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_weib_bayes_c1, "CmdStanMCMC")
@@ -320,8 +320,8 @@ test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist, two co
   )
 
   no_weib_bayes_c2 <- mcmc_sample(no_weib_bayes_c2_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_weib_bayes_c2, "CmdStanMCMC")
@@ -350,8 +350,8 @@ test_that("mcmc_sample for Analysis works for full borrowing, binomial dist", {
   )
 
   full_bin_bayes <- mcmc_sample(full_bin_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_bin_bayes, "CmdStanMCMC")
@@ -381,8 +381,8 @@ test_that("mcmc_sample for Analysis works for no borrowing, binomial dist", {
   )
 
   no_bin_bayes <- mcmc_sample(no_bin_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_bin_bayes, "CmdStanMCMC")
@@ -411,8 +411,8 @@ test_that("mcmc_sample for Analysis works for full borrowing, binomial dist, one
   )
 
   full_bin_bayes_c1 <- mcmc_sample(full_bin_bayes_c1_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_bin_bayes_c1, "CmdStanMCMC")
@@ -446,8 +446,8 @@ test_that("mcmc_sample for Analysis works for no borrowing, binomial dist, two c
   )
 
   no_bin_bayes_c2 <- mcmc_sample(no_bin_bayes_c2_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_bin_bayes_c2, "CmdStanMCMC")
@@ -477,8 +477,8 @@ test_that("mcmc_sample for Analysis works for exponential BDB, conservative borr
   )
   result <- mcmc_sample(
     exp_bdb_conservative,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
 
@@ -508,8 +508,8 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, aggressive borrowing"
   )
   result <- mcmc_sample(
     weib_bdb_aggressive,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
 
@@ -534,8 +534,8 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressiv
   )
   result <- mcmc_sample(
     bin_bdb_aggressive,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
 

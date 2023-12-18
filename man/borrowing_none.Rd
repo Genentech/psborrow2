@@ -36,6 +36,7 @@ db <- borrowing_none(
 }
 \seealso{
 Other borrowing classes: 
+\code{\link{Borrowing-class}},
 \code{\link{BorrowingFull-class}},
 \code{\link{BorrowingNone-class}},
 \code{\link{borrowing_full}()},

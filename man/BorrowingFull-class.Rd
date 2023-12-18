@@ -23,6 +23,7 @@ should not be created directly but by the constructor
 
 \seealso{
 Other borrowing classes: 
+\code{\link{Borrowing-class}},
 \code{\link{BorrowingNone-class}},
 \code{\link{borrowing_full}()},
 \code{\link{borrowing_hierarchical_commensurate}()},
