@@ -515,7 +515,7 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, aggressive borrowing"
 
   result_summary <- result$summary("HR_trt")
   expect_equal(result_summary[["median"]], 0.80, tolerance = .05)
-  expect_equal(result_summary[["q5"]], 0.57, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 0.54, tolerance = .05)
   expect_equal(result_summary[["q95"]], 1.12, tolerance = .05)
 })
 

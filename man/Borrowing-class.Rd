@@ -18,6 +18,8 @@ A class for defining borrowing details. Objects of class
 }}
 
 \seealso{
+Prior constructor functions: \code{\link[=borrowing_full]{borrowing_full()}}, \code{\link[=borrowing_hierarchical_commensurate]{borrowing_hierarchical_commensurate()}}, \code{\link[=borrowing_none]{borrowing_none()}}
+
 Other borrowing classes: 
 \code{\link{BorrowingFull-class}},
 \code{\link{BorrowingNone-class}},

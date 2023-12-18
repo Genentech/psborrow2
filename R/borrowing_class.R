@@ -6,6 +6,7 @@
 #'
 #' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.
+#' @seealso Prior constructor functions: [borrowing_full()], [borrowing_hierarchical_commensurate()], [borrowing_none()]
 #' @family borrowing classes
 setClass(
   "Borrowing",
@@ -38,6 +39,7 @@ setMethod(
 )
 
 # trim rows ----
+#' @rdname trim_rows
 #' @include generics.R
 setMethod(
   f = "trim_rows",
@@ -48,11 +50,34 @@ setMethod(
 )
 
 # trim cols ----
+#' @rdname trim_cols
 #' @include generics.R
 setMethod(
   f = "trim_cols",
   signature = "Borrowing",
   definition = function(borrowing_object, analysis_object) {
     return(setdiff(get_vars(analysis_object), get_vars(analysis_object@borrowing)))
+  }
+)
+
+#' @rdname trim_rows
+#' @include generics.R
+#' @usage \S4method{trim_rows}{NULL}(borrowing_object, analysis_object)
+setMethod(
+  f = "trim_rows",
+  signature = "NULL",
+  definition = function(borrowing_object, analysis_object) {
+    NULL
+  }
+)
+
+#' @rdname trim_cols
+#' @include generics.R
+#' @usage \S4method{trim_cols}{NULL}(borrowing_object, analysis_object)
+setMethod(
+  f = "trim_cols",
+  signature = "NULL",
+  definition = function(borrowing_object, analysis_object) {
+    NULL
   }
 )

@@ -107,7 +107,9 @@ setMethod(
 )
 
 # trim cols ----
+#' @rdname trim_cols
 #' @include generics.R
+#' @include borrowing_class.R
 setMethod(
   f = "trim_cols",
   signature = "BorrowingHierarchicalCommensurate",

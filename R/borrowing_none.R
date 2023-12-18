@@ -53,7 +53,9 @@ borrowing_none <- function(ext_flag_col) {
 
 
 # trim rows ----
+#' @rdname trim_rows
 #' @include generics.R
+#' @include borrowing_class.R
 setMethod(
   f = "trim_rows",
   signature = "BorrowingNone",
