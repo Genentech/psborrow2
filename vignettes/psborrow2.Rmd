@@ -1,0 +1,88 @@
+---
+title: "1. Getting started with psborrow2"
+author: "Matt Secrest and Isaac Gravestock"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{1. Getting started with psborrow2}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+In this vignette, you'll learn about the scope of `psborrow2` and where to find
+additional information on how to implement analyses in `psborrow2`.
+
+## Introduction
+
+While the randomized controlled trial (RCT) comparing experimental and control
+arms remains the gold standard for evaluating the efficacy of a novel therapy,
+one may want to leverage relevant existing external control data to inform the
+study outcome. External control data can help increase study power and thereby
+shorten trial duration or reduce the number of subjects needed. However,
+analysis of external control data can also introduce bias. One method for
+incorporating external control data to mitigate bias is **Bayesian dynamic
+borrowing (BDB)**, in which external control data is borrowed to the extent
+that the external and RCT control arms have similar outcomes
+(Viele et. al. 2014).
+
+Implementing BDB is computationally involved and requires Markov chain Monte
+Carlo (MCMC) sampling methods, which in turn may require knowledge
+of MCMC sampling software. To overcome these technical barriers and
+we developed `psborrow2` using `cmdstanr`, an R package which facilitates
+the use of the MCMC sampling program Stan (via CMD Stan).
+
+`psborrow2` has two main goals:
+
+1. to provide a user-friendly interface for applying BDB on study results that
+handles the MCMC sampling on behalf of the user
+
+2. to facilitate simulation studies that compare different borrowing parameters
+(e.g. full borrowing, no borrowing, BDB) and other trial and BDB
+characteristics in a unified way
+
+Right now, `psborrow2` supports time-to-event endpoints as well as
+binary endpoints.
+
+## Analyze your own data
+
+`psborrow2` can implement BDB in a scenario wherein a two-arm RCT is
+supplemented with external data on the control arm. Three arms are required to
+implement BDB in `psborrow2`. They are:
+
+* The internal control arm from within the RCT
+* The external control arm using observational data or experimental data
+from another trial with the same intervention/treatment and population
+as the internal control arm
+* The internal experimental arm from within the RCT
+
+Such scenarios are common in drug development because the comparator arm for
+a novel therapy is often the standard of care, for which data exists from
+electronic health care records or from previous phase III registrational trials.
+
+Refer to the "dataset" vignette for more information on
+how to implement BDB analyses on your own data:
+`vignette('dataset', package = 'psborrow2')`
+
+## Conduct a simulation study
+
+Refer to the "simulation study" vignette for more information on
+how to create a simulation study involving BDB and other innovative trial
+designs: `vignette('simulation_study', package = 'psborrow2')`
+
+## Additional information
+`psborrow2` is the successor to
+[`psborrow`](https://cran.r-project.org/web/packages/psborrow/index.html).
+While the core functionality has been replicated in `psborrow2` such that there
+is no longer any reason to prefer `psborrow`, we cite it here
+for posterity.
+
+## References
+Viele, K., Berry, S., Neuenschwander, B., Amzal, B., Chen, F.,
+Enas, N., Hobbs, B., Ibrahim, J.G., Kinnersley, N., Lindborg, S., Micallef,
+S., Roychoudhury, S. and Thompson, L. (2014),
+Use of historical control data for assessing treatment effects in clinical trials.
+__Pharmaceut. Statist., 13: 41--54__. \doi{10.1002/pst.1589}

@@ -15,4 +15,4 @@ rebuild: .clean build
 
 .PHONY: install
 install: 
-	Rscript -e "devtools::build('../') |> install.packages(repos = NULL, build_vignettes = FALSE)"
+	Rscript -e "devtools::build('../', vignettes = FALSE) |> install.packages(repos = NULL, build_vignettes = FALSE)"
