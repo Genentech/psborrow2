@@ -36,3 +36,23 @@ setMethod(
     cat("External control flag:", object@ext_flag_col, "\n\n")
    }
 )
+
+# trim rows ----
+#' @include generics.R
+setMethod(
+  f = "trim_rows",
+  signature = "Borrowing",
+  definition = function(analysis_object) {
+    return(seq_len(NROW(analysis_obj@data_matrix)))
+  }
+)
+
+# trim cols ----
+#' @include generics.R
+setMethod(
+  f = "trim_cols",
+  signature = "Borrowing",
+  definition = function(analysis_object) {
+    return(setdiff(get_vars(analysis_object), get_vars(analysis_object@borrowing)))
+  }
+)

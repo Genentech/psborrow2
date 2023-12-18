@@ -50,3 +50,14 @@ borrowing_none <- function(ext_flag_col) {
    assert_string(ext_flag_col)
    .borrowing_none(ext_flag_col = ext_flag_col)
 }
+
+
+# trim rows ----
+#' @include generics.R
+setMethod(
+  f = "trim_rows",
+  signature = "BorrowingNone",
+  definition = function(analysis_object) {
+    return(!as.logical(analysis_obj@data_matrix[, get_vars(analysis_obj@borrowing)]))
+  }
+)

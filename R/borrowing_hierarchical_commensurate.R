@@ -105,3 +105,13 @@ setMethod(
     show(object@tau_prior)
    }
 )
+
+# trim cols ----
+#' @include generics.R
+setMethod(
+  f = "trim_cols",
+  signature = "BorrowingHierarchicalCommensurate",
+  definition = function(analysis_object) {
+    return(get_vars(analysis_object))
+  }
+)

@@ -94,3 +94,21 @@ setGeneric("get_cmd_stan_models", function(object) standardGeneric("get_cmd_stan
 #'
 #' @export
 setGeneric("generate", function(x, ...) standardGeneric("generate"))
+
+#' Trim Rows from Data Matrix Based on Borrowing object type 
+#' 
+#' @param analysis_object analysis object
+#' 
+#' @rdname trim_rows
+#' 
+#' @export
+setGeneric("trim_rows", function(analysis_object) standardGeneric("trim_rows"))
+
+#' Trim columns from Data Matrix Based on Borrowing object type 
+#' 
+#' @param analysis_object analysis object
+#' 
+#' @rdname trim_cols
+#' 
+#' @export
+setGeneric("trim_cols", function(analysis_object) standardGeneric("trim_cols"))

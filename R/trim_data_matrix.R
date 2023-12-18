@@ -34,11 +34,9 @@
 #' trimmed_mat <- psborrow2:::trim_data_matrix(anls)
 #'
 trim_data_matrix <- function(analysis_obj) {
-  required_rows <- if (is(analysis_obj@borrowing, "BorrowingNone")) {
-    !as.logical(analysis_obj@data_matrix[, get_vars(analysis_obj@borrowing)])
-  } else {
-    seq_len(NROW(analysis_obj@data_matrix))
-  }
+  required_rows <- analysis_obj@borrowing$trim_rows(analysis_obj)
+  required_cols <- analysis_obj@borrowing$trim_cols(analysis_obj)
+
 
   required_cols <- if (!is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate")) {
     setdiff(get_vars(analysis_obj), get_vars(analysis_obj@borrowing))
