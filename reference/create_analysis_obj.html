@@ -15,7 +15,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,10 +64,10 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_analysis_obj</span><span class="op">(</span></span>
 <span>  <span class="va">data_matrix</span>,</span>
-<span>  covariates <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">outcome</span>,</span>
 <span>  <span class="va">borrowing</span>,</span>
 <span>  <span class="va">treatment</span>,</span>
+<span>  covariates <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -78,11 +78,6 @@
 <dd><p>matrix. The data matrix, including all covariates to be
 adjusted for, all relevant outcome variables, and treatment arm and external
 control arm flags.</p></dd>
-
-
-<dt>covariates</dt>
-<dd><p><code>Covariates</code>. Object of class <code><a href="Covariates-class.html">Covariates</a></code> as output by
-the function <code><a href="add_covariates.html">add_covariates()</a></code>.</p></dd>
 
 
 <dt>outcome</dt>
@@ -98,6 +93,11 @@ the function <code><a href="add_covariates.html">add_covariates()</a></code>.</p
 <dt>treatment</dt>
 <dd><p><code>Treatment</code>. Object of class <code><a href="Treatment-class.html">Treatment</a></code> as output by
 <code><a href="treatment_details.html">treatment_details()</a></code>.</p></dd>
+
+
+<dt>covariates</dt>
+<dd><p><code>Covariates</code>. Object of class <code><a href="Covariates-class.html">Covariates</a></code> as output by
+the function <code><a href="add_covariates.html">add_covariates()</a></code>.</p></dd>
 
 
 <dt>quiet</dt>
@@ -117,10 +117,6 @@ the default)</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="check_cmdstanr.html">check_cmdstan</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="va">anls</span> <span class="op">&lt;-</span> <span class="fu">create_analysis_obj</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span></span>
-<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="add_covariates.html">add_covariates</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cov1"</span>, <span class="st">"cov2"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      priors <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span>,</span></span>
 <span class="r-in"><span>    outcome <span class="op">=</span> <span class="fu"><a href="outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      <span class="st">"time"</span>,</span></span>
 <span class="r-in"><span>      <span class="st">"cnsr"</span>,</span></span>
@@ -134,6 +130,10 @@ the default)</p></dd>
 <span class="r-in"><span>    treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      <span class="st">"trt"</span>,</span></span>
 <span class="r-in"><span>      <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="add_covariates.html">add_covariates</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cov1"</span>, <span class="st">"cov2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      priors <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
