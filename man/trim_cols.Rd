@@ -4,9 +4,11 @@
 \alias{trim_cols}
 \title{Trim columns from Data Matrix Based on Borrowing object type}
 \usage{
-trim_cols(analysis_object)
+trim_cols(borrowing_object, analysis_object)
 }
 \arguments{
+\item{borrowing_object}{borrowing object}
+
 \item{analysis_object}{analysis object}
 }
 \description{
