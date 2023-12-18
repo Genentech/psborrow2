@@ -97,18 +97,20 @@ setGeneric("generate", function(x, ...) standardGeneric("generate"))
 
 #' Trim Rows from Data Matrix Based on Borrowing object type 
 #' 
+#' @param borrowing_object borrowing object
 #' @param analysis_object analysis object
 #' 
 #' @rdname trim_rows
 #' 
 #' @export
-setGeneric("trim_rows", function(analysis_object) standardGeneric("trim_rows"))
+setGeneric("trim_rows", function(borrowing_object, analysis_object) standardGeneric("trim_rows"))
 
 #' Trim columns from Data Matrix Based on Borrowing object type 
 #' 
+#' @param borrowing_object borrowing object
 #' @param analysis_object analysis object
 #' 
 #' @rdname trim_cols
 #' 
 #' @export
-setGeneric("trim_cols", function(analysis_object) standardGeneric("trim_cols"))
+setGeneric("trim_cols", function(borrowing_object, analysis_object) standardGeneric("trim_cols"))

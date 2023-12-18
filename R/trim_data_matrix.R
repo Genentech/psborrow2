@@ -34,7 +34,7 @@
 #' trimmed_mat <- psborrow2:::trim_data_matrix(anls)
 #'
 trim_data_matrix <- function(analysis_obj) {
-  required_rows <- analysis_obj@borrowing$trim_rows(analysis_obj)
-  required_cols <- analysis_obj@borrowing$trim_cols(analysis_obj)
+  required_rows <- trim_rows(analysis_obj@borrowing, analysis_obj)
+  required_cols <- trim_cols(analysis_obj@borrowing, analysis_obj)
   return(analysis_obj@data_matrix[required_rows, required_cols])
 }

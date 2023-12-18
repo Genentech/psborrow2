@@ -111,7 +111,7 @@ setMethod(
 setMethod(
   f = "trim_cols",
   signature = "BorrowingHierarchicalCommensurate",
-  definition = function(analysis_object) {
+  definition = function(borrowing_object, analysis_object) {
     return(get_vars(analysis_object))
   }
 )

@@ -57,7 +57,7 @@ borrowing_none <- function(ext_flag_col) {
 setMethod(
   f = "trim_rows",
   signature = "BorrowingNone",
-  definition = function(analysis_object) {
+  definition = function(borrowing_object, analysis_object) {
     return(!as.logical(analysis_obj@data_matrix[, get_vars(analysis_obj@borrowing)]))
   }
 )
