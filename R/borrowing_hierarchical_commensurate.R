@@ -11,7 +11,6 @@
 #' @slot data_stan_code string. Stan code that will be interpolated into the model.
 #' @slot method_name string. The name of the method.
 #' @include borrowing_class.R
-#' @family borrowing classes
 .borrowing_hierarchical_commensurate <- setClass(
    "BorrowingHierarchicalCommensurate",
    slots = c(
@@ -82,11 +81,12 @@
 #' 
 #' @return Object of class [`BorrowingHierarchicalCommensurate`][BorrowingHierarchicalCommensurate-class].
 #' @include borrowing_class.R
-#' 
+#' @family borrowing classes 
+#' @export
 #' @examples
 #' db <- borrowing_hierarchical_commensurate(
 #'    ext_flag_col = "ext",
-#'    tau_prior = gamma_prior(0.0001, 0.0001)
+#'    tau_prior = prior_gamma(0.0001, 0.0001)
 #' )
 borrowing_hierarchical_commensurate <- function(ext_flag_col, tau_prior) {
    assert_class(tau_prior, "Prior")

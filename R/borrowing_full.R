@@ -39,9 +39,10 @@
 #' 
 #' @return Object of class [`BorrowingFull`][BorrowingFull-class].
 #' @include borrowing_class.R
-#' 
+#' @family borrowing classes
+#' @export
 #' @examples
-#' db <- borrowing_full("ext")
+#' fb <- borrowing_full("ext")
 borrowing_full <- function(ext_flag_col) {
    .borrowing_full(ext_flag_col = ext_flag_col)
 }

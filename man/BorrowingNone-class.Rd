@@ -24,6 +24,8 @@ should not be created directly but by the constructor
 \seealso{
 Other borrowing classes: 
 \code{\link{BorrowingFull-class}},
-\code{\link{BorrowingHierarchicalCommensurate-class}}
+\code{\link{borrowing_full}()},
+\code{\link{borrowing_hierarchical_commensurate}()},
+\code{\link{borrowing_none}()}
 }
 \concept{borrowing classes}

@@ -29,5 +29,13 @@ contains the flag indicating a patient is from the external control cohort.
 }
 }
 \examples{
-db <- borrowing_full("ext")
+fb <- borrowing_full("ext")
 }
+\seealso{
+Other borrowing classes: 
+\code{\link{BorrowingFull-class}},
+\code{\link{BorrowingNone-class}},
+\code{\link{borrowing_hierarchical_commensurate}()},
+\code{\link{borrowing_none}()}
+}
+\concept{borrowing classes}

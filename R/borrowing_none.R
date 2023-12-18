@@ -40,7 +40,8 @@
 #' 
 #' @return Object of class [`BorrowingNone`][BorrowingNone-class].
 #' @include borrowing_class.R
-#' 
+#' @family borrowing classes
+#' @export
 #' @examples
 #' db <- borrowing_none(
 #'    ext_flag_col = "ext"

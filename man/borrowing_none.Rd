@@ -34,3 +34,11 @@ db <- borrowing_none(
    ext_flag_col = "ext"
 )
 }
+\seealso{
+Other borrowing classes: 
+\code{\link{BorrowingFull-class}},
+\code{\link{BorrowingNone-class}},
+\code{\link{borrowing_full}()},
+\code{\link{borrowing_hierarchical_commensurate}()}
+}
+\concept{borrowing classes}

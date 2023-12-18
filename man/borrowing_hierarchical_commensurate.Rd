@@ -55,7 +55,7 @@ will lead to more borrowing.
 \examples{
 db <- borrowing_hierarchical_commensurate(
    ext_flag_col = "ext",
-   tau_prior = gamma_prior(0.0001, 0.0001)
+   tau_prior = prior_gamma(0.0001, 0.0001)
 )
 }
 \references{
@@ -69,3 +69,11 @@ Hobbes, B.P., Carlin, B.P., Mandrekar, S.J. and Sargent, D.J. (2011),
 Hierarchical commensurate and power prior models for adaptive incorporation of historical information in clinical trials.
 \strong{Biometrics, 67: 1047--1056}. \doi{10.1111/j.1541-0420.2011.01564.x}
 }
+\seealso{
+Other borrowing classes: 
+\code{\link{BorrowingFull-class}},
+\code{\link{BorrowingNone-class}},
+\code{\link{borrowing_full}()},
+\code{\link{borrowing_none}()}
+}
+\concept{borrowing classes}
