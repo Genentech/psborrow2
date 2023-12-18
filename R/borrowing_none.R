@@ -58,6 +58,6 @@ setMethod(
   f = "trim_rows",
   signature = "BorrowingNone",
   definition = function(borrowing_object, analysis_object) {
-    return(!as.logical(analysis_obj@data_matrix[, get_vars(analysis_obj@borrowing)]))
+    return(!as.logical(analysis_object@data_matrix[, get_vars(analysis_object@borrowing)]))
   }
 )

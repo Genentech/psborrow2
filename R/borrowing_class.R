@@ -43,7 +43,7 @@ setMethod(
   f = "trim_rows",
   signature = "Borrowing",
   definition = function(borrowing_object, analysis_object) {
-    return(seq_len(NROW(analysis_obj@data_matrix)))
+    return(seq_len(NROW(analysis_object@data_matrix)))
   }
 )
 
