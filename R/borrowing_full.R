@@ -12,10 +12,7 @@
 #' @family borrowing classes
 .borrowing_full <- setClass(
    "BorrowingFull",
-   slots = c(
-      ext_flag_col = "character"
-   ),
-   prototype = list(
+    prototype = list(
       data_stan_code = "",
       method_name = "Full borrowing"
    ),

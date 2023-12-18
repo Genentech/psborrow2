@@ -14,7 +14,6 @@
 .borrowing_hierarchical_commensurate <- setClass(
    "BorrowingHierarchicalCommensurate",
    slots = c(
-      ext_flag_col = "character",
       tau_prior = "Prior"
    ),
    prototype = list(

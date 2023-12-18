@@ -12,9 +12,6 @@
 #' @family borrowing classes
 .borrowing_none <- setClass(
    "BorrowingNone",
-   slots = c(
-      ext_flag_col = "character"
-   ),
    prototype = list(
       data_stan_code = "",
       method_name = "No borrowing"

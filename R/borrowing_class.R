@@ -12,7 +12,8 @@ setClass(
   "Borrowing",
   slots = c(
     data_stan_code = "character",
-    method_name = "character"
+    method_name = "character",
+    ext_flag_col = "character"
   ),
   contains = "VIRTUAL"
 )
