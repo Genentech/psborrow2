@@ -6,10 +6,10 @@
 \usage{
 create_analysis_obj(
   data_matrix,
-  covariates = NULL,
   outcome,
   borrowing,
   treatment,
+  covariates = NULL,
   quiet = FALSE
 )
 }
@@ -17,9 +17,6 @@ create_analysis_obj(
 \item{data_matrix}{matrix. The data matrix, including all covariates to be
 adjusted for, all relevant outcome variables, and treatment arm and external
 control arm flags.}
-
-\item{covariates}{\code{Covariates}. Object of class \code{\link[=Covariates-class]{Covariates}} as output by
-the function \code{\link[=add_covariates]{add_covariates()}}.}
 
 \item{outcome}{\code{Outcome}. Object of class \code{\link[=Outcome-class]{Outcome}} as output by
 \code{\link[=outcome_surv_exponential]{outcome_surv_exponential()}}, \code{\link[=outcome_surv_weibull_ph]{outcome_surv_weibull_ph()}}, or \code{\link[=outcome_bin_logistic]{outcome_bin_logistic()}}.}
@@ -29,6 +26,9 @@ the function \code{\link[=add_covariates]{add_covariates()}}.}
 
 \item{treatment}{\code{Treatment}. Object of class \code{\link[=Treatment-class]{Treatment}} as output by
 \code{\link[=treatment_details]{treatment_details()}}.}
+
+\item{covariates}{\code{Covariates}. Object of class \code{\link[=Covariates-class]{Covariates}} as output by
+the function \code{\link[=add_covariates]{add_covariates()}}.}
 
 \item{quiet}{logical. Whether to suppress messages (\code{TRUE}) or not (\code{FALSE},
 the default)}
@@ -43,10 +43,6 @@ Compile MCMC sampler using STAN and create analysis object
 if (check_cmdstan()) {
   anls <- create_analysis_obj(
     data_matrix = example_matrix,
-    covariates = add_covariates(
-      covariates = c("cov1", "cov2"),
-      priors = prior_normal(0, 1000)
-    ),
     outcome = outcome_surv_exponential(
       "time",
       "cnsr",
@@ -59,6 +55,10 @@ if (check_cmdstan()) {
     treatment = treatment_details(
       "trt",
       prior_normal(0, 1000)
+    ),
+    covariates = add_covariates(
+      covariates = c("cov1", "cov2"),
+      priors = prior_normal(0, 1000)
     )
   )
 }
