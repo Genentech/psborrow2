@@ -1,10 +1,10 @@
-# psborrow2 0.0.2.0
+# psborrow2 0.0.2
 
 - First public demonstration of `psborrow2`
 - Propensity score weighting (or any other weighting)
 - Fixed power priors
 
-# psborrow2 0.0.1.0
+# psborrow2 0.0.1
 
 - First private functional application of `psborrow2`
 - Logistic, exponential survival and Weibull proportional

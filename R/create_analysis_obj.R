@@ -24,10 +24,6 @@
 #' if (check_cmdstan()) {
 #'   anls <- create_analysis_obj(
 #'     data_matrix = example_matrix,
-#'     covariates = add_covariates(
-#'       covariates = c("cov1", "cov2"),
-#'       priors = prior_normal(0, 1000)
-#'     ),
 #'     outcome = outcome_surv_exponential(
 #'       "time",
 #'       "cnsr",
@@ -41,15 +37,19 @@
 #'     treatment = treatment_details(
 #'       "trt",
 #'       prior_normal(0, 1000)
+#'     ),
+#'     covariates = add_covariates(
+#'       covariates = c("cov1", "cov2"),
+#'       priors = prior_normal(0, 1000)
 #'     )
 #'   )
 #' }
 #'
 create_analysis_obj <- function(data_matrix,
-                                covariates = NULL,
                                 outcome,
                                 borrowing,
                                 treatment,
+                                covariates = NULL,
                                 quiet = FALSE) {
   assert_matrix(data_matrix, mode = "numeric")
   assert_multi_class(covariates, c("Covariates", "NULL"))
