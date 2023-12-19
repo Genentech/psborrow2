@@ -2,7 +2,7 @@
 #'
 #' A class for defining borrowing details. Objects of class
 #' `Borrowing` should not be created directly but by the constructors
-#' [hierarchical_commensurate_borrowing(), no_borrowing(), full_borrowing()].
+#' [borrowing_hierarchical_commensurate()], [borrowing_none()], [borrowing_full()].
 #'
 #' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.

@@ -48,7 +48,6 @@ borrowing_none <- function(ext_flag_col) {
    .borrowing_none(ext_flag_col = ext_flag_col)
 }
 
-
 # trim rows ----
 #' @rdname trim_rows
 #' @include generics.R

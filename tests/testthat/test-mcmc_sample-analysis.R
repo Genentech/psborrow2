@@ -541,6 +541,6 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressiv
 
   result_summary <- result$summary("OR_trt")
   expect_equal(result_summary[["median"]], 1.65, tolerance = .05)
-  expect_equal(result_summary[["q5"]], 1.11, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 1.10, tolerance = .05)
   expect_equal(result_summary[["q95"]], 2.44, tolerance = .05)
 })

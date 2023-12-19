@@ -69,11 +69,3 @@ Hobbes, B.P., Carlin, B.P., Mandrekar, S.J. and Sargent, D.J. (2011),
 Hierarchical commensurate and power prior models for adaptive incorporation of historical information in clinical trials.
 \strong{Biometrics, 67: 1047--1056}. \doi{10.1111/j.1541-0420.2011.01564.x}
 }
-\seealso{
-Other borrowing classes: 
-\code{\link{Borrowing-class}},
-\code{\link{BorrowingFull-class}},
-\code{\link{BorrowingHierarchicalCommensurate-class}},
-\code{\link{BorrowingNone-class}}
-}
-\concept{borrowing classes}

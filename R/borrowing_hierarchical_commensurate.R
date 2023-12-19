@@ -81,7 +81,6 @@
 #'  __Biometrics, 67: 1047--1056__. \doi{10.1111/j.1541-0420.2011.01564.x}
 #' 
 #' @return Object of class [`BorrowingHierarchicalCommensurate`][BorrowingHierarchicalCommensurate-class].
-#' @family borrowing classes 
 #' @export
 #' @examples
 #' db <- borrowing_hierarchical_commensurate(

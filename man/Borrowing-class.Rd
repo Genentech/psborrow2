@@ -7,7 +7,7 @@
 \description{
 A class for defining borrowing details. Objects of class
 \code{Borrowing} should not be created directly but by the constructors
-\code{\link[=hierarchical_commensurate_borrowing(), no_borrowing(), full_borrowing]{hierarchical_commensurate_borrowing(), no_borrowing(), full_borrowing()}}.
+\code{\link[=borrowing_hierarchical_commensurate]{borrowing_hierarchical_commensurate()}}, \code{\link[=borrowing_none]{borrowing_none()}}, \code{\link[=borrowing_full]{borrowing_full()}}.
 }
 \section{Slots}{
 
@@ -25,7 +25,6 @@ Prior constructor functions: \code{\link[=borrowing_full]{borrowing_full()}}, \c
 Other borrowing classes: 
 \code{\link{BorrowingFull-class}},
 \code{\link{BorrowingHierarchicalCommensurate-class}},
-\code{\link{BorrowingNone-class}},
-\code{\link{borrowing_hierarchical_commensurate}()}
+\code{\link{BorrowingNone-class}}
 }
 \concept{borrowing classes}

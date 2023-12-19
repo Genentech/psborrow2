@@ -25,7 +25,6 @@ should not be created directly but by the constructor
 Other borrowing classes: 
 \code{\link{Borrowing-class}},
 \code{\link{BorrowingFull-class}},
-\code{\link{BorrowingHierarchicalCommensurate-class}},
-\code{\link{borrowing_hierarchical_commensurate}()}
+\code{\link{BorrowingHierarchicalCommensurate-class}}
 }
 \concept{borrowing classes}
