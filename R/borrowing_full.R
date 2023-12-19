@@ -43,13 +43,3 @@
 borrowing_full <- function(ext_flag_col) {
    .borrowing_full(ext_flag_col = ext_flag_col)
 }
-
-# show ----
-setMethod(
-  f = "show",
-  signature = "BorrowingFull",
-  definition = function(object) {
-    cat("Borrowing object using the `full borrowing` approach\n\n")
-    cat("External control flag:", object@ext_flag_col, "\n\n")
-   }
-)

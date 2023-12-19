@@ -98,8 +98,7 @@ setMethod(
   f = "show",
   signature = "BorrowingHierarchicalCommensurate",
   definition = function(object) {
-    cat("Borrowing object using the hierarchical commensurate prior approach\n\n")
-    cat("External control flag:", object@ext_flag_col, "\n\n")
+    callNextMethod()
     cat("Commensurability parameter prior:\n")
     show(object@tau_prior)
    }
