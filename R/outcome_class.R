@@ -5,6 +5,11 @@ setClass(
   contains = "VIRTUAL"
 )
 
+setClassUnion(
+  "vectorOrNULL",
+  c("vector", "NULL")
+)
+
 #' `TimeToEvent` class
 #'
 #' @slot function_stan_code character. Code to include in the Stan functions program block.
@@ -18,9 +23,9 @@ setClass(
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @slot name_beta_trt. Named vector for beta_trt.
-#' @slot name_exp_trt. Named exponentiated beta_trt.
+#' @slot name_exp_trt. Named vector for exponentiated beta_trt
 #' @slot name_alpha_type. How to interpret alpha.
-#' @slot name_addnl_params. Named additional parameters.
+#' @slot name_addnl_params. Named vector for additional parameters.
 #' @family outcome
 setClass(
   "TimeToEvent",
@@ -38,7 +43,7 @@ setClass(
     name_beta_trt = "vector",
     name_exp_trt = "vector",
     alpha_type = "character",
-    name_addnl_params = "vector"
+    name_addnl_params = "vectorOrNULL"
   ),
   prototype = list(
     n_param = 0L,
@@ -68,9 +73,9 @@ setClass(
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @slot name_beta_trt. Named vector for beta_trt.
-#' @slot name_exp_trt. Named exponentiated beta_trt.
+#' @slot name_exp_trt. Named vector for exponentiated beta_trt
 #' @slot name_alpha_type. How to interpret alpha.
-#' @slot name_addnl_params. Named additional parameters.
+#' @slot name_addnl_params. Named vector for additional parameters.
 #' @family outcome
 setClass(
   "BinaryOutcome",
@@ -87,7 +92,7 @@ setClass(
     name_beta_trt = "vector",
     name_exp_trt = "vector",
     alpha_type = "character",
-    name_addnl_params = "vector"
+    name_addnl_params = "vectorOrNULL"
   ),
   prototype = list(
     n_param = 0L,
@@ -116,9 +121,9 @@ setClass(
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @slot name_beta_trt. Named vector for beta_trt.
-#' @slot name_exp_trt. Named exponentiated beta_trt.
+#' @slot name_exp_trt. Named vector for exponentiated beta_trt
 #' @slot name_alpha_type. How to interpret alpha.
-#' @slot name_addnl_params. Named additional parameters.
+#' @slot name_addnl_params. Named vector for additional parameters.
 #' @family outcome
 setClass(
   "ContinuousOutcome",
@@ -135,7 +140,7 @@ setClass(
     name_beta_trt = "vector",
     name_exp_trt = "vector",
     alpha_type = "character",
-    name_addnl_params = "vector"
+    name_addnl_params = "vectorOrNULL"
   ),
   prototype = list(
     n_param = 0L,

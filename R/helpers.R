@@ -211,16 +211,15 @@ variable_dictionary <- function(analysis_obj) {
   exp_trt <- analysis_obj@outcome@name_exp_trt
   alpha_type = analysis_obj@outcome@alpha_type
   addnl_params <- analysis_obj@outcome@name_addnl_params
+  tau <- analysis_obj@borrowing@name_tau
 
   if (is_bdb) {
     alpha <- stats::setNames(c("alpha[1]", "alpha[2]"), paste0(alpha_type, c(", internal", ", external")))
-    tau <- c("commensurability parameter" = "tau")
   } else {
     alpha <- setNames("alpha", alpha_type)
-    tau <- NULL
   }
 
-  vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addl_params)
+  vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addnl_params)
   data.frame(Stan_variable = unname(vars), Description = names(vars))
 }
 

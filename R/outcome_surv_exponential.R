@@ -19,9 +19,9 @@
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @slot name_beta_trt. Named vector for beta_trt.
-#' @slot name_exp_trt. Named exponentiated beta_trt.
+#' @slot name_exp_trt. Named vector for exponentiated beta_trt
 #' @slot name_alpha_type. How to interpret alpha.
-#' @slot name_addnl_params. Named additional parameters.
+#' @slot name_addnl_params. Named vector for additional parameters.
 #' @include outcome_class.R
 #' @family outcome
 .outcome_surv_exponential <- setClass(

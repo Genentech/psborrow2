@@ -8,6 +8,7 @@
 #' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.
 #' @slot ext_flag_col character. Name of the external flag column in the matrix.
+#' @slot name_tau named vector for hierarchical commensurability parameter hyperprior.
 #' @include borrowing_class.R
 #' @family borrowing classes
 .borrowing_full <- setClass(
