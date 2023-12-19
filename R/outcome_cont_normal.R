@@ -17,6 +17,9 @@
 #' @slot continuous_var character. Variable used for outcome in `OutcomeContinuousNormal` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
+#' @slot name_beta_trt. Named vector for beta_trt.
+#' @slot name_exp_trt. Named exponentiated beta_trt.
+#' @slot name_alpha_type. How to interpret alpha.
 #' @include outcome_class.R helpers.R prior_half_cauchy.R
 #' @family outcome
 .outcome_cont_normal <- setClass(

@@ -207,8 +207,8 @@ variable_dictionary <- function(analysis_obj) {
     NULL
   }
 
-  beta_trt <- analysis_obj@borrowing@name_beta_trt
-  exp_trt <- analysis_obj@borrowing@name_exp_trt
+  beta_trt <- analysis_obj@outcome@name_beta_trt
+  exp_trt <- analysis_obj@outcome@name_exp_trt
   alpha_type = analysis_obj@outcome@alpha_type
 
   if (is_tte) {

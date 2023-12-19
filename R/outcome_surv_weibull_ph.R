@@ -15,6 +15,9 @@
 #' @slot cens_var character. Variable used for censoring in `TimeToEvent` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
+#' @slot name_beta_trt. Named vector for beta_trt.
+#' @slot name_exp_trt. Named exponentiated beta_trt.
+#' @slot name_alpha_type. How to interpret alpha.
 #' @include outcome_class.R
 #' @include prior_class.R
 #' @include prior_normal.R
