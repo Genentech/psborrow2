@@ -241,13 +241,14 @@ for (bd in 1:3) {
         "All allowable inputs create Analysis object (",
         "borrowing:", bd, "outcome:", oc, "covariates:", cc, ")"
       ), {
+        # Pass by position
         expect_class(
           create_analysis_obj(
-            data_matrix = example_matrix,
-            covariates = covariates_list[[cc]],
-            outcome = outcome_list[[oc]],
-            treatment = td,
-            borrowing = borrowing_list[[bd]],
+            example_matrix,
+            outcome_list[[oc]],
+            borrowing_list[[bd]],
+            td,
+            covariates_list[[cc]],
             quiet = TRUE
           ),
           classes = "Analysis"
