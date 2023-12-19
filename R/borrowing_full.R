@@ -5,9 +5,9 @@
 #' should not be created directly but by the constructor
 #' [borrowing_full()].
 #' 
-#' @slot ext_flag_col character. Name of the external flag column in the matrix.
-#' @slot data_stan_code string. Stan code that will be interpolated into the model.
+#' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.
+#' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @include borrowing_class.R
 #' @family borrowing classes
 .borrowing_full <- setClass(
@@ -26,6 +26,7 @@
 #' @details
 #' 
 #' ## Method
+#' 
 #' This method does not distinguish between internal and external arms, effectively 
 #' pooling patients.
 #' 
@@ -35,8 +36,7 @@
 #' contains the flag indicating a patient is from the external control cohort.
 #' 
 #' @return Object of class [`BorrowingFull`][BorrowingFull-class].
-#' @include borrowing_class.R
-#' @family borrowing classes
+#' @family borrowing
 #' @export
 #' @examples
 #' fb <- borrowing_full("ext")

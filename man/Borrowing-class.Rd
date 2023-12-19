@@ -15,6 +15,8 @@ A class for defining borrowing details. Objects of class
 \item{\code{data_stan_code}}{string. Code to include in the Stan data program block.}
 
 \item{\code{method_name}}{string. The name of the method.}
+
+\item{\code{ext_flag_col}}{character. Name of the external flag column in the matrix.}
 }}
 
 \seealso{
@@ -22,9 +24,8 @@ Prior constructor functions: \code{\link[=borrowing_full]{borrowing_full()}}, \c
 
 Other borrowing classes: 
 \code{\link{BorrowingFull-class}},
+\code{\link{BorrowingHierarchicalCommensurate-class}},
 \code{\link{BorrowingNone-class}},
-\code{\link{borrowing_full}()},
-\code{\link{borrowing_hierarchical_commensurate}()},
-\code{\link{borrowing_none}()}
+\code{\link{borrowing_hierarchical_commensurate}()}
 }
 \concept{borrowing classes}

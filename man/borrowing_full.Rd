@@ -32,11 +32,7 @@ contains the flag indicating a patient is from the external control cohort.
 fb <- borrowing_full("ext")
 }
 \seealso{
-Other borrowing classes: 
-\code{\link{Borrowing-class}},
-\code{\link{BorrowingFull-class}},
-\code{\link{BorrowingNone-class}},
-\code{\link{borrowing_hierarchical_commensurate}()},
+Other borrowing: 
 \code{\link{borrowing_none}()}
 }
-\concept{borrowing classes}
+\concept{borrowing}

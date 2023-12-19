@@ -6,8 +6,9 @@
 #'
 #' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.
-#' @seealso Prior constructor functions: [borrowing_full()], [borrowing_hierarchical_commensurate()], [borrowing_none()]
+#' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @family borrowing classes
+#' @seealso Prior constructor functions: [borrowing_full()], [borrowing_hierarchical_commensurate()], [borrowing_none()]
 setClass(
   "Borrowing",
   slots = c(

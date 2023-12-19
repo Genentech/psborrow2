@@ -6,11 +6,12 @@
 #' should not be created directly but by the constructor
 #' [borrowing_hierarchical_commensurate()].
 #' 
+#' @slot data_stan_code string. Code to include in the Stan data program block.
+#' @slot method_name string. The name of the method.
 #' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @slot tau_prior Prior. Prior for the commensurability parameter.
-#' @slot data_stan_code string. Stan code that will be interpolated into the model.
-#' @slot method_name string. The name of the method.
 #' @include borrowing_class.R
+#' @family borrowing classes
 .borrowing_hierarchical_commensurate <- setClass(
    "BorrowingHierarchicalCommensurate",
    slots = c(
@@ -37,6 +38,7 @@
 #' @details
 #' 
 #' ## Method
+#' 
 #' In Bayesian dynamic borrowing using the hierarchical commensurate prior approach, 
 #' external control information is borrowed to the extent that the
 #' outcomes (i.e., log hazard rates or log odds) are similar between
@@ -79,7 +81,6 @@
 #'  __Biometrics, 67: 1047--1056__. \doi{10.1111/j.1541-0420.2011.01564.x}
 #' 
 #' @return Object of class [`BorrowingHierarchicalCommensurate`][BorrowingHierarchicalCommensurate-class].
-#' @include borrowing_class.R
 #' @family borrowing classes 
 #' @export
 #' @examples
@@ -108,7 +109,6 @@ setMethod(
 # trim cols ----
 #' @rdname trim_cols
 #' @include generics.R
-#' @include borrowing_class.R
 setMethod(
   f = "trim_cols",
   signature = "BorrowingHierarchicalCommensurate",

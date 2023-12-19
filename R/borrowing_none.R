@@ -5,9 +5,9 @@
 #' should not be created directly but by the constructor
 #' [borrowing_none()].
 #' 
-#' @slot ext_flag_col character. Name of the external flag column in the matrix.
-#' @slot data_stan_code string. Stan code that will be interpolated into the model.
+#' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.
+#' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @include borrowing_class.R
 #' @family borrowing classes
 .borrowing_none <- setClass(
@@ -26,6 +26,7 @@
 #' @details
 #' 
 #' ## Method
+#' 
 #' This method evaluates only the internal comparison,
 #' ignoring historical controls. Note that this method will filter the
 #' model matrix based on values in `ext_flag_col`.
@@ -36,8 +37,7 @@
 #' contains the flag indicating a patient is from the external control cohort.
 #' 
 #' @return Object of class [`BorrowingNone`][BorrowingNone-class].
-#' @include borrowing_class.R
-#' @family borrowing classes
+#' @family borrowing
 #' @export
 #' @examples
 #' db <- borrowing_none(
@@ -52,7 +52,6 @@ borrowing_none <- function(ext_flag_col) {
 # trim rows ----
 #' @rdname trim_rows
 #' @include generics.R
-#' @include borrowing_class.R
 setMethod(
   f = "trim_rows",
   signature = "BorrowingNone",

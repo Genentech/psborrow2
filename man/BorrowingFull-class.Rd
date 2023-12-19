@@ -14,19 +14,18 @@ should not be created directly but by the constructor
 \section{Slots}{
 
 \describe{
-\item{\code{ext_flag_col}}{character. Name of the external flag column in the matrix.}
-
-\item{\code{data_stan_code}}{string. Stan code that will be interpolated into the model.}
+\item{\code{data_stan_code}}{string. Code to include in the Stan data program block.}
 
 \item{\code{method_name}}{string. The name of the method.}
+
+\item{\code{ext_flag_col}}{character. Name of the external flag column in the matrix.}
 }}
 
 \seealso{
 Other borrowing classes: 
 \code{\link{Borrowing-class}},
+\code{\link{BorrowingHierarchicalCommensurate-class}},
 \code{\link{BorrowingNone-class}},
-\code{\link{borrowing_full}()},
-\code{\link{borrowing_hierarchical_commensurate}()},
-\code{\link{borrowing_none}()}
+\code{\link{borrowing_hierarchical_commensurate}()}
 }
 \concept{borrowing classes}

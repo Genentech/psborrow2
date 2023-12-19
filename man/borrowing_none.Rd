@@ -35,11 +35,7 @@ db <- borrowing_none(
 )
 }
 \seealso{
-Other borrowing classes: 
-\code{\link{Borrowing-class}},
-\code{\link{BorrowingFull-class}},
-\code{\link{BorrowingNone-class}},
-\code{\link{borrowing_full}()},
-\code{\link{borrowing_hierarchical_commensurate}()}
+Other borrowing: 
+\code{\link{borrowing_full}()}
 }
-\concept{borrowing classes}
+\concept{borrowing}

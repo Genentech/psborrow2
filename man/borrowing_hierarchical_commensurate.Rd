@@ -73,8 +73,7 @@ Hierarchical commensurate and power prior models for adaptive incorporation of h
 Other borrowing classes: 
 \code{\link{Borrowing-class}},
 \code{\link{BorrowingFull-class}},
-\code{\link{BorrowingNone-class}},
-\code{\link{borrowing_full}()},
-\code{\link{borrowing_none}()}
+\code{\link{BorrowingHierarchicalCommensurate-class}},
+\code{\link{BorrowingNone-class}}
 }
 \concept{borrowing classes}
