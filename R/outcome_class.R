@@ -17,6 +17,7 @@ setClass(
 #' @slot cens_var character. Variable used for censoring in `TimeToEvent` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
+#' @slot name_beta_trt. Named vector for beta_trt.
 #' @family outcome
 setClass(
   "TimeToEvent",
@@ -30,7 +31,8 @@ setClass(
     time_var = "character",
     cens_var = "character",
     weight_var = "character",
-    baseline_prior = "Prior"
+    baseline_prior = "Prior",
+    name_beta_trt = "vector"
   ),
   prototype = list(
     n_param = 0L,
@@ -40,7 +42,8 @@ setClass(
     weight_var = NULL,
     data_stan_code = "vector[N] time;
     vector[N] cens;",
-    baseline_prior = NULL
+    baseline_prior = NULL,
+    name_beta_trt = c("treatment log HR" = "beta_trt")
   ),
   contains = "Outcome"
 )
@@ -55,6 +58,7 @@ setClass(
 #' @slot binary_var character. Variable used for outcome in `BinaryOutcome` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
+#' @slot name_beta_trt. Named vector for beta_trt.
 #' @family outcome
 setClass(
   "BinaryOutcome",
@@ -67,7 +71,8 @@ setClass(
     param_priors = "list",
     binary_var = "character",
     weight_var = "character",
-    baseline_prior = "Prior"
+    baseline_prior = "Prior",
+    name_beta_trt = "vector"
   ),
   prototype = list(
     n_param = 0L,
@@ -76,7 +81,8 @@ setClass(
     likelihood_stan_code = "",
     weight_var = "",
     data_stan_code = "array[N] int y;",
-    baseline_prior = NULL
+    baseline_prior = NULL,
+    name_beta_trt = c("treatment log OR" = "beta_trt")
   ),
   contains = "Outcome"
 )
@@ -91,6 +97,7 @@ setClass(
 #' @slot continuous_var character. Variable used for outcome in `ContinuousOutcome` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
+#' @slot name_beta_trt. Named vector for beta_trt.
 #' @family outcome
 setClass(
   "ContinuousOutcome",
@@ -103,7 +110,8 @@ setClass(
     param_priors = "list",
     continuous_var = "character",
     weight_var = "character",
-    baseline_prior = "Prior"
+    baseline_prior = "Prior",
+    name_beta_trt = "vector"
   ),
   prototype = list(
     n_param = 0L,
@@ -112,7 +120,8 @@ setClass(
     likelihood_stan_code = "",
     weight_var = "",
     data_stan_code = "array[N] int y;",
-    baseline_prior = NULL
+    baseline_prior = NULL,
+    name_beta_trt = c("treatment effect" = "beta_trt")
   ),
   contains = "Outcome"
 )

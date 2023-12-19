@@ -207,8 +207,9 @@ variable_dictionary <- function(analysis_obj) {
     NULL
   }
 
+  beta_trt <- analysis_obj@borrowing@name_beta_trt
+
   if (is_tte) {
-    beta_trt <- c("treatment log HR" = "beta_trt")
     exp_trt <- c("treatment HR" = "HR_trt")
     alpha_type <- "baseline log hazard rate"
     if (is_weib) {
@@ -217,7 +218,6 @@ variable_dictionary <- function(analysis_obj) {
       addl_params <- NULL
     }
   } else {
-    beta_trt <- c("treatment log OR" = "beta_trt")
     exp_trt <- c("treatment OR" = "OR_trt")
     alpha_type <- "intercept"
     addl_params <- NULL
