@@ -210,16 +210,7 @@ variable_dictionary <- function(analysis_obj) {
   beta_trt <- analysis_obj@outcome@name_beta_trt
   exp_trt <- analysis_obj@outcome@name_exp_trt
   alpha_type = analysis_obj@outcome@alpha_type
-
-  if (is_tte) {
-    if (is_weib) {
-      addl_params <- c("Weibull shape parameter" = "shape_weibull")
-    } else {
-      addl_params <- NULL
-    }
-  } else {
-    addl_params <- NULL
-  }
+  addnl_params <- analysis_obj@outcome@name_addnl_params
 
   if (is_bdb) {
     alpha <- stats::setNames(c("alpha[1]", "alpha[2]"), paste0(alpha_type, c(", internal", ", external")))

@@ -20,6 +20,7 @@ setClass(
 #' @slot name_beta_trt. Named vector for beta_trt.
 #' @slot name_exp_trt. Named exponentiated beta_trt.
 #' @slot name_alpha_type. How to interpret alpha.
+#' @slot name_addnl_params. Named additional parameters.
 #' @family outcome
 setClass(
   "TimeToEvent",
@@ -36,7 +37,8 @@ setClass(
     baseline_prior = "Prior",
     name_beta_trt = "vector",
     name_exp_trt = "vector",
-    alpha_type = "character"
+    alpha_type = "character",
+    name_addnl_params = "vector"
   ),
   prototype = list(
     n_param = 0L,
@@ -49,7 +51,8 @@ setClass(
     baseline_prior = NULL,
     name_beta_trt = c("treatment log HR" = "beta_trt"),
     name_exp_trt = c("treatment HR" = "HR_trt"),
-    alpha_type = "baseline log hazard rate"
+    alpha_type = "baseline log hazard rate",
+    name_addnl_params = NULL
   ),
   contains = "Outcome"
 )
@@ -67,6 +70,7 @@ setClass(
 #' @slot name_beta_trt. Named vector for beta_trt.
 #' @slot name_exp_trt. Named exponentiated beta_trt.
 #' @slot name_alpha_type. How to interpret alpha.
+#' @slot name_addnl_params. Named additional parameters.
 #' @family outcome
 setClass(
   "BinaryOutcome",
@@ -82,7 +86,8 @@ setClass(
     baseline_prior = "Prior",
     name_beta_trt = "vector",
     name_exp_trt = "vector",
-    alpha_type = "character"
+    alpha_type = "character",
+    name_addnl_params = "vector"
   ),
   prototype = list(
     n_param = 0L,
@@ -94,7 +99,8 @@ setClass(
     baseline_prior = NULL,
     name_beta_trt = c("treatment log OR" = "beta_trt"),
     name_exp_trt = c("treatment OR" = "OR_trt"),
-    alpha_type = "intercept"
+    alpha_type = "intercept",
+    name_addnl_params = NULL
   ),
   contains = "Outcome"
 )
@@ -112,6 +118,7 @@ setClass(
 #' @slot name_beta_trt. Named vector for beta_trt.
 #' @slot name_exp_trt. Named exponentiated beta_trt.
 #' @slot name_alpha_type. How to interpret alpha.
+#' @slot name_addnl_params. Named additional parameters.
 #' @family outcome
 setClass(
   "ContinuousOutcome",
@@ -127,7 +134,8 @@ setClass(
     baseline_prior = "Prior",
     name_beta_trt = "vector",
     name_exp_trt = "vector",
-    alpha_type = "character"
+    alpha_type = "character",
+    name_addnl_params = "vector"
   ),
   prototype = list(
     n_param = 0L,
@@ -139,7 +147,8 @@ setClass(
     baseline_prior = NULL,
     name_beta_trt = c("treatment effect" = "beta_trt"),
     name_exp_trt = c("exponentiated treatment effect" = "beta_trt"),
-    alpha_type = "intercept"
+    alpha_type = "intercept",
+    name_addnl_params = NULL
   ),
   contains = "Outcome"
 )

@@ -20,6 +20,7 @@
 #' @slot name_beta_trt. Named vector for beta_trt.
 #' @slot name_exp_trt. Named exponentiated beta_trt.
 #' @slot name_alpha_type. How to interpret alpha.
+#' @slot name_addnl_params. Named additional parameters.
 #' @include outcome_class.R helpers.R
 #' @family outcome
 .outcome_bin_logistic <- setClass(

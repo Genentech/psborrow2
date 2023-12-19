@@ -18,6 +18,7 @@
 #' @slot name_beta_trt. Named vector for beta_trt.
 #' @slot name_exp_trt. Named exponentiated beta_trt.
 #' @slot name_alpha_type. How to interpret alpha.
+#' @slot name_addnl_params. Named additional parameters.
 #' @include outcome_class.R
 #' @include prior_class.R
 #' @include prior_normal.R
@@ -57,7 +58,8 @@
     param_stan_code = "real<lower=0> shape_weibull; ",
     param_priors = list(
       shape_weibull = prior_exponential(beta = 0.0001)
-    )
+    ),
+    name_addnl_params =  c("Weibull shape parameter" = "shape_weibull")
   ),
   validity = function(object) {
     check_class(object@param_priors[["shape_weibull"]], "Prior")
