@@ -209,18 +209,15 @@ variable_dictionary <- function(analysis_obj) {
 
   beta_trt <- analysis_obj@borrowing@name_beta_trt
   exp_trt <- analysis_obj@borrowing@name_exp_trt
+  alpha_type = analysis_obj@outcome@alpha_type
 
   if (is_tte) {
-    exp_trt <- c("treatment HR" = "HR_trt")
-    alpha_type <- "baseline log hazard rate"
     if (is_weib) {
       addl_params <- c("Weibull shape parameter" = "shape_weibull")
     } else {
       addl_params <- NULL
     }
   } else {
-    exp_trt <- c("treatment OR" = "OR_trt")
-    alpha_type <- "intercept"
     addl_params <- NULL
   }
 
