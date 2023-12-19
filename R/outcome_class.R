@@ -18,6 +18,7 @@ setClass(
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @slot name_beta_trt. Named vector for beta_trt.
+#' @slot name_exp_trt. Named exponentiated beta_trt.
 #' @family outcome
 setClass(
   "TimeToEvent",
@@ -32,7 +33,8 @@ setClass(
     cens_var = "character",
     weight_var = "character",
     baseline_prior = "Prior",
-    name_beta_trt = "vector"
+    name_beta_trt = "vector",
+    name_exp_trt = "vector"
   ),
   prototype = list(
     n_param = 0L,
@@ -43,7 +45,8 @@ setClass(
     data_stan_code = "vector[N] time;
     vector[N] cens;",
     baseline_prior = NULL,
-    name_beta_trt = c("treatment log HR" = "beta_trt")
+    name_beta_trt = c("treatment log HR" = "beta_trt"),
+    name_exp_trt = c("treatment HR" = "HR_trt")
   ),
   contains = "Outcome"
 )
@@ -59,6 +62,7 @@ setClass(
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @slot name_beta_trt. Named vector for beta_trt.
+#' @slot name_exp_trt. Named exponentiated beta_trt.
 #' @family outcome
 setClass(
   "BinaryOutcome",
@@ -72,7 +76,8 @@ setClass(
     binary_var = "character",
     weight_var = "character",
     baseline_prior = "Prior",
-    name_beta_trt = "vector"
+    name_beta_trt = "vector",
+    name_exp_trt = "vector"
   ),
   prototype = list(
     n_param = 0L,
@@ -82,7 +87,8 @@ setClass(
     weight_var = "",
     data_stan_code = "array[N] int y;",
     baseline_prior = NULL,
-    name_beta_trt = c("treatment log OR" = "beta_trt")
+    name_beta_trt = c("treatment log OR" = "beta_trt"),
+    name_exp_trt = c("treatment OR" = "OR_trt")
   ),
   contains = "Outcome"
 )
@@ -98,6 +104,7 @@ setClass(
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @slot name_beta_trt. Named vector for beta_trt.
+#' @slot name_exp_trt. Named exponentiated beta_trt.
 #' @family outcome
 setClass(
   "ContinuousOutcome",
@@ -111,7 +118,8 @@ setClass(
     continuous_var = "character",
     weight_var = "character",
     baseline_prior = "Prior",
-    name_beta_trt = "vector"
+    name_beta_trt = "vector",
+    name_exp_trt = "vector"
   ),
   prototype = list(
     n_param = 0L,
@@ -121,7 +129,8 @@ setClass(
     weight_var = "",
     data_stan_code = "array[N] int y;",
     baseline_prior = NULL,
-    name_beta_trt = c("treatment effect" = "beta_trt")
+    name_beta_trt = c("treatment effect" = "beta_trt"),
+    name_exp_trt = c("exponentiated treatment effect" = "beta_trt")
   ),
   contains = "Outcome"
 )

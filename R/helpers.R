@@ -208,6 +208,7 @@ variable_dictionary <- function(analysis_obj) {
   }
 
   beta_trt <- analysis_obj@borrowing@name_beta_trt
+  exp_trt <- analysis_obj@borrowing@name_exp_trt
 
   if (is_tte) {
     exp_trt <- c("treatment HR" = "HR_trt")
