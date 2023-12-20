@@ -242,7 +242,7 @@ borrowing <- borrowing_hierarchical_commensurate(
   tau_prior = prior_gamma(0.001, 0.001)
 )
 borrowing
-# Borrowing object using the hierarchical commensurate prior approach
+# Borrowing object using the  Bayesian dynamic borrowing with the hierarchical commensurate prior  approach
 # 
 # External control flag: ext 
 # 
