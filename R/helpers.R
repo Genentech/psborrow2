@@ -195,15 +195,8 @@ rename_draws_covariates <- function(draws, analysis) {
 #' @export
 variable_dictionary <- function(analysis_obj) {
   assert_class(analysis_obj, "Analysis")
-  has_covs <- !is.null(analysis_obj@covariates)
 
-  covariates <- if (has_covs) {
-    covs <- get_vars(analysis_obj@covariates)
-    stats::setNames(h_glue("beta[{{seq_along(covs)}}]"), covs)
-  } else {
-    NULL
-  }
-
+  covariates <- if (!is.null(analysis_obj@covariates)) get_covs(analysis_obj@covariates) else NULL
   beta_trt <- analysis_obj@outcome@name_beta_trt
   exp_trt <- analysis_obj@outcome@name_exp_trt
   alpha_type = analysis_obj@outcome@alpha_type

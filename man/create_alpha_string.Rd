@@ -9,7 +9,7 @@
 \usage{
 create_alpha_string(borrowing_object, outcome_object)
 
-\S4method{create_alpha_string}{NULL}(borrowing_object, outcome_object)
+\S4method{create_alpha_string}{Borrowing}(borrowing_object, outcome_object)
 
 \S4method{create_alpha_string}{BorrowingHierarchicalCommensurate}(borrowing_object, outcome_object)
 }
