@@ -195,9 +195,6 @@ rename_draws_covariates <- function(draws, analysis) {
 #' @export
 variable_dictionary <- function(analysis_obj) {
   assert_class(analysis_obj, "Analysis")
-  is_tte <- isTRUE(inherits(analysis_obj@outcome, "TimeToEvent"))
-  is_bdb <- isTRUE(is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate"))
-  is_weib <- is_tte && isTRUE(inherits(analysis_obj@outcome, "OutcomeSurvWeibullPH"))
   has_covs <- !is.null(analysis_obj@covariates)
 
   covariates <- if (has_covs) {
@@ -212,12 +209,7 @@ variable_dictionary <- function(analysis_obj) {
   alpha_type = analysis_obj@outcome@alpha_type
   addnl_params <- analysis_obj@outcome@name_addnl_params
   tau <- analysis_obj@borrowing@name_tau
-
-  if (is_bdb) {
-    alpha <- stats::setNames(c("alpha[1]", "alpha[2]"), paste0(alpha_type, c(", internal", ", external")))
-  } else {
-    alpha <- setNames("alpha", alpha_type)
-  }
+  alpha <- create_alpha_string(analysis_obj@borrowing, analysis_obj@outcome)
 
   vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addnl_params)
   data.frame(Stan_variable = unname(vars), Description = names(vars))

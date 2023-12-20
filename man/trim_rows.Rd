@@ -4,15 +4,12 @@
 \name{trim_rows}
 \alias{trim_rows}
 \alias{trim_rows,Borrowing-method}
-\alias{trim_rows,NULL-method}
 \alias{trim_rows,BorrowingNone-method}
 \title{Trim Rows from Data Matrix Based on Borrowing object type}
 \usage{
 trim_rows(borrowing_object, analysis_object)
 
 \S4method{trim_rows}{Borrowing}(borrowing_object, analysis_object)
-
-\S4method{trim_rows}{NULL}(borrowing_object, analysis_object)
 
 \S4method{trim_rows}{BorrowingNone}(borrowing_object, analysis_object)
 }

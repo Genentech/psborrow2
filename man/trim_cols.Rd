@@ -4,15 +4,12 @@
 \name{trim_cols}
 \alias{trim_cols}
 \alias{trim_cols,Borrowing-method}
-\alias{trim_cols,NULL-method}
 \alias{trim_cols,BorrowingHierarchicalCommensurate-method}
 \title{Trim columns from Data Matrix Based on Borrowing object type}
 \usage{
 trim_cols(borrowing_object, analysis_object)
 
 \S4method{trim_cols}{Borrowing}(borrowing_object, analysis_object)
-
-\S4method{trim_cols}{NULL}(borrowing_object, analysis_object)
 
 \S4method{trim_cols}{BorrowingHierarchicalCommensurate}(borrowing_object, analysis_object)
 }

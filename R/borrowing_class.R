@@ -72,24 +72,13 @@ setMethod(
   }
 )
 
-#' @rdname trim_rows
+# create alpha string ---- 
+#' @rdname create_alpha_string
 #' @include generics.R
-#' @usage \S4method{trim_rows}{NULL}(borrowing_object, analysis_object)
 setMethod(
-  f = "trim_rows",
-  signature = "NULL",
-  definition = function(borrowing_object, analysis_object) {
-    NULL
-  }
-)
-
-#' @rdname trim_cols
-#' @include generics.R
-#' @usage \S4method{trim_cols}{NULL}(borrowing_object, analysis_object)
-setMethod(
-  f = "trim_cols",
-  signature = "NULL",
-  definition = function(borrowing_object, analysis_object) {
-    NULL
+  f = "create_alpha_string",
+  signature = "Borrowing",
+  definition = function(borrowing_object, outcome_object) {
+    return(setNames("alpha", outcome_object@alpha_type))
   }
 )

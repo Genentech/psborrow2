@@ -33,7 +33,7 @@ specifying prior distribution for the baseline outcome.}
 
 \item{\code{name_exp_trt.}}{Named vector for exponentiated beta_trt}
 
-\item{\code{name_alpha_type.}}{How to interpret alpha.}
+\item{\code{alpha_type.}}{How to interpret alpha.}
 
 \item{\code{name_addnl_params.}}{Named vector for additional parameters.}
 }}

@@ -116,3 +116,13 @@ setMethod(
     return(get_vars(analysis_object))
   }
 )
+
+#' @rdname create_alpha_string
+#' @include generics.R
+setMethod(
+  f = "create_alpha_string",
+  signature = "BorrowingHierarchicalCommensurate",
+  definition = function(borrowing_object, outcome_object) {
+    return(setNames(c("alpha[1]", "alpha[2]"), paste0(outcome_object@alpha_type, c(", internal", ", external"))))
+  }
+)

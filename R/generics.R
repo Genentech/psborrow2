@@ -114,3 +114,13 @@ setGeneric("trim_rows", function(borrowing_object, analysis_object) standardGene
 #' 
 #' @export
 setGeneric("trim_cols", function(borrowing_object, analysis_object) standardGeneric("trim_cols"))
+
+#' Create alpha string 
+#' 
+#' @param borrowing_object borrowing object
+#' @param outcome_object outcome object
+#' 
+#' @rdname create_alpha_string
+#' 
+#' @export
+setGeneric("create_alpha_string", function(borrowing_object, outcome_object) standardGeneric("create_alpha_string"))
