@@ -196,7 +196,7 @@ rename_draws_covariates <- function(draws, analysis) {
 variable_dictionary <- function(analysis_obj) {
   assert_class(analysis_obj, "Analysis")
 
-  covariates <- if (!is.null(analysis_obj@covariates)) get_covs(analysis_obj@covariates) else NULL
+  beta_covariates <- if (!is.null(analysis_obj@covariates)) analysis_obj@covariates@name_betas else NULL
   beta_trt <- analysis_obj@outcome@name_beta_trt
   exp_trt <- analysis_obj@outcome@name_exp_trt
   alpha_type = analysis_obj@outcome@alpha_type
@@ -204,7 +204,7 @@ variable_dictionary <- function(analysis_obj) {
   tau <- analysis_obj@borrowing@name_tau
   alpha <- create_alpha_string(analysis_obj@borrowing, analysis_obj@outcome)
 
-  vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addnl_params)
+  vars <- c(tau, alpha, beta_covariates, beta_trt, exp_trt, addnl_params)
   data.frame(Stan_variable = unname(vars), Description = names(vars))
 }
 
