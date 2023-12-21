@@ -27,8 +27,7 @@ anls <- psborrow2:::.analysis_obj(
     "cnsr",
     baseline_prior = prior_normal(0, 1000)
   ),
-  borrowing = borrowing_details(
-    "BDB",
+  borrowing = borrowing_hierarchical_commensurate(
     "ext",
     prior_exponential(.001)
   ),

@@ -4,8 +4,7 @@ test_that("data matrix trimming works with BDB", {
     covariates = add_covariates(covariates = "cov1", prior_normal(0, 1000)),
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
     treatment = treatment_details("trt", trt_prior = prior_normal(0, 1000)),
-    borrowing = borrowing_details(
-      method = "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       ext_flag_col = "ext",
       tau_prior = prior_exponential(0.001)
     )
@@ -23,10 +22,7 @@ test_that("data matrix trimming works with Full Borrowing", {
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
     treatment = treatment_details("trt", trt_prior = prior_normal(0, 1000)),
-    borrowing = borrowing_details(
-      method = "Full borrowing",
-      ext_flag_col = "ext"
-    )
+    borrowing = borrowing_full("ext")
   )
 
   anls2_trim <- psborrow2:::trim_data_matrix(anls2)
@@ -42,8 +38,7 @@ test_that("data matrix trimming works with No Borrowing", {
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
     treatment = treatment_details("trt", trt_prior = prior_normal(0, 1000)),
     covariates = add_covariates("cov1", prior_normal(0, 1000)),
-    borrowing = borrowing_details(
-      method = "No borrowing",
+    borrowing = borrowing_none(
       ext_flag_col = "ext"
     )
   )

@@ -34,6 +34,7 @@ add_covariates <- function(covariates,
 
   .covariate_class(
     covariates = covariates,
-    priors = priors
+    priors = priors,
+    name_betas = stats::setNames(h_glue("beta[{{seq_along(covariates)}}]"), covariates)
   )
 }

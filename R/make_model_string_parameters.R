@@ -11,10 +11,7 @@
 #' anls_obj <- psborrow2:::.analysis_obj(
 #'   data_matrix = example_matrix,
 #'   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-#'   borrowing = borrowing_details(
-#'     "Full borrowing",
-#'     "ext"
-#'   ),
+#'   borrowing = borrowing_full("ext"),
 #'   treatment = treatment_details("trt", prior_normal(0, 100))
 #' )
 #'
@@ -24,7 +21,7 @@ make_model_string_parameters <- function(analysis_obj) {
   ## Parameters string
   trt_string <- h_glue("real{{eval_constraints(analysis_obj@treatment@trt_prior)}} beta_trt;")
 
-  is_bdb <- isTRUE(analysis_obj@borrowing@method == "BDB")
+  is_bdb <- isTRUE(is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate"))
   ### Set tau
   borrowing_string <- if (is_bdb) h_glue("real{{eval_constraints(analysis_obj@borrowing@tau_prior)}} tau;") else ""
 

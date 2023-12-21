@@ -35,11 +35,11 @@ Normal Outcome Distribution
 
 The \code{baseline_prior} argument specifies the prior distribution for the
 intercept of the linear model. The interpretation of the \code{baseline_prior} differs
-slightly between methods selected in \code{borrowing_details()}:
+slightly between borrowing methods selected.
 \itemize{
-\item \emph{'BDB'}: the \code{baseline_prior} for Bayesian Dynamic Borrowing refers
-to the intercept of the external control arm.
-\item \emph{'Full borrowing'} or \emph{'No borrowing'}: the \code{baseline_prior} for
+\item \emph{Dynamic borrowing using \code{borrowing_hierarchical_commensurate()}}: the \code{baseline_prior} for Bayesian Dynamic Borrowing
+refers to the intercept of the external control arm.
+\item \emph{Full borrowing} or \emph{No borrowing} using \code{borrowing_full()} or \code{borrowing_none()}: the \code{baseline_prior} for
 these borrowing methods refers to the intercept for the
 internal control arm.
 }

@@ -10,16 +10,17 @@ maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https
 
 ## Overview
 
-`psborrow2` is an R package that for conducting Bayesian Dynamic Borrowing (BDB)
+`psborrow2` is an R package that for conducting Bayesian dynamic borrowing
 analyses and simulation studies.[^1] [^2]
 `psborrow2` has two main objectives:
 
-1. **Facilitate BDB analyses**. `psborrow2` has a user-friendly interface for
-   conducting BDB analyses that handles the computationally-difficult MCMC sampling
+1. **Facilitate Bayesian dynamic borrowing analyses**. `psborrow2` has a user-friendly interface for
+   conducting Bayesian dynamic borrowing analyses using the hierarchical commensurate prior approach 
+   that handles the computationally-difficult MCMC sampling
    on behalf of the user.
 
-2. **Facilitate simulation studies of BDB**. `psborrow2` includes a
-   framework to compare different trial and BDB characteristics in a unified way
+2. **Facilitate simulation studies of Bayesian dynamic borrowing**. `psborrow2` includes a
+   framework to compare different trial and borrowing characteristics in a unified way
    in simulation studies to inform trial design.
 
 ## Background

@@ -20,5 +20,7 @@ external and treatment flags should not go here.}
 \item{\code{priors.}}{Either a single object of class \code{Prior} specifying the prior
 distribution to apply to all covariates or a named list of
 distributions of class \code{Prior}, one for each covariate}
+
+\item{\code{name_betas.}}{Names for the beta parameters in the STAN model.}
 }}
 
