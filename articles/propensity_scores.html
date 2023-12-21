@@ -31,7 +31,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -189,7 +189,7 @@ can be constructed as before.</p>
 <span><span class="va">analysis_att</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>  data_matrix <span class="op">=</span> <span class="va">example_matrix_att</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span>, weight_var <span class="op">=</span> <span class="st">"att"</span><span class="op">)</span>,</span>
-<span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
+<span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_full.html">borrowing_full</a></span><span class="op">(</span><span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>  treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
@@ -316,7 +316,7 @@ you can extract the data for use in <code>psborrow2</code>.</p>
 <code class="sourceCode R"><span><span class="va">analysis_match</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>  data_matrix <span class="op">=</span> <span class="va">example_matrix_match</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
+<span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_full.html">borrowing_full</a></span><span class="op">(</span><span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>  treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
@@ -334,7 +334,7 @@ commensurate prior approach.</p>
 <code class="sourceCode R"><span><span class="va">analysis_iptw_bdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>  data_matrix <span class="op">=</span> <span class="va">example_matrix_att</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span>, weight_var <span class="op">=</span> <span class="st">"att"</span><span class="op">)</span>,</span>
-<span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_hierarchical_commensurate.html">borrowing_hierarchical_commensurate</a></span><span class="op">(</span><span class="st">"ext"</span>, <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
@@ -353,7 +353,7 @@ set the power parameter <span class="math inline">\(\alpha =
 <span><span class="va">analysis_pp01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>  data_matrix <span class="op">=</span> <span class="va">example_matrix_pp01</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span>, weight_var <span class="op">=</span> <span class="st">"pp_alpha"</span><span class="op">)</span>,</span>
-<span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
+<span>  borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_full.html">borrowing_full</a></span><span class="op">(</span><span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>  treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
@@ -370,7 +370,7 @@ BDB model without weights.</p>
 <span>  <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>    data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span>
 <span>    outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
+<span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_full.html">borrowing_full</a></span><span class="op">(</span><span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>    treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span>,</span>
@@ -381,7 +381,7 @@ BDB model without weights.</p>
 <span>  <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>    data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span>
 <span>    outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"No borrowing"</span>, <span class="st">"ext"</span><span class="op">)</span>,</span>
+<span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_none.html">borrowing_none</a></span><span class="op">(</span><span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>    treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span>,</span>
@@ -392,7 +392,7 @@ BDB model without weights.</p>
 <span>  <span class="fu"><a href="../reference/create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span>
 <span>    data_matrix <span class="op">=</span> <span class="va">example_matrix_att</span>,</span>
 <span>    outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"BDB"</span>, <span class="st">"ext"</span>, <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_hierarchical_commensurate.html">borrowing_hierarchical_commensurate</a></span><span class="op">(</span><span class="st">"ext"</span>, <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span>,</span>

@@ -31,7 +31,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -298,25 +298,31 @@ exponential distribution.</p>
 <div class="section level3">
 <h3 id="borrowing">3. <code>borrowing</code><a class="anchor" aria-label="anchor" href="#borrowing"></a>
 </h3>
-<p><code>psborrow2</code> supports three different borrowing methods
-which are specified in the <code>method</code> argument of
-<code><a href="../reference/borrowing_details.html">borrowing_details()</a></code> (see the code example below how to call
-it):</p>
+<p><code>psborrow2</code> supports three different borrowing methods,
+each of which has its own class:</p>
 <ul>
-<li>“No borrowing”: This is the internal trial comparison without any
-external data</li>
-<li>“Full borrowing”: This is pooling of the external and internal
-control arms</li>
-<li>“BDB”: Bayesian dynamic borrowing</li>
+<li>
+<strong><em>No borrowing</em></strong>: This is the internal trial
+comparison without any external data. Use <code><a href="../reference/borrowing_none.html">borrowing_none()</a></code>
+to specify this.</li>
+<li>
+<strong><em>Full borrowing</em></strong>: This is pooling of the
+external and internal control arms. Use <code><a href="../reference/borrowing_full.html">borrowing_full()</a></code> to
+specify this.</li>
+<li>
+<strong><em>Bayesian dynamic borrowing with the hierarchical
+commensurate prior</em></strong>: This borrowing is as described in <a href="https://doi.org/10.1111/j.1541-0420.2011.01564.x" class="external-link">Hobbs et
+al. (2011)</a> and uses the hierarchical commensurate prior. Use
+<code><a href="../reference/borrowing_hierarchical_commensurate.html">borrowing_hierarchical_commensurate()</a></code> to specify this.</li>
 </ul>
 <p>The column name for the external control column flag in our matrix is
 also required and passed to <code>ext_flag_col</code>.</p>
-<p>Finally, for BDB only, the hyperprior distribution on the
-commensurability parameter must be specified. This hyperprior determines
-(along with the comparability of the outcomes between internal and
-external controls) how much borrowing of the external control group will
-be performed. Example hyperpriors include largely uninformative inverse
-gamma distributions e.g.,
+<p>Finally, for dynamic borrowing only, the hyperprior distribution on
+the commensurability parameter must be specified. This hyperprior
+determines (along with the comparability of the outcomes between
+internal and external controls) how much borrowing of the external
+control group will be performed. Example hyperpriors include largely
+uninformative inverse gamma distributions e.g.,
 <code>prior_gamma(alpha = .001, beta = .001)</code> as well as more
 informative distributions e.g.,
 <code>prior_gamma(alpha = 1, beta = .001)</code>, though any
@@ -328,13 +334,12 @@ example.</p>
 greater detail in a separate vignette, see
 <code><a href="../articles/prior_distributions.html">vignette('prior_distributions', package = 'psborrow2')</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">borrowing</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span></span>
-<span>  method <span class="op">=</span> <span class="st">"BDB"</span>,</span>
+<code class="sourceCode R"><span><span class="va">borrowing</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/borrowing_hierarchical_commensurate.html">borrowing_hierarchical_commensurate</a></span><span class="op">(</span></span>
 <span>  ext_flag_col <span class="op">=</span> <span class="st">"ext"</span>,</span>
 <span>  tau_prior <span class="op">=</span> <span class="fu"><a href="../reference/prior_gamma.html">prior_gamma</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">borrowing</span></span>
-<span><span class="co"># Borrowing object using BDB </span></span>
+<span><span class="co"># Borrowing object using the  Bayesian dynamic borrowing with the hierarchical commensurate prior  approach</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># External control flag: ext </span></span>
 <span><span class="co"># </span></span>

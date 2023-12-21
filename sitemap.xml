@@ -64,6 +64,15 @@
     <loc>https://genentech.github.io/psborrow2/reference/Borrowing-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/BorrowingFull-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/BorrowingHierarchicalCommensurate-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/BorrowingNone-class.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/ContinuousOutcome-class.html</loc>
   </url>
   <url>
@@ -181,6 +190,15 @@
     <loc>https://genentech.github.io/psborrow2/reference/borrowing_details.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/borrowing_full.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/borrowing_hierarchical_commensurate.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/borrowing_none.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/cauchy_prior.html</loc>
   </url>
   <url>
@@ -196,6 +214,9 @@
     <loc>https://genentech.github.io/psborrow2/reference/covariance_matrix.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/create_alpha_string.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/create_analysis_obj.html</loc>
   </url>
   <url>
@@ -206,6 +227,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/create_simulation_obj.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/create_tau_string.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/eval_constraints.html</loc>
@@ -368,6 +392,12 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/treatment_details.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/trim_cols.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/trim_rows.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/uniform_prior.html</loc>

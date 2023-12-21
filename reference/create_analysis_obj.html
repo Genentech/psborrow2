@@ -15,7 +15,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +87,7 @@ control arm flags.</p></dd>
 
 <dt>borrowing</dt>
 <dd><p><code>Borrowing</code>. Object of class <code><a href="Borrowing-class.html">Borrowing</a></code> as output by
-<code><a href="borrowing_details.html">borrowing_details()</a></code>.</p></dd>
+<code><a href="borrowing_full.html">borrowing_full()</a></code>, <code><a href="borrowing_none.html">borrowing_none()</a></code>, and <code><a href="borrowing_hierarchical_commensurate.html">borrowing_hierarchical_commensurate()</a></code>.</p></dd>
 
 
 <dt>treatment</dt>
@@ -122,8 +122,7 @@ the default)</p></dd>
 <span class="r-in"><span>      <span class="st">"cnsr"</span>,</span></span>
 <span class="r-in"><span>      baseline_prior <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
-<span class="r-in"><span>    borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_details.html">borrowing_details</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      <span class="st">"BDB"</span>,</span></span>
+<span class="r-in"><span>    borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_hierarchical_commensurate.html">borrowing_hierarchical_commensurate</a></span><span class="op">(</span> </span></span>
 <span class="r-in"><span>      <span class="st">"ext"</span>,</span></span>
 <span class="r-in"><span>      <span class="fu"><a href="prior_exponential.html">prior_exponential</a></span><span class="op">(</span><span class="fl">.001</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>

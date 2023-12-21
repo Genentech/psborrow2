@@ -31,7 +31,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -181,9 +181,7 @@ treatment indicator and two covariates,
 <span>    covariates <span class="op">=</span> <span class="fu"><a href="../reference/add_covariates.html">add_covariates</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cov1"</span>, <span class="st">"cov2"</span><span class="op">)</span>,</span>
 <span>      priors <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>,</span>
-<span>      ext_flag_col <span class="op">=</span> <span class="st">"ext"</span>,</span>
-<span>    <span class="op">)</span>,</span>
+<span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_full.html">borrowing_full</a></span><span class="op">(</span><span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>    treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_bin_logistic.html">outcome_bin_logistic</a></span><span class="op">(</span><span class="st">"resp"</span>,</span>
 <span>      baseline_prior <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span>,</span>
@@ -497,9 +495,7 @@ weight = 1. The model has a treatment indicator and two covariates,
 <span>    covariates <span class="op">=</span> <span class="fu"><a href="../reference/add_covariates.html">add_covariates</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cov1"</span>, <span class="st">"cov2"</span><span class="op">)</span>,</span>
 <span>      priors <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_details.html">borrowing_details</a></span><span class="op">(</span><span class="st">"Full borrowing"</span>,</span>
-<span>      ext_flag_col <span class="op">=</span> <span class="st">"ext"</span>,</span>
-<span>    <span class="op">)</span>,</span>
+<span>    borrowing <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_full.html">borrowing_full</a></span><span class="op">(</span><span class="st">"ext"</span><span class="op">)</span>,</span>
 <span>    treatment <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"eventtime"</span>, <span class="st">"censor"</span>,</span>
 <span>      baseline_prior <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span>,</span>

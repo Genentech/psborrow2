@@ -15,7 +15,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,9 +87,24 @@
         <dd><code>BinaryOutcome</code> class</dd>
       </dl><dl><dt>
           
-          <code><a href="Borrowing-class.html">Borrowing-class</a></code> <code><a href="Borrowing-class.html">.borrowing_class</a></code> 
+          <code><a href="Borrowing-class.html">Borrowing-class</a></code> 
         </dt>
         <dd><code>Borrowing</code> Class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="BorrowingFull-class.html">BorrowingFull-class</a></code> <code><a href="BorrowingFull-class.html">.borrowing_full</a></code> 
+        </dt>
+        <dd><code>BorrowingFull</code> class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="BorrowingHierarchicalCommensurate-class.html">BorrowingHierarchicalCommensurate-class</a></code> <code><a href="BorrowingHierarchicalCommensurate-class.html">.borrowing_hierarchical_commensurate</a></code> 
+        </dt>
+        <dd><code>BorrowingHierarchicalCommensurate</code> class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="BorrowingNone-class.html">BorrowingNone-class</a></code> <code><a href="BorrowingNone-class.html">.borrowing_none</a></code> 
+        </dt>
+        <dd><code>BorrowingNone</code> class</dd>
       </dl><dl><dt>
           
           <code><a href="ContinuousOutcome-class.html">ContinuousOutcome-class</a></code> 
@@ -284,7 +299,22 @@
           
           <code><a href="borrowing_details.html">borrowing_details()</a></code> 
         </dt>
-        <dd>Specify Borrowing Model</dd>
+        <dd>Legacy function for specifying borrowing details</dd>
+      </dl><dl><dt>
+          
+          <code><a href="borrowing_full.html">borrowing_full()</a></code> 
+        </dt>
+        <dd>Full borrowing</dd>
+      </dl><dl><dt>
+          
+          <code><a href="borrowing_hierarchical_commensurate.html">borrowing_hierarchical_commensurate()</a></code> 
+        </dt>
+        <dd>Hierarchical commensurate borrowing</dd>
+      </dl><dl><dt>
+          
+          <code><a href="borrowing_none.html">borrowing_none()</a></code> 
+        </dt>
+        <dd>No borrowing</dd>
       </dl><dl><dt>
           
           <code><a href="cauchy_prior.html">cauchy_prior()</a></code> 
@@ -312,6 +342,11 @@
         <dd>Create Covariance Matrix</dd>
       </dl><dl><dt>
           
+          <code><a href="create_alpha_string.html">create_alpha_string()</a></code> 
+        </dt>
+        <dd>Create alpha string</dd>
+      </dl><dl><dt>
+          
           <code><a href="create_analysis_obj.html">create_analysis_obj()</a></code> 
         </dt>
         <dd>Compile MCMC sampler using STAN and create analysis object</dd>
@@ -330,6 +365,11 @@
           <code><a href="create_simulation_obj.html">create_simulation_obj()</a></code> 
         </dt>
         <dd>Compile MCMC sampler using STAN and create simulation object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="create_tau_string.html">create_tau_string()</a></code> 
+        </dt>
+        <dd>Create tau string</dd>
       </dl><dl><dt>
           
           <code><a href="eval_constraints.html">eval_constraints()</a></code> 
@@ -596,6 +636,16 @@ in a <code>SimCovariates</code> object created by <code><a href="../reference/si
           <code><a href="treatment_details.html">treatment_details()</a></code> 
         </dt>
         <dd>Specify Treatment Details</dd>
+      </dl><dl><dt>
+          
+          <code><a href="trim_cols.html">trim_cols()</a></code> 
+        </dt>
+        <dd>Trim columns from Data Matrix Based on Borrowing object type</dd>
+      </dl><dl><dt>
+          
+          <code><a href="trim_rows.html">trim_rows()</a></code> 
+        </dt>
+        <dd>Trim Rows from Data Matrix Based on Borrowing object type</dd>
       </dl><dl><dt>
           
           <code><a href="uniform_prior.html">uniform_prior()</a></code> 
