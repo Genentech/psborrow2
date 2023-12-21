@@ -357,3 +357,199 @@ binary_cutoff <- function(name, int_cutoff, ext_cutoff) {
     as.integer(ifelse(ext, q > int_cutoff, q > ext_cutoff))
   }
 }
+
+# show method
+setMethod(
+  f = "get_vars",
+  signature = "BaselineObject",
+  definition = function(object) {
+    unique(c(
+      unlist(lapply(object@covariates, slot, name = "names")),
+      names(object@transformations)
+    ))
+  }
+)
+
+
+#' Data Simulation
+#'
+#' @param baseline `BaselineObject` from [create_baseline_object()]
+#' @param coefficients Named vector of coefficients for linear predictor.
+#' Must correspond to variables in baseline object
+#' @param treatment_effect Treatment effect coefficient on linear predictor scale.
+#' @param drift Drift parameter between internal and external arms on linear predictor scale
+#' @param event_dist Specify time to event distribution with `SimDataEvent` object from [event_dist()]
+#' @param recruitment
+#' @param cut_off
+
+#' @param survival
+#'
+#' @return `SimDataObject`
+#' @export
+#'
+#' @examples
+create_data_simulation <- function(baseline,
+                                   coefficients,
+                                   treatment_effect = 0,
+                                   drift = 0,
+                                   event_dist,
+                                   recruitment,
+                                   cut_off) {
+  assert_class(baseline, "BaselineObject")
+  assert_numeric(coefficients, finite = TRUE, names = "named")
+  assert_numeric(treatment_effect, finite = TRUE)
+  assert_numeric(drift, finite = TRUE)
+  possible_coefs <- possible_data_sim_vars(baseline)
+  unknown_names <- setdiff(names(coefficients), possible_coefs)
+  if (length(unknown_names)) {
+    stop(
+      "Unknown coefficient specified: ", toString(unknown_names), "\n",
+      "Coefficient names must match: ", toString(possible_coefs),
+      call. = FALSE
+    )
+  }
+
+  .sim_data_object(
+    baseline = baseline,
+    coefficients = coefficients,
+    treatment_effect = treatment_effect,
+    drift = drift,
+    event_dist = event_dist
+  )
+}
+
+
+#' Event Time Distribution Object
+#'
+#' @slot params Parameters used for simulating event times with [simsurv::simsurv()].
+#'
+#' @return A `SimDataEvent`
+.sim_data_event <- setClass(
+  "SimDataEvent",
+  slots = c(
+    params = "list"
+  )
+)
+
+#' Data Simulation Object
+#'
+#' @slot params Parameters used for simulating event times with [simsurv::simsurv()].
+#'
+#' @return A `SimDataObject`
+.sim_data_object <- setClass(
+  "SimDataObject",
+  slots = c(
+    baseline = "BaselineObject",
+    coefficients = "numeric",
+    treatment_effect = "numeric",
+    drift = "numeric",
+    event_dist = "SimDataEvent"
+  )
+)
+
+
+
+
+event_dist <- function(dist = NULL,
+                       lambdas = NULL,
+                       gammas = NULL,
+                       mixture = FALSE,
+                       pmix = 0.5,
+                       hazard = NULL,
+                       loghazard = NULL,
+                       cumhazard = NULL,
+                       logcumhazard = NULL,
+                       ...) {
+  .sim_data_event(
+    params = as.list(match.call())[-1]
+  )
+}
+
+
+
+
+possible_data_sim_vars <- function(object) {
+  object@n_trt_int <- 1L
+  object@n_ctrl_int <- 1L
+  object@n_ctrl_ext <- 1L
+  df <- generate(object)
+  formula_names <- setdiff(colnames(df), c("patid", "ext", "trt"))
+  formula <- as.formula(paste("~ 0 +", paste(formula_names, collapse = "+")))
+  mm <- model.matrix(formula, data = data.frame(df))
+  colnames(mm)
+}
+
+
+
+
+# Generate complete data
+# nolint start
+generate.SimDataObject <- function(x, n = 1, treatment_effect = NULL, drift = NULL) {
+  # nolint end
+  if (is.null(treatment_effect)) treatment_effect <- x@treatment_effect
+  if (is.null(drift)) drift <- x@drift
+
+  guide <- expand.grid(treatment_effect = treatment_effect, drift = drift)
+  guide <- cbind(seq_len(nrow(guide)), guide)
+
+  simulated_data <- list()
+  for (i in seq_len(nrow(guide))) {
+    betas <- c(x@coefficients,
+      trt = guide$treatment_effect[i],
+      ext = guide$drift[i]
+    )
+
+    simulated_data[[i]] <- replicate(n, simplify = FALSE, expr = {
+      df <- generate(x@baseline)
+      mm <- model.matrix(
+        as.formula(paste("~ 0 +", paste(names(betas), collapse = "+"))),
+        data = data.frame(df)
+      )
+      surv_df <- do.call(
+        simsurv::simsurv,
+        args = c(
+          list(betas = betas, x = data.frame(mm)),
+          x@event_dist@params
+        )
+      )
+      as.matrix(cbind(patid = df$patid, mm, surv_df))
+    })
+  }
+  list(
+    guide = guide,
+    data_list = simulated_data
+  )
+}
+
+
+#' Generate Data for a `BaselineObject`
+#'
+#' @param x a `BaselineObject` object created by [create_baseline_object]
+#' @param n number of data sets to simulate
+#' @param treatment_effect vector of numeric treatment effects
+#' @param drift vector of numeric drift effects
+#'
+#' @return A list of list of matrices
+#' @export
+#'
+#' @examples
+#' bl_biomarkers <- create_baseline_object(
+#'   n_trt_int = 100,
+#'   n_ctrl_int = 50,
+#'   n_ctrl_ext = 100,
+#'   covariates = baseline_covariates(
+#'     c("b1", "b2", "b3"),
+#'     means_int = c(0, 0, 0),
+#'     covariance_int = covariance_matrix(c(1, 1, 1), c(.8, .3, .8))
+#'   ),
+#'   transformations = list(
+#'     exp_b1 = function(data) exp(data$b1),
+#'     b2 = binary_cutoff("b2", int_cutoff = 0.7, ext_cutoff = 0.5)
+#'   )
+#' )
+#' generate(bl_biomarkers)
+setMethod(
+  f = "generate",
+  signature = "SimDataObject",
+  definition = generate.SimDataObject
+)

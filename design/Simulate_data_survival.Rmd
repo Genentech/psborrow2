@@ -18,6 +18,49 @@ For survival we need to specify in addition:
    - treatment effect HR
 
 ```{r}
+with_age_score <- create_baseline_object(
+  n_trt_int = 100,
+  n_ctrl_int = 50,
+  n_ctrl_ext = 100,
+  covariates = baseline_covariates(
+    names = c("age", "score"),
+    means_int = c(55, 5),
+    means_ext = c(60, 5),
+    covariance_int = covariance_matrix(c(5, 1))
+  )
+)
+
+with_age_score@transformations <- list(
+  score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7),
+  score_rounded = function(data) round(data$score),
+  score_high_factor = function(data) factor(round(data$score), levels = 0:10)
+)
+
+weibull_surv <- event_dist(dist = "weibull", lambdas = 1 / 200, gammas = 1)
+
+my_data_sim <- create_data_simulation(
+  with_age_score,
+  coefficients = c(age = 0.001, score_high = 1.5),
+  event_dist = weibull_surv,
+)
+
+my_data <- generate(
+  my_data_sim,
+  treatment_effect = c(0, .5, 1),
+  drift = c(0, .2, .4)
+)
+
+my_data$guide
+head(my_data$data_list[[1]][[1]])
+plot(
+  x = my_data$data_list[[1]][[1]][, "age"],
+  y = my_data$data_list[[1]][[1]][, "eventtime"],
+  col = my_data$data_list[[1]][[1]][, "score_high"] + 1
+)
+```
+
+
+```{r}
 # each of these builds up the object
 # nothing needs to generate any data
 #

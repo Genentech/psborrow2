@@ -47,7 +47,8 @@ Imports:
     generics,
     Matrix,
     mvtnorm,
-    future
+    future,
+    simsurv
 Suggests:
     cmdstanr,
     survival,
