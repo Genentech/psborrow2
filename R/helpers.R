@@ -199,7 +199,7 @@ variable_dictionary <- function(analysis_obj) {
   beta_covariates <- if (!is.null(analysis_obj@covariates)) analysis_obj@covariates@name_betas else NULL
   beta_trt <- analysis_obj@outcome@name_beta_trt
   exp_trt <- analysis_obj@outcome@name_exp_trt
-  alpha_type = analysis_obj@outcome@alpha_type
+  alpha_type <- analysis_obj@outcome@alpha_type
   addnl_params <- analysis_obj@outcome@name_addnl_params
   tau <- analysis_obj@borrowing@name_tau
   alpha <- create_alpha_string(analysis_obj@borrowing, analysis_obj@outcome)
