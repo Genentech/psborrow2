@@ -22,8 +22,6 @@ should not be created directly but by the constructor
 \item{\code{ext_flag_col}}{character. Name of the external flag column in the matrix.}
 
 \item{\code{tau_prior}}{Prior. Prior for the commensurability parameter.}
-
-\item{\code{name_tau}}{named vector for hierarchical commensurability parameter hyperprior.}
 }}
 
 \seealso{

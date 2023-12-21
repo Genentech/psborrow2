@@ -124,3 +124,12 @@ setGeneric("trim_cols", function(borrowing_object, analysis_object) standardGene
 #' 
 #' @export
 setGeneric("create_alpha_string", function(borrowing_object, outcome_object) standardGeneric("create_alpha_string"))
+
+#' Create tau string 
+#' 
+#' @param borrowing_object borrowing object
+#' 
+#' @rdname create_tau_string
+#' 
+#' @export
+setGeneric("create_tau_string", function(borrowing_object) standardGeneric("create_tau_string"))

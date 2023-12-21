@@ -201,7 +201,7 @@ variable_dictionary <- function(analysis_obj) {
   exp_trt <- analysis_obj@outcome@name_exp_trt
   alpha_type <- analysis_obj@outcome@alpha_type
   addnl_params <- analysis_obj@outcome@name_addnl_params
-  tau <- analysis_obj@borrowing@name_tau
+  tau <- create_tau_string(analysis_obj@borrowing)
   alpha <- create_alpha_string(analysis_obj@borrowing, analysis_obj@outcome)
 
   vars <- c(tau, alpha, beta_covariates, beta_trt, exp_trt, addnl_params)

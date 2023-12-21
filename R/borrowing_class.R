@@ -1,8 +1,3 @@
-setClassUnion(
-  "vectorOrNULL",
-  c("vector", "NULL")
-)
-
 #' `Borrowing` Class
 #'
 #' A class for defining borrowing details. Objects of class
@@ -12,7 +7,6 @@ setClassUnion(
 #' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.
 #' @slot ext_flag_col character. Name of the external flag column in the matrix.
-#' @slot name_tau named vector for hierarchical commensurability parameter hyperprior.
 #' @family borrowing classes
 #' @seealso Prior constructor functions: [borrowing_full()], [borrowing_hierarchical_commensurate()], [borrowing_none()]
 setClass(
@@ -20,11 +14,7 @@ setClass(
   slots = c(
     data_stan_code = "character",
     method_name = "character",
-    ext_flag_col = "character",
-    name_tau = "vectorOrNULL"
-  ),
-  prototype = list(
-    name_tau = NULL
+    ext_flag_col = "character"
   ),
   contains = "VIRTUAL"
 )
@@ -80,5 +70,16 @@ setMethod(
   signature = "Borrowing",
   definition = function(borrowing_object, outcome_object) {
     return(setNames("alpha", outcome_object@alpha_type))
+  }
+)
+
+# create tau string ---- 
+#' @rdname create_tau_string
+#' @include generics.R
+setMethod(
+  f = "create_tau_string",
+  signature = "Borrowing",
+  definition = function(borrowing_object) {
+    return(NULL)
   }
 )

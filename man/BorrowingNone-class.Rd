@@ -19,8 +19,6 @@ should not be created directly but by the constructor
 \item{\code{method_name}}{string. The name of the method.}
 
 \item{\code{ext_flag_col}}{character. Name of the external flag column in the matrix.}
-
-\item{\code{name_tau}}{named vector for hierarchical commensurability parameter hyperprior.}
 }}
 
 \seealso{
