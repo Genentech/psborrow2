@@ -2,10 +2,7 @@ test_that("prepare_stan_data_inputs works with exponential survival and full bor
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-    borrowing = borrowing_details(
-      "Full borrowing",
-      "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
@@ -18,8 +15,7 @@ test_that("prepare_stan_data_inputs works with exponential survival and BDB", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),
@@ -44,8 +40,7 @@ test_that("prepare_stan_data_inputs works with weibull survival and BDB and cova
       prior_normal(0, 1000),
       prior_normal(0, 1000)
     ),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),
@@ -65,8 +60,7 @@ test_that("prepare_stan_data_inputs works with binary outcome and BDB and covari
       prior_normal(0, 1000)
     ),
     outcome = outcome_bin_logistic("cnsr", prior_normal(0, 100)),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),
@@ -86,8 +80,7 @@ test_that("prepare_stan_data_inputs returns correct matrix dimensions for X", {
       prior_normal(0, 1000)
     ),
     outcome = outcome_bin_logistic("cnsr", prior_normal(0, 100)),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),
@@ -105,8 +98,7 @@ test_that("prepare_stan_data_inputs returns correct matrix dimensions for X", {
       prior_normal(0, 1000)
     ),
     outcome = outcome_bin_logistic("cnsr", prior_normal(0, 100)),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),
@@ -124,10 +116,7 @@ test_that("prepare_stan_data_inputs works with weights", {
   object <- psborrow2:::.analysis_obj(
     data_matrix = cbind(example_matrix, w = weights),
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100), weight_var = "w"),
-    borrowing = borrowing_details(
-      "Full borrowing",
-      "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 

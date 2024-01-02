@@ -8,7 +8,7 @@
 #' @param outcome `Outcome`. Object of class [`Outcome`][Outcome-class] as output by
 #' [`outcome_surv_exponential()`], [`outcome_surv_weibull_ph()`], or [`outcome_bin_logistic()`].
 #' @param borrowing `Borrowing`. Object of class [`Borrowing`][Borrowing-class] as output by
-#' [`borrowing_details()`].
+#' [`borrowing_full()`], [`borrowing_none()`], and [`borrowing_hierarchical_commensurate()`].
 #' @param treatment `Treatment`. Object of class [`Treatment`][Treatment-class] as output by
 #' [`treatment_details()`].
 #' @param quiet logical. Whether to suppress messages (`TRUE`) or not (`FALSE`,
@@ -29,8 +29,7 @@
 #'       "cnsr",
 #'       baseline_prior = prior_normal(0, 1000)
 #'     ),
-#'     borrowing = borrowing_details(
-#'       "BDB",
+#'     borrowing = borrowing_hierarchical_commensurate( 
 #'       "ext",
 #'       prior_exponential(.001)
 #'     ),
@@ -80,13 +79,13 @@ create_analysis_obj <- function(data_matrix,
   if (!quiet) {
     message("Inputs look good.")
 
-    if (analysis_obj@borrowing@method == "Full borrowing") {
+    if (is(analysis_obj@borrowing, "BorrowingFull")) {
       message(
         h_glue("NOTE: dropping column `{{analysis_obj@borrowing@ext_flag_col}}` for full borrowing.")
       )
     }
 
-    if (analysis_obj@borrowing@method == "No borrowing") {
+    if (is(analysis_obj@borrowing, "BorrowingNone")) {
       message(
         h_glue("NOTE: excluding `{{analysis_obj@borrowing@ext_flag_col}}` == `1`/`TRUE` for no borrowing.")
       )

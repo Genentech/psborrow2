@@ -94,3 +94,42 @@ setGeneric("get_cmd_stan_models", function(object) standardGeneric("get_cmd_stan
 #'
 #' @export
 setGeneric("generate", function(x, ...) standardGeneric("generate"))
+
+#' Trim Rows from Data Matrix Based on Borrowing object type 
+#' 
+#' @param borrowing_object borrowing object
+#' @param analysis_object analysis object
+#' 
+#' @rdname trim_rows
+#' 
+#' @export
+setGeneric("trim_rows", function(borrowing_object, analysis_object) standardGeneric("trim_rows"))
+
+#' Trim columns from Data Matrix Based on Borrowing object type 
+#' 
+#' @param borrowing_object borrowing object
+#' @param analysis_object analysis object
+#' 
+#' @rdname trim_cols
+#' 
+#' @export
+setGeneric("trim_cols", function(borrowing_object, analysis_object) standardGeneric("trim_cols"))
+
+#' Create alpha string 
+#' 
+#' @param borrowing_object borrowing object
+#' @param outcome_object outcome object
+#' 
+#' @rdname create_alpha_string
+#' 
+#' @export
+setGeneric("create_alpha_string", function(borrowing_object, outcome_object) standardGeneric("create_alpha_string"))
+
+#' Create tau string 
+#' 
+#' @param borrowing_object borrowing object
+#' 
+#' @rdname create_tau_string
+#' 
+#' @export
+setGeneric("create_tau_string", function(borrowing_object) standardGeneric("create_tau_string"))

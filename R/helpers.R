@@ -164,8 +164,7 @@ parse_constraint <- function(object) {
 #'       "cnsr",
 #'       baseline_prior = prior_normal(0, 1000)
 #'     ),
-#'     borrowing = borrowing_details(
-#'       "BDB",
+#'     borrowing = borrowing_hierarchical_commensurate(
 #'       "ext",
 #'       prior_exponential(.001)
 #'     ),
@@ -196,43 +195,16 @@ rename_draws_covariates <- function(draws, analysis) {
 #' @export
 variable_dictionary <- function(analysis_obj) {
   assert_class(analysis_obj, "Analysis")
-  is_tte <- isTRUE(inherits(analysis_obj@outcome, "TimeToEvent"))
-  is_bdb <- isTRUE(analysis_obj@borrowing@method == "BDB")
-  is_weib <- is_tte && isTRUE(inherits(analysis_obj@outcome, "OutcomeSurvWeibullPH"))
-  has_covs <- !is.null(analysis_obj@covariates)
 
-  covariates <- if (has_covs) {
-    covs <- get_vars(analysis_obj@covariates)
-    stats::setNames(h_glue("beta[{{seq_along(covs)}}]"), covs)
-  } else {
-    NULL
-  }
+  beta_covariates <- if (!is.null(analysis_obj@covariates)) analysis_obj@covariates@name_betas else NULL
+  beta_trt <- analysis_obj@outcome@name_beta_trt
+  exp_trt <- analysis_obj@outcome@name_exp_trt
+  alpha_type <- analysis_obj@outcome@alpha_type
+  addnl_params <- analysis_obj@outcome@name_addnl_params
+  tau <- create_tau_string(analysis_obj@borrowing)
+  alpha <- create_alpha_string(analysis_obj@borrowing, analysis_obj@outcome)
 
-  if (is_tte) {
-    beta_trt <- c("treatment log HR" = "beta_trt")
-    exp_trt <- c("treatment HR" = "HR_trt")
-    alpha_type <- "baseline log hazard rate"
-    if (is_weib) {
-      addl_params <- c("Weibull shape parameter" = "shape_weibull")
-    } else {
-      addl_params <- NULL
-    }
-  } else {
-    beta_trt <- c("treatment log OR" = "beta_trt")
-    exp_trt <- c("treatment OR" = "OR_trt")
-    alpha_type <- "intercept"
-    addl_params <- NULL
-  }
-
-  if (is_bdb) {
-    alpha <- stats::setNames(c("alpha[1]", "alpha[2]"), paste0(alpha_type, c(", internal", ", external")))
-    tau <- c("commensurability parameter" = "tau")
-  } else {
-    alpha <- setNames("alpha", alpha_type)
-    tau <- NULL
-  }
-
-  vars <- c(tau, alpha, covariates, beta_trt, exp_trt, addl_params)
+  vars <- c(tau, alpha, beta_covariates, beta_trt, exp_trt, addnl_params)
   data.frame(Stan_variable = unname(vars), Description = names(vars))
 }
 

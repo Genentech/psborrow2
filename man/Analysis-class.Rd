@@ -24,7 +24,7 @@ the function \code{covariate_details()}.}
 \code{outcome_surv_exponential()}, \code{outcome_surv_weibull_ph()}, or \code{outcome_bin_logistic()}.}
 
 \item{\code{borrowing}}{\code{Borrowing}. Object of class \code{Borrowing} as output by
-\code{borrowing_details()}.}
+\code{borrowing_full()}, \code{borrowing_none()}, or \code{borrowing_hierarchical_commensurate()}.}
 
 \item{\code{treatment}}{\code{Treatment}. Object of class \code{Treatment} as output by
 \code{treatment_details()}.}

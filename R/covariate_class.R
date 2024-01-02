@@ -13,12 +13,14 @@ setClassUnion("listOrPrior", c("list", "Prior"))
 #' @slot priors. Either a single object of class `Prior` specifying the prior
 #' distribution to apply to all covariates or a named list of
 #' distributions of class `Prior`, one for each covariate
+#' @slot name_betas. Names for the beta parameters in the STAN model.
 #' @include prior_class.R
 .covariate_class <- setClass(
   "Covariates",
   slots = c(
     covariates = "character",
-    priors = "listOrPrior"
+    priors = "listOrPrior",
+    name_betas = "character"
   ),
   validity = function(object) {
     if (is(object@priors, "list")) {

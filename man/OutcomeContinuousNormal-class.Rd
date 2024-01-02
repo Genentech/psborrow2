@@ -32,6 +32,14 @@ Empty for \code{OutcomeContinuousNormal}.}
 
 \item{\code{baseline_prior}}{\code{Prior}. Object of class \code{Prior}
 specifying prior distribution for the baseline outcome.}
+
+\item{\code{name_beta_trt.}}{Named vector for beta_trt.}
+
+\item{\code{name_exp_trt.}}{Named vector for exponentiated beta_trt}
+
+\item{\code{alpha_type.}}{How to interpret alpha.}
+
+\item{\code{name_addnl_params.}}{Named vector for additional parameters.}
 }}
 
 \seealso{

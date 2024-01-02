@@ -1,7 +1,7 @@
 Type: Package
 Package: psborrow2
 Title: An R Package for Bayesian Dynamic Borrowing Simulation Study and Analysis
-Version: 0.0.2.9000
+Version: 0.0.2.9001
 Authors@R: c(
    person(
       given = "Matt",
@@ -23,11 +23,11 @@ Authors@R: c(
       )
    )
 Description: `psborrow2` is an R package for complex, innovative trial designs using
-   Bayesian dynamic borrowing (BDB). `psborrow2` has two main goals:
+   Bayesian dynamic borrowing using the hierarchical commensurate prior approach. `psborrow2` has two main goals:
    First, `psborrow2` facilitates simulation studies that compare different borrowing
    parameters (e.g. full borrowing, no borrowing, dynamic borrowing) and
    other trial and borrowing characteristics (e.g. sample size, covariates) in
-   a unified way; and second, `psborrow2` provides a user-friendly interface for applying BDB
+   a unified way; and second, `psborrow2` provides a user-friendly interface for applying dynamic borrowing
    on the study results handles the MCMC sampling on behalf of the user.
 URL: https://github.com/Genentech/psborrow2, https://genentech.github.io/psborrow2/
 BugReports: https://github.com/Genentech/psborrow2/issues
@@ -86,6 +86,9 @@ Collate:
     'outcome_class.R'
     'analysis_class.R'
     'borrowing_details.R'
+    'borrowing_full.R'
+    'borrowing_hierarchical_commensurate.R'
+    'borrowing_none.R'
     'check_data_matrix_has_columns.R'
     'cmdstan.R'
     'create_analysis_obj.R'

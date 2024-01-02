@@ -5,6 +5,11 @@ setClass(
   contains = "VIRTUAL"
 )
 
+setClassUnion(
+  "vectorOrNULL",
+  c("vector", "NULL")
+)
+
 #' `TimeToEvent` class
 #'
 #' @slot function_stan_code character. Code to include in the Stan functions program block.
@@ -17,6 +22,10 @@ setClass(
 #' @slot cens_var character. Variable used for censoring in `TimeToEvent` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
+#' @slot name_beta_trt. Named vector for beta_trt.
+#' @slot name_exp_trt. Named vector for exponentiated beta_trt
+#' @slot alpha_type. How to interpret alpha.
+#' @slot name_addnl_params. Named vector for additional parameters.
 #' @family outcome
 setClass(
   "TimeToEvent",
@@ -30,7 +39,11 @@ setClass(
     time_var = "character",
     cens_var = "character",
     weight_var = "character",
-    baseline_prior = "Prior"
+    baseline_prior = "Prior",
+    name_beta_trt = "vector",
+    name_exp_trt = "vector",
+    alpha_type = "character",
+    name_addnl_params = "vectorOrNULL"
   ),
   prototype = list(
     n_param = 0L,
@@ -40,7 +53,11 @@ setClass(
     weight_var = NULL,
     data_stan_code = "vector[N] time;
     vector[N] cens;",
-    baseline_prior = NULL
+    baseline_prior = NULL,
+    name_beta_trt = c("treatment log HR" = "beta_trt"),
+    name_exp_trt = c("treatment HR" = "HR_trt"),
+    alpha_type = "baseline log hazard rate",
+    name_addnl_params = NULL
   ),
   contains = "Outcome"
 )
@@ -55,6 +72,10 @@ setClass(
 #' @slot binary_var character. Variable used for outcome in `BinaryOutcome` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
+#' @slot name_beta_trt. Named vector for beta_trt.
+#' @slot name_exp_trt. Named vector for exponentiated beta_trt
+#' @slot alpha_type. How to interpret alpha.
+#' @slot name_addnl_params. Named vector for additional parameters.
 #' @family outcome
 setClass(
   "BinaryOutcome",
@@ -67,7 +88,11 @@ setClass(
     param_priors = "list",
     binary_var = "character",
     weight_var = "character",
-    baseline_prior = "Prior"
+    baseline_prior = "Prior",
+    name_beta_trt = "vector",
+    name_exp_trt = "vector",
+    alpha_type = "character",
+    name_addnl_params = "vectorOrNULL"
   ),
   prototype = list(
     n_param = 0L,
@@ -76,7 +101,11 @@ setClass(
     likelihood_stan_code = "",
     weight_var = "",
     data_stan_code = "array[N] int y;",
-    baseline_prior = NULL
+    baseline_prior = NULL,
+    name_beta_trt = c("treatment log OR" = "beta_trt"),
+    name_exp_trt = c("treatment OR" = "OR_trt"),
+    alpha_type = "intercept",
+    name_addnl_params = NULL
   ),
   contains = "Outcome"
 )
@@ -91,6 +120,10 @@ setClass(
 #' @slot continuous_var character. Variable used for outcome in `ContinuousOutcome` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
+#' @slot name_beta_trt. Named vector for beta_trt.
+#' @slot name_exp_trt. Named vector for exponentiated beta_trt
+#' @slot alpha_type. How to interpret alpha.
+#' @slot name_addnl_params. Named vector for additional parameters.
 #' @family outcome
 setClass(
   "ContinuousOutcome",
@@ -103,7 +136,11 @@ setClass(
     param_priors = "list",
     continuous_var = "character",
     weight_var = "character",
-    baseline_prior = "Prior"
+    baseline_prior = "Prior",
+    name_beta_trt = "vector",
+    name_exp_trt = "vector",
+    alpha_type = "character",
+    name_addnl_params = "vectorOrNULL"
   ),
   prototype = list(
     n_param = 0L,
@@ -112,7 +149,11 @@ setClass(
     likelihood_stan_code = "",
     weight_var = "",
     data_stan_code = "array[N] int y;",
-    baseline_prior = NULL
+    baseline_prior = NULL,
+    name_beta_trt = c("treatment effect" = "beta_trt"),
+    name_exp_trt = c("exponentiated treatment effect" = "beta_trt"),
+    alpha_type = "intercept",
+    name_addnl_params = NULL
   ),
   contains = "Outcome"
 )

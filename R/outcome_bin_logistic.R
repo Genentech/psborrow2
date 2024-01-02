@@ -17,6 +17,10 @@
 #' @slot binary_var character. Variable used for outcome in `OutcomeBinaryLogistic` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
+#' @slot name_beta_trt. Named vector for beta_trt.
+#' @slot name_exp_trt. Named vector for exponentiated beta_trt
+#' @slot alpha_type. How to interpret alpha.
+#' @slot name_addnl_params. Named vector for additional parameters.
 #' @include outcome_class.R helpers.R
 #' @family outcome
 .outcome_bin_logistic <- setClass(
@@ -49,10 +53,10 @@
 #'
 #' The `baseline_prior` argument specifies the prior distribution for the
 #' baseline log odds. The interpretation of the `baseline_prior` differs
-#' slightly between methods selected in `borrowing_details()`:
-#' - \emph{'BDB'}: the `baseline_prior` for Bayesian Dynamic Borrowing refers
+#' slightly between borrowing methods selected.
+#' - \emph{Dynamic borrowing using `borrowing_hierarchical_commensurate()`}: the `baseline_prior` for Bayesian Dynamic Borrowing refers
 #' to the log odds of the external control arm.
-#' - \emph{'Full borrowing'} or \emph{'No borrowing'}: the `baseline_prior` for
+#' - \emph{Full borrowing} or \emph{No borrowing} using `borrowing_full()` or `borrowing_none()`: the `baseline_prior` for
 #' these borrowing methods refers to the log odds for the
 #' internal control arm.
 #'

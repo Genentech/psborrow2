@@ -2,10 +2,7 @@ test_that("make_model_string_parameters works with exponential survival and full
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-    borrowing = borrowing_details(
-      "Full borrowing",
-      "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
@@ -18,8 +15,7 @@ test_that("make_model_string_parameters works with exponential survival and BDB"
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),
@@ -44,8 +40,7 @@ test_that("make_model_string_parameters works with weibull survival and BDB", {
       prior_normal(0, 1000),
       prior_normal(0, 100)
     ),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),
@@ -65,8 +60,7 @@ test_that("make_model_string_parameters works with binary outcome and BDB", {
       prior_normal(0, 1000)
     ),
     outcome = outcome_bin_logistic("cnsr", prior_normal(0, 100)),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),
@@ -83,9 +77,7 @@ test_that("the STAN code is correctly generated when limits are placed in the tr
   stan_model_string <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_half_cauchy(0, 20))
   )@model_string
 
@@ -97,7 +89,7 @@ test_that("the STAN code is correctly generated when limits are placed in the bo
   stan_model_string_cauchy <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       ext_flag_col = "ext",
       tau_prior = prior_half_cauchy(10, 20)
     ),
@@ -107,7 +99,7 @@ test_that("the STAN code is correctly generated when limits are placed in the bo
   stan_model_string_normal <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       ext_flag_col = "ext",
       tau_prior = prior_half_normal(10, 20)
     ),
@@ -123,9 +115,7 @@ test_that("the STAN code is correctly generated when limits are placed in the ou
   stan_model_string <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", uniform_prior(0, 10)),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )@model_string
 
@@ -137,9 +127,7 @@ test_that("the STAN code is correctly generated when limits are placed in the ou
   stan_model_string <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", uniform_prior(0, 10)),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )@model_string
 
@@ -153,9 +141,7 @@ test_that("the STAN code is correctly generated when limits are placed in the co
     data_matrix = example_matrix,
     covariates = add_covariates("cov1", uniform_prior(0, 10)),
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
@@ -177,9 +163,7 @@ test_that("the STAN code is correctly generated when limits are placed in the co
       )
     ),
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
