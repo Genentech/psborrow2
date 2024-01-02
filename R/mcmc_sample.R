@@ -244,6 +244,8 @@ setMethod(
       mcmc_simulation_result@results$trt_var <-
       vector("list", x@n_combos)
 
+    parent_cmdstanr_path <- cmdstanr::cmdstan_path()
+
     # MCMC sample
     for (i in 1:x@n_combos) {
       # Create a list for `cmd_stan_models`
@@ -282,6 +284,7 @@ setMethod(
             packages = "psborrow2",
             seed = TRUE,
             expr = {
+              if (!check_cmdstan()) cmdstanr::set_cmdstan_path(parent_cmdstanr_path)
               if (!file.exists(anls_obj@model$exe_file())) anls_obj@model$compile()
 
               mcmc_results <- mcmc_sample(
