@@ -77,8 +77,8 @@ Language: en-US
 SystemRequirements: cmdstan
 Collate:
     'generics.R'
-    'prior_class.R'
     'covariate_class.R'
+    'prior_class.R'
     'add_covariates.R'
     'prior_normal.R'
     'treatment_class.R'

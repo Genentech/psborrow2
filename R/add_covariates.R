@@ -14,9 +14,9 @@ setClassUnion("listOrPrior", c("list", "Prior"))
 #' distribution to apply to all covariates or a named list of
 #' distributions of class `Prior`, one for each covariate
 #' @slot name_betas. Names for the beta parameters in the STAN model.
-#' @slot n_cov. Number of covariates to adjust for.
+#' @slot n_covs. Number of covariates to adjust for.
 #' @family covariate classes
-#' @include prior_class.R
+#' @include prior_class.R covariate_class.R
 .covariate_class <- setClass(
   "Covariates",
   slots = c(
@@ -124,6 +124,6 @@ add_covariates <- function(covariates,
     covariates = covariates,
     priors = priors,
     name_betas = stats::setNames(h_glue("beta[{{seq_along(covariates)}}]"), covariates),
-    n_cov = NROW(covariates)
+    n_covs = NROW(covariates)
   )
 }
