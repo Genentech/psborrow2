@@ -115,6 +115,7 @@ Collate:
     'make_model_string_transf_params.R'
     'mcmc_sample.R'
     'mcmc_simulation_result.R'
+    'no_covariates.R'
     'prior_half_cauchy.R'
     'outcome_cont_normal.R'
     'package.R'

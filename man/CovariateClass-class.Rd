@@ -19,6 +19,7 @@ A class for defining covariate adjustment details. Objects of class
 Prior constructor functions: \code{\link[=add_covariates]{add_covariates()}}, \code{\link[=no_covariates]{no_covariates()}}
 
 Other covariate classes: 
-\code{\link{Covariates-class}}
+\code{\link{Covariates-class}},
+\code{\link{NoCovariates-class}}
 }
 \concept{covariate classes}

@@ -28,6 +28,7 @@ distributions of class \code{Prior}, one for each covariate}
 
 \seealso{
 Other covariate classes: 
-\code{\link{CovariateClass-class}}
+\code{\link{CovariateClass-class}},
+\code{\link{NoCovariates-class}}
 }
 \concept{covariate classes}

@@ -12,5 +12,8 @@ setClass(
   slots = c(
     n_covs = "integer"
   ),
+  prototype = prototype(
+    n_covs = 0L
+  ),
   contains = "VIRTUAL"
 )
