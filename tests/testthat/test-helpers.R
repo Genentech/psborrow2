@@ -59,8 +59,7 @@ test_that("rename_draws_covariates works as expected", {
       prior_normal(0, 1000)
     ),
     outcome = outcome_bin_logistic("cnsr", prior_normal(0, 1000)),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),
@@ -110,8 +109,7 @@ test_that("variable_dictionary works as expected for logistic and BDB", {
       prior_normal(0, 1000)
     ),
     outcome = outcome_bin_logistic("cnsr", prior_normal(0, 1000)),
-    borrowing = borrowing_details(
-      "BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       "ext",
       prior_exponential(0.001)
     ),
@@ -134,10 +132,7 @@ test_that("variable_dictionary works as expected for exponential and no borrowin
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
-    borrowing = borrowing_details(
-      "Full borrowing",
-      "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
   result <- variable_dictionary(object)
@@ -159,10 +154,7 @@ test_that("variable_dictionary includes shape parameter for Weibull PH", {
       prior_normal(0, 1000),
       prior_normal(0, 1000)
     ),
-    borrowing = borrowing_details(
-      "Full borrowing",
-      "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
   result <- variable_dictionary(object)

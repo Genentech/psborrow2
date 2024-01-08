@@ -3,8 +3,7 @@ test_that("Incorrect inputs lead to errors", {
   # At the bottom is a list of borrowing objects
   expect_error(
     sim_borrowing_list(
-      borrowing_details(
-        method = "BDB",
+      borrowing_hierarchical_commensurate(
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       )
@@ -25,8 +24,7 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_borrowing_list(
       list(
-        borrowing_details(
-          method = "BDB",
+        borrowing_hierarchical_commensurate(
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         )
@@ -39,15 +37,11 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_borrowing_list(
       list(
-        bdb = borrowing_details(
-          method = "BDB",
+        bdb = borrowing_hierarchical_commensurate(
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
-        borrowing_details(
-          method = "Full borrowing",
-          "ext"
-        )
+        borrowing_full("ext")
       )
     ),
     "All items in `borrowing_list` must be named"
@@ -57,15 +51,11 @@ test_that("Incorrect inputs lead to errors", {
   expect_error(
     sim_borrowing_list(
       list(
-        scenario_1 = borrowing_details(
-          method = "BDB",
+        scenario_1 = borrowing_hierarchical_commensurate(
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
-        scenario_1 = borrowing_details(
-          method = "Full borrowing",
-          "ext"
-        )
+        scenario_1 = borrowing_full("ext")
       )
     ),
     "All names supplied to `borrowing_list` must be unique"
@@ -76,15 +66,11 @@ test_that("Correct inputs successfully produce `SimBorrowingList`", {
   expect_class(
     sim_borrowing_list(
       list(
-        "BDB" = borrowing_details(
-          method = "BDB",
+        "BDB" = borrowing_hierarchical_commensurate(
           ext_flag_col = "ext",
           tau_prior = prior_exponential(0.001)
         ),
-        "Full borrowing" = borrowing_details(
-          method = "Full borrowing",
-          "ext"
-        )
+        "Full borrowing" = borrowing_full("ext")
       )
     ),
     "SimBorrowingList"
@@ -95,15 +81,11 @@ test_that("Correct inputs successfully produce `SimBorrowingList`", {
 test_that("Borrowing `guide` is produced correctly", {
   borrowing_obj1 <- sim_borrowing_list(
     list(
-      "BDB" = borrowing_details(
-        method = "BDB",
+      "BDB" = borrowing_hierarchical_commensurate(
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),
-      "Full borrowing" = borrowing_details(
-        method = "Full borrowing",
-        "ext"
-      )
+      "Full borrowing" = borrowing_full("ext")
     )
   )
 
@@ -116,16 +98,12 @@ test_that("Borrowing `guide` is produced correctly", {
 
   borrowing_obj2 <- sim_borrowing_list(
     list(
-      "BDB" = borrowing_details(
-        method = "BDB",
+      "BDB" = borrowing_hierarchical_commensurate(
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),
-      "Full borrowing" = borrowing_details(
-        method = "Full borrowing",
-        "ext"
-      ),
-      "No borrowing" = borrowing_details(method = "No borrowing", "ext")
+      "Full borrowing" = borrowing_full("ext"),
+      "No borrowing" = borrowing_none("ext")
     )
   )
 
@@ -141,15 +119,11 @@ test_that("Borrowing `guide` is produced correctly", {
 test_that("get_vars for `sim_borrowing_list` works", {
   borrowing_obj <- sim_borrowing_list(
     list(
-      "BDB" = borrowing_details(
-        method = "BDB",
+      "BDB" = borrowing_hierarchical_commensurate(
         ext_flag_col = "ext",
         tau_prior = prior_exponential(0.001)
       ),
-      "Full borrowing" = borrowing_details(
-        method = "Full borrowing",
-        "ext"
-      )
+      "Full borrowing" = borrowing_full("ext")
     )
   )
 

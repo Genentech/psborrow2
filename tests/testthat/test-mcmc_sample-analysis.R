@@ -9,8 +9,7 @@ test_that("mcmc_sample gracefully fails if cmdstanr is unavailable", {
         cens_var = "cnsr",
         prior_normal(0, 100000)
       ),
-      borrowing = borrowing_details(
-        "BDB",
+      borrowing = borrowing_hierarchical_commensurate(
         ext_flag_col = "ext",
         tau_prior = prior_gamma(0.001, 0.001)
       ),
@@ -21,8 +20,8 @@ test_that("mcmc_sample gracefully fails if cmdstanr is unavailable", {
   expect_error(
     result <- mcmc_sample(
       object,
-      iter_warmup = 800,
-      iter_sampling = 800,
+      iter_warmup = 2000,
+      iter_sampling = 2000,
       chains = 1
     ),
     regexp = "Cannot sample object",
@@ -60,10 +59,7 @@ test_that("mcmc_sample handles Analysis objects not ready to sample", {
       "trt",
       prior_normal(0, 1000)
     ),
-    borrowing = borrowing_details(
-      "Full borrowing",
-      ext_flag_col = "ext"
-    )
+    borrowing = borrowing_full("ext")
   )
   expect_error(mcmc_sample(object), "Cannot sample object.")
 })
@@ -81,15 +77,13 @@ test_that("mcmc_sample for Analysis works for full borrowing, exponential dist",
   full_exp_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   full_exp_bayes <- mcmc_sample(full_exp_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_exp_bayes, "CmdStanMCMC")
@@ -108,15 +102,15 @@ test_that("mcmc_sample for Analysis works for no borrowing, exponential dist", {
   no_exp_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
-    borrowing = borrowing_details("No borrowing",
+    borrowing = borrowing_none(
       ext_flag_col = "ext"
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   no_exp_bayes <- mcmc_sample(no_exp_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_exp_bayes, "CmdStanMCMC")
@@ -140,15 +134,13 @@ test_that("mcmc_sample for Analysis works for full borrowing, exponential dist, 
     data_matrix = example_matrix,
     covariates = add_covariates("cov1", prior_normal(0, 100000)),
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   full_exp_bayes_c1 <- mcmc_sample(full_exp_bayes_c1_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_exp_bayes_c1, "CmdStanMCMC")
@@ -175,15 +167,15 @@ test_that("mcmc_sample for Analysis works for no borrowing, exponential dist, tw
       prior_normal(0, 100000)
     ),
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
-    borrowing = borrowing_details("No borrowing",
+    borrowing = borrowing_none(
       ext_flag_col = "ext"
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   no_exp_bayes_c2 <- mcmc_sample(no_exp_bayes_c2_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_exp_bayes_c2, "CmdStanMCMC")
@@ -212,15 +204,13 @@ test_that("mcmc_sample for Analysis works for full borrowing, Weibull dist", {
       prior_normal(0, 100000),
       prior_normal(0, 100000)
     ),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   full_weib_bayes <- mcmc_sample(full_weib_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_weib_bayes, "CmdStanMCMC")
@@ -248,15 +238,15 @@ test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist", {
       prior_normal(0, 100000),
       prior_normal(0, 100000)
     ),
-    borrowing = borrowing_details("No borrowing",
+    borrowing = borrowing_none(
       ext_flag_col = "ext"
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   no_weib_bayes <- mcmc_sample(no_weib_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_weib_bayes, "CmdStanMCMC")
@@ -285,15 +275,13 @@ test_that("mcmc_sample for Analysis works for full borrowing, weibull dist, one 
       prior_normal(0, 100000),
       prior_normal(0, 100000)
     ),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   full_weib_bayes_c1 <- mcmc_sample(full_weib_bayes_c1_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_weib_bayes_c1, "CmdStanMCMC")
@@ -325,15 +313,15 @@ test_that("mcmc_sample for Analysis works for no borrowing, Weibull dist, two co
       prior_normal(0, 100000),
       prior_normal(0, 100000)
     ),
-    borrowing = borrowing_details("No borrowing",
+    borrowing = borrowing_none(
       ext_flag_col = "ext"
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   no_weib_bayes_c2 <- mcmc_sample(no_weib_bayes_c2_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_weib_bayes_c2, "CmdStanMCMC")
@@ -357,15 +345,13 @@ test_that("mcmc_sample for Analysis works for full borrowing, binomial dist", {
   full_bin_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_bin_logistic("resp", prior_normal(0, 100000)),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   full_bin_bayes <- mcmc_sample(full_bin_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_bin_bayes, "CmdStanMCMC")
@@ -388,15 +374,15 @@ test_that("mcmc_sample for Analysis works for no borrowing, binomial dist", {
   no_bin_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_bin_logistic("resp", prior_normal(0, 100000)),
-    borrowing = borrowing_details("No borrowing",
+    borrowing = borrowing_none(
       ext_flag_col = "ext"
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   no_bin_bayes <- mcmc_sample(no_bin_bayes_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_bin_bayes, "CmdStanMCMC")
@@ -420,15 +406,13 @@ test_that("mcmc_sample for Analysis works for full borrowing, binomial dist, one
     data_matrix = example_matrix,
     covariates = add_covariates("cov1", prior_normal(0, 100000)),
     outcome = outcome_bin_logistic("resp", prior_normal(0, 100000)),
-    borrowing = borrowing_details("Full borrowing",
-      ext_flag_col = "ext"
-    ),
+    borrowing = borrowing_full("ext"),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   full_bin_bayes_c1 <- mcmc_sample(full_bin_bayes_c1_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(full_bin_bayes_c1, "CmdStanMCMC")
@@ -455,15 +439,15 @@ test_that("mcmc_sample for Analysis works for no borrowing, binomial dist, two c
       prior_normal(0, 100000)
     ),
     outcome = outcome_bin_logistic("resp", prior_normal(0, 100000)),
-    borrowing = borrowing_details("No borrowing",
+    borrowing = borrowing_none(
       ext_flag_col = "ext"
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
   no_bin_bayes_c2 <- mcmc_sample(no_bin_bayes_c2_ao,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
   expect_r6(no_bin_bayes_c2, "CmdStanMCMC")
@@ -485,7 +469,7 @@ test_that("mcmc_sample for Analysis works for exponential BDB, conservative borr
       cens_var = "cnsr",
       prior_normal(0, 100000)
     ),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       ext_flag_col = "ext",
       tau_prior = prior_gamma(0.001, 0.001)
     ),
@@ -493,8 +477,8 @@ test_that("mcmc_sample for Analysis works for exponential BDB, conservative borr
   )
   result <- mcmc_sample(
     exp_bdb_conservative,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
 
@@ -516,7 +500,7 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, aggressive borrowing"
       shape_prior = prior_normal(0, 100000),
       baseline_prior = prior_normal(0, 100000)
     ),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       ext_flag_col = "ext",
       tau_prior = prior_gamma(1, 0.001)
     ),
@@ -524,8 +508,8 @@ test_that("mcmc_sample for Analysis works for Weibull BDB, aggressive borrowing"
   )
   result <- mcmc_sample(
     weib_bdb_aggressive,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
 
@@ -542,7 +526,7 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressiv
   bin_bdb_aggressive <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_bin_logistic("resp", prior_normal(0, 100000)),
-    borrowing = borrowing_details("BDB",
+    borrowing = borrowing_hierarchical_commensurate(
       ext_flag_col = "ext",
       tau_prior = prior_gamma(1, 0.001)
     ),
@@ -550,13 +534,13 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressiv
   )
   result <- mcmc_sample(
     bin_bdb_aggressive,
-    iter_warmup = 800,
-    iter_sampling = 800,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
     chains = 1
   )
 
   result_summary <- result$summary("OR_trt")
   expect_equal(result_summary[["median"]], 1.65, tolerance = .05)
-  expect_equal(result_summary[["q5"]], 1.11, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 1.10, tolerance = .05)
   expect_equal(result_summary[["q95"]], 2.44, tolerance = .05)
 })

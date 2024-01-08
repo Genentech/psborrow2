@@ -15,6 +15,10 @@
 #' @slot cens_var character. Variable used for censoring in `TimeToEvent` objects.
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
+#' @slot name_beta_trt. Named vector for beta_trt.
+#' @slot name_exp_trt. Named vector for exponentiated beta_trt
+#' @slot alpha_type. How to interpret alpha.
+#' @slot name_addnl_params. Named vector for additional parameters.
 #' @include outcome_class.R
 #' @include prior_class.R
 #' @include prior_normal.R
@@ -54,7 +58,8 @@
     param_stan_code = "real<lower=0> shape_weibull; ",
     param_priors = list(
       shape_weibull = prior_exponential(beta = 0.0001)
-    )
+    ),
+    name_addnl_params =  c("Weibull shape parameter" = "shape_weibull")
   ),
   validity = function(object) {
     check_class(object@param_priors[["shape_weibull"]], "Prior")
@@ -78,10 +83,10 @@
 #'
 #' The `baseline_prior` argument specifies the prior distribution for the
 #' baseline log hazard rate. The interpretation of the `baseline_prior` differs
-#' slightly between methods selected in `borrowing_details()`:
-#' - \emph{'BDB'}: the `baseline_prior` for Bayesian Dynamic Borrowing refers
-#' to the log hazard rate of the external control arm.
-#' - \emph{'Full borrowing'} or \emph{'No borrowing'}: the `baseline_prior` for
+#' slightly between borrowing methods selected.
+#' - \emph{Dynamic borrowing using `borrowing_hierarchical_commensurate()`}: the `baseline_prior` for Bayesian Dynamic Borrowing 
+#' refers to the log hazard rate of the external control arm.
+#' - \emph{Full borrowing} or \emph{No borrowing} using `borrowing_full()` or `borrowing_none()`: the `baseline_prior` for
 #' these borrowing methods refers to the log hazard rate for the
 #' internal control arm.
 #'

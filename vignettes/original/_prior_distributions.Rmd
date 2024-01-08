@@ -42,9 +42,9 @@ coefficients, passed to `add_covariates()`
 for the Weibull survival distribution, passed to `outcome_surv_weibull_ph()`
 * log effect estimates (e.g. hazard ratios or odds ratios) for the primary
 contrast between treatments, passed to `treatment_details()`
-* baseline outcome rates or odds, passed to `borrowing_details()`
+* baseline outcome rates or odds, passed to outcome functions
 * the hyperprior on the commensurability parameter for
-Bayesian dynamic borrowing (BDB), passed to `borrowing_details()`
+Bayesian dynamic borrowing (BDB), passed to `borrowing_hierarchical_commensurate()`
 
 See the documentation of these functions for more information.
 

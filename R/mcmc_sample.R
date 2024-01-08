@@ -42,8 +42,7 @@ setMethod(
 #'       shape_prior = prior_normal(0, 1000),
 #'       baseline_prior = prior_normal(0, 1000)
 #'     ),
-#'     borrowing = borrowing_details(
-#'       "BDB",
+#'     borrowing = borrowing_hierarchical_commensurate(
 #'       "ext",
 #'       prior_exponential(.001)
 #'     ),
@@ -182,8 +181,8 @@ setMethod(
 #'     data_matrix_list = sdl,
 #'     outcome = outcome_bin_logistic("ep", prior_normal(0, 1000)),
 #'     borrowing = sim_borrowing_list(list(
-#'       full_borrowing = borrowing_details("Full borrowing", "ext"),
-#'       bdb = borrowing_details("BDB", "ext", prior_exponential(0.0001))
+#'       full_borrowing = borrowing_full("ext"),
+#'       bdb = borrowing_hierarchical_commensurate("ext", prior_exponential(0.0001))
 #'     )),
 #'     treatment = treatment_details("trt", prior_normal(0, 1000))
 #'   )
@@ -245,6 +244,8 @@ setMethod(
       mcmc_simulation_result@results$trt_var <-
       vector("list", x@n_combos)
 
+    parent_cmdstanr_path <- cmdstanr::cmdstan_path()
+
     # MCMC sample
     for (i in 1:x@n_combos) {
       # Create a list for `cmd_stan_models`
@@ -283,6 +284,7 @@ setMethod(
             packages = "psborrow2",
             seed = TRUE,
             expr = {
+              if (!check_cmdstan()) cmdstanr::set_cmdstan_path(parent_cmdstanr_path)
               if (!file.exists(anls_obj@model$exe_file())) anls_obj@model$compile()
 
               mcmc_results <- mcmc_sample(
@@ -298,31 +300,31 @@ setMethod(
 
               keep <- list()
               # Coverage
-              keep$true_coverage <- sim_is_true_effect_covered(
+              keep$true_coverage <- psborrow2:::sim_is_true_effect_covered(
                 draws,
                 true_effect,
                 posterior_quantiles
               )
 
-              keep$null_coverage <- sim_is_null_effect_covered(
+              keep$null_coverage <- psborrow2:::sim_is_null_effect_covered(
                 draws,
                 posterior_quantiles
               )
 
               # Bias
-              keep$bias <- sim_estimate_bias(
+              keep$bias <- psborrow2:::sim_estimate_bias(
                 draws,
                 true_effect
               )
 
               # MSE
-              keep$mse <- sim_estimate_mse(
+              keep$mse <- psborrow2:::sim_estimate_mse(
                 draws,
                 true_effect
               )
 
               # Variance of beta_trt
-              keep$var <- sim_estimate_effect_variance(draws)
+              keep$var <- psborrow2:::sim_estimate_effect_variance(draws)
 
               # Save draws if desired
               if (keep_cmd_stan_models) {

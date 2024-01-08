@@ -2,92 +2,13 @@
 % Please edit documentation in R/borrowing_details.R
 \name{borrowing_details}
 \alias{borrowing_details}
-\title{Specify Borrowing Model}
+\title{Legacy function for specifying borrowing details}
 \usage{
-borrowing_details(method, ext_flag_col, tau_prior = NULL)
+borrowing_details(...)
 }
 \arguments{
-\item{method}{character. The type of borrowing to perform. It
-must be one of: \code{'BDB'}, \code{'Full borrowing'}, or \code{'No borrowing'}. See \emph{Details} for
-more information.}
-
-\item{ext_flag_col}{character. The name of the column in
-the data matrix that corresponds to the external control flag (\code{1}/\code{0} or
-\code{TRUE}/\code{FALSE}). This identifies a patient as belonging to the external
-control cohort.}
-
-\item{tau_prior}{Object of class \code{Prior} defining the hyperprior on the
-"commensurability parameter". See \code{Details} for more information.}
-}
-\value{
-Object of class \code{\link[=Borrowing-class]{Borrowing}}.
+\item{...}{Deprecated arguments to \code{borrowing_details}.}
 }
 \description{
-Specify type of borrowing and, for Bayesian Dynamic Borrowing,
-set hyperprior for commensurability parameter tau.
-}
-\details{
-\subsection{Method}{
-
-The \code{method} argument specifies the type of borrowing that will be
-implemented. There are currently three types of borrowing that are supported:
-\itemize{
-\item \emph{'BDB'} for Bayesian Dynamic Borrowing. In Bayesian Dynamic
-Borrowing, external control information is borrowed to the extent that the
-outcomes (i.e., log hazard rates or log odds) are similar between
-external and internal control populations. See
-\href{https://doi.org/10.1002/pst.1589}{Viele et. al. 2014}.
-\item \emph{'Full borrowing'} for pooling of historical and concurrent controls.
-There is no distinction between patients in the internal and external
-control arms. While the \code{ext_flag_col} must still be specified, it is not
-used.
-\item \emph{'No borrowing'} for evaluating only the internal comparison,
-ignoring historical controls. Note that this method will filter the
-model matrix based on values in \code{ext_flag_col}.
-}
-
-Though the ultimate model specification is the same for 'Full borrowing'
-and 'No borrowing', both are available as options to facilitate comparison
-between methods.
-}
-
-\subsection{External Control}{
-
-The \code{ext_flag_col} argument refers to the column in the data matrix that
-contains the flag indicating a patient is from the external control cohort.
-While this column is not used in 'Full borrowing', it must still be
-specified.
-}
-
-\subsection{Tau Prior}{
-
-The \code{tau_prior} argument specifies the hyperprior on the precision parameter
-commonly referred to as the commensurability parameter.
-See \href{https://doi.org/10.1002/pst.1589}{Viele et. al. 2014} for more
-details.
-This hyperprior determines (along with the comparability of the outcomes
-between internal and external controls) how much borrowing of the external
-control group will be performed.
-Example hyperpriors include largely uninformative inverse gamma distributions
-[e.g., \code{prior_gamma(alpha = .001, beta = .001)}] as well as more
-informative distributions [e.g., \verb{prior_gamma(alpha = 1, beta = .001})],
-though any distribution \eqn{x \in (0, \infty)} can be used. Distributions
-with more density at higher values of \eqn{x} (i.e., higher precision)
-will lead to more borrowing.
-}
-}
-\examples{
-sb <- borrowing_details(
-  method = "BDB",
-  ext_flag_col = "ext",
-  tau_prior = prior_gamma(0.001, 0.001)
-)
-
-}
-\references{
-Viele, K., Berry, S., Neuenschwander, B., Amzal, B., Chen, F.,
-Enas, N., Hobbs, B., Ibrahim, J.G., Kinnersley, N., Lindborg, S., Micallef,
-S., Roychoudhury, S. and Thompson, L. (2014),
-Use of historical control data for assessing treatment effects in clinical trials.
-\strong{Pharmaceut. Statist., 13: 41--54}. \doi{10.1002/pst.1589}
+Please use one of \code{hierarchical_commensurate_borrowing()}, \code{no_borrowing()}, or \code{full_borrowing()} instead.
 }

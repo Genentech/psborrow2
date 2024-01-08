@@ -13,20 +13,14 @@ ac2 <- add_covariates(
   )
 )
 
-bd_fb <- borrowing_details(
-  method = "Full borrowing",
+bd_fb <- borrowing_full("ext")
+bd_nb <- borrowing_none(
   ext_flag_col = "ext"
 )
-bd_nb <- borrowing_details(
-  method = "No borrowing",
-  ext_flag_col = "ext"
-)
-bd_db <- borrowing_details(
-  method = "BDB",
+bd_db <- borrowing_hierarchical_commensurate(
   ext_flag_col = "ext",
   tau_prior = prior_half_cauchy(0, .0001)
 )
-
 td <- treatment_details(
   "trt",
   prior_half_normal(0, 1000)
@@ -184,8 +178,7 @@ test_that("Columns in analysis_obj should be in matrix", {
       covariates = ac,
       outcome = esd,
       treatment = td,
-      borrowing = borrowing_details(
-        method = "BDB",
+      borrowing = borrowing_hierarchical_commensurate(
         ext_flag_col = "tira",
         tau_prior = prior_gamma(.001, .001)
       )
@@ -206,8 +199,7 @@ test_that("create_analysis_obj behaves gracefully if cmdstanr is unavailable", {
         cens_var = "cnsr",
         prior_normal(0, 100000)
       ),
-      borrowing = borrowing_details(
-        "BDB",
+      borrowing = borrowing_hierarchical_commensurate(
         ext_flag_col = "ext",
         tau_prior = prior_gamma(0.001, 0.001)
       ),
