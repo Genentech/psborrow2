@@ -42,7 +42,7 @@ make_model_string_parameters <- function(analysis_obj) {
   }
 
   ### Add in vector of coefficients if covariates are provided
-  covariate_string <- if (!is.null(analysis_obj@covariates)) "vector<lower=L_beta, upper=U_beta>[K] beta;" else ""
+  covariate_string <- if (analysis_obj@covariates@n_covs>0) "vector<lower=L_beta, upper=U_beta>[K] beta;" else ""
 
   h_glue("parameters {
   {{trt_string}}

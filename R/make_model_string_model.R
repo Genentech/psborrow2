@@ -22,7 +22,7 @@ make_model_string_model <- function(analysis_obj) {
   beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
 
   ### Linear predictor
-  has_covariates <- !is.null(analysis_obj@covariates)
+  has_covariates <- analysis_obj@covariates@n_covs > 0
   is_bdb <- is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate")
 
   if (has_covariates && is_bdb) {

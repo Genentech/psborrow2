@@ -21,7 +21,7 @@ test_that("get_vars works for Analysis", {
     c(time_var = "time", cens_var = "cnsr", ext_flag_col = "ext", trt_flag_col = "trt", "cov1", "cov2")
   )
 
-  object@covariates <- NULL
+  object@covariates <- no_covariates()
   expect_equal(
     get_vars(object),
     c(time_var = "time", cens_var = "cnsr", ext_flag_col = "ext", trt_flag_col = "trt")

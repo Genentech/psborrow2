@@ -17,7 +17,7 @@
 #' @return Object of class [`Analysis`][Analysis-class].
 #' @export
 #'
-#' @include analysis_class.R
+#' @include analysis_class.R no_covariates.R add_covariates.R
 #' @importFrom stats complete.cases
 #'
 #' @examples
@@ -63,6 +63,11 @@ create_analysis_obj <- function(data_matrix,
       "Data matrix must not include any missing data. ",
       "Filter to only complete cases or remove irrelevant columns"
     )
+  }
+  
+  ## Replace null covariates with an object of type NoCovariates
+  if (is.null(covariates)) {
+    covariates <- no_covariates()
   }
 
   analysis_obj <- .analysis_obj(

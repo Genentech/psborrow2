@@ -196,7 +196,7 @@ rename_draws_covariates <- function(draws, analysis) {
 variable_dictionary <- function(analysis_obj) {
   assert_class(analysis_obj, "Analysis")
 
-  beta_covariates <- if (!is.null(analysis_obj@covariates)) analysis_obj@covariates@name_betas else NULL
+  beta_covariates <- analysis_obj@covariates@name_betas
   beta_trt <- analysis_obj@outcome@name_beta_trt
   exp_trt <- analysis_obj@outcome@name_exp_trt
   alpha_type <- analysis_obj@outcome@alpha_type

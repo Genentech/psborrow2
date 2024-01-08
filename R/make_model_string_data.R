@@ -23,7 +23,7 @@ make_model_string_data <- function(analysis_obj) {
   borrowing_string <- analysis_obj@borrowing@data_stan_code
 
   covariate_string <- ifelse(
-    !is.null(analysis_obj@covariates),
+    analysis_obj@covariates@n_covs > 0,
     h_glue("int<lower=0> K;
      matrix[N, K] X;
      vector[K] L_beta;

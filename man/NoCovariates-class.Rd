@@ -13,6 +13,8 @@ A class for no covariates. Objects of class
 \section{Slots}{
 
 \describe{
+\item{\code{name_betas.}}{Names for the beta parameters in the STAN model (NULL).}
+
 \item{\code{n_covs.}}{Number of covariates to adjust for.}
 }}
 

@@ -53,8 +53,8 @@ prepare_stan_data_inputs <- function(analysis_obj) {
   }
 
   ## Covariate additions
-  if (!is.null(analysis_obj@covariates)) {
-    data_in[["K"]] <- NROW(analysis_obj@covariates@covariates)
+  if (analysis_obj@covariates@n_covs > 0) {
+    data_in[["K"]] <- analysis_obj@covariates@n_covs
     data_in[["X"]] <- trimmed_data_matrix[, analysis_obj@covariates@covariates, drop = FALSE]
     beta_constraints <- get_covariate_constraints(analysis_obj@covariates)
     data_in[["L_beta"]] <- beta_constraints[, "lower"]

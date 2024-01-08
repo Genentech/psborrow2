@@ -1,5 +1,5 @@
 # class union ----
-setClassUnion("CovariatesOrNULL", c("Covariates", "NULL"))
+setClassUnion("CovariatesOrNoCovariates", c("Covariates", "NoCovariates"))
 
 # R6 CmdStanModel placeholder
 setClass("CmdStanModel")
@@ -26,15 +26,12 @@ setClassUnion("CmdStanModelOrNULL", c("CmdStanModel", "NULL"))
 #' Stan model code to be compiled.
 #' @slot model `CmdStanModel`. The compiled Stan model as output by `cmdstanr::cmdstan_model()`
 #' @slot ready_to_sample logical. Is the object ready to sample?
-#' @include covariate_class.R
-#' @include outcome_class.R
-#' @include borrowing_class.R
-#' @include treatment_class.R
+#' @include covariate_class.R no_covariates.R outcome_class.R borrowing_class.R treatment_class.R
 .analysis_obj <- setClass(
   "Analysis",
   slots = c(
     data_matrix = "matrix",
-    covariates = "CovariatesOrNULL",
+    covariates = "CovariatesOrNoCovariates",
     outcome = "Outcome",
     borrowing = "Borrowing",
     treatment = "Treatment",
@@ -63,7 +60,7 @@ setMethod(
     cat("Treatment variable:", get_vars(object@treatment), "\n\n")
 
     cov_names <- get_vars(object@covariates)
-    if (!is.null(cov_names)) cat("Covariates:", cov_names, "\n\n")
+    if (object@covariates@n_covs > 0) cat("Covariates:", cov_names, "\n\n")
 
     cat("Data: Matrix with", nrow(object@data_matrix), "observations \n")
     cat(
@@ -112,13 +109,3 @@ setMethod(
   }
 )
 
-#' @rdname get_vars
-#' @include generics.R
-#' @usage \S4method{get_vars}{NULL}(object)
-setMethod(
-  f = "get_vars",
-  signature = "NULL",
-  definition = function(object) {
-    NULL
-  }
-)
