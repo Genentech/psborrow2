@@ -133,6 +133,7 @@ Collate:
     'sim_is_null_effect_covered.R'
     'sim_is_true_effect_covered.R'
     'sim_samplesize.R'
+    'simulate_data_baseline.R'
     'simulate_data.R'
     'simvar_class.R'
     'trim_data_matrix.R'

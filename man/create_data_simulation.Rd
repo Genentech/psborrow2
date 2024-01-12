@@ -10,8 +10,7 @@ create_data_simulation(
   treatment_effect = 0,
   drift = 0,
   event_dist,
-  recruitment,
-  cut_off
+  fixed_external_data
 )
 }
 \arguments{
@@ -25,11 +24,9 @@ Must correspond to variables in baseline object}
 \item{drift}{Drift parameter between internal and external arms on linear predictor scale}
 
 \item{event_dist}{Specify time to event distribution with \code{SimDataEvent} object from \code{\link[=event_dist]{event_dist()}}}
-
-\item{survival}{}
 }
 \value{
-\code{SimDataObject}
+\code{DataSimObject}
 }
 \description{
 Data Simulation

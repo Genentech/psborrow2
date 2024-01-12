@@ -1,455 +1,90 @@
-#' Create Covariance Matrix
-#'
-#' @param diag Diagonal entries of the covariance matrix
-#' @param upper_tri Upper triangle entries of the matrix, specified column wise.
-#'
-#' @return A symmetric matrix with `diag` values on the main diagonal and
-#' `upper_tri` values in the lower and upper triangles.
-#' @export
-#'
-#' @examples
-#' m1 <- covariance_matrix(c(1, 1, 1, 1), c(.8, .3, .8, 0, 0, 0))
-#' m1
-#' mvtnorm::rmvnorm(5, mean = c(0, 0, 0, 0), sigma = m1)
-#'
-#' # No correlation
-#' covariance_matrix(c(1, 2, 3))
-#'
-#' @importFrom Matrix nearPD
-covariance_matrix <- function(diag, upper_tri) {
-  assert_numeric(diag, lower = 0)
-  dim <- length(diag)
-  if (missing(upper_tri)) upper_tri <- rep(0, sum(seq.int(1, dim - 1)))
+#' @include simulate_data_baseline.R
 
-  if (dim == 1) {
-    cov_mat <- matrix(diag)
-  } else if (dim > 1) {
-    assert_numeric(upper_tri, len = sum(seq.int(1, dim - 1)))
-    cov_mat <- diag(diag, nrow = dim, ncol = dim)
-    cov_mat[upper.tri(cov_mat)] <- upper_tri
-    cov_mat[lower.tri(cov_mat)] <- t(cov_mat)[lower.tri(cov_mat)]
-  }
-  if (any(eigen(cov_mat, only.values = TRUE)$values < 0)) {
-    warning(
-      "Provided parameters do not define a semi-positive definite matrix. ",
-      "Finding nearest positive definite matrix with Matrix::nearPD()."
-    )
-    cov_mat <- Matrix::nearPD(cov_mat, ensureSymmetry = TRUE, keepDiag = TRUE, base.matrix = TRUE)$mat
-  }
-  cov_mat
-}
+# Fixed External Control Data ---------------
 
-
-#' Specify Correlated Baseline Covariates
+#' Fixed External Control Data Object
 #'
-#' Set parameters to generate correlated multivariate normal data for internal and external patients.
+#' @slot data `data.frame` containing external control data
+#' @slot n Number of observations
 #'
-#' @param names character vector of variable names.
-#' @param means_int numeric vector of means for internal patients. Must have same length as `names`
-#' @param means_ext numeric vector of means for external patients. Must have same length as `names`
-#' @param covariance_int variance-covariance matrix for generating multivariate normal for internal patients.
-#' Must be square matrix with same number of rows and `length(names)`
-#' @param covariance_ext variance-covariance matrix for generating multivariate normal data for external patients.
-#' Must be square matrix with same number of rows and `length(names)`
-#'
-#' @return [BaselineObject][BaselineObject-class] to build simulated dataset
-#' @export
-#'
-#' @examples
-#' corr_covs <- baseline_covariates(
-#'   names = c("b1", "b2"),
-#'   means_int = c(5, 25),
-#'   covariance_int = covariance_matrix(diag = c(1, 1), upper_tri = 0.4)
-#' )
-baseline_covariates <- function(names,
-                                means_int,
-                                means_ext = means_int,
-                                covariance_int,
-                                covariance_ext = covariance_int) {
-  assert_character(names)
-  n <- length(names)
-  assert_numeric(means_int, finite = TRUE, len = n, any.missing = FALSE)
-  assert_numeric(means_ext, finite = TRUE, len = n, any.missing = FALSE)
-  assert_matrix(covariance_int, nrows = n, ncols = n, any.missing = FALSE)
-  assert_matrix(covariance_ext, nrows = n, ncols = n, any.missing = FALSE)
-
-  .correlated_covariates(
-    names = names,
-    means_int = means_int,
-    means_ext = means_ext,
-    covariance_int = covariance_int,
-    covariance_ext = covariance_ext
-  )
-}
-
-
-.correlated_covariates <- setClass(
-  "CorrelatedCovariates",
+#' @return A `FixedExternalData`
+.datasim_fixed_external_data <- setClass(
+  "DataSimFixedExternalData",
   slots = c(
-    names = "character",
-    means_int = "numeric",
-    means_ext = "numeric",
-    covariance_int = "matrix",
-    covariance_ext = "matrix"
+    data = "data.frame",
+    n = "integer"
+  ),
+  prototype = list(
+    data = data.frame(),
+    n = 0L
   )
 )
 
 
-# BaselineObject -----
+#' Create a Fixed External Data Object
+#'
+#' @param data A data.frame containing external control data
+#' @param req_cols Character vector of required covariate columns
+set_fixed_external_data <- function(data, req_cols) {
+  cols <- colnames(data)
 
-#' `BaselineObject` class for data simulation
-#'
-#' @slot n_trt_int integer. Number of internal treated patients
-#' @slot n_ctrl_int integer. Number of internal control patients
-#' @slot n_ctrl_ext integer. Number of external control patients
-#' @slot covariates list. List of correlated covariates objects, see [baseline_covariates()]
-#' @slot transformations list. List of named transformation functions.
-#'
-.baseline_object <- setClass(
-  "BaselineObject",
-  slots = c(
-    n_trt_int = "integer",
-    n_ctrl_int = "integer",
-    n_ctrl_ext = "integer",
-    covariates = "list",
-    transformations = "list"
-  )
-)
-
-#' Create Baseline Data Simulation Object
-#'
-#' @param n_trt_int Number of internal treated patients
-#' @param n_ctrl_int Number of internal control patients
-#' @param n_ctrl_ext Number of external control patients
-#' @param covariates List of correlated covariates objects, see [baseline_covariates()]
-#' @param transformations List of named transformation functions.
-#'
-#' @details
-#' Transformation functions are evaluated in order and create or overwrite a column
-#' in the data.frame with that name. The function should take a `data.frame` (specifically
-#' a `BaselineDataFrame` object from `generate(BaselineObject)`) and return a vector with
-#' length identical to the total number of patients.
-#' The `@BaselineObject` slot may be accessed directly or with [get_quantiles()] to
-#' create transformations. See [binary_cutoff()]
-#'
-#' @return A [BaselineObject][BaselineObject-class]
-#' @export
-#'
-#' @examples
-#' bl_no_covs <- create_baseline_object(
-#'   n_trt_int = 100,
-#'   n_ctrl_int = 50,
-#'   n_ctrl_ext = 100
-#' )
-#'
-#'
-#' bl_biomarkers <- create_baseline_object(
-#'   n_trt_int = 100,
-#'   n_ctrl_int = 50,
-#'   n_ctrl_ext = 100,
-#'   covariates = baseline_covariates(
-#'     c("b1", "b2", "b3"),
-#'     means_int = c(0, 0, 0),
-#'     covariance_int = covariance_matrix(c(1, 1, 1), c(.8, .3, .8))
-#'   ),
-#'   transformations = list(
-#'     exp_b1 = function(data) exp(data$b1),
-#'     b2 = binary_cutoff("b2", int_cutoff = 0.7, ext_cutoff = 0.5)
-#'   )
-#' )
-#'
-create_baseline_object <- function(n_trt_int, n_ctrl_int, n_ctrl_ext, covariates, transformations) {
-  assert_integerish(n_trt_int, len = 1, lower = 1)
-  assert_integerish(n_ctrl_int, len = 1, lower = 1)
-  assert_integerish(n_ctrl_ext, len = 1, lower = 1)
-
-  if (!missing(covariates)) {
-    if (is(covariates, "CorrelatedCovariates")) covariates <- list(covariates)
-    assert_list(covariates)
+  if ("trt" %in% cols && !all(data[["trt"]] == 0)) {
+    stop("All `trt` values must equal 0 in fixed external data")
   } else {
-    covariates <- list(.correlated_covariates())
+    data[["trt"]] <- 0
   }
 
-  if (!missing(transformations)) {
-    assert_list(transformations)
+  if ("ext" %in% cols && !all(data[["ext"]] == 1)) {
+    stop("All `ext` values must equal 1 in fixed external data")
   } else {
-    transformations <- list()
+    data[["ext"]] <- 1
   }
 
-  .baseline_object(
-    n_trt_int = as.integer(n_trt_int),
-    n_ctrl_int = as.integer(n_ctrl_int),
-    n_ctrl_ext = as.integer(n_ctrl_ext),
-    covariates = covariates,
-    transformations = transformations
-  )
-}
-
-#' @importFrom generics generate
-#' @importFrom mvtnorm rmvnorm
-# nolint start
-generate.BaselineObject <- function(x, ...) {
-  # nolint end
-  arm_data <- data.frame(
-    patid = seq_len(x@n_trt_int + x@n_ctrl_int + x@n_ctrl_ext),
-    ext = rep(c(0, 1), times = c(x@n_trt_int + x@n_ctrl_int, x@n_ctrl_ext)),
-    trt = rep(c(1, 0), times = c(x@n_trt_int, x@n_ctrl_int + x@n_ctrl_ext))
-  )
-
-  # If any covariates are defined, generate multivariate normal data and combine with arm data
-  cov_defined <- vapply(x@covariates, function(x) length(x@names) > 0, logical(1L))
-  if (any(cov_defined)) {
-    cor_data_list <- lapply(
-      x@covariates[cov_defined],
-      function(cor_cov, n_int = x@n_trt_int + x@n_ctrl_int, n_ext = x@n_ctrl_ext) {
-        mvnorm_data <- rbind(
-          mvtnorm::rmvnorm(n = n_int, mean = cor_cov@means_int, sigma = cor_cov@covariance_int),
-          mvtnorm::rmvnorm(n = n_ext, mean = cor_cov@means_ext, sigma = cor_cov@covariance_ext)
-        )
-        colnames(mvnorm_data) <- cor_cov@names
-        as.data.frame(mvnorm_data)
-      }
-    )
-    arm_data <- cbind(arm_data, do.call("cbind", cor_data_list))
+  missing_cols <- setdiff(req_cols, cols)
+  if (length(missing_cols)) {
+    stop("Columns required in data simulation are not in fixed external data: ", toString(missing_cols))
   }
 
-  bl_df <- .baseline_dataframe(arm_data, BaselineObject = x)
+  if (!"eventtime" %in% cols) stop("Fixed external data must contain column `eventtime`")
+  if (!"status" %in% cols) stop("Fixed external data must contain column `status`")
 
-  # For each named transformation, either create a new column or overwrite
-  for (i in names(x@transformations)) {
-    var_index <- match(i, bl_df@names)
-    if (!is.na(var_index)) {
-      bl_df@.Data[[var_index]] <- x@transformations[[i]](bl_df)
-    } else {
-      next_index <- length(bl_df@names) + 1
-      bl_df@.Data[[next_index]] <- x@transformations[[i]](bl_df)
-      bl_df@names[next_index] <- i
-    }
-  }
-  bl_df
+  .datasim_fixed_external_data(data = data, n = nrow(data))
 }
 
 
-#' Generate Data for a `BaselineObject`
-#'
-#' @param x a `BaselineObject` object created by [create_baseline_object]
-#' @param ... additional parameters are ignored
-#'
-#' @return A [BaselineDataFrame][psborrow2::BaselineDataFrame-class] object
-#' @export
-#'
-#' @examples
-#' bl_biomarkers <- create_baseline_object(
-#'   n_trt_int = 100,
-#'   n_ctrl_int = 50,
-#'   n_ctrl_ext = 100,
-#'   covariates = baseline_covariates(
-#'     c("b1", "b2", "b3"),
-#'     means_int = c(0, 0, 0),
-#'     covariance_int = covariance_matrix(c(1, 1, 1), c(.8, .3, .8))
-#'   ),
-#'   transformations = list(
-#'     exp_b1 = function(data) exp(data$b1),
-#'     b2 = binary_cutoff("b2", int_cutoff = 0.7, ext_cutoff = 0.5)
-#'   )
-#' )
-#' generate(bl_biomarkers)
-setMethod(
-  f = "generate",
-  signature = "BaselineObject",
-  definition = generate.BaselineObject
-)
-
-
-#' Baseline Data Frame Object
-#'
-#' A `data.frame` with additional slot containing simulation definition
-#'
-#' @slot BaselineObject Simulated covariates definitions as `BaselineObject`. See [create_baseline_object()]
-#'
-#' @return A `BaselineDataFrame`
-.baseline_dataframe <- setClass(
-  "BaselineDataFrame",
-  contains = "data.frame",
-  slots = c(
-    BaselineObject = "BaselineObject"
-  )
-)
-
-# Validity checks for Baseline Object
-setValidity("BaselineObject", function(object) {
-  msg <- NULL
-  c(msg, check_list(object@covariates, types = "CorrelatedCovariates"))
-  c(msg, check_list(object@transformations, types = "function", names = "named"))
-  if (is.null(msg)) TRUE else msg
-})
-
-# show method
-setMethod(
-  f = "show",
-  signature = "BaselineDataFrame",
-  definition = function(object) {
-    cat("Simulated Baseline Data")
-    cat("\n")
-    print.data.frame(object)
-  }
-)
-
-#' Get Quantiles of Random Data
-#'
-#' Helper for use within transformation functions for [create_baseline_object()].
-#'
-#' @param object a `BaselineDataFrame`
-#' @param var character string name of the variable
-#'
-#' @return A numeric vector containing quantiles based on the data
-#'  generating distribution.
-#' @export
-#' @importFrom stats pnorm
-#'
-get_quantiles <- function(object, var) {
-  assert_class(object, "BaselineDataFrame")
-
-  covs <- object@BaselineObject@covariates
-  names <- unlist(lapply(covs, function(x) x@names))
-  assert_subset(var, choices = names)
-
-  index <- which(names == var)
-
-  mean_int <- unlist(lapply(covs, function(x) x@means_int))[index]
-  mean_ext <- unlist(lapply(covs, function(x) x@means_ext))[index]
-
-  sd_int <- unlist(lapply(covs, function(x) sqrt(diag(x@covariance_int))))[index]
-  sd_ext <- unlist(lapply(covs, function(x) sqrt(diag(x@covariance_ext))))[index]
-
-  ifelse(
-    object[["ext"]] == 0,
-    pnorm(object[[var]], mean_int, sd_int),
-    pnorm(object[[var]], mean_ext, sd_ext)
-  )
-}
-
-
-#' Binary Cut-Off Transformation
-#'
-#' @param name variable to transform
-#' @param int_cutoff cut-off for internal patients, numeric between 0 and 1
-#' @param ext_cutoff cut-off for external patients, numeric between 0 and 1
-#'
-#' @return Transformation function to be used in [create_baseline_object()].
-#'  Sets quantile values larger than cut-off value to `TRUE` otherwise `FALSE`.
-#' @export
-#' @examples
-#' # Creates a simple function, where `data` is a `BaselineDataFrame`:
-#' function(data) {
-#'   ext <- data$ext == 0
-#'   q <- get_quantiles(data, name)
-#'   ifelse(ext, q > int_cutoff, q > ext_cutoff)
-#' }
-#'
-binary_cutoff <- function(name, int_cutoff, ext_cutoff) {
-  assert_character(name, len = 1, any.missing = FALSE)
-  assert_numeric(int_cutoff, lower = 0, upper = 1, any.missing = FALSE, len = 1)
-  assert_numeric(ext_cutoff, lower = 0, upper = 1, any.missing = FALSE, len = 1)
-  function(data) {
-    ext <- data$ext == 0
-    q <- get_quantiles(data, name)
-    as.integer(ifelse(ext, q > int_cutoff, q > ext_cutoff))
-  }
-}
-
-# show method
-setMethod(
-  f = "get_vars",
-  signature = "BaselineObject",
-  definition = function(object) {
-    unique(c(
-      unlist(lapply(object@covariates, slot, name = "names")),
-      names(object@transformations)
-    ))
-  }
-)
-
-
-#' Data Simulation
-#'
-#' @param baseline `BaselineObject` from [create_baseline_object()]
-#' @param coefficients Named vector of coefficients for linear predictor.
-#' Must correspond to variables in baseline object
-#' @param treatment_effect Treatment effect coefficient on linear predictor scale.
-#' @param drift Drift parameter between internal and external arms on linear predictor scale
-#' @param event_dist Specify time to event distribution with `SimDataEvent` object from [event_dist()]
-#' @param recruitment
-#' @param cut_off
-
-#' @param survival
-#'
-#' @return `SimDataObject`
-#' @export
-#'
-#' @examples
-create_data_simulation <- function(baseline,
-                                   coefficients,
-                                   treatment_effect = 0,
-                                   drift = 0,
-                                   event_dist,
-                                   recruitment,
-                                   cut_off) {
-  assert_class(baseline, "BaselineObject")
-  assert_numeric(coefficients, finite = TRUE, names = "named")
-  assert_numeric(treatment_effect, finite = TRUE)
-  assert_numeric(drift, finite = TRUE)
-  possible_coefs <- possible_data_sim_vars(baseline)
-  unknown_names <- setdiff(names(coefficients), possible_coefs)
-  if (length(unknown_names)) {
-    stop(
-      "Unknown coefficient specified: ", toString(unknown_names), "\n",
-      "Coefficient names must match: ", toString(possible_coefs),
-      call. = FALSE
-    )
-  }
-
-  .sim_data_object(
-    baseline = baseline,
-    coefficients = coefficients,
-    treatment_effect = treatment_effect,
-    drift = drift,
-    event_dist = event_dist
-  )
-}
-
+# Time to Event Distribution Object ------------------
 
 #' Event Time Distribution Object
 #'
 #' @slot params Parameters used for simulating event times with [simsurv::simsurv()].
 #'
-#' @return A `SimDataEvent`
-.sim_data_event <- setClass(
-  "SimDataEvent",
+#' @return A `DataSimEvent`
+.datasim_event <- setClass(
+  "DataSimEvent",
   slots = c(
     params = "list"
   )
 )
 
-#' Data Simulation Object
+#' Specify a Time to Event Distribution
 #'
-#' @slot params Parameters used for simulating event times with [simsurv::simsurv()].
+#' Uses [simsurv::simsurv] to generate time to event data.
 #'
-#' @return A `SimDataObject`
-.sim_data_object <- setClass(
-  "SimDataObject",
-  slots = c(
-    baseline = "BaselineObject",
-    coefficients = "numeric",
-    treatment_effect = "numeric",
-    drift = "numeric",
-    event_dist = "SimDataEvent"
-  )
-)
-
-
-
-
+#' @param dist
+#' @param lambdas
+#' @param gammas
+#' @param mixture
+#' @param pmix
+#' @param hazard
+#' @param loghazard
+#' @param cumhazard
+#' @param logcumhazard
+#' @param ...
+#'
+#' @return A `SimDataEvent` object
+#' @export
+#'
+#' @examples
 event_dist <- function(dist = NULL,
                        lambdas = NULL,
                        gammas = NULL,
@@ -460,51 +95,219 @@ event_dist <- function(dist = NULL,
                        cumhazard = NULL,
                        logcumhazard = NULL,
                        ...) {
-  .sim_data_event(
+  .datasim_event(
     params = as.list(match.call())[-1]
   )
 }
 
 
+# Specify Enrollment into Trial --------------
 
+#' Enrollment Object
+#' @slot enrollment_fun A function that takes one argument `n` the number of enrollment times to observe and returns a
+#'  vector of times.
+.datasim_enrollment <- setClass(
+  "DataSimEnrollment",
+  slots = c(
+    fun = "function"
+  ),
+  prototype = list(
+    fun = function(n) rep(1, n)
+  )
+)
 
-possible_data_sim_vars <- function(object) {
-  object@n_trt_int <- 1L
-  object@n_ctrl_int <- 1L
-  object@n_ctrl_ext <- 1L
-  df <- generate(object)
-  formula_names <- setdiff(colnames(df), c("patid", "ext", "trt"))
-  formula <- as.formula(paste("~ 0 +", paste(formula_names, collapse = "+")))
-  mm <- model.matrix(formula, data = data.frame(df))
-  colnames(mm)
+#' Fixed Enrollment Rates
+#'
+#' @param rate Number of patients to enroll per unit time
+#' @param for_time Number of time periods for each rate. Must be equal length to `rate`
+#'
+#' @return An object of class [DataSimEnrollment] to be passed to [create_data_simulation()]
+#'
+#' @examples
+#' # 10 patients/month for 6 months, then 5/month for 6 months
+#' enroll_obj <- enrollment_fixed(rate = c(10, 5), for_time = c(6, 6))
+#' enroll_obj@fun(n = 80)
+enrollment_fixed <- function(rate, for_time = rep(1, length(rate))) {
+  assert_integerish(rate, min.len = 1)
+  assert_integerish(for_time, len = length(rate))
+  .datasim_enrollment(
+    fun = function(n) {
+      enrolled_per_t <- rep(rate, times = for_time)
+      enrollment_times <- rep(seq_along(enrolled_per_t), times = enrolled_per_t)
+      if (length(enrollment_times) < n) {
+        stop("Not enough patients could be enrolled. Revise the enrollment rates and times.")
+      }
+      enrollment_times[seq_len(n)]
+    }
+  )
 }
+
+#' Set Enrollment Rates for Internal and External Trials
+#'
+#' @param object A `DataSimObject` from [create_data_simulation]
+#' @param internal `DataSimEnrollment` object to define the enrollment times for internal data
+#' @param external `DataSimEnrollment` object to define the enrollment times for external data. Defaults to be the same
+#' as internal.
+#'
+#' @return A `DataSimObject` with updated `enrollment_internal` and `enrollment_external` slots.
+#' @export
+#'
+#' @examples
+set_enrollment <- function(object, internal, external = internal) {
+  assert_class(object, "DataSimObject")
+  assert_class(internal, "DataSimEnrollment")
+  assert_class(external, "DataSimEnrollment")
+  object@enrollment_internal <- internal
+  object@enrollment_external <- external
+  object
+}
+
+
+
+
+#' Cut Off Object
+#' @slot cut_off_fun A function that takes a `data.frame` with columns of enrollment time, survival time and outcome.
+#' The function returns a the observed time and outcome after applying the clinical cut-off rule.
+.datasim_cut_off <- setClass(
+  "DataSimCutOff",
+  slots = c(
+    cut_off_fun = "function"
+  )
+)
+
+
+
+#' Data Simulation Object
+#'
+#' @slot baseline
+#' @slot coefficients
+#' @slot treatment_effect
+#' @slot drift
+#' @slot fixed_external_data
+#' @slot event_dist
+#' @slot enrollment
+#' @slot cut_off
+#'
+#' @return A `DataSimObject`
+.datasim_object <- setClass(
+  "DataSimObject",
+  slots = c(
+    baseline = "BaselineObject",
+    coefficients = "numeric",
+    treatment_effect = "numeric",
+    drift = "numeric",
+    fixed_external_data = "DataSimFixedExternalData",
+    event_dist = "DataSimEvent",
+    enrollment_internal = "DataSimEnrollment",
+    enrollment_external = "DataSimEnrollment",
+    cut_off = "DataSimCutOff"
+  )
+)
+
+
+
+
+
+
+#' Data Simulation
+#'
+#' @param baseline `BaselineObject` from [create_baseline_object()]
+#' @param coefficients Named vector of coefficients for linear predictor.
+#' Must correspond to variables in baseline object
+#' @param treatment_effect Treatment effect coefficient on linear predictor scale.
+#' @param drift Drift parameter between internal and external arms on linear predictor scale
+#' @param event_dist Specify time to event distribution with `SimDataEvent` object from [event_dist()]
+#'
+#' @return `DataSimObject`
+#' @export
+#'
+#' @examples
+create_data_simulation <- function(baseline,
+                                   coefficients,
+                                   treatment_effect = 0,
+                                   drift = 0,
+                                   event_dist,
+                                   fixed_external_data) {
+  assert_class(baseline, "BaselineObject")
+  assert_numeric(coefficients, finite = TRUE, names = "named")
+  assert_numeric(treatment_effect, finite = TRUE)
+  assert_numeric(drift, finite = TRUE)
+
+
+  possible_coefs <- possible_data_sim_vars(baseline)
+  unknown_names <- setdiff(names(coefficients), possible_coefs)
+  if (length(unknown_names)) {
+    stop(
+      "Unknown coefficient specified: ", toString(unknown_names), "\n",
+      "Coefficient names must match: ", toString(possible_coefs),
+      call. = FALSE
+    )
+  }
+
+  if (!missing(fixed_external_data)) {
+    assert_data_frame(fixed_external_data, min.rows = 1)
+    fixed_data_object <- set_fixed_external_data(fixed_external_data, coefficients)
+  } else {
+    fixed_data_object <- .datasim_fixed_external_data()
+  }
+
+  ds <- .datasim_object(
+    baseline = baseline,
+    coefficients = coefficients,
+    treatment_effect = treatment_effect,
+    drift = drift,
+    event_dist = event_dist,
+    fixed_external_data = fixed_data_object
+  )
+}
+
+
+# Cut Off Functions
+cut_off_after_first <- function(time) {
+  .sim_cut_off(
+    cut_off_fun = function(enrollment, time, outcome) {
+      return(list(time, outcome))
+    }
+  )
+}
+
+cut_off_after_last <- function(time) {
+  .sim_cut_off()
+}
+
+
 
 
 
 
 # Generate complete data
 # nolint start
-generate.SimDataObject <- function(x, n = 1, treatment_effect = NULL, drift = NULL) {
+generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NULL) {
   # nolint end
+
   if (is.null(treatment_effect)) treatment_effect <- x@treatment_effect
   if (is.null(drift)) drift <- x@drift
 
   guide <- expand.grid(treatment_effect = treatment_effect, drift = drift)
-  guide <- cbind(seq_len(nrow(guide)), guide)
+  guide <- cbind(sim_id = seq_len(nrow(guide)), guide)
 
   simulated_data <- list()
   for (i in seq_len(nrow(guide))) {
-    betas <- c(x@coefficients,
+    betas <- c(
+      x@coefficients,
       trt = guide$treatment_effect[i],
       ext = guide$drift[i]
     )
 
     simulated_data[[i]] <- replicate(n, simplify = FALSE, expr = {
+      # generate baseline data
       df <- generate(x@baseline)
       mm <- model.matrix(
         as.formula(paste("~ 0 +", paste(names(betas), collapse = "+"))),
         data = data.frame(df)
       )
+
+      # generate survival times
       surv_df <- do.call(
         simsurv::simsurv,
         args = c(
@@ -512,7 +315,13 @@ generate.SimDataObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
           x@event_dist@params
         )
       )
-      as.matrix(cbind(patid = df$patid, mm, surv_df))
+
+      # Calculate enrollment for generated observations
+      enrollment <- numeric(nrow(mm))
+      enrollment[mm[, "ext"] == 0] <- sample(x@enrollment_internal@fun(x@baseline@n_trt_int + x@baseline@n_ctrl_int))
+      enrollment[mm[, "ext"] == 1] <- sample(x@enrollment_internal@fun(x@baseline@n_ctrl_ext))
+
+      as.matrix(cbind(patid = df$patid, mm, surv_df, enrollment))
     })
   }
   list(
@@ -522,9 +331,9 @@ generate.SimDataObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
 }
 
 
-#' Generate Data for a `BaselineObject`
+#' Generate Data for a `DataSimObject`
 #'
-#' @param x a `BaselineObject` object created by [create_baseline_object]
+#' @param x a `DataSimObject` object created by [create_data_simulation]
 #' @param n number of data sets to simulate
 #' @param treatment_effect vector of numeric treatment effects
 #' @param drift vector of numeric drift effects
@@ -533,23 +342,8 @@ generate.SimDataObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
 #' @export
 #'
 #' @examples
-#' bl_biomarkers <- create_baseline_object(
-#'   n_trt_int = 100,
-#'   n_ctrl_int = 50,
-#'   n_ctrl_ext = 100,
-#'   covariates = baseline_covariates(
-#'     c("b1", "b2", "b3"),
-#'     means_int = c(0, 0, 0),
-#'     covariance_int = covariance_matrix(c(1, 1, 1), c(.8, .3, .8))
-#'   ),
-#'   transformations = list(
-#'     exp_b1 = function(data) exp(data$b1),
-#'     b2 = binary_cutoff("b2", int_cutoff = 0.7, ext_cutoff = 0.5)
-#'   )
-#' )
-#' generate(bl_biomarkers)
 setMethod(
   f = "generate",
-  signature = "SimDataObject",
-  definition = generate.SimDataObject
+  signature = "DataSimObject",
+  definition = generate.DataSimObject
 )
