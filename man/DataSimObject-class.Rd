@@ -4,12 +4,12 @@
 \name{DataSimObject-class}
 \alias{DataSimObject-class}
 \alias{.datasim_object}
-\title{Data Simulation Object}
+\title{Data Simulation Object Class}
 \value{
 A \code{DataSimObject}
 }
 \description{
-Data Simulation Object
+Data Simulation Object Class
 }
 \section{Slots}{
 

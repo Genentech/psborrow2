@@ -163,7 +163,7 @@ set_enrollment <- function(object, internal, external = internal) {
 }
 
 
-
+# Specify Clinical Cut Offs ----------
 
 #' Cut Off Object
 #' @slot cut_off_fun A function that takes a `data.frame` with columns of enrollment time, survival time and outcome.
@@ -171,13 +171,50 @@ set_enrollment <- function(object, internal, external = internal) {
 .datasim_cut_off <- setClass(
   "DataSimCutOff",
   slots = c(
-    cut_off_fun = "function"
+    fun = "function"
   )
 )
 
 
+# Cut Off Functions
+cut_off_after_first <- function(time) {
+  .sim_cut_off(
+    cut_off_fun = function(enrollment, time, outcome) {
+      return(list(time, outcome))
+    }
+  )
+}
 
-#' Data Simulation Object
+cut_off_after_last <- function(time) {
+  .sim_cut_off()
+}
+
+cut_off_after_events <- function(n) {
+  .sim_cut_off()
+}
+
+set_cut_off <- function(object, internal, external = internal) {
+  assert_class(object, "DataSimObject")
+  assert_class(internal, "DataSimCutOff")
+  assert_class(external, "DataSimCutOff")
+  object@enrollment_internal <- internal
+  object@enrollment_external <- external
+  object
+}
+
+# Specify Drop Out Rates -------------
+.datasim_drop_out <- setClass(
+  "DataSimDropOut",
+  slots = c(
+    fun = "function"
+  )
+)
+set_dropout <- function() {}
+
+
+# Data Simulation -----------------
+
+#' Data Simulation Object Class
 #'
 #' @slot baseline
 #' @slot coefficients
@@ -262,18 +299,6 @@ create_data_simulation <- function(baseline,
 }
 
 
-# Cut Off Functions
-cut_off_after_first <- function(time) {
-  .sim_cut_off(
-    cut_off_fun = function(enrollment, time, outcome) {
-      return(list(time, outcome))
-    }
-  )
-}
-
-cut_off_after_last <- function(time) {
-  .sim_cut_off()
-}
 
 
 
