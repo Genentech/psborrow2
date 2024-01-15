@@ -105,7 +105,7 @@ event_dist <- function(dist = NULL,
 
 #' Enrollment Object
 #' @slot enrollment_fun A function that takes one argument `n` the number of enrollment times to observe and returns a
-#'  vector of times.
+#'   vector of times.
 .datasim_enrollment <- setClass(
   "DataSimEnrollment",
   slots = c(
@@ -165,40 +165,81 @@ set_enrollment <- function(object, internal, external = internal) {
 
 # Specify Clinical Cut Offs ----------
 
-#' Cut Off Object
-#' @slot cut_off_fun A function that takes a `data.frame` with columns of enrollment time, survival time and outcome.
-#' The function returns a the observed time and outcome after applying the clinical cut-off rule.
-.datasim_cut_off <- setClass(
-  "DataSimCutOff",
-  slots = c(
-    fun = "function"
-  )
-)
-
-
 # Cut Off Functions
+cut_off_none <- function(time) {
+  .datasim_cut_off(
+    fun = function(data) {
+      data
+    }
+  )
+}
+
 cut_off_after_first <- function(time) {
-  .sim_cut_off(
-    cut_off_fun = function(enrollment, time, outcome) {
-      return(list(time, outcome))
+  .datasim_cut_off(
+    fun = function(data) {
+      cut_time <- min(data$enrollment) + time
+      after_cut_off <- data$enrollment + data$eventtime > cut_time
+      data$status <- ifelse(after_cut_off, 0, data$status)
+      data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
+      data[data$enrollment < cut_time, ]
     }
   )
 }
 
 cut_off_after_last <- function(time) {
-  .sim_cut_off()
+  .datasim_cut_off(
+    fun = function(data) {
+      cut_time <- max(data$enrollment) + time
+      after_cut_off <- data$enrollment + data$eventtime > cut_time
+      data$status <- ifelse(after_cut_off, 0, data$status)
+      data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
+      data
+    }
+  )
 }
 
 cut_off_after_events <- function(n) {
-  .sim_cut_off()
+  .datasim_cut_off(
+    fun = function(data) {
+      cut_time <- sort(data$enrollment + data$eventtime)[n]
+      after_cut_off <- data$enrollment + data$eventtime > cut_time
+      data$status <- ifelse(after_cut_off, 0, data$status)
+      data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
+      data[data$enrollment < cut_time, ]
+    }
+  )
 }
 
-set_cut_off <- function(object, internal, external = internal) {
+#' Cut Off Object
+#' @slot cut_off_fun A function that takes a `data.frame` with columns of enrollment time, survival time and outcome.
+#' The function returns a modified `data.frame` after applied the cut-off rule.
+.datasim_cut_off <- setClass(
+  "DataSimCutOff",
+  slots = c(
+    fun = "function"
+  ),
+  prototype = list(
+    fun = function(data) data
+  )
+)
+
+#' Set Clinical Cut Off Rule
+#'
+#' @param object `DataSimObject`
+#' @param internal `DataSimCutOff` object specified by one of the cut off functions: `cut_off_after_events()`,
+#' `cut_off_after_first()`, `cut_off_after_last()`, `cut_off_none()`.
+#' @param external `DataSimCutOff` for the external data.
+#'
+#' @return A `DataSimObject` with updated `cut_off_internal` and `cut_off_external` slots.
+#' @export
+#'
+#' @examples
+set_cut_off <- function(object, internal = cut_off_none(), external = cut_off_none()) {
   assert_class(object, "DataSimObject")
   assert_class(internal, "DataSimCutOff")
   assert_class(external, "DataSimCutOff")
-  object@enrollment_internal <- internal
-  object@enrollment_external <- external
+  object@cut_off_internal <- internal
+  object@cut_off_external <- external
   object
 }
 
@@ -237,7 +278,8 @@ set_dropout <- function() {}
     event_dist = "DataSimEvent",
     enrollment_internal = "DataSimEnrollment",
     enrollment_external = "DataSimEnrollment",
-    cut_off = "DataSimCutOff"
+    cut_off_internal = "DataSimCutOff",
+    cut_off_external = "DataSimCutOff"
   )
 )
 
@@ -299,12 +341,6 @@ create_data_simulation <- function(baseline,
 }
 
 
-
-
-
-
-
-
 # Generate complete data
 # nolint start
 generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NULL) {
@@ -341,12 +377,19 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
         )
       )
 
-      # Calculate enrollment for generated observations
-      enrollment <- numeric(nrow(mm))
-      enrollment[mm[, "ext"] == 0] <- sample(x@enrollment_internal@fun(x@baseline@n_trt_int + x@baseline@n_ctrl_int))
-      enrollment[mm[, "ext"] == 1] <- sample(x@enrollment_internal@fun(x@baseline@n_ctrl_ext))
+      data <- cbind(patid = df$patid, mm, surv_df)
 
-      as.matrix(cbind(patid = df$patid, mm, surv_df, enrollment))
+      # Calculate enrollment for generated observations
+      data$enrollment <- numeric(nrow(mm))
+      data$enrollment[data$ext == 0] <- sample(x@enrollment_internal@fun(x@baseline@n_trt_int + x@baseline@n_ctrl_int))
+      data$enrollment[data$ext == 1] <- sample(x@enrollment_external@fun(x@baseline@n_ctrl_ext))
+
+      data <- rbind(
+        x@cut_off_internal@fun(data[data$ext == 0, ]),
+        x@cut_off_external@fun(data[data$ext == 1, ])
+      )
+
+      as.matrix(data)
     })
   }
   list(

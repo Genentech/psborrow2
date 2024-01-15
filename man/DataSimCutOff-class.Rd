@@ -12,6 +12,6 @@ Cut Off Object
 
 \describe{
 \item{\code{cut_off_fun}}{A function that takes a \code{data.frame} with columns of enrollment time, survival time and outcome.
-The function returns a the observed time and outcome after applying the clinical cut-off rule.}
+The function returns a modified \code{data.frame} after applied the cut-off rule.}
 }}
 

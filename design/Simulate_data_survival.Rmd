@@ -45,33 +45,37 @@ my_data_sim <-
     coefficients = c(age = 0.001, score_high = 1.5),
     event_dist = exp_event_dist
     # fixed_external_data
-  ) %>% generate(
-    treatment_effect = c(0),
-    drift = c(.5)
   )
+
+my_data_sim %>% generate(
+  treatment_effect = c(0),
+  drift = c(.5)
+)
 
 my_data_sim <- my_data_sim %>%
   set_enrollment(
     internal = enrollment_fixed(rate = c(25, 10), for_time = c(4, 30)),
     external = enrollment_fixed(rate = c(30, 10), for_time = c(4, 30))
+  ) %>%
+  generate(
+    treatment_effect = c(1),
+    drift = c(0)
   )
-my_data <- generate(
-  my_data_sim,
-  treatment_effect = c(1),
-  drift = c(0)
-)
 
 # TODO continue from here
 my_data_sim %>%
-  set_dropout(
-    internal_treated = exp_event_dist,
-    internal_control = exp_event_dist,
-    exteral_control = event_dist(dist = "exponential", lambdas = 1 / 40)
-  ) %>%
   set_cut_off(
     internal = cut_off_after_first(time = 36),
-    exteral = cut_off_events(n = 45)
-  )
+    external = cut_off_after_events(n = 45)
+  ) %>%
+  generate()
+
+
+set_dropout(
+  internal_treated = exp_event_dist,
+  internal_control = exp_event_dist,
+  exteral_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+)
 
 # Generate simulation list
 my_data <- generate(
