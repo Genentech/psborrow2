@@ -244,13 +244,20 @@ set_cut_off <- function(object, internal = cut_off_none(), external = cut_off_no
 }
 
 # Specify Drop Out Rates -------------
-.datasim_drop_out <- setClass(
-  "DataSimDropOut",
-  slots = c(
-    fun = "function"
-  )
-)
-set_dropout <- function() {}
+
+set_dropout <- function(object,
+                        internal_treated,
+                        internal_control,
+                        external_control) {
+  assert_class(object, "DataSimObject")
+  assert_class(internal_treated, "DataSimEvent")
+  assert_class(internal_control, "DataSimEvent")
+  assert_class(external_control, "DataSimEvent")
+  object@dropout_internal_treated <- internal_treated
+  object@dropout_internal_control <- internal_control
+  object@dropout_external_control <- external_control
+  object
+}
 
 
 # Data Simulation -----------------
@@ -279,7 +286,10 @@ set_dropout <- function() {}
     enrollment_internal = "DataSimEnrollment",
     enrollment_external = "DataSimEnrollment",
     cut_off_internal = "DataSimCutOff",
-    cut_off_external = "DataSimCutOff"
+    cut_off_external = "DataSimCutOff",
+    dropout_internal_treated = "DataSimEvent",
+    dropout_internal_control = "DataSimEvent",
+    dropout_external_control = "DataSimEvent"
   )
 )
 
@@ -352,6 +362,7 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
   guide <- expand.grid(treatment_effect = treatment_effect, drift = drift)
   guide <- cbind(sim_id = seq_len(nrow(guide)), guide)
 
+
   simulated_data <- list()
   for (i in seq_len(nrow(guide))) {
     betas <- c(
@@ -363,33 +374,27 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
     simulated_data[[i]] <- replicate(n, simplify = FALSE, expr = {
       # generate baseline data
       df <- generate(x@baseline)
-      mm <- model.matrix(
-        as.formula(paste("~ 0 +", paste(names(betas), collapse = "+"))),
-        data = data.frame(df)
+      df_list <- list(
+        internal_treated = df[df$ext == 0 & df$trt == 1, ],
+        internal_control = df[df$ext == 0 & df$trt == 0, ],
+        external_control = df[df$ext == 1 & df$trt == 0, ]
       )
 
-      # generate survival times
-      surv_df <- do.call(
-        simsurv::simsurv,
-        args = c(
-          list(betas = betas, x = data.frame(mm)),
-          x@event_dist@params
+      df_list <- .mapply(
+        FUN = make_one_dataset,
+        dots = list(
+          baseline = df_list,
+          cut_off = list(x@cut_off_internal, x@cut_off_internal, x@cut_off_external),
+          enrollment = list(x@enrollment_internal, x@enrollment_internal, x@enrollment_external),
+          dropout = list(x@dropout_internal_treated, x@dropout_internal_control, x@dropout_external_control)
+        ),
+        MoreArgs = list(
+          betas = betas,
+          event_dist = x@event_dist
         )
       )
 
-      data <- cbind(patid = df$patid, mm, surv_df)
-
-      # Calculate enrollment for generated observations
-      data$enrollment <- numeric(nrow(mm))
-      data$enrollment[data$ext == 0] <- sample(x@enrollment_internal@fun(x@baseline@n_trt_int + x@baseline@n_ctrl_int))
-      data$enrollment[data$ext == 1] <- sample(x@enrollment_external@fun(x@baseline@n_ctrl_ext))
-
-      data <- rbind(
-        x@cut_off_internal@fun(data[data$ext == 0, ]),
-        x@cut_off_external@fun(data[data$ext == 1, ])
-      )
-
-      as.matrix(data)
+      as.matrix(do.call(rbind, df_list))
     })
   }
   list(
@@ -397,6 +402,40 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
     data_list = simulated_data
   )
 }
+
+
+make_one_dataset <- function(baseline, betas, event_dist, enrollment, cut_off, dropout) {
+  data <- data.frame(
+    patid = baseline$patid,
+    model.matrix(
+      object = as.formula(paste(c("~ 0", names(betas)), collapse = "+")),
+      data = data.frame(baseline)
+    )
+  )
+
+  # Generate outcome event times
+  surv_df <- do.call(
+    simsurv::simsurv,
+    args = c(list(betas = betas, x = data), event_dist@params)
+  )
+  data$eventtime <- surv_df$eventtime
+  data$status <- surv_df$status
+
+  # Generate drop out times
+  drop_df <- do.call(simsurv::simsurv, args = c(dropout@params, list(x = data)))
+  drop_flag <- data$dropouttime < drop_df$eventtime
+  data$eventtime <- ifelse(drop_flag, drop_df$dropouttime, data$eventtime)
+  data$status <- ifelse(drop_flag, 0, data$status)
+
+  # Calculate enrollment for generated observations
+  data$enrollment <- sample(enrollment@fun(nrow(data)))
+
+  # Apply clinical cut off
+  data <- cut_off@fun(data)
+
+  data
+}
+
 
 
 #' Generate Data for a `DataSimObject`

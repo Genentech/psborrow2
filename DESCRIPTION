@@ -62,7 +62,6 @@ Suggests:
     rmarkdown,
     bayesplot,
     matrixcalc,
-    simsurv,
     WeightIt,
     MatchIt,
     BayesPPD,

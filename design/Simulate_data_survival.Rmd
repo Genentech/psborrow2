@@ -63,7 +63,7 @@ my_data_sim <- my_data_sim %>%
   )
 
 # TODO continue from here
-my_data_sim %>%
+my_data_sim <- my_data_sim %>%
   set_cut_off(
     internal = cut_off_after_first(time = 36),
     external = cut_off_after_events(n = 45)
@@ -71,12 +71,13 @@ my_data_sim %>%
   generate()
 
 
-set_dropout(
+my_data_sim <- my_data_sim %>% set_dropout(
   internal_treated = exp_event_dist,
   internal_control = exp_event_dist,
-  exteral_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+  external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
 )
 
+generate(my_data_sim)
 # Generate simulation list
 my_data <- generate(
   my_data_sim,
