@@ -21,8 +21,12 @@ A \code{DataSimObject} with updated \code{cut_off_internal} and \code{cut_off_ex
 Set Clinical Cut Off Rule
 }
 \examples{
-set_cut_off(
+data_sim <- create_data_simulation(
   create_baseline_object(10, 10, 10),
+  event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+)
+set_cut_off(
+  data_sim,
   cut_off_after_events(n = 10),
   cut_off_after_first(time = 30)
 )

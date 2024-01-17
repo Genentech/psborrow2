@@ -26,8 +26,12 @@ Set Drop Out Distribution
 distributions (unlike for the survival outcome).
 }
 \examples{
-set_dropout(
+data_sim <- create_data_simulation(
   create_baseline_object(10, 10, 10),
+  event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+)
+set_dropout(
+  data_sim,
   internal_treated = event_dist(dist = "exponential", lambdas = 1 / 55),
   internal_control = event_dist(dist = "exponential", lambdas = 1 / 50),
   external_control = event_dist(dist = "exponential", lambdas = 1 / 40)

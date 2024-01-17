@@ -6,7 +6,7 @@
 \usage{
 create_data_simulation(
   baseline,
-  coefficients,
+  coefficients = numeric(),
   treatment_effect = 0,
   drift = 0,
   event_dist,

@@ -21,8 +21,12 @@ A \code{DataSimObject} with updated \code{enrollment_internal} and \code{enrollm
 Set Enrollment Rates for Internal and External Trials
 }
 \examples{
-set_enrollment(
+data_sim <- create_data_simulation(
   create_baseline_object(10, 10, 10),
+  event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+)
+set_enrollment(
+  data_sim,
   internal = enrollment_fixed(rate = c(10, 5), for_time = c(6, 6)),
   external = enrollment_fixed(rate = c(5), for_time = c(20))
 )

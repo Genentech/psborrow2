@@ -157,8 +157,12 @@ enrollment_fixed <- function(rate, for_time = rep(1, length(rate))) {
 #' @return A `DataSimObject` with updated `enrollment_internal` and `enrollment_external` slots.
 #' @export
 #' @examples
-#' set_enrollment(
+#' data_sim <- create_data_simulation(
 #'   create_baseline_object(10, 10, 10),
+#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+#' )
+#' set_enrollment(
+#'   data_sim,
 #'   internal = enrollment_fixed(rate = c(10, 5), for_time = c(6, 6)),
 #'   external = enrollment_fixed(rate = c(5), for_time = c(20))
 #' )
@@ -268,8 +272,12 @@ cut_off_after_events <- function(n) {
 #' @export
 #'
 #' @examples
-#' set_cut_off(
+#' data_sim <- create_data_simulation(
 #'   create_baseline_object(10, 10, 10),
+#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+#' )
+#' set_cut_off(
+#'   data_sim,
 #'   cut_off_after_events(n = 10),
 #'   cut_off_after_first(time = 30)
 #' )
@@ -299,8 +307,12 @@ set_cut_off <- function(object, internal = cut_off_none(), external = cut_off_no
 #' @export
 #'
 #' @examples
-#' set_dropout(
+#' data_sim <- create_data_simulation(
 #'   create_baseline_object(10, 10, 10),
+#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+#' )
+#' set_dropout(
+#'   data_sim,
 #'   internal_treated = event_dist(dist = "exponential", lambdas = 1 / 55),
 #'   internal_control = event_dist(dist = "exponential", lambdas = 1 / 50),
 #'   external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
@@ -388,13 +400,13 @@ set_dropout <- function(object,
 #' )
 #' data_sim_list <- generate(sim_obj, treatment_effect = c(0, 1), drift = 0.5)
 create_data_simulation <- function(baseline,
-                                   coefficients,
+                                   coefficients = numeric(),
                                    treatment_effect = 0,
                                    drift = 0,
                                    event_dist,
                                    fixed_external_data) {
   assert_class(baseline, "BaselineObject")
-  assert_numeric(coefficients, finite = TRUE, names = "named")
+  assert_numeric(coefficients, finite = TRUE, names = "named", min.len = 0)
   assert_numeric(treatment_effect, finite = TRUE)
   assert_numeric(drift, finite = TRUE)
 
@@ -485,7 +497,34 @@ make_one_dataset <- function(baseline, betas, event_dist, enrollment, dropout) {
   data
 }
 
-# Generate complete data
+#' Generate Data for a `DataSimObject`
+#'
+#' @param x a `DataSimObject` object created by [create_data_simulation]
+#' @param n number of data sets to simulate
+#' @param treatment_effect vector of numeric treatment effects
+#' @param drift vector of numeric drift effects
+#'
+#' @return A list of list of matrices
+#' @export
+#'
+#' @examples
+#' baseline_obj <- create_baseline_object(
+#'   n_trt_int = 100,
+#'   n_ctrl_int = 50,
+#'   n_ctrl_ext = 10,
+#'   covariates = baseline_covariates(
+#'     names = c("age", "score"),
+#'     means_int = c(55, 5),
+#'     means_ext = c(60, 5),
+#'     covariance_int = covariance_matrix(c(5, 1))
+#'   )
+#' )
+#' sim_obj <- create_data_simulation(
+#'   baseline_obj,
+#'   coefficients = c(age = 0.001, score = 1.5),
+#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+#' )
+#' data_sim_list <- generate(sim_obj, treatment_effect = c(0, 1), drift = 0.5)
 # nolint start
 generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NULL) {
   # nolint end
@@ -512,7 +551,6 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
         FUN = make_one_dataset,
         dots = list(
           baseline = df_list,
-          cut_off = list(x@cut_off_internal, x@cut_off_internal, x@cut_off_external),
           enrollment = list(x@enrollment_internal, x@enrollment_internal, x@enrollment_external),
           dropout = list(x@dropout_internal_treated, x@dropout_internal_control, x@dropout_external_control)
         ),
@@ -522,10 +560,12 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
         )
       )
       # Apply clinical cut off
-      as.matrix(rbind(
-        x@cut_off_internal(rbind(df_list[["internal_treated"]], df_list[["internal_control"]])),
-        x@cut_off_external(df_list[["external_control"]])
-      ))
+      df <- rbind(
+        x@cut_off_internal@fun(rbind(df_list[[1]], df_list[[2]])),
+        x@cut_off_external@fun(df_list[[3]])
+      )
+      df$patid <- seq_len(nrow(df))
+      as.matrix(df)
     })
   }
   list(
@@ -546,7 +586,7 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
 #' @export
 #'
 #' @examples
-#' baseline_obj <- baseline_with_age_score <- create_baseline_object(
+#' baseline_obj <- create_baseline_object(
 #'   n_trt_int = 100,
 #'   n_ctrl_int = 50,
 #'   n_ctrl_ext = 10,
@@ -559,7 +599,7 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
 #' )
 #' sim_obj <- create_data_simulation(
 #'   baseline_obj,
-#'   coefficients = c(age = 0.001, score_high = 1.5),
+#'   coefficients = c(age = 0.001, score = 1.5),
 #'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
 #' )
 #' data_sim_list <- generate(sim_obj, treatment_effect = c(0, 1), drift = 0.5)
