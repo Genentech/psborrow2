@@ -12,7 +12,7 @@ enrollment_fixed(rate, for_time = rep(1, length(rate)))
 \item{for_time}{Number of time periods for each rate. Must be equal length to \code{rate}}
 }
 \value{
-An object of class \link{DataSimEnrollment} to be passed to \code{\link[=create_data_simulation]{create_data_simulation()}}
+An object of class \link[=DataSimEnrollment-class]{DataSimEnrollment} to be passed to \code{\link[=create_data_simulation]{create_data_simulation()}}
 }
 \description{
 Fixed Enrollment Rates

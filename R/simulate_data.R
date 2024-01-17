@@ -125,7 +125,7 @@ event_dist <- function(dist = NULL,
 #' @param rate Number of patients to enroll per unit time
 #' @param for_time Number of time periods for each rate. Must be equal length to `rate`
 #'
-#' @return An object of class [DataSimEnrollment] to be passed to [create_data_simulation()]
+#' @return An object of class [DataSimEnrollment][DataSimEnrollment-class] to be passed to [create_data_simulation()]
 #'
 #' @export
 #' @examples
@@ -497,34 +497,7 @@ make_one_dataset <- function(baseline, betas, event_dist, enrollment, dropout) {
   data
 }
 
-#' Generate Data for a `DataSimObject`
-#'
-#' @param x a `DataSimObject` object created by [create_data_simulation]
-#' @param n number of data sets to simulate
-#' @param treatment_effect vector of numeric treatment effects
-#' @param drift vector of numeric drift effects
-#'
-#' @return A list of list of matrices
-#' @export
-#'
-#' @examples
-#' baseline_obj <- create_baseline_object(
-#'   n_trt_int = 100,
-#'   n_ctrl_int = 50,
-#'   n_ctrl_ext = 10,
-#'   covariates = baseline_covariates(
-#'     names = c("age", "score"),
-#'     means_int = c(55, 5),
-#'     means_ext = c(60, 5),
-#'     covariance_int = covariance_matrix(c(5, 1))
-#'   )
-#' )
-#' sim_obj <- create_data_simulation(
-#'   baseline_obj,
-#'   coefficients = c(age = 0.001, score = 1.5),
-#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
-#' )
-#' data_sim_list <- generate(sim_obj, treatment_effect = c(0, 1), drift = 0.5)
+#' @importFrom generics generate
 # nolint start
 generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NULL) {
   # nolint end

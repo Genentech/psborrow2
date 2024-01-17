@@ -2,7 +2,8 @@
 % Please edit documentation in R/generics.R, R/covariate_class.R,
 %   R/treatment_class.R, R/borrowing_class.R, R/outcome_class.R,
 %   R/analysis_class.R, R/sim_treatment_list.R, R/sim_outcome_list.R,
-%   R/sim_borrowing_list.R, R/sim_covariate_list.R, R/simulation_class.R
+%   R/sim_borrowing_list.R, R/sim_covariate_list.R, R/simulation_class.R,
+%   R/simulate_data_baseline.R
 \name{get_vars}
 \alias{get_vars}
 \alias{get_vars,Covariates-method}
@@ -18,6 +19,7 @@
 \alias{get_vars,SimBorrowingList-method}
 \alias{get_vars,SimCovariateList-method}
 \alias{get_vars,Simulation-method}
+\alias{get_vars,BaselineObject-method}
 \title{Get Variables}
 \usage{
 get_vars(object)
@@ -47,6 +49,8 @@ get_vars(object)
 \S4method{get_vars}{SimCovariateList}(object)
 
 \S4method{get_vars}{Simulation}(object)
+
+\S4method{get_vars}{BaselineObject}(object)
 }
 \arguments{
 \item{object}{Object}

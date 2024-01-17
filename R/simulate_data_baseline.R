@@ -385,7 +385,9 @@ binary_cutoff <- function(name, int_cutoff, ext_cutoff) {
   }
 }
 
-# show method
+# get_vars ---
+#' @rdname get_vars
+#' @include generics.R
 setMethod(
   f = "get_vars",
   signature = "BaselineObject",
