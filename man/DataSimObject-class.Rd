@@ -20,7 +20,7 @@ Data Simulation Object Class
 \code{?simsurv::simsurv}}
 
 \item{\code{treatment_effect}}{\code{numeric} treatment effect used as a \code{beta} with \code{coefficients} and \code{drift}. This default is
-overridden by \link{generate.DataSimObject} arguments}
+overridden by \link[=generate,DataSimObject-method]{generate} arguments}
 
 \item{\code{drift}}{\code{numeric} difference between internal and external arms}
 

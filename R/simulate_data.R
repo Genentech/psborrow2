@@ -340,7 +340,7 @@ set_dropout <- function(object,
 #' @slot coefficients Named `numeric` vector of `beta` coefficients for survival model. See `beta` at
 #'   `?simsurv::simsurv`
 #' @slot treatment_effect `numeric` treatment effect used as a `beta` with `coefficients` and `drift`. This default is
-#'   overridden by [generate.DataSimObject] arguments
+#'   overridden by [generate][generate,DataSimObject-method] arguments
 #' @slot drift `numeric` difference between internal and external arms
 #' @slot fixed_external_data `data.frame` for external data. Currently unused.
 #' @slot event_dist `DataSimEvent` parameters for outcome distribution from [event_dist()]
