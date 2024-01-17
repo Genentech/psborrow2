@@ -9,11 +9,14 @@
 A \code{BaselineDataFrame}
 }
 \description{
-A \code{data.frame} with additional slot containing simulation definition
+Baseline Data Frame Object
 }
 \section{Slots}{
 
 \describe{
+\item{\code{data}}{A named \code{list} of \code{data.frame}s with generated data for \code{internal_treated}/\code{internal_control}/
+\code{external_control} groups}
+
 \item{\code{BaselineObject}}{Simulated covariates definitions as \code{BaselineObject}. See \code{\link[=create_baseline_object]{create_baseline_object()}}}
 }}
 

@@ -20,3 +20,10 @@ A \code{DataSimObject} with updated \code{cut_off_internal} and \code{cut_off_ex
 \description{
 Set Clinical Cut Off Rule
 }
+\examples{
+set_cut_off(
+  create_baseline_object(10, 10, 10),
+  cut_off_after_events(n = 10),
+  cut_off_after_first(time = 30)
+)
+}

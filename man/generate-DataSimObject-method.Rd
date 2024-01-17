@@ -21,3 +21,22 @@ A list of list of matrices
 \description{
 Generate Data for a \code{DataSimObject}
 }
+\examples{
+baseline_obj <- baseline_with_age_score <- create_baseline_object(
+  n_trt_int = 100,
+  n_ctrl_int = 50,
+  n_ctrl_ext = 10,
+  covariates = baseline_covariates(
+    names = c("age", "score"),
+    means_int = c(55, 5),
+    means_ext = c(60, 5),
+    covariance_int = covariance_matrix(c(5, 1))
+  )
+)
+sim_obj <- create_data_simulation(
+  baseline_obj,
+  coefficients = c(age = 0.001, score_high = 1.5),
+  event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+)
+data_sim_list <- generate(sim_obj, treatment_effect = c(0, 1), drift = 0.5)
+}

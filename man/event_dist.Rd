@@ -18,11 +18,33 @@ event_dist(
 )
 }
 \arguments{
-\item{...}{}
+\item{dist}{Specify the distribution \code{"exponential"}}
+
+\item{lambdas}{Scale parameter}
+
+\item{gammas}{Second parameter needed for Weibull or Gompertz distributions}
+
+\item{mixture}{Use mixture model?}
+
+\item{pmix}{Proportion of mixtures}
+
+\item{hazard}{A user defined hazard function}
+
+\item{loghazard}{Alternatively, a user defined log hazard function}
+
+\item{cumhazard}{Alternatively, a user defined cumulative hazard function}
+
+\item{logcumhazard}{Alternatively, a user defined log cumulative hazard function}
+
+\item{...}{Other \code{simsurv} parameters}
 }
 \value{
 A \code{SimDataEvent} object
 }
 \description{
-Uses \link[simsurv:simsurv]{simsurv::simsurv} to generate time to event data.
+Uses \link[simsurv:simsurv]{simsurv::simsurv} to generate time to event data. See \code{simsurv} help for more details.
+}
+\examples{
+weibull_surv <- event_dist(dist = "weibull", lambdas = 1 / 200, gammas = 1)
+exp_event_dist <- event_dist(dist = "exponential", lambdas = 1 / 36)
 }

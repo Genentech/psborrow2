@@ -14,6 +14,22 @@ Data Simulation Object Class
 \section{Slots}{
 
 \describe{
-\item{\code{cut_off}}{}
+\item{\code{baseline}}{\code{BaselineObject} from \link{create_baseline_object}}
+
+\item{\code{coefficients}}{Named \code{numeric} vector of \code{beta} coefficients for survival model. See \code{beta} at
+\code{?simsurv::simsurv}}
+
+\item{\code{treatment_effect}}{\code{numeric} treatment effect used as a \code{beta} with \code{coefficients} and \code{drift}. This default is
+overridden by \link{generate.DataSimObject} arguments}
+
+\item{\code{drift}}{\code{numeric} difference between internal and external arms}
+
+\item{\code{fixed_external_data}}{\code{data.frame} for external data. Currently unused.}
+
+\item{\code{event_dist}}{\code{DataSimEvent} parameters for outcome distribution from \code{\link[=event_dist]{event_dist()}}}
+
+\item{\code{enrollment}}{\code{DataSimEnrollment} object.}
+
+\item{\code{cut_off}}{\code{DataSimCutOff}}
 }}
 

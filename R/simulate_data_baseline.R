@@ -116,6 +116,14 @@ baseline_covariates <- function(names,
   )
 )
 
+# Validity checks for Baseline Object
+setValidity("BaselineObject", function(object) {
+  msg <- NULL
+  c(msg, check_list(object@covariates, types = "CorrelatedCovariates"))
+  c(msg, check_list(object@transformations, types = "function", names = "named"))
+  if (is.null(msg)) TRUE else msg
+})
+
 #' Create Baseline Data Simulation Object
 #'
 #' @param n_trt_int Number of internal treated patients
@@ -159,9 +167,9 @@ baseline_covariates <- function(names,
 #' )
 #'
 create_baseline_object <- function(n_trt_int, n_ctrl_int, n_ctrl_ext, covariates, transformations) {
-  assert_integerish(n_trt_int, len = 1, lower = 1)
-  assert_integerish(n_ctrl_int, len = 1, lower = 1)
-  assert_integerish(n_ctrl_ext, len = 1, lower = 1)
+  assert_integerish(n_trt_int, len = 1, lower = 0)
+  assert_integerish(n_ctrl_int, len = 1, lower = 0)
+  assert_integerish(n_ctrl_ext, len = 1, lower = 0)
 
   if (!missing(covariates)) {
     if (is(covariates, "CorrelatedCovariates")) covariates <- list(covariates)
@@ -190,43 +198,54 @@ create_baseline_object <- function(n_trt_int, n_ctrl_int, n_ctrl_ext, covariates
 # nolint start
 generate.BaselineObject <- function(x, ...) {
   # nolint end
-  arm_data <- data.frame(
-    patid = seq_len(x@n_trt_int + x@n_ctrl_int + x@n_ctrl_ext),
-    ext = rep(c(0, 1), times = c(x@n_trt_int + x@n_ctrl_int, x@n_ctrl_ext)),
-    trt = rep(c(1, 0), times = c(x@n_trt_int, x@n_ctrl_int + x@n_ctrl_ext))
+  arm_data <- .mapply(
+    function(n, ext, trt) {
+      .baseline_dataframe(data.frame(patid = seq_len(n), ext = rep(ext, n), trt = rep(trt, n)))
+    },
+    dots = list(
+      n = list(x@n_trt_int, x@n_ctrl_int, x@n_ctrl_ext),
+      ext = list(0, 0, 1),
+      trt = list(1, 0, 0)
+    ),
+    MoreArgs = NULL
   )
 
   # If any covariates are defined, generate multivariate normal data and combine with arm data
   cov_defined <- vapply(x@covariates, function(x) length(x@names) > 0, logical(1L))
+
   if (any(cov_defined)) {
-    cor_data_list <- lapply(
-      x@covariates[cov_defined],
-      function(cor_cov, n_int = x@n_trt_int + x@n_ctrl_int, n_ext = x@n_ctrl_ext) {
-        mvnorm_data <- rbind(
-          mvtnorm::rmvnorm(n = n_int, mean = cor_cov@means_int, sigma = cor_cov@covariance_int),
-          mvtnorm::rmvnorm(n = n_ext, mean = cor_cov@means_ext, sigma = cor_cov@covariance_ext)
-        )
-        colnames(mvnorm_data) <- cor_cov@names
-        as.data.frame(mvnorm_data)
-      }
-    )
-    arm_data <- cbind(arm_data, do.call("cbind", cor_data_list))
-  }
-
-  bl_df <- .baseline_dataframe(arm_data, BaselineObject = x)
-
-  # For each named transformation, either create a new column or overwrite
-  for (i in names(x@transformations)) {
-    var_index <- match(i, bl_df@names)
-    if (!is.na(var_index)) {
-      bl_df@.Data[[var_index]] <- x@transformations[[i]](bl_df)
-    } else {
-      next_index <- length(bl_df@names) + 1
-      bl_df@.Data[[next_index]] <- x@transformations[[i]](bl_df)
-      bl_df@names[next_index] <- i
+    for (cov in x@covariates[cov_defined]) {
+      arm_data <- .mapply(
+        dots = list(
+          data = arm_data,
+          mean = list(cov@means_int, cov@means_int, cov@means_ext),
+          sigma = list(cov@covariance_int, cov@covariance_int, cov@covariance_int)
+        ),
+        MoreArgs = list(names = cov@names),
+        FUN = function(data, mean, sigma, names) {
+          covs <- if (nrow(data)) {
+            mvtnorm::rmvnorm(n = nrow(data), mean = mean, sigma = sigma)
+          } else {
+            matrix(ncol = length(names), nrow = 0)
+          }
+          covs <- setNames(data.frame(covs), names)
+          cbind2(data, .baseline_dataframe(covs, cov_names = names, means = mean, variances = diag(sigma)))
+        }
+      )
     }
   }
-  bl_df
+
+  # Apply transformations
+  if (length(x@transformations)) {
+    arm_data <- lapply(arm_data, function(data) {
+      for (i in names(x@transformations)) {
+        data[i] <- x@transformations[[i]](data)
+      }
+      data
+    })
+  }
+
+  arm_data
 }
 
 
@@ -260,11 +279,12 @@ setMethod(
   definition = generate.BaselineObject
 )
 
+# BaselineDataFrame Object -----------
 
 #' Baseline Data Frame Object
 #'
-#' A `data.frame` with additional slot containing simulation definition
-#'
+#' @slot data A named `list` of `data.frame`s with generated data for `internal_treated`/`internal_control`/
+#' `external_control` groups
 #' @slot BaselineObject Simulated covariates definitions as `BaselineObject`. See [create_baseline_object()]
 #'
 #' @return A `BaselineDataFrame`
@@ -272,17 +292,39 @@ setMethod(
   "BaselineDataFrame",
   contains = "data.frame",
   slots = c(
-    BaselineObject = "BaselineObject"
+    cov_names = "character",
+    means = "numeric",
+    variances = "numeric"
   )
 )
 
 # Validity checks for Baseline Object
-setValidity("BaselineObject", function(object) {
+setValidity("BaselineDataFrame", function(object) {
   msg <- NULL
-  c(msg, check_list(object@covariates, types = "CorrelatedCovariates"))
-  c(msg, check_list(object@transformations, types = "function", names = "named"))
+  c(msg, check_names(object@cov_names, subset.of = object@names))
+  c(msg, check_numeric(object@means, finite = TRUE, any.missing = FALSE, len = length(object@cov_names)))
+  c(msg, check_numeric(object@variances, lower = 0, finite = TRUE, any.missing = FALSE, len = length(object@cov_names)))
   if (is.null(msg)) TRUE else msg
 })
+
+# cbind BaselineDataFrame
+cbind.BaselineDataFrame <- function(...) {
+  to_bind <- list(...)
+  assert_list(to_bind, types = "BaselineDataFrame", len = 2)
+  .baseline_dataframe(
+    data.frame(to_bind[[1]], to_bind[[2]]),
+    cov_names = c(to_bind[[1]]@cov_names, to_bind[[2]]@cov_names),
+    means = c(to_bind[[1]]@means, to_bind[[2]]@means),
+    variances = c(to_bind[[1]]@variances, to_bind[[2]]@variances)
+  )
+}
+
+setMethod(
+  f = "cbind2",
+  signature(x = "BaselineDataFrame", y = "BaselineDataFrame"),
+  definition = function(x, y) cbind.BaselineDataFrame(x, y)
+)
+
 
 # show method
 setMethod(
@@ -309,24 +351,9 @@ setMethod(
 #'
 get_quantiles <- function(object, var) {
   assert_class(object, "BaselineDataFrame")
-
-  covs <- object@BaselineObject@covariates
-  names <- unlist(lapply(covs, function(x) x@names))
-  assert_subset(var, choices = names)
-
-  index <- which(names == var)
-
-  mean_int <- unlist(lapply(covs, function(x) x@means_int))[index]
-  mean_ext <- unlist(lapply(covs, function(x) x@means_ext))[index]
-
-  sd_int <- unlist(lapply(covs, function(x) sqrt(diag(x@covariance_int))))[index]
-  sd_ext <- unlist(lapply(covs, function(x) sqrt(diag(x@covariance_ext))))[index]
-
-  ifelse(
-    object[["ext"]] == 0,
-    pnorm(object[[var]], mean_int, sd_int),
-    pnorm(object[[var]], mean_ext, sd_ext)
-  )
+  assert_choice(var, object@cov_names)
+  i <- match(var, object@cov_names)
+  pnorm(object[var][[1]], object@means[i], sqrt(object@variances[i]))
 }
 
 
@@ -378,11 +405,11 @@ setMethod(
 #' @return A vector of variable names
 possible_data_sim_vars <- function(object) {
   object@n_trt_int <- 1L
-  object@n_ctrl_int <- 1L
-  object@n_ctrl_ext <- 1L
-  df <- generate(object)
+  object@n_ctrl_int <- 0L
+  object@n_ctrl_ext <- 0L
+  df <- generate(object)[[1]]
   formula_names <- setdiff(colnames(df), c("patid", "ext", "trt"))
-  formula <- as.formula(paste("~ 0 +", paste(formula_names, collapse = "+")))
+  formula <- as.formula(paste(c("~ 0", formula_names), collapse = " + "))
   mm <- model.matrix(formula, data = data.frame(df))
   colnames(mm)
 }

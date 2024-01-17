@@ -21,7 +21,7 @@ For survival we need to specify in addition:
 baseline_with_age_score <- create_baseline_object(
   n_trt_int = 100,
   n_ctrl_int = 50,
-  n_ctrl_ext = 100,
+  n_ctrl_ext = 10,
   covariates = baseline_covariates(
     names = c("age", "score"),
     means_int = c(55, 5),
@@ -56,7 +56,8 @@ my_data_sim <- my_data_sim %>%
   set_enrollment(
     internal = enrollment_fixed(rate = c(25, 10), for_time = c(4, 30)),
     external = enrollment_fixed(rate = c(30, 10), for_time = c(4, 30))
-  ) %>%
+  )
+my_data_sim %>%
   generate(
     treatment_effect = c(1),
     drift = c(0)
@@ -67,8 +68,8 @@ my_data_sim <- my_data_sim %>%
   set_cut_off(
     internal = cut_off_after_first(time = 36),
     external = cut_off_after_events(n = 45)
-  ) %>%
-  generate()
+  )
+my_data_sim %>% generate()
 
 
 my_data_sim <- my_data_sim %>% set_dropout(
@@ -104,8 +105,8 @@ plot(
   y = my_data$data_list[[1]][[1]][, "eventtime"],
   col = my_data$data_list[[1]][[1]][, "score_high"] + 1
 )
-
 library(survival)
+
 plot(survfit(Surv(eventtime, status) ~ trt, data = as.data.frame(my_data$data_list[[1]][[1]])),
   main = "Treatment effect = 0"
 )

@@ -20,3 +20,10 @@ A \code{DataSimObject} with updated \code{enrollment_internal} and \code{enrollm
 \description{
 Set Enrollment Rates for Internal and External Trials
 }
+\examples{
+set_enrollment(
+  create_baseline_object(10, 10, 10),
+  internal = enrollment_fixed(rate = c(10, 5), for_time = c(6, 6)),
+  external = enrollment_fixed(rate = c(5), for_time = c(20))
+)
+}

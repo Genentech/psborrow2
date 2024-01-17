@@ -2,7 +2,7 @@
 
 # Fixed External Control Data ---------------
 
-#' Fixed External Control Data Object
+#' @title Fixed External Control Data Object
 #'
 #' @slot data `data.frame` containing external control data
 #' @slot n Number of observations
@@ -23,9 +23,11 @@
 
 #' Create a Fixed External Data Object
 #'
-#' @param data A data.frame containing external control data
-#' @param req_cols Character vector of required covariate columns
-set_fixed_external_data <- function(data, req_cols) {
+#' @param data A `data.frame` containing external control data
+#' @param req_cols A `character` vector of required covariate columns
+#'
+#' @return A `DataSimObject` with updated `enrollment_internal` and `enrollment_external` slots.
+check_fixed_external_data <- function(data, req_cols) {
   cols <- colnames(data)
 
   if ("trt" %in% cols && !all(data[["trt"]] == 0)) {
@@ -68,23 +70,25 @@ set_fixed_external_data <- function(data, req_cols) {
 
 #' Specify a Time to Event Distribution
 #'
-#' Uses [simsurv::simsurv] to generate time to event data.
+#' Uses [simsurv::simsurv] to generate time to event data. See `simsurv` help for more details.
 #'
-#' @param dist
-#' @param lambdas
-#' @param gammas
-#' @param mixture
-#' @param pmix
-#' @param hazard
-#' @param loghazard
-#' @param cumhazard
-#' @param logcumhazard
-#' @param ...
+#' @param dist Specify the distribution `"exponential"`
+#' @param lambdas Scale parameter
+#' @param gammas Second parameter needed for Weibull or Gompertz distributions
+#' @param mixture Use mixture model?
+#' @param pmix Proportion of mixtures
+#' @param hazard A user defined hazard function
+#' @param loghazard Alternatively, a user defined log hazard function
+#' @param cumhazard Alternatively, a user defined cumulative hazard function
+#' @param logcumhazard Alternatively, a user defined log cumulative hazard function
+#' @param ... Other `simsurv` parameters
 #'
 #' @return A `SimDataEvent` object
 #' @export
 #'
 #' @examples
+#' weibull_surv <- event_dist(dist = "weibull", lambdas = 1 / 200, gammas = 1)
+#' exp_event_dist <- event_dist(dist = "exponential", lambdas = 1 / 36)
 event_dist <- function(dist = NULL,
                        lambdas = NULL,
                        gammas = NULL,
@@ -123,6 +127,7 @@ event_dist <- function(dist = NULL,
 #'
 #' @return An object of class [DataSimEnrollment] to be passed to [create_data_simulation()]
 #'
+#' @export
 #' @examples
 #' # 10 patients/month for 6 months, then 5/month for 6 months
 #' enroll_obj <- enrollment_fixed(rate = c(10, 5), for_time = c(6, 6))
@@ -151,8 +156,12 @@ enrollment_fixed <- function(rate, for_time = rep(1, length(rate))) {
 #'
 #' @return A `DataSimObject` with updated `enrollment_internal` and `enrollment_external` slots.
 #' @export
-#'
 #' @examples
+#' set_enrollment(
+#'   create_baseline_object(10, 10, 10),
+#'   internal = enrollment_fixed(rate = c(10, 5), for_time = c(6, 6)),
+#'   external = enrollment_fixed(rate = c(5), for_time = c(20))
+#' )
 set_enrollment <- function(object, internal, external = internal) {
   assert_class(object, "DataSimObject")
   assert_class(internal, "DataSimEnrollment")
@@ -165,8 +174,18 @@ set_enrollment <- function(object, internal, external = internal) {
 
 # Specify Clinical Cut Offs ----------
 
-# Cut Off Functions
-cut_off_none <- function(time) {
+#' Cut Off Functions
+#'
+#' @return A `DataSimCutOff` object containing a cut-off function
+#' @name cut_off_funs
+#' @rdname cut_off_funs
+NULL
+
+#' @export
+#' @describeIn cut_off_funs No cut off is specified
+#' @examples
+#' cut_off_none()
+cut_off_none <- function() {
   .datasim_cut_off(
     fun = function(data) {
       data
@@ -174,6 +193,11 @@ cut_off_none <- function(time) {
   )
 }
 
+#' @param time Time to cut off
+#' @export
+#' @describeIn cut_off_funs Cut off at `time` after first enrolled patient
+#' @examples
+#' cut_off_after_first(time = 36)
 cut_off_after_first <- function(time) {
   .datasim_cut_off(
     fun = function(data) {
@@ -186,6 +210,11 @@ cut_off_after_first <- function(time) {
   )
 }
 
+#' @param time Time to cut off
+#' @export
+#' @describeIn cut_off_funs Cut off at `time` after last enrolled patient
+#' @examples
+#' cut_off_after_last(time = 36)
 cut_off_after_last <- function(time) {
   .datasim_cut_off(
     fun = function(data) {
@@ -198,6 +227,11 @@ cut_off_after_last <- function(time) {
   )
 }
 
+#' @param n Number of events
+#' @export
+#' @describeIn cut_off_funs Cut off after the time of the n-th event
+#' @examples
+#' cut_off_after_events(n = 20)
 cut_off_after_events <- function(n) {
   .datasim_cut_off(
     fun = function(data) {
@@ -234,6 +268,11 @@ cut_off_after_events <- function(n) {
 #' @export
 #'
 #' @examples
+#' set_cut_off(
+#'   create_baseline_object(10, 10, 10),
+#'   cut_off_after_events(n = 10),
+#'   cut_off_after_first(time = 30)
+#' )
 set_cut_off <- function(object, internal = cut_off_none(), external = cut_off_none()) {
   assert_class(object, "DataSimObject")
   assert_class(internal, "DataSimCutOff")
@@ -245,6 +284,27 @@ set_cut_off <- function(object, internal = cut_off_none(), external = cut_off_no
 
 # Specify Drop Out Rates -------------
 
+#' Set Drop Out Distribution
+#'
+#' @param object `DataSimObject`
+#' @param internal_treated `DataSimEvent` object specifying distribution for internal treated patients.
+#' @param internal_control `DataSimEvent` object specifying distribution for internal control patients.
+#' @param external_control `DataSimEvent` object specifying distribution for external control patients.
+#'
+#' @details
+#' `DataSimEvent` objects can be specified with [event_dist]. Currently no `beta` parameters can be used in drop out
+#' distributions (unlike for the survival outcome).
+#'
+#' @return  A `DataSimObject` with updated `internal_treated`, `internal_control` and `external_control` slots.
+#' @export
+#'
+#' @examples
+#' set_dropout(
+#'   create_baseline_object(10, 10, 10),
+#'   internal_treated = event_dist(dist = "exponential", lambdas = 1 / 55),
+#'   internal_control = event_dist(dist = "exponential", lambdas = 1 / 50),
+#'   external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+#' )
 set_dropout <- function(object,
                         internal_treated,
                         internal_control,
@@ -264,14 +324,16 @@ set_dropout <- function(object,
 
 #' Data Simulation Object Class
 #'
-#' @slot baseline
-#' @slot coefficients
-#' @slot treatment_effect
-#' @slot drift
-#' @slot fixed_external_data
-#' @slot event_dist
-#' @slot enrollment
-#' @slot cut_off
+#' @slot baseline `BaselineObject` from [create_baseline_object]
+#' @slot coefficients Named `numeric` vector of `beta` coefficients for survival model. See `beta` at
+#'   `?simsurv::simsurv`
+#' @slot treatment_effect `numeric` treatment effect used as a `beta` with `coefficients` and `drift`. This default is
+#'   overridden by [generate.DataSimObject] arguments
+#' @slot drift `numeric` difference between internal and external arms
+#' @slot fixed_external_data `data.frame` for external data. Currently unused.
+#' @slot event_dist `DataSimEvent` parameters for outcome distribution from [event_dist()]
+#' @slot enrollment `DataSimEnrollment` object.
+#' @slot cut_off `DataSimCutOff`
 #'
 #' @return A `DataSimObject`
 .datasim_object <- setClass(
@@ -294,10 +356,6 @@ set_dropout <- function(object,
 )
 
 
-
-
-
-
 #' Data Simulation
 #'
 #' @param baseline `BaselineObject` from [create_baseline_object()]
@@ -306,11 +364,29 @@ set_dropout <- function(object,
 #' @param treatment_effect Treatment effect coefficient on linear predictor scale.
 #' @param drift Drift parameter between internal and external arms on linear predictor scale
 #' @param event_dist Specify time to event distribution with `SimDataEvent` object from [event_dist()]
+#' @param fixed_external_data Currently ignored.
 #'
 #' @return `DataSimObject`
 #' @export
 #'
 #' @examples
+#' baseline_obj <- create_baseline_object(
+#'   n_trt_int = 100,
+#'   n_ctrl_int = 50,
+#'   n_ctrl_ext = 10,
+#'   covariates = baseline_covariates(
+#'     names = c("age", "score"),
+#'     means_int = c(55, 5),
+#'     means_ext = c(60, 5),
+#'     covariance_int = covariance_matrix(c(5, 1))
+#'   )
+#' )
+#' sim_obj <- create_data_simulation(
+#'   baseline_obj,
+#'   coefficients = c(age = 0.001, score = 1.5),
+#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+#' )
+#' data_sim_list <- generate(sim_obj, treatment_effect = c(0, 1), drift = 0.5)
 create_data_simulation <- function(baseline,
                                    coefficients,
                                    treatment_effect = 0,
@@ -322,7 +398,6 @@ create_data_simulation <- function(baseline,
   assert_numeric(treatment_effect, finite = TRUE)
   assert_numeric(drift, finite = TRUE)
 
-
   possible_coefs <- possible_data_sim_vars(baseline)
   unknown_names <- setdiff(names(coefficients), possible_coefs)
   if (length(unknown_names)) {
@@ -333,11 +408,13 @@ create_data_simulation <- function(baseline,
     )
   }
 
-  if (!missing(fixed_external_data)) {
-    assert_data_frame(fixed_external_data, min.rows = 1)
-    fixed_data_object <- set_fixed_external_data(fixed_external_data, coefficients)
-  } else {
-    fixed_data_object <- .datasim_fixed_external_data()
+  if (FALSE) {
+    if (!missing(fixed_external_data)) {
+      assert_data_frame(fixed_external_data, min.rows = 1)
+      fixed_data_object <- check_fixed_external_data(fixed_external_data, coefficients)
+    } else {
+      fixed_data_object <- .datasim_fixed_external_data()
+    }
   }
 
   ds <- .datasim_object(
@@ -346,10 +423,67 @@ create_data_simulation <- function(baseline,
     treatment_effect = treatment_effect,
     drift = drift,
     event_dist = event_dist,
-    fixed_external_data = fixed_data_object
+    fixed_external_data = .datasim_fixed_external_data()
   )
 }
 
+#' Helper function to create one arm dataset
+#'
+#' @param baseline Baseline data
+#' @param betas Coefficients for outcome model, including treatment and drift
+#' @param event_dist `DataSimEvent` Parameters for [simsurv::simsurv] for outcome model
+#' @param enrollment `DataSimEnrollment` object to create enrollment times
+#' @param dropout `DataSimEvent` object to generate dropout times
+#'
+#' @return A `data.frame`
+#' @noRd
+make_one_dataset <- function(baseline, betas, event_dist, enrollment, dropout) {
+  # skip if there are no patients in this arm
+  if (nrow(baseline) == 0) {
+    return(data.frame())
+  }
+
+  data <- data.frame(
+    patid = baseline$patid,
+    model.matrix(
+      object = as.formula(paste(c("~ 0", names(betas)), collapse = "+")),
+      data = data.frame(baseline)
+    )
+  )
+
+  # Generate outcome event times
+  surv_df <- tryCatch(
+    do.call(simsurv::simsurv, args = c(list(betas = betas, x = data), event_dist@params)),
+    error = function(e) {
+      cat("Error caught when generating survival times. Check parameters:\n")
+      print(event_dist@params)
+      stop(e)
+    }
+  )
+
+  data$eventtime <- surv_df$eventtime
+  data$status <- surv_df$status
+
+  # Generate drop out times
+  if (length(dropout@params)) {
+    drop_df <- tryCatch(
+      do.call(simsurv::simsurv, args = c(dropout@params, list(x = data))),
+      error = function(e) {
+        cat("Error caught when generating drop out times. Check parameters:\n")
+        print(dropout@params)
+        stop(e)
+      }
+    )
+    drop_flag <- data$eventtime < drop_df$eventtime
+    data$eventtime <- ifelse(drop_flag, drop_df$eventtime, data$eventtime)
+    data$status <- ifelse(drop_flag, 0, data$status)
+  }
+
+  # Calculate enrollment for generated observations
+  data$enrollment <- sample(enrollment@fun(nrow(data)))
+
+  data
+}
 
 # Generate complete data
 # nolint start
@@ -362,7 +496,6 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
   guide <- expand.grid(treatment_effect = treatment_effect, drift = drift)
   guide <- cbind(sim_id = seq_len(nrow(guide)), guide)
 
-
   simulated_data <- list()
   for (i in seq_len(nrow(guide))) {
     betas <- c(
@@ -373,12 +506,7 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
 
     simulated_data[[i]] <- replicate(n, simplify = FALSE, expr = {
       # generate baseline data
-      df <- generate(x@baseline)
-      df_list <- list(
-        internal_treated = df[df$ext == 0 & df$trt == 1, ],
-        internal_control = df[df$ext == 0 & df$trt == 0, ],
-        external_control = df[df$ext == 1 & df$trt == 0, ]
-      )
+      df_list <- generate(x@baseline)
 
       df_list <- .mapply(
         FUN = make_one_dataset,
@@ -393,8 +521,11 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
           event_dist = x@event_dist
         )
       )
-
-      as.matrix(do.call(rbind, df_list))
+      # Apply clinical cut off
+      as.matrix(rbind(
+        x@cut_off_internal(rbind(df_list[["internal_treated"]], df_list[["internal_control"]])),
+        x@cut_off_external(df_list[["external_control"]])
+      ))
     })
   }
   list(
@@ -402,40 +533,6 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
     data_list = simulated_data
   )
 }
-
-
-make_one_dataset <- function(baseline, betas, event_dist, enrollment, cut_off, dropout) {
-  data <- data.frame(
-    patid = baseline$patid,
-    model.matrix(
-      object = as.formula(paste(c("~ 0", names(betas)), collapse = "+")),
-      data = data.frame(baseline)
-    )
-  )
-
-  # Generate outcome event times
-  surv_df <- do.call(
-    simsurv::simsurv,
-    args = c(list(betas = betas, x = data), event_dist@params)
-  )
-  data$eventtime <- surv_df$eventtime
-  data$status <- surv_df$status
-
-  # Generate drop out times
-  drop_df <- do.call(simsurv::simsurv, args = c(dropout@params, list(x = data)))
-  drop_flag <- data$dropouttime < drop_df$eventtime
-  data$eventtime <- ifelse(drop_flag, drop_df$dropouttime, data$eventtime)
-  data$status <- ifelse(drop_flag, 0, data$status)
-
-  # Calculate enrollment for generated observations
-  data$enrollment <- sample(enrollment@fun(nrow(data)))
-
-  # Apply clinical cut off
-  data <- cut_off@fun(data)
-
-  data
-}
-
 
 
 #' Generate Data for a `DataSimObject`
@@ -449,6 +546,23 @@ make_one_dataset <- function(baseline, betas, event_dist, enrollment, cut_off, d
 #' @export
 #'
 #' @examples
+#' baseline_obj <- baseline_with_age_score <- create_baseline_object(
+#'   n_trt_int = 100,
+#'   n_ctrl_int = 50,
+#'   n_ctrl_ext = 10,
+#'   covariates = baseline_covariates(
+#'     names = c("age", "score"),
+#'     means_int = c(55, 5),
+#'     means_ext = c(60, 5),
+#'     covariance_int = covariance_matrix(c(5, 1))
+#'   )
+#' )
+#' sim_obj <- create_data_simulation(
+#'   baseline_obj,
+#'   coefficients = c(age = 0.001, score_high = 1.5),
+#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+#' )
+#' data_sim_list <- generate(sim_obj, treatment_effect = c(0, 1), drift = 0.5)
 setMethod(
   f = "generate",
   signature = "DataSimObject",
