@@ -199,11 +199,12 @@ create_baseline_object <- function(n_trt_int, n_ctrl_int, n_ctrl_ext, covariates
 generate.BaselineObject <- function(x, ...) {
   # nolint end
   arm_data <- .mapply(
-    function(n, ext, trt) {
-      .baseline_dataframe(data.frame(patid = seq_len(n), ext = rep(ext, n), trt = rep(trt, n)))
+    function(n, id_offset, ext, trt) {
+      .baseline_dataframe(data.frame(patid = id_offset + seq_len(n), ext = rep(ext, n), trt = rep(trt, n)))
     },
     dots = list(
       n = list(x@n_trt_int, x@n_ctrl_int, x@n_ctrl_ext),
+      id_offset = list(0, x@n_trt_int, x@n_trt_int + x@n_ctrl_int),
       ext = list(0, 0, 1),
       trt = list(1, 0, 0)
     ),
@@ -244,8 +245,7 @@ generate.BaselineObject <- function(x, ...) {
       data
     })
   }
-
-  arm_data
+  .baseline_data_list(arm_data, baseline_object = x)
 }
 
 
@@ -283,9 +283,11 @@ setMethod(
 
 #' Baseline Data Frame Object
 #'
-#' @slot data A named `list` of `data.frame`s with generated data for `internal_treated`/`internal_control`/
-#' `external_control` groups
-#' @slot BaselineObject Simulated covariates definitions as `BaselineObject`. See [create_baseline_object()]
+#' Contains a generated baseline dataset for a single arm.
+#' @slot cov_names `character` contains the names of covariates generated from the multivariate normal distribution
+#' @slot means `numeric` contains the means of generating distribution for the covariates in `cov_names`
+#' @slot variances `numeric` contains the marginal variances of generating distribution for the covariates in
+#' `cov_names`.
 #'
 #' @return A `BaselineDataFrame`
 .baseline_dataframe <- setClass(
@@ -415,3 +417,49 @@ possible_data_sim_vars <- function(object) {
   mm <- model.matrix(formula, data = data.frame(df))
   colnames(mm)
 }
+
+
+#' Baseline Data Frame List
+#'
+#' A named `list` of `BaselineDataFrame`s with generated data for `internal_treated`/`internal_control`/
+#' `external_control` groups
+#' @slot baseline_object Simulated covariates definitions as `BaselineObject`. See [create_baseline_object()]
+#'
+#' @return A `BaselineDataList`
+.baseline_data_list <- setClass(
+  "BaselineDataList",
+  contains = "list",
+  slots = c(baseline_object = "BaselineObject")
+)
+
+
+as_data_frame_baselinedatalist <- function(x, ...) {
+  df <- do.call(rbind, x)
+  data.frame(setNames(df@.Data, df@names))
+}
+
+setMethod(
+  "as.data.frame",
+  signature(x = "BaselineDataList"),
+  function(x, ...) as_data_frame_baselinedatalist(x, ...)
+)
+
+setAs(
+  from = "BaselineDataList",
+  to = "data.frame",
+  def = function(from) as_data_frame_baselinedatalist(from)
+)
+
+setMethod(
+  "show",
+  signature = c(object = "BaselineDataList"),
+  function(object) {
+    cat("Baseline Data List\n\n")
+    cat("Internal Treated\n")
+    print(head(object[[1]]), row.names = FALSE)
+    cat("Internal Control\n")
+    print(head(object[[2]]), row.names = FALSE)
+    cat("External Control\n")
+    print(head(object[[3]]), row.names = FALSE)
+  }
+)

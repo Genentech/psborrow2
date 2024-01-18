@@ -16,7 +16,7 @@
 \item{drift}{vector of numeric drift effects}
 }
 \value{
-A list of list of matrices
+A \link[=SimDataList-class]{SimDataList} object for use with \code{\link[=create_simulation_obj]{create_simulation_obj()}}.
 }
 \description{
 Generate Data for a \code{DataSimObject}

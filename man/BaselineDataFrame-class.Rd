@@ -9,14 +9,16 @@
 A \code{BaselineDataFrame}
 }
 \description{
-Baseline Data Frame Object
+Contains a generated baseline dataset for a single arm.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{data}}{A named \code{list} of \code{data.frame}s with generated data for \code{internal_treated}/\code{internal_control}/
-\code{external_control} groups}
+\item{\code{cov_names}}{\code{character} contains the names of covariates generated from the multivariate normal distribution}
 
-\item{\code{BaselineObject}}{Simulated covariates definitions as \code{BaselineObject}. See \code{\link[=create_baseline_object]{create_baseline_object()}}}
+\item{\code{means}}{\code{numeric} contains the means of generating distribution for the covariates in \code{cov_names}}
+
+\item{\code{variances}}{\code{numeric} contains the marginal variances of generating distribution for the covariates in
+\code{cov_names}.}
 }}
 

@@ -537,13 +537,16 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
         x@cut_off_internal@fun(rbind(df_list[[1]], df_list[[2]])),
         x@cut_off_external@fun(df_list[[3]])
       )
-      df$patid <- seq_len(nrow(df))
+      df$cens <- 1 - df$status
       as.matrix(df)
     })
   }
-  list(
+  sim_data_list(
+    data_list = simulated_data,
     guide = guide,
-    data_list = simulated_data
+    effect = "treatment_effect",
+    drift = "drift",
+    index = "sim_id"
   )
 }
 
@@ -555,7 +558,7 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
 #' @param treatment_effect vector of numeric treatment effects
 #' @param drift vector of numeric drift effects
 #'
-#' @return A list of list of matrices
+#' @return A [SimDataList][SimDataList-class] object for use with [create_simulation_obj()].
 #' @export
 #'
 #' @examples
