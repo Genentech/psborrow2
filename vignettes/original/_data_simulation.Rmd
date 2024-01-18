@@ -245,7 +245,7 @@ my_data_sim_setup <- create_data_simulation(
     external = cut_off_after_events(n = 100)
   )
 
-my_data <- generate(my_data_sim_setup, n = 5, treatment_effect = 1, drift = c(0, 1))
+my_data <- generate(my_data_sim_setup, n = 3, treatment_effect = 1, drift = c(0, 1))
 ```
 
 Now we can define the simulation setup for the models:
