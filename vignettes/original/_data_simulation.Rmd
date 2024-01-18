@@ -275,6 +275,6 @@ sim_obj <- create_simulation_obj(
   treatment = treatment,
   covariate = covariate
 )
-sim_results <- mcmc_sample(sim_obj, chains = 1)
-get_results(sim_results)
+# sim_results <- mcmc_sample(sim_obj, chains = 1)
+# get_results(sim_results)
 ```

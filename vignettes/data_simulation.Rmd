@@ -14,6 +14,7 @@ This vignette will show the internal functions for generating data that can be u
 
 ```r
 library(psborrow2)
+library(dplyr)
 ```
 
 ## Generating Baseline Data
@@ -31,24 +32,47 @@ simple_baseline <- create_baseline_object(
 ```
 
 This object defines how the data will be created. To actually generate a sample, use `generate()` to produce a
-`data.frame`.
+list containing `data.frame`s for each arm. We can convert this to a single `data.frame` if needed.
 
 
 ```r
-generate(simple_baseline)
-#> Simulated Baseline Data
-#>   patid ext trt
-#> 1     1   0   1
-#> 2     2   0   1
-#> 3     3   0   1
-#> 4     4   0   1
-#> 5     5   0   1
-#> 6     6   0   1
-#>  [ reached 'max' / getOption("max.print") -- omitted 244 rows ]
+baseline_data <- generate(simple_baseline)
+baseline_data
+#> Baseline Data List
+#> 
+#> Internal Treated
+#>  patid ext trt
+#>      1   0   1
+#>      2   0   1
+#>      3   0   1
+#>      4   0   1
+#>      5   0   1
+#>      6   0   1
+#> Internal Control
+#>  patid ext trt
+#>    101   0   0
+#>    102   0   0
+#>    103   0   0
+#>    104   0   0
+#>    105   0   0
+#>    106   0   0
+#> External Control
+#>  patid ext trt
+#>    151   1   0
+#>    152   1   0
+#>    153   1   0
+#>    154   1   0
+#>    155   1   0
+#>    156   1   0
+as.data.frame(baseline_data)
+#>   patid ext trt patid.1 ext.1 trt.1 patid.2 ext.2 trt.2
+#> 1     1   0   1     101     0     0     151     1     0
+#> 2     2   0   1     102     0     0     152     1     0
+#>  [ reached 'max' / getOption("max.print") -- omitted 98 rows ]
 ```
 
 Often we are interested in some additional covariates. Internally the package uses multivariate normal distributions,
-so we need to specify the mean and (co-)variance. We have the option to specify different distribution parameters
+so we need to specify the means and (co-)variances. We have the option to specify different distribution parameters
 for the internal and external arms. The internal arms are assumed to be randomized and therefore come from the same
 distribution. If no external parameters are specified, the internal ones are used for both.
 
@@ -66,19 +90,44 @@ with_age <- create_baseline_object(
 )
 set.seed(123)
 generate(with_age)
-#> Simulated Baseline Data
-#>   patid ext trt      age
-#> 1     1   0   1 53.74674
-#> 2     2   0   1 54.48531
-#> 3     3   0   1 58.48538
-#> 4     4   0   1 55.15766
-#> 5     5   0   1 55.28910
-#>  [ reached 'max' / getOption("max.print") -- omitted 245 rows ]
+#> Baseline Data List
+#> 
+#> Internal Treated
+#>  patid ext trt      age
+#>      1   0   1 53.74674
+#>      2   0   1 54.48531
+#>      3   0   1 58.48538
+#>      4   0   1 55.15766
+#>      5   0   1 55.28910
+#>  [ reached 'max' / getOption("max.print") -- omitted 1 rows ]
+#> Internal Control
+#>  patid ext trt      age
+#>    101   0   0 53.41148
+#>    102   0   0 55.57441
+#>    103   0   0 54.44838
+#>    104   0   0 54.22287
+#>    105   0   0 52.87212
+#>  [ reached 'max' / getOption("max.print") -- omitted 1 rows ]
+#> External Control
+#>  patid ext trt      age
+#>    151   1   0 56.76144
+#>    152   1   0 56.71963
+#>    153   1   0 55.74283
+#>    154   1   0 52.74520
+#>    155   1   0 54.73290
+#>  [ reached 'max' / getOption("max.print") -- omitted 1 rows ]
 ```
 
-In a more complex setting, we can generate correlated baseline covariates.
+In a more complex setting, we can generate correlated baseline covariates by specifying a variance-covariance matrix as
+the main diagonal (variance components) and the upper triangle (covariance components).
+
 
 ```r
+covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
+#>      [,1] [,2]
+#> [1,]  5.0  0.1
+#> [2,]  0.1  1.2
+
 with_age_score <- create_baseline_object(
   n_trt_int = 100,
   n_ctrl_int = 50,
@@ -87,7 +136,8 @@ with_age_score <- create_baseline_object(
     names = c("age", "score"),
     means_int = c(55, 5),
     means_ext = c(60, 5),
-    covariance_int = covariance_matrix(c(5, 1))
+    covariance_int = covariance_matrix(diag = c(5, 1)),
+    covariance_ext = covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
   )
 )
 data_age_score <- generate(with_age_score)
@@ -95,11 +145,12 @@ data_age_score <- generate(with_age_score)
 
 
 ```r
+df_age_score <- as.data.frame(data_age_score)
 plot(
-  x = data_age_score$age,
-  y = data_age_score$score,
-  col = data_age_score$trt + 1,
-  pch = data_age_score$ext * 16,
+  x = df_age_score$age,
+  y = df_age_score$score,
+  col = df_age_score$trt + 1,
+  pch = df_age_score$ext * 16,
   xlab = "Age",
   ylab = "Score"
 )
@@ -123,9 +174,501 @@ with_age_score@transformations <- list(
 )
 set.seed(123)
 generate(with_age_score)
-#> Simulated Baseline Data
-#>   patid ext trt      age    score score_high score_rounded
-#> 1     1   0   1 53.74674 4.769823          0             5
-#> 2     2   0   1 58.48538 5.070508          0             5
-#>  [ reached 'max' / getOption("max.print") -- omitted 248 rows ]
+#> Baseline Data List
+#> 
+#> Internal Treated
+#>  patid ext trt      age    score score_high score_rounded
+#>      1   0   1 53.74674 4.769823          0             5
+#>      2   0   1 58.48538 5.070508          0             5
+#>  [ reached 'max' / getOption("max.print") -- omitted 4 rows ]
+#> Internal Control
+#>  patid ext trt      age    score score_high score_rounded
+#>    101   0   0 59.91669 6.312413          1             6
+#>    102   0   0 54.40712 5.543194          1             6
+#>  [ reached 'max' / getOption("max.print") -- omitted 4 rows ]
+#> External Control
+#>  patid ext trt      age    score score_high score_rounded
+#>    151   1   0 58.40067 4.247311          0             4
+#>    152   1   0 57.90136 3.947487          0             4
+#>  [ reached 'max' / getOption("max.print") -- omitted 4 rows ]
+```
+
+
+## Generating Survival Data
+
+Using the baseline object we have specified, we can generate survival outcome data including various parameters like
+dropout rate, enrollment rate and clinical cut-off.
+
+First we need to specify the outcome distribution. The underlying data generation is handled by the `simsurv` package.
+The `event_dist()` function take the parameters needed to define the distribution. In the simplest case we can use an
+exponential distribution by specifying a single `lambda` parameter. We could also use Weibull or Gompertz distributions,
+mixtures of distributions, or even specify an arbitrary (log/cumulative) hazard function.
+
+```r
+exponential_dist <- event_dist(dist = "exponential", lambda = 1 / 24)
+```
+
+The minimum required parameters to create a data simulation object are a baseline object and an event distribution.
+
+```r
+create_data_simulation(
+  baseline = create_baseline_object(n_trt_int = 100, n_ctrl_int = 50, n_ctrl_ext = 100),
+  event_dist = exponential_dist
+) %>% generate()
+#> SimDataList object with  1  different scenarios
+#>   sim_id treatment_effect drift n_datasets_per_param
+#> 1      1                0     0                    1
+```
+
+We can expand by including a baseline object with covariates and so we need coefficients for including them in the
+hazard calculation. Further we can include coefficient for the treatment parameter (`treatment_effect`) and for the
+difference between internal and external arms (`drift`).
+
+```r
+data_sim <- create_data_simulation(
+  baseline = with_age_score,
+  coefficients = c(age = 0.001, score_high = 1.5),
+  event_dist = exponential_dist,
+  treatment_effect = 0.5,
+  drift = -0.1
+)
+
+data_list <- generate(data_sim)
+head(data_list@data_list[[1]][[1]])
+#>   patid      age score_high trt ext eventtime status enrollment cens
+#> 1     1 53.25887          0   1   0 49.610565      1          1    0
+#> 2     2 55.64217          0   1   0  2.087921      1          1    0
+#>  [ reached getOption("max.print") -- omitted 4 rows ]
+```
+
+We can control how datasets are generated with the `n`, `treatment_effect` and `drift` parameters of `generate()`. These
+will override the defaults specified in `create_data_simulation()`.
+
+```r
+generate(data_sim, n = 10, treatment_effect = c(0, 1, 2), drift = c(0, .2))
+#> SimDataList object with  6  different scenarios
+#>   sim_id treatment_effect drift n_datasets_per_param
+#> 1      1                0   0.0                   10
+#> 2      2                1   0.0                   10
+#> 3      3                2   0.0                   10
+#> 4      4                0   0.2                   10
+#> 5      5                1   0.2                   10
+#>  [ reached 'max' / getOption("max.print") -- omitted 1 rows ]
+```
+
+To add other features to the simulation there are `set_enrollment()`, `set_cut_off()` and `set_dropout()` functions
+which modify a `DataSimObject`.
+
+### Enrollment
+
+Currently only one enrollment option is defined, `enrollment_fixed()` where a fixed number of patients are enrolled in
+each period for a given time duration, so `enrollment_fixed(rate = c(5, 2), for_time = c(4, 5))` enrolls 5 patients in
+periods 1, 2, 3, 4, and then 2 patients each in 5, 6, 7, 8, 9.
+
+New methods can be specified by defining a function that takes a parameter `n`, the number of patients to generate
+enrollment times for.
+
+```r
+poisson_enrollment <- .datasim_enrollment(fun = function(n) rpois(n, lambda = 5))
+#> Error in .datasim_enrollment(fun = function(n) rpois(n, lambda = 5)): could not find function ".datasim_enrollment"
+set_enrollment(data_sim, internal = poisson_enrollment)
+#> Error in eval(expr, envir, enclos): object 'poisson_enrollment' not found
+```
+
+### Drop Out
+
+Drop out is defined using the same `event_dist()` function as for the survival time. No covariates can be specified for
+these distributions, but we can set different distributions for the three arms.
+
+
+```r
+set_dropout(
+  data_sim,
+  internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
+  internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
+  external_control = event_dist(dist = "weibull", lambdas = 1 / 40, gammas = 1.1)
+)
+#> An object of class "DataSimObject"
+#> Slot "baseline":
+#> An object of class "BaselineObject"
+#> Slot "n_trt_int":
+#> [1] 100
+#> 
+#> Slot "n_ctrl_int":
+#> [1] 50
+#> 
+#> Slot "n_ctrl_ext":
+#> [1] 100
+#> 
+#> Slot "covariates":
+#> [[1]]
+#> An object of class "CorrelatedCovariates"
+#> Slot "names":
+#> [1] "age"   "score"
+#> 
+#> Slot "means_int":
+#> [1] 55  5
+#> 
+#> Slot "means_ext":
+#> [1] 60  5
+#> 
+#> Slot "covariance_int":
+#>      [,1] [,2]
+#> [1,]    5    0
+#> [2,]    0    1
+#> 
+#> Slot "covariance_ext":
+#>      [,1] [,2]
+#> [1,]  5.0  0.1
+#> [2,]  0.1  1.2
+#> 
+#> 
+#> 
+#> Slot "transformations":
+#> $score_high
+#> function(data) {
+#>     ext <- data$ext == 0
+#>     q <- get_quantiles(data, name)
+#>     as.integer(ifelse(ext, q > int_cutoff, q > ext_cutoff))
+#>   }
+#> <bytecode: 0x7fd7b80132a8>
+#> <environment: 0x7fd7b801b1c8>
+#> 
+#> $score_rounded
+#> function(data) round(data$score)
+#> <bytecode: 0x7fd7b91700a8>
+#> 
+#> 
+#> 
+#> Slot "coefficients":
+#>        age score_high 
+#>      0.001      1.500 
+#> 
+#> Slot "treatment_effect":
+#> [1] 0.5
+#> 
+#> Slot "drift":
+#> [1] -0.1
+#> 
+#> Slot "fixed_external_data":
+#> An object of class "DataSimFixedExternalData"
+#> Slot "data":
+#> data frame with 0 columns and 0 rows
+#> 
+#> Slot "n":
+#> [1] 0
+#> 
+#> 
+#> Slot "event_dist":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> $dist
+#> [1] "exponential"
+#> 
+#> $lambdas
+#> 1/24
+#> 
+#> 
+#> 
+#> Slot "enrollment_internal":
+#> An object of class "DataSimEnrollment"
+#> Slot "fun":
+#> function(n) rep(1, n)
+#> <bytecode: 0x7fd7b2b94398>
+#> <environment: namespace:psborrow2>
+#> 
+#> 
+#> Slot "enrollment_external":
+#> An object of class "DataSimEnrollment"
+#> Slot "fun":
+#> function(n) rep(1, n)
+#> <bytecode: 0x7fd7b2b950b8>
+#> <environment: namespace:psborrow2>
+#> 
+#> 
+#> Slot "cut_off_internal":
+#> An object of class "DataSimCutOff"
+#> Slot "fun":
+#> function(data) data
+#> <bytecode: 0x7fd7b2b91fe0>
+#> <environment: namespace:psborrow2>
+#> 
+#> 
+#> Slot "cut_off_external":
+#> An object of class "DataSimCutOff"
+#> Slot "fun":
+#> function(data) data
+#> <bytecode: 0x7fd7b2b92c58>
+#> <environment: namespace:psborrow2>
+#> 
+#> 
+#> Slot "dropout_internal_treated":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> $dist
+#> [1] "exponential"
+#> 
+#> $lambdas
+#> 1/50
+#> 
+#> 
+#> 
+#> Slot "dropout_internal_control":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> $dist
+#> [1] "exponential"
+#> 
+#> $lambdas
+#> 1/55
+#> 
+#> 
+#> 
+#> Slot "dropout_external_control":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> $dist
+#> [1] "weibull"
+#> 
+#> $lambdas
+#> 1/40
+#> 
+#> $gammas
+#> [1] 1.1
+```
+
+## Clinical Cut Off
+
+In some cases we want to mimic a clinical trial cut off rule, where all patient data after a certain time are censored.
+Different rules are available such as:
+  - fixed time after first patient is enrolled `cut_off_after_first(time = 36)`
+  - fixed time after last patient is enrolled `cut_off_after_first(time = 60)`
+  - fixed number of events observed `cut_off_after_events(n = 45)`
+
+If a patient has survival time longer than these rules their status will be set to `0` and `eventtime` set to the cut
+off time.
+
+```r
+set_cut_off(
+  data_sim,
+  internal = cut_off_after_first(time = 36),
+  external = cut_off_after_events(n = 45)
+)
+#> An object of class "DataSimObject"
+#> Slot "baseline":
+#> An object of class "BaselineObject"
+#> Slot "n_trt_int":
+#> [1] 100
+#> 
+#> Slot "n_ctrl_int":
+#> [1] 50
+#> 
+#> Slot "n_ctrl_ext":
+#> [1] 100
+#> 
+#> Slot "covariates":
+#> [[1]]
+#> An object of class "CorrelatedCovariates"
+#> Slot "names":
+#> [1] "age"   "score"
+#> 
+#> Slot "means_int":
+#> [1] 55  5
+#> 
+#> Slot "means_ext":
+#> [1] 60  5
+#> 
+#> Slot "covariance_int":
+#>      [,1] [,2]
+#> [1,]    5    0
+#> [2,]    0    1
+#> 
+#> Slot "covariance_ext":
+#>      [,1] [,2]
+#> [1,]  5.0  0.1
+#> [2,]  0.1  1.2
+#> 
+#> 
+#> 
+#> Slot "transformations":
+#> $score_high
+#> function(data) {
+#>     ext <- data$ext == 0
+#>     q <- get_quantiles(data, name)
+#>     as.integer(ifelse(ext, q > int_cutoff, q > ext_cutoff))
+#>   }
+#> <bytecode: 0x7fd7b80132a8>
+#> <environment: 0x7fd7b801b1c8>
+#> 
+#> $score_rounded
+#> function(data) round(data$score)
+#> <bytecode: 0x7fd7b91700a8>
+#> 
+#> 
+#> 
+#> Slot "coefficients":
+#>        age score_high 
+#>      0.001      1.500 
+#> 
+#> Slot "treatment_effect":
+#> [1] 0.5
+#> 
+#> Slot "drift":
+#> [1] -0.1
+#> 
+#> Slot "fixed_external_data":
+#> An object of class "DataSimFixedExternalData"
+#> Slot "data":
+#> data frame with 0 columns and 0 rows
+#> 
+#> Slot "n":
+#> [1] 0
+#> 
+#> 
+#> Slot "event_dist":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> $dist
+#> [1] "exponential"
+#> 
+#> $lambdas
+#> 1/24
+#> 
+#> 
+#> 
+#> Slot "enrollment_internal":
+#> An object of class "DataSimEnrollment"
+#> Slot "fun":
+#> function(n) rep(1, n)
+#> <bytecode: 0x7fd7b2b94398>
+#> <environment: namespace:psborrow2>
+#> 
+#> 
+#> Slot "enrollment_external":
+#> An object of class "DataSimEnrollment"
+#> Slot "fun":
+#> function(n) rep(1, n)
+#> <bytecode: 0x7fd7b2b950b8>
+#> <environment: namespace:psborrow2>
+#> 
+#> 
+#> Slot "cut_off_internal":
+#> An object of class "DataSimCutOff"
+#> Slot "fun":
+#> function(data) {
+#>       cut_time <- min(data$enrollment) + time
+#>       after_cut_off <- data$enrollment + data$eventtime > cut_time
+#>       data$status <- ifelse(after_cut_off, 0, data$status)
+#>       data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
+#>       data[data$enrollment < cut_time, ]
+#>     }
+#> <bytecode: 0x7fd7ba92eb30>
+#> <environment: 0x7fd7ba93ab30>
+#> 
+#> 
+#> Slot "cut_off_external":
+#> An object of class "DataSimCutOff"
+#> Slot "fun":
+#> function(data) {
+#>       cut_time <- sort(data$enrollment + data$eventtime)[n]
+#>       after_cut_off <- data$enrollment + data$eventtime > cut_time
+#>       data$status <- ifelse(after_cut_off, 0, data$status)
+#>       data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
+#>       data[data$enrollment < cut_time, ]
+#>     }
+#> <bytecode: 0x7fd7ba9940a0>
+#> <environment: 0x7fd7ba99b7a8>
+#> 
+#> 
+#> Slot "dropout_internal_treated":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> list()
+#> 
+#> 
+#> Slot "dropout_internal_control":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> list()
+#> 
+#> 
+#> Slot "dropout_external_control":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> list()
+```
+
+
+## Running a simulation
+
+Putting all that together:
+
+
+```r
+my_baseline <- create_baseline_object(
+  n_trt_int = 100,
+  n_ctrl_int = 50,
+  n_ctrl_ext = 100,
+  covariates = baseline_covariates(
+    names = c("age", "score"),
+    means_int = c(55, 5),
+    means_ext = c(60, 5),
+    covariance_int = covariance_matrix(diag = c(5, 1)),
+    covariance_ext = covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
+  ),
+  transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+)
+
+my_data_sim_setup <- create_data_simulation(
+  baseline = my_baseline,
+  coefficients = c(age = 0.001, score_high = 1.1),
+  event_dist = event_dist(dist = "exponential", lambdas = 1 / 50)
+) %>%
+  set_enrollment(
+    internal = enrollment_fixed(rate = c(25, 10), for_time = c(4, 30)),
+    external = enrollment_fixed(rate = c(30, 10), for_time = c(4, 30))
+  ) %>%
+  set_dropout(
+    internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
+    internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
+    external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+  ) %>%
+  set_cut_off(
+    internal = cut_off_after_first(time = 60),
+    external = cut_off_after_events(n = 100)
+  )
+
+my_data <- generate(my_data_sim_setup, n = 3, treatment_effect = 1, drift = c(0, 1))
+```
+
+Now we can define the simulation setup for the models:
+
+
+```r
+borrowing <- sim_borrowing_list(list(full = borrowing_full("ext")))
+outcome <- sim_outcome_list(
+  list(standard_outcome = outcome_surv_exponential(
+    time_var = "eventtime",
+    cens_var = "cens",
+    baseline_prior = prior_normal(0, 1000)
+  ))
+)
+covariate <- sim_covariate_list(list(
+  cov1 = add_covariates(c("age", "score_high"), prior_normal(0, 1000)),
+  no_covs = NULL
+))
+
+treatment <- sim_treatment_list(
+  list(standard_tx = treatment_details(trt_flag_col = "trt", trt_prior = prior_normal(0, 1000)))
+)
+
+sim_obj <- create_simulation_obj(
+  data_matrix_list = my_data,
+  outcome = outcome,
+  borrowing = borrowing,
+  treatment = treatment,
+  covariate = covariate
+)
+# sim_results <- mcmc_sample(sim_obj, chains = 1)
+# get_results(sim_results)
 ```
