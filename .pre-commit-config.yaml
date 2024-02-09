@@ -63,9 +63,19 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=200"]
       - id: end-of-file-fixer
-        exclude: '\.Rd|tests/testthat/_snaps/.*'
+        exclude: >
+          (?x)^(
+          \.Rd|
+          tests/testthat/_snaps/.*|
+          vignettes/.*\.Rmd
+          )$
       - id: trailing-whitespace
-        exclude: '\.Rd|tests/testthat/_snaps/.*'
+        exclude: >
+          (?x)^(
+          \.Rd|
+          tests/testthat/_snaps/.*|
+          vignettes/.*\.Rmd
+          )$
       - id: check-yaml
       - id: no-commit-to-branch
       - id: mixed-line-ending
