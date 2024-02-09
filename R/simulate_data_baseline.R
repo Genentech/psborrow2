@@ -310,6 +310,7 @@ setValidity("BaselineDataFrame", function(object) {
 })
 
 # cbind BaselineDataFrame
+#' @export
 cbind.BaselineDataFrame <- function(...) {
   to_bind <- list(...)
   assert_list(to_bind, types = "BaselineDataFrame", len = 2)
@@ -450,6 +451,7 @@ setAs(
   def = function(from) as_data_frame_baselinedatalist(from)
 )
 
+#' @importFrom utils head
 setMethod(
   "show",
   signature = c(object = "BaselineDataList"),

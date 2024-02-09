@@ -261,18 +261,142 @@ which modify a `DataSimObject`.
 
 ### Enrollment
 
-Currently only one enrollment option is defined, `enrollment_fixed()` where a fixed number of patients are enrolled in
-each period for a given time duration, so `enrollment_fixed(rate = c(5, 2), for_time = c(4, 5))` enrolls 5 patients in
-periods 1, 2, 3, 4, and then 2 patients each in 5, 6, 7, 8, 9.
+Currently only one enrollment option is defined, `enrollment_constant` where a fixed number of patients are enrolled in
+each period for a given time duration, so `enrollment_constant(rate = c(5, 2), for_time = c(4, 5))` enrolls 5 patients
+in periods 1, 2, 3, 4, and then 2 patients each in 5, 6, 7, 8, 9.
 
 New methods can be specified by defining a function that takes a parameter `n`, the number of patients to generate
 enrollment times for.
 
 ```r
-poisson_enrollment <- .datasim_enrollment(fun = function(n) rpois(n, lambda = 5))
-#> Error in .datasim_enrollment(fun = function(n) rpois(n, lambda = 5)): could not find function ".datasim_enrollment"
+poisson_enrollment <- new("DataSimEnrollment", fun = function(n) rpois(n, lambda = 5))
 set_enrollment(data_sim, internal = poisson_enrollment)
-#> Error in eval(expr, envir, enclos): object 'poisson_enrollment' not found
+#> An object of class "DataSimObject"
+#> Slot "baseline":
+#> An object of class "BaselineObject"
+#> Slot "n_trt_int":
+#> [1] 100
+#> 
+#> Slot "n_ctrl_int":
+#> [1] 50
+#> 
+#> Slot "n_ctrl_ext":
+#> [1] 100
+#> 
+#> Slot "covariates":
+#> [[1]]
+#> An object of class "CorrelatedCovariates"
+#> Slot "names":
+#> [1] "age"   "score"
+#> 
+#> Slot "means_int":
+#> [1] 55  5
+#> 
+#> Slot "means_ext":
+#> [1] 60  5
+#> 
+#> Slot "covariance_int":
+#>      [,1] [,2]
+#> [1,]    5    0
+#> [2,]    0    1
+#> 
+#> Slot "covariance_ext":
+#>      [,1] [,2]
+#> [1,]  5.0  0.1
+#> [2,]  0.1  1.2
+#> 
+#> 
+#> 
+#> Slot "transformations":
+#> $score_high
+#> function(data) {
+#>     ext <- data$ext == 0
+#>     q <- get_quantiles(data, name)
+#>     as.integer(ifelse(ext, q > int_cutoff, q > ext_cutoff))
+#>   }
+#> <bytecode: 0x7f79b3fe3270>
+#> <environment: 0x7f79b3fe8668>
+#> 
+#> $score_rounded
+#> function(data) round(data$score)
+#> <bytecode: 0x7f79b58157e8>
+#> 
+#> 
+#> 
+#> Slot "coefficients":
+#>        age score_high 
+#>      0.001      1.500 
+#> 
+#> Slot "treatment_effect":
+#> [1] 0.5
+#> 
+#> Slot "drift":
+#> [1] -0.1
+#> 
+#> Slot "fixed_external_data":
+#> An object of class "DataSimFixedExternalData"
+#> Slot "data":
+#> data frame with 0 columns and 0 rows
+#> 
+#> Slot "n":
+#> [1] 0
+#> 
+#> 
+#> Slot "event_dist":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> $dist
+#> [1] "exponential"
+#> 
+#> $lambdas
+#> 1/24
+#> 
+#> 
+#> 
+#> Slot "enrollment_internal":
+#> An object of class "DataSimEnrollment"
+#> Slot "fun":
+#> function(n) rpois(n, lambda = 5)
+#> 
+#> 
+#> Slot "enrollment_external":
+#> An object of class "DataSimEnrollment"
+#> Slot "fun":
+#> function(n) rpois(n, lambda = 5)
+#> 
+#> 
+#> Slot "cut_off_internal":
+#> An object of class "DataSimCutOff"
+#> Slot "fun":
+#> function(data) data
+#> <bytecode: 0x7f79ad0fd5d8>
+#> <environment: namespace:psborrow2>
+#> 
+#> 
+#> Slot "cut_off_external":
+#> An object of class "DataSimCutOff"
+#> Slot "fun":
+#> function(data) data
+#> <bytecode: 0x7f79ad216a00>
+#> <environment: namespace:psborrow2>
+#> 
+#> 
+#> Slot "dropout_internal_treated":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> list()
+#> 
+#> 
+#> Slot "dropout_internal_control":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> list()
+#> 
+#> 
+#> Slot "dropout_external_control":
+#> An object of class "DataSimEvent"
+#> Slot "params":
+#> list()
 ```
 
 ### Drop Out
@@ -331,12 +455,12 @@ set_dropout(
 #>     q <- get_quantiles(data, name)
 #>     as.integer(ifelse(ext, q > int_cutoff, q > ext_cutoff))
 #>   }
-#> <bytecode: 0x7fd7b80132a8>
-#> <environment: 0x7fd7b801b1c8>
+#> <bytecode: 0x7f79b3fe3270>
+#> <environment: 0x7f79b3fe8668>
 #> 
 #> $score_rounded
 #> function(data) round(data$score)
-#> <bytecode: 0x7fd7b91700a8>
+#> <bytecode: 0x7f79b58157e8>
 #> 
 #> 
 #> 
@@ -374,7 +498,7 @@ set_dropout(
 #> An object of class "DataSimEnrollment"
 #> Slot "fun":
 #> function(n) rep(1, n)
-#> <bytecode: 0x7fd7b2b94398>
+#> <bytecode: 0x7f79ad0edba8>
 #> <environment: namespace:psborrow2>
 #> 
 #> 
@@ -382,7 +506,7 @@ set_dropout(
 #> An object of class "DataSimEnrollment"
 #> Slot "fun":
 #> function(n) rep(1, n)
-#> <bytecode: 0x7fd7b2b950b8>
+#> <bytecode: 0x7f79ad0fc228>
 #> <environment: namespace:psborrow2>
 #> 
 #> 
@@ -390,7 +514,7 @@ set_dropout(
 #> An object of class "DataSimCutOff"
 #> Slot "fun":
 #> function(data) data
-#> <bytecode: 0x7fd7b2b91fe0>
+#> <bytecode: 0x7f79ad0fd5d8>
 #> <environment: namespace:psborrow2>
 #> 
 #> 
@@ -398,7 +522,7 @@ set_dropout(
 #> An object of class "DataSimCutOff"
 #> Slot "fun":
 #> function(data) data
-#> <bytecode: 0x7fd7b2b92c58>
+#> <bytecode: 0x7f79ad216a00>
 #> <environment: namespace:psborrow2>
 #> 
 #> 
@@ -497,12 +621,12 @@ set_cut_off(
 #>     q <- get_quantiles(data, name)
 #>     as.integer(ifelse(ext, q > int_cutoff, q > ext_cutoff))
 #>   }
-#> <bytecode: 0x7fd7b80132a8>
-#> <environment: 0x7fd7b801b1c8>
+#> <bytecode: 0x7f79b3fe3270>
+#> <environment: 0x7f79b3fe8668>
 #> 
 #> $score_rounded
 #> function(data) round(data$score)
-#> <bytecode: 0x7fd7b91700a8>
+#> <bytecode: 0x7f79b58157e8>
 #> 
 #> 
 #> 
@@ -540,7 +664,7 @@ set_cut_off(
 #> An object of class "DataSimEnrollment"
 #> Slot "fun":
 #> function(n) rep(1, n)
-#> <bytecode: 0x7fd7b2b94398>
+#> <bytecode: 0x7f79ad0edba8>
 #> <environment: namespace:psborrow2>
 #> 
 #> 
@@ -548,7 +672,7 @@ set_cut_off(
 #> An object of class "DataSimEnrollment"
 #> Slot "fun":
 #> function(n) rep(1, n)
-#> <bytecode: 0x7fd7b2b950b8>
+#> <bytecode: 0x7f79ad0fc228>
 #> <environment: namespace:psborrow2>
 #> 
 #> 
@@ -562,8 +686,8 @@ set_cut_off(
 #>       data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
 #>       data[data$enrollment < cut_time, ]
 #>     }
-#> <bytecode: 0x7fd7ba92eb30>
-#> <environment: 0x7fd7ba93ab30>
+#> <bytecode: 0x7f79b4754ba8>
+#> <environment: 0x7f79b475ee80>
 #> 
 #> 
 #> Slot "cut_off_external":
@@ -576,8 +700,8 @@ set_cut_off(
 #>       data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
 #>       data[data$enrollment < cut_time, ]
 #>     }
-#> <bytecode: 0x7fd7ba9940a0>
-#> <environment: 0x7fd7ba99b7a8>
+#> <bytecode: 0x7f79b4792d68>
+#> <environment: 0x7f79b47a0d68>
 #> 
 #> 
 #> Slot "dropout_internal_treated":
@@ -625,8 +749,8 @@ my_data_sim_setup <- create_data_simulation(
   event_dist = event_dist(dist = "exponential", lambdas = 1 / 50)
 ) %>%
   set_enrollment(
-    internal = enrollment_fixed(rate = c(25, 10), for_time = c(4, 30)),
-    external = enrollment_fixed(rate = c(30, 10), for_time = c(4, 30))
+    internal = enrollment_constant(rate = c(25, 10), for_time = c(4, 30)),
+    external = enrollment_constant(rate = c(30, 10), for_time = c(4, 30))
   ) %>%
   set_dropout(
     internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
@@ -672,3 +796,66 @@ sim_obj <- create_simulation_obj(
 # sim_results <- mcmc_sample(sim_obj, chains = 1)
 # get_results(sim_results)
 ```
+
+
+### Using fixed external data
+
+
+```r
+my_baseline <- create_baseline_object(
+  n_trt_int = 100,
+  n_ctrl_int = 50,
+  n_ctrl_ext = 100,
+  covariates = baseline_covariates(
+    names = c("age", "score"),
+    means_int = c(55, 5),
+    means_ext = c(60, 5),
+    covariance_int = covariance_matrix(diag = c(5, 1)),
+    covariance_ext = covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
+  ),
+  transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+)
+
+historical_trial_data <- data.frame(
+    age = rnorm(40, 60, 5),
+    score_high = rbinom(40, 1, 0.7),
+    trt = 0,
+    eventtime = rexp(40, 1 / 50),
+    status = 1
+  )
+
+my_data_sim_setup <- create_data_simulation(
+  baseline = my_baseline,
+  coefficients = c(age = 0.001, score_high = 1.1),
+  event_dist = event_dist(dist = "exponential", lambdas = 1 / 50),
+  fixed_external_data = historical_trial_data
+) %>%
+  set_enrollment(
+    internal = enrollment_constant(rate = c(25, 10), for_time = c(4, 30)),
+    external = enrollment_constant(rate = c(30, 10), for_time = c(4, 30))
+  ) %>%
+  set_dropout(
+    internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
+    internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
+    external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+  ) %>%
+  set_cut_off(
+    internal = cut_off_after_first(time = 60),
+    external = cut_off_after_events(n = 100)
+  )
+
+my_data <- generate(my_data_sim_setup, n = 3, treatment_effect = 1, drift = c(0, 1))
+#> Warning: Drift parameter is not applied to fixed external data
+#> Warning: Missing columns in fixed external data: enrollment
+
+#> Warning: Missing columns in fixed external data: enrollment
+
+#> Warning: Missing columns in fixed external data: enrollment
+
+#> Warning: Missing columns in fixed external data: enrollment
+
+#> Warning: Missing columns in fixed external data: enrollment
+
+#> Warning: Missing columns in fixed external data: enrollment
+```
+

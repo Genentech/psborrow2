@@ -27,7 +27,7 @@ data_sim <- create_data_simulation(
 )
 set_enrollment(
   data_sim,
-  internal = enrollment_fixed(rate = c(10, 5), for_time = c(6, 6)),
-  external = enrollment_fixed(rate = c(5), for_time = c(20))
+  internal = enrollment_constant(rate = c(10, 5), for_time = c(6, 6)),
+  external = enrollment_constant(rate = c(5), for_time = c(20))
 )
 }

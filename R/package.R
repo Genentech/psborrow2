@@ -3,4 +3,5 @@
 #' @importFrom methods new is show callNextMethod slot cbind2
 #' @importFrom graphics plot par lines axis rect
 #' @import future
-NULL
+#' @keywords internal
+"_PACKAGE"

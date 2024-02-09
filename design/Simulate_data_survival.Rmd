@@ -17,7 +17,7 @@ For survival we need to specify in addition:
    - covariate HR coefficients
    - treatment effect HR
 
-```{r}
+```{r, eval = FALSE}
 baseline_with_age_score <- create_baseline_object(
   n_trt_int = 100,
   n_ctrl_int = 50,

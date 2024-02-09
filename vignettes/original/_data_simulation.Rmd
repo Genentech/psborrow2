@@ -163,14 +163,14 @@ which modify a `DataSimObject`.
 
 ### Enrollment
 
-Currently only one enrollment option is defined, `enrollment_fixed()` where a fixed number of patients are enrolled in
-each period for a given time duration, so `enrollment_fixed(rate = c(5, 2), for_time = c(4, 5))` enrolls 5 patients in
-periods 1, 2, 3, 4, and then 2 patients each in 5, 6, 7, 8, 9.
+Currently only one enrollment option is defined, `enrollment_constant` where a fixed number of patients are enrolled in
+each period for a given time duration, so `enrollment_constant(rate = c(5, 2), for_time = c(4, 5))` enrolls 5 patients
+in periods 1, 2, 3, 4, and then 2 patients each in 5, 6, 7, 8, 9.
 
 New methods can be specified by defining a function that takes a parameter `n`, the number of patients to generate
 enrollment times for.
 ```{r}
-poisson_enrollment <- .datasim_enrollment(fun = function(n) rpois(n, lambda = 5))
+poisson_enrollment <- new("DataSimEnrollment", fun = function(n) rpois(n, lambda = 5))
 set_enrollment(data_sim, internal = poisson_enrollment)
 ```
 
@@ -232,8 +232,8 @@ my_data_sim_setup <- create_data_simulation(
   event_dist = event_dist(dist = "exponential", lambdas = 1 / 50)
 ) %>%
   set_enrollment(
-    internal = enrollment_fixed(rate = c(25, 10), for_time = c(4, 30)),
-    external = enrollment_fixed(rate = c(30, 10), for_time = c(4, 30))
+    internal = enrollment_constant(rate = c(25, 10), for_time = c(4, 30)),
+    external = enrollment_constant(rate = c(30, 10), for_time = c(4, 30))
   ) %>%
   set_dropout(
     internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
@@ -277,4 +277,53 @@ sim_obj <- create_simulation_obj(
 )
 # sim_results <- mcmc_sample(sim_obj, chains = 1)
 # get_results(sim_results)
+```
+
+
+### Using fixed external data
+
+```{r}
+my_baseline <- create_baseline_object(
+  n_trt_int = 100,
+  n_ctrl_int = 50,
+  n_ctrl_ext = 100,
+  covariates = baseline_covariates(
+    names = c("age", "score"),
+    means_int = c(55, 5),
+    means_ext = c(60, 5),
+    covariance_int = covariance_matrix(diag = c(5, 1)),
+    covariance_ext = covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
+  ),
+  transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+)
+
+historical_trial_data <- data.frame(
+  age = rnorm(40, 60, 5),
+  score_high = rbinom(40, 1, 0.7),
+  trt = 0,
+  eventtime = rexp(40, 1 / 50),
+  status = 1
+)
+
+my_data_sim_setup <- create_data_simulation(
+  baseline = my_baseline,
+  coefficients = c(age = 0.001, score_high = 1.1),
+  event_dist = event_dist(dist = "exponential", lambdas = 1 / 50),
+  fixed_external_data = historical_trial_data
+) %>%
+  set_enrollment(
+    internal = enrollment_constant(rate = c(25, 10), for_time = c(4, 30)),
+    external = enrollment_constant(rate = c(30, 10), for_time = c(4, 30))
+  ) %>%
+  set_dropout(
+    internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
+    internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
+    external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+  ) %>%
+  set_cut_off(
+    internal = cut_off_after_first(time = 60),
+    external = cut_off_after_events(n = 100)
+  )
+
+my_data <- generate(my_data_sim_setup, n = 3, treatment_effect = 1, drift = c(0, 1))
 ```

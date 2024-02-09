@@ -28,6 +28,7 @@
 #'
 #' @return A `DataSimObject` with updated `enrollment_internal` and `enrollment_external` slots.
 check_fixed_external_data <- function(data, req_cols) {
+  assert_data_frame(data, min.rows = 1)
   cols <- colnames(data)
 
   if ("trt" %in% cols && !all(data[["trt"]] == 0)) {
@@ -120,7 +121,7 @@ event_dist <- function(dist = NULL,
   )
 )
 
-#' Fixed Enrollment Rates
+#' Constant Enrollment Rates
 #'
 #' @param rate Number of patients to enroll per unit time
 #' @param for_time Number of time periods for each rate. Must be equal length to `rate`
@@ -130,9 +131,9 @@ event_dist <- function(dist = NULL,
 #' @export
 #' @examples
 #' # 10 patients/month for 6 months, then 5/month for 6 months
-#' enroll_obj <- enrollment_fixed(rate = c(10, 5), for_time = c(6, 6))
+#' enroll_obj <- enrollment_constant(rate = c(10, 5), for_time = c(6, 6))
 #' enroll_obj@fun(n = 80)
-enrollment_fixed <- function(rate, for_time = rep(1, length(rate))) {
+enrollment_constant <- function(rate, for_time = rep(1, length(rate))) {
   assert_integerish(rate, min.len = 1)
   assert_integerish(for_time, len = length(rate))
   .datasim_enrollment(
@@ -163,8 +164,8 @@ enrollment_fixed <- function(rate, for_time = rep(1, length(rate))) {
 #' )
 #' set_enrollment(
 #'   data_sim,
-#'   internal = enrollment_fixed(rate = c(10, 5), for_time = c(6, 6)),
-#'   external = enrollment_fixed(rate = c(5), for_time = c(20))
+#'   internal = enrollment_constant(rate = c(10, 5), for_time = c(6, 6)),
+#'   external = enrollment_constant(rate = c(5), for_time = c(20))
 #' )
 set_enrollment <- function(object, internal, external = internal) {
   assert_class(object, "DataSimObject")
@@ -420,13 +421,10 @@ create_data_simulation <- function(baseline,
     )
   }
 
-  if (FALSE) {
-    if (!missing(fixed_external_data)) {
-      assert_data_frame(fixed_external_data, min.rows = 1)
-      fixed_data_object <- check_fixed_external_data(fixed_external_data, coefficients)
-    } else {
-      fixed_data_object <- .datasim_fixed_external_data()
-    }
+  if (!missing(fixed_external_data)) {
+    fixed_data_object <- check_fixed_external_data(fixed_external_data, names(coefficients))
+  } else {
+    fixed_data_object <- .datasim_fixed_external_data()
   }
 
   ds <- .datasim_object(
@@ -435,7 +433,7 @@ create_data_simulation <- function(baseline,
     treatment_effect = treatment_effect,
     drift = drift,
     event_dist = event_dist,
-    fixed_external_data = .datasim_fixed_external_data()
+    fixed_external_data = fixed_data_object
   )
 }
 
@@ -504,6 +502,9 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
 
   if (is.null(treatment_effect)) treatment_effect <- x@treatment_effect
   if (is.null(drift)) drift <- x@drift
+  if (!all(drift == 0) && x@fixed_external_data@n > 0) {
+    warning("Drift parameter is not applied to fixed external data", call. = FALSE)
+  }
 
   guide <- expand.grid(treatment_effect = treatment_effect, drift = drift)
   guide <- cbind(sim_id = seq_len(nrow(guide)), guide)
@@ -532,10 +533,21 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
           event_dist = x@event_dist
         )
       )
+
+      if (x@fixed_external_data@n > 0) {
+        x@fixed_external_data@data$patid <- seq_len(x@fixed_external_data@n) + sum(sapply(df_list, nrow))
+        missing_cols <- setdiff(colnames(df_list[[1]]), colnames(x@fixed_external_data@data))
+        if (length(missing_cols)) {
+          warning("Missing columns in fixed external data: ", toString(missing_cols), call. = FALSE)
+          x@fixed_external_data@data[, missing_cols] <- NA
+        }
+      }
+
       # Apply clinical cut off
       df <- rbind(
         x@cut_off_internal@fun(rbind(df_list[[1]], df_list[[2]])),
-        x@cut_off_external@fun(df_list[[3]])
+        x@cut_off_external@fun(df_list[[3]]),
+        x@fixed_external_data@data
       )
       df$cens <- 1 - df$status
       as.matrix(df)
