@@ -60,12 +60,16 @@ check_fixed_external_data <- function(data, req_cols) {
 #' Event Time Distribution Object
 #'
 #' @slot params Parameters used for simulating event times with [simsurv::simsurv()].
-#'
-#' @return A `DataSimEvent`
+#' @slot label Description of the distribution.
 .datasim_event <- setClass(
   "DataSimEvent",
   slots = c(
-    params = "list"
+    params = "list",
+    label = "character"
+  ),
+  prototype = list(
+    params = list(),
+    label = "No distribution specified"
   )
 )
 
@@ -100,11 +104,64 @@ event_dist <- function(dist = NULL,
                        cumhazard = NULL,
                        logcumhazard = NULL,
                        ...) {
+  dist_spec <- c(
+    dist = !is.null(dist), hazard = !is.null(hazard), loghazard = !is.null(loghazard),
+    cumhazard = !is.null(cumhazard), logcumhazard = !is.null(logcumhazard)
+  )
+  dist_type <- names(dist_spec[dist_spec])
+  if (length(dist_type) == 0) {
+    stop("One of `dist`, `hazard`, `loghazard`, `cumhazard`, or `logcumhazard` must be specified")
+  } else if (length(dist_type) > 1) {
+    stop("Only one of `dist`, `hazard`, `loghazard`, `cumhazard`, or `logcumhazard` can be specified")
+  }
+
+  if (dist_type == "dist") {
+    assert_choice(dist, choices = c("exponential", "weibull", "gompertz"))
+  } else {
+    assert_function(dist_spec[dist_spec], args = c("t", "x", "betas"))
+  }
+  assert_numeric(lambdas, finite = TRUE, null.ok = TRUE, len = 1 + mixture)
+  assert_numeric(gammas, finite = TRUE, null.ok = TRUE, len = 1 + mixture)
+  assert_flag(mixture)
+  assert_numeric(pmix, lower = 0, upper = 1, len = 1, any.missing = FALSE)
+
+  label <- if (dist_type == "dist") {
+    if (mixture) {
+      h_glue("Mixture of {{dist}} distributions (p = {{pmix}}) ",
+        "with lambdas = {{toString(lambdas)}}{{gamma_part}}",
+        gamma_part = if (is.null(gammas)) "" else h_glue(" and gammas = {{toString(gammas)}}")
+      )
+    } else {
+      h_glue("{{dist}} distribution with lambda = {{toString(lambdas)}}{{gamma_part}}",
+        gamma_part = if (is.null(gammas)) "" else h_glue(" and gamma = {{toString(gammas)}}")
+      )
+    }
+  } else {
+    paste0("User defined ", dist_type)
+  }
+
   .datasim_event(
-    params = as.list(match.call())[-1]
+    params = as.list(match.call())[-1],
+    label = label
   )
 }
 
+
+
+#' No specified event distribution
+#'
+#' @return `null_event_dist` returns an object with no parameters specified that does not simulate event times.
+#' @export
+#' @rdname event_dist
+#'
+#' @examples
+#' null_event_dist()
+null_event_dist <- function() {
+  .datasim_event(
+    params = list(),
+    label = "No distribution specified"
+  )
+}
 
 # Specify Enrollment into Trial --------------
 
@@ -114,10 +171,12 @@ event_dist <- function(dist = NULL,
 .datasim_enrollment <- setClass(
   "DataSimEnrollment",
   slots = c(
-    fun = "function"
+    fun = "function",
+    label = "character"
   ),
   prototype = list(
-    fun = function(n) rep(1, n)
+    fun = function(n) rep(1, n),
+    label = "Enrolling 1 patient per time"
   )
 )
 
@@ -144,7 +203,8 @@ enrollment_constant <- function(rate, for_time = rep(1, length(rate))) {
         stop("Not enough patients could be enrolled. Revise the enrollment rates and times.")
       }
       enrollment_times[seq_len(n)]
-    }
+    },
+    label = paste("Enrolling patients per time at rates:", toString(rep(rate, times = for_time), width = 50))
   )
 }
 
@@ -194,7 +254,8 @@ cut_off_none <- function() {
   .datasim_cut_off(
     fun = function(data) {
       data
-    }
+    },
+    label = "No cut off"
   )
 }
 
@@ -211,7 +272,8 @@ cut_off_after_first <- function(time) {
       data$status <- ifelse(after_cut_off, 0, data$status)
       data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
       data[data$enrollment < cut_time, ]
-    }
+    },
+    label = h_glue("Cut off after first enrolled patient reaches time = {{time}}")
   )
 }
 
@@ -228,7 +290,8 @@ cut_off_after_last <- function(time) {
       data$status <- ifelse(after_cut_off, 0, data$status)
       data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
       data
-    }
+    },
+    label = h_glue("Cut off after last enrolled patient reaches time={{time}}")
   )
 }
 
@@ -245,7 +308,8 @@ cut_off_after_events <- function(n) {
       data$status <- ifelse(after_cut_off, 0, data$status)
       data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
       data[data$enrollment < cut_time, ]
-    }
+    },
+    label = h_glue("Cut off after {{n}} events")
   )
 }
 
@@ -255,10 +319,12 @@ cut_off_after_events <- function(n) {
 .datasim_cut_off <- setClass(
   "DataSimCutOff",
   slots = c(
-    fun = "function"
+    fun = "function",
+    label = "character"
   ),
   prototype = list(
-    fun = function(data) data
+    fun = function(data) data,
+    label = "No cut off"
   )
 )
 
@@ -595,4 +661,53 @@ setMethod(
   f = "generate",
   signature = "DataSimObject",
   definition = generate.DataSimObject
+)
+
+setMethod(
+  f = "show",
+  signature = "DataSimObject",
+  definition = function(object) {
+    cat("DataSimObject\n")
+    cat("-------------\n")
+    cat("Baseline object:\n")
+    print(object@baseline)
+    cat("\n")
+
+    cat("Event distribution:\n")
+    cat(object@event_dist@label, "\n")
+    cat("\n")
+
+    cat("Treatment effect: ", toString(object@treatment_effect), "\n")
+    cat("Drift: ", toString(object@drift), "\n")
+    cat("\n")
+
+    if (length(object@coefficients) > 0) {
+      cat("Coefficients:\n")
+      print(object@coefficients)
+      cat("\n")
+    }
+
+    cat("Enrollment:\n")
+    cat(" Internal:", object@enrollment_internal@label, "\n")
+    cat(" External:", object@enrollment_external@label, "\n")
+    cat("\n")
+
+    cat("Dropout:\n")
+    cat(" Internal treated:", object@dropout_internal_treated@label, "\n")
+    cat(" Internal control:", object@dropout_internal_control@label, "\n")
+    cat(" External control:", object@dropout_external_control@label, "\n")
+    cat("\n")
+
+    cat("Clinical cut off:\n")
+    cat(" Internal:", object@cut_off_internal@label, "\n")
+    cat(" External:", object@cut_off_external@label, "\n")
+    cat("\n")
+
+    if (object@fixed_external_data@n > 0) {
+      cat("Fixed external data:\n")
+      cat(" Columns:", toString(colnames(object@fixed_external_data@data)), "\n")
+      cat(" N:", object@fixed_external_data@n, "\n")
+      cat("\n")
+    }
+  }
 )

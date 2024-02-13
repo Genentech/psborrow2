@@ -5,9 +5,6 @@
 \alias{DataSimEvent-class}
 \alias{.datasim_event}
 \title{Event Time Distribution Object}
-\value{
-A \code{DataSimEvent}
-}
 \description{
 Event Time Distribution Object
 }
@@ -15,5 +12,6 @@ Event Time Distribution Object
 
 \describe{
 \item{\code{params}}{Parameters used for simulating event times with \code{\link[simsurv:simsurv]{simsurv::simsurv()}}.}
-}}
 
+\item{\code{label}}{Description of the distribution.}
+}}

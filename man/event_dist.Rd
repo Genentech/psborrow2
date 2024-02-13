@@ -2,6 +2,7 @@
 % Please edit documentation in R/simulate_data.R
 \name{event_dist}
 \alias{event_dist}
+\alias{null_event_dist}
 \title{Specify a Time to Event Distribution}
 \usage{
 event_dist(
@@ -16,6 +17,8 @@ event_dist(
   logcumhazard = NULL,
   ...
 )
+
+null_event_dist()
 }
 \arguments{
 \item{dist}{Specify the distribution \code{"exponential"}}
@@ -40,6 +43,8 @@ event_dist(
 }
 \value{
 A \code{SimDataEvent} object
+
+\code{null_event_dist} returns an object with no parameters specified that does not simulate event times.
 }
 \description{
 Uses \link[simsurv:simsurv]{simsurv::simsurv} to generate time to event data. See \code{simsurv} help for more details.
@@ -47,4 +52,5 @@ Uses \link[simsurv:simsurv]{simsurv::simsurv} to generate time to event data. Se
 \examples{
 weibull_surv <- event_dist(dist = "weibull", lambdas = 1 / 200, gammas = 1)
 exp_event_dist <- event_dist(dist = "exponential", lambdas = 1 / 36)
+null_event_dist()
 }

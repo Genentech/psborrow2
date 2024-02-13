@@ -94,6 +94,41 @@ baseline_covariates <- function(names,
   )
 )
 
+setMethod(
+  "show",
+  signature = c(object = "CorrelatedCovariates"),
+  function(object) {
+    print(
+      data.frame(
+        covariate = object@names,
+        means_internal = object@means_int,
+        means_external = object@means_ext
+      ),
+      row.names = FALSE
+    )
+    cat("\n")
+    m1 <- object@covariance_int
+    m2 <- object@covariance_ext
+    dimnames(m1) <- dimnames(m2) <- list(object@names, object@names)
+    outputs <- utils::capture.output({
+      print(m1)
+      print(m2)
+    })
+    width <- nchar(outputs[1])
+    half <- length(outputs) / 2
+    cat("Covariance Matrices\n")
+    if (options("width") < width * 2 + 1) {
+      cat("Internal\n")
+      for (i in seq_len(half)) cat(outputs[i], "\n")
+      cat("\nExternal\n")
+      for (i in seq_len(half)) cat(outputs[i + half], "\n")
+    } else {
+      gap <- strrep(" ", times = max(1, 8 - width))
+      cat("Internal", gap, strrep(" ", width - 9), "External\n")
+      for (i in seq_len(half)) cat(outputs[i], gap, outputs[i + half], "\n")
+    }
+  }
+)
 
 # BaselineObject -----
 
@@ -192,6 +227,26 @@ create_baseline_object <- function(n_trt_int, n_ctrl_int, n_ctrl_ext, covariates
     transformations = transformations
   )
 }
+
+setMethod(
+  "show",
+  signature = c(object = "BaselineObject"),
+  function(object) {
+    cat("Baseline Data Simulation Object\n")
+    cat("  N internal treated: ", object@n_trt_int, "\n")
+    cat("  N internal control: ", object@n_ctrl_int, "\n")
+    cat("  N external control: ", object@n_ctrl_ext, "\n")
+    cat("\n")
+    if (length(object@covariates)) {
+      cat("Covariates: \n")
+      print(object@covariates)
+    }
+    if (length(object@transformations)) {
+      cat("Transformations: \n")
+      cat("  ", toString(names(object@transformations)), "\n")
+    }
+  }
+)
 
 #' @importFrom generics generate
 #' @importFrom mvtnorm rmvnorm

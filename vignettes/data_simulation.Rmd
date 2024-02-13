@@ -269,134 +269,57 @@ New methods can be specified by defining a function that takes a parameter `n`, 
 enrollment times for.
 
 ```r
-poisson_enrollment <- new("DataSimEnrollment", fun = function(n) rpois(n, lambda = 5))
+poisson_enrollment <- new(
+  "DataSimEnrollment",
+  fun = function(n) rpois(n, lambda = 5),
+  label = "Poisson enrollment distribution"
+)
 set_enrollment(data_sim, internal = poisson_enrollment)
-#> An object of class "DataSimObject"
-#> Slot "baseline":
-#> An object of class "BaselineObject"
-#> Slot "n_trt_int":
-#> [1] 100
+#> DataSimObject
+#> -------------
+#> Baseline object:
+#> Baseline Data Simulation Object
+#>   N internal treated:  100 
+#>   N internal control:  50 
+#>   N external control:  100 
 #> 
-#> Slot "n_ctrl_int":
-#> [1] 50
-#> 
-#> Slot "n_ctrl_ext":
-#> [1] 100
-#> 
-#> Slot "covariates":
+#> Covariates: 
 #> [[1]]
-#> An object of class "CorrelatedCovariates"
-#> Slot "names":
-#> [1] "age"   "score"
+#>  covariate means_internal means_external
+#>        age             55             60
+#>      score              5              5
 #> 
-#> Slot "means_int":
-#> [1] 55  5
+#> Covariance Matrices
+#> Internal          External
+#>       age score         age score 
+#> age     5     0   age   5.0   0.1 
+#> score   0     1   score 0.1   1.2 
 #> 
-#> Slot "means_ext":
-#> [1] 60  5
+#> Transformations: 
+#>    score_high, score_rounded 
 #> 
-#> Slot "covariance_int":
-#>      [,1] [,2]
-#> [1,]    5    0
-#> [2,]    0    1
+#> Event distribution:
+#> exponential distribution with lambda = 0.0416666666666667 
 #> 
-#> Slot "covariance_ext":
-#>      [,1] [,2]
-#> [1,]  5.0  0.1
-#> [2,]  0.1  1.2
+#> Treatment effect:  0.5 
+#> Drift:  -0.1 
 #> 
-#> 
-#> 
-#> Slot "transformations":
-#> $score_high
-#> function(data) {
-#>     ext <- data$ext == 0
-#>     q <- get_quantiles(data, name)
-#>     as.integer(ifelse(ext, q > int_cutoff, q > ext_cutoff))
-#>   }
-#> <bytecode: 0x7f79b3fe3270>
-#> <environment: 0x7f79b3fe8668>
-#> 
-#> $score_rounded
-#> function(data) round(data$score)
-#> <bytecode: 0x7f79b58157e8>
-#> 
-#> 
-#> 
-#> Slot "coefficients":
+#> Coefficients:
 #>        age score_high 
 #>      0.001      1.500 
 #> 
-#> Slot "treatment_effect":
-#> [1] 0.5
+#> Enrollment:
+#>  Internal: Poisson enrollment distribution 
+#>  External: Poisson enrollment distribution 
 #> 
-#> Slot "drift":
-#> [1] -0.1
+#> Dropout:
+#>  Internal treated: No distribution specified 
+#>  Internal control: No distribution specified 
+#>  External control: No distribution specified 
 #> 
-#> Slot "fixed_external_data":
-#> An object of class "DataSimFixedExternalData"
-#> Slot "data":
-#> data frame with 0 columns and 0 rows
-#> 
-#> Slot "n":
-#> [1] 0
-#> 
-#> 
-#> Slot "event_dist":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> $dist
-#> [1] "exponential"
-#> 
-#> $lambdas
-#> 1/24
-#> 
-#> 
-#> 
-#> Slot "enrollment_internal":
-#> An object of class "DataSimEnrollment"
-#> Slot "fun":
-#> function(n) rpois(n, lambda = 5)
-#> 
-#> 
-#> Slot "enrollment_external":
-#> An object of class "DataSimEnrollment"
-#> Slot "fun":
-#> function(n) rpois(n, lambda = 5)
-#> 
-#> 
-#> Slot "cut_off_internal":
-#> An object of class "DataSimCutOff"
-#> Slot "fun":
-#> function(data) data
-#> <bytecode: 0x7f79ad0fd5d8>
-#> <environment: namespace:psborrow2>
-#> 
-#> 
-#> Slot "cut_off_external":
-#> An object of class "DataSimCutOff"
-#> Slot "fun":
-#> function(data) data
-#> <bytecode: 0x7f79ad216a00>
-#> <environment: namespace:psborrow2>
-#> 
-#> 
-#> Slot "dropout_internal_treated":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> list()
-#> 
-#> 
-#> Slot "dropout_internal_control":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> list()
-#> 
-#> 
-#> Slot "dropout_external_control":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> list()
+#> Clinical cut off:
+#>  Internal: No cut off 
+#>  External: No cut off
 ```
 
 ### Drop Out
@@ -412,153 +335,51 @@ set_dropout(
   internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
   external_control = event_dist(dist = "weibull", lambdas = 1 / 40, gammas = 1.1)
 )
-#> An object of class "DataSimObject"
-#> Slot "baseline":
-#> An object of class "BaselineObject"
-#> Slot "n_trt_int":
-#> [1] 100
+#> DataSimObject
+#> -------------
+#> Baseline object:
+#> Baseline Data Simulation Object
+#>   N internal treated:  100 
+#>   N internal control:  50 
+#>   N external control:  100 
 #> 
-#> Slot "n_ctrl_int":
-#> [1] 50
-#> 
-#> Slot "n_ctrl_ext":
-#> [1] 100
-#> 
-#> Slot "covariates":
+#> Covariates: 
 #> [[1]]
-#> An object of class "CorrelatedCovariates"
-#> Slot "names":
-#> [1] "age"   "score"
+#>  covariate means_internal means_external
+#>        age             55             60
+#>      score              5              5
 #> 
-#> Slot "means_int":
-#> [1] 55  5
+#> Covariance Matrices
+#> Internal          External
+#>       age score         age score 
+#> age     5     0   age   5.0   0.1 
+#> score   0     1   score 0.1   1.2 
 #> 
-#> Slot "means_ext":
-#> [1] 60  5
+#> Transformations: 
+#>    score_high, score_rounded 
 #> 
-#> Slot "covariance_int":
-#>      [,1] [,2]
-#> [1,]    5    0
-#> [2,]    0    1
+#> Event distribution:
+#> exponential distribution with lambda = 0.0416666666666667 
 #> 
-#> Slot "covariance_ext":
-#>      [,1] [,2]
-#> [1,]  5.0  0.1
-#> [2,]  0.1  1.2
+#> Treatment effect:  0.5 
+#> Drift:  -0.1 
 #> 
-#> 
-#> 
-#> Slot "transformations":
-#> $score_high
-#> function(data) {
-#>     ext <- data$ext == 0
-#>     q <- get_quantiles(data, name)
-#>     as.integer(ifelse(ext, q > int_cutoff, q > ext_cutoff))
-#>   }
-#> <bytecode: 0x7f79b3fe3270>
-#> <environment: 0x7f79b3fe8668>
-#> 
-#> $score_rounded
-#> function(data) round(data$score)
-#> <bytecode: 0x7f79b58157e8>
-#> 
-#> 
-#> 
-#> Slot "coefficients":
+#> Coefficients:
 #>        age score_high 
 #>      0.001      1.500 
 #> 
-#> Slot "treatment_effect":
-#> [1] 0.5
+#> Enrollment:
+#>  Internal: Enrolling 1 patient per time 
+#>  External: Enrolling 1 patient per time 
 #> 
-#> Slot "drift":
-#> [1] -0.1
+#> Dropout:
+#>  Internal treated: exponential distribution with lambda = 0.02 
+#>  Internal control: exponential distribution with lambda = 0.0181818181818182 
+#>  External control: weibull distribution with lambda = 0.025 and gamma = 1.1 
 #> 
-#> Slot "fixed_external_data":
-#> An object of class "DataSimFixedExternalData"
-#> Slot "data":
-#> data frame with 0 columns and 0 rows
-#> 
-#> Slot "n":
-#> [1] 0
-#> 
-#> 
-#> Slot "event_dist":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> $dist
-#> [1] "exponential"
-#> 
-#> $lambdas
-#> 1/24
-#> 
-#> 
-#> 
-#> Slot "enrollment_internal":
-#> An object of class "DataSimEnrollment"
-#> Slot "fun":
-#> function(n) rep(1, n)
-#> <bytecode: 0x7f79ad0edba8>
-#> <environment: namespace:psborrow2>
-#> 
-#> 
-#> Slot "enrollment_external":
-#> An object of class "DataSimEnrollment"
-#> Slot "fun":
-#> function(n) rep(1, n)
-#> <bytecode: 0x7f79ad0fc228>
-#> <environment: namespace:psborrow2>
-#> 
-#> 
-#> Slot "cut_off_internal":
-#> An object of class "DataSimCutOff"
-#> Slot "fun":
-#> function(data) data
-#> <bytecode: 0x7f79ad0fd5d8>
-#> <environment: namespace:psborrow2>
-#> 
-#> 
-#> Slot "cut_off_external":
-#> An object of class "DataSimCutOff"
-#> Slot "fun":
-#> function(data) data
-#> <bytecode: 0x7f79ad216a00>
-#> <environment: namespace:psborrow2>
-#> 
-#> 
-#> Slot "dropout_internal_treated":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> $dist
-#> [1] "exponential"
-#> 
-#> $lambdas
-#> 1/50
-#> 
-#> 
-#> 
-#> Slot "dropout_internal_control":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> $dist
-#> [1] "exponential"
-#> 
-#> $lambdas
-#> 1/55
-#> 
-#> 
-#> 
-#> Slot "dropout_external_control":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> $dist
-#> [1] "weibull"
-#> 
-#> $lambdas
-#> 1/40
-#> 
-#> $gammas
-#> [1] 1.1
+#> Clinical cut off:
+#>  Internal: No cut off 
+#>  External: No cut off
 ```
 
 ## Clinical Cut Off
@@ -578,148 +399,51 @@ set_cut_off(
   internal = cut_off_after_first(time = 36),
   external = cut_off_after_events(n = 45)
 )
-#> An object of class "DataSimObject"
-#> Slot "baseline":
-#> An object of class "BaselineObject"
-#> Slot "n_trt_int":
-#> [1] 100
+#> DataSimObject
+#> -------------
+#> Baseline object:
+#> Baseline Data Simulation Object
+#>   N internal treated:  100 
+#>   N internal control:  50 
+#>   N external control:  100 
 #> 
-#> Slot "n_ctrl_int":
-#> [1] 50
-#> 
-#> Slot "n_ctrl_ext":
-#> [1] 100
-#> 
-#> Slot "covariates":
+#> Covariates: 
 #> [[1]]
-#> An object of class "CorrelatedCovariates"
-#> Slot "names":
-#> [1] "age"   "score"
+#>  covariate means_internal means_external
+#>        age             55             60
+#>      score              5              5
 #> 
-#> Slot "means_int":
-#> [1] 55  5
+#> Covariance Matrices
+#> Internal          External
+#>       age score         age score 
+#> age     5     0   age   5.0   0.1 
+#> score   0     1   score 0.1   1.2 
 #> 
-#> Slot "means_ext":
-#> [1] 60  5
+#> Transformations: 
+#>    score_high, score_rounded 
 #> 
-#> Slot "covariance_int":
-#>      [,1] [,2]
-#> [1,]    5    0
-#> [2,]    0    1
+#> Event distribution:
+#> exponential distribution with lambda = 0.0416666666666667 
 #> 
-#> Slot "covariance_ext":
-#>      [,1] [,2]
-#> [1,]  5.0  0.1
-#> [2,]  0.1  1.2
+#> Treatment effect:  0.5 
+#> Drift:  -0.1 
 #> 
-#> 
-#> 
-#> Slot "transformations":
-#> $score_high
-#> function(data) {
-#>     ext <- data$ext == 0
-#>     q <- get_quantiles(data, name)
-#>     as.integer(ifelse(ext, q > int_cutoff, q > ext_cutoff))
-#>   }
-#> <bytecode: 0x7f79b3fe3270>
-#> <environment: 0x7f79b3fe8668>
-#> 
-#> $score_rounded
-#> function(data) round(data$score)
-#> <bytecode: 0x7f79b58157e8>
-#> 
-#> 
-#> 
-#> Slot "coefficients":
+#> Coefficients:
 #>        age score_high 
 #>      0.001      1.500 
 #> 
-#> Slot "treatment_effect":
-#> [1] 0.5
+#> Enrollment:
+#>  Internal: Enrolling 1 patient per time 
+#>  External: Enrolling 1 patient per time 
 #> 
-#> Slot "drift":
-#> [1] -0.1
+#> Dropout:
+#>  Internal treated: No distribution specified 
+#>  Internal control: No distribution specified 
+#>  External control: No distribution specified 
 #> 
-#> Slot "fixed_external_data":
-#> An object of class "DataSimFixedExternalData"
-#> Slot "data":
-#> data frame with 0 columns and 0 rows
-#> 
-#> Slot "n":
-#> [1] 0
-#> 
-#> 
-#> Slot "event_dist":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> $dist
-#> [1] "exponential"
-#> 
-#> $lambdas
-#> 1/24
-#> 
-#> 
-#> 
-#> Slot "enrollment_internal":
-#> An object of class "DataSimEnrollment"
-#> Slot "fun":
-#> function(n) rep(1, n)
-#> <bytecode: 0x7f79ad0edba8>
-#> <environment: namespace:psborrow2>
-#> 
-#> 
-#> Slot "enrollment_external":
-#> An object of class "DataSimEnrollment"
-#> Slot "fun":
-#> function(n) rep(1, n)
-#> <bytecode: 0x7f79ad0fc228>
-#> <environment: namespace:psborrow2>
-#> 
-#> 
-#> Slot "cut_off_internal":
-#> An object of class "DataSimCutOff"
-#> Slot "fun":
-#> function(data) {
-#>       cut_time <- min(data$enrollment) + time
-#>       after_cut_off <- data$enrollment + data$eventtime > cut_time
-#>       data$status <- ifelse(after_cut_off, 0, data$status)
-#>       data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
-#>       data[data$enrollment < cut_time, ]
-#>     }
-#> <bytecode: 0x7f79b4754ba8>
-#> <environment: 0x7f79b475ee80>
-#> 
-#> 
-#> Slot "cut_off_external":
-#> An object of class "DataSimCutOff"
-#> Slot "fun":
-#> function(data) {
-#>       cut_time <- sort(data$enrollment + data$eventtime)[n]
-#>       after_cut_off <- data$enrollment + data$eventtime > cut_time
-#>       data$status <- ifelse(after_cut_off, 0, data$status)
-#>       data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
-#>       data[data$enrollment < cut_time, ]
-#>     }
-#> <bytecode: 0x7f79b4792d68>
-#> <environment: 0x7f79b47a0d68>
-#> 
-#> 
-#> Slot "dropout_internal_treated":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> list()
-#> 
-#> 
-#> Slot "dropout_internal_control":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> list()
-#> 
-#> 
-#> Slot "dropout_external_control":
-#> An object of class "DataSimEvent"
-#> Slot "params":
-#> list()
+#> Clinical cut off:
+#>  Internal: Cut off after first enrolled patient reaches time = 36 
+#>  External: Cut off after 45 events
 ```
 
 
@@ -817,12 +541,12 @@ my_baseline <- create_baseline_object(
 )
 
 historical_trial_data <- data.frame(
-    age = rnorm(40, 60, 5),
-    score_high = rbinom(40, 1, 0.7),
-    trt = 0,
-    eventtime = rexp(40, 1 / 50),
-    status = 1
-  )
+  age = rnorm(40, 60, 5),
+  score_high = rbinom(40, 1, 0.7),
+  trt = 0,
+  eventtime = rexp(40, 1 / 50),
+  status = 1
+)
 
 my_data_sim_setup <- create_data_simulation(
   baseline = my_baseline,
@@ -843,7 +567,56 @@ my_data_sim_setup <- create_data_simulation(
     internal = cut_off_after_first(time = 60),
     external = cut_off_after_events(n = 100)
   )
-
+my_data_sim_setup
+#> DataSimObject
+#> -------------
+#> Baseline object:
+#> Baseline Data Simulation Object
+#>   N internal treated:  100 
+#>   N internal control:  50 
+#>   N external control:  100 
+#> 
+#> Covariates: 
+#> [[1]]
+#>  covariate means_internal means_external
+#>        age             55             60
+#>      score              5              5
+#> 
+#> Covariance Matrices
+#> Internal          External
+#>       age score         age score 
+#> age     5     0   age   5.0   0.1 
+#> score   0     1   score 0.1   1.2 
+#> 
+#> Transformations: 
+#>    score_high 
+#> 
+#> Event distribution:
+#> exponential distribution with lambda = 0.02 
+#> 
+#> Treatment effect:  0 
+#> Drift:  0 
+#> 
+#> Coefficients:
+#>        age score_high 
+#>      0.001      1.100 
+#> 
+#> Enrollment:
+#>  Internal: Enrolling patients per time at rates: 25, 25, 25, 25, 10, 10, 10, 10, 10, 10, 10, 10.... 
+#>  External: Enrolling patients per time at rates: 30, 30, 30, 30, 10, 10, 10, 10, 10, 10, 10, 10.... 
+#> 
+#> Dropout:
+#>  Internal treated: exponential distribution with lambda = 0.02 
+#>  Internal control: exponential distribution with lambda = 0.0181818181818182 
+#>  External control: exponential distribution with lambda = 0.025 
+#> 
+#> Clinical cut off:
+#>  Internal: Cut off after first enrolled patient reaches time = 60 
+#>  External: Cut off after 100 events 
+#> 
+#> Fixed external data:
+#>  Columns: age, score_high, trt, eventtime, status, ext 
+#>  N: 40
 my_data <- generate(my_data_sim_setup, n = 3, treatment_effect = 1, drift = c(0, 1))
 #> Warning: Drift parameter is not applied to fixed external data
 #> Warning: Missing columns in fixed external data: enrollment
@@ -858,4 +631,3 @@ my_data <- generate(my_data_sim_setup, n = 3, treatment_effect = 1, drift = c(0,
 
 #> Warning: Missing columns in fixed external data: enrollment
 ```
-
