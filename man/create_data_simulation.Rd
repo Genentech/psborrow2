@@ -7,8 +7,8 @@
 create_data_simulation(
   baseline,
   coefficients = numeric(),
-  treatment_effect = 0,
-  drift = 0,
+  treatment_hr = 1,
+  drift_hr = 1,
   event_dist,
   fixed_external_data
 )
@@ -19,9 +19,9 @@ create_data_simulation(
 \item{coefficients}{Named vector of coefficients for linear predictor.
 Must correspond to variables in baseline object}
 
-\item{treatment_effect}{Treatment effect coefficient on linear predictor scale.}
+\item{treatment_hr}{Treatment hazard ratio.}
 
-\item{drift}{Drift parameter between internal and external arms on linear predictor scale}
+\item{drift_hr}{Drift hazard ratio between internal and external arms}
 
 \item{event_dist}{Specify time to event distribution with \code{SimDataEvent} object from \code{\link[=event_dist]{event_dist()}}}
 
@@ -50,5 +50,5 @@ sim_obj <- create_data_simulation(
   coefficients = c(age = 0.001, score = 1.5),
   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
 )
-data_sim_list <- generate(sim_obj, treatment_effect = c(0, 1), drift = 0.5)
+data_sim_list <- generate(sim_obj, treatment_hr = c(0.5, 1), drift_hr = 0.5)
 }

@@ -4,16 +4,16 @@
 \alias{generate,DataSimObject-method}
 \title{Generate Data for a \code{DataSimObject}}
 \usage{
-\S4method{generate}{DataSimObject}(x, n = 1, treatment_effect = NULL, drift = NULL)
+\S4method{generate}{DataSimObject}(x, n = 1, treatment_hr = NULL, drift_hr = NULL)
 }
 \arguments{
 \item{x}{a \code{DataSimObject} object created by \link{create_data_simulation}}
 
 \item{n}{number of data sets to simulate}
 
-\item{treatment_effect}{vector of numeric treatment effects}
+\item{treatment_hr}{vector of numeric treatment effects}
 
-\item{drift}{vector of numeric drift effects}
+\item{drift_hr}{vector of numeric drift effects}
 }
 \value{
 A \link[=SimDataList-class]{SimDataList} object for use with \code{\link[=create_simulation_obj]{create_simulation_obj()}}.
@@ -38,5 +38,5 @@ sim_obj <- create_data_simulation(
   coefficients = c(age = 0.001, score = 1.5),
   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
 )
-data_sim_list <- generate(sim_obj, treatment_effect = c(0, 1), drift = 0.5)
+data_sim_list <- generate(sim_obj, treatment_hr = c(0, 1), drift_hr = 0.5)
 }

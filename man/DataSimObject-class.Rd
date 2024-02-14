@@ -19,10 +19,10 @@ Data Simulation Object Class
 \item{\code{coefficients}}{Named \code{numeric} vector of \code{beta} coefficients for survival model. See \code{beta} at
 \code{?simsurv::simsurv}}
 
-\item{\code{treatment_effect}}{\code{numeric} treatment effect used as a \code{beta} with \code{coefficients} and \code{drift}. This default is
-overridden by \link[=generate,DataSimObject-method]{generate} arguments}
+\item{\code{treatment_hr}}{\code{numeric} treatment effect as a hazard ration. \code{log(treatment_hr)} is included in \code{beta} with
+\code{coefficients} and \code{log(drift_hr)}. This default is overridden by \link[=generate,DataSimObject-method]{generate} arguments}
 
-\item{\code{drift}}{\code{numeric} difference between internal and external arms}
+\item{\code{drift_hr}}{\code{numeric} hazard ratio between internal and external arms. Included as \code{log(drift_hr)}.}
 
 \item{\code{fixed_external_data}}{\code{data.frame} for external data. Currently unused.}
 
@@ -32,4 +32,3 @@ overridden by \link[=generate,DataSimObject-method]{generate} arguments}
 
 \item{\code{cut_off}}{\code{DataSimCutOff}}
 }}
-

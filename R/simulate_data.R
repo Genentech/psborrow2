@@ -406,9 +406,9 @@ set_dropout <- function(object,
 #' @slot baseline `BaselineObject` from [create_baseline_object]
 #' @slot coefficients Named `numeric` vector of `beta` coefficients for survival model. See `beta` at
 #'   `?simsurv::simsurv`
-#' @slot treatment_effect `numeric` treatment effect used as a `beta` with `coefficients` and `drift`. This default is
-#'   overridden by [generate][generate,DataSimObject-method] arguments
-#' @slot drift `numeric` difference between internal and external arms
+#' @slot treatment_hr `numeric` treatment effect as a hazard ration. `log(treatment_hr)` is included in `beta` with
+#'  `coefficients` and `log(drift_hr)`. This default is overridden by [generate][generate,DataSimObject-method] arguments
+#' @slot drift_hr `numeric` hazard ratio between internal and external arms. Included as `log(drift_hr)`.
 #' @slot fixed_external_data `data.frame` for external data. Currently unused.
 #' @slot event_dist `DataSimEvent` parameters for outcome distribution from [event_dist()]
 #' @slot enrollment `DataSimEnrollment` object.
@@ -420,8 +420,8 @@ set_dropout <- function(object,
   slots = c(
     baseline = "BaselineObject",
     coefficients = "numeric",
-    treatment_effect = "numeric",
-    drift = "numeric",
+    treatment_hr = "numeric",
+    drift_hr = "numeric",
     fixed_external_data = "DataSimFixedExternalData",
     event_dist = "DataSimEvent",
     enrollment_internal = "DataSimEnrollment",
@@ -440,8 +440,8 @@ set_dropout <- function(object,
 #' @param baseline `BaselineObject` from [create_baseline_object()]
 #' @param coefficients Named vector of coefficients for linear predictor.
 #' Must correspond to variables in baseline object
-#' @param treatment_effect Treatment effect coefficient on linear predictor scale.
-#' @param drift Drift parameter between internal and external arms on linear predictor scale
+#' @param treatment_hr Treatment hazard ratio.
+#' @param drift_hr Drift hazard ratio between internal and external arms
 #' @param event_dist Specify time to event distribution with `SimDataEvent` object from [event_dist()]
 #' @param fixed_external_data Currently ignored.
 #'
@@ -465,17 +465,17 @@ set_dropout <- function(object,
 #'   coefficients = c(age = 0.001, score = 1.5),
 #'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
 #' )
-#' data_sim_list <- generate(sim_obj, treatment_effect = c(0, 1), drift = 0.5)
+#' data_sim_list <- generate(sim_obj, treatment_hr = c(0.5, 1), drift_hr = 0.5)
 create_data_simulation <- function(baseline,
                                    coefficients = numeric(),
-                                   treatment_effect = 0,
-                                   drift = 0,
+                                   treatment_hr = 1,
+                                   drift_hr = 1,
                                    event_dist,
                                    fixed_external_data) {
   assert_class(baseline, "BaselineObject")
   assert_numeric(coefficients, finite = TRUE, names = "named", min.len = 0)
-  assert_numeric(treatment_effect, finite = TRUE)
-  assert_numeric(drift, finite = TRUE)
+  assert_numeric(treatment_hr, finite = TRUE)
+  assert_numeric(drift_hr, finite = TRUE)
 
   possible_coefs <- possible_data_sim_vars(baseline)
   unknown_names <- setdiff(names(coefficients), possible_coefs)
@@ -496,8 +496,8 @@ create_data_simulation <- function(baseline,
   ds <- .datasim_object(
     baseline = baseline,
     coefficients = coefficients,
-    treatment_effect = treatment_effect,
-    drift = drift,
+    treatment_hr = treatment_hr,
+    drift_hr = drift_hr,
     event_dist = event_dist,
     fixed_external_data = fixed_data_object
   )
@@ -563,24 +563,24 @@ make_one_dataset <- function(baseline, betas, event_dist, enrollment, dropout) {
 
 #' @importFrom generics generate
 # nolint start
-generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NULL) {
+generate.DataSimObject <- function(x, n = 1, treatment_hr = NULL, drift_hr = NULL) {
   # nolint end
 
-  if (is.null(treatment_effect)) treatment_effect <- x@treatment_effect
-  if (is.null(drift)) drift <- x@drift
-  if (!all(drift == 0) && x@fixed_external_data@n > 0) {
+  if (is.null(treatment_hr)) treatment_hr <- x@treatment_hr
+  if (is.null(drift_hr)) drift_hr <- x@drift_hr
+  if (!all(drift_hr == 1) && x@fixed_external_data@n > 0) {
     warning("Drift parameter is not applied to fixed external data", call. = FALSE)
   }
 
-  guide <- expand.grid(treatment_effect = treatment_effect, drift = drift)
+  guide <- expand.grid(treatment_hr = treatment_hr, drift_hr = drift_hr)
   guide <- cbind(sim_id = seq_len(nrow(guide)), guide)
 
   simulated_data <- list()
   for (i in seq_len(nrow(guide))) {
     betas <- c(
       x@coefficients,
-      trt = guide$treatment_effect[i],
-      ext = guide$drift[i]
+      trt = log(guide$treatment_hr[i]),
+      ext = log(guide$drift_hr[i])
     )
 
     simulated_data[[i]] <- replicate(n, simplify = FALSE, expr = {
@@ -622,8 +622,8 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
   sim_data_list(
     data_list = simulated_data,
     guide = guide,
-    effect = "treatment_effect",
-    drift = "drift",
+    effect = "treatment_hr",
+    drift = "drift_hr",
     index = "sim_id"
   )
 }
@@ -633,8 +633,8 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
 #'
 #' @param x a `DataSimObject` object created by [create_data_simulation]
 #' @param n number of data sets to simulate
-#' @param treatment_effect vector of numeric treatment effects
-#' @param drift vector of numeric drift effects
+#' @param treatment_hr vector of numeric treatment effects
+#' @param drift_hr vector of numeric drift effects
 #'
 #' @return A [SimDataList][SimDataList-class] object for use with [create_simulation_obj()].
 #' @export
@@ -656,7 +656,7 @@ generate.DataSimObject <- function(x, n = 1, treatment_effect = NULL, drift = NU
 #'   coefficients = c(age = 0.001, score = 1.5),
 #'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
 #' )
-#' data_sim_list <- generate(sim_obj, treatment_effect = c(0, 1), drift = 0.5)
+#' data_sim_list <- generate(sim_obj, treatment_hr = c(0, 1), drift_hr = 0.5)
 setMethod(
   f = "generate",
   signature = "DataSimObject",
@@ -677,8 +677,8 @@ setMethod(
     cat(object@event_dist@label, "\n")
     cat("\n")
 
-    cat("Treatment effect: ", toString(object@treatment_effect), "\n")
-    cat("Drift: ", toString(object@drift), "\n")
+    cat("Treatment HR: ", toString(object@treatment_hr), "\n")
+    cat("Drift HR: ", toString(object@drift_hr), "\n")
     cat("\n")
 
     if (length(object@coefficients) > 0) {
