@@ -6,7 +6,7 @@ test_that("make_model_string_model works with exponential survival and full borr
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
-  result <- psborrow2:::make_model_string_model(object)
+  result <- psborrow2:::make_model_string_model(object@borrowing, object@outcome, object)
   expect_class(result, "glue")
   expect_string(fixed = "exponential_lccdf", x = result)
   expect_string(fixed = "alpha + trt * beta_trt", x = result)
@@ -25,7 +25,7 @@ test_that("make_model_string_model works with exponential survival and BDB", {
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
-  result <- psborrow2:::make_model_string_model(object)
+  result <- psborrow2:::make_model_string_model(object@borrowing, object@outcome, object)
   expect_class(result, "glue")
   expect_string(fixed = "exponential_lccdf", x = result)
   expect_string(fixed = "Z * alpha + trt * beta_trt", x = result)
@@ -54,7 +54,7 @@ test_that("make_model_string_model works with weibull survival and BDB and covar
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
-  result <- psborrow2:::make_model_string_model(object)
+  result <- psborrow2:::make_model_string_model(object@borrowing, object@outcome, object)
   expect_class(result, "glue")
   expect_string(fixed = "weibull_ph_lccdf", x = result)
   expect_string(fixed = "X * beta + Z * alpha + trt * beta_trt", x = result)
@@ -79,7 +79,7 @@ test_that("make_model_string_model works with binary outcome and BDB and covaria
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
-  result <- psborrow2:::make_model_string_model(object)
+  result <- psborrow2:::make_model_string_model(object@borrowing, object@outcome, object)
   expect_class(result, "glue")
   expect_string(fixed = "bernoulli_logit_lupmf", x = result)
   expect_string(fixed = "X * beta + Z * alpha + trt * beta_trt", x = result)

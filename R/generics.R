@@ -95,41 +95,61 @@ setGeneric("get_cmd_stan_models", function(object) standardGeneric("get_cmd_stan
 #' @export
 setGeneric("generate", function(x, ...) standardGeneric("generate"))
 
-#' Trim Rows from Data Matrix Based on Borrowing object type 
-#' 
+#' Trim Rows from Data Matrix Based on Borrowing object type
+#'
 #' @param borrowing_object borrowing object
 #' @param analysis_object analysis object
-#' 
+#'
 #' @rdname trim_rows
-#' 
+#'
 #' @export
 setGeneric("trim_rows", function(borrowing_object, analysis_object) standardGeneric("trim_rows"))
 
-#' Trim columns from Data Matrix Based on Borrowing object type 
-#' 
+#' Trim columns from Data Matrix Based on Borrowing object type
+#'
 #' @param borrowing_object borrowing object
 #' @param analysis_object analysis object
-#' 
+#'
 #' @rdname trim_cols
-#' 
+#'
 #' @export
 setGeneric("trim_cols", function(borrowing_object, analysis_object) standardGeneric("trim_cols"))
 
-#' Create alpha string 
-#' 
+#' Create alpha string
+#'
 #' @param borrowing_object borrowing object
 #' @param outcome_object outcome object
-#' 
+#'
 #' @rdname create_alpha_string
-#' 
+#'
 #' @export
 setGeneric("create_alpha_string", function(borrowing_object, outcome_object) standardGeneric("create_alpha_string"))
 
-#' Create tau string 
-#' 
+#' Create tau string
+#'
 #' @param borrowing_object borrowing object
-#' 
+#'
 #' @rdname create_tau_string
-#' 
+#'
 #' @export
 setGeneric("create_tau_string", function(borrowing_object) standardGeneric("create_tau_string"))
+
+#' Create Stan Code for Model
+#'
+#' @param borrowing borrowing object
+#' @param outcome outcome object
+#' @param analysis_obj analysis object
+#'
+#' @rdname make_model_string_model
+#' @return `glue` `character` containing the Stan code for the data block.
+#' @examples
+#' anls_obj <- psborrow2:::.analysis_obj(
+#'   data_matrix = example_matrix,
+#'   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
+#'   borrowing = borrowing_full("ext"),
+#'   treatment = treatment_details("trt", prior_normal(0, 100))
+#' )
+#' make_model_string_model(anls_obj@borrowing, anls_obj@outcome, anls_obj)
+setGeneric("make_model_string_model", function(borrowing, outcome, analysis_obj) {
+  standardGeneric("make_model_string_model")
+})
