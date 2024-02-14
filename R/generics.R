@@ -142,6 +142,7 @@ setGeneric("create_tau_string", function(borrowing_object) standardGeneric("crea
 #'
 #' @rdname make_model_string_model
 #' @return `glue` `character` containing the Stan code for the data block.
+#' @export
 #' @examples
 #' anls_obj <- psborrow2:::.analysis_obj(
 #'   data_matrix = example_matrix,
