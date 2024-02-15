@@ -1,3 +1,12 @@
+#' @rdname make_model_string_model
+setMethod(
+  "make_model_string_model",
+  signature("ANY", "ANY", "Analysis"),
+  function(borrowing, outcome, analysis_obj) {
+    stop(h_glue("No Stan model defined for the combination of {{class(outcome)}} and {{class(borrowing)}}."))
+  }
+)
+
 make_model_string_full_none <- function(borrowing, outcome, analysis_obj) {
   ### Treatment prior
   beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)

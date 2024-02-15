@@ -2,12 +2,15 @@
 % Please edit documentation in R/generics.R, R/make_model_string_model.R
 \name{make_model_string_model}
 \alias{make_model_string_model}
+\alias{make_model_string_model,ANY,ANY,Analysis-method}
 \alias{make_model_string_model,BorrowingFull,ANY,Analysis-method}
 \alias{make_model_string_model,BorrowingNone,ANY,Analysis-method}
 \alias{make_model_string_model,BorrowingHierarchicalCommensurate,ANY,Analysis-method}
 \title{Create Stan Code for Model}
 \usage{
 make_model_string_model(borrowing, outcome, analysis_obj)
+
+\S4method{make_model_string_model}{ANY,ANY,Analysis}(borrowing, outcome, analysis_obj)
 
 \S4method{make_model_string_model}{BorrowingFull,ANY,Analysis}(borrowing, outcome, analysis_obj)
 
