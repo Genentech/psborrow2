@@ -216,43 +216,43 @@ create_data_simulation(
   event_dist = exponential_dist
 ) %>% generate()
 #> SimDataList object with  1  different scenarios
-#>   sim_id treatment_effect drift n_datasets_per_param
-#> 1      1                0     0                    1
+#>   sim_id treatment_hr drift_hr n_datasets_per_param
+#> 1      1            1        1                    1
 ```
 
 We can expand by including a baseline object with covariates and so we need coefficients for including them in the
-hazard calculation. Further we can include coefficient for the treatment parameter (`treatment_effect`) and for the
-difference between internal and external arms (`drift`).
+hazard calculation. Further we can include coefficient for the treatment parameter (`treatment_hr`) and for the
+difference between internal and external arms (`drift_hr`).
 
 ```r
 data_sim <- create_data_simulation(
   baseline = with_age_score,
   coefficients = c(age = 0.001, score_high = 1.5),
   event_dist = exponential_dist,
-  treatment_effect = 0.5,
-  drift = -0.1
+  treatment_hr = 0.5,
+  drift_hr = 0.9
 )
 
 data_list <- generate(data_sim)
 head(data_list@data_list[[1]][[1]])
-#>   patid      age score_high trt ext eventtime status enrollment cens
-#> 1     1 53.25887          0   1   0 49.610565      1          1    0
-#> 2     2 55.64217          0   1   0  2.087921      1          1    0
+#>   patid      age score_high trt ext  eventtime status enrollment cens
+#> 1     1 53.25887          0   1   0 163.587989      1          1    0
+#> 2     2 55.64217          0   1   0   6.884799      1          1    0
 #>  [ reached getOption("max.print") -- omitted 4 rows ]
 ```
 
-We can control how datasets are generated with the `n`, `treatment_effect` and `drift` parameters of `generate()`. These
+We can control how datasets are generated with the `n`, `treatment_hr` and `drift_hr` parameters of `generate()`. These
 will override the defaults specified in `create_data_simulation()`.
 
 ```r
-generate(data_sim, n = 10, treatment_effect = c(0, 1, 2), drift = c(0, .2))
+generate(data_sim, n = 10, treatment_hr = c(1, 1.3, 2), drift_hr = c(1, 1.2))
 #> SimDataList object with  6  different scenarios
-#>   sim_id treatment_effect drift n_datasets_per_param
-#> 1      1                0   0.0                   10
-#> 2      2                1   0.0                   10
-#> 3      3                2   0.0                   10
-#> 4      4                0   0.2                   10
-#> 5      5                1   0.2                   10
+#>   sim_id treatment_hr drift_hr n_datasets_per_param
+#> 1      1          1.0      1.0                   10
+#> 2      2          1.3      1.0                   10
+#> 3      3          2.0      1.0                   10
+#> 4      4          1.0      1.2                   10
+#> 5      5          1.3      1.2                   10
 #>  [ reached 'max' / getOption("max.print") -- omitted 1 rows ]
 ```
 
@@ -301,8 +301,8 @@ set_enrollment(data_sim, internal = poisson_enrollment)
 #> Event distribution:
 #> exponential distribution with lambda = 0.0416666666666667 
 #> 
-#> Treatment effect:  0.5 
-#> Drift:  -0.1 
+#> Treatment HR:  0.5 
+#> Drift HR:  0.9 
 #> 
 #> Coefficients:
 #>        age score_high 
@@ -361,8 +361,8 @@ set_dropout(
 #> Event distribution:
 #> exponential distribution with lambda = 0.0416666666666667 
 #> 
-#> Treatment effect:  0.5 
-#> Drift:  -0.1 
+#> Treatment HR:  0.5 
+#> Drift HR:  0.9 
 #> 
 #> Coefficients:
 #>        age score_high 
@@ -425,8 +425,8 @@ set_cut_off(
 #> Event distribution:
 #> exponential distribution with lambda = 0.0416666666666667 
 #> 
-#> Treatment effect:  0.5 
-#> Drift:  -0.1 
+#> Treatment HR:  0.5 
+#> Drift HR:  0.9 
 #> 
 #> Coefficients:
 #>        age score_high 
@@ -486,7 +486,7 @@ my_data_sim_setup <- create_data_simulation(
     external = cut_off_after_events(n = 100)
   )
 
-my_data <- generate(my_data_sim_setup, n = 3, treatment_effect = 1, drift = c(0, 1))
+my_data <- generate(my_data_sim_setup, n = 3, treatment_hr = 1, drift_hr = c(1, 1.2))
 ```
 
 Now we can define the simulation setup for the models:
@@ -517,19 +517,42 @@ sim_obj <- create_simulation_obj(
   treatment = treatment,
   covariate = covariate
 )
-# sim_results <- mcmc_sample(sim_obj, chains = 1)
-# get_results(sim_results)
+```
+
+And finally sample from these models. See the vignette "4. Conduct a simulation study" for more details.
+
+
+```r
+sim_results <- mcmc_sample(sim_obj, chains = 1)
+get_results(sim_results)
 ```
 
 
 ### Using fixed external data
 
+We can also include a known data set as the external data, if we wish to simulate the operating characteristics of
+using previously collected data. This is done by setting the `external_data` argument in `create_data_simulation` to a
+data frame. This data is included after enrollment, cut-off and dropout functions are applied, so these have no effect
+on the fixed data.
+
+It is possible to include a fixed external dataset and additionally simulate external patients by setting `n_ctrl_ext`
+to a non-zero value. This will simulate external patients in addition to the fixed data.
+
 
 ```r
+historical_trial_data <- data.frame(
+  age = rnorm(40, 60, 5),
+  score_high = rbinom(40, 1, 0.7),
+  trt = 0,
+  eventtime = rexp(40, 1 / 50),
+  status = 1,
+  enrollment = 1 # enrollment is specified here but not used in clinical cut off
+)
+
 my_baseline <- create_baseline_object(
   n_trt_int = 100,
   n_ctrl_int = 50,
-  n_ctrl_ext = 100,
+  n_ctrl_ext = 0,
   covariates = baseline_covariates(
     names = c("age", "score"),
     means_int = c(55, 5),
@@ -538,14 +561,6 @@ my_baseline <- create_baseline_object(
     covariance_ext = covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
   ),
   transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
-)
-
-historical_trial_data <- data.frame(
-  age = rnorm(40, 60, 5),
-  score_high = rbinom(40, 1, 0.7),
-  trt = 0,
-  eventtime = rexp(40, 1 / 50),
-  status = 1
 )
 
 my_data_sim_setup <- create_data_simulation(
@@ -574,7 +589,7 @@ my_data_sim_setup
 #> Baseline Data Simulation Object
 #>   N internal treated:  100 
 #>   N internal control:  50 
-#>   N external control:  100 
+#>   N external control:  0 
 #> 
 #> Covariates: 
 #> [[1]]
@@ -594,8 +609,8 @@ my_data_sim_setup
 #> Event distribution:
 #> exponential distribution with lambda = 0.02 
 #> 
-#> Treatment effect:  0 
-#> Drift:  0 
+#> Treatment HR:  1 
+#> Drift HR:  1 
 #> 
 #> Coefficients:
 #>        age score_high 
@@ -615,19 +630,18 @@ my_data_sim_setup
 #>  External: Cut off after 100 events 
 #> 
 #> Fixed external data:
-#>  Columns: age, score_high, trt, eventtime, status, ext 
+#>  Columns: age, score_high, trt, eventtime, status, enrollment, ext 
 #>  N: 40
-my_data <- generate(my_data_sim_setup, n = 3, treatment_effect = 1, drift = c(0, 1))
+
+# Drift is not be used for the fixed external data!
+generate(my_data_sim_setup, n = 1, treatment_hr = c(1, 1.3), drift_hr = c(1, 1.2))
 #> Warning: Drift parameter is not applied to fixed external data
-#> Warning: Missing columns in fixed external data: enrollment
+#> SimDataList object with  4  different scenarios
+#>   sim_id treatment_hr drift_hr n_datasets_per_param
+#> 1      1          1.0      1.0                    1
+#> 2      2          1.3      1.0                    1
+#> 3      3          1.0      1.2                    1
+#> 4      4          1.3      1.2                    1
 
-#> Warning: Missing columns in fixed external data: enrollment
-
-#> Warning: Missing columns in fixed external data: enrollment
-
-#> Warning: Missing columns in fixed external data: enrollment
-
-#> Warning: Missing columns in fixed external data: enrollment
-
-#> Warning: Missing columns in fixed external data: enrollment
+my_data <- generate(my_data_sim_setup, n = 3, treatment_hr = c(1, 1.3), drift_hr = c(1))
 ```
