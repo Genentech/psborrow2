@@ -4,7 +4,11 @@
 \name{BaselineDataList-class}
 \alias{BaselineDataList-class}
 \alias{.baseline_data_list}
+\alias{as.data.frame,BaselineDataList-method}
 \title{Baseline Data Frame List}
+\usage{
+\S4method{as.data.frame}{BaselineDataList}(x, row.names = NULL, optional = FALSE, ...)
+}
 \value{
 A \code{BaselineDataList}
 }
@@ -12,6 +16,11 @@ A \code{BaselineDataList}
 A named \code{list} of \code{BaselineDataFrame}s with generated data for \code{internal_treated}/\code{internal_control}/
 \code{external_control} groups
 }
+\section{Functions}{
+\itemize{
+\item \code{as.data.frame(BaselineDataList)}: convert to a \code{data.frame}
+
+}}
 \section{Slots}{
 
 \describe{

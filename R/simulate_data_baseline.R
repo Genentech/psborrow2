@@ -493,6 +493,8 @@ as_data_frame_baselinedatalist <- function(x, ...) {
   data.frame(setNames(df@.Data, df@names))
 }
 
+
+#' @describeIn BaselineDataList-class convert to a `data.frame`
 #' @export
 setMethod(
   "as.data.frame",
