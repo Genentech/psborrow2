@@ -268,7 +268,6 @@ generate.BaselineObject <- function(x, ...) {
 
   # If any covariates are defined, generate multivariate normal data and combine with arm data
   cov_defined <- vapply(x@covariates, function(x) length(x@names) > 0, logical(1L))
-
   if (any(cov_defined)) {
     for (cov in x@covariates[cov_defined]) {
       arm_data <- .mapply(
@@ -494,12 +493,14 @@ as_data_frame_baselinedatalist <- function(x, ...) {
   data.frame(setNames(df@.Data, df@names))
 }
 
+#' @export
 setMethod(
   "as.data.frame",
   signature(x = "BaselineDataList"),
   function(x, ...) as_data_frame_baselinedatalist(x, ...)
 )
 
+#' @export
 setAs(
   from = "BaselineDataList",
   to = "data.frame",
