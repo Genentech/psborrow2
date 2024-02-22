@@ -487,26 +487,22 @@ possible_data_sim_vars <- function(object) {
   slots = c(baseline_object = "BaselineObject")
 )
 
-
-as_data_frame_baselinedatalist <- function(x, ...) {
+#' @rdname as_data_frame
+#' @export
+# nolint start
+as.data.frame.BaselineDataList <- function(x, ...) {
+  # nolint end
   df <- do.call(rbind, x)
-  data.frame(setNames(df@.Data, df@names))
+  data.frame(setNames(df@.Data, df@names), ...)
 }
 
+# #' @rdname as.data.frame.BaselineDataList
+# setMethod("as.data.frame", "BaselineDataList", as.data.frame.BaselineDataList)
 
-#' @describeIn BaselineDataList-class convert to a `data.frame`
-#' @export
-setMethod(
-  "as.data.frame",
-  signature(x = "BaselineDataList"),
-  function(x, ...) as_data_frame_baselinedatalist(x, ...)
-)
-
-#' @export
 setAs(
   from = "BaselineDataList",
   to = "data.frame",
-  def = function(from) as_data_frame_baselinedatalist(from)
+  def = function(from) as.data.frame.BaselineDataList(from)
 )
 
 #' @importFrom utils head

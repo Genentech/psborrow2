@@ -65,10 +65,14 @@ baseline_data
 #>    155   1   0
 #>    156   1   0
 as.data.frame(baseline_data)
-#>   patid ext trt patid.1 ext.1 trt.1 patid.2 ext.2 trt.2
-#> 1     1   0   1     101     0     0     151     1     0
-#> 2     2   0   1     102     0     0     152     1     0
-#>  [ reached 'max' / getOption("max.print") -- omitted 98 rows ]
+#>   patid ext trt
+#> 1     1   0   1
+#> 2     2   0   1
+#> 3     3   0   1
+#> 4     4   0   1
+#> 5     5   0   1
+#> 6     6   0   1
+#>  [ reached 'max' / getOption("max.print") -- omitted 244 rows ]
 ```
 
 Often we are interested in some additional covariates. Internally the package uses multivariate normal distributions,
