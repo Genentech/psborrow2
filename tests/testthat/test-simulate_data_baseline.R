@@ -36,3 +36,39 @@ test_that("covariance_matrix fails with incompatible arguments", {
   expect_error(covariance_matrix(c(1:3), c(0, 0)))
   expect_error(covariance_matrix(c("a", "b", "c")))
 })
+
+
+test_that("show CorrelatedCovariates works for narrow matrices", {
+  with_age <- create_baseline_object(
+    100, 50, 100,
+    covariates = baseline_covariates(
+      names = "age", means_int = 55,
+      covariance_int = covariance_matrix(5)
+    )
+  )
+  expect_snapshot(show(with_age))
+})
+
+
+test_that("show CorrelatedCovariates works for very wide matrices", {
+  with_age <- create_baseline_object(
+    100, 50, 100,
+    covariates = baseline_covariates(
+      names = "age_at_baseline", means_int = 55,
+      covariance_int = covariance_matrix(5)
+    )
+  )
+  expect_snapshot(show(with_age))
+})
+
+
+test_that("show CorrelatedCovariates works for very wide matrices", {
+  with_age <- create_baseline_object(
+    100, 50, 100,
+    covariates = baseline_covariates(
+      names = "number_of_years_since_the_date_of_birth_at_baseline_date", means_int = 55,
+      covariance_int = covariance_matrix(5)
+    )
+  )
+  expect_snapshot(show(with_age))
+})

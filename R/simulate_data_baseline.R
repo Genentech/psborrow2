@@ -123,9 +123,10 @@ setMethod(
       cat("\nExternal\n")
       for (i in seq_len(half)) cat(outputs[i + half], "\n")
     } else {
-      gap <- strrep(" ", times = max(1, 8 - width))
-      cat("Internal", gap, strrep(" ", width - 9), "External\n")
-      for (i in seq_len(half)) cat(outputs[i], gap, outputs[i + half], "\n")
+      m_gap <- strrep(" ", 1 + max(0, 8 - width))
+      h_gap <- strrep(" ", 1 + max(0, width - 8))
+      cat("Internal", h_gap, "External\n")
+      for (i in seq_len(half)) cat(outputs[i], m_gap, outputs[i + half], "\n")
     }
   }
 )
@@ -495,9 +496,6 @@ as.data.frame.BaselineDataList <- function(x, ...) {
   df <- do.call(rbind, x)
   data.frame(setNames(df@.Data, df@names), ...)
 }
-
-# #' @rdname as.data.frame.BaselineDataList
-# setMethod("as.data.frame", "BaselineDataList", as.data.frame.BaselineDataList)
 
 setAs(
   from = "BaselineDataList",
