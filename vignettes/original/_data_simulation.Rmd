@@ -2,7 +2,7 @@
 title: "7. Data Simulation"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{8. Data Simulation}
+  %\VignetteIndexEntry{7. Data Simulation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,6 +19,7 @@ This vignette will show the internal functions for generating data that can be u
 
 ```{r setup, message = FALSE}
 library(psborrow2)
+library(dplyr)
 ```
 
 ## Generating Baseline Data
@@ -35,14 +36,16 @@ simple_baseline <- create_baseline_object(
 ```
 
 This object defines how the data will be created. To actually generate a sample, use `generate()` to produce a
-`data.frame`.
+list containing `data.frame`s for each arm. We can convert this to a single `data.frame` if needed.
 
 ```{r}
-generate(simple_baseline)
+baseline_data <- generate(simple_baseline)
+baseline_data
+as.data.frame(baseline_data)
 ```
 
 Often we are interested in some additional covariates. Internally the package uses multivariate normal distributions,
-so we need to specify the mean and (co-)variance. We have the option to specify different distribution parameters
+so we need to specify the means and (co-)variances. We have the option to specify different distribution parameters
 for the internal and external arms. The internal arms are assumed to be randomized and therefore come from the same
 distribution. If no external parameters are specified, the internal ones are used for both.
 
@@ -61,8 +64,12 @@ set.seed(123)
 generate(with_age)
 ```
 
-In a more complex setting, we can generate correlated baseline covariates.
+In a more complex setting, we can generate correlated baseline covariates by specifying a variance-covariance matrix as
+the main diagonal (variance components) and the upper triangle (covariance components).
+
 ```{r}
+covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
+
 with_age_score <- create_baseline_object(
   n_trt_int = 100,
   n_ctrl_int = 50,
@@ -71,18 +78,20 @@ with_age_score <- create_baseline_object(
     names = c("age", "score"),
     means_int = c(55, 5),
     means_ext = c(60, 5),
-    covariance_int = covariance_matrix(c(5, 1))
+    covariance_int = covariance_matrix(diag = c(5, 1)),
+    covariance_ext = covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
   )
 )
 data_age_score <- generate(with_age_score)
 ```
 
 ```{r}
+df_age_score <- as.data.frame(data_age_score)
 plot(
-  x = data_age_score$age,
-  y = data_age_score$score,
-  col = data_age_score$trt + 1,
-  pch = data_age_score$ext * 16,
+  x = df_age_score$age,
+  y = df_age_score$score,
+  col = df_age_score$trt + 1,
+  pch = df_age_score$ext * 16,
   xlab = "Age",
   ylab = "Score"
 )
@@ -103,4 +112,240 @@ with_age_score@transformations <- list(
 )
 set.seed(123)
 generate(with_age_score)
+```
+
+
+## Generating Survival Data
+
+Using the baseline object we have specified, we can generate survival outcome data including various parameters like
+dropout rate, enrollment rate and clinical cut-off.
+
+First we need to specify the outcome distribution. The underlying data generation is handled by the `simsurv` package.
+The `event_dist()` function take the parameters needed to define the distribution. In the simplest case we can use an
+exponential distribution by specifying a single `lambda` parameter. We could also use Weibull or Gompertz distributions,
+mixtures of distributions, or even specify an arbitrary (log/cumulative) hazard function.
+```{r}
+exponential_dist <- event_dist(dist = "exponential", lambda = 1 / 24)
+```
+
+The minimum required parameters to create a data simulation object are a baseline object and an event distribution.
+```{r}
+create_data_simulation(
+  baseline = create_baseline_object(n_trt_int = 100, n_ctrl_int = 50, n_ctrl_ext = 100),
+  event_dist = exponential_dist
+) %>% generate()
+```
+
+We can expand by including a baseline object with covariates and so we need coefficients for including them in the
+hazard calculation. Further we can include coefficient for the treatment parameter (`treatment_hr`) and for the
+difference between internal and external arms (`drift_hr`).
+```{r}
+data_sim <- create_data_simulation(
+  baseline = with_age_score,
+  coefficients = c(age = 0.001, score_high = 1.5),
+  event_dist = exponential_dist,
+  treatment_hr = 0.5,
+  drift_hr = 0.9
+)
+
+data_list <- generate(data_sim)
+head(data_list@data_list[[1]][[1]])
+```
+
+We can control how datasets are generated with the `n`, `treatment_hr` and `drift_hr` parameters of `generate()`. These
+will override the defaults specified in `create_data_simulation()`.
+```{r}
+generate(data_sim, n = 10, treatment_hr = c(1, 1.3, 2), drift_hr = c(1, 1.2))
+```
+
+To add other features to the simulation there are `set_enrollment()`, `set_cut_off()` and `set_dropout()` functions
+which modify a `DataSimObject`.
+
+### Enrollment
+
+Currently only one enrollment option is defined, `enrollment_constant` where a fixed number of patients are enrolled in
+each period for a given time duration, so `enrollment_constant(rate = c(5, 2), for_time = c(4, 5))` enrolls 5 patients
+in periods 1, 2, 3, 4, and then 2 patients each in 5, 6, 7, 8, 9.
+
+New methods can be specified by defining a function that takes a parameter `n`, the number of patients to generate
+enrollment times for.
+```{r}
+poisson_enrollment <- new(
+  "DataSimEnrollment",
+  fun = function(n) rpois(n, lambda = 5),
+  label = "Poisson enrollment distribution"
+)
+set_enrollment(data_sim, internal = poisson_enrollment)
+```
+
+### Drop Out
+
+Drop out is defined using the same `event_dist()` function as for the survival time. No covariates can be specified for
+these distributions, but we can set different distributions for the three arms.
+
+```{r}
+set_dropout(
+  data_sim,
+  internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
+  internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
+  external_control = event_dist(dist = "weibull", lambdas = 1 / 40, gammas = 1.1)
+)
+```
+
+## Clinical Cut Off
+
+In some cases we want to mimic a clinical trial cut off rule, where all patient data after a certain time are censored.
+Different rules are available such as:
+  - fixed time after first patient is enrolled `cut_off_after_first(time = 36)`
+  - fixed time after last patient is enrolled `cut_off_after_first(time = 60)`
+  - fixed number of events observed `cut_off_after_events(n = 45)`
+
+If a patient has survival time longer than these rules their status will be set to `0` and `eventtime` set to the cut
+off time.
+```{r}
+set_cut_off(
+  data_sim,
+  internal = cut_off_after_first(time = 36),
+  external = cut_off_after_events(n = 45)
+)
+```
+
+
+## Running a simulation
+
+Putting all that together:
+
+```{r}
+my_baseline <- create_baseline_object(
+  n_trt_int = 100,
+  n_ctrl_int = 50,
+  n_ctrl_ext = 100,
+  covariates = baseline_covariates(
+    names = c("age", "score"),
+    means_int = c(55, 5),
+    means_ext = c(60, 5),
+    covariance_int = covariance_matrix(diag = c(5, 1)),
+    covariance_ext = covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
+  ),
+  transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+)
+
+my_data_sim_setup <- create_data_simulation(
+  baseline = my_baseline,
+  coefficients = c(age = 0.001, score_high = 1.1),
+  event_dist = event_dist(dist = "exponential", lambdas = 1 / 50)
+) %>%
+  set_enrollment(
+    internal = enrollment_constant(rate = c(25, 10), for_time = c(4, 30)),
+    external = enrollment_constant(rate = c(30, 10), for_time = c(4, 30))
+  ) %>%
+  set_dropout(
+    internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
+    internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
+    external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+  ) %>%
+  set_cut_off(
+    internal = cut_off_after_first(time = 60),
+    external = cut_off_after_events(n = 100)
+  )
+
+my_data <- generate(my_data_sim_setup, n = 3, treatment_hr = 1, drift_hr = c(1, 1.2))
+```
+
+Now we can define the simulation setup for the models:
+
+```{r}
+borrowing <- sim_borrowing_list(list(full = borrowing_full("ext")))
+outcome <- sim_outcome_list(
+  list(standard_outcome = outcome_surv_exponential(
+    time_var = "eventtime",
+    cens_var = "cens",
+    baseline_prior = prior_normal(0, 1000)
+  ))
+)
+covariate <- sim_covariate_list(list(
+  cov1 = add_covariates(c("age", "score_high"), prior_normal(0, 1000)),
+  no_covs = NULL
+))
+
+treatment <- sim_treatment_list(
+  list(standard_tx = treatment_details(trt_flag_col = "trt", trt_prior = prior_normal(0, 1000)))
+)
+
+sim_obj <- create_simulation_obj(
+  data_matrix_list = my_data,
+  outcome = outcome,
+  borrowing = borrowing,
+  treatment = treatment,
+  covariate = covariate
+)
+```
+
+And finally sample from these models. See the vignette "4. Conduct a simulation study" for more details.
+
+```{r, eval = FALSE}
+sim_results <- mcmc_sample(sim_obj, chains = 1)
+get_results(sim_results)
+```
+
+
+### Using fixed external data
+
+We can also include a known data set as the external data, if we wish to simulate the operating characteristics of
+using previously collected data. This is done by setting the `external_data` argument in `create_data_simulation` to a
+data frame. This data is included after enrollment, cut-off and dropout functions are applied, so these have no effect
+on the fixed data.
+
+It is possible to include a fixed external dataset and additionally simulate external patients by setting `n_ctrl_ext`
+to a non-zero value. This will simulate external patients in addition to the fixed data.
+
+```{r}
+historical_trial_data <- data.frame(
+  age = rnorm(40, 60, 5),
+  score_high = rbinom(40, 1, 0.7),
+  trt = 0,
+  eventtime = rexp(40, 1 / 50),
+  status = 1,
+  enrollment = 1 # enrollment is specified here but not used in clinical cut off
+)
+
+my_baseline <- create_baseline_object(
+  n_trt_int = 100,
+  n_ctrl_int = 50,
+  n_ctrl_ext = 0,
+  covariates = baseline_covariates(
+    names = c("age", "score"),
+    means_int = c(55, 5),
+    means_ext = c(60, 5),
+    covariance_int = covariance_matrix(diag = c(5, 1)),
+    covariance_ext = covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
+  ),
+  transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+)
+
+my_data_sim_setup <- create_data_simulation(
+  baseline = my_baseline,
+  coefficients = c(age = 0.001, score_high = 1.1),
+  event_dist = event_dist(dist = "exponential", lambdas = 1 / 50),
+  fixed_external_data = historical_trial_data
+) %>%
+  set_enrollment(
+    internal = enrollment_constant(rate = c(25, 10), for_time = c(4, 30)),
+    external = enrollment_constant(rate = c(30, 10), for_time = c(4, 30))
+  ) %>%
+  set_dropout(
+    internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
+    internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
+    external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+  ) %>%
+  set_cut_off(
+    internal = cut_off_after_first(time = 60),
+    external = cut_off_after_events(n = 100)
+  )
+my_data_sim_setup
+
+# Drift is not be used for the fixed external data!
+generate(my_data_sim_setup, n = 1, treatment_hr = c(1, 1.3), drift_hr = c(1, 1.2))
+
+my_data <- generate(my_data_sim_setup, n = 3, treatment_hr = c(1, 1.3), drift_hr = c(1))
 ```
