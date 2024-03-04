@@ -206,3 +206,60 @@ setMethod(
     }
   }
 )
+
+# c ----
+#' @rdname c
+setMethod(
+  f = "c",
+  signature = "SimDataList",
+  definition = function(x, ...) {
+    dots <- list(...)
+    assert_list(dots, types = "SimDataList", .var.name = "...")
+
+    x_cols <- colnames(x@guide)
+    assertions <- makeAssertCollection()
+    for (i in seq_along(dots)) {
+      assert_names(
+        colnames(dots[[i]]@guide),
+        identical.to = x_cols,
+        what = "colnames",
+        .var.name = h_glue("Argument {{i+1}}"),
+        add = assertions
+      )
+      assert_names(
+        dots[[i]]@effect,
+        identical.to = x@effect,
+        .var.name = h_glue("Argument {{i+1}} @effect"),
+        add = assertions
+      )
+      assert_names(
+        dots[[i]]@drift,
+        identical.to = x@drift,
+        .var.name = h_glue("Argument {{i+1}} @drift"),
+        add = assertions
+      )
+      assert_names(
+        dots[[i]]@index,
+        identical.to = x@index,
+        .var.name = h_glue("Argument {{i+1}} @index"),
+        add = assertions
+      )
+    }
+    reportAssertions(assertions)
+
+    combined_lists <- unlist(lapply(dots, slot, name = "data_list"), recursive = FALSE)
+    new_data_list <- c(x@data_list, combined_lists)
+
+    new_guides <- do.call(rbind, c(list(x@guide), lapply(dots, slot, name = "guide")))
+    new_guides[x@index] <- seq_len(nrow(new_guides))
+    new_guides$n_datasets_per_param <- NULL
+
+    sim_data_list(
+      data_list = new_data_list,
+      guide = new_guides,
+      drift = x@drift,
+      effect = x@effect,
+      index = x@index
+    )
+  }
+)

@@ -145,3 +145,12 @@ setGeneric("create_tau_string", function(borrowing_object) standardGeneric("crea
 #' @param ... Optional arguments for passed to [data.frame]
 #' @returns A `data.frame`
 NULL
+
+#' @title Combine objects in `psborrow2`
+#'
+#' @description Creates `data.frame` objects from various classes in `psborrow2`
+#' @name c
+#' @param x object of type: [SimDataList-class]
+#' @param ... additional objects to combine
+#' @returns A combined object
+NULL
