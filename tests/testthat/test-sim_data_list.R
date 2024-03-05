@@ -319,3 +319,46 @@ test_that("Combining SimDataLists gives error if guide columns don't match", {
   )
   expect_error(c(list_1, list_2), "identical")
 })
+
+test_that("Combining SimDataLists gives error if identical scenarios", {
+
+  list_1 <- sim_data_list(
+    data_list,
+    data.frame(
+      trueOR = c(1.5, 2.5),
+      driftOR = c(1.0, 1.0),
+      index = 1L:2L
+    ),
+    "trueOR",
+    "driftOR",
+    "index"
+  )
+
+  list_2 <- sim_data_list(
+    data_list,
+    data.frame(
+      trueOR = c(1.25, 2.25),
+      driftOR = c(1.2, 1.2),
+      index = 1L:2L
+    ),
+    "trueOR",
+    "driftOR",
+    "index"
+  )
+
+  list_3 <- sim_data_list(
+    data_list,
+    data.frame(
+      trueOR = c(1.25, 2.5),
+      driftOR = c(1.2, 1.0),
+      index = 1L:2L
+    ),
+    "trueOR",
+    "driftOR",
+    "index"
+  )
+
+  expect_error(c(list_1, list_1), "Duplicate")
+  expect_error(c(list_1, list_1, list_2), "Duplicate")
+  expect_error(c(list_1, list_3), "Duplicate")
+})

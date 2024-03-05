@@ -254,6 +254,10 @@ setMethod(
     new_guides[x@index] <- seq_len(nrow(new_guides))
     new_guides$n_datasets_per_param <- NULL
 
+    if (NROW(new_guides) != NROW(unique(new_guides[, x_cols[!x_cols%in% c("index", "n_datasets_per_param")]]))) {
+      stop("Duplicate scenarios detected. Please inspect the SimDataList objects you are combining to look for overlapping scenarios.")
+    }
+
     sim_data_list(
       data_list = new_data_list,
       guide = new_guides,
