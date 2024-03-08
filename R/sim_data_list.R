@@ -270,11 +270,15 @@ setMethod(
 
 # get_sim_data ----
 #' @rdname get_sim_data
-setMethod("get_sim_data", "SimDataList", function(sim_data_list, i = NULL) {
+setMethod("get_sim_data", "SimDataList", function(sim_data_list, index = NULL, dataset = NULL) {
   
-  if (is.null(i)) {
+  if (is.null(index)) {
     return(sim_data_list@data_list)
   }
 
-  return(sim_data_list@data_list[[i]])
+  if (is.null(dataset)) {
+    return(sim_data_list@data_list[[index]])
+  }
+
+  return(sim_data_list@data_list[[index]][[dataset]])
 })

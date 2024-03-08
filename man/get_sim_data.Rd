@@ -5,12 +5,16 @@
 \alias{get_sim_data,SimDataList-method}
 \title{Get Simulated Data from \code{SimDataList} object}
 \usage{
-get_sim_data(sim_data_list, i)
+get_sim_data(sim_data_list, index = 1, dataset = 1)
 
-\S4method{get_sim_data}{SimDataList}(sim_data_list, i = NULL)
+\S4method{get_sim_data}{SimDataList}(sim_data_list, index = NULL, dataset = NULL)
 }
 \arguments{
-\item{object}{\code{Simulation} object}
+\item{sim_data_list}{\code{SimDataList} object}
+
+\item{index}{the index of the scenario (see guide with print(\code{SimDataList}))}
+
+\item{dataset}{the dataset out of \code{n_datasets_per_param}}
 }
 \value{
 Simulated data as a data frame if the index is specified, else as a list
