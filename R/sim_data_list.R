@@ -267,3 +267,14 @@ setMethod(
     )
   }
 )
+
+# get_sim_data ----
+#' @rdname get_sim_data
+setMethod("get_sim_data", "SimDataList", function(sim_data_list, i = NULL) {
+  
+  if (is.null(i)) {
+    return(sim_data_list@data_list)
+  }
+
+  return(sim_data_list@data_list[[i]])
+})

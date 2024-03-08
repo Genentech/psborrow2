@@ -17,3 +17,4 @@ A named \code{list} of \code{BaselineDataFrame}s with generated data for \code{i
 \describe{
 \item{\code{baseline_object}}{Simulated covariates definitions as \code{BaselineObject}. See \code{\link[=create_baseline_object]{create_baseline_object()}}}
 }}
+

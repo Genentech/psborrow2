@@ -32,3 +32,4 @@ Data Simulation Object Class
 
 \item{\code{cut_off}}{\code{DataSimCutOff}}
 }}
+

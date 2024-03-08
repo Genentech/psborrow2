@@ -154,3 +154,13 @@ NULL
 #' @param ... additional objects to combine
 #' @returns A combined object
 NULL
+
+
+#' Get Simulated Data from `SimDataList` object
+#'
+#' Retrieves the simulated data from a `SimDataList` object by index.
+#'
+#' @param object `Simulation` object
+#' @returns Simulated data as a data frame if the index is specified, else as a list
+#' @export
+setGeneric("get_sim_data", function(sim_data_list, i) standardGeneric("get_sim_data"))
