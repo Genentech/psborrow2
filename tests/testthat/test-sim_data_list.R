@@ -362,3 +362,22 @@ test_that("Combining SimDataLists gives error if identical scenarios", {
   expect_error(c(list_1, list_1, list_2), "Duplicate")
   expect_error(c(list_1, list_3), "Duplicate")
 })
+
+test_that("get_data works", {
+  sim_data_list <- sim_data_list(
+    data_list,
+    data.frame(
+      trueOR = c(1.5, 2.5),
+      driftOR = c(1.0, 1.0),
+      index = 1L:2L
+    ),
+    "trueOR",
+    "driftOR",
+    "index"
+  )
+
+  expect_equal(get_data(sim_data_list, 1), data_list[[1]])
+  expect_equal(get_data(sim_data_list, 2), data_list[[2]])
+  expect_equal(get_data(sim_data_list, 2, 1), data_list[[2]][[1]])
+  expect_equal(get_data(sim_data_list), data_list)
+})

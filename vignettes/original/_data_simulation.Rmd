@@ -149,8 +149,16 @@ data_sim <- create_data_simulation(
 )
 
 data_list <- generate(data_sim)
-head(data_list@data_list[[1]][[1]])
+
+data_list
 ```
+
+We can peek at the data with `get_data()`:
+
+```{r}
+get_data(data_list, index = 1, dataset = 1) %>% head()
+```
+
 
 We can control how datasets are generated with the `n`, `treatment_hr` and `drift_hr` parameters of `generate()`. These
 will override the defaults specified in `create_data_simulation()`.

@@ -154,3 +154,15 @@ NULL
 #' @param ... additional objects to combine
 #' @returns A combined object
 NULL
+
+
+#' Get Simulated Data from `SimDataList` object
+#'
+#' Retrieves the simulated data from a `SimDataList` object by index.
+#'
+#' @param sim_data_list `SimDataList` object
+#' @param index the index of the scenario (see guide with print(`SimDataList`))
+#' @param dataset the dataset out of `n_datasets_per_param`
+#' @returns Simulated data as a data frame if the index is specified, else as a list
+#' @export
+setGeneric("get_data", function(sim_data_list, index = 1, dataset = 1) standardGeneric("get_data"))

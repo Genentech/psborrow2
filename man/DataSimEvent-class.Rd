@@ -15,3 +15,4 @@ Event Time Distribution Object
 
 \item{\code{label}}{Description of the distribution.}
 }}
+
