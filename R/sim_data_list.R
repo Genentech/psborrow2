@@ -271,7 +271,8 @@ setMethod(
 # get_sim_data ----
 #' @rdname get_sim_data
 setMethod("get_sim_data", "SimDataList", function(sim_data_list, index = NULL, dataset = NULL) {
-  
+  assert_integerish(index, lower = 1, upper = length(sim_data_list@data_list))
+  assert_integerish(dataset, lower = 1)
   if (is.null(index)) {
     return(sim_data_list@data_list)
   }
