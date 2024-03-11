@@ -245,11 +245,11 @@ data_list
 #> 1      1          0.5      0.9                    1
 ```
 
-We can peek at the data with `get_sim_data()`:
+We can peek at the data with `get_data()`:
 
 
 ```r
-get_sim_data(data_list, index = 1, dataset = 1) %>% head()
+get_data(data_list, index = 1, dataset = 1) %>% head()
 #>   patid      age score_high trt ext  eventtime status enrollment cens
 #> 1     1 53.25887          0   1   0 163.587989      1          1    0
 #> 2     2 55.64217          0   1   0   6.884799      1          1    0

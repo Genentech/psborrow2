@@ -165,4 +165,4 @@ NULL
 #' @param dataset the dataset out of `n_datasets_per_param`
 #' @returns Simulated data as a data frame if the index is specified, else as a list
 #' @export
-setGeneric("get_sim_data", function(sim_data_list, index = 1, dataset = 1) standardGeneric("get_sim_data"))
+setGeneric("get_data", function(sim_data_list, index = 1, dataset = 1) standardGeneric("get_data"))

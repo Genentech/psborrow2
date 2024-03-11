@@ -363,7 +363,7 @@ test_that("Combining SimDataLists gives error if identical scenarios", {
   expect_error(c(list_1, list_3), "Duplicate")
 })
 
-test_that("get_sim_data works", {
+test_that("get_data works", {
   sim_data_list <- sim_data_list(
     data_list,
     data.frame(
@@ -376,8 +376,8 @@ test_that("get_sim_data works", {
     "index"
   )
 
-  expect_equal(get_sim_data(sim_data_list, 1), data_list[[1]])
-  expect_equal(get_sim_data(sim_data_list, 2), data_list[[2]])
-  expect_equal(get_sim_data(sim_data_list, 2, 1), data_list[[2]][[1]])
-  expect_equal(get_sim_data(sim_data_list), data_list)
+  expect_equal(get_data(sim_data_list, 1), data_list[[1]])
+  expect_equal(get_data(sim_data_list, 2), data_list[[2]])
+  expect_equal(get_data(sim_data_list, 2, 1), data_list[[2]][[1]])
+  expect_equal(get_data(sim_data_list), data_list)
 })
