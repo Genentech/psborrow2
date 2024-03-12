@@ -5,12 +5,12 @@
 \alias{get_data,SimDataList-method}
 \title{Get Simulated Data from \code{SimDataList} object}
 \usage{
-get_data(sim_data_list, index = 1, dataset = 1)
+get_data(object, index = 1, dataset = 1)
 
-\S4method{get_data}{SimDataList}(sim_data_list, index = NULL, dataset = NULL)
+\S4method{get_data}{SimDataList}(object, index = NULL, dataset = NULL)
 }
 \arguments{
-\item{sim_data_list}{\code{SimDataList} object}
+\item{object}{\code{SimDataList} object}
 
 \item{index}{the index of the scenario (see guide with print(\code{SimDataList}))}
 

@@ -321,7 +321,6 @@ test_that("Combining SimDataLists gives error if guide columns don't match", {
 })
 
 test_that("Combining SimDataLists gives error if identical scenarios", {
-
   list_1 <- sim_data_list(
     data_list,
     data.frame(

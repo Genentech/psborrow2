@@ -30,3 +30,4 @@ coverage.*
 /doc/
 /Meta/
 inst/doc
+node_modules

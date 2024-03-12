@@ -254,8 +254,11 @@ setMethod(
     new_guides[x@index] <- seq_len(nrow(new_guides))
     new_guides$n_datasets_per_param <- NULL
 
-    if (NROW(new_guides) != NROW(unique(new_guides[, x_cols[!x_cols%in% c("index", "n_datasets_per_param")]]))) {
-      stop("Duplicate scenarios detected. Please inspect the SimDataList objects you are combining to look for overlapping scenarios.")
+    if (NROW(new_guides) != NROW(unique(new_guides[, x_cols[!x_cols %in% c("index", "n_datasets_per_param")]]))) {
+      stop(
+        "Duplicate scenarios detected.",
+        "Please inspect the SimDataList objects you are combining to look for overlapping scenarios."
+      )
     }
 
     sim_data_list(
@@ -270,16 +273,21 @@ setMethod(
 
 # get_data ----
 #' @rdname get_data
-setMethod("get_data", "SimDataList", function(sim_data_list, index = NULL, dataset = NULL) {
-  assert_integerish(index, lower = 1, upper = length(sim_data_list@data_list))
-  assert_integerish(dataset, lower = 1)
-  if (is.null(index)) {
-    return(sim_data_list@data_list)
+setMethod("get_data", "SimDataList", function(object, index = NULL, dataset = NULL) {
+  if (is.null(index) && is.null(dataset)) {
+    return(object@data_list)
   }
 
-  if (is.null(dataset)) {
-    return(sim_data_list@data_list[[index]])
+  if (!is.null(index)) {
+    assert_integerish(index, lower = 1, upper = length(object@data_list), any.missing = FALSE, null.ok = TRUE)
+    if (is.null(dataset)) {
+      return(object@data_list[[index]])
+    } else {
+      assert_integerish(dataset,
+        lower = 1, upper = length(object@data_list[[index]]),
+        any.missing = FALSE, null.ok = TRUE
+      )
+      return(object@data_list[[index]][[dataset]])
+    }
   }
-
-  return(sim_data_list@data_list[[index]][[dataset]])
 })
