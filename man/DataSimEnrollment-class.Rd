@@ -11,7 +11,9 @@ Enrollment Object
 \section{Slots}{
 
 \describe{
-\item{\code{enrollment_fun}}{A function that takes one argument \code{n} the number of enrollment times to observe and returns a
+\item{\code{fun}}{A function that takes one argument \code{n} the number of enrollment times to observe and returns a
 vector of times.}
+
+\item{\code{label}}{A user-friendly label}
 }}
 

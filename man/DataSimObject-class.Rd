@@ -20,7 +20,8 @@ Data Simulation Object Class
 \code{?simsurv::simsurv}}
 
 \item{\code{treatment_hr}}{\code{numeric} treatment effect as a hazard ration. \code{log(treatment_hr)} is included in \code{beta} with
-\code{coefficients} and \code{log(drift_hr)}. This default is overridden by \link[=generate,DataSimObject-method]{generate} arguments}
+\code{coefficients} and \code{log(drift_hr)}. This default is overridden by \link[=generate,DataSimObject-method]{generate}
+arguments}
 
 \item{\code{drift_hr}}{\code{numeric} hazard ratio between internal and external arms. Included as \code{log(drift_hr)}.}
 

@@ -166,8 +166,10 @@ null_event_dist <- function() {
 # Specify Enrollment into Trial --------------
 
 #' Enrollment Object
-#' @slot enrollment_fun A function that takes one argument `n` the number of enrollment times to observe and returns a
+#'
+#' @slot fun A function that takes one argument `n` the number of enrollment times to observe and returns a
 #'   vector of times.
+#' @slot label A user-friendly label
 .datasim_enrollment <- setClass(
   "DataSimEnrollment",
   slots = c(
@@ -179,6 +181,26 @@ null_event_dist <- function() {
     label = "Enrolling 1 patient per time"
   )
 )
+
+#' Create a `DataSimEnrollment` Object
+#'
+#' @param fun A function that takes one argument `n` the number of enrollment times to observe and returns a
+#'   vector of times.
+#' @param label A user-friendly label
+#'
+#' @return A [DataSimEnrollment][DataSimEnrollment-class] object
+#' @export
+#'
+#' @examples
+#' datasim_enrollment(
+#'   fun = function(n) rpois(n, lambda = 5),
+#'   label = "Poisson enrollment distribution"
+#' )
+datasim_enrollment <- function(fun, label) {
+  assert_string(label)
+  assert_function(fun, args = "n")
+  .datasim_enrollment(fun = fun, label = label)
+}
 
 #' Constant Enrollment Rates
 #'
@@ -407,7 +429,8 @@ set_dropout <- function(object,
 #' @slot coefficients Named `numeric` vector of `beta` coefficients for survival model. See `beta` at
 #'   `?simsurv::simsurv`
 #' @slot treatment_hr `numeric` treatment effect as a hazard ration. `log(treatment_hr)` is included in `beta` with
-#'  `coefficients` and `log(drift_hr)`. This default is overridden by [generate][generate,DataSimObject-method] arguments
+#'   `coefficients` and `log(drift_hr)`. This default is overridden by [generate][generate,DataSimObject-method]
+#'   arguments
 #' @slot drift_hr `numeric` hazard ratio between internal and external arms. Included as `log(drift_hr)`.
 #' @slot fixed_external_data `data.frame` for external data. Currently unused.
 #' @slot event_dist `DataSimEvent` parameters for outcome distribution from [event_dist()]
