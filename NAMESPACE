@@ -3,6 +3,7 @@
 S3method(as.data.frame,BaselineDataList)
 S3method(cbind,BaselineDataFrame)
 export(add_covariates)
+export(add_transformation)
 export(baseline_covariates)
 export(bernoulli_prior)
 export(beta_prior)

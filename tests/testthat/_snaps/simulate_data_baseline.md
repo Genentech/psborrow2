@@ -19,7 +19,7 @@
       age   5    age   5 
       
 
-# show CorrelatedCovariates works for very wide matrices
+# show CorrelatedCovariates works for wide matrices
 
     Code
       show(with_age)
@@ -40,7 +40,7 @@
       age_at_baseline               5   age_at_baseline               5 
       
 
----
+# show CorrelatedCovariates works for very wide matrices
 
     Code
       show(with_age)
