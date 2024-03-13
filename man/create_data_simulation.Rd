@@ -16,16 +16,20 @@ create_data_simulation(
 \arguments{
 \item{baseline}{\code{BaselineObject} from \code{\link[=create_baseline_object]{create_baseline_object()}}}
 
-\item{coefficients}{Named vector of coefficients for linear predictor.
-Must correspond to variables in baseline object}
+\item{coefficients}{Named vector of coefficients for linear predictor. Must correspond to variables in baseline
+object}
 
-\item{treatment_hr}{Treatment hazard ratio.}
+\item{treatment_hr}{Default treatment hazard ratio for simulations. Alternative simulation settings can be specified
+in \link{generate}.}
 
-\item{drift_hr}{Drift hazard ratio between internal and external arms}
+\item{drift_hr}{Default drift hazard ratio between internal and external arms. Alternative simulation settings can be
+specified in \link{generate}.}
 
 \item{event_dist}{Specify time to event distribution with \code{SimDataEvent} object from \code{\link[=event_dist]{event_dist()}}}
 
-\item{fixed_external_data}{Currently ignored.}
+\item{fixed_external_data}{A \code{data.frame} containing external control data. It must contain columns \code{eventtime},
+\code{status} and all of the variables named in \code{coefficients}. If present, \code{trt} must be 0 and \code{ext} must be 1 for all
+rows.}
 }
 \value{
 \code{DataSimObject}
