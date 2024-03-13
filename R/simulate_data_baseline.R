@@ -249,26 +249,6 @@ setMethod(
   }
 )
 
-
-#' @importFrom generics add_transformation
-add_transformation.BaselineObject <- function(object, ..., overwrite = FALSE) {
-  assert_class(object, "BaselineObject")
-  new_tfs <- list(...)
-  assert_list(new_tfs, types = "function", names = "ids", .var.name = "Transformations in ...")
-  assert_flag(overwrite)
-  updated_tfs <- if (overwrite) new_tfs else c(object@transformations, new_tfs)
-  tfs_names <- names(updated_tfs)
-  tfs_duplicates <- tfs_names[anyDuplicated(tfs_names)]
-  if (length(tfs_duplicates)) {
-    warning(
-      "Multiple transformation functions named: ", toString(tfs_duplicates), ". ",
-      "These will be applied sequentially.\n"
-    )
-  }
-  object@transformations <- updated_tfs
-  object
-}
-
 #' Add Transformations to Baseline Objects
 #'
 #' @param object `BaselineObject` created by [create_baseline_object].
@@ -295,7 +275,24 @@ add_transformation.BaselineObject <- function(object, ..., overwrite = FALSE) {
 setMethod(
   f = "add_transformation",
   signature = "BaselineObject",
-  definition = add_transformation.BaselineObject
+  definition = function(object, ..., overwrite = FALSE) {
+    assert_class(object, "BaselineObject")
+    new_tfs <- list(...)
+    assert_list(new_tfs, types = "function", names = "ids", .var.name = "Transformations in ...")
+    assert_flag(overwrite)
+    updated_tfs <- if (overwrite) new_tfs else c(object@transformations, new_tfs)
+    tfs_names <- names(updated_tfs)
+    tfs_duplicates <- tfs_names[anyDuplicated(tfs_names)]
+    if (length(tfs_duplicates)) {
+      warning(
+        "Multiple transformation functions named: ", toString(tfs_duplicates), ". ",
+        "These will be applied sequentially.\n"
+      )
+    }
+    object@transformations <- updated_tfs
+    validObject(object)
+    object
+  }
 )
 
 #' @importFrom generics generate
