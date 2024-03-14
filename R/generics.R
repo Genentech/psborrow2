@@ -168,11 +168,11 @@ NULL
 setGeneric("get_data", function(object, index = 1, dataset = 1) standardGeneric("get_data"))
 
 
-#' Add transformations to `BaselineObject` objects
-#' 
+#' Set transformations in `BaselineObject` objects
+#'
 #' @param object `BaselineObject` object
 #' @param ... Additional arguments passed to methods
 #' @param overwrite logical. Overwrite existing transformations?
 #' @returns `BaselineObject` object with transformations
 #' @export
-setGeneric("add_transformation", function(object, ..., overwrite = FALSE) standardGeneric("add_transformation"))
+setGeneric("set_transformations", function(object, ..., overwrite = FALSE) standardGeneric("set_transformations"))
