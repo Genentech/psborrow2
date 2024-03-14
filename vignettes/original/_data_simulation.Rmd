@@ -179,8 +179,7 @@ in periods 1, 2, 3, 4, and then 2 patients each in 5, 6, 7, 8, 9.
 New methods can be specified by defining a function that takes a parameter `n`, the number of patients to generate
 enrollment times for.
 ```{r}
-poisson_enrollment <- new(
-  "DataSimEnrollment",
+poisson_enrollment <- custom_enrollment(
   fun = function(n) rpois(n, lambda = 5),
   label = "Poisson enrollment distribution"
 )

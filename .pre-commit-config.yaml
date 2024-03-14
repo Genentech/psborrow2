@@ -11,6 +11,13 @@ repos:
         additional_dependencies:
           - knitr
           - stan-dev/cmdstanr@*release
+          - checkmate
+          - glue
+          - methods
+          - graphics
+          - posterior
+          - generics
+          - Matrix
           - mvtnorm
           - future
           - simsurv

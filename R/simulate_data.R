@@ -166,9 +166,11 @@ null_event_dist <- function() {
 # Specify Enrollment into Trial --------------
 
 #' Enrollment Object
-#' @slot enrollment_fun A function that takes one argument `n` the number of enrollment times to observe and returns a
+#'
+#' @slot fun A function that takes one argument `n` the number of enrollment times to observe and returns a
 #'   vector of times.
-.datasim_enrollment <- setClass(
+#' @slot label A user-friendly label
+.custom_enrollment <- setClass(
   "DataSimEnrollment",
   slots = c(
     fun = "function",
@@ -179,6 +181,26 @@ null_event_dist <- function() {
     label = "Enrolling 1 patient per time"
   )
 )
+
+#' Create a `DataSimEnrollment` Object
+#'
+#' @param fun A function that takes one argument `n` the number of enrollment times to observe and returns a
+#'   vector of times.
+#' @param label A user-friendly label
+#'
+#' @return A [DataSimEnrollment][DataSimEnrollment-class] object
+#' @export
+#'
+#' @examples
+#' custom_enrollment(
+#'   fun = function(n) rpois(n, lambda = 5),
+#'   label = "Poisson enrollment distribution"
+#' )
+custom_enrollment <- function(fun, label) {
+  assert_string(label)
+  assert_function(fun, args = "n")
+  .custom_enrollment(fun = fun, label = label)
+}
 
 #' Constant Enrollment Rates
 #'
@@ -195,7 +217,7 @@ null_event_dist <- function() {
 enrollment_constant <- function(rate, for_time = rep(1, length(rate))) {
   assert_integerish(rate, min.len = 1)
   assert_integerish(for_time, len = length(rate))
-  .datasim_enrollment(
+  .custom_enrollment(
     fun = function(n) {
       enrolled_per_t <- rep(rate, times = for_time)
       enrollment_times <- rep(seq_along(enrolled_per_t), times = enrolled_per_t)
