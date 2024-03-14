@@ -50,7 +50,7 @@ test_that("show CorrelatedCovariates works for narrow matrices", {
 })
 
 
-test_that("show CorrelatedCovariates works for very wide matrices", {
+test_that("show CorrelatedCovariates works for wide matrices", {
   with_age <- create_baseline_object(
     100, 50, 100,
     covariates = baseline_covariates(
@@ -71,4 +71,71 @@ test_that("show CorrelatedCovariates works for very wide matrices", {
     )
   )
   expect_snapshot(show(with_age))
+})
+
+
+test_that("adding transformation works when transformations exist", {
+  baseline <- create_baseline_object(
+    100, 50, 100,
+    covariates = baseline_covariates(
+      names = "age", means_int = 55,
+      covariance_int = covariance_matrix(5)
+    ),
+    transformations = list(
+      age_sq = function(data) data$age^2
+    )
+  )
+  result <- add_transformation(baseline, age_scaled = function(data) scale(data$age))
+  expect_list(result@transformations, types = "function", len = 2)
+  expect_names(names(result@transformations), identical.to = c("age_sq", "age_scaled"))
+  expect_equal(result@transformations[["age_scaled"]](data.frame(age = 1:10)), scale(1:10))
+})
+
+test_that("adding transformation works when transformations exist and overwrite=TRUE", {
+  baseline <- create_baseline_object(
+    100, 50, 100,
+    covariates = baseline_covariates(
+      names = "age", means_int = 55,
+      covariance_int = covariance_matrix(5)
+    ),
+    transformations = list(
+      age_sq = function(data) data$age^2
+    )
+  )
+  result <- add_transformation(baseline, age_scaled = function(data) scale(data$age), overwrite = TRUE)
+  expect_list(result@transformations, types = "function", len = 1)
+  expect_names(names(result@transformations), identical.to = c("age_scaled"))
+})
+
+test_that("adding transformation works with no transformations exist", {
+  baseline <- create_baseline_object(
+    100, 50, 100,
+    covariates = baseline_covariates(
+      names = "age", means_int = 55,
+      covariance_int = covariance_matrix(5)
+    )
+  )
+  result <- add_transformation(baseline, age_months = function(data) data$age * 12)
+  expect_list(result@transformations, types = "function", len = 1)
+  expect_names(names(result@transformations), identical.to = c("age_months"))
+})
+
+test_that("adding transformation fails for bad input", {
+  baseline <- create_baseline_object(
+    100, 50, 100,
+    covariates = baseline_covariates(
+      names = "age", means_int = 55,
+      covariance_int = covariance_matrix(5)
+    )
+  )
+  expect_error(add_transformation(baseline, age_months = 1:200), "function")
+  expect_warning(
+    add_transformation(
+      baseline,
+      age_months = function(data) data$age * 12,
+      age_months = function(data) data$age * 12
+    ),
+    "Multiple"
+  )
+  expect_error(add_transformation(baseline, function(data) -data$age), "names")
 })

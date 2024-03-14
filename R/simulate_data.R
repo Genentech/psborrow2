@@ -461,12 +461,16 @@ set_dropout <- function(object,
 #' Data Simulation
 #'
 #' @param baseline `BaselineObject` from [create_baseline_object()]
-#' @param coefficients Named vector of coefficients for linear predictor.
-#' Must correspond to variables in baseline object
-#' @param treatment_hr Treatment hazard ratio.
-#' @param drift_hr Drift hazard ratio between internal and external arms
+#' @param coefficients Named vector of coefficients for linear predictor. Must correspond to variables in baseline
+#'   object
+#' @param treatment_hr Default treatment hazard ratio for simulations. Alternative simulation settings can be specified
+#'   in [generate].
+#' @param drift_hr Default drift hazard ratio between internal and external arms. Alternative simulation settings can be
+#'   specified in [generate].
 #' @param event_dist Specify time to event distribution with `SimDataEvent` object from [event_dist()]
-#' @param fixed_external_data Currently ignored.
+#' @param fixed_external_data A `data.frame` containing external control data. It must contain columns `eventtime`,
+#'   `status` and all of the variables named in `coefficients`. If present, `trt` must be 0 and `ext` must be 1 for all
+#'   rows.
 #'
 #' @return `DataSimObject`
 #' @export
@@ -497,8 +501,8 @@ create_data_simulation <- function(baseline,
                                    fixed_external_data) {
   assert_class(baseline, "BaselineObject")
   assert_numeric(coefficients, finite = TRUE, names = "named", min.len = 0)
-  assert_numeric(treatment_hr, finite = TRUE)
-  assert_numeric(drift_hr, finite = TRUE)
+  assert_numeric(treatment_hr, finite = TRUE, len = 1)
+  assert_numeric(drift_hr, finite = TRUE, len = 1)
 
   possible_coefs <- possible_data_sim_vars(baseline)
   unknown_names <- setdiff(names(coefficients), possible_coefs)
@@ -580,6 +584,12 @@ make_one_dataset <- function(baseline, betas, event_dist, enrollment, dropout) {
 
   # Calculate enrollment for generated observations
   data$enrollment <- sample(enrollment@fun(nrow(data)))
+  if (any(data$enrollment < 0)) {
+    warning(
+      "Negative enrollment times were generated. ",
+      "Check the @enrollment_internal and @enrollment_external slots if this is unexpected."
+    )
+  }
 
   data
 }

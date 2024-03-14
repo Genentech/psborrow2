@@ -1,6 +1,6 @@
 #' @import checkmate
 #' @importFrom stats formula model.matrix setNames as.formula
-#' @importFrom methods new is show callNextMethod slot cbind2
+#' @import methods
 #' @importFrom graphics plot par lines axis rect
 #' @import future
 #' @keywords internal

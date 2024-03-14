@@ -249,6 +249,52 @@ setMethod(
   }
 )
 
+#' Add Transformations to Baseline Objects
+#'
+#' @param object `BaselineObject` created by [create_baseline_object].
+#' @param ... named transformation functions. See details for more information.
+#' @param overwrite If `TRUE` overwrite existing transformation list and only include newly specified transformations.
+#'
+#' @details Transformation functions are evaluated in order and create or overwrite a column in the data.frame with that
+#'   name. The function should have signature `function(data)`, taking a `data.frame` (specifically a
+#'   `BaselineDataFrame` object from `generate(BaselineObject)`) and return a vector with length identical to the total
+#'   number of patients. The `@BaselineObject` slot of the [BaselineDataFrame-class] may be accessed directly or with
+#'   [get_quantiles()] to create transformations. See [binary_cutoff()].
+#' @return An updated `BaselineObject`
+#' @export
+#'
+#' @examples
+#' baseline <- create_baseline_object(
+#'   100, 50, 100,
+#'   covariates = baseline_covariates(
+#'     names = "age", means_int = 55,
+#'     covariance_int = covariance_matrix(5)
+#'   )
+#' )
+#' add_transformation(baseline, age_scaled = function(data) scale(data$age))
+setMethod(
+  f = "add_transformation",
+  signature = "BaselineObject",
+  definition = function(object, ..., overwrite = FALSE) {
+    assert_class(object, "BaselineObject")
+    new_tfs <- list(...)
+    assert_list(new_tfs, types = "function", names = "ids", .var.name = "Transformations in ...")
+    assert_flag(overwrite)
+    updated_tfs <- if (overwrite) new_tfs else c(object@transformations, new_tfs)
+    tfs_names <- names(updated_tfs)
+    tfs_duplicates <- tfs_names[anyDuplicated(tfs_names)]
+    if (length(tfs_duplicates)) {
+      warning(
+        "Multiple transformation functions named: ", toString(tfs_duplicates), ". ",
+        "These will be applied sequentially.\n"
+      )
+    }
+    object@transformations <- updated_tfs
+    validObject(object)
+    object
+  }
+)
+
 #' @importFrom generics generate
 #' @importFrom mvtnorm rmvnorm
 # nolint start
