@@ -173,7 +173,7 @@ These can be added to existing objects and can use built-in functions or used de
 
 ```r
 with_age_score <- with_age_score %>%
-  add_transformation(
+  set_transformations(
     score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7),
     score_rounded = function(data) round(data$score)
   )

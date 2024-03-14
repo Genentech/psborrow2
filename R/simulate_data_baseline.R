@@ -249,7 +249,7 @@ setMethod(
   }
 )
 
-#' Add Transformations to Baseline Objects
+#' Set Transformations in Baseline Objects
 #'
 #' @param object `BaselineObject` created by [create_baseline_object].
 #' @param ... named transformation functions. See details for more information.
@@ -271,9 +271,9 @@ setMethod(
 #'     covariance_int = covariance_matrix(5)
 #'   )
 #' )
-#' add_transformation(baseline, age_scaled = function(data) scale(data$age))
+#' set_transformations(baseline, age_scaled = function(data) scale(data$age))
 setMethod(
-  f = "add_transformation",
+  f = "set_transformations",
   signature = "BaselineObject",
   definition = function(object, ..., overwrite = FALSE) {
     assert_class(object, "BaselineObject")
