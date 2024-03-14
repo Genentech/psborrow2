@@ -85,7 +85,7 @@ test_that("adding transformation works when transformations exist", {
       age_sq = function(data) data$age^2
     )
   )
-  result <- add_transformation(baseline, age_scaled = function(data) scale(data$age))
+  result <- set_transformations(baseline, age_scaled = function(data) scale(data$age))
   expect_list(result@transformations, types = "function", len = 2)
   expect_names(names(result@transformations), identical.to = c("age_sq", "age_scaled"))
   expect_equal(result@transformations[["age_scaled"]](data.frame(age = 1:10)), scale(1:10))
@@ -102,7 +102,7 @@ test_that("adding transformation works when transformations exist and overwrite=
       age_sq = function(data) data$age^2
     )
   )
-  result <- add_transformation(baseline, age_scaled = function(data) scale(data$age), overwrite = TRUE)
+  result <- set_transformations(baseline, age_scaled = function(data) scale(data$age), overwrite = TRUE)
   expect_list(result@transformations, types = "function", len = 1)
   expect_names(names(result@transformations), identical.to = c("age_scaled"))
 })
@@ -115,7 +115,7 @@ test_that("adding transformation works with no transformations exist", {
       covariance_int = covariance_matrix(5)
     )
   )
-  result <- add_transformation(baseline, age_months = function(data) data$age * 12)
+  result <- set_transformations(baseline, age_months = function(data) data$age * 12)
   expect_list(result@transformations, types = "function", len = 1)
   expect_names(names(result@transformations), identical.to = c("age_months"))
 })
@@ -128,14 +128,14 @@ test_that("adding transformation fails for bad input", {
       covariance_int = covariance_matrix(5)
     )
   )
-  expect_error(add_transformation(baseline, age_months = 1:200), "function")
+  expect_error(set_transformations(baseline, age_months = 1:200), "function")
   expect_warning(
-    add_transformation(
+    set_transformations(
       baseline,
       age_months = function(data) data$age * 12,
       age_months = function(data) data$age * 12
     ),
     "Multiple"
   )
-  expect_error(add_transformation(baseline, function(data) -data$age), "names")
+  expect_error(set_transformations(baseline, function(data) -data$age), "names")
 })
