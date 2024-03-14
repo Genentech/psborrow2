@@ -286,7 +286,7 @@ New methods can be specified by defining a function that takes a parameter `n`, 
 enrollment times for.
 
 ```r
-poisson_enrollment <- datasim_enrollment(
+poisson_enrollment <- custom_enrollment(
   fun = function(n) rpois(n, lambda = 5),
   label = "Poisson enrollment distribution"
 )

@@ -3,7 +3,7 @@
 \docType{class}
 \name{DataSimEnrollment-class}
 \alias{DataSimEnrollment-class}
-\alias{.datasim_enrollment}
+\alias{.custom_enrollment}
 \title{Enrollment Object}
 \description{
 Enrollment Object

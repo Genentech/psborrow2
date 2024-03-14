@@ -1,6 +1,6 @@
 # DataSimEnrollment -------
-test_that("datasim_enrollment constructor works as expected", {
-  result <- datasim_enrollment(
+test_that("custom_enrollment constructor works as expected", {
+  result <- custom_enrollment(
     fun = function(n) rpois(n, lambda = 5),
     label = "Poisson enrollment distribution"
   )
@@ -10,13 +10,13 @@ test_that("datasim_enrollment constructor works as expected", {
   expect_equal(result@fun(5), c(4, 3, 5, 2, 5))
 })
 
-test_that("datasim_enrollment constructor fails as expected", {
+test_that("custom_enrollment constructor fails as expected", {
   expect_error(
-    datasim_enrollment(fun = function(num) rpois(num, lambda = 5), label = "test"),
+    custom_enrollment(fun = function(num) rpois(num, lambda = 5), label = "test"),
     "formal arguments"
   )
   expect_error(
-    datasim_enrollment(fun = function(n) rpois(n, lambda = 5), label = NA),
+    custom_enrollment(fun = function(n) rpois(n, lambda = 5), label = NA),
     "label"
   )
 })
