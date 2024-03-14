@@ -1,3 +1,9 @@
+# psborrow2 0.0.3
+
+- Addition of data generation functions for simulation studies
+- Improved UI and documentation
+- Additional vignettes
+
 # psborrow2 0.0.2
 
 - First public demonstration of `psborrow2`
