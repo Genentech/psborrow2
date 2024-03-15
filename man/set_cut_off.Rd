@@ -23,7 +23,7 @@ Set Clinical Cut Off Rule
 \examples{
 data_sim <- create_data_simulation(
   create_baseline_object(10, 10, 10),
-  event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+  event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 36)
 )
 set_cut_off(
   data_sim,

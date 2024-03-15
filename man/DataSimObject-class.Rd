@@ -27,7 +27,7 @@ arguments}
 
 \item{\code{fixed_external_data}}{\code{data.frame} for external data. Currently unused.}
 
-\item{\code{event_dist}}{\code{DataSimEvent} parameters for outcome distribution from \code{\link[=event_dist]{event_dist()}}}
+\item{\code{event_dist}}{\code{DataSimEvent} parameters for outcome distribution from \code{\link[=create_event_dist]{create_event_dist()}}}
 
 \item{\code{enrollment}}{\code{DataSimEnrollment} object.}
 

@@ -36,7 +36,7 @@ baseline_obj <- create_baseline_object(
 sim_obj <- create_data_simulation(
   baseline_obj,
   coefficients = c(age = 0.001, score = 1.5),
-  event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+  event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 36)
 )
 data_sim_list <- generate(sim_obj, treatment_hr = c(0, 1), drift_hr = 0.5)
 }
