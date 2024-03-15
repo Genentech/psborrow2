@@ -25,7 +25,7 @@ in \link{generate}.}
 \item{drift_hr}{Default drift hazard ratio between internal and external arms. Alternative simulation settings can be
 specified in \link{generate}.}
 
-\item{event_dist}{Specify time to event distribution with \code{SimDataEvent} object from \code{\link[=event_dist]{event_dist()}}}
+\item{event_dist}{Specify time to event distribution with \code{SimDataEvent} object from \code{\link[=create_event_dist]{create_event_dist()}}}
 
 \item{fixed_external_data}{A \code{data.frame} containing external control data. It must contain columns \code{eventtime},
 \code{status} and all of the variables named in \code{coefficients}. If present, \code{trt} must be 0 and \code{ext} must be 1 for all
@@ -52,7 +52,7 @@ baseline_obj <- create_baseline_object(
 sim_obj <- create_data_simulation(
   baseline_obj,
   coefficients = c(age = 0.001, score = 1.5),
-  event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+  event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 36)
 )
 data_sim_list <- generate(sim_obj, treatment_hr = c(0.5, 1), drift_hr = 0.5)
 }
