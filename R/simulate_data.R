@@ -292,7 +292,7 @@ cut_off_after_first <- function(time) {
       cut_time <- min(data$enrollment) + time
       after_cut_off <- data$enrollment + data$eventtime > cut_time
       data$status <- ifelse(after_cut_off, 0, data$status)
-      data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
+      data$eventtime <- ifelse(after_cut_off, cut_time - data$enrollment, data$eventtime)
       data[data$enrollment < cut_time, ]
     },
     label = h_glue("Cut off after first enrolled patient reaches time = {{time}}")
@@ -310,7 +310,7 @@ cut_off_after_last <- function(time) {
       cut_time <- max(data$enrollment) + time
       after_cut_off <- data$enrollment + data$eventtime > cut_time
       data$status <- ifelse(after_cut_off, 0, data$status)
-      data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
+      data$eventtime <- ifelse(after_cut_off, cut_time - data$enrollment, data$eventtime)
       data
     },
     label = h_glue("Cut off after last enrolled patient reaches time={{time}}")
@@ -328,7 +328,7 @@ cut_off_after_events <- function(n) {
       cut_time <- sort(data$enrollment + data$eventtime)[n]
       after_cut_off <- data$enrollment + data$eventtime > cut_time
       data$status <- ifelse(after_cut_off, 0, data$status)
-      data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
+      data$eventtime <- ifelse(after_cut_off, cut_time - data$enrollment, data$eventtime)
       data[data$enrollment < cut_time, ]
     },
     label = h_glue("Cut off after {{n}} events")

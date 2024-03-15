@@ -26,6 +26,12 @@ test_that("check_fixed_external_data works as expected", {
 # create_event_dist ----
 
 # null_event_dist ----
+test_that("null_event_dist works as expected", {
+  result <- null_event_dist()
+  expect_class(result, "DataSimEvent")
+  expect_list(result@params, len = 0)
+  expect_equal(result@label, "No distribution specified")
+})
 
 # DataSimEnrollment -------
 test_that("custom_enrollment constructor works as expected", {
@@ -52,13 +58,66 @@ test_that("custom_enrollment constructor fails as expected", {
 
 # enrollment_constant ------
 
+test_that("enrollment_constant works as expected", {
+  enrollment <- enrollment_constant(rate = c(3, 2, 1), for_time = c(2, 3, 4))
+  expect_class(enrollment, "DataSimEnrollment")
+  expect_equal(enrollment@fun(16), c(1L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 4L, 4L, 5L, 5L, 6L, 7L, 8L, 9L))
+  expect_error(enrollment@fun(100), "Not enough patients")
+  expect_error(enrollment@fun(), "argument")
+})
+
+test_that("enrollment_constant works with a single rate", {
+  enrollment <- enrollment_constant(rate = 5, for_time = 5)
+  expect_class(enrollment, "DataSimEnrollment")
+  expect_equal(enrollment@fun(12), c(1L, 1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L, 2L, 3L, 3L))
+  expect_error(enrollment@fun(100), "Not enough patients")
+  expect_error(enrollment@fun(), "argument")
+})
+
+test_that("enrollment_constant works with missing for_time", {
+  enrollment <- enrollment_constant(rate = c(3, 3, 3, 3, 3, 3, 3))
+  expect_class(enrollment, "DataSimEnrollment")
+  expect_equal(enrollment@fun(9), c(1L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L))
+  expect_equal(enrollment@fun(21), rep(1:7, each = 3))
+  expect_error(enrollment@fun(22), "Not enough")
+})
+
+# create_data_sim_enrollment ----
+
 # set_enrollment -------
 
+
 # cut_off_none -----
+test_that("cut_off_none works to create the object", {
+  result <- cut_off_none()
+  expect_class(result, "DataSimCutOff")
+  test_data <- data.frame(id = 1:3, eventtime = 1:3, enrollment = 1:3, status = c(1, 0, 1))
+  expect_equal(result@fun(test_data), test_data)
+})
 
 # cut_off_after_first -----
+test_that("cut_off_after_first works as expected", {
+  result <- cut_off_after_first(time = 2)
+  expect_class(result, "DataSimCutOff")
+  test_data <- data.frame(id = 1:3, eventtime = 1:3, enrollment = 1:3, status = c(1, 1, 1))
+  cutoff_data <- result@fun(test_data)
+  expected_data <- data.frame(
+    id = 1:2, eventtime = c(1, 1), enrollment = 1:2, status = c(1, 0)
+  )
+  expect_equal(cutoff_data, expected_data)
+})
 
 # cut_off_after_last ------
+test_that("cut_off_after_last works as expected", {
+  result <- cut_off_after_last(time = 2)
+  expect_class(result, "DataSimCutOff")
+  test_data <- data.frame(id = 1:3, eventtime = c(3, 4, 5), enrollment = 1:3, status = c(1, 1, 1))
+  cutoff_data <- result@fun(test_data)
+  expected_data <- data.frame(
+    id = 1:3, eventtime = c(3, 3, 2), enrollment = 1:3, status = c(1, 0, 0)
+  )
+  expect_equal(cutoff_data, expected_data)
+})
 
 # cut_off_after_events ----
 
@@ -108,4 +167,10 @@ test_that("DataSimObject show works as expected", {
       external = cut_off_after_first(time = 65)
     )
   expect_snapshot(show(object))
+})
+
+# Testing generated data
+
+test_that("Test simulated data gives expected result with coxph", {
+
 })
