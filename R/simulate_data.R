@@ -520,7 +520,7 @@ create_data_simulation <- function(baseline,
     fixed_data_object <- .datasim_fixed_external_data()
   }
 
-  ds <- .datasim_object(
+  .datasim_object(
     baseline = baseline,
     coefficients = coefficients,
     treatment_hr = treatment_hr,
