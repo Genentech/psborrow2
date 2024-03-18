@@ -174,14 +174,303 @@ test_that("cut_off_after_last works as expected", {
 })
 
 # cut_off_after_events ----
+test_that("cut_off_after_events works as expected", {
+  result <- cut_off_after_events(n = 2)
+  expect_class(result, "DataSimCutOff")
+  test_data <- data.frame(id = 1:4, eventtime = c(2, 5, 2, 4), enrollment = c(1, 2, 3, 7), status = c(1, 0, 1, 1))
+  cutoff_data <- result@fun(test_data)
+  expected_data <- data.frame(
+    id = 1:3, eventtime = c(2, 3, 2), enrollment = 1:3, status = c(1, 0, 1)
+  )
+  expect_equal(cutoff_data, expected_data)
+})
 
 # set_cut_off --------
+test_that("set_cut_off works", {
+  baseline <- create_baseline_object(
+    n_trt_int = 50,
+    n_ctrl_int = 40,
+    n_ctrl_ext = 10,
+    covariates = baseline_covariates(
+      names = c("age", "score"),
+      means_int = c(59, 5),
+      covariance_int = covariance_matrix(diag = c(5, 1)),
+    )
+  )
+  data_sim <- create_data_simulation(
+    baseline = baseline,
+    event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50)
+  )
+  cutoff_1 <- cut_off_after_events(n = 50)
+  cutoff_2 <- cut_off_none()
+  result <- set_cut_off(data_sim, internal = cutoff_1, external = cutoff_2)
+  expect_class(result, "DataSimObject")
+  expect_class(result@cut_off_external, "DataSimCutOff")
+  expect_class(result@cut_off_internal, "DataSimCutOff")
+  expect_equal(cutoff_1, result@cut_off_internal)
+  expect_equal(cutoff_2, result@cut_off_external)
+})
 
 # set_dropout -----
+test_that("set_dropout works", {
+  baseline <- create_baseline_object(
+    n_trt_int = 50,
+    n_ctrl_int = 40,
+    n_ctrl_ext = 10,
+    covariates = baseline_covariates(
+      names = c("age", "score"),
+      means_int = c(59, 5),
+      covariance_int = covariance_matrix(diag = c(5, 1)),
+    )
+  )
+  data_sim <- create_data_simulation(
+    baseline = baseline,
+    event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50)
+  )
+
+  dropout_1 <- create_event_dist(dist = "exponential", lambdas = 1 / 50)
+  dropout_2 <- create_event_dist(dist = "exponential", lambdas = c(0.002, 0.004), pmix = 0.4, mixture = TRUE)
+  dropout_3 <- create_event_dist(dist = "weibull", lambdas = 1 / 50, gammas = 1.1)
+  result <- set_dropout(data_sim,
+    internal_treated = dropout_1,
+    internal_control = dropout_2,
+    external_control = dropout_3
+  )
+  expect_class(result, "DataSimObject")
+  expect_equal(result@dropout_internal_treated, dropout_1)
+  expect_equal(result@dropout_internal_control, dropout_2)
+  expect_equal(result@dropout_external_control, dropout_3)
+})
 
 # create_data_simulation ------
 
+test_that("create_data_simulation works as expected", {
+  baseline <- create_baseline_object(
+    n_trt_int = 50,
+    n_ctrl_int = 40,
+    n_ctrl_ext = 10,
+    covariates = baseline_covariates(
+      names = c("age", "score"),
+      means_int = c(59, 5),
+      covariance_int = covariance_matrix(diag = c(5, 1)),
+    ),
+    transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+  )
+  data_sim <- create_data_simulation(
+    baseline = baseline,
+    drift_hr = 1,
+    treatment_hr = 2,
+    coefficients = c(age = 0.05, score_high = 1.1),
+    event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50)
+  )
+
+  expect_class(data_sim, "DataSimObject")
+})
+
+test_that("create_data_simulation works catches misspecified parameters", {
+  baseline <- create_baseline_object(
+    n_trt_int = 50,
+    n_ctrl_int = 40,
+    n_ctrl_ext = 10,
+    covariates = baseline_covariates(
+      names = c("age", "score"),
+      means_int = c(59, 5),
+      covariance_int = covariance_matrix(diag = c(5, 1)),
+    ),
+    transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+  )
+
+  # bad coefficient name
+  expect_error(
+    create_data_simulation(
+      baseline = baseline,
+      drift_hr = 1,
+      treatment_hr = 2,
+      coefficients = c(AGE = 0.05, score_high = 1.1),
+      event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50)
+    ),
+    "Unknown coefficient"
+  )
+
+  # bad drift_hr
+  expect_error(
+    create_data_simulation(
+      baseline = baseline,
+      drift_hr = "no drift",
+      treatment_hr = 2,
+      coefficients = c(age = 0.05, score_high = 1.1),
+      event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50)
+    ),
+    "Must be of type"
+  )
+
+  # bad treatment_hr
+  expect_error(
+    create_data_simulation(
+      baseline = baseline,
+      drift_hr = 1,
+      treatment_hr = NA_real_,
+      coefficients = c(age = 0.05, score_high = 1.1),
+      event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50)
+    ),
+    "missing"
+  )
+})
+
+
+test_that("create_data_simulation works with fixed data", {
+  historical_trial_data <- data.frame(
+    age = rnorm(40, 60, 5),
+    score_high = rbinom(40, 1, 0.7),
+    trt = 0,
+    eventtime = rexp(40, 1 / 50),
+    status = 1,
+    enrollment = 1 # enrollment is specified here but not used in clinical cut off
+  )
+
+  my_internal_baseline <- create_baseline_object(
+    n_trt_int = 100,
+    n_ctrl_int = 50,
+    n_ctrl_ext = 0,
+    covariates = baseline_covariates(
+      names = c("age", "score"),
+      means_int = c(55, 5),
+      means_ext = c(60, 5),
+      covariance_int = covariance_matrix(diag = c(5, 1)),
+      covariance_ext = covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
+    ),
+    transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+  )
+
+  my_data_sim_setup_with_fixed <- create_data_simulation(
+    baseline = my_internal_baseline,
+    coefficients = c(age = 0.001, score_high = 1.1),
+    event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50),
+    fixed_external_data = historical_trial_data
+  ) %>%
+    set_enrollment(
+      internal = enrollment_constant(rate = c(25, 10), for_time = c(4, 30)),
+      external = enrollment_constant(rate = c(30, 10), for_time = c(4, 30))
+    ) %>%
+    set_dropout(
+      internal_treated = create_event_dist(dist = "exponential", lambdas = 1 / 50),
+      internal_control = create_event_dist(dist = "exponential", lambdas = 1 / 55),
+      external_control = create_event_dist(dist = "exponential", lambdas = 1 / 40)
+    ) %>%
+    set_cut_off(
+      internal = cut_off_after_first(time = 60),
+      external = cut_off_after_events(n = 100)
+    )
+  expect_class(my_data_sim_setup_with_fixed, "DataSimObject")
+
+  expected_historical <- cbind(historical_trial_data, ext = 1)
+  expect_equal(
+    my_data_sim_setup_with_fixed@fixed_external_data@data,
+    expected_historical
+  )
+
+  # same as original data
+  set.seed(100)
+  generated_data <- generate(my_data_sim_setup_with_fixed, n = 1, treatment_hr = 1, drift_hr = 1)
+  fixed_obs <- as.data.frame(generated_data@data_list[[1]][[1]][151:190, ])
+  expect_equal(fixed_obs$age, historical_trial_data$age)
+  expect_equal(fixed_obs$eventtime, historical_trial_data$eventtime)
+
+  # Drift is not used warning
+  expect_warning(
+    generate(my_data_sim_setup_with_fixed, n = 1, treatment_hr = 1, drift_hr = 1.2),
+    "Drift parameter is not applied to fixed external data"
+  )
+})
+
 # make_one_dataset --------
+
+test_that("make_one_dataset works as expected", {
+  baseline <- create_baseline_object(
+    n_trt_int = 30,
+    n_ctrl_int = 20,
+    n_ctrl_ext = 30,
+    covariates = baseline_covariates(
+      names = c("age", "score"),
+      means_int = c(40, 5),
+      means_ext = c(50, 5),
+      covariance_int = covariance_matrix(diag = c(5, 1)),
+      covariance_ext = covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
+    ),
+    transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+  )
+
+  baseline_data <- generate(baseline)[[1]]
+  result <- make_one_dataset(
+    baseline = baseline_data,
+    betas = c(age = 0.001, score_high = 1.1, trt = log(1.5), ext = log(1.1)),
+    enrollment = enrollment_constant(5, 20),
+    event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 20),
+    dropout = create_event_dist(dist = "exponential", lambdas = 1 / 50)
+  )
+  expect_data_frame(result, nrows = 30)
+  expect_equal(colnames(result), c("patid", "age", "score_high", "trt", "ext", "eventtime", "status", "enrollment"))
+})
+
+test_that("make_one_dataset works catches bad conditions", {
+  baseline <- create_baseline_object(
+    n_trt_int = 30,
+    n_ctrl_int = 20,
+    n_ctrl_ext = 30,
+    covariates = baseline_covariates(
+      names = c("age", "score"),
+      means_int = c(40, 5),
+      means_ext = c(50, 5),
+      covariance_int = covariance_matrix(diag = c(5, 1)),
+      covariance_ext = covariance_matrix(diag = c(5, 1.2), upper_tri = c(0.1))
+    ),
+    transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+  )
+
+  baseline_data <- generate(baseline)[[1]]
+
+  bad_event_dist <- create_event_dist(loghazard = function(t, x, betas, ...) stop("bad log hazard definition"))
+
+  expect_error(
+    expect_error(
+      make_one_dataset(
+        baseline = baseline_data,
+        betas = c(age = 0.001, score_high = 1.1, trt = log(1.5), ext = log(1.1)),
+        enrollment = enrollment_constant(5, 20),
+        event_dist = bad_event_dist,
+        dropout = create_event_dist(dist = "exponential", lambdas = 1 / 50)
+      ),
+      "Error caught when generating survival times"
+    ),
+    "bad log hazard"
+  )
+
+  expect_error(
+    expect_error(
+      make_one_dataset(
+        baseline = baseline_data,
+        betas = c(age = 0.001, score_high = 1.1, trt = log(1.5), ext = log(1.1)),
+        enrollment = enrollment_constant(5, 20),
+        event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50),
+        dropout = bad_event_dist
+      ),
+      "Error caught when generating drop out times"
+    ),
+    "bad log hazard"
+  )
+
+  expect_warning(
+    make_one_dataset(
+      baseline = baseline_data,
+      betas = c(age = 0.001, score_high = 1.1, trt = log(1.5), ext = log(1.1)),
+      enrollment = custom_enrollment(function(n) sample(-10:1, size = n, replace = TRUE), "negative times"),
+      event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50),
+      dropout = create_event_dist(dist = "exponential", lambdas = 1 / 500)
+    ),
+    "Negative enrollment times were generated"
+  )
+})
+
 
 # generate -----
 test_that("generate works on DataSimObjects", {
@@ -263,7 +552,7 @@ test_that("DataSimObject show works as expected", {
 
 # Testing generated data
 
-test_that("Test simulated data has expected coefficients in Cox model", {
+test_that("Test simulated data has expected coefficients in models", {
   library(survival)
   my_baseline <- create_baseline_object(
     n_trt_int = 800,
@@ -289,4 +578,10 @@ test_that("Test simulated data has expected coefficients in Cox model", {
   fit <- coxph(Surv(eventtime, status) ~ trt + age + score_high, as.data.frame(data@data_list[[1]][[1]]))
   expected_coefs <- c(trt = log(2), age = 0.05, score_high = 1.1)
   expect_equal(fit$coefficients, expected_coefs, tolerance = 0.05)
+
+  survreg_fit <- survreg(Surv(eventtime, status) ~ trt + age + score_high,
+    data = as.data.frame(data@data_list[[1]][[1]]), dist = "exponential"
+  )
+  expected_survreg_coefs <- c(trt = -log(2), age = -0.05, score_high = -1.1)
+  expect_equal(survreg_fit$coefficients[2:4], expected_survreg_coefs, tolerance = 0.025)
 })

@@ -217,7 +217,7 @@ custom_enrollment <- function(fun, label) {
 enrollment_constant <- function(rate, for_time = rep(1, length(rate))) {
   assert_integerish(rate, min.len = 1)
   assert_integerish(for_time, len = length(rate))
-  .custom_enrollment(
+  .datasim_enrollment(
     fun = function(n) {
       enrolled_per_t <- rep(rate, times = for_time)
       enrollment_times <- rep(seq_along(enrolled_per_t), times = enrolled_per_t)
@@ -500,8 +500,8 @@ create_data_simulation <- function(baseline,
                                    fixed_external_data) {
   assert_class(baseline, "BaselineObject")
   assert_numeric(coefficients, finite = TRUE, names = "named", min.len = 0)
-  assert_numeric(treatment_hr, finite = TRUE, len = 1)
-  assert_numeric(drift_hr, finite = TRUE, len = 1)
+  assert_numeric(treatment_hr, finite = TRUE, len = 1, any.missing = FALSE)
+  assert_numeric(drift_hr, finite = TRUE, len = 1, any.missing = FALSE)
 
   possible_coefs <- possible_data_sim_vars(baseline)
   unknown_names <- setdiff(names(coefficients), possible_coefs)
