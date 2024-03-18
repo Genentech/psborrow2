@@ -63,7 +63,7 @@ assessing balance between groups after weighting or matching. It is compatible w
 See the [vignette](https://cran.r-project.org/web/packages/cobalt/vignettes/cobalt.html) for more details.
 We can use the `cobalt` package to assess balance with `bal.plot()`.
 
-```{r balplot}
+```{r balplot, message = FALSE}
 library(cobalt)
 bal.plot(weightit_model)
 ```
