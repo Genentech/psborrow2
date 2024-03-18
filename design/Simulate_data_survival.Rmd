@@ -17,57 +17,84 @@ For survival we need to specify in addition:
    - covariate HR coefficients
    - treatment effect HR
 
-```{r}
-# each of these builds up the object
-# nothing needs to generate any data
-#
-# implement generate() method for all of them
-# generate methods are recursive,
-# highest level would take n=N repeat from highest level
-#
-
-
-baseline_obj %>%
-  design_matrx(~ sex + trt + ext) %>%
-  linear_predictor(betas = c(sex = 0.3, trt = 1, ext = 1.1)) %>%
-  simulate_survival(hazard_model = weibull_ph(shape = 1, scale = 0.9)) %>%
-  survival_matrix() %>% # think of better name....
-  generate(n = 100)
-
-generate(baseline_obj()) %>%
-  mutate(age2 = age^2) %>%
-  design_matrix(~ sex + trt + ext)
-
-baseline_design <- design_matrix(baseline_obj, ~ sex + I(age^2) + trt + ext, preprocess_fun = function(data) data)
-baseline_design2 <- design_matrix(baseline_obj, ~., preprocess_fun = function(data) data$age2 <- data$age^2)
-colnames(baseline_design)
-
-
-baseline_predictor <- linear_predictor(
-  design = baseline_design, # matrix
-  betas = c(
-    sex = .3,
-    "I(age^2)" = .4,
-    trt = 1,
-    ext = 1.1
+```{r, eval = FALSE}
+baseline_with_age_score <- create_baseline_object(
+  n_trt_int = 100,
+  n_ctrl_int = 50,
+  n_ctrl_ext = 10,
+  covariates = baseline_covariates(
+    names = c("age", "score"),
+    means_int = c(55, 5),
+    means_ext = c(60, 5),
+    covariance_int = covariance_matrix(c(5, 1))
   )
 )
 
-simulate_survival(
-  baseline_predictor,
-  hazard_model = weibull_ph(shape = 0.76, lambda = 1) # is a function that takes vector of LPs and gives vector of times
+baseline_with_age_score@transformations <- list(
+  score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7),
+  score_rounded = function(data) round(data$score),
+  score_high_factor = function(data) factor(round(data$score), levels = 0:10)
 )
 
-survival_matrix(
-  baseline_design,
-  surv_times = simulate_survival(baseline_predictor, hazard_model = weibull_ph(shape = 0.76, lambda = 1)),
-  censor_times = censor(),
-  recruitment = recruitment()
+weibull_surv <- event_dist(dist = "weibull", lambdas = 1 / 200, gammas = 1)
+exp_event_dist <- event_dist(dist = "exponential", lambdas = 1 / 36)
+
+my_data_sim <-
+  create_data_simulation(
+    baseline_with_age_score,
+    coefficients = c(age = 0.001, score_high = 1.5),
+    event_dist = exp_event_dist
+    # fixed_external_data
+  )
+
+my_data_sim %>% generate(
+  treatment_effect = c(0),
+  drift = c(.5)
+)
+
+my_data_sim <- my_data_sim %>%
+  set_enrollment(
+    internal = enrollment_fixed(rate = c(25, 10), for_time = c(4, 30)),
+    external = enrollment_fixed(rate = c(30, 10), for_time = c(4, 30))
+  ) %>%
+  set_cut_off(
+    internal = cut_off_after_first(time = 36),
+    external = cut_off_after_events(n = 45)
+  ) %>%
+  set_dropout(
+    internal_treated = exp_event_dist,
+    internal_control = exp_event_dist,
+    external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+  )
+
+# Generate simulation list
+my_data <- generate(
+  my_data_sim,
+  n = 4,
+  treatment_effect = c(0, .5, 1, 3),
+  drift = c(0, .2, .4)
+)
+
+
+my_data$guide
+head(my_data$data_list[[1]][[1]])
+plot(
+  x = my_data$data_list[[1]][[1]][, "age"],
+  y = my_data$data_list[[1]][[1]][, "eventtime"],
+  col = my_data$data_list[[1]][[1]][, "score_high"] + 1
+)
+library(survival)
+
+plot(survfit(Surv(eventtime, status) ~ trt, data = as.data.frame(my_data$data_list[[1]][[3]])),
+  main = "Treatment effect = 0"
+)
+plot(survfit(Surv(eventtime, status) ~ trt, data = as.data.frame(my_data$data_list[[2]][[3]])),
+  main = "Treatment effect = 0.5"
+)
+plot(survfit(Surv(eventtime, status) ~ trt, data = as.data.frame(my_data$data_list[[3]][[3]])),
+  main = "Treatment effect = 1"
+)
+plot(survfit(Surv(eventtime, status) ~ trt, data = as.data.frame(my_data$data_list[[4]][[3]])),
+  main = "Treatment effect = 3"
 )
 ```
-
-Refer to psborrow for how these can be calculated and combined.
-
-- recruitment rate
-- cut off
-- censoring

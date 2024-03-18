@@ -173,7 +173,7 @@ parse_constraint <- function(object) {
 #'       prior_normal(0, 1000)
 #'     )
 #'   )
-#'   samples <- mcmc_sample(analysis_object)
+#'   samples <- mcmc_sample(analysis_object, 200, 400, 1)
 #'   draws <- samples$draws()
 #'   renamed_draws <- rename_draws_covariates(draws, analysis_object)
 #'   summary(renamed_draws)

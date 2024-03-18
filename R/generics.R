@@ -134,6 +134,7 @@ setGeneric("create_alpha_string", function(borrowing_object, outcome_object) sta
 #' @export
 setGeneric("create_tau_string", function(borrowing_object) standardGeneric("create_tau_string"))
 
+
 #' Create Stan Code for Model
 #'
 #' @param borrowing borrowing object
@@ -154,3 +155,44 @@ setGeneric("create_tau_string", function(borrowing_object) standardGeneric("crea
 setGeneric("make_model_string_model", function(borrowing, outcome, analysis_obj) {
   standardGeneric("make_model_string_model")
 })
+
+#' @title Coerce a `psborrow2` object to a data frame
+#'
+#' @description Creates `data.frame` objects from various classes in `psborrow2`
+#'
+#' @name as_data_frame
+#'
+#' @param x object of type: [BaselineDataList-class]
+#' @param ... Optional arguments for passed to [data.frame]
+#' @returns A `data.frame`
+NULL
+
+#' @title Combine objects in `psborrow2`
+#'
+#' @description Creates `data.frame` objects from various classes in `psborrow2`
+#' @name c
+#' @param x object of type: [SimDataList-class]
+#' @param ... additional objects to combine
+#' @returns A combined object
+NULL
+
+#' Get Simulated Data from `SimDataList` object
+#'
+#' Retrieves the simulated data from a `SimDataList` object by index.
+#'
+#' @param object `SimDataList` object
+#' @param index the index of the scenario (see guide with print(`SimDataList`))
+#' @param dataset the dataset out of `n_datasets_per_param`
+#' @returns Simulated data as a data frame if the index is specified, else as a list
+#' @export
+setGeneric("get_data", function(object, index = 1, dataset = 1) standardGeneric("get_data"))
+
+#' Set transformations in `BaselineObject` objects
+#'
+#' @param object `BaselineObject` object
+#' @param ... Additional arguments passed to methods
+#' @param overwrite logical. Overwrite existing transformations?
+#' @returns `BaselineObject` object with transformations
+#' @export
+setGeneric("set_transformations", function(object, ..., overwrite = FALSE) standardGeneric("set_transformations"))
+
