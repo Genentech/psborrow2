@@ -65,7 +65,7 @@ test_that("null_event_dist works as expected", {
   expect_equal(result@label, "No distribution specified")
 })
 
-# DataSimEnrollment -------
+# custom_enrollment -------
 test_that("custom_enrollment constructor works as expected", {
   result <- custom_enrollment(
     fun = function(n) rpois(n, lambda = 5),
@@ -114,10 +114,32 @@ test_that("enrollment_constant works with missing for_time", {
   expect_error(enrollment@fun(22), "Not enough")
 })
 
-# create_data_sim_enrollment ----
 
 # set_enrollment -------
+test_that("set_enrollment works", {
+  baseline <- create_baseline_object(
+    n_trt_int = 50,
+    n_ctrl_int = 40,
+    n_ctrl_ext = 10,
+    covariates = baseline_covariates(
+      names = c("age", "score"),
+      means_int = c(59, 5),
+      covariance_int = covariance_matrix(diag = c(5, 1)),
+    )
+  )
+  data_sim <- create_data_simulation(
+    baseline = baseline,
+    event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50)
+  )
 
+  enrollment_1 <- enrollment_constant(rate = c(3, 8, 9), for_time = c(2, 3, 4))
+  enrollment_2 <- enrollment_constant(rate = c(5, 6, 5), for_time = c(2, 2, 5))
+  result <- set_enrollment(data_sim, internal = enrollment_1, external = enrollment_2)
+  expect_class(result@enrollment_external, "DataSimEnrollment")
+  expect_class(result@enrollment_internal, "DataSimEnrollment")
+  expect_equal(result@enrollment_internal@label, "Enrolling patients per time at rates: 3, 3, 8, 8, 8, 9, 9, 9, 9")
+  expect_equal(result@enrollment_external@label, "Enrolling patients per time at rates: 5, 5, 6, 6, 5, 5, 5, 5, 5")
+})
 
 # cut_off_none -----
 test_that("cut_off_none works to create the object", {
@@ -176,7 +198,7 @@ test_that("generate works on DataSimObjects", {
     transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
   )
   data_sim <- create_data_simulation(
-    baseline = my_baseline,
+    baseline = baseline,
     drift_hr = 1,
     treatment_hr = 2,
     coefficients = c(age = 0.05, score_high = 1.1),

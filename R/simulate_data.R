@@ -170,7 +170,7 @@ null_event_dist <- function() {
 #' @slot fun A function that takes one argument `n` the number of enrollment times to observe and returns a
 #'   vector of times.
 #' @slot label A user-friendly label
-.custom_enrollment <- setClass(
+.datasim_enrollment <- setClass(
   "DataSimEnrollment",
   slots = c(
     fun = "function",
@@ -199,7 +199,7 @@ null_event_dist <- function() {
 custom_enrollment <- function(fun, label) {
   assert_string(label)
   assert_function(fun, args = "n")
-  .custom_enrollment(fun = fun, label = label)
+  .datasim_enrollment(fun = fun, label = label)
 }
 
 #' Constant Enrollment Rates
