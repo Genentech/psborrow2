@@ -24,6 +24,38 @@ test_that("check_fixed_external_data works as expected", {
 })
 
 # create_event_dist ----
+test_that("create_event_dist works", {
+  result <- create_event_dist(dist = "weibull", lambdas = 1.1, gammas = 0.9)
+  expect_class(result, "DataSimEvent")
+  set.seed(99)
+  gen_data <- do.call(simsurv::simsurv, c(list(x = data.frame(id = 1:10)), result@params))
+  expect_data_frame(gen_data, nrows = 10, ncols = 3, any.missing = FALSE)
+  expect_equal(
+    gen_data$eventtime,
+    c(
+      1.34285317175713, 2.45011438227126, 0.030285230572182, 0.880064596397448,
+      1.58955110384185, 1.28253549768473, 1.49447380407981, 0.596184415973742,
+      0.0877234919454852, 0.866956772649554
+    )
+  )
+})
+
+test_that("create_event_dist works with custom log hazard", {
+  loghaz <- function(t, x, betas, ...) (-1 + 0.02 * t - 0.03 * t^2 + 0.005 * t^3)
+  result <- create_event_dist(loghazard = loghaz)
+  expect_class(result, "DataSimEvent")
+  set.seed(99)
+  gen_data <- do.call(simsurv::simsurv, c(list(x = data.frame(id = 1:10)), result@params))
+  expect_data_frame(gen_data, nrows = 10, ncols = 3, any.missing = FALSE)
+  expect_equal(
+    gen_data$eventtime,
+    c(
+      4.05780995025121, 6.70984562155907, 0.128321383518438, 2.72302459351723,
+      4.7401016488932, 3.88660961336116, 4.48116498640035, 1.89303597653449,
+      0.33382508210794, 2.68481471097052
+    )
+  )
+})
 
 # null_event_dist ----
 test_that("null_event_dist works as expected", {
@@ -130,7 +162,45 @@ test_that("cut_off_after_last works as expected", {
 # make_one_dataset --------
 
 # generate -----
+test_that("generate works on DataSimObjects", {
+  set.seed(1000)
+  baseline <- create_baseline_object(
+    n_trt_int = 50,
+    n_ctrl_int = 40,
+    n_ctrl_ext = 10,
+    covariates = baseline_covariates(
+      names = c("age", "score"),
+      means_int = c(59, 5),
+      covariance_int = covariance_matrix(diag = c(5, 1)),
+    ),
+    transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+  )
+  data_sim <- create_data_simulation(
+    baseline = my_baseline,
+    drift_hr = 1,
+    treatment_hr = 2,
+    coefficients = c(age = 0.05, score_high = 1.1),
+    event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50)
+  )
 
+  result <- generate(data_sim, drift_hr = c(1, 1.5), treatment_hr = c(1.1, 1.3), n = 2)
+  expect_class(result, "SimDataList")
+  expect_equal(
+    result@guide,
+    data.frame(
+      sim_id = 1:4,
+      treatment_hr = rep(c(1.1, 1.3), times = 2),
+      drift_hr = rep(c(1.0, 1.5), each = 2),
+      n_datasets_per_param = 2
+    )
+  )
+  expect_list(result@data_list[[1]], "matrix")
+  expect_equal(lengths(result@data_list), c(2, 2, 2, 2))
+  expect_equal(
+    colnames(result@data_list[[1]][[1]]),
+    c("patid", "age", "score_high", "trt", "ext", "eventtime", "status", "enrollment", "cens")
+  )
+})
 
 # show ----
 test_that("DataSimObject show works as expected", {
@@ -151,16 +221,16 @@ test_that("DataSimObject show works as expected", {
   object <- create_data_simulation(
     baseline = my_baseline,
     coefficients = c(age = 0.0005, score_high = 1.1),
-    event_dist = event_dist(dist = "exponential", lambdas = 1 / 50)
+    event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50)
   ) %>%
     set_enrollment(
       internal = enrollment_constant(rate = c(25, 10), for_time = c(4, 30)),
       external = enrollment_constant(rate = c(30, 10), for_time = c(4, 30))
     ) %>%
     set_dropout(
-      internal_treated = event_dist(dist = "weibull", lambdas = 1 / 50, gammas = 1.2),
-      internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
-      external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+      internal_treated = create_event_dist(dist = "weibull", lambdas = 1 / 50, gammas = 1.2),
+      internal_control = create_event_dist(dist = "exponential", lambdas = 1 / 55),
+      external_control = create_event_dist(dist = "exponential", lambdas = 1 / 40)
     ) %>%
     set_cut_off(
       internal = cut_off_after_events(n = 80),
@@ -171,6 +241,30 @@ test_that("DataSimObject show works as expected", {
 
 # Testing generated data
 
-test_that("Test simulated data gives expected result with coxph", {
-
+test_that("Test simulated data has expected coefficients in Cox model", {
+  library(survival)
+  my_baseline <- create_baseline_object(
+    n_trt_int = 800,
+    n_ctrl_int = 700,
+    n_ctrl_ext = 100,
+    covariates = baseline_covariates(
+      names = c("age", "score"),
+      means_int = c(59, 5),
+      covariance_int = covariance_matrix(diag = c(5, 1)),
+    ),
+    transformations = list(score_high = binary_cutoff("score", int_cutoff = 0.7, ext_cutoff = 0.7))
+  )
+  set.seed(10000)
+  data <- generate(
+    create_data_simulation(
+      baseline = my_baseline,
+      drift_hr = 1,
+      treatment_hr = 2,
+      coefficients = c(age = 0.05, score_high = 1.1),
+      event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50)
+    )
+  )
+  fit <- coxph(Surv(eventtime, status) ~ trt + age + score_high, as.data.frame(data@data_list[[1]][[1]]))
+  expected_coefs <- c(trt = log(2), age = 0.05, score_high = 1.1)
+  expect_equal(fit$coefficients, expected_coefs, tolerance = 0.05)
 })

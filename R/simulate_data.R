@@ -118,7 +118,7 @@ create_event_dist <- function(dist = NULL,
   if (dist_type == "dist") {
     assert_choice(dist, choices = c("exponential", "weibull", "gompertz"))
   } else {
-    assert_function(dist_spec[dist_spec], args = c("t", "x", "betas"))
+    assert_function(get(dist_type), args = c("t", "x", "betas"))
   }
   assert_numeric(lambdas, finite = TRUE, null.ok = TRUE, len = 1 + mixture)
   assert_numeric(gammas, finite = TRUE, null.ok = TRUE, len = 1 + mixture)
