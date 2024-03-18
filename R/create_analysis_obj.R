@@ -29,7 +29,7 @@
 #'       "cnsr",
 #'       baseline_prior = prior_normal(0, 1000)
 #'     ),
-#'     borrowing = borrowing_hierarchical_commensurate( 
+#'     borrowing = borrowing_hierarchical_commensurate(
 #'       "ext",
 #'       prior_exponential(.001)
 #'     ),
@@ -97,7 +97,7 @@ create_analysis_obj <- function(data_matrix,
   data_str <- make_model_string_data(analysis_obj)
   param_str <- make_model_string_parameters(analysis_obj)
   trans_param_str <- make_model_string_transf_param(analysis_obj)
-  model_str <- make_model_string_model(analysis_obj)
+  model_str <- make_model_string_model(analysis_obj@borrowing, analysis_obj@outcome, analysis_obj)
 
   # Model string
   stan_model_string <- h_glue("
