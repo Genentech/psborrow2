@@ -22,18 +22,18 @@ A \code{DataSimObject} with updated \code{internal_treated}, \code{internal_cont
 Set Drop Out Distribution
 }
 \details{
-\code{DataSimEvent} objects can be specified with \link{event_dist}. Currently no \code{beta} parameters can be used in drop out
-distributions (unlike for the survival outcome).
+\code{DataSimEvent} objects can be specified with \code{\link[=create_event_dist]{create_event_dist()}}. Currently no \code{beta} parameters can be
+used in drop out distributions (unlike for the survival outcome).
 }
 \examples{
 data_sim <- create_data_simulation(
   create_baseline_object(10, 10, 10),
-  event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+  event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 36)
 )
 set_dropout(
   data_sim,
-  internal_treated = event_dist(dist = "exponential", lambdas = 1 / 55),
-  internal_control = event_dist(dist = "exponential", lambdas = 1 / 50),
-  external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+  internal_treated = create_event_dist(dist = "exponential", lambdas = 1 / 55),
+  internal_control = create_event_dist(dist = "exponential", lambdas = 1 / 50),
+  external_control = create_event_dist(dist = "exponential", lambdas = 1 / 40)
 )
 }

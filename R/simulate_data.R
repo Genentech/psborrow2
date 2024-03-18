@@ -92,18 +92,18 @@ check_fixed_external_data <- function(data, req_cols) {
 #' @export
 #'
 #' @examples
-#' weibull_surv <- event_dist(dist = "weibull", lambdas = 1 / 200, gammas = 1)
-#' exp_event_dist <- event_dist(dist = "exponential", lambdas = 1 / 36)
-event_dist <- function(dist = NULL,
-                       lambdas = NULL,
-                       gammas = NULL,
-                       mixture = FALSE,
-                       pmix = 0.5,
-                       hazard = NULL,
-                       loghazard = NULL,
-                       cumhazard = NULL,
-                       logcumhazard = NULL,
-                       ...) {
+#' weibull_surv <- create_event_dist(dist = "weibull", lambdas = 1 / 200, gammas = 1)
+#' exp_event_dist <- create_event_dist(dist = "exponential", lambdas = 1 / 36)
+create_event_dist <- function(dist = NULL,
+                              lambdas = NULL,
+                              gammas = NULL,
+                              mixture = FALSE,
+                              pmix = 0.5,
+                              hazard = NULL,
+                              loghazard = NULL,
+                              cumhazard = NULL,
+                              logcumhazard = NULL,
+                              ...) {
   dist_spec <- c(
     dist = !is.null(dist), hazard = !is.null(hazard), loghazard = !is.null(loghazard),
     cumhazard = !is.null(cumhazard), logcumhazard = !is.null(logcumhazard)
@@ -152,7 +152,7 @@ event_dist <- function(dist = NULL,
 #'
 #' @return `null_event_dist` returns an object with no parameters specified that does not simulate event times.
 #' @export
-#' @rdname event_dist
+#' @rdname create_event_dist
 #'
 #' @examples
 #' null_event_dist()
@@ -242,7 +242,7 @@ enrollment_constant <- function(rate, for_time = rep(1, length(rate))) {
 #' @examples
 #' data_sim <- create_data_simulation(
 #'   create_baseline_object(10, 10, 10),
-#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+#'   event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 36)
 #' )
 #' set_enrollment(
 #'   data_sim,
@@ -363,7 +363,7 @@ cut_off_after_events <- function(n) {
 #' @examples
 #' data_sim <- create_data_simulation(
 #'   create_baseline_object(10, 10, 10),
-#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+#'   event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 36)
 #' )
 #' set_cut_off(
 #'   data_sim,
@@ -388,9 +388,8 @@ set_cut_off <- function(object, internal = cut_off_none(), external = cut_off_no
 #' @param internal_control `DataSimEvent` object specifying distribution for internal control patients.
 #' @param external_control `DataSimEvent` object specifying distribution for external control patients.
 #'
-#' @details
-#' `DataSimEvent` objects can be specified with [event_dist]. Currently no `beta` parameters can be used in drop out
-#' distributions (unlike for the survival outcome).
+#' @details `DataSimEvent` objects can be specified with [create_event_dist()]. Currently no `beta` parameters can be
+#' used in drop out distributions (unlike for the survival outcome).
 #'
 #' @return  A `DataSimObject` with updated `internal_treated`, `internal_control` and `external_control` slots.
 #' @export
@@ -398,13 +397,13 @@ set_cut_off <- function(object, internal = cut_off_none(), external = cut_off_no
 #' @examples
 #' data_sim <- create_data_simulation(
 #'   create_baseline_object(10, 10, 10),
-#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+#'   event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 36)
 #' )
 #' set_dropout(
 #'   data_sim,
-#'   internal_treated = event_dist(dist = "exponential", lambdas = 1 / 55),
-#'   internal_control = event_dist(dist = "exponential", lambdas = 1 / 50),
-#'   external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+#'   internal_treated = create_event_dist(dist = "exponential", lambdas = 1 / 55),
+#'   internal_control = create_event_dist(dist = "exponential", lambdas = 1 / 50),
+#'   external_control = create_event_dist(dist = "exponential", lambdas = 1 / 40)
 #' )
 set_dropout <- function(object,
                         internal_treated,
@@ -433,7 +432,7 @@ set_dropout <- function(object,
 #'   arguments
 #' @slot drift_hr `numeric` hazard ratio between internal and external arms. Included as `log(drift_hr)`.
 #' @slot fixed_external_data `data.frame` for external data. Currently unused.
-#' @slot event_dist `DataSimEvent` parameters for outcome distribution from [event_dist()]
+#' @slot event_dist `DataSimEvent` parameters for outcome distribution from [create_event_dist()]
 #' @slot enrollment `DataSimEnrollment` object.
 #' @slot cut_off `DataSimCutOff`
 #'
@@ -467,7 +466,7 @@ set_dropout <- function(object,
 #'   in [generate].
 #' @param drift_hr Default drift hazard ratio between internal and external arms. Alternative simulation settings can be
 #'   specified in [generate].
-#' @param event_dist Specify time to event distribution with `SimDataEvent` object from [event_dist()]
+#' @param event_dist Specify time to event distribution with `SimDataEvent` object from [create_event_dist()]
 #' @param fixed_external_data A `data.frame` containing external control data. It must contain columns `eventtime`,
 #'   `status` and all of the variables named in `coefficients`. If present, `trt` must be 0 and `ext` must be 1 for all
 #'   rows.
@@ -490,7 +489,7 @@ set_dropout <- function(object,
 #' sim_obj <- create_data_simulation(
 #'   baseline_obj,
 #'   coefficients = c(age = 0.001, score = 1.5),
-#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+#'   event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 36)
 #' )
 #' data_sim_list <- generate(sim_obj, treatment_hr = c(0.5, 1), drift_hr = 0.5)
 create_data_simulation <- function(baseline,
@@ -687,7 +686,7 @@ generate.DataSimObject <- function(x, n = 1, treatment_hr = NULL, drift_hr = NUL
 #' sim_obj <- create_data_simulation(
 #'   baseline_obj,
 #'   coefficients = c(age = 0.001, score = 1.5),
-#'   event_dist = event_dist(dist = "exponential", lambdas = 1 / 36)
+#'   event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 36)
 #' )
 #' data_sim_list <- generate(sim_obj, treatment_hr = c(0, 1), drift_hr = 0.5)
 setMethod(

@@ -122,11 +122,11 @@ Using the baseline object we have specified, we can generate survival outcome da
 dropout rate, enrollment rate and clinical cut-off.
 
 First we need to specify the outcome distribution. The underlying data generation is handled by the `simsurv` package.
-The `event_dist()` function take the parameters needed to define the distribution. In the simplest case we can use an
+The `create_event_dist()` function take the parameters needed to define the distribution. In the simplest case we can use an
 exponential distribution by specifying a single `lambda` parameter. We could also use Weibull or Gompertz distributions,
 mixtures of distributions, or even specify an arbitrary (log/cumulative) hazard function.
 ```{r}
-exponential_dist <- event_dist(dist = "exponential", lambda = 1 / 24)
+exponential_dist <- create_event_dist(dist = "exponential", lambda = 1 / 24)
 ```
 
 The minimum required parameters to create a data simulation object are a baseline object and an event distribution.
@@ -188,15 +188,15 @@ set_enrollment(data_sim, internal = poisson_enrollment)
 
 ### Drop Out
 
-Drop out is defined using the same `event_dist()` function as for the survival time. No covariates can be specified for
-these distributions, but we can set different distributions for the three arms.
+Drop out is defined using the same `create_event_dist()` function as for the survival time. No covariates can be
+specified for these distributions, but we can set different distributions for the three arms.
 
 ```{r}
 set_dropout(
   data_sim,
-  internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
-  internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
-  external_control = event_dist(dist = "weibull", lambdas = 1 / 40, gammas = 1.1)
+  internal_treated = create_event_dist(dist = "exponential", lambdas = 1 / 50),
+  internal_control = create_event_dist(dist = "exponential", lambdas = 1 / 55),
+  external_control = create_event_dist(dist = "weibull", lambdas = 1 / 40, gammas = 1.1)
 )
 ```
 
@@ -241,16 +241,16 @@ my_baseline <- create_baseline_object(
 my_data_sim_setup <- create_data_simulation(
   baseline = my_baseline,
   coefficients = c(age = 0.001, score_high = 1.1),
-  event_dist = event_dist(dist = "exponential", lambdas = 1 / 50)
+  event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50)
 ) %>%
   set_enrollment(
     internal = enrollment_constant(rate = c(25, 10), for_time = c(4, 30)),
     external = enrollment_constant(rate = c(30, 10), for_time = c(4, 30))
   ) %>%
   set_dropout(
-    internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
-    internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
-    external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+    internal_treated = create_event_dist(dist = "exponential", lambdas = 1 / 50),
+    internal_control = create_event_dist(dist = "exponential", lambdas = 1 / 55),
+    external_control = create_event_dist(dist = "exponential", lambdas = 1 / 40)
   ) %>%
   set_cut_off(
     internal = cut_off_after_first(time = 60),
@@ -334,7 +334,7 @@ my_internal_baseline <- create_baseline_object(
 my_data_sim_setup_with_fixed <- create_data_simulation(
   baseline = my_internal_baseline,
   coefficients = c(age = 0.001, score_high = 1.1),
-  event_dist = event_dist(dist = "exponential", lambdas = 1 / 50),
+  event_dist = create_event_dist(dist = "exponential", lambdas = 1 / 50),
   fixed_external_data = historical_trial_data
 ) %>%
   set_enrollment(
@@ -342,9 +342,9 @@ my_data_sim_setup_with_fixed <- create_data_simulation(
     external = enrollment_constant(rate = c(30, 10), for_time = c(4, 30))
   ) %>%
   set_dropout(
-    internal_treated = event_dist(dist = "exponential", lambdas = 1 / 50),
-    internal_control = event_dist(dist = "exponential", lambdas = 1 / 55),
-    external_control = event_dist(dist = "exponential", lambdas = 1 / 40)
+    internal_treated = create_event_dist(dist = "exponential", lambdas = 1 / 50),
+    internal_control = create_event_dist(dist = "exponential", lambdas = 1 / 55),
+    external_control = create_event_dist(dist = "exponential", lambdas = 1 / 40)
   ) %>%
   set_cut_off(
     internal = cut_off_after_first(time = 60),
