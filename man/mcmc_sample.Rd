@@ -100,7 +100,7 @@ if (check_cmdstan()) {
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
 
-  mcmc_results <- mcmc_sample(anls)
+  mcmc_results <- mcmc_sample(anls, chains = 1, iter_warmup = 500L, iter_sampling = 1000L)
 }
 
 ## Simulation objects

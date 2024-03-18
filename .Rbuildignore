@@ -25,3 +25,4 @@ devel
 ^\.pre-commit-config\.yaml$
 ^vignettes/original$
 ^vignettes/Makefile$
+^node_modules$

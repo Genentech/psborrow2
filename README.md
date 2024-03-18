@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 
-[![Version](https://img.shields.io/static/v1.svg?label=github.com/genentech&message=v.0.0.2.0&color=DC0073)](https://github.com/Genentech/psborrow2)
+[![Version](https://img.shields.io/static/v1.svg?label=github.com/genentech&message=v.0.0.3&color=DC0073)](https://github.com/Genentech/psborrow2)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 

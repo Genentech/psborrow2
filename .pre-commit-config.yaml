@@ -3,7 +3,7 @@
 # R specific hooks: https://github.com/lorenzwalthert/precommit
 repos:
   - repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.3.2.9019
+    rev: v0.4.0
     hooks:
       - id: style-files
         args: []
@@ -11,8 +11,16 @@ repos:
         additional_dependencies:
           - knitr
           - stan-dev/cmdstanr@*release
+          - checkmate
+          - glue
+          - methods
+          - graphics
+          - posterior
+          - generics
+          - Matrix
           - mvtnorm
           - future
+          - simsurv
       # codemeta must be above use-tidy-description when both are used
       # -   id: codemeta-description-updated
       - id: use-tidy-description
@@ -53,18 +61,28 @@ repos:
       - id: no-browser-statement
       - id: deps-in-desc
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.1
+    rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: check-added-large-files
         args: ["--maxkb=200"]
       - id: end-of-file-fixer
-        exclude: '\.Rd|tests/testthat/_snaps/.*'
+        exclude: >
+          (?x)^(
+          \.Rd|
+          tests/testthat/_snaps/.*|
+          vignettes/.*\.Rmd
+          )$
       - id: trailing-whitespace
-        exclude: '\.Rd|tests/testthat/_snaps/.*'
+        exclude: >
+          (?x)^(
+          \.Rd|
+          tests/testthat/_snaps/.*|
+          vignettes/.*\.Rmd
+          )$
       - id: check-yaml
       - id: no-commit-to-branch
       - id: mixed-line-ending
@@ -83,7 +101,7 @@ repos:
         files: '\.Rhistory|\.RData|\.Rds|\.rds$'
         # `exclude: <regex>` to allow committing specific files.
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.34.0
+    rev: v0.39.0
     hooks:
       - id: markdownlint
         args:

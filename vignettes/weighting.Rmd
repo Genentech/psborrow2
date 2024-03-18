@@ -6,7 +6,7 @@ output:
     toc: true
     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{7. Comparison of Fixed Weights}
+  %\VignetteIndexEntry{6. Comparison of Fixed Weights}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
