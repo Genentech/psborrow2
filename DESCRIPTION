@@ -1,7 +1,7 @@
 Type: Package
 Package: psborrow2
 Title: An R Package for Bayesian Dynamic Borrowing Simulation Study and Analysis
-Version: 0.0.3
+Version: 0.0.3.1
 Authors@R: c(
    person(
       given = "Matt",
