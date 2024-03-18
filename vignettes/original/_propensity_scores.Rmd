@@ -21,7 +21,9 @@ knitr::opts_chunk$set(
   warnings = FALSE
 )
 output_hook <- knitr::knit_hooks$get("output")
-output_null <- function(x, options) return(NULL)
+output_null <- function(x, options) {
+  return(NULL)
+}
 ```
 
 ```{r load, message=FALSE}
@@ -245,7 +247,6 @@ result_bdb <- mcmc_sample(
 ```
 ```{r, echo = FALSE}
 knitr::knit_hooks$set(output = output_hook)
-
 ```
 
 

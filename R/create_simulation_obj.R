@@ -8,7 +8,7 @@
 #' @param outcome `SimOutcomeList` or `Outcome`. List of `Outcome` objects created with
 #' `sim_outcome()`, or single `Outcome` object (e.g., created by `outcome_surv_exponential()`).
 #' @param borrowing `SimBorrowingList` or `Borrowing`. List of `Borrowing` objects created
-#' with `sim_borrowing()`, or a single `Borrowing` object created by `borrowing_full()`, 
+#' with `sim_borrowing()`, or a single `Borrowing` object created by `borrowing_full()`,
 #' `borrowing_none()`, or `borrowing_hierarchical_commensurate()`.
 #' @param treatment `SimTreatmentList` or `Treatment`. List of `Treatment` objects created
 #' with `sim_treatment()` or a single `Treatment` object created by `treatment_details()`.

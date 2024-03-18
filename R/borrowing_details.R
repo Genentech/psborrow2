@@ -1,5 +1,5 @@
 #' Legacy function for specifying borrowing details
-#' 
+#'
 #' Please use one of `hierarchical_commensurate_borrowing()`, `no_borrowing()`, or `full_borrowing()` instead.
 #' @export
 #' @param ... Deprecated arguments to `borrowing_details`.

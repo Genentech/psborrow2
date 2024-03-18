@@ -59,7 +59,7 @@
     param_priors = list(
       shape_weibull = prior_exponential(beta = 0.0001)
     ),
-    name_addnl_params =  c("Weibull shape parameter" = "shape_weibull")
+    name_addnl_params = c("Weibull shape parameter" = "shape_weibull")
   ),
   validity = function(object) {
     check_class(object@param_priors[["shape_weibull"]], "Prior")
@@ -84,7 +84,7 @@
 #' The `baseline_prior` argument specifies the prior distribution for the
 #' baseline log hazard rate. The interpretation of the `baseline_prior` differs
 #' slightly between borrowing methods selected.
-#' - \emph{Dynamic borrowing using `borrowing_hierarchical_commensurate()`}: the `baseline_prior` for Bayesian Dynamic Borrowing 
+#' - \emph{Dynamic borrowing using `borrowing_hierarchical_commensurate()`}: the `baseline_prior` for Bayesian Dynamic Borrowing
 #' refers to the log hazard rate of the external control arm.
 #' - \emph{Full borrowing} or \emph{No borrowing} using `borrowing_full()` or `borrowing_none()`: the `baseline_prior` for
 #' these borrowing methods refers to the log hazard rate for the
@@ -148,7 +148,7 @@ outcome_surv_weibull_ph <- function(time_var,
 weib_ph_surv_dist <- function(...) {
   .Defunct(
     "outcome_surv_weibull_ph",
-    "psborrow2",   
+    "psborrow2",
     "`weib_ph_surv_dist()` is deprecated. Use `outcome_surv_weibull_ph()` instead."
   )
 }

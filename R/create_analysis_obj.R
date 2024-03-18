@@ -29,7 +29,7 @@
 #'       "cnsr",
 #'       baseline_prior = prior_normal(0, 1000)
 #'     ),
-#'     borrowing = borrowing_hierarchical_commensurate( 
+#'     borrowing = borrowing_hierarchical_commensurate(
 #'       "ext",
 #'       prior_exponential(.001)
 #'     ),

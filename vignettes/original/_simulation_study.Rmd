@@ -23,7 +23,9 @@ knitr::opts_chunk$set(
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
 output_hook <- knitr::knit_hooks$get("output")
-output_null <- function(x, options) return(NULL)
+output_null <- function(x, options) {
+  return(NULL)
+}
 ```
 
 In this vignette, you'll learn how to use `psborrow2` to create a
