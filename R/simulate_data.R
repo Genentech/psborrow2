@@ -118,7 +118,7 @@ create_event_dist <- function(dist = NULL,
   if (dist_type == "dist") {
     assert_choice(dist, choices = c("exponential", "weibull", "gompertz"))
   } else {
-    assert_function(dist_spec[dist_spec], args = c("t", "x", "betas"))
+    assert_function(get(dist_type), args = c("t", "x", "betas"))
   }
   assert_numeric(lambdas, finite = TRUE, null.ok = TRUE, len = 1 + mixture)
   assert_numeric(gammas, finite = TRUE, null.ok = TRUE, len = 1 + mixture)
@@ -170,7 +170,7 @@ null_event_dist <- function() {
 #' @slot fun A function that takes one argument `n` the number of enrollment times to observe and returns a
 #'   vector of times.
 #' @slot label A user-friendly label
-.custom_enrollment <- setClass(
+.datasim_enrollment <- setClass(
   "DataSimEnrollment",
   slots = c(
     fun = "function",
@@ -199,7 +199,7 @@ null_event_dist <- function() {
 custom_enrollment <- function(fun, label) {
   assert_string(label)
   assert_function(fun, args = "n")
-  .custom_enrollment(fun = fun, label = label)
+  .datasim_enrollment(fun = fun, label = label)
 }
 
 #' Constant Enrollment Rates
@@ -217,7 +217,7 @@ custom_enrollment <- function(fun, label) {
 enrollment_constant <- function(rate, for_time = rep(1, length(rate))) {
   assert_integerish(rate, min.len = 1)
   assert_integerish(for_time, len = length(rate))
-  .custom_enrollment(
+  .datasim_enrollment(
     fun = function(n) {
       enrolled_per_t <- rep(rate, times = for_time)
       enrollment_times <- rep(seq_along(enrolled_per_t), times = enrolled_per_t)
@@ -292,7 +292,7 @@ cut_off_after_first <- function(time) {
       cut_time <- min(data$enrollment) + time
       after_cut_off <- data$enrollment + data$eventtime > cut_time
       data$status <- ifelse(after_cut_off, 0, data$status)
-      data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
+      data$eventtime <- ifelse(after_cut_off, cut_time - data$enrollment, data$eventtime)
       data[data$enrollment < cut_time, ]
     },
     label = h_glue("Cut off after first enrolled patient reaches time = {{time}}")
@@ -310,7 +310,7 @@ cut_off_after_last <- function(time) {
       cut_time <- max(data$enrollment) + time
       after_cut_off <- data$enrollment + data$eventtime > cut_time
       data$status <- ifelse(after_cut_off, 0, data$status)
-      data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
+      data$eventtime <- ifelse(after_cut_off, cut_time - data$enrollment, data$eventtime)
       data
     },
     label = h_glue("Cut off after last enrolled patient reaches time={{time}}")
@@ -328,7 +328,7 @@ cut_off_after_events <- function(n) {
       cut_time <- sort(data$enrollment + data$eventtime)[n]
       after_cut_off <- data$enrollment + data$eventtime > cut_time
       data$status <- ifelse(after_cut_off, 0, data$status)
-      data$eventtime <- ifelse(after_cut_off, cut_time, data$eventtime)
+      data$eventtime <- ifelse(after_cut_off, cut_time - data$enrollment, data$eventtime)
       data[data$enrollment < cut_time, ]
     },
     label = h_glue("Cut off after {{n}} events")
@@ -500,8 +500,8 @@ create_data_simulation <- function(baseline,
                                    fixed_external_data) {
   assert_class(baseline, "BaselineObject")
   assert_numeric(coefficients, finite = TRUE, names = "named", min.len = 0)
-  assert_numeric(treatment_hr, finite = TRUE, len = 1)
-  assert_numeric(drift_hr, finite = TRUE, len = 1)
+  assert_numeric(treatment_hr, finite = TRUE, len = 1, any.missing = FALSE)
+  assert_numeric(drift_hr, finite = TRUE, len = 1, any.missing = FALSE)
 
   possible_coefs <- possible_data_sim_vars(baseline)
   unknown_names <- setdiff(names(coefficients), possible_coefs)
@@ -519,7 +519,7 @@ create_data_simulation <- function(baseline,
     fixed_data_object <- .datasim_fixed_external_data()
   }
 
-  ds <- .datasim_object(
+  .datasim_object(
     baseline = baseline,
     coefficients = coefficients,
     treatment_hr = treatment_hr,
