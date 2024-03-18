@@ -31,7 +31,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,8 +130,8 @@ scenarios (e.g., true HR of 1.0 and true HR of 0.8). Each scenario is
 arranged as a list of matrices that were generated according to that
 data generation scenario.</p>
 <center>
-<div class="figure">
-<img src="data_list.jpg" style="width:80.0%" alt=""><p class="caption">Figure 1</p>
+<div class="float">
+<img src="data_list.jpg" style="width:80.0%" alt="Figure 1"><div class="figcaption">Figure 1</div>
 </div>
 </center>
 <p>We’ll use the <code>simsurv</code> package to generate survival data
@@ -145,7 +145,7 @@ matrix.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">simsurv</span><span class="op">)</span></span>
 <span><span class="co"># function to create a single matrix</span></span>
 <span><span class="va">sim_single_matrix</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">500</span>, <span class="co"># n simulated pts</span></span>
-<span>                              <span class="va">prob</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>                              <span class="va">prob</span> <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span></span>
 <span>                                <span class="fl">0.1</span>, <span class="co"># proportion internal control</span></span>
 <span>                                <span class="fl">0.2</span>, <span class="co"># proportion internal treated</span></span>
 <span>                                <span class="fl">0.7</span></span>
@@ -161,11 +161,11 @@ matrix.</p>
 <span>  <span class="co"># data frame with the subject IDs and treatment group</span></span>
 <span>  <span class="va">df_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span>,</span>
-<span>    ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    ext <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="va">n</span> <span class="op">*</span> <span class="op">(</span><span class="va">prob</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">prob</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="va">n</span> <span class="op">*</span> <span class="va">prob</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    trt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    trt <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="va">n</span> <span class="op">*</span> <span class="va">prob</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="va">n</span> <span class="op">*</span> <span class="va">prob</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="va">n</span> <span class="op">*</span> <span class="va">prob</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
@@ -176,7 +176,7 @@ matrix.</p>
 <span>  <span class="va">df_surv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/simsurv/man/simsurv.html" class="external-link">simsurv</a></span><span class="op">(</span></span>
 <span>    lambdas <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>    dist <span class="op">=</span> <span class="st">"exponential"</span>,</span>
-<span>    betas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    betas <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span></span>
 <span>      trt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">hr</span><span class="op">)</span>,</span>
 <span>      ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">drift_hr</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
@@ -189,8 +189,8 @@ matrix.</p>
 <span></span>
 <span>  <span class="co"># merge the simulated event times into data frame</span></span>
 <span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">df_ids</span>, <span class="va">df_surv</span><span class="op">)</span></span>
-<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"ext"</span>, <span class="st">"trt"</span>, <span class="st">"eventtime"</span>, <span class="st">"status"</span>, <span class="st">"censor"</span><span class="op">)</span><span class="op">]</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"ext"</span>, <span class="st">"trt"</span>, <span class="st">"time"</span>, <span class="st">"status"</span>, <span class="st">"cnsr"</span><span class="op">)</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"ext"</span>, <span class="st">"trt"</span>, <span class="st">"eventtime"</span>, <span class="st">"status"</span>, <span class="st">"censor"</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"ext"</span>, <span class="st">"trt"</span>, <span class="st">"time"</span>, <span class="st">"status"</span>, <span class="st">"cnsr"</span><span class="op">)</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -278,8 +278,8 @@ internal control arm.</li>
 <code>guide</code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_sim_data_guide</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
-<span>  true_hr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">1.0</span><span class="op">)</span>,</span>
-<span>  drift_hr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"No drift HR"</span>, <span class="st">"Moderate drift HR"</span><span class="op">)</span></span>
+<span>  true_hr <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">1.0</span><span class="op">)</span>,</span>
+<span>  drift_hr <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"No drift HR"</span>, <span class="st">"Moderate drift HR"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">my_sim_data_guide</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NROW</a></span><span class="op">(</span><span class="va">my_sim_data_guide</span><span class="op">)</span><span class="op">)</span></span>
@@ -511,7 +511,7 @@ argument.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">simulation_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span></span>
 <span>  <span class="va">simulation_obj</span>,</span>
-<span>  posterior_quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span>,</span>
+<span>  posterior_quantiles <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span>,</span>
 <span>  iter_warmup <span class="op">=</span> <span class="fl">400</span>,</span>
 <span>  iter_sampling <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  chains <span class="op">=</span> <span class="fl">1L</span>,</span>
@@ -562,7 +562,7 @@ scenarios:</p>
 <span></span>
 <span><span class="co"># Factorize</span></span>
 <span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">borrowing_scenario</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">borrowing_scenario</span>,</span>
-<span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  levels <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"No borrowing"</span>,</span>
 <span>    <span class="st">"BDB - conservative"</span>,</span>
 <span>    <span class="st">"BDB - aggressive"</span>,</span>
@@ -583,7 +583,7 @@ scenarios:</p>
 <span>    y <span class="op">=</span> <span class="st">"MSE"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">drift_hr</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#EF798A"</span>, <span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"#EF798A"</span>, <span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="figure-simulation_study-unnamed-chunk-23-1.png" alt="plot of chunk unnamed-chunk-23"><p class="caption">
 plot of chunk unnamed-chunk-23
@@ -605,8 +605,8 @@ looking at the compliment to the true parameter coverage:</p>
 <span>    x <span class="op">=</span> <span class="st">"drift HR"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Type I error"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#EF798A"</span>, <span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.1</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"#EF798A"</span>, <span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.1</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="figure-simulation_study-unnamed-chunk-24-1.png" alt="plot of chunk unnamed-chunk-24"><p class="caption">
@@ -629,8 +629,8 @@ simulation of 0.6.</p>
 <span>    x <span class="op">=</span> <span class="st">"drift HR"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Power"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#EF798A"</span>, <span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.1</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"#EF798A"</span>, <span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.1</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="figure-simulation_study-unnamed-chunk-25-1.png" alt="plot of chunk unnamed-chunk-25"><p class="caption">

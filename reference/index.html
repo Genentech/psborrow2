@@ -15,7 +15,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,6 +77,11 @@
         <dd>Baseline Data Frame Object</dd>
       </dl><dl><dt>
           
+          <code><a href="BaselineDataList-class.html">BaselineDataList-class</a></code> <code><a href="BaselineDataList-class.html">.baseline_data_list</a></code> 
+        </dt>
+        <dd>Baseline Data Frame List</dd>
+      </dl><dl><dt>
+          
           <code><a href="BaselineObject-class.html">BaselineObject-class</a></code> <code><a href="BaselineObject-class.html">.baseline_object</a></code> 
         </dt>
         <dd><code>BaselineObject</code> class for data simulation</dd>
@@ -115,6 +120,31 @@
           <code><a href="Covariates-class.html">Covariates-class</a></code> <code><a href="Covariates-class.html">.covariate_class</a></code> 
         </dt>
         <dd><code>Covariate</code> Class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="DataSimCutOff-class.html">DataSimCutOff-class</a></code> <code><a href="DataSimCutOff-class.html">.datasim_cut_off</a></code> 
+        </dt>
+        <dd>Cut Off Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="DataSimEnrollment-class.html">DataSimEnrollment-class</a></code> <code><a href="DataSimEnrollment-class.html">.datasim_enrollment</a></code> 
+        </dt>
+        <dd>Enrollment Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="DataSimEvent-class.html">DataSimEvent-class</a></code> <code><a href="DataSimEvent-class.html">.datasim_event</a></code> 
+        </dt>
+        <dd>Event Time Distribution Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="DataSimFixedExternalData-class.html">DataSimFixedExternalData-class</a></code> <code><a href="DataSimFixedExternalData-class.html">.datasim_fixed_external_data</a></code> 
+        </dt>
+        <dd>Fixed External Control Data Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="DataSimObject-class.html">DataSimObject-class</a></code> <code><a href="DataSimObject-class.html">.datasim_object</a></code> 
+        </dt>
+        <dd>Data Simulation Object Class</dd>
       </dl><dl><dt>
           
           <code><a href="MCMCSimulationResult-class.html">MCMCSimulationResult-class</a></code> <code><a href="MCMCSimulationResult-class.html">.mcmc_simulation_result</a></code> 
@@ -272,6 +302,11 @@
         <dd>Add Covariates for Model Adjustment</dd>
       </dl><dl><dt>
           
+          <code><a href="as_data_frame.html">as.data.frame(<i>&lt;BaselineDataList&gt;</i>)</a></code> 
+        </dt>
+        <dd>Coerce a <code>psborrow2</code> object to a data frame</dd>
+      </dl><dl><dt>
+          
           <code><a href="baseline_covariates.html">baseline_covariates()</a></code> 
         </dt>
         <dd>Specify Correlated Baseline Covariates</dd>
@@ -317,6 +352,11 @@
         <dd>No borrowing</dd>
       </dl><dl><dt>
           
+          <code><a href="c.html">c(<i>&lt;SimDataList&gt;</i>)</a></code> 
+        </dt>
+        <dd>Combine objects in <code>psborrow2</code></dd>
+      </dl><dl><dt>
+          
           <code><a href="cauchy_prior.html">cauchy_prior()</a></code> 
         </dt>
         <dd>Legacy function for the cauchy prior</dd>
@@ -330,6 +370,11 @@
           <code><a href="check_data_matrix_has_columns.html">check_data_matrix_has_columns()</a></code> 
         </dt>
         <dd>Check Data Matrix for Required Columns</dd>
+      </dl><dl><dt>
+          
+          <code><a href="check_fixed_external_data.html">check_fixed_external_data()</a></code> 
+        </dt>
+        <dd>Create a Fixed External Data Object</dd>
       </dl><dl><dt>
           
           <code><a href="cont_var.html">cont_var()</a></code> 
@@ -362,6 +407,16 @@
         <dd>Create Data Matrix</dd>
       </dl><dl><dt>
           
+          <code><a href="create_data_simulation.html">create_data_simulation()</a></code> 
+        </dt>
+        <dd>Data Simulation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="create_event_dist.html">create_event_dist()</a></code> <code><a href="create_event_dist.html">null_event_dist()</a></code> 
+        </dt>
+        <dd>Specify a Time to Event Distribution</dd>
+      </dl><dl><dt>
+          
           <code><a href="create_simulation_obj.html">create_simulation_obj()</a></code> 
         </dt>
         <dd>Compile MCMC sampler using STAN and create simulation object</dd>
@@ -370,6 +425,21 @@
           <code><a href="create_tau_string.html">create_tau_string()</a></code> 
         </dt>
         <dd>Create tau string</dd>
+      </dl><dl><dt>
+          
+          <code><a href="custom_enrollment.html">custom_enrollment()</a></code> 
+        </dt>
+        <dd>Create a <code>DataSimEnrollment</code> Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="cut_off_funs.html">cut_off_none()</a></code> <code><a href="cut_off_funs.html">cut_off_after_first()</a></code> <code><a href="cut_off_funs.html">cut_off_after_last()</a></code> <code><a href="cut_off_funs.html">cut_off_after_events()</a></code> 
+        </dt>
+        <dd>Cut Off Functions</dd>
+      </dl><dl><dt>
+          
+          <code><a href="enrollment_constant.html">enrollment_constant()</a></code> 
+        </dt>
+        <dd>Constant Enrollment Rates</dd>
       </dl><dl><dt>
           
           <code><a href="eval_constraints.html">eval_constraints()</a></code> 
@@ -407,6 +477,11 @@
         <dd>Generate Data for a <code>BaselineObject</code></dd>
       </dl><dl><dt>
           
+          <code><a href="generate-DataSimObject-method.html">generate(<i>&lt;DataSimObject&gt;</i>)</a></code> 
+        </dt>
+        <dd>Generate Data for a <code>DataSimObject</code></dd>
+      </dl><dl><dt>
+          
           <code><a href="generate.html">generate()</a></code> 
         </dt>
         <dd>Generate Data from Object</dd>
@@ -420,6 +495,11 @@
           <code><a href="get_covariate_constraints.html">get_covariate_constraints()</a></code> 
         </dt>
         <dd>Get constraints from a list of <code>Prior</code>s</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_data.html">get_data()</a></code> 
+        </dt>
+        <dd>Get Simulated Data from <code>SimDataList</code> object</dd>
       </dl><dl><dt>
           
           <code><a href="get_prior_string.html">get_prior_string()</a></code> 
@@ -537,6 +617,11 @@
         <dd>Legacy function for the poisson prior</dd>
       </dl><dl><dt>
           
+          <code><a href="possible_data_sim_vars.html">possible_data_sim_vars()</a></code> 
+        </dt>
+        <dd>Get All Variable Names in Simulated Data Model Matrix</dd>
+      </dl><dl><dt>
+          
           <code><a href="prior_bernoulli.html">prior_bernoulli()</a></code> 
         </dt>
         <dd>Prior bernoulli distribution</dd>
@@ -585,6 +670,31 @@
           <code><a href="rename_draws_covariates.html">rename_draws_covariates()</a></code> 
         </dt>
         <dd>Rename Covariates in <code>draws</code> Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="set_cut_off.html">set_cut_off()</a></code> 
+        </dt>
+        <dd>Set Clinical Cut Off Rule</dd>
+      </dl><dl><dt>
+          
+          <code><a href="set_dropout.html">set_dropout()</a></code> 
+        </dt>
+        <dd>Set Drop Out Distribution</dd>
+      </dl><dl><dt>
+          
+          <code><a href="set_enrollment.html">set_enrollment()</a></code> 
+        </dt>
+        <dd>Set Enrollment Rates for Internal and External Trials</dd>
+      </dl><dl><dt>
+          
+          <code><a href="set_transformations-BaselineObject-method.html">set_transformations(<i>&lt;BaselineObject&gt;</i>)</a></code> 
+        </dt>
+        <dd>Set Transformations in Baseline Objects</dd>
+      </dl><dl><dt>
+          
+          <code><a href="set_transformations.html">set_transformations()</a></code> 
+        </dt>
+        <dd>Set transformations in <code>BaselineObject</code> objects</dd>
       </dl><dl><dt>
           
           <code><a href="show_guide.html">show_guide()</a></code> 

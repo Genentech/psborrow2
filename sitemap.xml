@@ -55,6 +55,9 @@
     <loc>https://genentech.github.io/psborrow2/reference/BaselineDataFrame-class.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/BaselineDataList-class.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/BaselineObject-class.html</loc>
   </url>
   <url>
@@ -77,6 +80,21 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/Covariates-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/DataSimCutOff-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/DataSimEnrollment-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/DataSimEvent-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/DataSimFixedExternalData-class.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/DataSimObject-class.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/MCMCSimulationResult-class.html</loc>
@@ -172,6 +190,9 @@
     <loc>https://genentech.github.io/psborrow2/reference/add_covariates.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/as_data_frame.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/baseline_covariates.html</loc>
   </url>
   <url>
@@ -199,6 +220,9 @@
     <loc>https://genentech.github.io/psborrow2/reference/borrowing_none.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/c.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/cauchy_prior.html</loc>
   </url>
   <url>
@@ -206,6 +230,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/check_data_matrix_has_columns.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/check_fixed_external_data.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/cont_var.html</loc>
@@ -226,10 +253,25 @@
     <loc>https://genentech.github.io/psborrow2/reference/create_data_matrix.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/create_data_simulation.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/create_event_dist.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/create_simulation_obj.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/create_tau_string.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/custom_enrollment.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/cut_off_funs.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/enrollment_constant.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/eval_constraints.html</loc>
@@ -253,6 +295,9 @@
     <loc>https://genentech.github.io/psborrow2/reference/generate-BaselineObject-method.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/generate-DataSimObject-method.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/generate.html</loc>
   </url>
   <url>
@@ -260,6 +305,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/get_covariate_constraints.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/get_data.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/get_prior_string.html</loc>
@@ -334,6 +382,9 @@
     <loc>https://genentech.github.io/psborrow2/reference/poisson_prior.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/possible_data_sim_vars.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/prior_bernoulli.html</loc>
   </url>
   <url>
@@ -361,7 +412,25 @@
     <loc>https://genentech.github.io/psborrow2/reference/prior_poisson.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/psborrow2/reference/psborrow2-package.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/psborrow2/reference/rename_draws_covariates.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/set_cut_off.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/set_dropout.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/set_enrollment.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/set_transformations-BaselineObject-method.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/psborrow2/reference/set_transformations.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/show_guide.html</loc>

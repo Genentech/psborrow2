@@ -31,7 +31,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,7 +88,8 @@
 <p>This vignette will show the internal functions for generating data
 that can be used in simulation studies.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Genentech/psborrow2" class="external-link">psborrow2</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Genentech/psborrow2" class="external-link">psborrow2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="generating-baseline-data">Generating Baseline Data<a class="anchor" aria-label="anchor" href="#generating-baseline-data"></a>
 </h2>
@@ -102,11 +103,39 @@ treated internal, control internal, control external.</p>
 <span>  n_ctrl_ext <span class="op">=</span> <span class="fl">100</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>This object defines how the data will be created. To actually
-generate a sample, use <code><a href="../reference/generate.html">generate()</a></code> to produce a
-<code>data.frame</code>.</p>
+generate a sample, use <code><a href="../reference/generate.html">generate()</a></code> to produce a list
+containing <code>data.frame</code>s for each arm. We can convert this to
+a single <code>data.frame</code> if needed.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="va">simple_baseline</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Simulated Baseline Data</span></span>
+<code class="sourceCode R"><span><span class="va">baseline_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="va">simple_baseline</span><span class="op">)</span></span>
+<span><span class="va">baseline_data</span></span>
+<span><span class="co">#&gt; Baseline Data List</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Internal Treated</span></span>
+<span><span class="co">#&gt;  patid ext trt</span></span>
+<span><span class="co">#&gt;      1   0   1</span></span>
+<span><span class="co">#&gt;      2   0   1</span></span>
+<span><span class="co">#&gt;      3   0   1</span></span>
+<span><span class="co">#&gt;      4   0   1</span></span>
+<span><span class="co">#&gt;      5   0   1</span></span>
+<span><span class="co">#&gt;      6   0   1</span></span>
+<span><span class="co">#&gt; Internal Control</span></span>
+<span><span class="co">#&gt;  patid ext trt</span></span>
+<span><span class="co">#&gt;    101   0   0</span></span>
+<span><span class="co">#&gt;    102   0   0</span></span>
+<span><span class="co">#&gt;    103   0   0</span></span>
+<span><span class="co">#&gt;    104   0   0</span></span>
+<span><span class="co">#&gt;    105   0   0</span></span>
+<span><span class="co">#&gt;    106   0   0</span></span>
+<span><span class="co">#&gt; External Control</span></span>
+<span><span class="co">#&gt;  patid ext trt</span></span>
+<span><span class="co">#&gt;    151   1   0</span></span>
+<span><span class="co">#&gt;    152   1   0</span></span>
+<span><span class="co">#&gt;    153   1   0</span></span>
+<span><span class="co">#&gt;    154   1   0</span></span>
+<span><span class="co">#&gt;    155   1   0</span></span>
+<span><span class="co">#&gt;    156   1   0</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">baseline_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   patid ext trt</span></span>
 <span><span class="co">#&gt; 1     1   0   1</span></span>
 <span><span class="co">#&gt; 2     2   0   1</span></span>
@@ -117,7 +146,7 @@ generate a sample, use <code><a href="../reference/generate.html">generate()</a>
 <span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 244 rows ]</span></span></code></pre></div>
 <p>Often we are interested in some additional covariates. Internally the
 package uses multivariate normal distributions, so we need to specify
-the mean and (co-)variance. We have the option to specify different
+the means and (co-)variances. We have the option to specify different
 distribution parameters for the internal and external arms. The internal
 arms are assumed to be randomized and therefore come from the same
 distribution. If no external parameters are specified, the internal ones
@@ -135,64 +164,572 @@ are used for both.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="va">with_age</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Simulated Baseline Data</span></span>
-<span><span class="co">#&gt;   patid ext trt      age</span></span>
-<span><span class="co">#&gt; 1     1   0   1 53.74674</span></span>
-<span><span class="co">#&gt; 2     2   0   1 54.48531</span></span>
-<span><span class="co">#&gt; 3     3   0   1 58.48538</span></span>
-<span><span class="co">#&gt; 4     4   0   1 55.15766</span></span>
-<span><span class="co">#&gt; 5     5   0   1 55.28910</span></span>
-<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 245 rows ]</span></span></code></pre></div>
+<span><span class="co">#&gt; Baseline Data List</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Internal Treated</span></span>
+<span><span class="co">#&gt;  patid ext trt      age</span></span>
+<span><span class="co">#&gt;      1   0   1 53.74674</span></span>
+<span><span class="co">#&gt;      2   0   1 54.48531</span></span>
+<span><span class="co">#&gt;      3   0   1 58.48538</span></span>
+<span><span class="co">#&gt;      4   0   1 55.15766</span></span>
+<span><span class="co">#&gt;      5   0   1 55.28910</span></span>
+<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 1 rows ]</span></span>
+<span><span class="co">#&gt; Internal Control</span></span>
+<span><span class="co">#&gt;  patid ext trt      age</span></span>
+<span><span class="co">#&gt;    101   0   0 53.41148</span></span>
+<span><span class="co">#&gt;    102   0   0 55.57441</span></span>
+<span><span class="co">#&gt;    103   0   0 54.44838</span></span>
+<span><span class="co">#&gt;    104   0   0 54.22287</span></span>
+<span><span class="co">#&gt;    105   0   0 52.87212</span></span>
+<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 1 rows ]</span></span>
+<span><span class="co">#&gt; External Control</span></span>
+<span><span class="co">#&gt;  patid ext trt      age</span></span>
+<span><span class="co">#&gt;    151   1   0 56.76144</span></span>
+<span><span class="co">#&gt;    152   1   0 56.71963</span></span>
+<span><span class="co">#&gt;    153   1   0 55.74283</span></span>
+<span><span class="co">#&gt;    154   1   0 52.74520</span></span>
+<span><span class="co">#&gt;    155   1   0 54.73290</span></span>
+<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 1 rows ]</span></span></code></pre></div>
 <p>In a more complex setting, we can generate correlated baseline
-covariates.</p>
+covariates by specifying a variance-covariance matrix as the main
+diagonal (variance components) and the upper triangle (covariance
+components).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">with_age_score</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_baseline_object.html">create_baseline_object</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/covariance_matrix.html">covariance_matrix</a></span><span class="op">(</span>diag <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1.2</span><span class="op">)</span>, upper_tri <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      [,1] [,2]</span></span>
+<span><span class="co">#&gt; [1,]  5.0  0.1</span></span>
+<span><span class="co">#&gt; [2,]  0.1  1.2</span></span>
+<span></span>
+<span><span class="va">with_age_score</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_baseline_object.html">create_baseline_object</a></span><span class="op">(</span></span>
 <span>  n_trt_int <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  n_ctrl_int <span class="op">=</span> <span class="fl">50</span>,</span>
 <span>  n_ctrl_ext <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  covariates <span class="op">=</span> <span class="fu"><a href="../reference/baseline_covariates.html">baseline_covariates</a></span><span class="op">(</span></span>
-<span>    names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"score"</span><span class="op">)</span>,</span>
-<span>    means_int <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">55</span>, <span class="fl">5</span><span class="op">)</span>,</span>
-<span>    means_ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span>,</span>
-<span>    covariance_int <span class="op">=</span> <span class="fu"><a href="../reference/covariance_matrix.html">covariance_matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>    names <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"score"</span><span class="op">)</span>,</span>
+<span>    means_int <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">55</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    means_ext <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    covariance_int <span class="op">=</span> <span class="fu"><a href="../reference/covariance_matrix.html">covariance_matrix</a></span><span class="op">(</span>diag <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    covariance_ext <span class="op">=</span> <span class="fu"><a href="../reference/covariance_matrix.html">covariance_matrix</a></span><span class="op">(</span>diag <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1.2</span><span class="op">)</span>, upper_tri <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">data_age_score</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="va">with_age_score</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span></span>
-<span>  x <span class="op">=</span> <span class="va">data_age_score</span><span class="op">$</span><span class="va">age</span>,</span>
-<span>  y <span class="op">=</span> <span class="va">data_age_score</span><span class="op">$</span><span class="va">score</span>,</span>
-<span>  col <span class="op">=</span> <span class="va">data_age_score</span><span class="op">$</span><span class="va">trt</span> <span class="op">+</span> <span class="fl">1</span>,</span>
-<span>  pch <span class="op">=</span> <span class="va">data_age_score</span><span class="op">$</span><span class="va">ext</span> <span class="op">*</span> <span class="fl">16</span>,</span>
+<code class="sourceCode R"><span><span class="va">df_age_score</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">data_age_score</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plot.html">plot</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="va">df_age_score</span><span class="op">$</span><span class="va">age</span>,</span>
+<span>  y <span class="op">=</span> <span class="va">df_age_score</span><span class="op">$</span><span class="va">score</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">df_age_score</span><span class="op">$</span><span class="va">trt</span> <span class="op">+</span> <span class="fl">1</span>,</span>
+<span>  pch <span class="op">=</span> <span class="va">df_age_score</span><span class="op">$</span><span class="va">ext</span> <span class="op">*</span> <span class="fl">16</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="st">"Age"</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="st">"Score"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span></span>
 <span>  <span class="st">"topright"</span>,</span>
-<span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"internal treated"</span>, <span class="st">"internal control"</span>, <span class="st">"external control"</span><span class="op">)</span>,</span>
-<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">16</span><span class="op">)</span></span>
+<span>  legend <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"internal treated"</span>, <span class="st">"internal control"</span>, <span class="st">"external control"</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="figure-data_simulation-unnamed-chunk-6-1.png" alt=""><p class="caption">plot of chunk unnamed-chunk-6</p>
+<div class="float">
+<img src="figure-data_simulation-unnamed-chunk-6-1.png" alt="plot of chunk unnamed-chunk-6"><div class="figcaption">plot of chunk unnamed-chunk-6</div>
 </div>
 <p>Finally, we have the option to transform non-normal covariates, such
 as with binary cut-offs. These can be added to existing objects and can
 use built-in functions or used defined.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">with_age_score</span><span class="op">@</span><span class="va">transformations</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  score_high <span class="op">=</span> <span class="fu"><a href="../reference/binary_cutoff.html">binary_cutoff</a></span><span class="op">(</span><span class="st">"score"</span>, int_cutoff <span class="op">=</span> <span class="fl">0.7</span>, ext_cutoff <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>,</span>
-<span>  score_rounded <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">score</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">with_age_score</span> <span class="op">&lt;-</span> <span class="va">with_age_score</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/set_transformations.html">set_transformations</a></span><span class="op">(</span></span>
+<span>    score_high <span class="op">=</span> <span class="fu"><a href="../reference/binary_cutoff.html">binary_cutoff</a></span><span class="op">(</span><span class="st">"score"</span>, int_cutoff <span class="op">=</span> <span class="fl">0.7</span>, ext_cutoff <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>,</span>
+<span>    score_rounded <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">score</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="va">with_age_score</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Simulated Baseline Data</span></span>
-<span><span class="co">#&gt;   patid ext trt      age    score score_high score_rounded</span></span>
-<span><span class="co">#&gt; 1     1   0   1 53.74674 4.769823          0             5</span></span>
-<span><span class="co">#&gt; 2     2   0   1 58.48538 5.070508          0             5</span></span>
-<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 248 rows ]</span></span></code></pre></div>
+<span><span class="co">#&gt; Baseline Data List</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Internal Treated</span></span>
+<span><span class="co">#&gt;  patid ext trt      age    score score_high score_rounded</span></span>
+<span><span class="co">#&gt;      1   0   1 53.74674 4.769823          0             5</span></span>
+<span><span class="co">#&gt;      2   0   1 58.48538 5.070508          0             5</span></span>
+<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 4 rows ]</span></span>
+<span><span class="co">#&gt; Internal Control</span></span>
+<span><span class="co">#&gt;  patid ext trt      age    score score_high score_rounded</span></span>
+<span><span class="co">#&gt;    101   0   0 59.91669 6.312413          1             6</span></span>
+<span><span class="co">#&gt;    102   0   0 54.40712 5.543194          1             6</span></span>
+<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 4 rows ]</span></span>
+<span><span class="co">#&gt; External Control</span></span>
+<span><span class="co">#&gt;  patid ext trt      age    score score_high score_rounded</span></span>
+<span><span class="co">#&gt;    151   1   0 58.40067 4.247311          0             4</span></span>
+<span><span class="co">#&gt;    152   1   0 57.90136 3.947487          0             4</span></span>
+<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 4 rows ]</span></span></code></pre></div>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="generating-survival-data">Generating Survival Data<a class="anchor" aria-label="anchor" href="#generating-survival-data"></a>
+</h2>
+<p>Using the baseline object we have specified, we can generate survival
+outcome data including various parameters like dropout rate, enrollment
+rate and clinical cut-off.</p>
+<p>First we need to specify the outcome distribution. The underlying
+data generation is handled by the <code>simsurv</code> package. The
+<code><a href="../reference/create_event_dist.html">create_event_dist()</a></code> function take the parameters needed to
+define the distribution. In the simplest case we can use an exponential
+distribution by specifying a single <code>lambda</code> parameter. We
+could also use Weibull or Gompertz distributions, mixtures of
+distributions, or even specify an arbitrary (log/cumulative) hazard
+function.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">exponential_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"exponential"</span>, lambda <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">24</span><span class="op">)</span></span></code></pre></div>
+<p>The minimum required parameters to create a data simulation object
+are a baseline object and an event distribution.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/create_data_simulation.html">create_data_simulation</a></span><span class="op">(</span></span>
+<span>  baseline <span class="op">=</span> <span class="fu"><a href="../reference/create_baseline_object.html">create_baseline_object</a></span><span class="op">(</span>n_trt_int <span class="op">=</span> <span class="fl">100</span>, n_ctrl_int <span class="op">=</span> <span class="fl">50</span>, n_ctrl_ext <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
+<span>  event_dist <span class="op">=</span> <span class="va">exponential_dist</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; SimDataList object with  1  different scenarios</span></span>
+<span><span class="co">#&gt;   sim_id treatment_hr drift_hr n_datasets_per_param</span></span>
+<span><span class="co">#&gt; 1      1            1        1                    1</span></span></code></pre></div>
+<p>We can expand by including a baseline object with covariates and so
+we need coefficients for including them in the hazard calculation.
+Further we can include coefficient for the treatment parameter
+(<code>treatment_hr</code>) and for the difference between internal and
+external arms (<code>drift_hr</code>).</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_data_simulation.html">create_data_simulation</a></span><span class="op">(</span></span>
+<span>  baseline <span class="op">=</span> <span class="va">with_age_score</span>,</span>
+<span>  coefficients <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span>age <span class="op">=</span> <span class="fl">0.001</span>, score_high <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span>,</span>
+<span>  event_dist <span class="op">=</span> <span class="va">exponential_dist</span>,</span>
+<span>  treatment_hr <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  drift_hr <span class="op">=</span> <span class="fl">0.9</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="va">data_sim</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_list</span></span>
+<span><span class="co">#&gt; SimDataList object with  1  different scenarios</span></span>
+<span><span class="co">#&gt;   sim_id treatment_hr drift_hr n_datasets_per_param</span></span>
+<span><span class="co">#&gt; 1      1          0.5      0.9                    1</span></span></code></pre></div>
+<p>We can peek at the data with <code><a href="../reference/get_data.html">get_data()</a></code>:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">data_list</span>, index <span class="op">=</span> <span class="fl">1</span>, dataset <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   patid      age score_high trt ext  eventtime status enrollment cens</span></span>
+<span><span class="co">#&gt; 1     1 53.25887          0   1   0 163.587989      1          1    0</span></span>
+<span><span class="co">#&gt; 2     2 55.64217          0   1   0   6.884799      1          1    0</span></span>
+<span><span class="co">#&gt;  [ reached getOption("max.print") -- omitted 4 rows ]</span></span></code></pre></div>
+<p>We can control how datasets are generated with the <code>n</code>,
+<code>treatment_hr</code> and <code>drift_hr</code> parameters of
+<code><a href="../reference/generate.html">generate()</a></code>. These will override the defaults specified in
+<code><a href="../reference/create_data_simulation.html">create_data_simulation()</a></code>.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="va">data_sim</span>, n <span class="op">=</span> <span class="fl">10</span>, treatment_hr <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.3</span>, <span class="fl">2</span><span class="op">)</span>, drift_hr <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; SimDataList object with  6  different scenarios</span></span>
+<span><span class="co">#&gt;   sim_id treatment_hr drift_hr n_datasets_per_param</span></span>
+<span><span class="co">#&gt; 1      1          1.0      1.0                   10</span></span>
+<span><span class="co">#&gt; 2      2          1.3      1.0                   10</span></span>
+<span><span class="co">#&gt; 3      3          2.0      1.0                   10</span></span>
+<span><span class="co">#&gt; 4      4          1.0      1.2                   10</span></span>
+<span><span class="co">#&gt; 5      5          1.3      1.2                   10</span></span>
+<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 1 rows ]</span></span></code></pre></div>
+<p>To add other features to the simulation there are
+<code><a href="../reference/set_enrollment.html">set_enrollment()</a></code>, <code><a href="../reference/set_cut_off.html">set_cut_off()</a></code> and
+<code><a href="../reference/set_dropout.html">set_dropout()</a></code> functions which modify a
+<code>DataSimObject</code>.</p>
+<div class="section level3">
+<h3 id="enrollment">Enrollment<a class="anchor" aria-label="anchor" href="#enrollment"></a>
+</h3>
+<p>Currently only one enrollment option is defined,
+<code>enrollment_constant</code> where a fixed number of patients are
+enrolled in each period for a given time duration, so
+<code>enrollment_constant(rate = c(5, 2), for_time = c(4, 5))</code>
+enrolls 5 patients in periods 1, 2, 3, 4, and then 2 patients each in 5,
+6, 7, 8, 9.</p>
+<p>New methods can be specified by defining a function that takes a
+parameter <code>n</code>, the number of patients to generate enrollment
+times for.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">poisson_enrollment</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/custom_enrollment.html">custom_enrollment</a></span><span class="op">(</span></span>
+<span>  fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html" class="external-link">rpois</a></span><span class="op">(</span><span class="va">n</span>, lambda <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  label <span class="op">=</span> <span class="st">"Poisson enrollment distribution"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/set_enrollment.html">set_enrollment</a></span><span class="op">(</span><span class="va">data_sim</span>, internal <span class="op">=</span> <span class="va">poisson_enrollment</span><span class="op">)</span></span>
+<span><span class="co">#&gt; DataSimObject</span></span>
+<span><span class="co">#&gt; -------------</span></span>
+<span><span class="co">#&gt; Baseline object:</span></span>
+<span><span class="co">#&gt; Baseline Data Simulation Object</span></span>
+<span><span class="co">#&gt;   N internal treated:  100 </span></span>
+<span><span class="co">#&gt;   N internal control:  50 </span></span>
+<span><span class="co">#&gt;   N external control:  100 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Covariates: </span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt;  covariate means_internal means_external</span></span>
+<span><span class="co">#&gt;        age             55             60</span></span>
+<span><span class="co">#&gt;      score              5              5</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Covariance Matrices</span></span>
+<span><span class="co">#&gt; Internal          External</span></span>
+<span><span class="co">#&gt;       age score         age score </span></span>
+<span><span class="co">#&gt; age     5     0   age   5.0   0.1 </span></span>
+<span><span class="co">#&gt; score   0     1   score 0.1   1.2 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Transformations: </span></span>
+<span><span class="co">#&gt;    score_high, score_rounded </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Event distribution:</span></span>
+<span><span class="co">#&gt; exponential distribution with lambda = 0.0416666666666667 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment HR:  0.5 </span></span>
+<span><span class="co">#&gt; Drift HR:  0.9 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;        age score_high </span></span>
+<span><span class="co">#&gt;      0.001      1.500 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Enrollment:</span></span>
+<span><span class="co">#&gt;  Internal: Poisson enrollment distribution </span></span>
+<span><span class="co">#&gt;  External: Poisson enrollment distribution </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Dropout:</span></span>
+<span><span class="co">#&gt;  Internal treated: No distribution specified </span></span>
+<span><span class="co">#&gt;  Internal control: No distribution specified </span></span>
+<span><span class="co">#&gt;  External control: No distribution specified </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Clinical cut off:</span></span>
+<span><span class="co">#&gt;  Internal: No cut off </span></span>
+<span><span class="co">#&gt;  External: No cut off</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="drop-out">Drop Out<a class="anchor" aria-label="anchor" href="#drop-out"></a>
+</h3>
+<p>Drop out is defined using the same <code><a href="../reference/create_event_dist.html">create_event_dist()</a></code>
+function as for the survival time. No covariates can be specified for
+these distributions, but we can set different distributions for the
+three arms.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/set_dropout.html">set_dropout</a></span><span class="op">(</span></span>
+<span>  <span class="va">data_sim</span>,</span>
+<span>  internal_treated <span class="op">=</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"exponential"</span>, lambdas <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">50</span><span class="op">)</span>,</span>
+<span>  internal_control <span class="op">=</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"exponential"</span>, lambdas <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">55</span><span class="op">)</span>,</span>
+<span>  external_control <span class="op">=</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"weibull"</span>, lambdas <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">40</span>, gammas <span class="op">=</span> <span class="fl">1.1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; DataSimObject</span></span>
+<span><span class="co">#&gt; -------------</span></span>
+<span><span class="co">#&gt; Baseline object:</span></span>
+<span><span class="co">#&gt; Baseline Data Simulation Object</span></span>
+<span><span class="co">#&gt;   N internal treated:  100 </span></span>
+<span><span class="co">#&gt;   N internal control:  50 </span></span>
+<span><span class="co">#&gt;   N external control:  100 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Covariates: </span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt;  covariate means_internal means_external</span></span>
+<span><span class="co">#&gt;        age             55             60</span></span>
+<span><span class="co">#&gt;      score              5              5</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Covariance Matrices</span></span>
+<span><span class="co">#&gt; Internal          External</span></span>
+<span><span class="co">#&gt;       age score         age score </span></span>
+<span><span class="co">#&gt; age     5     0   age   5.0   0.1 </span></span>
+<span><span class="co">#&gt; score   0     1   score 0.1   1.2 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Transformations: </span></span>
+<span><span class="co">#&gt;    score_high, score_rounded </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Event distribution:</span></span>
+<span><span class="co">#&gt; exponential distribution with lambda = 0.0416666666666667 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment HR:  0.5 </span></span>
+<span><span class="co">#&gt; Drift HR:  0.9 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;        age score_high </span></span>
+<span><span class="co">#&gt;      0.001      1.500 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Enrollment:</span></span>
+<span><span class="co">#&gt;  Internal: Enrolling 1 patient per time </span></span>
+<span><span class="co">#&gt;  External: Enrolling 1 patient per time </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Dropout:</span></span>
+<span><span class="co">#&gt;  Internal treated: exponential distribution with lambda = 0.02 </span></span>
+<span><span class="co">#&gt;  Internal control: exponential distribution with lambda = 0.0181818181818182 </span></span>
+<span><span class="co">#&gt;  External control: weibull distribution with lambda = 0.025 and gamma = 1.1 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Clinical cut off:</span></span>
+<span><span class="co">#&gt;  Internal: No cut off </span></span>
+<span><span class="co">#&gt;  External: No cut off</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="clinical-cut-off">Clinical Cut Off<a class="anchor" aria-label="anchor" href="#clinical-cut-off"></a>
+</h2>
+<p>In some cases we want to mimic a clinical trial cut off rule, where
+all patient data after a certain time are censored. Different rules are
+available such as: - fixed time after first patient is enrolled
+<code>cut_off_after_first(time = 36)</code> - fixed time after last
+patient is enrolled <code>cut_off_after_first(time = 60)</code> - fixed
+number of events observed <code>cut_off_after_events(n = 45)</code></p>
+<p>If a patient has survival time longer than these rules their status
+will be set to <code>0</code> and <code>eventtime</code> set to the cut
+off time.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/set_cut_off.html">set_cut_off</a></span><span class="op">(</span></span>
+<span>  <span class="va">data_sim</span>,</span>
+<span>  internal <span class="op">=</span> <span class="fu"><a href="../reference/cut_off_funs.html">cut_off_after_first</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fl">36</span><span class="op">)</span>,</span>
+<span>  external <span class="op">=</span> <span class="fu"><a href="../reference/cut_off_funs.html">cut_off_after_events</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; DataSimObject</span></span>
+<span><span class="co">#&gt; -------------</span></span>
+<span><span class="co">#&gt; Baseline object:</span></span>
+<span><span class="co">#&gt; Baseline Data Simulation Object</span></span>
+<span><span class="co">#&gt;   N internal treated:  100 </span></span>
+<span><span class="co">#&gt;   N internal control:  50 </span></span>
+<span><span class="co">#&gt;   N external control:  100 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Covariates: </span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt;  covariate means_internal means_external</span></span>
+<span><span class="co">#&gt;        age             55             60</span></span>
+<span><span class="co">#&gt;      score              5              5</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Covariance Matrices</span></span>
+<span><span class="co">#&gt; Internal          External</span></span>
+<span><span class="co">#&gt;       age score         age score </span></span>
+<span><span class="co">#&gt; age     5     0   age   5.0   0.1 </span></span>
+<span><span class="co">#&gt; score   0     1   score 0.1   1.2 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Transformations: </span></span>
+<span><span class="co">#&gt;    score_high, score_rounded </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Event distribution:</span></span>
+<span><span class="co">#&gt; exponential distribution with lambda = 0.0416666666666667 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment HR:  0.5 </span></span>
+<span><span class="co">#&gt; Drift HR:  0.9 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;        age score_high </span></span>
+<span><span class="co">#&gt;      0.001      1.500 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Enrollment:</span></span>
+<span><span class="co">#&gt;  Internal: Enrolling 1 patient per time </span></span>
+<span><span class="co">#&gt;  External: Enrolling 1 patient per time </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Dropout:</span></span>
+<span><span class="co">#&gt;  Internal treated: No distribution specified </span></span>
+<span><span class="co">#&gt;  Internal control: No distribution specified </span></span>
+<span><span class="co">#&gt;  External control: No distribution specified </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Clinical cut off:</span></span>
+<span><span class="co">#&gt;  Internal: Cut off after first enrolled patient reaches time = 36 </span></span>
+<span><span class="co">#&gt;  External: Cut off after 45 events</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="running-a-simulation">Running a simulation<a class="anchor" aria-label="anchor" href="#running-a-simulation"></a>
+</h2>
+<p>Putting all that together:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_baseline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_baseline_object.html">create_baseline_object</a></span><span class="op">(</span></span>
+<span>  n_trt_int <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  n_ctrl_int <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  n_ctrl_ext <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  covariates <span class="op">=</span> <span class="fu"><a href="../reference/baseline_covariates.html">baseline_covariates</a></span><span class="op">(</span></span>
+<span>    names <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"score"</span><span class="op">)</span>,</span>
+<span>    means_int <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">55</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    means_ext <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    covariance_int <span class="op">=</span> <span class="fu"><a href="../reference/covariance_matrix.html">covariance_matrix</a></span><span class="op">(</span>diag <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    covariance_ext <span class="op">=</span> <span class="fu"><a href="../reference/covariance_matrix.html">covariance_matrix</a></span><span class="op">(</span>diag <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1.2</span><span class="op">)</span>, upper_tri <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  transformations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score_high <span class="op">=</span> <span class="fu"><a href="../reference/binary_cutoff.html">binary_cutoff</a></span><span class="op">(</span><span class="st">"score"</span>, int_cutoff <span class="op">=</span> <span class="fl">0.7</span>, ext_cutoff <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_data_sim_setup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_data_simulation.html">create_data_simulation</a></span><span class="op">(</span></span>
+<span>  baseline <span class="op">=</span> <span class="va">my_baseline</span>,</span>
+<span>  coefficients <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span>age <span class="op">=</span> <span class="fl">0.001</span>, score_high <span class="op">=</span> <span class="fl">1.1</span><span class="op">)</span>,</span>
+<span>  event_dist <span class="op">=</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"exponential"</span>, lambdas <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">50</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/set_enrollment.html">set_enrollment</a></span><span class="op">(</span></span>
+<span>    internal <span class="op">=</span> <span class="fu"><a href="../reference/enrollment_constant.html">enrollment_constant</a></span><span class="op">(</span>rate <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span>, for_time <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    external <span class="op">=</span> <span class="fu"><a href="../reference/enrollment_constant.html">enrollment_constant</a></span><span class="op">(</span>rate <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">10</span><span class="op">)</span>, for_time <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/set_dropout.html">set_dropout</a></span><span class="op">(</span></span>
+<span>    internal_treated <span class="op">=</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"exponential"</span>, lambdas <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">50</span><span class="op">)</span>,</span>
+<span>    internal_control <span class="op">=</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"exponential"</span>, lambdas <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">55</span><span class="op">)</span>,</span>
+<span>    external_control <span class="op">=</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"exponential"</span>, lambdas <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">40</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/set_cut_off.html">set_cut_off</a></span><span class="op">(</span></span>
+<span>    internal <span class="op">=</span> <span class="fu"><a href="../reference/cut_off_funs.html">cut_off_after_first</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fl">60</span><span class="op">)</span>,</span>
+<span>    external <span class="op">=</span> <span class="fu"><a href="../reference/cut_off_funs.html">cut_off_after_events</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="va">my_data_sim_setup</span>, n <span class="op">=</span> <span class="fl">3</span>, treatment_hr <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.3</span><span class="op">)</span>, drift_hr <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Now we can define the simulation setup for the models:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">borrowing</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_borrowing_list.html">sim_borrowing_list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>full <span class="op">=</span> <span class="fu"><a href="../reference/borrowing_full.html">borrowing_full</a></span><span class="op">(</span><span class="st">"ext"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_outcome_list.html">sim_outcome_list</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>standard_outcome <span class="op">=</span> <span class="fu"><a href="../reference/outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span></span>
+<span>    time_var <span class="op">=</span> <span class="st">"eventtime"</span>,</span>
+<span>    cens_var <span class="op">=</span> <span class="st">"cens"</span>,</span>
+<span>    baseline_prior <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">covariate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_covariate_list.html">sim_covariate_list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  cov1 <span class="op">=</span> <span class="fu"><a href="../reference/add_covariates.html">add_covariates</a></span><span class="op">(</span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"score_high"</span><span class="op">)</span>, <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  no_covs <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">treatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_treatment_list.html">sim_treatment_list</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>standard_tx <span class="op">=</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span>trt_flag_col <span class="op">=</span> <span class="st">"trt"</span>, trt_prior <span class="op">=</span> <span class="fu"><a href="../reference/prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sim_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_simulation_obj.html">create_simulation_obj</a></span><span class="op">(</span></span>
+<span>  data_matrix_list <span class="op">=</span> <span class="va">my_data_list</span>,</span>
+<span>  outcome <span class="op">=</span> <span class="va">outcome</span>,</span>
+<span>  borrowing <span class="op">=</span> <span class="va">borrowing</span>,</span>
+<span>  treatment <span class="op">=</span> <span class="va">treatment</span>,</span>
+<span>  covariate <span class="op">=</span> <span class="va">covariate</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>And finally sample from these models. See the vignette “4. Conduct a
+simulation study” for more details.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sim_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">sim_obj</span>, chains <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_results.html">get_results</a></span><span class="op">(</span><span class="va">sim_results</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="using-fixed-external-data">Using fixed external data<a class="anchor" aria-label="anchor" href="#using-fixed-external-data"></a>
+</h3>
+<p>We can also include a known data set as the external data, if we wish
+to simulate the operating characteristics of using previously collected
+data. This is done by setting the <code>external_data</code> argument in
+<code>create_data_simulation</code> to a data frame. This data is
+included after enrollment, cut-off and dropout functions are applied, so
+these have no effect on the fixed data.</p>
+<p>It is possible to include a fixed external dataset and additionally
+simulate external patients by setting <code>n_ctrl_ext</code> to a
+non-zero value. This will simulate external patients in addition to the
+fixed data.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">historical_trial_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  score_high <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">1</span>, <span class="fl">0.7</span><span class="op">)</span>,</span>
+<span>  trt <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  eventtime <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html" class="external-link">rexp</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">1</span> <span class="op">/</span> <span class="fl">50</span><span class="op">)</span>,</span>
+<span>  status <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  enrollment <span class="op">=</span> <span class="fl">1</span> <span class="co"># enrollment is specified here but not used in clinical cut off</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_internal_baseline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_baseline_object.html">create_baseline_object</a></span><span class="op">(</span></span>
+<span>  n_trt_int <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  n_ctrl_int <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  n_ctrl_ext <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  covariates <span class="op">=</span> <span class="fu"><a href="../reference/baseline_covariates.html">baseline_covariates</a></span><span class="op">(</span></span>
+<span>    names <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"score"</span><span class="op">)</span>,</span>
+<span>    means_int <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">55</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    means_ext <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    covariance_int <span class="op">=</span> <span class="fu"><a href="../reference/covariance_matrix.html">covariance_matrix</a></span><span class="op">(</span>diag <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    covariance_ext <span class="op">=</span> <span class="fu"><a href="../reference/covariance_matrix.html">covariance_matrix</a></span><span class="op">(</span>diag <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1.2</span><span class="op">)</span>, upper_tri <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  transformations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score_high <span class="op">=</span> <span class="fu"><a href="../reference/binary_cutoff.html">binary_cutoff</a></span><span class="op">(</span><span class="st">"score"</span>, int_cutoff <span class="op">=</span> <span class="fl">0.7</span>, ext_cutoff <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_data_sim_setup_with_fixed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_data_simulation.html">create_data_simulation</a></span><span class="op">(</span></span>
+<span>  baseline <span class="op">=</span> <span class="va">my_internal_baseline</span>,</span>
+<span>  coefficients <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span>age <span class="op">=</span> <span class="fl">0.001</span>, score_high <span class="op">=</span> <span class="fl">1.1</span><span class="op">)</span>,</span>
+<span>  event_dist <span class="op">=</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"exponential"</span>, lambdas <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">50</span><span class="op">)</span>,</span>
+<span>  fixed_external_data <span class="op">=</span> <span class="va">historical_trial_data</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/set_enrollment.html">set_enrollment</a></span><span class="op">(</span></span>
+<span>    internal <span class="op">=</span> <span class="fu"><a href="../reference/enrollment_constant.html">enrollment_constant</a></span><span class="op">(</span>rate <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span>, for_time <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    external <span class="op">=</span> <span class="fu"><a href="../reference/enrollment_constant.html">enrollment_constant</a></span><span class="op">(</span>rate <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">10</span><span class="op">)</span>, for_time <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/set_dropout.html">set_dropout</a></span><span class="op">(</span></span>
+<span>    internal_treated <span class="op">=</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"exponential"</span>, lambdas <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">50</span><span class="op">)</span>,</span>
+<span>    internal_control <span class="op">=</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"exponential"</span>, lambdas <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">55</span><span class="op">)</span>,</span>
+<span>    external_control <span class="op">=</span> <span class="fu"><a href="../reference/create_event_dist.html">create_event_dist</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"exponential"</span>, lambdas <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">40</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/set_cut_off.html">set_cut_off</a></span><span class="op">(</span></span>
+<span>    internal <span class="op">=</span> <span class="fu"><a href="../reference/cut_off_funs.html">cut_off_after_first</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fl">60</span><span class="op">)</span>,</span>
+<span>    external <span class="op">=</span> <span class="fu"><a href="../reference/cut_off_funs.html">cut_off_after_events</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">my_data_sim_setup_with_fixed</span></span>
+<span><span class="co">#&gt; DataSimObject</span></span>
+<span><span class="co">#&gt; -------------</span></span>
+<span><span class="co">#&gt; Baseline object:</span></span>
+<span><span class="co">#&gt; Baseline Data Simulation Object</span></span>
+<span><span class="co">#&gt;   N internal treated:  100 </span></span>
+<span><span class="co">#&gt;   N internal control:  50 </span></span>
+<span><span class="co">#&gt;   N external control:  0 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Covariates: </span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt;  covariate means_internal means_external</span></span>
+<span><span class="co">#&gt;        age             55             60</span></span>
+<span><span class="co">#&gt;      score              5              5</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Covariance Matrices</span></span>
+<span><span class="co">#&gt; Internal          External</span></span>
+<span><span class="co">#&gt;       age score         age score </span></span>
+<span><span class="co">#&gt; age     5     0   age   5.0   0.1 </span></span>
+<span><span class="co">#&gt; score   0     1   score 0.1   1.2 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Transformations: </span></span>
+<span><span class="co">#&gt;    score_high </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Event distribution:</span></span>
+<span><span class="co">#&gt; exponential distribution with lambda = 0.02 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment HR:  1 </span></span>
+<span><span class="co">#&gt; Drift HR:  1 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;        age score_high </span></span>
+<span><span class="co">#&gt;      0.001      1.100 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Enrollment:</span></span>
+<span><span class="co">#&gt;  Internal: Enrolling patients per time at rates: 25, 25, 25, 25, 10, 10, 10, 10, 10, 10, 10, 10.... </span></span>
+<span><span class="co">#&gt;  External: Enrolling patients per time at rates: 30, 30, 30, 30, 10, 10, 10, 10, 10, 10, 10, 10.... </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Dropout:</span></span>
+<span><span class="co">#&gt;  Internal treated: exponential distribution with lambda = 0.02 </span></span>
+<span><span class="co">#&gt;  Internal control: exponential distribution with lambda = 0.0181818181818182 </span></span>
+<span><span class="co">#&gt;  External control: exponential distribution with lambda = 0.025 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Clinical cut off:</span></span>
+<span><span class="co">#&gt;  Internal: Cut off after first enrolled patient reaches time = 60 </span></span>
+<span><span class="co">#&gt;  External: Cut off after 100 events </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Fixed external data:</span></span>
+<span><span class="co">#&gt;  Columns: age, score_high, trt, eventtime, status, enrollment, ext </span></span>
+<span><span class="co">#&gt;  N: 40</span></span>
+<span></span>
+<span><span class="co"># Drift is not be used for the fixed external data!</span></span>
+<span><span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="va">my_data_sim_setup_with_fixed</span>, n <span class="op">=</span> <span class="fl">1</span>, treatment_hr <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.3</span><span class="op">)</span>, drift_hr <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Drift parameter is not applied to fixed external data</span></span>
+<span><span class="co">#&gt; SimDataList object with  4  different scenarios</span></span>
+<span><span class="co">#&gt;   sim_id treatment_hr drift_hr n_datasets_per_param</span></span>
+<span><span class="co">#&gt; 1      1          1.0      1.0                    1</span></span>
+<span><span class="co">#&gt; 2      2          1.3      1.0                    1</span></span>
+<span><span class="co">#&gt; 3      3          1.0      1.2                    1</span></span>
+<span><span class="co">#&gt; 4      4          1.3      1.2                    1</span></span>
+<span></span>
+<span><span class="va">external_data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="va">my_data_sim_setup_with_fixed</span>, n <span class="op">=</span> <span class="fl">3</span>, treatment_hr <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.3</span><span class="op">)</span>, drift_hr <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="combining-simulations">Combining simulations<a class="anchor" aria-label="anchor" href="#combining-simulations"></a>
+</h3>
+<p>Simulation data objects can be combined so that a simulation can be
+run once.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">combined_data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="va">my_data_list</span>, <span class="va">external_data_list</span><span class="op">)</span></span>
+<span><span class="va">combined_data_list</span></span>
+<span><span class="co">#&gt; SimDataList object with  6  different scenarios</span></span>
+<span><span class="co">#&gt;   sim_id treatment_hr drift_hr n_datasets_per_param</span></span>
+<span><span class="co">#&gt; 1      1          1.0      1.0                    3</span></span>
+<span><span class="co">#&gt; 2      2          1.3      1.0                    3</span></span>
+<span><span class="co">#&gt; 3      3          1.0      1.2                    3</span></span>
+<span><span class="co">#&gt; 4      4          1.3      1.2                    3</span></span>
+<span><span class="co">#&gt; 5      5          1.0      1.0                    3</span></span>
+<span><span class="co">#&gt;  [ reached 'max' / getOption("max.print") -- omitted 1 rows ]</span></span></code></pre></div>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

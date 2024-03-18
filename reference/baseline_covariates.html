@@ -15,7 +15,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,7 +52,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Specify Correlated Baseline Covariates</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Genentech/psborrow2/blob/HEAD/R/simulate_data.R" class="external-link"><code>R/simulate_data.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Genentech/psborrow2/blob/HEAD/R/simulate_data_baseline.R" class="external-link"><code>R/simulate_data_baseline.R</code></a></small>
       <div class="d-none name"><code>baseline_covariates.Rd</code></div>
     </div>
 
@@ -105,9 +105,9 @@ Must be square matrix with same number of rows and <code>length(names)</code></p
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">corr_covs</span> <span class="op">&lt;-</span> <span class="fu">baseline_covariates</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"b1"</span>, <span class="st">"b2"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  means_int <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">25</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  covariance_int <span class="op">=</span> <span class="fu"><a href="covariance_matrix.html">covariance_matrix</a></span><span class="op">(</span>diag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, upper_tri <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  names <span class="op">=</span> <span class="fu"><a href="c.html">c</a></span><span class="op">(</span><span class="st">"b1"</span>, <span class="st">"b2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  means_int <span class="op">=</span> <span class="fu"><a href="c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">25</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  covariance_int <span class="op">=</span> <span class="fu"><a href="covariance_matrix.html">covariance_matrix</a></span><span class="op">(</span>diag <span class="op">=</span> <span class="fu"><a href="c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, upper_tri <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
