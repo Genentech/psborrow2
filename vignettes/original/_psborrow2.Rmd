@@ -81,7 +81,7 @@ designs: `vignette('simulation_study', package = 'psborrow2')`
 
 ## Additional information
 `psborrow2` is the successor to
-[`psborrow`](https://cran.r-project.org/web/packages/psborrow/index.html).
+[`psborrow`](https://CRAN.R-project.org/package=psborrow/index.html).
 While the core functionality has been replicated in `psborrow2` such that there
 is no longer any reason to prefer `psborrow`, we cite it here
 for posterity.

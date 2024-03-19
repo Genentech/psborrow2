@@ -60,7 +60,7 @@ summary(weightit_model)
 
 Another useful package is [cobalt](https://cran.r-project.org/package=cobalt), which provides tools for
 assessing balance between groups after weighting or matching. It is compatible with many matching and weighting packages.
-See the [vignette](https://cran.r-project.org/web/packages/cobalt/vignettes/cobalt.html) for more details.
+See the [vignette](https://CRAN.R-project.org/package=cobalt/vignettes/cobalt.html) for more details.
 We can use the `cobalt` package to assess balance with `bal.plot()`.
 
 ```{r balplot, message = FALSE}
@@ -111,7 +111,7 @@ knitr::knit_hooks$set(output = output_hook)
 A variety of matching methods, including PS matching are implemented in the
 [MatchIt](https://cran.r-project.org/package=MatchIt) package.
 
-As described in the [Getting Started vignette](https://cran.r-project.org/web/packages/MatchIt/vignettes/MatchIt.html),
+As described in the [Getting Started vignette](https://CRAN.R-project.org/package=MatchIt/vignettes/MatchIt.html),
 it can be useful to check the imbalance before matching.
 
 ```{r matchit}
@@ -141,7 +141,7 @@ plot(match_11, type = "jitter", interactive = FALSE)
 ```
 
 Determining whether the balance after matching is appropriate is beyond the scope of this vignette. You can read more in
-the [MatchIt Assessing Balance](https://cran.r-project.org/web/packages/MatchIt/vignettes/assessing-balance.html)
+the [MatchIt Assessing Balance](https://CRAN.R-project.org/package=MatchIt/vignettes/assessing-balance.html)
 vignette. Again the `cobalt` package can be useful here.
 
 However, if you are happy with the results of the matching procedure, you can extract the data for use in `psborrow2`.

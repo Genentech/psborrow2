@@ -516,4 +516,4 @@ mcse_quantile(x = vm, probs = c(0.1, 0.5, 0.9))
 ```
 
 `posterior` contains many other helpful functions, as outlined in their
-[vignettes](https://cran.r-project.org/web/packages/posterior/vignettes/posterior.html).
+[vignettes](https://CRAN.R-project.org/package=posterior/vignettes/posterior.html).
