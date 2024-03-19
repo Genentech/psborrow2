@@ -31,11 +31,11 @@ contains the flag indicating a patient is from the external control cohort.
 }
 \examples{
 db <- borrowing_none(
-   ext_flag_col = "ext"
+  ext_flag_col = "ext"
 )
 }
 \seealso{
-Other borrowing: 
+Other borrowing:
 \code{\link{borrowing_full}()}
 }
 \concept{borrowing}

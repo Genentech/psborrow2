@@ -211,6 +211,7 @@ setMethod(
                         verbose = FALSE,
                         keep_cmd_stan_models = FALSE,
                         ...) {
+    if (!is_cmdstanr_available()) stop("cmdstanr is required for sampling.")
     # Input checks
     assert_class(x, "Simulation")
     assert_numeric(posterior_quantiles)
