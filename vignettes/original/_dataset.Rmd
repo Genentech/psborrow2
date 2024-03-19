@@ -264,10 +264,16 @@ anls_obj <- create_analysis_obj(
 knitr::knit_hooks$set(output = output_hook)
 ```
 
-
-
 The Stan model compiled successfully and informed us that we are
 ready to begin sampling.
+
+Note that if you are interested in seeing the Stan code that was generated,
+you can use the `get_stan_code()` function to see the full Stan code that will
+be compiled.
+
+```{r get-stan-code}
+get_stan_code(anls_obj)
+```
 
 # Sampling from an analysis object
 

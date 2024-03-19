@@ -122,3 +122,18 @@ setMethod(
     NULL
   }
 )
+
+# get_stan_code ---- 
+#' @rdname get_stan_code
+#' @include generics.R
+setMethod(
+  f = "get_stan_code",
+  signature = "Analysis",
+  definition = function(object) {
+    if (is.null(object@model_string)) {
+      stop("Model not compiled yet!")
+    } else {
+      object@model_string
+    }
+  }
+)
