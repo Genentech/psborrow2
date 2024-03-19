@@ -38,8 +38,13 @@ This vignette will show how weights can be specified and compare regression mode
 We will compare a `glm` model with weights, a weighted likelihood in Stan with `psborrow2`, and
 `BayesPPD::glm.fixed.a0` for generalized linear models with fixed `a0` (power prior parameter).
 
+Note that we'll need `cmdstanr` to run this analysis. Please install 
+`cmdstanr` if you have not done so already following
+[this guide](https://mc-stan.org/cmdstanr/articles/cmdstanr.html).
+
 ```{r packages, results = "hide", message = FALSE}
 library(psborrow2)
+library(cmdstsanr)
 library(BayesPPD)
 library(ggplot2)
 ```

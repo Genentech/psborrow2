@@ -20,13 +20,13 @@ analyses using `psborrow2`.
 
 # Before you start
 
-The `psborrows2` package relies on [`Stan`](https://mc-stan.org/) for model fitting,
+The functionality in this article relies on [`Stan`](https://mc-stan.org/) for model fitting,
 specifically via the [`CmdStan`](https://mc-stan.org/users/interfaces/cmdstan.html)
 and [`cmdstanr`](https://mc-stan.org/cmdstanr/) tools.
 
 If you haven't used `CmdStan` before you'll need to install the R package
 and the external program. More information can be found in the
-[`cmdstanr` vignette](https://mc-stan.org/cmdstanr/articles/cmdstanr.html).
+[`cmdstanr` installation guide](https://mc-stan.org/cmdstanr/articles/cmdstanr.html).
 
 The short version is:
 
@@ -44,6 +44,7 @@ Now you're ready to start with `psborrow2`.
 
 ```r
 library(psborrow2)
+library(cmdstanr)
 ```
 
 # Creating an analysis object {.tabset}
@@ -164,7 +165,7 @@ The column definitions are below:
 
 ## 2. `outcome`
 
-`psborrow2` currently supports three outcomes:
+`psborrow2` currently supports four outcomes:
 
 * Time-to-event with exponential distribution (constant hazard), created with
 `outcome_surv_exponential()`
@@ -172,12 +173,12 @@ The column definitions are below:
 parametrization, created with `outcome_surv_weibull_ph()`
 * Binary endpoints with a Bernoulli distribution and using logistic regression,
 created with `outcome_bin_logistic()`
+* Continuous endpoints with a normal distribution, created with `outcome_cont_normal()`
 
 After we select which outcome and distribution we want,
 we need to specify a prior distribution for the baseline event rate,
 `baseline_prior`. In this case, `baseline_prior` is
-a log hazard rate (for binary endpoints this represents the log
-odds instead). Let's assume we have no prior knowledge on this event rate,
+a log hazard rate. Let's assume we have no prior knowledge on this event rate,
 so we'll specify an uninformative prior: `prior_normal(0, 1000)`.
 
 For our example, let's conduct a time-to-event analysis using the exponential
@@ -296,7 +297,7 @@ anls_obj <- create_analysis_obj(
   borrowing = borrowing,
   treatment = treatment,
   quiet = TRUE
-  )
+)
 ```
 
 
@@ -324,7 +325,7 @@ results <- mcmc_sample(anls_obj,
   iter_sampling = 50000,
   chains = 4,
   seed = 112233
-  )
+)
 ```
 
 

@@ -24,8 +24,7 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 library(psborrow2)
 ```
 
-
-In this vignette, you'll learn how to specify prior distributions in `psborrow2`.
+In this article, you'll learn how to specify prior distributions in `psborrow2`.
 
 # Specifying prior distributions
 Because `psborrow2` creates fully-parametrized Bayesian models,
@@ -49,17 +48,18 @@ Bayesian dynamic borrowing (BDB), passed to `borrowing_hierarchical_commensurate
 See the documentation of these functions for more information.
 
 # Types of prior distributions
-The currently supported prior distributions are created with the
+The currently supported prior distributions are created with the `prior_`
 constructors below:
 
-* `prior_bernoulli(theta)`
-* `prior_beta(alpha, beta)`
-* `prior_cauchy(mu, sigma)`
-* `prior_exponential(beta)`
-* `prior_gamma(alpha, beta)`
-* `prior_normal(mu, sigma)`
-* `prior_poisson(lambda)`
-* `uniform_prior(alpha, beta)`
+* `prior_bernoulli()`
+* `prior_beta()`
+* `prior_cauchy()`
+* `prior_exponential()`
+* `prior_gamma()`
+* `prior_half_cauchy()`
+* `prior_half_normal()`
+* `prior_normal()`
+* `prior_poisson()`
 
 For example, we can create an uninformative normal distribution by specifying
 a normal prior centered around 0 with a very large standard deviation:

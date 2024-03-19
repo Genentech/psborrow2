@@ -15,6 +15,7 @@ link-citations: yes
 
 ```r
 library(psborrow2)
+library(cmdstanr)
 ```
 
 Propensity scores (PS) methods offer various ways to adjust analyses for differences in groups of patients.
@@ -271,6 +272,7 @@ analysis_match <- create_analysis_obj(
 
 result_match <- mcmc_sample(analysis_match, seed = 123)
 ```
+
 ## Combined Weighting and Dynamic Borrowing
 
 The models also support fixed weights on the likelihood contributions from each observation. This
@@ -349,6 +351,7 @@ result_bdb <- mcmc_sample(
   seed = 123
 )
 ```
+
 
 
 
