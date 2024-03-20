@@ -36,7 +36,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: rcmdcheck
+          extra-packages: rcmdcheck, survival, flexsurv, testthat, usethis, vdiffr, tibble, xml2, knitr, rmarkdown, bayesplot, matrixcalc, WeightIt, MatchIt, BayesPPD, ggsurvfit, gbm, ggplot2, cobalt, table1, gt, gtsummary
           dependencies: '"hard"'
 
       - name: Install system dependencies on Linux
