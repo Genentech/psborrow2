@@ -211,6 +211,15 @@ setMethod(
                         verbose = FALSE,
                         keep_cmd_stan_models = FALSE,
                         ...) {
+    if (!is_cmdstanr_available()) {
+      stop(
+        "`mcmc_sample()` failed because `cmdstanr` is required for sampling. ",
+        "Install `cmdstanr` and create another simulation object with `create_simulation_obj()`, ",
+        "then call `mcmc_sample()` again.\n",
+        "To install:\n",
+        "install.packages(\"cmdstanr\", repos = c(\"https://mc-stan.org/r-packages/\", getOption(\"repos\")))"
+      )
+    }
     # Input checks
     assert_class(x, "Simulation")
     assert_numeric(posterior_quantiles)

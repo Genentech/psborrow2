@@ -23,21 +23,32 @@ knitr::opts_chunk$set(
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
 output_hook <- knitr::knit_hooks$get("output")
-output_null <- function(x, options) return(NULL)
+output_null <- function(x, options) {
+  return(NULL)
+}
 ```
 
-In this vignette, you'll learn how to use `psborrow2` to create a
-simulation study with the goal of informing trial design. Let's
-load `psborrow2` to start:
+In this article, you'll learn how to use `psborrow2` to create a
+simulation study with the goal of informing trial design. 
+
+Note that we'll need `cmdstanr` to run the simulation study. Please install 
+`cmdstanr` if you have not done so already following
+[this guide](https://mc-stan.org/cmdstanr/articles/cmdstanr.html).
+
+Let's load `psborrow2` to start:
 
 ```{r setup, message = FALSE}
 library(psborrow2)
+library(cmdstanr)
 ```
 
 # Bringing your own simulated data
 
 We'll start by showing how to conduct a simulation study when you bring your
-own simulated data. To execute a simulation study with your own data,
+own simulated data. To learn how to use `psborrow2` for the data generation
+as well, please refer to the [data simulation article (https://genentech.github.io/psborrow2/articles/data_simulation.html)](https://genentech.github.io/psborrow2/articles/data_simulation.html).
+
+To execute a simulation study with your own data,
 we need to build an object of class `Simulation` using the function
 `create_simulation_obj()`. Let's look at the arguments to
 `create_simulation_obj()` and consider them one-by-one below:

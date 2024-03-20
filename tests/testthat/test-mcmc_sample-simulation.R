@@ -110,28 +110,9 @@ test_that("mcmc_sample.Simulation behaves gracefully when cmdstanr is not availa
     "could not be compiled"
   )
   expect_class(sim_obj, "Simulation")
-  expect_warning(
+  expect_error(
     result <- mcmc_sample(sim_obj),
-    "is not ready for sampling and unexpected results may occur"
-  )
-  expect_class(result, "MCMCSimulationResult")
-  expect_equal(
-    get_results(result),
-    data.frame(
-      true_hr = 0.6,
-      drift_hr = 1,
-      index = 1,
-      n_datasets_per_param = 1L,
-      outcome_scenario = "standard_outcome",
-      borrowing_scenario = "full",
-      covariate_scenario = "No adjustment",
-      treatment_scenario = "standard_tx",
-      trt_var = 0,
-      mse_mean = NA_real_,
-      bias_mean = NA_real_,
-      null_coverage = NA_real_,
-      true_coverage = NA_real_
-    )
+    "cmdstanr is required for sampling"
   )
 })
 

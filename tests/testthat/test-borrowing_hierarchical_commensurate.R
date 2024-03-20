@@ -4,9 +4,9 @@ test_that("borrowing_hierarchical_commensurate works as expected for no borrowin
     ext_flag_col = "ext"
   )
   expect_class(nb, "Borrowing")
-  expect_class(nb, "BorrowingHierarchicalCommensurate") 
+  expect_class(nb, "BorrowingHierarchicalCommensurate")
   expect_equal(nb@ext_flag_col, "ext")
-  expect_equal(nb@tau_prior, prior_gamma(alpha = .001, beta = .001))  
+  expect_equal(nb@tau_prior, prior_gamma(alpha = .001, beta = .001))
 })
 
 test_that("borrowing_hierarchical_commensurate requires the tau prior", {

@@ -432,7 +432,7 @@ test_that("make_one_dataset works catches bad conditions", {
   bad_event_dist <- create_event_dist(loghazard = function(t, x, betas, ...) stop("bad log hazard definition"))
 
   expect_error(
-    expect_error(
+    expect_output(
       make_one_dataset(
         baseline = baseline_data,
         betas = c(age = 0.001, score_high = 1.1, trt = log(1.5), ext = log(1.1)),
@@ -446,7 +446,7 @@ test_that("make_one_dataset works catches bad conditions", {
   )
 
   expect_error(
-    expect_error(
+    expect_output(
       make_one_dataset(
         baseline = baseline_data,
         betas = c(age = 0.001, score_high = 1.1, trt = log(1.5), ext = log(1.1)),

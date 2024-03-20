@@ -37,7 +37,7 @@ setMethod(
   definition = function(object) {
     cat("Borrowing object using the ", object@method_name, " approach\n\n")
     cat("External control flag:", object@ext_flag_col, "\n\n")
-   }
+  }
 )
 
 # trim rows ----
@@ -62,7 +62,7 @@ setMethod(
   }
 )
 
-# create alpha string ---- 
+# create alpha string ----
 #' @rdname create_alpha_string
 #' @include generics.R
 setMethod(
@@ -73,7 +73,7 @@ setMethod(
   }
 )
 
-# create tau string ---- 
+# create tau string ----
 #' @rdname create_tau_string
 #' @include generics.R
 setMethod(

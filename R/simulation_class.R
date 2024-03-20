@@ -51,7 +51,23 @@ setMethod(
   f = "show",
   signature = "Simulation",
   definition = function(object) {
-    if (object@n_combos > 20 | object@n_analyses > 100) {
+    ready_to_sample <- all(vapply(
+      object@analysis_obj_list,
+      \(level_1) all(vapply(
+        level_1,
+        \(level_2) level_2@ready_to_sample, logical(1)
+      )), logical(1)
+    ))
+    if (!ready_to_sample) {
+      cat(
+        "Simulation object with ",
+        object@n_combos,
+        " combinations and ",
+        object@n_analyses,
+        " analyses. ",
+        "Not ready to sample yet! Try installing `cmdstanr` and calling `create_simulation_obj()` again."
+      )
+    } else if (object@n_combos > 20 | object@n_analyses > 100) {
       cat(
         "Simulation object with ",
         object@n_combos,

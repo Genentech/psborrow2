@@ -54,8 +54,8 @@ will lead to more borrowing.
 }
 \examples{
 db <- borrowing_hierarchical_commensurate(
-   ext_flag_col = "ext",
-   tau_prior = prior_gamma(0.0001, 0.0001)
+  ext_flag_col = "ext",
+  tau_prior = prior_gamma(0.0001, 0.0001)
 )
 }
 \references{

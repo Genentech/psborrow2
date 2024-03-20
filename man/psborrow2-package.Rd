@@ -4,9 +4,9 @@
 \name{psborrow2-package}
 \alias{psborrow2}
 \alias{psborrow2-package}
-\title{psborrow2: An R Package for Bayesian Dynamic Borrowing Simulation Study and Analysis}
+\title{psborrow2: Bayesian Dynamic Borrowing Analysis and Simulation}
 \description{
-`psborrow2` is an R package for complex, innovative trial designs using Bayesian dynamic borrowing using the hierarchical commensurate prior approach. `psborrow2` has two main goals: First, `psborrow2` facilitates simulation studies that compare different borrowing parameters (e.g. full borrowing, no borrowing, dynamic borrowing) and other trial and borrowing characteristics (e.g. sample size, covariates) in a unified way; and second, `psborrow2` provides a user-friendly interface for applying dynamic borrowing on the study results handles the MCMC sampling on behalf of the user.
+Bayesian dynamic borrowing is an approach to incorporating external data to supplement a randomized, controlled trial analysis in which external data are incorporated in a dynamic way (e.g., based on similarity of outcomes); see Viele et al (2013) \doi{10.1002/pst.1589} for an overview. This package implements the hierarchical commensurate prior approach to dynamic borrowing as described in Hobbes et al (2011) \doi{10.1111/j.1541-0420.2011.01564.x}. There are three main functionalities. First, 'psborrow2' provides a user-friendly interface for applying dynamic borrowing on the study results handles the MCMC sampling on behalf of the user. Second, 'psborrow2' provides a simulation framework to compare different borrowing parameters (e.g. full borrowing, no borrowing, dynamic borrowing) and other trial and borrowing characteristics (e.g. sample size, covariates) in a unified way. Third, 'psborrow2' provides a set of functions to generate data for simulation studies, and also allows the user to specify their own data generation process.
 }
 \seealso{
 Useful links:
@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Matt Secrest \email{secrestm@gene.com}
+\strong{Maintainer}: Matt Secrest \email{secrestm@gene.com} (\href{https://orcid.org/0000-0002-0939-4902}{ORCID})
 
 Authors:
 \itemize{
@@ -28,6 +28,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Craig Gower-Page \email{craig.gower-page@roche.com} [contributor]
+  \item Genentech, Inc. [copyright holder, funder]
 }
 
 }
