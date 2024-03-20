@@ -6,7 +6,7 @@
 \alias{.borrowing_full}
 \title{\code{BorrowingFull} class}
 \description{
-A class for defining details for "Full Borowing" methods.
+A class for defining details for "Full Borrowing" methods.
 Objects of class \code{BorrowingFull}
 should not be created directly but by the constructor
 \code{\link[=borrowing_full]{borrowing_full()}}.

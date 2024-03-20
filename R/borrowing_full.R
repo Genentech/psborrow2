@@ -1,6 +1,6 @@
 #' `BorrowingFull` class
 #'
-#' A class for defining details for "Full Borowing" methods.
+#' A class for defining details for "Full Borrowing" methods.
 #' Objects of class `BorrowingFull`
 #' should not be created directly but by the constructor
 #' [borrowing_full()].
