@@ -112,7 +112,7 @@ test_that("mcmc_sample.Simulation behaves gracefully when cmdstanr is not availa
   expect_class(sim_obj, "Simulation")
   expect_error(
     result <- mcmc_sample(sim_obj),
-    "cmdstanr is required for sampling"
+    "`mcmc_sample\\(\\)` failed because `cmdstanr` is required for sampling.*"
   )
 })
 
