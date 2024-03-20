@@ -53,9 +53,11 @@ setMethod(
   definition = function(object) {
     ready_to_sample <- all(vapply(
       object@analysis_obj_list,
-      \(level_1) all(vapply(level_1,
+      \(level_1) all(vapply(
+        level_1,
         \(level_2) level_2@ready_to_sample, logical(1)
-    )), logical(1)))
+      )), logical(1)
+    ))
     if (!ready_to_sample) {
       cat(
         "Simulation object with ",

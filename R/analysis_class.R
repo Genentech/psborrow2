@@ -123,7 +123,7 @@ setMethod(
   }
 )
 
-# get_stan_code ---- 
+# get_stan_code ----
 #' @rdname get_stan_code
 #' @include generics.R
 setMethod(
