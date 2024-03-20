@@ -31,7 +31,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,8 +99,14 @@ regression model results with other packages. We will compare a
 <code>psborrow2</code>, and <code><a href="https://rdrr.io/pkg/BayesPPD/man/glm.fixed.a0.html" class="external-link">BayesPPD::glm.fixed.a0</a></code> for
 generalized linear models with fixed <code>a0</code> (power prior
 parameter).</p>
+<p>Note that we’ll need <code>cmdstanr</code> to run this analysis.
+Please install <code>cmdstanr</code> if you have not done so already
+following <a href="https://mc-stan.org/cmdstanr/articles/cmdstanr.html" class="external-link">this
+guide</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Genentech/psborrow2" class="external-link">psborrow2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">cmdstsanr</span><span class="op">)</span></span>
+<span><span class="co"># Error in library(cmdstsanr): there is no package called 'cmdstsanr'</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BayesPPD</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -724,7 +730,7 @@ plot of chunk exp_plot
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Matt Secrest, Isaac Gravestock.</p>
+<p>Developed by Matt Secrest, Isaac Gravestock, Genentech, Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">

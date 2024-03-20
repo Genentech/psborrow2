@@ -31,7 +31,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,7 +89,7 @@ and Isaac Gravestock</h4>
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Genentech/psborrow2" class="external-link">psborrow2</a></span><span class="op">)</span></span></code></pre></div>
-<p>In this vignette, you’ll learn how to specify prior distributions in
+<p>In this article, you’ll learn how to specify prior distributions in
 <code>psborrow2</code>.</p>
 <div class="section level2">
 <h2 id="specifying-prior-distributions">Specifying prior distributions<a class="anchor" aria-label="anchor" href="#specifying-prior-distributions"></a>
@@ -123,16 +123,17 @@ dynamic borrowing (BDB), passed to
 <h2 id="types-of-prior-distributions">Types of prior distributions<a class="anchor" aria-label="anchor" href="#types-of-prior-distributions"></a>
 </h2>
 <p>The currently supported prior distributions are created with the
-constructors below:</p>
+<code>prior_</code> constructors below:</p>
 <ul>
-<li><code>prior_bernoulli(theta)</code></li>
-<li><code>prior_beta(alpha, beta)</code></li>
-<li><code>prior_cauchy(mu, sigma)</code></li>
-<li><code>prior_exponential(beta)</code></li>
-<li><code>prior_gamma(alpha, beta)</code></li>
-<li><code>prior_normal(mu, sigma)</code></li>
-<li><code>prior_poisson(lambda)</code></li>
-<li><code>uniform_prior(alpha, beta)</code></li>
+<li><code><a href="../reference/prior_bernoulli.html">prior_bernoulli()</a></code></li>
+<li><code><a href="../reference/prior_beta.html">prior_beta()</a></code></li>
+<li><code><a href="../reference/prior_cauchy.html">prior_cauchy()</a></code></li>
+<li><code><a href="../reference/prior_exponential.html">prior_exponential()</a></code></li>
+<li><code><a href="../reference/prior_gamma.html">prior_gamma()</a></code></li>
+<li><code><a href="../reference/prior_half_cauchy.html">prior_half_cauchy()</a></code></li>
+<li><code><a href="../reference/prior_half_normal.html">prior_half_normal()</a></code></li>
+<li><code><a href="../reference/prior_normal.html">prior_normal()</a></code></li>
+<li><code><a href="../reference/prior_poisson.html">prior_poisson()</a></code></li>
 </ul>
 <p>For example, we can create an uninformative normal distribution by
 specifying a normal prior centered around 0 with a very large standard
@@ -187,7 +188,7 @@ plot of chunk unnamed-chunk-4
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Matt Secrest, Isaac Gravestock.</p>
+<p>Developed by Matt Secrest, Isaac Gravestock, Genentech, Inc..</p>
 </div>
 
 <div class="pkgdown-footer-right">
