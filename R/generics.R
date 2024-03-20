@@ -196,7 +196,7 @@ setGeneric("get_data", function(object, index = 1, dataset = 1) standardGeneric(
 #' @export
 setGeneric("set_transformations", function(object, ..., overwrite = FALSE) standardGeneric("set_transformations"))
 
-#' Getter for Stan model
+#' Get method for Stan model
 #' @param object `Analysis` object
 #' @returns String containing the Stan model
 #' @export

@@ -302,10 +302,18 @@ anls_obj <- create_analysis_obj(
 
 
 
-
-
 The Stan model compiled successfully and informed us that we are
 ready to begin sampling.
+
+Note that if you are interested in seeing the Stan code that was generated,
+you can use the `get_stan_code()` function to see the full Stan code that will
+be compiled.
+
+
+```r
+get_stan_code(anls_obj)
+# Error in get_stan_code(anls_obj): could not find function "get_stan_code"
+```
 
 # Sampling from an analysis object
 
