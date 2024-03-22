@@ -14,7 +14,7 @@ is_cmdstanr_available <- function() {
 #' check_cmdstanr()
 check_cmdstanr <- function(check_sampling = FALSE) {
   if (!is_cmdstanr_available()) {
-    cat("cmdstanr is not installed. \n")
+    cat("cmdstanr is not installed or is installed but not configured. \n")
   } else {
     cat("cmdstanr is installed.\n")
     cat("cmdstanr version: \n")

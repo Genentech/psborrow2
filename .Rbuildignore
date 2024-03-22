@@ -18,6 +18,7 @@ README.*
 coverage.*
 ^codemeta\.json$
 devel
+develop
 ^design$
 ^data-raw$
 ^doc$
