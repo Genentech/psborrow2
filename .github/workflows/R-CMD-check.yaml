@@ -48,11 +48,17 @@ jobs:
       - name: R CMD check before cmdstanr installed
         uses: r-lib/actions/check-r-package@v2
 
-      - name: Install and unpack cmdstan
+      - name: Install cmdstanr but not cmdstan
         run: |
           Rscript -e "install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/', getOption('repos')))"
+
+      - name: R CMD check after cmdstanr installed but before cmdstan
+        uses: r-lib/actions/check-r-package@v2
+      
+      - name: Install cmdstan
+        run: |
           Rscript -e "cmdstanr::check_cmdstan_toolchain(fix = TRUE)"
           Rscript -e "cmdstanr::install_cmdstan()"
 
-      - name: R CMD check after cmdstanr installed
+      - name: R CMD check after cmdstanr and cmdstan are installed
         uses: r-lib/actions/check-r-package@v2
