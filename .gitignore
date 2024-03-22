@@ -12,13 +12,17 @@
 *.sas.txt
 *~
 /.project
+articles
 devel/*
 doc
 docs
 inst/outputs/*
 logs
+main
 Meta
+news
 packrat/lib*/
+reference
 temp
 temp_w
 templates/

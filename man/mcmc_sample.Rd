@@ -70,12 +70,7 @@ return a \code{CmdStanMCMC} object with draws.
 \subsection{Simulation objects}{
 
 This function takes draws from an MCMC sampler and summarizes
-results. Several metrics are summarized:
-
-\itemize{
-\item{"Type 1 error"}{ This is the probability that the posterior
-treatment effect distribution excludes the true value.}
-}
+results.
 }
 }
 \examples{

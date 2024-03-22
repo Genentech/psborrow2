@@ -1,3 +1,4 @@
+^articles$
 ^psborrow2\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
@@ -20,7 +21,10 @@ devel
 ^design$
 ^data-raw$
 ^doc$
+^main$
 ^Meta$
+^news$
+^reference$
 ^dev$
 ^\.pre-commit-config\.yaml$
 ^vignettes/original$
