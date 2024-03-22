@@ -14,6 +14,7 @@
 /.project
 articles
 devel/*
+develop/
 doc
 docs
 inst/outputs/*
