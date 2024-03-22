@@ -88,7 +88,7 @@ test_that("show works with no borrowing", {
 
 
 test_that("get_stan_code works when cmdstanr isn't available", {
-  skip_if(is_cmdstanr_available())
+  skip_if(check_cmdstan())
   expect_warning(
     object <- create_analysis_obj(
       data_matrix = example_matrix,
@@ -162,7 +162,7 @@ beta[2] ~ normal(0, 1000) ;
 
 
 test_that("get_stan_code works when cmdstanr is available", {
-  skip_if(!is_cmdstanr_available())
+  skip_if_not(check_cmdstan())
   object <- create_analysis_obj(
     data_matrix = example_matrix,
     covariates = add_covariates(

@@ -1,3 +1,4 @@
+^articles$
 ^psborrow2\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
@@ -17,10 +18,14 @@ README.*
 coverage.*
 ^codemeta\.json$
 devel
+develop
 ^design$
 ^data-raw$
 ^doc$
+^main$
 ^Meta$
+^news$
+^reference$
 ^dev$
 ^\.pre-commit-config\.yaml$
 ^vignettes/original$

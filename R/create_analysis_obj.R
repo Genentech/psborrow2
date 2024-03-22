@@ -117,7 +117,7 @@ create_analysis_obj <- function(data_matrix,
   analysis_obj@model_string <- stan_model_string
 
   # Compile model
-  if (is_cmdstanr_available()) {
+  if (check_cmdstan()) {
     stan_file <- cmdstanr::write_stan_file(analysis_obj@model_string)
     if (!quiet) {
       analysis_obj@model <- cmdstanr::cmdstan_model(stan_file)
