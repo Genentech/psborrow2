@@ -23,10 +23,9 @@ Hierarchical commensurate borrowing
 In Bayesian dynamic borrowing using the hierarchical commensurate prior approach,
 external control information is borrowed to the extent that the
 outcomes (i.e., log hazard rates or log odds) are similar between
-external and internal control populations. See
-\href{https://doi.org/10.1002/pst.1589}{Viele et. al. 2014} and
-\href{https://doi.org/10.1111/j.1541-0420.2011.01564.x}{Hobbs et. al. 2011}
-for details.
+external and internal control populations. See Viele 2014
+\doi{10.1002/pst.1589} and Hobbs 2011
+\doi{10.1111/j.1541-0420.2011.01564.x} for details.
 }
 
 \subsection{External Control}{
@@ -39,7 +38,7 @@ contains the flag indicating a patient is from the external control cohort.
 
 The \code{tau_prior} argument specifies the hyperprior on the precision parameter
 commonly referred to as the commensurability parameter.
-See \href{https://doi.org/10.1002/pst.1589}{Viele et. al. 2014} for more
+See Viele 2014 \doi{10.1002/pst.1589} for more
 details.
 This hyperprior determines (along with the comparability of the outcomes
 between internal and external controls) how much borrowing of the external
