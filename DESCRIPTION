@@ -81,8 +81,7 @@ Suggests:
     table1,
     gt,
     gtsummary
-Remotes:
-   stan-dev/cmdstanr
+Additional_repositories: https://mc-stan.org/r-packages/
 Language: en-US
 SystemRequirements: cmdstan
 Collate:
