@@ -37,7 +37,9 @@ Description: Bayesian dynamic borrowing is an approach to incorporating external
    borrowing, dynamic borrowing) and other trial and borrowing characteristics
    (e.g. sample size, covariates) in a unified way. Third, 'psborrow2' provides
    a set of functions to generate data for simulation studies, and also allows
-   the user to specify their own data generation process.
+   the user to specify their own data generation process. This package is designed to 
+   use the sampling functions from 'cmdstanr' which can be installed from
+   https://mc-stan.org/r-packages/.
 URL: https://github.com/Genentech/psborrow2, https://genentech.github.io/psborrow2/index.html
 BugReports: https://github.com/Genentech/psborrow2/issues
 License: Apache License 2.0
