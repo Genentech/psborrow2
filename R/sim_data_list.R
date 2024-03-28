@@ -173,7 +173,7 @@
 #'   index = "ind"
 #' )
 #' 
-#' @return object of class [`SimDataList`][SimDataList-class].
+#' @return Object of class [`SimDataList`][SimDataList-class].
 #' 
 #' @export
 sim_data_list <- function(data_list,

@@ -11,7 +11,7 @@ sim_covariate_list(covariate_list)
 by \code{add_covariates()}.}
 }
 \value{
-object of class \code{\link[=SimCovariateList-class]{SimCovariateList}}.
+Object of class \code{\link[=SimCovariateList-class]{SimCovariateList}}.
 }
 \description{
 A function for defining which covariate adjustment scenarios should be evaluated as

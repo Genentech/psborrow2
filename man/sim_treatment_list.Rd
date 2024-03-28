@@ -11,7 +11,7 @@ sim_treatment_list(treatment_list)
 by \code{treatment_details()}.}
 }
 \value{
-object of class \code{\link[=SimTreatmentList-class]{SimTreatmentList}}.
+Object of class \code{\link[=SimTreatmentList-class]{SimTreatmentList}}.
 }
 \description{
 A function for defining which treatment scenarios should be evaluated as

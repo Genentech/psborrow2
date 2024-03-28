@@ -46,7 +46,7 @@
 #'
 #' @family simulation classes
 #' 
-#' @return object of class [`SimOutcomeList`][SimOutcomeList-class].
+#' @return Object of class [`SimOutcomeList`][SimOutcomeList-class].
 #'
 #' @export
 #'

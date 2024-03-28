@@ -11,7 +11,7 @@ sim_outcome_list(outcome_list)
 by \code{outcome_details()}.}
 }
 \value{
-object of class \code{\link[=SimOutcomeList-class]{SimOutcomeList}}.
+Object of class \code{\link[=SimOutcomeList-class]{SimOutcomeList}}.
 }
 \description{
 A function for defining which outcome scenarios should be evaluated as

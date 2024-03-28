@@ -45,7 +45,7 @@
 #' @param borrowing_list named list of objects of class `Borrowing` created
 #' by `borrowing_full()`, `borrowing_none()`, or `borrowing_hierarchical_commensurate()`.
 #'
-#' @return object of class [`SimBorrowingList`][SimBorrowingList-class].
+#' @return Object of class [`SimBorrowingList`][SimBorrowingList-class].
 #' 
 #' @export
 #'
