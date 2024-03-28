@@ -67,6 +67,8 @@ setGeneric("show_guide", function(object) standardGeneric("show_guide"))
 #' @param object `MCMCSimulationResults` object
 #'
 #' @rdname get_results
+#' 
+#' @return data.frame with simulation results.
 #'
 #' @export
 #'
@@ -79,6 +81,8 @@ setGeneric("get_results", function(object) standardGeneric("get_results"))
 #' @param object `MCMCSimulationResults` object
 #'
 #' @rdname get_cmd_stan_models
+#' 
+#' @return List of lists of `CmdStanModel` objects for each model.
 #'
 #' @export
 #'
