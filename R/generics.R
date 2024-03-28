@@ -10,14 +10,13 @@
 #' @param y Not used.
 #' @param add logical. Add density to existing plot.
 #' @param ... Optional arguments for plotting.
-#'
+#' @return No return value, this function generates a plot in the current graphics device.
 #' @export
 #' @details
 #' Plot ranges are selected by default to show 99% of the density for unbounded distributions.
 #' The limits can be changed by specifying `xlim = c(lower, upper)`.
 #'
 #' Colors, line types, and other typical [par()] parameters can be used.
-#'
 if (!isGeneric("plot")) setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 
 
@@ -101,8 +100,6 @@ setGeneric("generate", function(x, ...) standardGeneric("generate"))
 #' @param analysis_object analysis object
 #'
 #' @rdname trim_rows
-#'
-#' @export
 setGeneric("trim_rows", function(borrowing_object, analysis_object) standardGeneric("trim_rows"))
 
 #' Trim columns from Data Matrix Based on Borrowing object type
@@ -111,8 +108,6 @@ setGeneric("trim_rows", function(borrowing_object, analysis_object) standardGene
 #' @param analysis_object analysis object
 #'
 #' @rdname trim_cols
-#'
-#' @export
 setGeneric("trim_cols", function(borrowing_object, analysis_object) standardGeneric("trim_cols"))
 
 #' Create alpha string
@@ -121,8 +116,6 @@ setGeneric("trim_cols", function(borrowing_object, analysis_object) standardGene
 #' @param outcome_object outcome object
 #'
 #' @rdname create_alpha_string
-#'
-#' @export
 setGeneric("create_alpha_string", function(borrowing_object, outcome_object) standardGeneric("create_alpha_string"))
 
 #' Create tau string
@@ -130,10 +123,7 @@ setGeneric("create_alpha_string", function(borrowing_object, outcome_object) sta
 #' @param borrowing_object borrowing object
 #'
 #' @rdname create_tau_string
-#'
-#' @export
 setGeneric("create_tau_string", function(borrowing_object) standardGeneric("create_tau_string"))
-
 
 #' Create Stan Code for Model
 #'
@@ -143,7 +133,6 @@ setGeneric("create_tau_string", function(borrowing_object) standardGeneric("crea
 #'
 #' @rdname make_model_string_model
 #' @return `glue` `character` containing the Stan code for the data block.
-#' @export
 #' @examples
 #' anls_obj <- psborrow2:::.analysis_obj(
 #'   data_matrix = example_matrix,
