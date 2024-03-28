@@ -9,6 +9,11 @@ gamma_prior(...)
 \arguments{
 \item{...}{Deprecated arguments to \code{gamma_prior()}.}
 }
+\value{
+This function does not return a value. When called, it triggers an error
+message indicating that \code{gamma_prior()} is deprecated and that
+\code{prior_gamma()} should be used instead.
+}
 \description{
 Please use \code{prior_gamma()} instead.
 }
