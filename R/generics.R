@@ -28,7 +28,7 @@ if (!isGeneric("plot")) setGeneric("plot", function(x, y, ...) standardGeneric("
 #' @aliases get_vars
 #'
 #' @param object Object
-#' @returns A `character` vector containing variable names
+#' @return A `character` vector containing variable names
 #' @export
 #'
 setGeneric("get_vars", function(object) standardGeneric("get_vars"))
@@ -56,6 +56,8 @@ setGeneric("mcmc_sample", function(x, ...) standardGeneric("mcmc_sample"))
 #'
 #' @rdname show_guide
 #'
+#' @return A `data.frame` showing all simulation scenarios.
+#' 
 #' @export
 #'
 setGeneric("show_guide", function(object) standardGeneric("show_guide"))
@@ -159,7 +161,7 @@ setGeneric("make_model_string_model", function(borrowing, outcome, analysis_obj)
 #'
 #' @param x object of type: [BaselineDataList-class]
 #' @param ... Optional arguments for passed to [data.frame]
-#' @returns A `data.frame`
+#' @return A `data.frame`
 NULL
 
 #' @title Combine objects in `psborrow2`
@@ -168,7 +170,7 @@ NULL
 #' @name c
 #' @param x object of type: [SimDataList-class]
 #' @param ... additional objects to combine
-#' @returns A combined object
+#' @return A combined object
 NULL
 
 #' Get Simulated Data from `SimDataList` object
@@ -178,7 +180,7 @@ NULL
 #' @param object `SimDataList` object
 #' @param index the index of the scenario (see guide with print(`SimDataList`))
 #' @param dataset the dataset out of `n_datasets_per_param`
-#' @returns Simulated data as a data frame if the index is specified, else as a list
+#' @return Simulated data as a data frame if the index is specified, else as a list
 #' @export
 setGeneric("get_data", function(object, index = 1, dataset = 1) standardGeneric("get_data"))
 
@@ -187,12 +189,12 @@ setGeneric("get_data", function(object, index = 1, dataset = 1) standardGeneric(
 #' @param object `BaselineObject` object
 #' @param ... Additional arguments passed to methods
 #' @param overwrite logical. Overwrite existing transformations?
-#' @returns `BaselineObject` object with transformations
+#' @return `BaselineObject` object with transformations
 #' @export
 setGeneric("set_transformations", function(object, ..., overwrite = FALSE) standardGeneric("set_transformations"))
 
 #' Get method for Stan model
 #' @param object `Analysis` object
-#' @returns String containing the Stan model
+#' @return String containing the Stan model
 #' @export
 setGeneric("get_stan_code", function(object) standardGeneric("get_stan_code"))
