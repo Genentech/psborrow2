@@ -9,6 +9,11 @@ exp_surv_dist(...)
 \arguments{
 \item{...}{Deprecated arguments to \code{exp_surv_dist()}.}
 }
+\value{
+This function does not return a value. When called, it triggers an error
+message indicating that \code{exp_surv_dist()} is deprecated and that
+\code{outcome_surv_exponential()} should be used instead.
+}
 \description{
 Please use \code{outcome_surv_exponential()} instead.
 }

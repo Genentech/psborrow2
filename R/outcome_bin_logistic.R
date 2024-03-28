@@ -99,6 +99,12 @@ outcome_bin_logistic <- function(binary_var,
 #'
 #' Please use `outcome_bin_logistic()` instead.
 #' @param ... Deprecated arguments to `logistic_bin_outcome`.
+#' 
+#' @return
+#' This function does not return a value. When called, it triggers an error 
+#' message indicating that `logistic_bin_outcome()` is deprecated and that 
+#' `outcome_bin_logistic()` should be used instead.
+#' 
 #' @export
 logistic_bin_outcome <- function(...) {
   .Defunct(

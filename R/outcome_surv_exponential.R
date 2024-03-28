@@ -109,6 +109,12 @@ outcome_surv_exponential <- function(time_var, cens_var, baseline_prior, weight_
 #'
 #' Please use `outcome_surv_exponential()` instead.
 #' @param ... Deprecated arguments to `exp_surv_dist()`.
+#' 
+#' @return
+#' This function does not return a value. When called, it triggers an error 
+#' message indicating that `exp_surv_dist()` is deprecated and that 
+#' `outcome_surv_exponential()` should be used instead.
+#' 
 #' @export
 exp_surv_dist <- function(...) {
   .Defunct(
