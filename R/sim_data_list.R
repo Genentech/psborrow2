@@ -212,6 +212,9 @@ setMethod(
 
 # c ----
 #' @rdname c
+#' 
+#' @return list of [`SimDataList`][SimDataList-class] objects.
+#' @export
 setMethod(
   f = "c",
   signature = "SimDataList",

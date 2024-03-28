@@ -14,6 +14,8 @@
 }
 \value{
 A combined object
+
+list of \code{\link[=SimDataList-class]{SimDataList}} objects.
 }
 \description{
 Creates \code{data.frame} objects from various classes in \code{psborrow2}
