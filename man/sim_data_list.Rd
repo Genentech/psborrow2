@@ -25,6 +25,9 @@ A drift >1 means the external arm experiences greater effects.}
 \item{index}{character. The column in \code{guide} that corresponds
 to the index column.}
 }
+\value{
+object of class \code{\link[=SimDataList-class]{SimDataList}}.
+}
 \description{
 A function for defining generated data for use as part of a
 simulation study.
@@ -107,6 +110,7 @@ sdl <- sim_data_list(
   drift = "driftOR",
   index = "ind"
 )
+
 }
 \seealso{
 Other simulation classes: 

@@ -10,6 +10,9 @@ sim_treatment_list(treatment_list)
 \item{treatment_list}{named list of objects of class \code{Treatment} created
 by \code{treatment_details()}.}
 }
+\value{
+object of class \code{\link[=SimTreatmentList-class]{SimTreatmentList}}.
+}
 \description{
 A function for defining which treatment scenarios should be evaluated as
 part of a simulation study.

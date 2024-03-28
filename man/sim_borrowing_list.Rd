@@ -10,6 +10,9 @@ sim_borrowing_list(borrowing_list)
 \item{borrowing_list}{named list of objects of class \code{Borrowing} created
 by \code{borrowing_full()}, \code{borrowing_none()}, or \code{borrowing_hierarchical_commensurate()}.}
 }
+\value{
+object of class \code{\link[=SimBorrowingList-class]{SimBorrowingList}}.
+}
 \description{
 A function for defining which borrowing scenarios should be evaluated as
 part of a simulation study.

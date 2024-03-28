@@ -45,6 +45,8 @@
 #' by `outcome_details()`.
 #'
 #' @family simulation classes
+#' 
+#' @return object of class [`SimOutcomeList`][SimOutcomeList-class].
 #'
 #' @export
 #'

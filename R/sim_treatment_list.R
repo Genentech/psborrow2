@@ -44,6 +44,8 @@
 #'
 #' @family simulation classes
 #'
+#' @return object of class [`SimTreatmentList`][SimTreatmentList-class].
+#'
 #' @export
 #'
 #' @examples

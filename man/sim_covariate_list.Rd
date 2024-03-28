@@ -10,6 +10,9 @@ sim_covariate_list(covariate_list)
 \item{covariate_list}{named list of objects of class \code{Covariate} created
 by \code{add_covariates()}.}
 }
+\value{
+object of class \code{\link[=SimCovariateList-class]{SimCovariateList}}.
+}
 \description{
 A function for defining which covariate adjustment scenarios should be evaluated as
 part of a simulation study.
