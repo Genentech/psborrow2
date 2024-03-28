@@ -40,8 +40,11 @@ or you can install the development version with:
 remotes::install_github("Genentech/psborrow2")
 ```
 
-Please note that [`cmdstanr`](https://mc-stan.org/cmdstanr/) is highly recommended, but will not be installed by default when installing `psborrow2`. To install `cmdstanr`, follow the instructions outlined by the [`cmdstanr` documentation](https://mc-stan.org/cmdstanr/).
-
+Please note that [`cmdstanr`](https://mc-stan.org/cmdstanr/) is highly recommended, but will not be installed by default when installing `psborrow2`. 
+To install `cmdstanr`, follow the instructions outlined by the [`cmdstanr` documentation](https://mc-stan.org/cmdstanr/) or use:
+```
+install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
+```
 
 ## Tutorial
 

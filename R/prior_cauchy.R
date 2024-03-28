@@ -92,6 +92,12 @@ setMethod(
 #'
 #' Please use `prior_cauchy()` instead.
 #' @param ... Deprecated arguments to `cauchy_prior()`.
+#' 
+#' @return
+#' This function does not return a value. When called, it triggers an error 
+#' message indicating that `cauchy_prior()` is deprecated and that 
+#' `prior_cauchy()` should be used instead.
+#' 
 #' @export
 cauchy_prior <- function(...) {
   .Defunct(

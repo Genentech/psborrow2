@@ -9,6 +9,12 @@ borrowing_details(...)
 \arguments{
 \item{...}{Deprecated arguments to \code{borrowing_details}.}
 }
+\value{
+This function does not return a value. When called, it triggers an error
+message indicating that \code{borrowing_details()} is deprecated and that
+one of \code{borrowing_hierarchical_commensurate()}, \code{borrowing_none()}, or
+\code{borrowing_full()} should be used instead.
+}
 \description{
-Please use one of \code{hierarchical_commensurate_borrowing()}, \code{no_borrowing()}, or \code{full_borrowing()} instead.
+Please use one of \code{borrowing_hierarchical_commensurate()}, \code{borrowing_none()}, or \code{borrowing_full()} instead.
 }

@@ -97,6 +97,12 @@ setMethod(
 #'
 #' Please use `prior_half_cauchy()` instead.
 #' @param ... Deprecated arguments to `half_cauchy_prior()`.
+#' 
+#' @return
+#' This function does not return a value. When called, it triggers an error 
+#' message indicating that `half_cauchy_prior()` is deprecated and that 
+#' `prior_half_cauchy()` should be used instead. 
+#'
 #' @export
 half_cauchy_prior <- function(...) {
   .Defunct(

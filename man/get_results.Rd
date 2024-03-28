@@ -12,6 +12,9 @@ get_results(object)
 \arguments{
 \item{object}{\code{MCMCSimulationResults} object}
 }
+\value{
+data.frame with simulation results.
+}
 \description{
 Get the results \code{data.frame} from \code{MCMCSimulationResults} objects.
 }

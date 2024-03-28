@@ -12,6 +12,9 @@ get_cmd_stan_models(object)
 \arguments{
 \item{object}{\code{MCMCSimulationResults} object}
 }
+\value{
+List of lists of \code{CmdStanModel} objects for each model.
+}
 \description{
 Show the \code{CmdStanModel} objects from \code{MCMCSimulationResults} objects.
 }

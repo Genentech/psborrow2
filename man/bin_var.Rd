@@ -22,6 +22,9 @@ for the internal arms. The default is 0. See \code{details} for more information
 \item{mu_external_before_bin}{numeric. Mean value of the covariate before binarization
 for the external arm. The default is 0. See \code{details} for more information.}
 }
+\value{
+Object of class \code{\link[=SimVarBin-class]{SimVarBin}}.
+}
 \description{
 Create an object of class \code{SimVarBin} to hold proportions of binary
 variables specified in a simulation study.

@@ -91,8 +91,6 @@ setMethod(
 #'
 #' @rdname eval_constraints
 #'
-#' @export
-#'
 setGeneric("eval_constraints", function(object) standardGeneric("eval_constraints"))
 
 #' @rdname eval_constraints

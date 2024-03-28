@@ -9,6 +9,11 @@ logistic_bin_outcome(...)
 \arguments{
 \item{...}{Deprecated arguments to \code{logistic_bin_outcome}.}
 }
+\value{
+This function does not return a value. When called, it triggers an error
+message indicating that \code{logistic_bin_outcome()} is deprecated and that
+\code{outcome_bin_logistic()} should be used instead.
+}
 \description{
 Please use \code{outcome_bin_logistic()} instead.
 }

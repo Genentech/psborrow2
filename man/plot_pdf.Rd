@@ -15,6 +15,9 @@ plot_pdf(x, y, ...)
 
 Plots the density values as a curve with the lower vertical limit set to 0.}
 }
+\value{
+No return value, this function generates a plot in the current graphics device.
+}
 \description{
 Plot Probability Density Function Values
 }

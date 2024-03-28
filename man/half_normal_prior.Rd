@@ -9,6 +9,11 @@ half_normal_prior(...)
 \arguments{
 \item{...}{Deprecated arguments to \code{half_normal_prior()}.}
 }
+\value{
+This function does not return a value. When called, it triggers an error
+message indicating that \code{half_normal_prior()} is deprecated and that
+\code{prior_half_normal()} should be used instead.
+}
 \description{
 Please use \code{prior_half_normal()} instead.
 }
