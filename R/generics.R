@@ -95,6 +95,8 @@ setGeneric("get_cmd_stan_models", function(object) standardGeneric("get_cmd_stan
 #'
 #' @rdname generate
 #'
+#' @return Object of class [`SimDataList`][SimDataList-class].
+#' 
 #' @export
 setGeneric("generate", function(x, ...) standardGeneric("generate"))
 
