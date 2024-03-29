@@ -8,7 +8,7 @@ make_model_string_data(analysis_obj)
 }
 \arguments{
 \item{analysis_obj}{\code{Analysis}. Object of class \code{\link[=Analysis-class]{Analysis}} created by
-\code{psborrow2:::.analysis_obj()}.}
+\code{.analysis_obj()}.}
 }
 \value{
 \code{glue} \code{character} containing the text for the data block.
@@ -18,7 +18,7 @@ Create the Stan string encompassed by data \code{{}}
 }
 \examples{
 # NOT RUN
-# anls_obj <- create_analysis_obj(
+# anls_obj <- .analysis_obj(
 #   data_matrix = example_matrix,
 #   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
 #   borrowing = borrowing_full("ext"),

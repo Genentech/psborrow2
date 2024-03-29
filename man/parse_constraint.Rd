@@ -16,6 +16,7 @@ A list with upper and lower bounds. Any unspecified bounds are set to \code{-Inf
 Extract Upper and Lower Bounds from a Prior object
 }
 \examples{
-np <- prior_normal(0, 100)
-psborrow2:::parse_constraint(np)
+# NOT RUN
+# np <- prior_normal(0, 100)
+# parse_constraint(np)
 }

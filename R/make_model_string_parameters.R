@@ -3,13 +3,13 @@
 #' Create the Stan string encompassed by parameters `{}`
 #'
 #' @param analysis_obj `Analysis`. Object of class [`Analysis`][Analysis-class] created by
-#' `psborrow2:::.analysis_obj()`.
+#' `.analysis_obj()`.
 #'
 #' @return `glue` `character` containing the Stan code for the functions block.
 #'
 #' @examples
 #' # NOT RUN 
-#' # anls_obj <- create_analysis_obj(
+#' # anls_obj <- .analysis_obj(
 #' #   data_matrix = example_matrix,
 #' #   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
 #' #   borrowing = borrowing_full("ext"),

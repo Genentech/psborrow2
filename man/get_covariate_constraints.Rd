@@ -16,15 +16,15 @@ A \code{matrix} with columns "lower" and "upper" with rows for each \code{Prior}
 Get constraints from a list of \code{Prior}s
 }
 \examples{
-psborrow2:::get_covariate_constraints(
-  add_covariates(
-    c("cov1", "cov2", "cov3"),
-    list(
-      prior_normal(0, 10),
-      prior_beta(0.3, 0.3),
-      prior_gamma(30, 1)
-    )
-  )
-)
-
+# NOT RUN
+# get_covariate_constraints(
+#   add_covariates(
+#     c("cov1", "cov2", "cov3"),
+#     list(
+#       prior_normal(0, 10),
+#       prior_beta(0.3, 0.3),
+#       prior_gamma(30, 1)
+#     )
+#   )
+# )
 }

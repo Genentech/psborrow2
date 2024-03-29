@@ -99,17 +99,17 @@ h_glue <- function(..., collapse = FALSE, collapse_sep = "\n") {
 #'
 #' @return A `matrix` with columns "lower" and "upper" with rows for each `Prior`.
 #' @examples
-#' psborrow2:::get_covariate_constraints(
-#'   add_covariates(
-#'     c("cov1", "cov2", "cov3"),
-#'     list(
-#'       prior_normal(0, 10),
-#'       prior_beta(0.3, 0.3),
-#'       prior_gamma(30, 1)
-#'     )
-#'   )
-#' )
-#'
+#' # NOT RUN
+#' # get_covariate_constraints(
+#' #   add_covariates(
+#' #     c("cov1", "cov2", "cov3"),
+#' #     list(
+#' #       prior_normal(0, 10),
+#' #       prior_beta(0.3, 0.3),
+#' #       prior_gamma(30, 1)
+#' #     )
+#' #   )
+#' # )
 get_covariate_constraints <- function(cov_obj) {
   n_covs <- length(cov_obj@covariates)
   if (is(cov_obj@priors, "Prior")) {
@@ -129,8 +129,9 @@ get_covariate_constraints <- function(cov_obj) {
 #' @return
 #' A list with upper and lower bounds. Any unspecified bounds are set to `-Inf` or `Inf`.
 #' @examples
-#' np <- prior_normal(0, 100)
-#' psborrow2:::parse_constraint(np)
+#' # NOT RUN
+#' # np <- prior_normal(0, 100)
+#' # parse_constraint(np)
 parse_constraint <- function(object) {
   assert_class(object, "Prior")
   s <- eval_constraints(object)
@@ -219,7 +220,8 @@ variable_dictionary <- function(analysis_obj) {
 #'
 #' @return A string containing the Stan code sampling from specified distribution.
 #' @examples
-#' psborrow2:::get_prior_string(prior_normal(0, 100))
+#' # NOT RUN
+#' # get_prior_string(prior_normal(0, 100))
 get_prior_string <- function(object) {
   assert_multi_class(object, c("Prior", "list"))
   if (is(object, "list")) {
