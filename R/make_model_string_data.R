@@ -16,7 +16,7 @@
 #' #   treatment = treatment_details("trt", prior_normal(0, 100))
 #' # )
 #' # 
-#' # getFromNamespace("make_model_string_data", "psborrow2")(anls_obj)
+#' # make_model_string_data(anls_obj)
 make_model_string_data <- function(analysis_obj) {
   outcome_string <- analysis_obj@outcome@data_stan_code
 

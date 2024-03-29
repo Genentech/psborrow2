@@ -25,5 +25,5 @@ Create the Stan string encompassed by data \code{{}}
 #   treatment = treatment_details("trt", prior_normal(0, 100))
 # )
 # 
-# getFromNamespace("make_model_string_data", "psborrow2")(anls_obj)
+# make_model_string_data(anls_obj)
 }

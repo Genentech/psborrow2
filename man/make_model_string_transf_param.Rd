@@ -25,6 +25,6 @@ Create the Stan string encompassed by transformed parameters \code{{}}
 #   treatment = treatment_details("trt", prior_normal(0, 100))
 # )
 #
-# getFromNamespace("make_model_string_transf_param", "psborrow2")(anls_obj)
+# make_model_string_transf_param(anls_obj)
 #
 }

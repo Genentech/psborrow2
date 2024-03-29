@@ -16,7 +16,7 @@
 #' #   treatment = treatment_details("trt", prior_normal(0, 100))
 #' # )
 #' #
-#' # getFromNamespace("make_model_string_transf_param", "psborrow2")(anls_obj)
+#' # make_model_string_transf_param(anls_obj)
 #' #
 make_model_string_transf_param <- function(analysis_obj) {
   transformed_parameters_string <- if (is(analysis_obj@outcome, "TimeToEvent")) {

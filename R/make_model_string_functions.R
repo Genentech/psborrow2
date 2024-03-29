@@ -16,7 +16,7 @@
 #' #   treatment = treatment_details("trt", prior_normal(0, 100))
 #' # )
 #' #
-#' # getFromNamespace("make_model_string_functions", "psborrow2")(anls_obj)
+#' # make_model_string_functions(anls_obj)
 make_model_string_functions <- function(analysis_obj) {
   ## Bring in analysis_obj functions
   h_glue("
