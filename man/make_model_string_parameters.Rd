@@ -17,13 +17,14 @@ make_model_string_parameters(analysis_obj)
 Create the Stan string encompassed by parameters \code{{}}
 }
 \examples{
-anls_obj <- psborrow2:::.analysis_obj(
-  data_matrix = example_matrix,
-  outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-  borrowing = borrowing_full("ext"),
-  treatment = treatment_details("trt", prior_normal(0, 100))
-)
-
-psborrow2:::make_model_string_parameters(anls_obj)
-
+# NOT RUN 
+# anls_obj <- create_analysis_obj(
+#   data_matrix = example_matrix,
+#   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
+#   borrowing = borrowing_full("ext"),
+#   treatment = treatment_details("trt", prior_normal(0, 100))
+# )
+#
+# getFromNamespace("make_model_string_parameters", "psborrow2")(anls_obj)
+#
 }

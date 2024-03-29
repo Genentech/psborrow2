@@ -8,15 +8,16 @@
 #' @return `glue` `character` containing the Stan code for the functions block.
 #'
 #' @examples
-#' anls_obj <- psborrow2:::.analysis_obj(
-#'   data_matrix = example_matrix,
-#'   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-#'   borrowing = borrowing_full("ext"),
-#'   treatment = treatment_details("trt", prior_normal(0, 100))
-#' )
-#'
-#' psborrow2:::make_model_string_transf_param(anls_obj)
-#'
+#' # NOT RUN 
+#' # anls_obj <- create_analysis_obj(
+#' #   data_matrix = example_matrix,
+#' #   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
+#' #   borrowing = borrowing_full("ext"),
+#' #   treatment = treatment_details("trt", prior_normal(0, 100))
+#' # )
+#' #
+#' # getFromNamespace("make_model_string_transf_param", "psborrow2")(anls_obj)
+#' #
 make_model_string_transf_param <- function(analysis_obj) {
   transformed_parameters_string <- if (is(analysis_obj@outcome, "TimeToEvent")) {
     "real HR_trt = exp(beta_trt);"
