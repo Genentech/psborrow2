@@ -141,13 +141,28 @@ setGeneric("create_tau_string", function(borrowing_object) standardGeneric("crea
 #'
 #' @rdname make_model_string_model
 #' @return `glue` `character` containing the Stan code for the data block.
+#' @export
 #' @examples
-#' anls_obj <- psborrow2:::.analysis_obj(
-#'   data_matrix = example_matrix,
-#'   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-#'   borrowing = borrowing_full("ext"),
-#'   treatment = treatment_details("trt", prior_normal(0, 100))
-#' )
+#' anls_obj <- create_analysis_obj(
+#'     data_matrix = example_matrix,
+#'     outcome = outcome_surv_exponential(
+#'       "time",
+#'       "cnsr",
+#'       baseline_prior = prior_normal(0, 1000)
+#'     ),
+#'     borrowing = borrowing_hierarchical_commensurate(
+#'       "ext",
+#'       prior_exponential(.001)
+#'     ),
+#'     treatment = treatment_details(
+#'       "trt",
+#'       prior_normal(0, 1000)
+#'     ),
+#'     covariates = add_covariates(
+#'       covariates = c("cov1", "cov2"),
+#'       priors = prior_normal(0, 1000)
+#'     )
+#'   )
 #' make_model_string_model(anls_obj@borrowing, anls_obj@outcome, anls_obj)
 setGeneric("make_model_string_model", function(borrowing, outcome, analysis_obj) {
   standardGeneric("make_model_string_model")
