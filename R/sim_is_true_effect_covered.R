@@ -63,7 +63,7 @@
 #'   treatment = treatment_details("trt", prior_normal(0, 1000))
 #' )
 #'
-#' \dontrun{
+#' \donttest{
 #' i <- 1
 #' j <- 1
 #' true_effect <- x@guide[i, x@data_matrix_list@effect]
