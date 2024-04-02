@@ -45,13 +45,19 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y texlive-fonts-extra
 
-      - name: Set up MSYS2 on windows
+      # Set up MSYS2 and update pacman
+      - name: Set up MSYS2 and install tools
         if: runner.os == 'Windows'
         uses: msys2/setup-msys2@v2
         with:
           update: true
-          install: base-devel mingw-w64-x86_64-toolchain
+          install: >-
+            base-devel
+            mingw-w64-x86_64-toolchain
+            mingw-w64-i686-make  # mingw32-make equivalent
+            mingw-w64-x86_64-gcc  # g++ equivalent for 64-bit, replace with mingw-w64-i686-gcc for 32-bit
           path-type: inherit
+
 
       - name: R CMD check before cmdstanr installed
         uses: r-lib/actions/check-r-package@v2
