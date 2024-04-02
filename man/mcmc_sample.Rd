@@ -155,7 +155,7 @@ if (check_cmdstan()) {
 
   mcmc_sample(sim_object, chains = 1, iter_warmup = 500L, iter_sampling = 1000L)
 }
-\dontrun{
+\donttest{
 library(future)
 # Use two separate R processes
 plan("multisession", workers = 2)
