@@ -8,15 +8,15 @@
 #' @return `glue` `character` containing the text for the data block.
 #'
 #' @examples
-#' # NOT RUN
-#' # anls_obj <- .analysis_obj(
-#' #   data_matrix = example_matrix,
-#' #   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-#' #   borrowing = borrowing_full("ext"),
-#' #   treatment = treatment_details("trt", prior_normal(0, 100))
-#' # )
-#' # 
-#' # make_model_string_data(anls_obj)
+#' anls_obj <- .analysis_obj(
+#'   data_matrix = example_matrix,
+#'   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
+#'   borrowing = borrowing_full("ext"),
+#'   treatment = treatment_details("trt", prior_normal(0, 100))
+#' )
+#' 
+#' make_model_string_data(anls_obj)
+#' @noRd
 make_model_string_data <- function(analysis_obj) {
   outcome_string <- analysis_obj@outcome@data_stan_code
 

@@ -78,12 +78,12 @@ plot_pmf <- function(x, y, ..., col = "grey", add = FALSE) {
 #' @param collapse_sep string. A character string to separate the original strings in the collapsed string.
 #'
 #' @return A character (of class `glue`).
-#' @noRd
 #' @examples
 #' name <- "Tom"
 #' psborrow2:::h_glue("hello, my name is {{name}}.")
 #' name <- c("Tom", "Fred")
 #' psborrow2:::h_glue("hello, my name is {{name}}.", collapse = TRUE)
+#' @noRd
 h_glue <- function(..., collapse = FALSE, collapse_sep = "\n") {
   result <- glue::glue(..., .open = "{{", .close = "}}", .envir = parent.frame())
   if (isTRUE(collapse)) {
@@ -99,17 +99,17 @@ h_glue <- function(..., collapse = FALSE, collapse_sep = "\n") {
 #'
 #' @return A `matrix` with columns "lower" and "upper" with rows for each `Prior`.
 #' @examples
-#' # NOT RUN
-#' # get_covariate_constraints(
-#' #   add_covariates(
-#' #     c("cov1", "cov2", "cov3"),
-#' #     list(
-#' #       prior_normal(0, 10),
-#' #       prior_beta(0.3, 0.3),
-#' #       prior_gamma(30, 1)
-#' #     )
-#' #   )
-#' # )
+#' get_covariate_constraints(
+#'   add_covariates(
+#'     c("cov1", "cov2", "cov3"),
+#'     list(
+#'       prior_normal(0, 10),
+#'       prior_beta(0.3, 0.3),
+#'       prior_gamma(30, 1)
+#'     )
+#'   )
+#' )
+#' @noRd
 get_covariate_constraints <- function(cov_obj) {
   n_covs <- length(cov_obj@covariates)
   if (is(cov_obj@priors, "Prior")) {
@@ -129,9 +129,9 @@ get_covariate_constraints <- function(cov_obj) {
 #' @return
 #' A list with upper and lower bounds. Any unspecified bounds are set to `-Inf` or `Inf`.
 #' @examples
-#' # NOT RUN
-#' # np <- prior_normal(0, 100)
-#' # parse_constraint(np)
+#' np <- prior_normal(0, 100)
+#' parse_constraint(np)
+#' @noRd
 parse_constraint <- function(object) {
   assert_class(object, "Prior")
   s <- eval_constraints(object)
@@ -220,8 +220,8 @@ variable_dictionary <- function(analysis_obj) {
 #'
 #' @return A string containing the Stan code sampling from specified distribution.
 #' @examples
-#' # NOT RUN
-#' # get_prior_string(prior_normal(0, 100))
+#' get_prior_string(prior_normal(0, 100))
+#' @noRd
 get_prior_string <- function(object) {
   assert_multi_class(object, c("Prior", "list"))
   if (is(object, "list")) {

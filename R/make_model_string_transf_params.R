@@ -8,16 +8,15 @@
 #' @return `glue` `character` containing the Stan code for the functions block.
 #'
 #' @examples
-#' # NOT RUN 
-#' # anls_obj <- .analysis_obj(
-#' #   data_matrix = example_matrix,
-#' #   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-#' #   borrowing = borrowing_full("ext"),
-#' #   treatment = treatment_details("trt", prior_normal(0, 100))
-#' # )
-#' #
-#' # make_model_string_transf_param(anls_obj)
-#' #
+#' anls_obj <- .analysis_obj(
+#'   data_matrix = example_matrix,
+#'   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
+#'   borrowing = borrowing_full("ext"),
+#'   treatment = treatment_details("trt", prior_normal(0, 100))
+#' )
+#' 
+#' make_model_string_transf_param(anls_obj)
+#' @noRd
 make_model_string_transf_param <- function(analysis_obj) {
   transformed_parameters_string <- if (is(analysis_obj@outcome, "TimeToEvent")) {
     "real HR_trt = exp(beta_trt);"

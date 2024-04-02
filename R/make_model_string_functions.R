@@ -8,15 +8,15 @@
 #' @return `glue` `character` containing the text for the functions block.
 #'
 #' @examples
-#' # NOT RUN
-#' # anls_obj <- .analysis_obj(
-#' #   data_matrix = example_matrix,
-#' #   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-#' #   borrowing = borrowing_full("ext"),
-#' #   treatment = treatment_details("trt", prior_normal(0, 100))
-#' # )
-#' #
-#' # make_model_string_functions(anls_obj)
+#' anls_obj <- .analysis_obj(
+#'   data_matrix = example_matrix,
+#'   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
+#'   borrowing = borrowing_full("ext"),
+#'   treatment = treatment_details("trt", prior_normal(0, 100))
+#' )
+#'
+#' make_model_string_functions(anls_obj)
+#' @noRd
 make_model_string_functions <- function(analysis_obj) {
   ## Bring in analysis_obj functions
   h_glue("

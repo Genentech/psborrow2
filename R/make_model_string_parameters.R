@@ -8,16 +8,15 @@
 #' @return `glue` `character` containing the Stan code for the functions block.
 #'
 #' @examples
-#' # NOT RUN 
-#' # anls_obj <- .analysis_obj(
-#' #   data_matrix = example_matrix,
-#' #   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-#' #   borrowing = borrowing_full("ext"),
-#' #   treatment = treatment_details("trt", prior_normal(0, 100))
-#' # )
-#' #
-#' # make_model_string_parameters(anls_obj)
-#' #
+#' anls_obj <- .analysis_obj(
+#'   data_matrix = example_matrix,
+#'   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
+#'   borrowing = borrowing_full("ext"),
+#'   treatment = treatment_details("trt", prior_normal(0, 100))
+#' )
+#' 
+#' make_model_string_parameters(anls_obj)
+#' @noRd
 make_model_string_parameters <- function(analysis_obj) {
   ## Parameters string
   trt_string <- h_glue("real{{eval_constraints(analysis_obj@treatment@trt_prior)}} beta_trt;")
