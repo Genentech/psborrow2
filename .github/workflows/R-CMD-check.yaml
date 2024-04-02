@@ -55,10 +55,18 @@ jobs:
       - name: R CMD check after cmdstanr installed but before cmdstan
         uses: r-lib/actions/check-r-package@v2
       
-      - name: Install cmdstan
+      - name: Install cmdstan on Linux / Mac
+        if: runner.os != 'Windows'
         run: |
           Rscript -e "cmdstanr::check_cmdstan_toolchain(fix = TRUE)"
           Rscript -e "cmdstanr::install_cmdstan()"
+
+      - name: Install cmdstan on Windows
+        if: runner.os == 'Windows'
+        run: |
+          Rscript -e "cmdstanr::check_cmdstan_toolchain(fix = TRUE)"
+          Rscript -e "cmdstanr::install_cmdstan()"
+        shell: msys2 {0}
 
       - name: R CMD check after cmdstanr and cmdstan are installed
         uses: r-lib/actions/check-r-package@v2
