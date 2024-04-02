@@ -184,7 +184,7 @@ setMethod(
 #'
 #'   mcmc_sample(sim_object, chains = 1, iter_warmup = 500L, iter_sampling = 1000L)
 #' }
-#' \donttest{
+#' \dontrun{
 #' library(future)
 #' # Use two separate R processes
 #' plan("multisession", workers = 2)
