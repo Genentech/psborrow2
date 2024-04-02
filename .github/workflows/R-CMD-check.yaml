@@ -55,8 +55,7 @@ jobs:
             mingw-w64-x86_64-toolchain
             mingw-w64-i686-make
             mingw-w64-x86_64-gcc
-          path-type: inherit
-
+          path-type: inherit  
 
       - name: R CMD check before cmdstanr installed
         uses: r-lib/actions/check-r-package@v2
@@ -77,6 +76,7 @@ jobs:
       - name: Install cmdstan on Windows
         if: runner.os == 'Windows'
         run: |
+          choco install rtools
           Rscript -e "cmdstanr::check_cmdstan_toolchain(fix = TRUE)"
           Rscript -e "cmdstanr::install_cmdstan()"
         shell: msys2 {0}
