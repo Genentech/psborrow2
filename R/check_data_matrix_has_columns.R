@@ -7,7 +7,7 @@
 #' @return `stop()` if some columns are missing.
 #' @export
 #' @examples
-#' anls <- psborrow2:::.analysis_obj(
+#' anls <- create_analysis_obj(
 #'   data_matrix = example_matrix,
 #'   covariates = add_covariates(
 #'     covariates = c("cov1", "cov2"),
@@ -25,8 +25,7 @@
 #'   treatment = treatment_details(
 #'     "trt",
 #'     prior_normal(0, 1000)
-#'   ),
-#'   ready_to_sample = FALSE
+#'   )
 #' )
 #'
 #' check_data_matrix_has_columns(anls)

@@ -35,7 +35,7 @@ db <- borrowing_none(
 )
 }
 \seealso{
-Other borrowing:
+Other borrowing: 
 \code{\link{borrowing_full}()}
 }
 \concept{borrowing}

@@ -9,6 +9,11 @@ exponential_prior(...)
 \arguments{
 \item{...}{Deprecated arguments to \code{exponential_prior()}.}
 }
+\value{
+This function does not return a value. When called, it triggers an error
+message indicating that \code{exponential_prior()} is deprecated and that
+\code{prior_exponential()} should be used instead.
+}
 \description{
 Please use \code{prior_exponential()} instead.
 }

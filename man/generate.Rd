@@ -11,6 +11,9 @@ generate(x, ...)
 
 \item{...}{Other arguments passed to methods}
 }
+\value{
+Object of class \code{\link[=SimDataList-class]{SimDataList}}.
+}
 \description{
 Generate Data from Object
 }

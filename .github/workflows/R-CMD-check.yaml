@@ -17,7 +17,7 @@ jobs:
       matrix:
         config:
           - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
+          #- {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -38,6 +38,7 @@ jobs:
         with:
           extra-packages: rcmdcheck, survival, flexsurv, testthat, usethis, vdiffr, tibble, xml2, knitr, rmarkdown, bayesplot, matrixcalc, WeightIt, MatchIt, BayesPPD, ggsurvfit, gbm, ggplot2, cobalt, table1, gt, gtsummary
           dependencies: '"hard"'
+          cache: false
 
       - name: Install system dependencies on Linux
         if: runner.os == 'Linux'

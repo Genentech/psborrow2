@@ -112,6 +112,6 @@ setMethod(
   f = "show_guide",
   signature = "Simulation",
   definition = function(object) {
-    print(object@guide)
+    object@guide
   }
 )

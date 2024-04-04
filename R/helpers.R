@@ -6,8 +6,11 @@
 #'
 #' Plots the density values as a curve with the lower vertical limit set to 0.
 #'
-#' @export
+#' 
+#' @return No return value, this function generates a plot in the current graphics device.
 #'
+#' @export
+#' 
 #' @examples
 #' x <- seq(-2, 2, len = 100)
 #' y <- dnorm(x)
@@ -35,6 +38,8 @@ plot_pdf <- function(x, y, ...) {
 #' @param add Add bars to existing plot.
 #'
 #' Plots the probability values as a barplot.
+#'
+#' @return No return value, this function generates a plot in the current graphics device.
 #'
 #' @export
 #'
@@ -73,12 +78,12 @@ plot_pmf <- function(x, y, ..., col = "grey", add = FALSE) {
 #' @param collapse_sep string. A character string to separate the original strings in the collapsed string.
 #'
 #' @return A character (of class `glue`).
-#' @noRd
 #' @examples
 #' name <- "Tom"
 #' psborrow2:::h_glue("hello, my name is {{name}}.")
 #' name <- c("Tom", "Fred")
 #' psborrow2:::h_glue("hello, my name is {{name}}.", collapse = TRUE)
+#' @noRd
 h_glue <- function(..., collapse = FALSE, collapse_sep = "\n") {
   result <- glue::glue(..., .open = "{{", .close = "}}", .envir = parent.frame())
   if (isTRUE(collapse)) {
@@ -94,7 +99,7 @@ h_glue <- function(..., collapse = FALSE, collapse_sep = "\n") {
 #'
 #' @return A `matrix` with columns "lower" and "upper" with rows for each `Prior`.
 #' @examples
-#' psborrow2:::get_covariate_constraints(
+#' get_covariate_constraints(
 #'   add_covariates(
 #'     c("cov1", "cov2", "cov3"),
 #'     list(
@@ -104,7 +109,7 @@ h_glue <- function(..., collapse = FALSE, collapse_sep = "\n") {
 #'     )
 #'   )
 #' )
-#'
+#' @noRd
 get_covariate_constraints <- function(cov_obj) {
   n_covs <- length(cov_obj@covariates)
   if (is(cov_obj@priors, "Prior")) {
@@ -125,7 +130,8 @@ get_covariate_constraints <- function(cov_obj) {
 #' A list with upper and lower bounds. Any unspecified bounds are set to `-Inf` or `Inf`.
 #' @examples
 #' np <- prior_normal(0, 100)
-#' psborrow2:::parse_constraint(np)
+#' parse_constraint(np)
+#' @noRd
 parse_constraint <- function(object) {
   assert_class(object, "Prior")
   s <- eval_constraints(object)
@@ -214,7 +220,8 @@ variable_dictionary <- function(analysis_obj) {
 #'
 #' @return A string containing the Stan code sampling from specified distribution.
 #' @examples
-#' psborrow2:::get_prior_string(prior_normal(0, 100))
+#' get_prior_string(prior_normal(0, 100))
+#' @noRd
 get_prior_string <- function(object) {
   assert_multi_class(object, c("Prior", "list"))
   if (is(object, "list")) {

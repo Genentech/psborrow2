@@ -50,6 +50,8 @@
 #'
 #' @family simulation classes
 #'
+#' @return Object of class [`SimCovariateList`][SimCovariateList-class].
+#'
 #' @export
 #'
 #' @examples

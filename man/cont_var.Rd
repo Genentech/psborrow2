@@ -11,6 +11,9 @@ cont_var(mu_internal, mu_external)
 
 \item{mu_external}{numeric. Mean covariate value for the external arm.}
 }
+\value{
+Object of class \code{\link[=SimVarCont-class]{SimVarCont}}.
+}
 \description{
 Create an object of class \code{SimVarCont} to hold mean values of
 of continuous variables specified in a simulation study.

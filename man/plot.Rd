@@ -63,6 +63,9 @@
 
 \item{...}{Optional arguments for plotting.}
 }
+\value{
+No return value, this function generates a plot in the current graphics device.
+}
 \description{
 Plot prior distributions as densities. Continuous distributions are plotted as curves and
 discrete distributions as bar plots.

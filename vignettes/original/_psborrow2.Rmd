@@ -91,4 +91,13 @@ how to generate data for simulation studies: [https://genentech.github.io/psborr
 
 Please refer to [https://genentech.github.io/psborrow2/articles/index.html](https://genentech.github.io/psborrow2/articles/index.html) for additional articles on `psborrow2` functionality.
 
+## Installing `cmdstanr`
+
+`cmdstanr` is highly recommended for use with `psborrow2`. To install `cmdstanr`, follow the instructions outlined by the [`cmdstanr` documentation](https://mc-stan.org/cmdstanr/) or use:
+
+```
+install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
+```
+
+
 ## References

@@ -90,6 +90,12 @@ setMethod(
 #'
 #' Please use `prior_gamma()` instead.
 #' @param ... Deprecated arguments to `gamma_prior()`.
+#' 
+#' @return
+#' This function does not return a value. When called, it triggers an error 
+#' message indicating that `gamma_prior()` is deprecated and that 
+#' `prior_gamma()` should be used instead. 
+#'
 #' @export
 gamma_prior <- function(...) {
   .Defunct(

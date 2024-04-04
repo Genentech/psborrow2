@@ -12,6 +12,9 @@ show_guide(object)
 \arguments{
 \item{object}{\code{Simulation} object}
 }
+\value{
+A \code{data.frame} showing all simulation scenarios.
+}
 \description{
 Show the guide in \code{Simulation} objects.
 }

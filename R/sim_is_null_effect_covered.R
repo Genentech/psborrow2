@@ -62,7 +62,7 @@
 #'   treatment = treatment_details("trt", prior_normal(0, 1000))
 #' )
 #'
-#' \dontrun{
+#' \donttest{
 #' i <- 1
 #' j <- 1
 #' anls_obj <- x@analysis_obj_list[[i]][[j]]

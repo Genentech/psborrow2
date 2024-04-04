@@ -378,3 +378,42 @@ test_that("`create_simulation_obj()` does not create deep copies", {
     }
   }
 })
+
+test_that("`show_guide()` gives correct output", {
+
+  valid_simulation_obj <- create_simulation_obj(
+    data_matrix_list = valid_data_list,
+    covariate = valid_covariate,
+    outcome = valid_outcome,
+    borrowing = valid_borrowing,
+    treatment = valid_treatment
+  )
+
+  guide <- show_guide(valid_simulation_obj)
+
+  expect_class(
+    guide,
+    "data.frame"
+  )
+
+  expect_equal(
+    NROW(guide),
+    8
+  )
+
+  expect_equal(
+    NCOL(guide),
+    8
+  )
+
+  expect_equal(
+    1,
+    NROW(guide[
+      guide$true_hr == 0.6 &
+      guide$drift_hr == 1.0 & 
+      guide$borrowing_scenario == "bdb" & 
+      guide$covariate_scenario == "cov1" &
+      guide$treatment_scenario == "standard_tx",
+    ])
+  )
+})

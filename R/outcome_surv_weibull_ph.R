@@ -144,6 +144,12 @@ outcome_surv_weibull_ph <- function(time_var,
 #'
 #' Please use `outcome_surv_weibull_ph()` instead.
 #' @param ... Deprecated arguments to `weib_ph_surv_dist()`.
+#' 
+#' @return
+#' This function does not return a value. When called, it triggers an error 
+#' message indicating that `weib_ph_surv_dist()` is deprecated and that 
+#' `outcome_surv_weibull_ph()` should be used instead.
+#' 
 #' @export
 weib_ph_surv_dist <- function(...) {
   .Defunct(

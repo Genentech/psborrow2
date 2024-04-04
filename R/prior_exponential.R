@@ -85,6 +85,12 @@ setMethod(
 #'
 #' Please use `prior_exponential()` instead.
 #' @param ... Deprecated arguments to `exponential_prior()`.
+#' 
+#' @return
+#' This function does not return a value. When called, it triggers an error 
+#' message indicating that `exponential_prior()` is deprecated and that 
+#' `prior_exponential()` should be used instead.
+#' 
 #' @export
 exponential_prior <- function(...) {
   .Defunct(

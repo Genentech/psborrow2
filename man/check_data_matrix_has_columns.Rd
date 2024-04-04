@@ -16,7 +16,7 @@ check_data_matrix_has_columns(object)
 Check that an \code{Analysis} object's \code{data_matrix} has all the required variables.
 }
 \examples{
-anls <- psborrow2:::.analysis_obj(
+anls <- create_analysis_obj(
   data_matrix = example_matrix,
   covariates = add_covariates(
     covariates = c("cov1", "cov2"),
@@ -34,8 +34,7 @@ anls <- psborrow2:::.analysis_obj(
   treatment = treatment_details(
     "trt",
     prior_normal(0, 1000)
-  ),
-  ready_to_sample = FALSE
+  )
 )
 
 check_data_matrix_has_columns(anls)

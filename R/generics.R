@@ -10,14 +10,13 @@
 #' @param y Not used.
 #' @param add logical. Add density to existing plot.
 #' @param ... Optional arguments for plotting.
-#'
+#' @return No return value, this function generates a plot in the current graphics device.
 #' @export
 #' @details
 #' Plot ranges are selected by default to show 99% of the density for unbounded distributions.
 #' The limits can be changed by specifying `xlim = c(lower, upper)`.
 #'
 #' Colors, line types, and other typical [par()] parameters can be used.
-#'
 if (!isGeneric("plot")) setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 
 
@@ -29,7 +28,7 @@ if (!isGeneric("plot")) setGeneric("plot", function(x, y, ...) standardGeneric("
 #' @aliases get_vars
 #'
 #' @param object Object
-#' @returns A `character` vector containing variable names
+#' @return A `character` vector containing variable names
 #' @export
 #'
 setGeneric("get_vars", function(object) standardGeneric("get_vars"))
@@ -57,6 +56,8 @@ setGeneric("mcmc_sample", function(x, ...) standardGeneric("mcmc_sample"))
 #'
 #' @rdname show_guide
 #'
+#' @return A `data.frame` showing all simulation scenarios.
+#' 
 #' @export
 #'
 setGeneric("show_guide", function(object) standardGeneric("show_guide"))
@@ -68,6 +69,8 @@ setGeneric("show_guide", function(object) standardGeneric("show_guide"))
 #' @param object `MCMCSimulationResults` object
 #'
 #' @rdname get_results
+#' 
+#' @return data.frame with simulation results.
 #'
 #' @export
 #'
@@ -80,6 +83,8 @@ setGeneric("get_results", function(object) standardGeneric("get_results"))
 #' @param object `MCMCSimulationResults` object
 #'
 #' @rdname get_cmd_stan_models
+#' 
+#' @return List of lists of `CmdStanModel` objects for each model.
 #'
 #' @export
 #'
@@ -92,6 +97,8 @@ setGeneric("get_cmd_stan_models", function(object) standardGeneric("get_cmd_stan
 #'
 #' @rdname generate
 #'
+#' @return Object of class [`SimDataList`][SimDataList-class].
+#' 
 #' @export
 setGeneric("generate", function(x, ...) standardGeneric("generate"))
 
@@ -101,8 +108,6 @@ setGeneric("generate", function(x, ...) standardGeneric("generate"))
 #' @param analysis_object analysis object
 #'
 #' @rdname trim_rows
-#'
-#' @export
 setGeneric("trim_rows", function(borrowing_object, analysis_object) standardGeneric("trim_rows"))
 
 #' Trim columns from Data Matrix Based on Borrowing object type
@@ -111,8 +116,6 @@ setGeneric("trim_rows", function(borrowing_object, analysis_object) standardGene
 #' @param analysis_object analysis object
 #'
 #' @rdname trim_cols
-#'
-#' @export
 setGeneric("trim_cols", function(borrowing_object, analysis_object) standardGeneric("trim_cols"))
 
 #' Create alpha string
@@ -121,8 +124,6 @@ setGeneric("trim_cols", function(borrowing_object, analysis_object) standardGene
 #' @param outcome_object outcome object
 #'
 #' @rdname create_alpha_string
-#'
-#' @export
 setGeneric("create_alpha_string", function(borrowing_object, outcome_object) standardGeneric("create_alpha_string"))
 
 #' Create tau string
@@ -130,10 +131,7 @@ setGeneric("create_alpha_string", function(borrowing_object, outcome_object) sta
 #' @param borrowing_object borrowing object
 #'
 #' @rdname create_tau_string
-#'
-#' @export
 setGeneric("create_tau_string", function(borrowing_object) standardGeneric("create_tau_string"))
-
 
 #' Create Stan Code for Model
 #'
@@ -145,12 +143,26 @@ setGeneric("create_tau_string", function(borrowing_object) standardGeneric("crea
 #' @return `glue` `character` containing the Stan code for the data block.
 #' @export
 #' @examples
-#' anls_obj <- psborrow2:::.analysis_obj(
-#'   data_matrix = example_matrix,
-#'   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100)),
-#'   borrowing = borrowing_full("ext"),
-#'   treatment = treatment_details("trt", prior_normal(0, 100))
-#' )
+#' anls_obj <- create_analysis_obj(
+#'     data_matrix = example_matrix,
+#'     outcome = outcome_surv_exponential(
+#'       "time",
+#'       "cnsr",
+#'       baseline_prior = prior_normal(0, 1000)
+#'     ),
+#'     borrowing = borrowing_hierarchical_commensurate(
+#'       "ext",
+#'       prior_exponential(.001)
+#'     ),
+#'     treatment = treatment_details(
+#'       "trt",
+#'       prior_normal(0, 1000)
+#'     ),
+#'     covariates = add_covariates(
+#'       covariates = c("cov1", "cov2"),
+#'       priors = prior_normal(0, 1000)
+#'     )
+#'   )
 #' make_model_string_model(anls_obj@borrowing, anls_obj@outcome, anls_obj)
 setGeneric("make_model_string_model", function(borrowing, outcome, analysis_obj) {
   standardGeneric("make_model_string_model")
@@ -164,7 +176,7 @@ setGeneric("make_model_string_model", function(borrowing, outcome, analysis_obj)
 #'
 #' @param x object of type: [BaselineDataList-class]
 #' @param ... Optional arguments for passed to [data.frame]
-#' @returns A `data.frame`
+#' @return A `data.frame`
 NULL
 
 #' @title Combine objects in `psborrow2`
@@ -173,7 +185,7 @@ NULL
 #' @name c
 #' @param x object of type: [SimDataList-class]
 #' @param ... additional objects to combine
-#' @returns A combined object
+#' @return A combined object
 NULL
 
 #' Get Simulated Data from `SimDataList` object
@@ -183,7 +195,7 @@ NULL
 #' @param object `SimDataList` object
 #' @param index the index of the scenario (see guide with print(`SimDataList`))
 #' @param dataset the dataset out of `n_datasets_per_param`
-#' @returns Simulated data as a data frame if the index is specified, else as a list
+#' @return Simulated data as a data frame if the index is specified, else as a list
 #' @export
 setGeneric("get_data", function(object, index = 1, dataset = 1) standardGeneric("get_data"))
 
@@ -192,12 +204,12 @@ setGeneric("get_data", function(object, index = 1, dataset = 1) standardGeneric(
 #' @param object `BaselineObject` object
 #' @param ... Additional arguments passed to methods
 #' @param overwrite logical. Overwrite existing transformations?
-#' @returns `BaselineObject` object with transformations
+#' @return `BaselineObject` object with transformations
 #' @export
 setGeneric("set_transformations", function(object, ..., overwrite = FALSE) standardGeneric("set_transformations"))
 
 #' Get method for Stan model
 #' @param object `Analysis` object
-#' @returns String containing the Stan model
+#' @return String containing the Stan model
 #' @export
 setGeneric("get_stan_code", function(object) standardGeneric("get_stan_code"))

@@ -9,6 +9,11 @@ bernoulli_prior(...)
 \arguments{
 \item{...}{Deprecated arguments to \code{bernoulli_prior()}.}
 }
+\value{
+This function does not return a value. When called, it triggers an error
+message indicating that \code{bernoulli_prior()} is deprecated and that
+\code{prior_bernoulli()} should be used instead.
+}
 \description{
 Please use \code{prior_bernoulli()} instead.
 }

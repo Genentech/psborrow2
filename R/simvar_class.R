@@ -41,6 +41,7 @@ setClass(
 #'
 #' @param mu_internal numeric. Mean covariate value for the internal arms.
 #' @param mu_external numeric. Mean covariate value for the external arm.
+#' @return Object of class [`SimVarCont`][SimVarCont-class].
 #' @export
 #' @family simvar
 #' @examples
@@ -134,6 +135,7 @@ setMethod(
 #' `mu_internal_before_bin` and `mu_external_before_bin` are `0`, and
 #' it is not recommended to change these without good reason.
 #'
+#' @return Object of class [`SimVarBin`][SimVarBin-class].
 #'
 #' @export
 #' @family simvar

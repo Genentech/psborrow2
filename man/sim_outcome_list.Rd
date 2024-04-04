@@ -10,6 +10,9 @@ sim_outcome_list(outcome_list)
 \item{outcome_list}{named list of objects of class \code{Outcome} created
 by \code{outcome_details()}.}
 }
+\value{
+Object of class \code{\link[=SimOutcomeList-class]{SimOutcomeList}}.
+}
 \description{
 A function for defining which outcome scenarios should be evaluated as
 part of a simulation study.

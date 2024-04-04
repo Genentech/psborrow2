@@ -19,6 +19,9 @@ plot_pmf(x, y, ..., col = "grey", add = FALSE)
 
 Plots the probability values as a barplot.}
 }
+\value{
+No return value, this function generates a plot in the current graphics device.
+}
 \description{
 Plot Probability Mass Function Values
 }
