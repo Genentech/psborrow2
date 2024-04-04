@@ -102,22 +102,44 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">anls_obj</span> <span class="op">&lt;-</span> <span class="fu">psborrow2</span><span class="fu">:::</span><span class="fu"><a href="Analysis-class.html">.analysis_obj</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span></span>
-<span class="r-in"><span>  outcome <span class="op">=</span> <span class="fu"><a href="outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span>, <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_full.html">borrowing_full</a></span><span class="op">(</span><span class="st">"ext"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">anls_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_analysis_obj.html">create_analysis_obj</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data_matrix <span class="op">=</span> <span class="va">example_matrix</span>,</span></span>
+<span class="r-in"><span>    outcome <span class="op">=</span> <span class="fu"><a href="outcome_surv_exponential.html">outcome_surv_exponential</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"time"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"cnsr"</span>,</span></span>
+<span class="r-in"><span>      baseline_prior <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    borrowing <span class="op">=</span> <span class="fu"><a href="borrowing_hierarchical_commensurate.html">borrowing_hierarchical_commensurate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"ext"</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="prior_exponential.html">prior_exponential</a></span><span class="op">(</span><span class="fl">.001</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    treatment <span class="op">=</span> <span class="fu"><a href="treatment_details.html">treatment_details</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"trt"</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="add_covariates.html">add_covariates</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      covariates <span class="op">=</span> <span class="fu"><a href="c.html">c</a></span><span class="op">(</span><span class="st">"cov1"</span>, <span class="st">"cov2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      priors <span class="op">=</span> <span class="fu"><a href="prior_normal.html">prior_normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Inputs look good.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Stan program compiled successfully!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Ready to go! Now call `mcmc_sample()`.</span>
 <span class="r-in"><span><span class="fu">make_model_string_model</span><span class="op">(</span><span class="va">anls_obj</span><span class="op">@</span><span class="va">borrowing</span>, <span class="va">anls_obj</span><span class="op">@</span><span class="va">outcome</span>, <span class="va">anls_obj</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> model {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   vector[N] lp;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   vector[N] elp;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   beta_trt ~ normal(0, 100);</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   lp = alpha + trt * beta_trt ;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> elp = exp(lp);</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   beta_trt ~ normal(0, 1000);</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lp = X * beta + Z * alpha + trt * beta_trt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> elp = exp(lp) ;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   alpha ~ normal(0, 100) ;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   beta[1] ~ normal(0, 1000) ;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> beta[2] ~ normal(0, 1000) ;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   tau ~ exponential(0.001) ;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> real sigma;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma = 1 / tau;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> alpha[2] ~ normal(0, 1000) ;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> alpha[1] ~ normal(alpha[2], sqrt(sigma)) ;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   for (i in 1:N) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    if (cens[i] == 1) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       target += exponential_lccdf(time[i] | elp[i] );</span>

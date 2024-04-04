@@ -304,13 +304,7 @@
     <loc>https://genentech.github.io/psborrow2/reference/get_cmd_stan_models.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/psborrow2/reference/get_covariate_constraints.html</loc>
-  </url>
-  <url>
     <loc>https://genentech.github.io/psborrow2/reference/get_data.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/get_prior_string.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/get_quantiles.html</loc>
@@ -337,19 +331,7 @@
     <loc>https://genentech.github.io/psborrow2/reference/logistic_bin_outcome.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/psborrow2/reference/make_model_string_data.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/make_model_string_functions.html</loc>
-  </url>
-  <url>
     <loc>https://genentech.github.io/psborrow2/reference/make_model_string_model.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/make_model_string_parameters.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/make_model_string_transf_param.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/mcmc_sample.html</loc>
@@ -368,9 +350,6 @@
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/outcome_surv_weibull_ph.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/psborrow2/reference/parse_constraint.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/psborrow2/reference/plot.html</loc>

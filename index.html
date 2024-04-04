@@ -8,9 +8,9 @@
 <meta name="description" content="Bayesian dynamic borrowing is an approach to incorporating external
    data to supplement a randomized, controlled trial analysis in which
    external data are incorporated in a dynamic way (e.g., based on similarity
-   of outcomes); see Viele 2013 \doi{10.1002/pst.1589} for an overview.
+   of outcomes); see Viele 2013 &lt;doi:10.1002/pst.1589&gt; for an overview.
    This package implements the hierarchical commensurate prior approach to dynamic borrowing
-   as described in Hobbes 2011 \doi{10.1111/j.1541-0420.2011.01564.x}.
+   as described in Hobbes 2011 &lt;doi:10.1111/j.1541-0420.2011.01564.x&gt;.
    There are three main functionalities. First, psborrow2 provides a user-friendly 
    interface for applying dynamic borrowing on the study results handles the Markov Chain
    Monte Carlo sampling on behalf of the user. Second, psborrow2 provides a 
@@ -18,7 +18,9 @@
    borrowing, dynamic borrowing) and other trial and borrowing characteristics
    (e.g. sample size, covariates) in a unified way. Third, psborrow2 provides
    a set of functions to generate data for simulation studies, and also allows
-   the user to specify their own data generation process.">
+   the user to specify their own data generation process. This package is designed to 
+   use the sampling functions from cmdstanr which can be installed from
+   &lt;https://mc-stan.org/r-packages/&gt;.">
 <title>Bayesian Dynamic Borrowing Analysis and Simulation • psborrow2</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
@@ -28,9 +30,9 @@
 <meta property="og:description" content="Bayesian dynamic borrowing is an approach to incorporating external
    data to supplement a randomized, controlled trial analysis in which
    external data are incorporated in a dynamic way (e.g., based on similarity
-   of outcomes); see Viele 2013 \doi{10.1002/pst.1589} for an overview.
+   of outcomes); see Viele 2013 &lt;doi:10.1002/pst.1589&gt; for an overview.
    This package implements the hierarchical commensurate prior approach to dynamic borrowing
-   as described in Hobbes 2011 \doi{10.1111/j.1541-0420.2011.01564.x}.
+   as described in Hobbes 2011 &lt;doi:10.1111/j.1541-0420.2011.01564.x&gt;.
    There are three main functionalities. First, psborrow2 provides a user-friendly 
    interface for applying dynamic borrowing on the study results handles the Markov Chain
    Monte Carlo sampling on behalf of the user. Second, psborrow2 provides a 
@@ -38,7 +40,9 @@
    borrowing, dynamic borrowing) and other trial and borrowing characteristics
    (e.g. sample size, covariates) in a unified way. Third, psborrow2 provides
    a set of functions to generate data for simulation studies, and also allows
-   the user to specify their own data generation process.">
+   the user to specify their own data generation process. This package is designed to 
+   use the sampling functions from cmdstanr which can be installed from
+   &lt;https://mc-stan.org/r-packages/&gt;.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -122,7 +126,8 @@
 <p>or you can install the development version with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Genentech/psborrow2"</span><span class="op">)</span></span></code></pre></div>
-<p>Please note that <a href="https://mc-stan.org/cmdstanr/" class="external-link"><code>cmdstanr</code></a> is highly recommended, but will not be installed by default when installing <code>psborrow2</code>. To install <code>cmdstanr</code>, follow the instructions outlined by the <a href="https://mc-stan.org/cmdstanr/" class="external-link"><code>cmdstanr</code> documentation</a>.</p>
+<p>Please note that <a href="https://mc-stan.org/cmdstanr/" class="external-link"><code>cmdstanr</code></a> is highly recommended, but will not be installed by default when installing <code>psborrow2</code>. To install <code>cmdstanr</code>, follow the instructions outlined by the <a href="https://mc-stan.org/cmdstanr/" class="external-link"><code>cmdstanr</code> documentation</a> or use:</p>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cmdstanr"</span>, repos <span class="op">=</span> <span class="fu"><a href="reference/c.html">c</a></span><span class="op">(</span><span class="st">"https://mc-stan.org/r-packages/"</span>, <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"repos"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="tutorial">Tutorial<a class="anchor" aria-label="anchor" href="#tutorial"></a>
@@ -152,6 +157,7 @@
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=psborrow2" class="external-link">View on CRAN</a></li>
 <li><a href="https://github.com/Genentech/psborrow2/" class="external-link">Browse source code</a></li>
 <li><a href="https://github.com/Genentech/psborrow2/issues" class="external-link">Report a bug</a></li>
 </ul>
