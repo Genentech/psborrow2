@@ -1,0 +1,15 @@
+---
+title: "1. Sandwich"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{sandwich}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+
+```r
+library(psborrow2)
+```
