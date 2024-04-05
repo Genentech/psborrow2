@@ -184,7 +184,7 @@ We also load the data set `data_with_weights`.
 ```{r message=FALSE}
 data_with_weights <- read.csv("data_with_weights.csv")
 data_with_weights$cnsr <- 1 - data_with_weights$event
-data_with_weights <- data_with_weights[,-c(2,14)]
+data_with_weights <- data_with_weights[, sapply(data_with_weights, class) %in% c("numeric", "integer")]
 data_with_weights$ext <- 1 - data_with_weights$indicator #External control flag
 data_with_weights$norm.weights=data_with_weights$invprob_weights
 data_with_weights$norm.weights[data_with_weights$ext==1]=data_with_weights$norm.weights[data_with_weights$ext==1]/max(data_with_weights$norm.weights[data_with_weights$ext==1])
@@ -205,10 +205,10 @@ The `psborrow2` package will be used to conduct the analysis.
 We use exponential distribution for the outcome model as follows. Non-informative normal prior is used for the baseline parameter. The data `data_with_weights` contain the time and censoring variable. For demonstration purpose, we choose the subject level weight `invprob_weights` calculated using inverse probability of treatment weighting (IPTW). In this step we extract the time, censoring indicator and the normalized weight variables denoted by `time`, `cnsr` and `norm.weights` respectively.
 ```{r message=FALSE}
 #Outcome
-outcome <- exp_surv_dist(
+outcome <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
-  baseline_prior = normal_prior(0, 1000),
+  baseline_prior = prior_normal(0, 1000),
   weight_var = "norm.weights"
 )
 
@@ -219,10 +219,9 @@ outcome
 Next, the borrowing method is implemented as shown below. We consider Bayesian Dynamic Borrowing (BDB) in which gamma prior is assigned for the commensurability parameter. The `tau_prior` shown below is the hyperparameter of the commensurate prior which determines the degree of borrowing. We assign a gamma prior for this hyperparameter. Furhtermore, we also need to specify a flag for external data which is denoted by `ext`.
 ```{r message=FALSE}
 #Borrowing
-borrowing <- borrowing_details(
-  method = "BDB",
+borrowing <- borrowing_hierarchical_commensurate(
   ext_flag_col = "ext",
-  tau_prior = gamma_prior(0.001, 0.001)
+  tau_prior = prior_gamma(0.001, 0.001)
 )
 
 borrowing
@@ -234,7 +233,7 @@ Similarly, details regarding the treatment variable is specified below. A Non-in
 #Treatment
 treatment <- treatment_details(
   trt_flag_col = "group",
-  trt_prior = normal_prior(0, 1000)
+  trt_prior = prior_normal(0, 1000)
 )
 treatment
 ```

@@ -73,35 +73,34 @@ Other variables in the simulated data include
 
 To generate the covariates, we first specify the sample sizes, number of continuous and categorical variables, the marginal moments of the covariates, and the correlation matrix. Note that rcorrvar2 requires the correlation matrix to be ordered as ordinal, continuous, Poisson, and Negative Binomial.
 ```{r message=FALSE, warning=FALSE}
- #Simulate correlated covariates
-  n_t <- 600 #Sample size in trial data
-  n_ec <- 500 #Sample size in external control data
-  k_cont <- 5 #Number of continuous variables
-  k_cat <- 3 #Number of categorical variables
-  means_cont_tc <- c(55,150,65,35,50) #Vector of means of continuous variables
-  vars_cont_tc <- c(15,10,6,5,6)
-  marginal_tc = list(0.2,0.8,0.3)
-  rho_tc <- matrix(0.2, 8, 8)
-  diag(rho_tc) <- 1
-  skews_tc <- rep(0.2,5)
-  skurts_tc <- rep(0.1,5)
+#Simulate correlated covariates
+n_t <- 600 #Sample size in trial data
+n_ec <- 500 #Sample size in external control data
+k_cont <- 5 #Number of continuous variables
+k_cat <- 3 #Number of categorical variables
+means_cont_tc <- c(55,150,65,35,50) #Vector of means of continuous variables
+vars_cont_tc <- c(15,10,6,5,6)
+marginal_tc = list(0.2,0.8,0.3)
+rho_tc <- matrix(0.2, 8, 8)
+diag(rho_tc) <- 1
+skews_tc <- rep(0.2,5)
+skurts_tc <- rep(0.1,5)
 ```
 
 # Simulating trial data
 After specifying the moments of the covariate distribution, we simulate the covariates using `rcorrvar2` function from `SimMultiCorrData` package.
 ```{r message=FALSE}
-  #Simulating covariates
-  trial.data <- rcorrvar2(n = n_t, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
-                          method = "Fleishman",  seed=1,
-                          means = means_cont_tc, vars = vars_cont_tc, # if continuous variables
-                          skews = skews_tc, skurts = skurts_tc, 
-                          marginal=marginal_tc, rho = rho_tc)
+#Simulating covariates
+trial.data <- rcorrvar2(n = n_t, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
+                        method = "Fleishman",  seed=1,
+                        means = means_cont_tc, vars = vars_cont_tc, # if continuous variables
+                        skews = skews_tc, skurts = skurts_tc, 
+                        marginal=marginal_tc, rho = rho_tc)
 
-  trial.data <- data.frame(cbind(id=paste("TRIAL",1:n_t,sep=""), trial.data$continuous_variables, 
-                          ifelse(trial.data$ordinal_variables==1,1,0)))
-  colnames(trial.data) <- c("ID", "Age", "Weight","Height","Biomarker1","Biomarker2","Smoker", 
-                            "Sex", "ECOG1")
-  
+trial.data <- data.frame(cbind(id=paste("TRIAL",1:n_t,sep=""), trial.data$continuous_variables, 
+                        ifelse(trial.data$ordinal_variables==1,1,0)))
+colnames(trial.data) <- c("ID", "Age", "Weight","Height","Biomarker1","Biomarker2","Smoker", 
+                          "Sex", "ECOG1")
 ```
 
 We now simulate the survival outcome data using the Cox proportional hazards model [@cox1972regression] in which the hazard function $\lambda(t|\boldsymbol X, Z)$  is given by $$\lambda(t|\boldsymbol X, Z)=\lambda_0(t) \exp\{\boldsymbol X \boldsymbol \beta_{Trial} + Z \gamma\},$$
@@ -122,35 +121,35 @@ where $\lambda_0(t)=2$ is the baseline hazard function and assumed to be constan
       
 The survival function is given by $$S(t|\boldsymbol X, Z)=exp\{-\Lambda(t|\boldsymbol X, Z)\},$$ where $\Lambda(t|\boldsymbol X, Z)=\int_0^t\lambda(u|\boldsymbol X, Z)du$. The time to event is generated using a inverse CDF method. The censoring time is generated independently from an exponential distribution with `rate=1/4`.
 ```{r message=FALSE, warning=FALSE}
-  #Simulate survival outcome using Cox proportional hazards regression model
-  set.seed(1)
-  u <- runif(1)
-  lambda0 <- 2 #constant baseline hazard
-  #Simulate treatment indicator in the trial data
-  trial.data$group <- rbinom(n_t,1,prob=0.7)
-  beta <- c(0.3,0.1,-0.3,-0.2,-0.12,0.3,1,-1,-0.4)
-  times <- -log(u)/(lambda0*exp(as.matrix(trial.data[,-1])%*%beta)) #Inverse CDF method
-  cens.time <- rexp(n_t,rate=1/4) #Censoring time from exponential distribution
-  event <- as.numeric(times <= cens.time) #Event indicator. 0 is censored.
-  time <- pmin(times,cens.time)
+#Simulate survival outcome using Cox proportional hazards regression model
+set.seed(1)
+u <- runif(1)
+lambda0 <- 2 #constant baseline hazard
+#Simulate treatment indicator in the trial data
+trial.data$group <- rbinom(n_t,1,prob=0.7)
+beta <- c(0.3,0.1,-0.3,-0.2,-0.12,0.3,1,-1,-0.4)
+times <- -log(u)/(lambda0*exp(as.matrix(trial.data[,-1])%*%beta)) #Inverse CDF method
+cens.time <- rexp(n_t,rate=1/4) #Censoring time from exponential distribution
+event <- as.numeric(times <= cens.time) #Event indicator. 0 is censored.
+time <- pmin(times,cens.time)
 ```
 
 ```{r message=FALSE}
-  #Combine trial data
-  trial.data <- data.frame(trial.data,time,event,data="TRIAL")
+#Combine trial data
+trial.data <- data.frame(trial.data,time,event,data="TRIAL")
 ```
 The first 10 observations in the RCT data is shown below.
 ```{r, echo=FALSE, results='asis'}
-  knitr::kable(head(trial.data, 10))
+knitr::kable(head(trial.data, 10))
 ```
 The censoring and event rate in the RCT data is 
 ```{r message=FALSE}
-  table(trial.data$event)/nrow(trial.data) 
+table(trial.data$event)/nrow(trial.data) 
 ```
 
 The distribution of the outcome time is
 ```{r message=FALSE}
-  summary(trial.data$time)
+summary(trial.data$time)
 ```
 
 
@@ -173,50 +172,50 @@ print(tab1,smd=TRUE)
 The same set of covariates $X$ were simulated for the external control data as the RCT. The means, variances for continuous variables and proportion for categorical variables are modified for the external controls compared to the RCT according to the code below.
 
 ```{r message=FALSE}
-  means_cont_ec <- c(55+2,150-2,65-2,35+2,50-2) #Vector of means of continuous variables
-  vars_cont_ec <- c(14,10,5,5,5)
-  marginal_ec = list(0.3,0.7,0.4)
-  ext.cont.data <- rcorrvar2(n = n_ec, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
-                          method = "Fleishman",  seed=3,
-                          means = means_cont_ec, vars = vars_cont_ec, # if continuous variables
-                          skews = skews_tc, skurts = skurts_tc, 
-                          marginal=marginal_ec, rho = rho_tc)
+means_cont_ec <- c(55+2,150-2,65-2,35+2,50-2) #Vector of means of continuous variables
+vars_cont_ec <- c(14,10,5,5,5)
+marginal_ec = list(0.3,0.7,0.4)
+ext.cont.data <- rcorrvar2(n = n_ec, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
+                        method = "Fleishman",  seed=3,
+                        means = means_cont_ec, vars = vars_cont_ec, # if continuous variables
+                        skews = skews_tc, skurts = skurts_tc, 
+                        marginal=marginal_ec, rho = rho_tc)
 
-  ext.cont.data <- data.frame(cbind(id=paste("EC",1:n_ec,sep=""), ext.cont.data$continuous_variables, 
-                          ifelse(ext.cont.data$ordinal_variables==1,1,0)))
-  colnames(ext.cont.data) <- c("ID", "Age", "Weight","Height","Biomarker1","Biomarker2","Smoker", "Sex", "ECOG1")
+ext.cont.data <- data.frame(cbind(id=paste("EC",1:n_ec,sep=""), ext.cont.data$continuous_variables, 
+                        ifelse(ext.cont.data$ordinal_variables==1,1,0)))
+colnames(ext.cont.data) <- c("ID", "Age", "Weight","Height","Biomarker1","Biomarker2","Smoker", "Sex", "ECOG1")
 ```
 
 The same generating mechanism used for the RCT data was used to simulate survival time for the external controls.
 ```{r message=FALSE}
-  #Simulate survival outcome using Cox proportional hazards regression model
-  set.seed(1111)
-  u <- runif(1)
-  lambda0 <- 6 #constant baseline hazard
-  beta <- c(-0.27,-0.1,0.3,0.2,0.1,-0.31,-1,1)
-  times <- -log(u)/(lambda0*exp(as.matrix(ext.cont.data[,-1])%*%beta)) #Inverse CDF method
-  cens.time <- rexp(n_ec,rate=3) #Censoring time from exponential distribution
-  event <- as.numeric(times <= cens.time) #Event indicator. 0 is censored.
-  time <- pmin(times,cens.time)
-  
-  #Simulate treatment indicator in the trial data
-  group <- 0
-  
-  ext.cont.data <- data.frame(ext.cont.data,group,time,event,data="EC")
+#Simulate survival outcome using Cox proportional hazards regression model
+set.seed(1111)
+u <- runif(1)
+lambda0 <- 6 #constant baseline hazard
+beta <- c(-0.27,-0.1,0.3,0.2,0.1,-0.31,-1,1)
+times <- -log(u)/(lambda0*exp(as.matrix(ext.cont.data[,-1])%*%beta)) #Inverse CDF method
+cens.time <- rexp(n_ec,rate=3) #Censoring time from exponential distribution
+event <- as.numeric(times <= cens.time) #Event indicator. 0 is censored.
+time <- pmin(times,cens.time)
+
+#Simulate treatment indicator in the trial data
+group <- 0
+
+ext.cont.data <- data.frame(ext.cont.data,group,time,event,data="EC")
 ```
 The first 10 observations in the external control data is shown below.
 ```{r message=FALSE}
-  knitr::kable(head(ext.cont.data, 10))
+knitr::kable(head(ext.cont.data, 10))
 ```
 
 The censoring and event rate in the trial data is 
 ```{r message=FALSE}
-  table(ext.cont.data$event)/nrow(ext.cont.data) 
+table(ext.cont.data$event)/nrow(ext.cont.data) 
 ```
 
 The distribution of the outcome time is
 ```{r message=FALSE}
-  summary(ext.cont.data$time)
+summary(ext.cont.data$time)
 ```
 
 # Merging trial and external control data
@@ -240,7 +239,7 @@ knitr::kable(head(final.data, 10))
 ```
 
 ```{r message=FALSE}
-  knitr::kable(tail(final.data, 10))
+knitr::kable(tail(final.data, 10))
 ```
 
 We examine the standardized mean difference for covariates between the RCT and external control data before conducting matching/weighting. Note that `strata="data"` in the following code.
@@ -801,5 +800,11 @@ hist(data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==0],ma
 # Selection of matching/weighting methods
 
 Based on the standardized difference mean plot, PSML, PSMR, and GM can be the methods for selection. In terms of ESS, the PSML has the highest sample size of $215$ in both trial and external control data. 
+
+
+```{r echo=FALSE}
+readr::write_csv(data_with_weights, file = "data_with_weights.csv")
+```
+
 
 # References
