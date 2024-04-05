@@ -12,7 +12,6 @@
 *.sas.txt
 *~
 /.project
-articles
 devel/*
 develop/
 doc

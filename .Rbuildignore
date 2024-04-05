@@ -31,3 +31,4 @@ develop
 ^vignettes/original$
 ^vignettes/Makefile$
 ^node_modules$
+^vignettes/articles$
