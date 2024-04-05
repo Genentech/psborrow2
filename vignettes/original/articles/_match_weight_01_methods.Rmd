@@ -1,0 +1,805 @@
+---
+title: "Matching and Weighting Methods"
+# bibliography: references.bib
+author: 
+  - Manoj Khanal, PhD
+  - Eli Lilly & Company
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{1. Matching and Weighting Methods}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Using external control in the analysis of clinical trial data can be challenging as the two data source may be heterogenous. In this document, we demonstrate the use of various matching and weighting techniques using readily available packages in R to adjust for imbalance in baseline covariates between the data sets. 
+
+We first load all of the libraries used in this tutorial. 
+
+```{r message=FALSE}
+#Loading the libraries
+library(SimMultiCorrData)
+library(ebal)
+library(ggplot2)
+library(tableone)
+library(MatchIt)
+library(twang)
+library(cobalt)
+library(dplyr)
+library(overlapping)
+library(survey)
+```
+
+To demonstrate the utility of the tools, we simulate data for a randomized controlled trial (RCT) and a dataset with external controls. We simulate a two arm trial where approximately $70\%$ of subjects receive the active treatment. The sample size for the RCT and external data is $n_D=600$ and $n_K=500$ respectively. In the RCT, we generate $5$ continuous and $3$ binary baseline covariates $X$ as follows:
+
+* The continuous variables are
+    + Age (years): mean = $55$ and variance = $15$
+    + Weight (lbs): mean = $150$ and variance = $10$
+    + Height (inches): mean = $65$ and variance = $6$
+    + Biomarker1: mean = $53$ and variance = $5$
+    + Biomarker2: mean = $50$ and variance = $6$
+
+
+* The categorical variables are
+    + Smoker: Yes = 1 and No = 0. Proportion of Yes is $20\%$.
+    + Sex: Male = 1 and Female = 0. Proportion of Male is $80\%$.
+    + ECOG1: ECOG 1 = 1 and ECOG 0 = 0. Proportion of ECOG 1 is $30\%$.
+
+We simulate covariates with a correlation coefficient of $0.2$ between all variables. For the continuous variables, we also specify the skewness and kurtosis to be $0.2$ and $0.1$, respectively, for all variables. Given the randomized nature of the RCT, subjects are assigned treatment at random. 
+
+Other variables in the simulated data include
+    
+* The treatment indicator is
+    + group: group = 1 is treatment and group = 0 is placebo.
+ 
+    
+* The time to event variable is
+    + time
+ 
+    
+* The event indicator variable is
+    + event: event = 1 is an event indicator and event = 0 is censored
+
+    
+* The data indicator variable is
+    + data: data = TRIAL indicating the trial data set
+
+To generate the covariates, we first specify the sample sizes, number of continuous and categorical variables, the marginal moments of the covariates, and the correlation matrix. Note that rcorrvar2 requires the correlation matrix to be ordered as ordinal, continuous, Poisson, and Negative Binomial.
+```{r message=FALSE, warning=FALSE}
+ #Simulate correlated covariates
+  n_t <- 600 #Sample size in trial data
+  n_ec <- 500 #Sample size in external control data
+  k_cont <- 5 #Number of continuous variables
+  k_cat <- 3 #Number of categorical variables
+  means_cont_tc <- c(55,150,65,35,50) #Vector of means of continuous variables
+  vars_cont_tc <- c(15,10,6,5,6)
+  marginal_tc = list(0.2,0.8,0.3)
+  rho_tc <- matrix(0.2, 8, 8)
+  diag(rho_tc) <- 1
+  skews_tc <- rep(0.2,5)
+  skurts_tc <- rep(0.1,5)
+```
+
+# Simulating trial data
+After specifying the moments of the covariate distribution, we simulate the covariates using `rcorrvar2` function from `SimMultiCorrData` package.
+```{r message=FALSE}
+  #Simulating covariates
+  trial.data <- rcorrvar2(n = n_t, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
+                          method = "Fleishman",  seed=1,
+                          means = means_cont_tc, vars = vars_cont_tc, # if continuous variables
+                          skews = skews_tc, skurts = skurts_tc, 
+                          marginal=marginal_tc, rho = rho_tc)
+
+  trial.data <- data.frame(cbind(id=paste("TRIAL",1:n_t,sep=""), trial.data$continuous_variables, 
+                          ifelse(trial.data$ordinal_variables==1,1,0)))
+  colnames(trial.data) <- c("ID", "Age", "Weight","Height","Biomarker1","Biomarker2","Smoker", 
+                            "Sex", "ECOG1")
+  
+```
+
+We now simulate the survival outcome data using the Cox proportional hazards model [@cox1972regression] in which the hazard function $\lambda(t|\boldsymbol X, Z)$  is given by $$\lambda(t|\boldsymbol X, Z)=\lambda_0(t) \exp\{\boldsymbol X \boldsymbol \beta_{Trial} + Z \gamma\},$$
+
+where $\lambda_0(t)=2$ is the baseline hazard function and assumed to be constant, $\boldsymbol X$ is a matrix of baseline covariates, $\boldsymbol \beta_{Trial}$ is a vector of covariate effects, $Z$ is the treatment indicator, and $\gamma$ is the treatment effect in terms of the log hazard ratio. 
+
+<!-- #MS maybe this section below can be deleted, it might not be necessary to provide all of the coefficients -->
+<!-- *   The true value of the covariates effect and treatment effect are -->
+<!--       + $\beta_{Age,Trial}=0.3$ -->
+<!--       + $\beta_{Weight,Trial}=0.1$ -->
+<!--       + $\beta_{Height,Trial}=-0.3$ -->
+<!--       + $\beta_{Biomarker1,Trial}=-0.2$ -->
+<!--       + $\beta_{Biomarker2,Trial}=-0.12$ -->
+<!--       + $\beta_{Smoker,Trial}=0.3$ -->
+<!--       + $\beta_{Sex,Trial}=1$ -->
+<!--       + $\beta_{ECOG1,Trial}=-1$ -->
+<!--       + $\gamma=-0.4$ -->
+      
+The survival function is given by $$S(t|\boldsymbol X, Z)=exp\{-\Lambda(t|\boldsymbol X, Z)\},$$ where $\Lambda(t|\boldsymbol X, Z)=\int_0^t\lambda(u|\boldsymbol X, Z)du$. The time to event is generated using a inverse CDF method. The censoring time is generated independently from an exponential distribution with `rate=1/4`.
+```{r message=FALSE, warning=FALSE}
+  #Simulate survival outcome using Cox proportional hazards regression model
+  set.seed(1)
+  u <- runif(1)
+  lambda0 <- 2 #constant baseline hazard
+  #Simulate treatment indicator in the trial data
+  trial.data$group <- rbinom(n_t,1,prob=0.7)
+  beta <- c(0.3,0.1,-0.3,-0.2,-0.12,0.3,1,-1,-0.4)
+  times <- -log(u)/(lambda0*exp(as.matrix(trial.data[,-1])%*%beta)) #Inverse CDF method
+  cens.time <- rexp(n_t,rate=1/4) #Censoring time from exponential distribution
+  event <- as.numeric(times <= cens.time) #Event indicator. 0 is censored.
+  time <- pmin(times,cens.time)
+```
+
+```{r message=FALSE}
+  #Combine trial data
+  trial.data <- data.frame(trial.data,time,event,data="TRIAL")
+```
+The first 10 observations in the RCT data is shown below.
+```{r, echo=FALSE, results='asis'}
+  knitr::kable(head(trial.data, 10))
+```
+The censoring and event rate in the RCT data is 
+```{r message=FALSE}
+  table(trial.data$event)/nrow(trial.data) 
+```
+
+The distribution of the outcome time is
+```{r message=FALSE}
+  summary(trial.data$time)
+```
+
+
+The summary of each of the baseline covariates and their standardized mean difference between treatment arms is shown below.
+```{r message=FALSE}
+myVars <- c("Age", "Weight", "Height", "Biomarker1", "Biomarker2", "Smoker", "Sex",
+          "ECOG1")
+
+## Vector of categorical variables 
+catVars <- c("Smoker", "Sex", "ECOG1", "group")
+
+tab1 <- CreateTableOne(vars = myVars, strata = "group" , data = trial.data, factorVars = catVars)
+```
+
+```{r message=FALSE}
+print(tab1,smd=TRUE)
+```
+
+# Simulating external control data
+The same set of covariates $X$ were simulated for the external control data as the RCT. The means, variances for continuous variables and proportion for categorical variables are modified for the external controls compared to the RCT according to the code below.
+
+```{r message=FALSE}
+  means_cont_ec <- c(55+2,150-2,65-2,35+2,50-2) #Vector of means of continuous variables
+  vars_cont_ec <- c(14,10,5,5,5)
+  marginal_ec = list(0.3,0.7,0.4)
+  ext.cont.data <- rcorrvar2(n = n_ec, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
+                          method = "Fleishman",  seed=3,
+                          means = means_cont_ec, vars = vars_cont_ec, # if continuous variables
+                          skews = skews_tc, skurts = skurts_tc, 
+                          marginal=marginal_ec, rho = rho_tc)
+
+  ext.cont.data <- data.frame(cbind(id=paste("EC",1:n_ec,sep=""), ext.cont.data$continuous_variables, 
+                          ifelse(ext.cont.data$ordinal_variables==1,1,0)))
+  colnames(ext.cont.data) <- c("ID", "Age", "Weight","Height","Biomarker1","Biomarker2","Smoker", "Sex", "ECOG1")
+```
+
+The same generating mechanism used for the RCT data was used to simulate survival time for the external controls.
+```{r message=FALSE}
+  #Simulate survival outcome using Cox proportional hazards regression model
+  set.seed(1111)
+  u <- runif(1)
+  lambda0 <- 6 #constant baseline hazard
+  beta <- c(-0.27,-0.1,0.3,0.2,0.1,-0.31,-1,1)
+  times <- -log(u)/(lambda0*exp(as.matrix(ext.cont.data[,-1])%*%beta)) #Inverse CDF method
+  cens.time <- rexp(n_ec,rate=3) #Censoring time from exponential distribution
+  event <- as.numeric(times <= cens.time) #Event indicator. 0 is censored.
+  time <- pmin(times,cens.time)
+  
+  #Simulate treatment indicator in the trial data
+  group <- 0
+  
+  ext.cont.data <- data.frame(ext.cont.data,group,time,event,data="EC")
+```
+The first 10 observations in the external control data is shown below.
+```{r message=FALSE}
+  knitr::kable(head(ext.cont.data, 10))
+```
+
+The censoring and event rate in the trial data is 
+```{r message=FALSE}
+  table(ext.cont.data$event)/nrow(ext.cont.data) 
+```
+
+The distribution of the outcome time is
+```{r message=FALSE}
+  summary(ext.cont.data$time)
+```
+
+# Merging trial and external control data
+We can use `bind_rows` function to merge two datasets. Before using this function, we make sure that the column names for the same variables are consistent in the two datasets.
+
+```{r message=FALSE}
+names(ext.cont.data)
+names(trial.data)
+#MS I recommend adding a statement that forces the colnames to be the same, like names(ex.cont.data)[1:10]=names(trial.data)[1:10]
+```
+
+Now, we merge the two datasets.
+
+```{r message=FALSE}
+final.data <- data.frame(bind_rows(trial.data,ext.cont.data))
+```
+
+
+```{r message=FALSE}
+knitr::kable(head(final.data, 10))
+```
+
+```{r message=FALSE}
+  knitr::kable(tail(final.data, 10))
+```
+
+We examine the standardized mean difference for covariates between the RCT and external control data before conducting matching/weighting. Note that `strata="data"` in the following code.
+
+```{r message=FALSE}
+tab2 <- CreateTableOne(vars = myVars, strata = "data" , data = final.data, factorVars = catVars)
+```
+
+```{r message=FALSE}
+print(tab2,smd=TRUE)
+```
+
+Note that the standardized mean difference for all covariates is large. Next, we will conduct matching/weighting approach to reduce difference in baseline characteristics.
+
+We also examine the standardized mean difference for covariates between the treated and control patients before conducting matching/weighting. Note that `strata="group"` in the following code.
+
+```{r message=FALSE}
+tab2 <- CreateTableOne(vars = myVars, strata = "group" , data = final.data, factorVars = catVars)
+```
+
+```{r message=FALSE}
+print(tab2,smd=TRUE)
+```
+
+# Propensity scores overlap
+
+Before applying the matching/weighting methods, we investigate the overlapping of propensity scores. The overlapping coefficient is only $0.19$ indicating a very small overlap.
+
+```{r message=FALSE}
+final.data$indicator <- ifelse(final.data$data=="TRIAL",1,0)
+ps.logit <- glm(indicator ~ Age + Weight + Height + Biomarker1  + Biomarker2 + Smoker +
+                            Sex +ECOG1, data = final.data,
+                            family=binomial)
+psfit=predict(ps.logit,type = "response",data=final.data)
+
+ps_trial <- psfit[final.data$indicator==1] 
+ps_extcont <- psfit[final.data$indicator==0]
+```
+
+```{r, fig.width=5,fig.height=5}
+overlap(list(ps_trial=ps_trial, ps_extcont=ps_extcont),plot=TRUE)
+```
+
+# Matching Methods
+
+We will explore several matching methods to balance the balance the baseline characteristics between subjects in the RCT and external control data.
+
+* Matching methods
+    + 1:1 Nearest Neighbor Propensity score matching with a caliper width of 0.2 of the standard deviation of the logit of the propensity score      (PSML)
+    + 1:1 Nearest Neighbor Propensity score matching with a caliper width of 0.2 of the standard deviation of raw propensity score                   (PSMR)
+    + Genetic matching with replacement  (GM)
+    + 1:1 Genetic matching without replacement (GMW)
+    + 1:1 Optimal matching (OM)
+
+All of the matching methods can be conducted using the `MatchIt` package. The matching is conducted between the RCT subjects and external control subjects. Hence, we introduce a variable named `indicator` in `final.data` to represent the data source indicator.
+
+```{r message=FALSE}
+final.data$indicator <- ifelse(final.data$data=="TRIAL",1,0)
+```
+## PSML
+This matching method is a variation of nearest neighbour or greedy matching that selects matches based on the difference in the logit of the propensity score, up to a certain distance (caliper) [@austin2011optimal]. We selected a caliper width of 0.2 of the standard deviation of the logit of the propensity score, where the propensity score is estimated using a logistic regression.
+```{r message=FALSE}
+m.out.nearest.ratio1.caliper.lps <- matchit(indicator ~ Age + Weight + Height + Biomarker1  + Biomarker2 + Smoker +
+                                                        Sex +ECOG1, estimand="ATT",data = final.data, 
+                                                        method="nearest",ratio=1,caliper=0.20,
+                                                        distance="glm",link="linear.logit",replace=FALSE,
+                                                        m.order="largest")
+summary(m.out.nearest.ratio1.caliper.lps)
+
+final.data$ratio1_caliper_weights_lps = m.out.nearest.ratio1.caliper.lps$weights
+```
+
+We now compare the SMD between the two datasets.
+
+```{r message=FALSE}
+svy <- svydesign(id = ~0, data=final.data,weights = ~ratio1_caliper_weights_lps)
+t1 <- svyCreateTableOne(vars = myVars, strata = "data" , data = svy, factorVars = catVars)
+```
+
+```{r message=FALSE}
+print(t1,smd=TRUE)
+```
+<!-- "Hi Ming, does the following make sense to you? Maybe we don't need this. I am thinking to include SMD between the data sets as well as the SMD between all treated patients and all control patients from trial along with matched external control patients." -->
+
+<!-- We also examine the SMD between all treated patients and all control patients from trial along with matched external control patients. -->
+<!-- ```{r message=FALSE} -->
+<!-- final.data$ratio1_caliper_weights_lps_star = 1 -->
+<!-- final.data$ratio1_caliper_weights_lps_star[final.data$data=="EC"] = final.data$ratio1_caliper_weights_lps[final.data$data=="EC"] -->
+<!-- ``` -->
+
+<!-- ```{r message=FALSE} -->
+<!-- svy <- svydesign(id = ~0, data=final.data,weights = ~ratio1_caliper_weights_lps_star) -->
+<!-- t1 <- svyCreateTableOne(vars = myVars, strata = "group" , data = svy, factorVars = catVars) -->
+<!-- ``` -->
+
+<!-- ```{r message=FALSE} -->
+<!-- print(t1,smd=TRUE) -->
+<!-- ``` -->
+
+## PSMR
+This matching method is similar to PSML except the caliper width of 0.2 is based on the standard deviation of the propensity score scale [@stuart2011nonparametric].
+
+```{r message=FALSE}
+m.out.nearest.ratio1.caliper <- matchit(indicator ~ Age + Weight + Height + Biomarker1  + Biomarker2 + Smoker +
+                                                    Sex +ECOG1, estimand="ATT",data = final.data, 
+                                                    method = "nearest",  ratio = 1, caliper=0.2, replace=FALSE)
+summary(m.out.nearest.ratio1.caliper)
+
+final.data$ratio1_caliper_weights = m.out.nearest.ratio1.caliper$weights
+```
+
+We now compare the SMD between the two datasets.
+
+```{r message=FALSE}
+svy <- svydesign(id = ~0, data=final.data,weights = ~ratio1_caliper_weights)
+t1 <- svyCreateTableOne(vars = myVars, strata = "data" , data = svy, factorVars = catVars)
+```
+
+```{r message=FALSE}
+print(t1,smd=TRUE)
+```
+
+<!-- We also examine the SMD between all treated patients and all control patients from trial along with matched external control patients. -->
+
+<!-- ```{r message=FALSE} -->
+<!--  final.data$ratio1_caliper_weights_star = 1 -->
+<!--  final.data$ratio1_caliper_weights_star[final.data$data=="EC"] = final.data$ratio1_caliper_weights[final.data$data=="EC"] -->
+<!-- ``` -->
+
+<!-- ```{r message=FALSE} -->
+<!-- svy <- svydesign(id = ~0, data=final.data,weights = ~ratio1_caliper_weights_star) -->
+<!-- t1 <- svyCreateTableOne(vars = myVars, strata = "group" , data = svy, factorVars = catVars) -->
+<!-- ``` -->
+
+<!-- ```{r message=FALSE} -->
+<!-- print(t1,smd=TRUE) -->
+<!-- ``` -->
+
+<!-- ```{r message=FALSE} -->
+
+<!-- ##MS: I think we should be consistent throughout the matching section in terms of which SMDS we present. We should certainly present the comparison between RCT and matched controls. We can also present treated + hybrid controls, but should be consistent throughout the vignette. -->
+<!-- #head(final.data) -->
+<!-- ``` -->
+## GM
+Genetic matching is a form of nearest neighbor matching where distances are computed using the generalized Mahalanobis distance, which is a generalization of the Mahalanobis distance with a scaling factor for each covariate that represents the importance of that covariate to the distance. A genetic algorithm is used to select the scaling factors. Matching is done with replacement, so an external control can be a matched for more than one patient in the treatment arm. Weighting is used to maintain the sample size in the treated arm [@sekhon2008multivariate].
+
+For a treated unit $i$ and a control unit $j$, genetic matching uses the generalized Mahalanobis distance as $$\delta_{GMD}(\mathbf{x}_i,\mathbf{x}_j, \mathbf{W})=\sqrt{(\mathbf{x}_i - \mathbf{x}_j)'(\mathbf{S}^{-1/2})'\mathbf{W}(\mathbf{S}^{-1/2})(\mathbf{x}_i - \mathbf{x}_j)}$$ where $\mathbf{x}$ is a $p \times 1$ vector containing the value of each of the $p$ included covariates for that unit, $\mathbf{S}^{-1/2}$ is the Cholesky decomposition of the covariance matrix $\mathbf{S}$ of the covariates, and $\mathbf{W}$ is a diagonal matrix with scaling factors $w$ on the diagonal [@greifer2020update].
+\[
+  \begin{pmatrix}
+    w_1 & 0 & \dots & 0 \\
+    0 & w_2 & \dots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \dots & w_p
+  \end{pmatrix}
+\]
+
+If $w_k=1$ for all $k$ then the distance is the standard Mahalanobis distance. However, genetic matching estimates the optimal $w_k$s. The default is to maximize the smallest p-value among balance tests for the covariates in the matched sample (both Kolmogorov-Smirnov tests and t-tests for each covariate) [@greifer2020update].
+
+```{r message=FALSE}
+m.out.genetic.ratio1 <- matchit(indicator ~ Age + Weight + Height + Biomarker1  + Biomarker2 + Smoker +
+                                            Sex +ECOG1 ,replace=TRUE, estimand="ATT", 
+                                            data = final.data, method = "genetic",  
+                                            ratio = 1,pop.size=200)
+
+summary(m.out.genetic.ratio1)
+final.data$genetic_ratio1_weights = m.out.genetic.ratio1$weights
+```
+
+We now compare the SMD between the two datasets.
+
+```{r message=FALSE}
+svy <- svydesign(id = ~0, data=final.data,weights = ~genetic_ratio1_weights)
+t1 <- svyCreateTableOne(vars = myVars, strata = "data" , data = svy, factorVars = catVars)
+```
+
+```{r message=FALSE}
+print(t1,smd=TRUE)
+```
+
+## GMW
+
+We now consider genetic matching without replacement.
+
+```{r message=FALSE}
+m.out.genetic.ratio1 <- matchit(indicator ~ Age + Weight + Height + Biomarker1  + Biomarker2 + Smoker +
+                                            Sex +ECOG1 ,replace=FALSE, estimand="ATT", 
+                                            data = final.data, method = "genetic",  
+                                            ratio = 1,pop.size=200)
+
+summary(m.out.genetic.ratio1)
+final.data$genetic_ratio1_weights_no_replace = m.out.genetic.ratio1$weights
+```
+
+We now compare the SMD between the two datasets.
+
+```{r message=FALSE}
+svy <- svydesign(id = ~0, data=final.data,weights = ~genetic_ratio1_weights_no_replace)
+t1 <- svyCreateTableOne(vars = myVars, strata = "data" , data = svy, factorVars = catVars)
+```
+
+```{r message=FALSE}
+print(t1,smd=TRUE)
+```
+
+<!-- We will also check the standardized mean difference after including all the treated patients from trial data and only matched patients from external control along with all control patients from trial. -->
+
+<!-- ```{r message=FALSE} -->
+<!-- final.data$genetic_ratio1_weights_star = m.out.genetic.ratio1$weights -->
+<!-- final.data$genetic_ratio1_weights_star[final.data$data=="TRIAL"] = 1 -->
+<!-- ``` -->
+
+<!-- ```{r message=FALSE} -->
+<!-- svy <- svydesign(id = ~0, data=final.data,weights = ~genetic_ratio1_weights_star) -->
+<!-- t1 <- svyCreateTableOne(vars = myVars, strata = "group" , data = svy, factorVars = catVars) -->
+<!-- ``` -->
+
+<!-- ```{r message=FALSE} -->
+<!-- print(t1,smd=TRUE) -->
+<!-- ``` -->
+
+## OM
+The optimal matching algorithm performs a global minimization of propensity score distance between the RCT subjects and matched external controls [@harris2016brief]. The criterion used is the sum of the absolute pair distances in the matched sample. Optimal pair matching and nearest neighbor matching often yield the same or very similar matched samples and some research has indicated that optimal pair matching is not much better than nearest neighbor matching at yielding balanced matched samples [@greifer2020update].
+
+```{r message=FALSE}
+m.out.optimal.ratio1 <- matchit(indicator ~ Age + Weight + Height + Biomarker1  + Biomarker2 + Smoker +
+                                            Sex +ECOG1 , estimand="ATT", 
+                                            data = final.data, method = "optimal",  
+                                            ratio = 1)
+
+summary(m.out.optimal.ratio1)
+
+final.data$optimal_ratio1_weights = m.out.optimal.ratio1$weights
+```
+
+We now compare the SMD between the two datasets.
+
+```{r message=FALSE}
+svy <- svydesign(id = ~0, data=final.data,weights = ~optimal_ratio1_weights)
+t1 <- svyCreateTableOne(vars = myVars, strata = "data" , data = svy, factorVars = catVars)
+```
+
+```{r message=FALSE}
+print(t1,smd=TRUE)
+```
+
+
+<!-- We will also check the standardized mean difference after including all the treated patients from trial data and only matched patients from external control along with all control patients from trial. -->
+
+<!-- ```{r message=FALSE} -->
+<!-- ##MS this is not outputting the SMDs -->
+<!-- final.data$optimal_ratio1_weights_star = m.out.optimal.ratio1$weights -->
+<!-- final.data$optimal_ratio1_weights_star[final.data$data=="TRIAL"] = 1 -->
+<!-- ``` -->
+
+
+# Weighting Methods
+
+We also explore several weighting approaches.
+
+* Weighting methods
+    + Propensity score weighting based on a gradient boosted model (GBM)
+    + Entropy balancing weighting (EB)
+    + Inverse probability of treatment weighting (IPW)
+    
+## GBM
+
+The GBM (Gradient Boosting Machine) is a machine learning method which generates predicted values from a flexible regression model. It can adjust for a large number of covariates. The estimation involves an iterative process with multiple regression trees to capture complex and non-linear relationships. One of the most useful features of GBM for estimating the propensity score is that its iterative estimation procedure can be tuned to find the propensity score model leading to the best balance between treated and control groups, where balance refers to the similarity between different groups on their propensity score weighted distributions of pretreatment covariates [@mccaffrey2013tutorial].
+
+```{r message=FALSE}
+set.seed(1)
+
+# Toolkit for Weighting and Analysis of Nonequivalent Groups
+# https://cran.r-project.org/web/packages/twang/vignettes/twang.pdf
+
+# Model includes non-linear effects and interactions with shrinkage to 
+# avoid overfitting
+                                                      
+ps.AOD.ATT <- ps(indicator ~ Age + Weight + Height + Biomarker1  + Biomarker2 + Smoker +
+                             Sex +ECOG1, data = final.data,
+                             estimand = "ATT", interaction.depth=3, 
+                             shrinkage=0.01, verbose = FALSE, n.trees = 7000, 
+                             stop.method = c("es.mean","ks.max"))
+
+# interaction.dept is the tree depth used in gradient boosting; loosely interpreted as 
+# the maximum number of variables that can be included in an interaction
+
+# n.trees is the maximum number of gradient boosting iterations to be considered. The
+# more iterations allows for more nonlienarity and interactions to be considered.
+
+# shrinkage is a numeric value between 0 and 1 denoting the learning rate. Smaller 
+# values restrict the complexity that is added at each iteration of the gradient 
+# boosting algorithm. A smaller learning rate requires more iterations (n.trees), but 
+# adds some protection against model overfit. The default value is 0.01.
+
+# windows()
+# plot(ps.AOD.ATT, plot=5)
+# 
+# summary(ps.AOD.ATT)
+# 
+# # Relative influence
+# summary(ps.AOD.ATT$gbm.obj, n.trees=ps.AOD.ATT$desc$ks.max.ATT$n.trees, plot=FALSE)
+# 
+# bal.table(ps.AOD.ATT)
+
+final.data$weights_gbm <- ps.AOD.ATT$w[,1]
+
+# write.csv(bal.table(ps.AOD.ATT)$es.mean.ATT ,"balance_GBM.csv")
+# 
+# control.wts.ps <- subset(combined_data_imp, TREAT==0)$weights_gbm
+
+```
+
+We now compare the SMD between the two datasets.
+
+```{r message=FALSE}
+svy <- svydesign(id = ~0, data=final.data,weights = ~weights_gbm)
+t1 <- svyCreateTableOne(vars = myVars, strata = "data" , data = svy, factorVars = catVars)
+```
+
+```{r message=FALSE}
+print(t1,smd=TRUE)
+```
+
+<!-- We will also check the standardized mean difference after including all the treated patients from trial data and only matched patients from external control along with all control patients from trial. -->
+
+<!-- ```{r message=FALSE} -->
+<!-- final.data$weights_gbm_star = final.data$weights_gbm -->
+<!-- final.data$weights_gbm_star[final.data$data=="TRIAL"] = 1 -->
+<!-- ``` -->
+
+
+## EB
+
+Entropy balancing is a weighting method to balance the covariates by assigning a scalar weight to each external control observations such that the reweighted groups satisfy a set of balance constraints that are imposed on the sample moments of the covariate distributions [@hainmueller2012entropy]. 
+```{r message=FALSE}
+# dummy_matrix <- model.matrix(~ Age + Weight + Height + Biomarker1  + Biomarker2 + Smoker +
+#                              Sex +ECOG1 , data = combined_data_imp)
+# dummy_matrix <- dummy_matrix[,-1] #Remove the intercept term
+# dummy_matrix <- as.data.frame(dummy_matrix)
+# 
+# treat <- ifelse(combined_data_imp$group=="BRUIN",1,0)
+eb.out <- ebalance(final.data$indicator,final.data[,c(2:9)],max.iterations = 300)
+final.data$eb_weights <- rep(1,nrow(final.data))
+final.data$eb_weights[final.data$indicator==0] <- eb.out$w
+```
+
+Note that the entropy balancing method failed to converge.
+
+```{r message=FALSE}
+eb.out$converged
+```
+We now compare the SMD between the two datasets. By definition, the SMD after EB should be zero. 
+
+```{r message=FALSE}
+svy <- svydesign(id = ~0, data=final.data,weights = ~eb_weights)
+t1 <- svyCreateTableOne(vars = myVars, strata = "data" , data = svy, factorVars = catVars)
+```
+
+```{r message=FALSE}
+print(t1,smd=TRUE)
+```
+
+
+<!-- We will also check the standardized mean difference after including all the treated patients from trial data and only matched patients from external control along with all control patients from trial. -->
+
+<!-- ```{r message=FALSE} -->
+<!-- final.data$eb_weights_star = final.data$eb_weights -->
+<!-- final.data$eb_weights_star[final.data$data=="TRIAL"] = 1 -->
+<!-- ``` -->
+
+
+
+## IPW
+The propensity score is defined as the probability of a patient being in a trial given the observed baseline covariates. We utilized the ATT weights, which are defined for the IPW as fixing the trial patients weight at unity, and external control patients as $\hat{e}(x)/(1-\hat{e}(x))$ where $\hat{e}(x)$ is estimated using a logistic regression model [@amusa2019examination].
+```{r message=FALSE}
+ps.logit <- glm(indicator ~ Age + Weight + Height + Biomarker1  + Biomarker2 + Smoker +
+                            Sex +ECOG1, data = final.data,
+                            family=binomial)
+psfit=predict(ps.logit,type = "response",data=final.data)
+
+ps_trial <- psfit[final.data$indicator==1] 
+ps_extcont <- psfit[final.data$indicator==0]
+
+
+final.data$invprob_weights <- NA
+final.data$invprob_weights[final.data$indicator==0] <- ps_extcont/(1-ps_extcont)
+final.data$invprob_weights[final.data$indicator==1] <- ps_trial/ps_trial
+```
+
+We now compare the SMD between the two datasets.
+
+```{r message=FALSE}
+svy <- svydesign(id = ~0, data=final.data,weights = ~invprob_weights)
+t1 <- svyCreateTableOne(vars = myVars, strata = "data" , data = svy, factorVars = catVars)
+```
+
+```{r message=FALSE}
+print(t1,smd=TRUE)
+```
+
+
+<!-- We will also check the standardized mean difference after including all the treated patients from trial data and only matched patients from external control along with all control patients from trial. -->
+
+<!-- ```{r message=FALSE} -->
+<!-- final.data$invprob_weights_star = final.data$invprob_weights -->
+<!-- final.data$invprob_weights_star[final.data$data=="TRIAL"] = 1 -->
+<!-- ``` -->
+
+
+
+Next we will investigate balance plots.
+
+```{r message=FALSE}
+covs <- data.frame(final.data[,c("Age","Weight","Height","Biomarker1","Biomarker2","Smoker","Sex","ECOG1")])
+data_with_weights <- final.data
+```
+
+
+# Balance Plots for Matching Methods
+We now conduct a balance diagnostic by considering SMD plot. The x-axis of the plot represent the absolute value of the SMD and y-axis represent the list of all covariates. SMD greater than $0.1$ can be considered a sign of imbalance [@zhang2019balance]. Hence, we put a threshold of $0.1$ in the plot with a vertical dashed line.
+
+```{r, fig.width=5,fig.height=5}
+
+love.plot(covs, 
+          treat=data_with_weights$data,
+          weights = list(NNMPS=data_with_weights$ratio1_caliper_weights,
+                         NNMLPS=data_with_weights$ratio1_caliper_weights_lps,
+                         OPTM=data_with_weights$optimal_ratio1_weights,
+                         GENMATCH=data_with_weights$genetic_ratio1_weights,
+                         GENMATCHW=data_with_weights$genetic_ratio1_weights_no_replace),
+          thresholds=0.1 ,binary="std",shapes = c("circle filled"),
+          line=FALSE,estimand="ATT",abs=TRUE,
+          sample.names = c("PSMR", 
+                           "PSML", 
+                           "OM",
+                           "GM",
+                           "GMW"),
+          title="Covariate Balance after matching methods",
+          s.d.denom="pooled")
+
+```
+
+
+# Balance Plots for Weighting Methods
+
+```{r, fig.width=5,fig.height=5}
+
+love.plot(covs, 
+          treat=data_with_weights$data,
+          weights = list(EB=data_with_weights$eb_weights,
+                         IPW=data_with_weights$invprob_weights,
+                         GBM=data_with_weights$weights_gbm),
+          thresholds=0.1 ,binary="std",shapes = c("circle filled"),
+          line=FALSE,estimand="ATT",abs=TRUE,
+          sample.names = c("EB", 
+                           "IPW", 
+                           "GBM"),
+          title="Covariate Balance after weighting methods",
+          s.d.denom="pooled")
+
+```
+
+We now investigate the effective sample size (ESS) in the trial and external control cohort.
+
+
+```{r message=FALSE}
+#External control
+ess.PSML.extcont <- (sum(data_with_weights$ratio1_caliper_weights_lps[data_with_weights$indicator==0]))^2/
+                     sum((data_with_weights$ratio1_caliper_weights_lps[data_with_weights$indicator==0])^2)
+
+ess.PSMR.extcont <- (sum(data_with_weights$ratio1_caliper_weights[data_with_weights$indicator==0]))^2/
+                    sum((data_with_weights$ratio1_caliper_weights[data_with_weights$indicator==0])^2)
+
+ess.OM.extcont <- (sum(data_with_weights$optimal_ratio1_weights[data_with_weights$indicator==0]))^2/
+                  sum((data_with_weights$optimal_ratio1_weights[data_with_weights$indicator==0])^2)
+
+ess.GM.extcont <- (sum(data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==0]))^2/
+                  sum((data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==0])^2)
+
+ess.eb.extcont <- (sum(data_with_weights$eb_weights[data_with_weights$indicator==0]))^2/
+                  sum((data_with_weights$eb_weights[data_with_weights$indicator==0])^2)
+
+ess.ipw.extcont <- (sum(data_with_weights$invprob_weights[data_with_weights$indicator==0]))^2/
+                   sum((data_with_weights$invprob_weights[data_with_weights$indicator==0])^2)
+
+ess.gbm.extcont <- (sum(data_with_weights$weights_gbm[data_with_weights$indicator==0]))^2/
+                   sum((data_with_weights$weights_gbm[data_with_weights$indicator==0])^2)
+
+ess.genetic.extcont <- (sum(data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==0]))^2/
+                       sum((data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==0])^2)
+
+ess.genetic.no.replace.extcont <- (sum(data_with_weights$genetic_ratio1_weights_no_replace[data_with_weights$indicator==0]))^2/
+                       sum((data_with_weights$genetic_ratio1_weights_no_replace[data_with_weights$indicator==0])^2)
+```
+
+```{r message=FALSE}
+#Trial
+ess.PSML.trial <- (sum(data_with_weights$ratio1_caliper_weights_lps[data_with_weights$indicator==1]))^2/
+                  sum((data_with_weights$ratio1_caliper_weights_lps[data_with_weights$indicator==1])^2)
+
+ess.PSMR.trial <- (sum(data_with_weights$ratio1_caliper_weights[data_with_weights$indicator==1]))^2/
+                  sum((data_with_weights$ratio1_caliper_weights[data_with_weights$indicator==1])^2)
+
+ess.OM.trial <- (sum(data_with_weights$optimal_ratio1_weights[data_with_weights$indicator==1]))^2/
+                sum((data_with_weights$optimal_ratio1_weights[data_with_weights$indicator==1])^2)
+
+ess.GM.trial <- (sum(data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==1]))^2/
+                sum((data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==1])^2)
+
+ess.eb.trial <- (sum(data_with_weights$eb_weights[data_with_weights$indicator==1]))^2/
+                sum((data_with_weights$eb_weights[data_with_weights$indicator==1])^2)
+
+ess.ipw.trial <- (sum(data_with_weights$invprob_weights[data_with_weights$indicator==1]))^2/
+                 sum((data_with_weights$invprob_weights[data_with_weights$indicator==1])^2)
+
+ess.gbm.trial <- (sum(data_with_weights$weights_gbm[data_with_weights$indicator==1]))^2/
+                 sum((data_with_weights$weights_gbm[data_with_weights$indicator==1])^2)
+
+ess.genetic.trial <- (sum(data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==1]))^2/
+                     sum((data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==1])^2)
+ess.genetic.no.replace.trial <- (sum(data_with_weights$genetic_ratio1_weights_no_replace[data_with_weights$indicator==1]))^2/
+                     sum((data_with_weights$genetic_ratio1_weights_no_replace[data_with_weights$indicator==1])^2)
+```
+
+```{r message=FALSE}
+out.ess <- data.frame(Unadjusted=c(length(which(final.data$data=="TRIAL")),length(which(final.data$data=="EC"))),
+           PSML=c(ess.PSML.trial,ess.PSML.extcont),
+           PSMR=c(ess.PSMR.trial,ess.PSMR.extcont),
+           OM=c(ess.OM.trial,ess.OM.extcont),
+           GM=c(ess.genetic.trial,ess.genetic.extcont),
+           GMW=c(ess.genetic.no.replace.trial,ess.genetic.no.replace.extcont),
+           EB=c(ess.eb.trial,ess.eb.extcont),
+           IPW=c(ess.ipw.trial,ess.ipw.extcont),
+           GBM=c(ess.gbm.trial,ess.gbm.extcont))
+
+rownames(out.ess) <- c("Trial","External Control")
+```
+
+Note: After applying the matching methods, some patients in RCT were excluded. For demonstration purpose in this vignette, we will also exclude RCT patients that were not matched in the Bayesian outcome model. However, in reality we may keep the full sample size in RCT and discounting could be done at the second stage with power prior and commensurate prior. Before, moving to the next stage of Bayesian borrowing, ESS also needs to be taken into account.
+
+The ESS for each cohort using different methods are shown below. 
+```{r message=FALSE}
+out.ess
+```
+
+We also investigate the histogram of the weights for external control patients and the effective sample size (ESS).
+
+```{r, fig.width=5,fig.height=5}
+par(mfrow=c(2,2))
+hist(data_with_weights$eb_weights[data_with_weights$indicator==0],main=paste("EB \n ESS=",round(ess.eb.extcont),sep=""),xlab="Weight")
+hist(data_with_weights$invprob_weights[data_with_weights$indicator==0],main=paste("IPW\n ESS=",round(ess.ipw.extcont),sep=""),xlab="Weight")
+hist(data_with_weights$weights_gbm[data_with_weights$indicator==0],main=paste("GBM \n ESS=",round(ess.gbm.extcont),sep=""),xlab="Weight")
+hist(data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==0],main=paste("GM \n ESS=",round(ess.genetic.extcont),sep=""),xlab="Weight")
+```
+
+
+
+# Selection of matching/weighting methods
+
+Based on the standardized difference mean plot, PSML, PSMR, and GM can be the methods for selection. In terms of ESS, the PSML has the highest sample size of $215$ in both trial and external control data. 
+
+# References

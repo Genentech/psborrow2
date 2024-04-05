@@ -2,7 +2,7 @@
 title: "1. Sandwich"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{sandwich}
+  %\VignetteIndexEntry{1. Sandwich}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

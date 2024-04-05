@@ -1,13 +1,13 @@
 ---
 title: "Bayesian dynamic borrowing method"
-bibliography: references_bayesian.bib
+# bibliography: references_bayesian.bib
 author: 
   - Manoj Khanal, PhD
   - Eli Lilly & Company
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{2. Matching and Weighting Application}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
     \usepackage{amsthm,amssymb,bm}
