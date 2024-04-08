@@ -31,4 +31,5 @@ develop
 ^vignettes/original$
 ^vignettes/Makefile$
 ^node_modules$
-^vignettes/articles$
+^vignettes/match_weight_01_methods.Rmd$
+^vignettes/match_weight_02_application.Rmd$

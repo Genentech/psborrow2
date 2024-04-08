@@ -1,8 +1,8 @@
 ---
 title: "2. Matching and Weighting Application"
-bibliography: ../references.bib
+bibliography: references.bib
 author: 
-  - Manoj Khanal, PhD
+  - Manoj Khanal <khanal_manoj@lilly.com>
   - Eli Lilly & Company
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

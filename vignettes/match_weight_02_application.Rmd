@@ -1,8 +1,8 @@
 ---
 title: "2. Matching and Weighting Application"
-bibliography: ../references.bib
+bibliography: references.bib
 author: 
-  - Manoj Khanal, PhD
+  - Manoj Khanal <khanal_manoj@lilly.com>
   - Eli Lilly & Company
 date: "2024-04-08"
 output: rmarkdown::html_vignette
@@ -323,7 +323,7 @@ anls_obj <- create_analysis_obj(
 #> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
 #> If your model failed to compile please run rebuild_cmdstan().
 #> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpwRRWPV/model-50d22d659a12.o] Error 1
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpIh4GYP/model-1120e58c3f352.o] Error 1
 #> Error: An error occured during compilation! See the message above for more information.
 ```
 
@@ -485,7 +485,7 @@ anls_obj <- create_analysis_obj(
 #> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
 #> If your model failed to compile please run rebuild_cmdstan().
 #> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpwRRWPV/model-50d279ef444c.o] Error 1
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpIh4GYP/model-1120e2b31e958.o] Error 1
 #> Error: An error occured during compilation! See the message above for more information.
 ```
 
@@ -1071,7 +1071,7 @@ anls_obj <- create_analysis_obj(
 #> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
 #> If your model failed to compile please run rebuild_cmdstan().
 #> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpwRRWPV/model-50d22fb5ab1.o] Error 1
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpIh4GYP/model-1120e188e9398.o] Error 1
 #> Error: An error occured during compilation! See the message above for more information.
 ```
 
@@ -1220,7 +1220,7 @@ anls_obj <- create_analysis_obj(
 #> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
 #> If your model failed to compile please run rebuild_cmdstan().
 #> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpwRRWPV/model-50d24af9d71f.o] Error 1
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpIh4GYP/model-1120e1ec1ca46.o] Error 1
 #> Error: An error occured during compilation! See the message above for more information.
 ```
 
