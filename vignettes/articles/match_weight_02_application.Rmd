@@ -1,10 +1,10 @@
 ---
-title: "Bayesian dynamic borrowing method"
-# bibliography: references_bayesian.bib
+title: "2. Matching and Weighting Application"
+bibliography: ../references.bib
 author: 
   - Manoj Khanal, PhD
   - Eli Lilly & Company
-date: "2024-04-05"
+date: "2024-04-08"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{2. Matching and Weighting Application}
@@ -318,8 +318,13 @@ anls_obj <- create_analysis_obj(
   treatment = treatment
 )
 #> Inputs look good.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
+#> error: PCH file was compiled for the target 'x86_64-apple-macosx13.0.0' but the current translation unit is being compiled for target 'x86_64-apple-macosx14.0.0'
+#> 1 error generated.
+#> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
+#> If your model failed to compile please run rebuild_cmdstan().
+#> If the issue persists please open a bug report.
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpwRRWPV/model-50d22d659a12.o] Error 1
+#> Error: An error occured during compilation! See the message above for more information.
 ```
 
 Finally, we run the MCMC sample for $10,000$ iterations with $3$ chains.
@@ -333,34 +338,19 @@ results.exp.psborrow<- mcmc_sample(anls_obj,
   chains = 3,
   seed = 123
 )
-#> Running MCMC with 3 sequential chains...
-#> 
-#> Chain 1 finished in 11.8 seconds.
-#> Chain 2 finished in 11.4 seconds.
-#> Chain 3 finished in 11.9 seconds.
-#> 
-#> All 3 chains finished successfully.
-#> Mean chain execution time: 11.7 seconds.
-#> Total execution time: 35.3 seconds.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'anls_obj' not found
 
 draws1 <- results.exp.psborrow$draws()
+#> Error in eval(expr, envir, enclos): object 'results.exp.psborrow' not found
 draws1 <- rename_draws_covariates(draws1, anls_obj)
+#> Error in eval(expr, envir, enclos): object 'draws1' not found
 ```
 
 The summary is shown below.
 
 ```r
 results.exp.psborrow$summary()
-#> # A tibble: 6 × 10
-#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
-#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
-#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
-#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
-#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
-#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
-#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
-#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
-#> # ℹ 1 more variable: ess_tail <dbl>
+#> Error in eval(expr, envir, enclos): object 'results.exp.psborrow' not found
 ```
 
 The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
@@ -368,19 +358,9 @@ The histogram of the posterior samples for hazard ratio and commensurability par
 
 ```r
 bayesplot::mcmc_hist(draws1, c("treatment HR"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-![plot of chunk unnamed-chunk-10](articles/figure-match_weight_02_application-unnamed-chunk-10-1.png)
-
-```r
+#> Error in eval(expr, envir, enclos): object 'draws1' not found
 bayesplot::mcmc_hist(draws1, c("commensurability parameter"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-![plot of chunk unnamed-chunk-10](articles/figure-match_weight_02_application-unnamed-chunk-10-2.png)
-
-```r
+#> Error in eval(expr, envir, enclos): object 'draws1' not found
 bayesplot::color_scheme_set("mix-blue-pink")
 ```
 
@@ -388,15 +368,7 @@ The $95\%$ credible interval can be calculated as follows.
 
 ```r
 summarize_draws(draws1, ~ quantile(.x, probs = c(0.025, 0.975)))
-#> # A tibble: 6 × 3
-#>   variable                                 `2.5%`  `97.5%`
-#>   <chr>                                     <dbl>    <dbl>
-#> 1 lp__                               -713.        -707.   
-#> 2 treatment log HR                     -0.266        0.195
-#> 3 commensurability parameter            0.0000886    0.428
-#> 4 baseline log hazard rate, internal   -1.14        -0.754
-#> 5 baseline log hazard rate, external    1.90         3.14 
-#> 6 treatment HR                          0.767        1.21
+#> Error in eval(expr, envir, enclos): object 'draws1' not found
 ```
 
 We can graph other plots that help us evaluate convergence and diagnose problems with the MCMC sampler, such as trace plot.
@@ -409,9 +381,8 @@ bayesplot::mcmc_trace(
   pars = c("treatment HR", "commensurability parameter"),
   n_warmup = niter/10
 )
+#> Error in eval(expr, envir, enclos): object 'draws1' not found
 ```
-
-![plot of chunk unnamed-chunk-12](articles/figure-match_weight_02_application-unnamed-chunk-12-1.png)
 
 # Time-to-event analysis with Weibull distribution and proportional hazards parametrization
 
@@ -509,8 +480,13 @@ anls_obj <- create_analysis_obj(
   treatment = treatment
 )
 #> Inputs look good.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
+#> error: PCH file was compiled for the target 'x86_64-apple-macosx13.0.0' but the current translation unit is being compiled for target 'x86_64-apple-macosx14.0.0'
+#> 1 error generated.
+#> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
+#> If your model failed to compile please run rebuild_cmdstan().
+#> If the issue persists please open a bug report.
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpwRRWPV/model-50d279ef444c.o] Error 1
+#> Error: An error occured during compilation! See the message above for more information.
 ```
 
 Finally, we run the MCMC sample for $10,000$ iterations with $3$ chains.
@@ -523,34 +499,19 @@ results.weib.psborrow<- mcmc_sample(anls_obj,
   chains = 3,
   seed = 123
 )
-#> Running MCMC with 3 sequential chains...
-#> 
-#> Chain 1 finished in 10.9 seconds.
-#> Chain 2 finished in 11.1 seconds.
-#> Chain 3 finished in 12.0 seconds.
-#> 
-#> All 3 chains finished successfully.
-#> Mean chain execution time: 11.3 seconds.
-#> Total execution time: 34.2 seconds.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'anls_obj' not found
 
 draws2 <- results.weib.psborrow$draws()
+#> Error in eval(expr, envir, enclos): object 'results.weib.psborrow' not found
 draws2 <- rename_draws_covariates(draws2, anls_obj)
+#> Error in eval(expr, envir, enclos): object 'draws2' not found
 ```
 
 The summary is shown below.
 
 ```r
 results.weib.psborrow$summary()
-#> # A tibble: 6 × 10
-#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
-#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
-#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
-#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
-#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
-#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
-#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
-#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
-#> # ℹ 1 more variable: ess_tail <dbl>
+#> Error in eval(expr, envir, enclos): object 'results.weib.psborrow' not found
 ```
 
 Histogram of the posterior samples for hazard ratio and commensurability parameter are produced.
@@ -558,19 +519,9 @@ Histogram of the posterior samples for hazard ratio and commensurability paramet
 
 ```r
 bayesplot::mcmc_hist(draws2, c("treatment HR"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-![plot of chunk unnamed-chunk-19](articles/figure-match_weight_02_application-unnamed-chunk-19-1.png)
-
-```r
+#> Error in eval(expr, envir, enclos): object 'draws2' not found
 bayesplot::mcmc_hist(draws2, c("commensurability parameter"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-![plot of chunk unnamed-chunk-19](articles/figure-match_weight_02_application-unnamed-chunk-19-2.png)
-
-```r
+#> Error in eval(expr, envir, enclos): object 'draws2' not found
 bayesplot::color_scheme_set("mix-blue-pink")
 ```
 
@@ -578,15 +529,7 @@ The $95\%$ credible interval can be calculated as follows.
 
 ```r
 summarize_draws(draws2, ~ quantile(.x, probs = c(0.025, 0.975)))
-#> # A tibble: 6 × 3
-#>   variable                                 `2.5%`  `97.5%`
-#>   <chr>                                     <dbl>    <dbl>
-#> 1 lp__                               -713.        -707.   
-#> 2 treatment log HR                     -0.266        0.195
-#> 3 commensurability parameter            0.0000886    0.428
-#> 4 baseline log hazard rate, internal   -1.14        -0.754
-#> 5 baseline log hazard rate, external    1.90         3.14 
-#> 6 treatment HR                          0.767        1.21
+#> Error in eval(expr, envir, enclos): object 'draws2' not found
 ```
 
 We can see other plots that help us evaluate convergence and diagnose problems with the MCMC sampler, such as trace plot.
@@ -599,9 +542,8 @@ bayesplot::mcmc_trace(
   pars = c("treatment HR", "commensurability parameter"),
   n_warmup = round(niter/10)
 )
+#> Error in eval(expr, envir, enclos): object 'draws2' not found
 ```
-
-![plot of chunk unnamed-chunk-21](articles/figure-match_weight_02_application-unnamed-chunk-21-1.png)
 
 # Power prior with piecewise exponential distribution (not implemented in `psborrow2` R package)
 
@@ -1124,8 +1066,13 @@ anls_obj <- create_analysis_obj(
   treatment = treatment
 )
 #> Inputs look good.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
+#> error: PCH file was compiled for the target 'x86_64-apple-macosx13.0.0' but the current translation unit is being compiled for target 'x86_64-apple-macosx14.0.0'
+#> 1 error generated.
+#> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
+#> If your model failed to compile please run rebuild_cmdstan().
+#> If the issue persists please open a bug report.
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpwRRWPV/model-50d22fb5ab1.o] Error 1
+#> Error: An error occured during compilation! See the message above for more information.
 ```
 
 Finally, we run the MCMC sample with $3$ chains.
@@ -1138,34 +1085,19 @@ results.no.psborrow<- mcmc_sample(anls_obj,
   chains = 3,
   seed = 123
 )
-#> Running MCMC with 3 sequential chains...
-#> 
-#> Chain 1 finished in 11.2 seconds.
-#> Chain 2 finished in 11.1 seconds.
-#> Chain 3 finished in 11.8 seconds.
-#> 
-#> All 3 chains finished successfully.
-#> Mean chain execution time: 11.4 seconds.
-#> Total execution time: 34.4 seconds.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'anls_obj' not found
 
 draws3 <- results.no.psborrow$draws()
+#> Error in eval(expr, envir, enclos): object 'results.no.psborrow' not found
 draws3 <- rename_draws_covariates(draws3, anls_obj)
+#> Error in eval(expr, envir, enclos): object 'draws3' not found
 ```
 
 The summary is shown below.
 
 ```r
 results.no.psborrow$summary()
-#> # A tibble: 6 × 10
-#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
-#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
-#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
-#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
-#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
-#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
-#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
-#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
-#> # ℹ 1 more variable: ess_tail <dbl>
+#> Error in eval(expr, envir, enclos): object 'results.no.psborrow' not found
 ```
 
 The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
@@ -1173,12 +1105,7 @@ The histogram of the posterior samples for hazard ratio and commensurability par
 
 ```r
 bayesplot::mcmc_hist(draws3, c("treatment HR"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-![plot of chunk unnamed-chunk-51](articles/figure-match_weight_02_application-unnamed-chunk-51-1.png)
-
-```r
+#> Error in eval(expr, envir, enclos): object 'draws3' not found
 bayesplot::color_scheme_set("mix-blue-pink")
 ```
 
@@ -1186,15 +1113,7 @@ The $95\%$ credible interval can be calculated as follows.
 
 ```r
 summarize_draws(draws3, ~ quantile(.x, probs = c(0.025, 0.975)))
-#> # A tibble: 6 × 3
-#>   variable                                 `2.5%`  `97.5%`
-#>   <chr>                                     <dbl>    <dbl>
-#> 1 lp__                               -713.        -707.   
-#> 2 treatment log HR                     -0.266        0.195
-#> 3 commensurability parameter            0.0000886    0.428
-#> 4 baseline log hazard rate, internal   -1.14        -0.754
-#> 5 baseline log hazard rate, external    1.90         3.14 
-#> 6 treatment HR                          0.767        1.21
+#> Error in eval(expr, envir, enclos): object 'draws3' not found
 ```
 
 We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
@@ -1207,9 +1126,8 @@ bayesplot::mcmc_trace(
   pars = c("treatment HR"),
   n_warmup = round(niter/10)
 )
+#> Error in eval(expr, envir, enclos): object 'draws3' not found
 ```
-
-![plot of chunk unnamed-chunk-53](articles/figure-match_weight_02_application-unnamed-chunk-53-1.png)
 
 # Exponential distribution (constant hazard) and full borrowing: Using `psborrow2` R package
 
@@ -1297,8 +1215,13 @@ anls_obj <- create_analysis_obj(
   treatment = treatment
 )
 #> Inputs look good.
-#> Stan program compiled successfully!
-#> Ready to go! Now call `mcmc_sample()`.
+#> error: PCH file was compiled for the target 'x86_64-apple-macosx13.0.0' but the current translation unit is being compiled for target 'x86_64-apple-macosx14.0.0'
+#> 1 error generated.
+#> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
+#> If your model failed to compile please run rebuild_cmdstan().
+#> If the issue persists please open a bug report.
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpwRRWPV/model-50d24af9d71f.o] Error 1
+#> Error: An error occured during compilation! See the message above for more information.
 ```
 
 Finally, we run the MCMC sample with $3$ chains.
@@ -1311,34 +1234,19 @@ results.full.psborrow<- mcmc_sample(anls_obj,
   chains = 3,
   seed = 123
 )
-#> Running MCMC with 3 sequential chains...
-#> 
-#> Chain 1 finished in 10.7 seconds.
-#> Chain 2 finished in 11.1 seconds.
-#> Chain 3 finished in 11.9 seconds.
-#> 
-#> All 3 chains finished successfully.
-#> Mean chain execution time: 11.2 seconds.
-#> Total execution time: 34.0 seconds.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'anls_obj' not found
 
 draws4 <- results.full.psborrow$draws()
+#> Error in eval(expr, envir, enclos): object 'results.full.psborrow' not found
 draws4 <- rename_draws_covariates(draws4, anls_obj)
+#> Error in eval(expr, envir, enclos): object 'draws4' not found
 ```
 
 The summary is shown below.
 
 ```r
 results.full.psborrow$summary()
-#> # A tibble: 6 × 10
-#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
-#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
-#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
-#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
-#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
-#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
-#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
-#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
-#> # ℹ 1 more variable: ess_tail <dbl>
+#> Error in eval(expr, envir, enclos): object 'results.full.psborrow' not found
 ```
 
 The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
@@ -1346,12 +1254,7 @@ The histogram of the posterior samples for hazard ratio and commensurability par
 
 ```r
 bayesplot::mcmc_hist(draws4, c("treatment HR"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-![plot of chunk unnamed-chunk-60](articles/figure-match_weight_02_application-unnamed-chunk-60-1.png)
-
-```r
+#> Error in eval(expr, envir, enclos): object 'draws4' not found
 bayesplot::color_scheme_set("mix-blue-pink")
 ```
 
@@ -1359,15 +1262,7 @@ The $95\%$ credible interval can be calculated as follows.
 
 ```r
 summarize_draws(draws4, ~ quantile(.x, probs = c(0.025, 0.975)))
-#> # A tibble: 6 × 3
-#>   variable                                 `2.5%`  `97.5%`
-#>   <chr>                                     <dbl>    <dbl>
-#> 1 lp__                               -713.        -707.   
-#> 2 treatment log HR                     -0.266        0.195
-#> 3 commensurability parameter            0.0000886    0.428
-#> 4 baseline log hazard rate, internal   -1.14        -0.754
-#> 5 baseline log hazard rate, external    1.90         3.14 
-#> 6 treatment HR                          0.767        1.21
+#> Error in eval(expr, envir, enclos): object 'draws4' not found
 ```
 
 We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
@@ -1380,9 +1275,8 @@ bayesplot::mcmc_trace(
   pars = c("treatment HR"),
   n_warmup = round(niter/10)
 )
+#> Error in eval(expr, envir, enclos): object 'draws4' not found
 ```
-
-![plot of chunk unnamed-chunk-62](articles/figure-match_weight_02_application-unnamed-chunk-62-1.png)
 
 # Cox proportional hazards model using frequentist approach (No borrowing)
 
@@ -1443,8 +1337,11 @@ Now, we concatenate the results from all of the Bayesian and frequentist analysi
 
 ```r
 hr1=results.exp.psborrow$summary()[6,c(2)]
+#> Error in eval(expr, envir, enclos): object 'results.exp.psborrow' not found
 hr1conf = summarize_draws(draws1, ~ quantile(.x, probs = c(0.025, 0.975)))[6,c(2,3)]
+#> Error in eval(expr, envir, enclos): object 'draws1' not found
 hr1.conf=c(hr1$mean,hr1conf$`2.5%`,hr1conf$`97.5%`)
+#> Error in eval(expr, envir, enclos): object 'hr1' not found
 
 hr2=c(mean(exp(model1$BUGSoutput$sims.list$beta[,1])),
   quantile(exp(model1$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
@@ -1453,8 +1350,11 @@ hr2.conf=c(hr2)
 #> Error in eval(expr, envir, enclos): object 'hr2' not found
 
 hr3=results.weib.psborrow$summary()[7,c(2)]
+#> Error in eval(expr, envir, enclos): object 'results.weib.psborrow' not found
 hr3conf = summarize_draws(draws2, ~ quantile(.x, probs = c(0.025, 0.975)))[7,c(2,3)]
+#> Error in eval(expr, envir, enclos): object 'draws2' not found
 hr3.conf=c(hr3$mean,hr3conf$`2.5%`,hr3conf$`97.5%`)
+#> Error in eval(expr, envir, enclos): object 'hr3' not found
 
 hr4=c(mean(exp(model2$BUGSoutput$sims.list$beta[,1])),
   quantile(exp(model2$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
@@ -1463,19 +1363,25 @@ hr4.conf=c(hr4)
 #> Error in eval(expr, envir, enclos): object 'hr4' not found
 
 hr5=results.no.psborrow$summary()[4,c(2)]
+#> Error in eval(expr, envir, enclos): object 'results.no.psborrow' not found
 hr5conf = summarize_draws(draws3, ~ quantile(.x, probs = c(0.025, 0.975)))[4,c(2,3)]
+#> Error in eval(expr, envir, enclos): object 'draws3' not found
 hr5.conf=c(hr5$mean,hr5conf$`2.5%`,hr5conf$`97.5%`)
+#> Error in eval(expr, envir, enclos): object 'hr5' not found
 
 hr6=results.full.psborrow$summary()[4,c(2)]
+#> Error in eval(expr, envir, enclos): object 'results.full.psborrow' not found
 hr6conf = summarize_draws(draws4, ~ quantile(.x, probs = c(0.025, 0.975)))[4,c(2,3)]
+#> Error in eval(expr, envir, enclos): object 'draws4' not found
 hr6.conf=c(hr6$mean,hr6conf$`2.5%`,hr6conf$`97.5%`)
+#> Error in eval(expr, envir, enclos): object 'hr6' not found
 
 hr7.conf=c(exp(coef(f1)),exp(confint(f1)))
 
 hr8.conf=c(exp(coef(f2)),exp(confint(f2)))
 
 out = round(rbind(hr1.conf,hr2.conf,hr3.conf,hr4.conf,hr5.conf,hr6.conf,hr7.conf,hr8.conf),4)
-#> Error in eval(expr, envir, enclos): object 'hr2.conf' not found
+#> Error in eval(expr, envir, enclos): object 'hr1.conf' not found
 
 rownames(out)= NULL
 #> Error: object 'out' not found

@@ -1,10 +1,10 @@
 ---
-title: "Matching and Weighting Methods"
-# bibliography: references.bib
+title: "1. Matching and Weighting Methods"
+bibliography: ../references.bib
 author: 
   - Manoj Khanal, PhD
   - Eli Lilly & Company
-date: "2024-04-05"
+date: "2024-04-08"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{1. Matching and Weighting Methods}

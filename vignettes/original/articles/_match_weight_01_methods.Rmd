@@ -1,6 +1,6 @@
 ---
-title: "Matching and Weighting Methods"
-# bibliography: references.bib
+title: "1. Matching and Weighting Methods"
+bibliography: ../references.bib
 author: 
   - Manoj Khanal, PhD
   - Eli Lilly & Company

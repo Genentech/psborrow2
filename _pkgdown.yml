@@ -33,6 +33,5 @@ articles:
   - title: Deep dive into matching/weighting
     desc: ~
     contents:
-      - "articles/sandwich"
       - "articles/match_weight_01_methods"
       - "articles/match_weight_02_application"

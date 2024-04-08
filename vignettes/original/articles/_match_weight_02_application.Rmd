@@ -1,6 +1,6 @@
 ---
-title: "Bayesian dynamic borrowing method"
-# bibliography: references_bayesian.bib
+title: "2. Matching and Weighting Application"
+bibliography: ../references.bib
 author: 
   - Manoj Khanal, PhD
   - Eli Lilly & Company
