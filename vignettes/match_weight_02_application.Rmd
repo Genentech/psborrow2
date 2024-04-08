@@ -1,5 +1,5 @@
 ---
-title: "2. Matching and Weighting Application"
+title: "2. Matching and Weighting Application with Dynamic Borrowing"
 bibliography: references.bib
 author: 
   - Manoj Khanal <khanal_manoj@lilly.com>
@@ -7,7 +7,7 @@ author:
 date: "2024-04-08"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{2. Matching and Weighting Application}
+  %\VignetteIndexEntry{2. Matching and Weighting Application with Dynamic Borrowing}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
     \usepackage{amsthm,amssymb,bm}
@@ -323,7 +323,7 @@ anls_obj <- create_analysis_obj(
 #> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
 #> If your model failed to compile please run rebuild_cmdstan().
 #> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpIh4GYP/model-1120e58c3f352.o] Error 1
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/Rtmpr3ngkz/model-1623373f600c5.o] Error 1
 #> Error: An error occured during compilation! See the message above for more information.
 ```
 
@@ -485,7 +485,7 @@ anls_obj <- create_analysis_obj(
 #> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
 #> If your model failed to compile please run rebuild_cmdstan().
 #> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpIh4GYP/model-1120e2b31e958.o] Error 1
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/Rtmpr3ngkz/model-162336c589958.o] Error 1
 #> Error: An error occured during compilation! See the message above for more information.
 ```
 
@@ -1071,7 +1071,7 @@ anls_obj <- create_analysis_obj(
 #> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
 #> If your model failed to compile please run rebuild_cmdstan().
 #> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpIh4GYP/model-1120e188e9398.o] Error 1
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/Rtmpr3ngkz/model-1623370822c64.o] Error 1
 #> Error: An error occured during compilation! See the message above for more information.
 ```
 
@@ -1220,7 +1220,7 @@ anls_obj <- create_analysis_obj(
 #> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
 #> If your model failed to compile please run rebuild_cmdstan().
 #> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/RtmpIh4GYP/model-1120e1ec1ca46.o] Error 1
+#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/Rtmpr3ngkz/model-162333938101c.o] Error 1
 #> Error: An error occured during compilation! See the message above for more information.
 ```
 

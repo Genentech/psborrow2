@@ -1,5 +1,5 @@
 ---
-title: "2. Matching and Weighting Application"
+title: "2. Matching and Weighting Application with Dynamic Borrowing"
 bibliography: references.bib
 author: 
   - Manoj Khanal <khanal_manoj@lilly.com>
@@ -7,7 +7,7 @@ author:
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{2. Matching and Weighting Application}
+  %\VignetteIndexEntry{2. Matching and Weighting Application with Dynamic Borrowing}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
     \usepackage{amsthm,amssymb,bm}
