@@ -56,7 +56,7 @@ We start with the Cox proportional hazards model [@cox1972regression] for observ
 where $\boldsymbol{X}_i$ is the vector of baseline covariates and $Z_i$ is the treatment indicator.
 
 # Baseline hazard function
-Baseline hazard functions can be modeled using common probability distributions in survival analysis, such as exponential, Weibull, and Gompertz. However, these standard specifications have limited flexibility and cannot capture irregular behaviors. Alternatively, more flexible hazard shapes can be specified using piecewise constant, piecewise exponential or spline functions, allowing for the representation of multimodal patterns and accommodating diverse irregularities [@lazaro2021bayesian].The misspecification of the baseline hazard can lead to the loss of important model details which can be challenging to accurately estimate outcomes of interest, such as probabilities or survival curves. In this article, we consider the following baseline hazard functions.
+Baseline hazard functions can be modeled using common probability distributions in survival analysis, such as exponential, Weibull, and Gompertz. However, these standard specifications have limited flexibility and cannot capture irregular behaviors. Alternatively, more flexible hazard shapes can be specified using piecewise constant, piecewise exponential or spline functions, allowing for the representation of multimodal patterns and accommodating diverse irregularities [@lazaro2021bayesian]. The misspecification of the baseline hazard can lead to the loss of important model details which can be challenging to accurately estimate outcomes of interest, such as probabilities or survival curves. In this article, we consider the following baseline hazard functions.
 
 * Exponential distribution with constant hazard
     + $\lambda_0(t|\alpha)=exp(\alpha)$
@@ -335,13 +335,13 @@ results.exp.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 11.8 seconds.
-#> Chain 2 finished in 11.2 seconds.
-#> Chain 3 finished in 11.8 seconds.
+#> Chain 1 finished in 11.5 seconds.
+#> Chain 2 finished in 13.0 seconds.
+#> Chain 3 finished in 13.1 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 11.6 seconds.
-#> Total execution time: 35.2 seconds.
+#> Mean chain execution time: 12.5 seconds.
+#> Total execution time: 38.0 seconds.
 
 draws1 <- results.exp.psborrow$draws()
 draws1 <- rename_draws_covariates(draws1, anls_obj)
@@ -368,17 +368,21 @@ The histogram of the posterior samples for hazard ratio and commensurability par
 
 ```r
 bayesplot::mcmc_hist(draws1, c("treatment HR"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![plot of chunk unnamed-chunk-10](figure-match_weight_02_application-unnamed-chunk-10-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-10-1.png" alt="plot of chunk unnamed-chunk-10"  />
+<p class="caption">plot of chunk unnamed-chunk-10</p>
+</div>
 
 ```r
 bayesplot::mcmc_hist(draws1, c("commensurability parameter"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![plot of chunk unnamed-chunk-10](figure-match_weight_02_application-unnamed-chunk-10-2.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-10-2.png" alt="plot of chunk unnamed-chunk-10"  />
+<p class="caption">plot of chunk unnamed-chunk-10</p>
+</div>
 
 ```r
 bayesplot::color_scheme_set("mix-blue-pink")
@@ -411,7 +415,10 @@ bayesplot::mcmc_trace(
 )
 ```
 
-![plot of chunk unnamed-chunk-12](figure-match_weight_02_application-unnamed-chunk-12-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-12-1.png" alt="plot of chunk unnamed-chunk-12"  />
+<p class="caption">plot of chunk unnamed-chunk-12</p>
+</div>
 
 # Time-to-event analysis with Weibull distribution and proportional hazards parametrization
 
@@ -422,17 +429,16 @@ Non-informative normal prior is used for the baseline parameter $\mu$. An expone
 
 ```r
 #Outcome
-outcome <- weib_ph_surv_dist(
+outcome <- outcome_surv_weibull_ph(
   time_var = "time",
   cens_var = "cnsr",
-  shape_prior=exponential_prior(1),
-  baseline_prior = normal_prior(0, 1000),
+  shape_prior=prior_exponential(1),
+  baseline_prior = prior_normal(0, 1000),
   weight_var = "norm.weights"
 )
-#> Error: `weib_ph_surv_dist()` is deprecated. Use `outcome_surv_weibull_ph()` instead.
 
 outcome
-#> Outcome object with class OutcomeSurvExponential 
+#> Outcome object with class OutcomeSurvWeibullPH 
 #> 
 #> Outcome variables:
 #>       time_var       cens_var     weight_var 
@@ -443,7 +449,14 @@ outcome
 #> Parameters:
 #>  Stan  R    Value
 #>  mu    mean    0 
-#>  sigma sd   1000
+#>  sigma sd   1000 
+#> 
+#> shape_weibull prior:
+#> Exponential Distribution
+#> Parameters:
+#>  Stan R    Value
+#>  beta rate 1    
+#> Constraints: <lower=0>
 ```
 
 Next, the borrowing method is implemented as shown below. We consider Bayesian Dynamic Borrowing (BDB) in which a non-informative gamma prior is assigned for the commensurability parameter.
@@ -451,12 +464,10 @@ Next, the borrowing method is implemented as shown below. We consider Bayesian D
 
 ```r
 #Borrowing
-borrowing <- borrowing_details(
-  method = "BDB",
+borrowing <- borrowing_hierarchical_commensurate(
   ext_flag_col = "ext",
-  tau_prior = gamma_prior(0.001, 0.001)
+  tau_prior = prior_gamma(0.001, 0.001)
 )
-#> Error: `borrowing_details()` is deprecated. Use `borrowing_hierarchical_commensurate()` for dynamic borrowing, else `borrowing_none()` or `borrowing_full()`.
 
 borrowing
 #> Borrowing object using the  Bayesian dynamic borrowing with the hierarchical commensurate prior  approach
@@ -480,9 +491,8 @@ Similarly, details regarding the treatment variable are specified below. Non-inf
 #Treatment
 treatment <- treatment_details(
   trt_flag_col = "group",
-  trt_prior = normal_prior(0, 1000)
+  trt_prior = prior_normal(0, 1000)
 )
-#> Error: `normal_prior()` is deprecated. Use `prior_normal()` instead.
 treatment
 #> Treatment object
 #> 
@@ -525,13 +535,13 @@ results.weib.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 10.9 seconds.
-#> Chain 2 finished in 11.0 seconds.
-#> Chain 3 finished in 12.1 seconds.
+#> Chain 1 finished in 29.2 seconds.
+#> Chain 2 finished in 33.2 seconds.
+#> Chain 3 finished in 29.7 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 11.3 seconds.
-#> Total execution time: 34.3 seconds.
+#> Mean chain execution time: 30.7 seconds.
+#> Total execution time: 92.5 seconds.
 
 draws2 <- results.weib.psborrow$draws()
 draws2 <- rename_draws_covariates(draws2, anls_obj)
@@ -541,15 +551,16 @@ The summary is shown below.
 
 ```r
 results.weib.psborrow$summary()
-#> # A tibble: 6 × 10
-#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
-#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
-#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
-#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
-#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
-#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
-#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
-#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
+#> # A tibble: 7 × 10
+#>   variable          mean   median     sd    mad       q5      q95  rhat ess_bulk
+#>   <chr>            <dbl>    <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl>    <dbl>
+#> 1 lp__          -6.96e+2 -6.96e+2 1.63   1.48   -6.99e+2 -694.     1.00   11832.
+#> 2 beta_trt      -2.84e-2 -2.87e-2 0.117  0.118  -2.20e-1    0.166  1.00   16067.
+#> 3 shape_weibull  8.19e-1  8.18e-1 0.0324 0.0324  7.67e-1    0.873  1.00   20840.
+#> 4 tau            1.23e-1  5.50e-2 0.179  0.0750  5.65e-4    0.474  1.00   15655.
+#> 5 alpha[1]      -7.76e-1 -7.75e-1 0.103  0.104  -9.49e-1   -0.611  1.00   16026.
+#> 6 alpha[2]       2.14e+0  2.15e+0 0.326  0.325   1.58e+0    2.65   1.00   21336.
+#> 7 HR_trt         9.79e-1  9.72e-1 0.116  0.115   8.03e-1    1.18   1.00   16067.
 #> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
@@ -558,17 +569,21 @@ Histogram of the posterior samples for hazard ratio and commensurability paramet
 
 ```r
 bayesplot::mcmc_hist(draws2, c("treatment HR"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![plot of chunk unnamed-chunk-19](figure-match_weight_02_application-unnamed-chunk-19-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-19-1.png" alt="plot of chunk unnamed-chunk-19"  />
+<p class="caption">plot of chunk unnamed-chunk-19</p>
+</div>
 
 ```r
 bayesplot::mcmc_hist(draws2, c("commensurability parameter"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![plot of chunk unnamed-chunk-19](figure-match_weight_02_application-unnamed-chunk-19-2.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-19-2.png" alt="plot of chunk unnamed-chunk-19"  />
+<p class="caption">plot of chunk unnamed-chunk-19</p>
+</div>
 
 ```r
 bayesplot::color_scheme_set("mix-blue-pink")
@@ -578,15 +593,16 @@ The $95\%$ credible interval can be calculated as follows.
 
 ```r
 summarize_draws(draws2, ~ quantile(.x, probs = c(0.025, 0.975)))
-#> # A tibble: 6 × 3
-#>   variable                                 `2.5%`  `97.5%`
-#>   <chr>                                     <dbl>    <dbl>
-#> 1 lp__                               -713.        -707.   
-#> 2 treatment log HR                     -0.266        0.195
-#> 3 commensurability parameter            0.0000886    0.428
-#> 4 baseline log hazard rate, internal   -1.14        -0.754
-#> 5 baseline log hazard rate, external    1.90         3.14 
-#> 6 treatment HR                          0.767        1.21
+#> # A tibble: 7 × 3
+#>   variable                                `2.5%`  `97.5%`
+#>   <chr>                                    <dbl>    <dbl>
+#> 1 lp__                               -700.       -694.   
+#> 2 treatment log HR                     -0.254       0.203
+#> 3 Weibull shape parameter               0.757       0.884
+#> 4 commensurability parameter            0.000142    0.617
+#> 5 baseline log hazard rate, internal   -0.981      -0.582
+#> 6 baseline log hazard rate, external    1.46        2.74 
+#> 7 treatment HR                          0.776       1.22
 ```
 
 We can see other plots that help us evaluate convergence and diagnose problems with the MCMC sampler, such as trace plot.
@@ -601,7 +617,10 @@ bayesplot::mcmc_trace(
 )
 ```
 
-![plot of chunk unnamed-chunk-21](figure-match_weight_02_application-unnamed-chunk-21-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-21-1.png" alt="plot of chunk unnamed-chunk-21"  />
+<p class="caption">plot of chunk unnamed-chunk-21</p>
+</div>
 
 # Power prior with piecewise exponential distribution (not implemented in `psborrow2` R package)
 
@@ -817,7 +836,10 @@ The histogram of the treatment hazard ratio can also be produced.
 hist(exp(model1$BUGSoutput$sims.list$beta[,1]),xlab="treatmentHR",main="",ylab="")
 ```
 
-![plot of chunk unnamed-chunk-31](figure-match_weight_02_application-unnamed-chunk-31-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-31-1.png" alt="plot of chunk unnamed-chunk-31"  />
+<p class="caption">plot of chunk unnamed-chunk-31</p>
+</div>
 
 The traceplot can be generated as follows.
 
@@ -825,7 +847,13 @@ The traceplot can be generated as follows.
 traceplot(model1,varname=c("alpha","beta"))
 ```
 
-![plot of chunk unnamed-chunk-32](figure-match_weight_02_application-unnamed-chunk-32-1.png)![plot of chunk unnamed-chunk-32](figure-match_weight_02_application-unnamed-chunk-32-2.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-32-1.png" alt="plot of chunk unnamed-chunk-32"  />
+<p class="caption">plot of chunk unnamed-chunk-32</p>
+</div><div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-32-2.png" alt="plot of chunk unnamed-chunk-32"  />
+<p class="caption">plot of chunk unnamed-chunk-32</p>
+</div>
 
 
 
@@ -1052,7 +1080,10 @@ The histogram of the treatment hazard ratio can also be produced.
 hist(exp(model2$BUGSoutput$sims.list$beta[,1]),xlab="treatmentHR",main="",ylab="")
 ```
 
-![plot of chunk unnamed-chunk-42](figure-match_weight_02_application-unnamed-chunk-42-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-42-1.png" alt="plot of chunk unnamed-chunk-42"  />
+<p class="caption">plot of chunk unnamed-chunk-42</p>
+</div>
 
 The histogram of the commensurability parameter can also be produced.
 
@@ -1060,7 +1091,10 @@ The histogram of the commensurability parameter can also be produced.
 hist(exp(model2$BUGSoutput$sims.list$tau[,1]),xlab="Commensurability Parameter",main="",ylab="")
 ```
 
-![plot of chunk unnamed-chunk-43](figure-match_weight_02_application-unnamed-chunk-43-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-43-1.png" alt="plot of chunk unnamed-chunk-43"  />
+<p class="caption">plot of chunk unnamed-chunk-43</p>
+</div>
 
 The traceplot can be created as follows.
 
@@ -1068,7 +1102,19 @@ The traceplot can be created as follows.
 traceplot(model2,varname=c("alpha","alphaR","beta","tau"))
 ```
 
-![plot of chunk unnamed-chunk-44](figure-match_weight_02_application-unnamed-chunk-44-1.png)![plot of chunk unnamed-chunk-44](figure-match_weight_02_application-unnamed-chunk-44-2.png)![plot of chunk unnamed-chunk-44](figure-match_weight_02_application-unnamed-chunk-44-3.png)![plot of chunk unnamed-chunk-44](figure-match_weight_02_application-unnamed-chunk-44-4.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-44-1.png" alt="plot of chunk unnamed-chunk-44"  />
+<p class="caption">plot of chunk unnamed-chunk-44</p>
+</div><div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-44-2.png" alt="plot of chunk unnamed-chunk-44"  />
+<p class="caption">plot of chunk unnamed-chunk-44</p>
+</div><div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-44-3.png" alt="plot of chunk unnamed-chunk-44"  />
+<p class="caption">plot of chunk unnamed-chunk-44</p>
+</div><div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-44-4.png" alt="plot of chunk unnamed-chunk-44"  />
+<p class="caption">plot of chunk unnamed-chunk-44</p>
+</div>
 
 # Exponential distribution (constant hazard) and no borrowing: Using `psborrow2` R package
 In addition to specifying an exponential distribution using Bayesian dynamic borrowing, naive no-borrowing and full-borrowing analysis can be conducted using the exponential distribution following similar steps as above. These ype of analysis could be used as a sensitivity or exploratory analysis.
@@ -1079,19 +1125,18 @@ We use exponential distribution for the outcome model as follows. Non-informativ
 
 ```r
 #Outcome
-outcome <- exp_surv_dist(
+outcome <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
-  baseline_prior = normal_prior(0, 1000)
+  baseline_prior = prior_normal(0, 1000)
 )
-#> Error: `exp_surv_dist()` is deprecated. Use `outcome_surv_exponential()` instead.
 
 outcome
 #> Outcome object with class OutcomeSurvExponential 
 #> 
 #> Outcome variables:
-#>       time_var       cens_var     weight_var 
-#>         "time"         "cnsr" "norm.weights" 
+#> time_var cens_var 
+#>   "time"   "cnsr" 
 #> 
 #> Baseline prior:
 #> Normal Distribution
@@ -1105,23 +1150,14 @@ Next, the borrowing method is implemented as shown below. We consider no borrowi
 
 ```r
 #Borrowing
-borrowing <- borrowing_details(method="No borrowing",
+borrowing <- borrowing_none(
   ext_flag_col = "ext"
 )
-#> Error: `borrowing_details()` is deprecated. Use `borrowing_hierarchical_commensurate()` for dynamic borrowing, else `borrowing_none()` or `borrowing_full()`.
 
 borrowing
-#> Borrowing object using the  Bayesian dynamic borrowing with the hierarchical commensurate prior  approach
+#> Borrowing object using the  No borrowing  approach
 #> 
-#> External control flag: ext 
-#> 
-#> Commensurability parameter prior:
-#> Gamma Distribution
-#> Parameters:
-#>  Stan  R     Value
-#>  alpha shape 0.001
-#>  beta  rate  0.001
-#> Constraints: <lower=0>
+#> External control flag: ext
 ```
 
 Similarly, details regarding the treatment variable is specified below. Non-informative prior is used a prior for treatment effect.
@@ -1130,9 +1166,8 @@ Similarly, details regarding the treatment variable is specified below. Non-info
 #Treatment
 treatment <- treatment_details(
   trt_flag_col = "group",
-  trt_prior = normal_prior(0, 1000)
+  trt_prior = prior_normal(0, 1000)
 )
-#> Error: `normal_prior()` is deprecated. Use `prior_normal()` instead.
 treatment
 #> Treatment object
 #> 
@@ -1159,6 +1194,7 @@ anls_obj <- create_analysis_obj(
   treatment = treatment
 )
 #> Inputs look good.
+#> NOTE: excluding `ext` == `1`/`TRUE` for no borrowing.
 #> Stan program compiled successfully!
 #> Ready to go! Now call `mcmc_sample()`.
 ```
@@ -1175,13 +1211,13 @@ results.no.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 11.4 seconds.
-#> Chain 2 finished in 11.5 seconds.
-#> Chain 3 finished in 11.9 seconds.
+#> Chain 1 finished in 4.1 seconds.
+#> Chain 2 finished in 4.1 seconds.
+#> Chain 3 finished in 4.0 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 11.6 seconds.
-#> Total execution time: 35.1 seconds.
+#> Mean chain execution time: 4.1 seconds.
+#> Total execution time: 12.6 seconds.
 
 draws3 <- results.no.psborrow$draws()
 draws3 <- rename_draws_covariates(draws3, anls_obj)
@@ -1191,15 +1227,13 @@ The summary is shown below.
 
 ```r
 results.no.psborrow$summary()
-#> # A tibble: 6 × 10
-#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
-#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
-#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
-#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
-#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
-#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
-#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
-#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
+#> # A tibble: 4 × 10
+#>   variable      mean    median     sd    mad       q5      q95  rhat ess_bulk
+#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl>    <dbl>
+#> 1 lp__     -724.     -724.     0.995  0.718  -726.    -723.     1.00   10028.
+#> 2 beta_trt   -0.0343   -0.0352 0.117  0.116    -0.224    0.159  1.00    7950.
+#> 3 alpha      -0.948    -0.947  0.0989 0.0989   -1.11    -0.787  1.00    7991.
+#> 4 HR_trt      0.973     0.965  0.114  0.112     0.799    1.17   1.00    7950.
 #> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
@@ -1208,10 +1242,12 @@ The histogram of the posterior samples for hazard ratio and commensurability par
 
 ```r
 bayesplot::mcmc_hist(draws3, c("treatment HR"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![plot of chunk unnamed-chunk-51](figure-match_weight_02_application-unnamed-chunk-51-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-51-1.png" alt="plot of chunk unnamed-chunk-51"  />
+<p class="caption">plot of chunk unnamed-chunk-51</p>
+</div>
 
 ```r
 bayesplot::color_scheme_set("mix-blue-pink")
@@ -1221,15 +1257,13 @@ The $95\%$ credible interval can be calculated as follows.
 
 ```r
 summarize_draws(draws3, ~ quantile(.x, probs = c(0.025, 0.975)))
-#> # A tibble: 6 × 3
-#>   variable                                 `2.5%`  `97.5%`
-#>   <chr>                                     <dbl>    <dbl>
-#> 1 lp__                               -713.        -707.   
-#> 2 treatment log HR                     -0.266        0.195
-#> 3 commensurability parameter            0.0000886    0.428
-#> 4 baseline log hazard rate, internal   -1.14        -0.754
-#> 5 baseline log hazard rate, external    1.90         3.14 
-#> 6 treatment HR                          0.767        1.21
+#> # A tibble: 4 × 3
+#>   variable                   `2.5%`  `97.5%`
+#>   <chr>                       <dbl>    <dbl>
+#> 1 lp__                     -727.    -723.   
+#> 2 treatment log HR           -0.264    0.195
+#> 3 baseline log hazard rate   -1.14    -0.757
+#> 4 treatment HR                0.768    1.22
 ```
 
 We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
@@ -1244,7 +1278,10 @@ bayesplot::mcmc_trace(
 )
 ```
 
-![plot of chunk unnamed-chunk-53](figure-match_weight_02_application-unnamed-chunk-53-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-53-1.png" alt="plot of chunk unnamed-chunk-53"  />
+<p class="caption">plot of chunk unnamed-chunk-53</p>
+</div>
 
 # Exponential distribution (constant hazard) and full borrowing: Using `psborrow2` R package
 
@@ -1254,19 +1291,18 @@ We use exponential distribution for the outcome model as follows. Non-informativ
 
 ```r
 #Outcome
-outcome <- exp_surv_dist(
+outcome <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
-  baseline_prior = normal_prior(0, 1000)
+  baseline_prior = prior_normal(0, 1000)
 )
-#> Error: `exp_surv_dist()` is deprecated. Use `outcome_surv_exponential()` instead.
 
 outcome
 #> Outcome object with class OutcomeSurvExponential 
 #> 
 #> Outcome variables:
-#>       time_var       cens_var     weight_var 
-#>         "time"         "cnsr" "norm.weights" 
+#> time_var cens_var 
+#>   "time"   "cnsr" 
 #> 
 #> Baseline prior:
 #> Normal Distribution
@@ -1280,22 +1316,12 @@ Next, the borrowing method is implemented as shown below. We consider full borro
 
 ```r
 #Borrowing
-borrowing <- borrowing_details(method="Full borrowing",
-                               ext_flag_col = "ext")
-#> Error: `borrowing_details()` is deprecated. Use `borrowing_hierarchical_commensurate()` for dynamic borrowing, else `borrowing_none()` or `borrowing_full()`.
+borrowing <- borrowing_full(ext_flag_col = "ext")
 
 borrowing
-#> Borrowing object using the  Bayesian dynamic borrowing with the hierarchical commensurate prior  approach
+#> Borrowing object using the  Full borrowing  approach
 #> 
-#> External control flag: ext 
-#> 
-#> Commensurability parameter prior:
-#> Gamma Distribution
-#> Parameters:
-#>  Stan  R     Value
-#>  alpha shape 0.001
-#>  beta  rate  0.001
-#> Constraints: <lower=0>
+#> External control flag: ext
 ```
 
 Similarly, details regarding the treatment variable is specified below. Non-informative prior is used a prior for treatment effect.
@@ -1304,9 +1330,8 @@ Similarly, details regarding the treatment variable is specified below. Non-info
 #Treatment
 treatment <- treatment_details(
   trt_flag_col = "group",
-  trt_prior = normal_prior(0, 1000)
+  trt_prior = prior_normal(0, 1000)
 )
-#> Error: `normal_prior()` is deprecated. Use `prior_normal()` instead.
 treatment
 #> Treatment object
 #> 
@@ -1332,6 +1357,7 @@ anls_obj <- create_analysis_obj(
   treatment = treatment
 )
 #> Inputs look good.
+#> NOTE: dropping column `ext` for full borrowing.
 #> Stan program compiled successfully!
 #> Ready to go! Now call `mcmc_sample()`.
 ```
@@ -1348,13 +1374,13 @@ results.full.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 10.8 seconds.
-#> Chain 2 finished in 10.9 seconds.
-#> Chain 3 finished in 11.9 seconds.
+#> Chain 1 finished in 5.7 seconds.
+#> Chain 2 finished in 5.6 seconds.
+#> Chain 3 finished in 5.6 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 11.2 seconds.
-#> Total execution time: 34.0 seconds.
+#> Mean chain execution time: 5.7 seconds.
+#> Total execution time: 17.4 seconds.
 
 draws4 <- results.full.psborrow$draws()
 draws4 <- rename_draws_covariates(draws4, anls_obj)
@@ -1364,15 +1390,13 @@ The summary is shown below.
 
 ```r
 results.full.psborrow$summary()
-#> # A tibble: 6 × 10
-#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
-#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
-#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
-#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
-#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
-#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
-#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
-#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
+#> # A tibble: 4 × 10
+#>   variable     mean   median     sd    mad       q5      q95  rhat ess_bulk
+#>   <chr>       <dbl>    <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl>    <dbl>
+#> 1 lp__     -815.    -814.    1.01   0.710  -817.    -814.     1.00   14094.
+#> 2 beta_trt   -1.32    -1.32  0.0781 0.0775   -1.45    -1.19   1.00   11317.
+#> 3 alpha       0.339    0.339 0.0476 0.0480    0.260    0.416  1.00   11709.
+#> 4 HR_trt      0.268    0.267 0.0209 0.0207    0.235    0.303  1.00   11317.
 #> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
@@ -1381,10 +1405,12 @@ The histogram of the posterior samples for hazard ratio and commensurability par
 
 ```r
 bayesplot::mcmc_hist(draws4, c("treatment HR"))
-#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![plot of chunk unnamed-chunk-60](figure-match_weight_02_application-unnamed-chunk-60-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-60-1.png" alt="plot of chunk unnamed-chunk-60"  />
+<p class="caption">plot of chunk unnamed-chunk-60</p>
+</div>
 
 ```r
 bayesplot::color_scheme_set("mix-blue-pink")
@@ -1394,15 +1420,13 @@ The $95\%$ credible interval can be calculated as follows.
 
 ```r
 summarize_draws(draws4, ~ quantile(.x, probs = c(0.025, 0.975)))
-#> # A tibble: 6 × 3
-#>   variable                                 `2.5%`  `97.5%`
-#>   <chr>                                     <dbl>    <dbl>
-#> 1 lp__                               -713.        -707.   
-#> 2 treatment log HR                     -0.266        0.195
-#> 3 commensurability parameter            0.0000886    0.428
-#> 4 baseline log hazard rate, internal   -1.14        -0.754
-#> 5 baseline log hazard rate, external    1.90         3.14 
-#> 6 treatment HR                          0.767        1.21
+#> # A tibble: 4 × 3
+#>   variable                   `2.5%`  `97.5%`
+#>   <chr>                       <dbl>    <dbl>
+#> 1 lp__                     -817.    -814.   
+#> 2 treatment log HR           -1.47    -1.17 
+#> 3 baseline log hazard rate    0.245    0.430
+#> 4 treatment HR                0.229    0.311
 ```
 
 We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
@@ -1417,7 +1441,10 @@ bayesplot::mcmc_trace(
 )
 ```
 
-![plot of chunk unnamed-chunk-62](figure-match_weight_02_application-unnamed-chunk-62-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-62-1.png" alt="plot of chunk unnamed-chunk-62"  />
+<p class="caption">plot of chunk unnamed-chunk-62</p>
+</div>
 
 # Cox proportional hazards model using frequentist approach (No borrowing)
 
@@ -1544,9 +1571,9 @@ The hazard ratio estimates and $95\%$ credible intervals for all the methods are
   </tr>
   <tr>
    <td style="text-align:left;"> Weibull distribution (proportional hazard) and gamma prior </td>
-   <td style="text-align:right;"> NA </td>
-   <td style="text-align:right;"> NA </td>
-   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 0.9787 </td>
+   <td style="text-align:right;"> 0.7756 </td>
+   <td style="text-align:right;"> 1.2249 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Piecewise exponential distribution (proportional hazard) and commensurate prior </td>
@@ -1556,15 +1583,15 @@ The hazard ratio estimates and $95\%$ credible intervals for all the methods are
   </tr>
   <tr>
    <td style="text-align:left;"> Exponential distribution (constant hazard): No borrowing </td>
-   <td style="text-align:right;"> -0.9451 </td>
-   <td style="text-align:right;"> -1.1435 </td>
-   <td style="text-align:right;"> -0.7542 </td>
+   <td style="text-align:right;"> 0.9729 </td>
+   <td style="text-align:right;"> 0.7682 </td>
+   <td style="text-align:right;"> 1.2156 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Exponential distribution (constant hazard): Full borrowing </td>
-   <td style="text-align:right;"> -0.9451 </td>
-   <td style="text-align:right;"> -1.1435 </td>
-   <td style="text-align:right;"> -0.7542 </td>
+   <td style="text-align:right;"> 0.2678 </td>
+   <td style="text-align:right;"> 0.2290 </td>
+   <td style="text-align:right;"> 0.3110 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Cox model (Frequentist approach): No borrowing </td>

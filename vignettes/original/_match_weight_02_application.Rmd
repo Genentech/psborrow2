@@ -61,7 +61,7 @@ We start with the Cox proportional hazards model [@cox1972regression] for observ
 where $\boldsymbol{X}_i$ is the vector of baseline covariates and $Z_i$ is the treatment indicator.
 
 # Baseline hazard function
-Baseline hazard functions can be modeled using common probability distributions in survival analysis, such as exponential, Weibull, and Gompertz. However, these standard specifications have limited flexibility and cannot capture irregular behaviors. Alternatively, more flexible hazard shapes can be specified using piecewise constant, piecewise exponential or spline functions, allowing for the representation of multimodal patterns and accommodating diverse irregularities [@lazaro2021bayesian].The misspecification of the baseline hazard can lead to the loss of important model details which can be challenging to accurately estimate outcomes of interest, such as probabilities or survival curves. In this article, we consider the following baseline hazard functions.
+Baseline hazard functions can be modeled using common probability distributions in survival analysis, such as exponential, Weibull, and Gompertz. However, these standard specifications have limited flexibility and cannot capture irregular behaviors. Alternatively, more flexible hazard shapes can be specified using piecewise constant, piecewise exponential or spline functions, allowing for the representation of multimodal patterns and accommodating diverse irregularities [@lazaro2021bayesian]. The misspecification of the baseline hazard can lead to the loss of important model details which can be challenging to accurately estimate outcomes of interest, such as probabilities or survival curves. In this article, we consider the following baseline hazard functions.
 
 * Exponential distribution with constant hazard
     + $\lambda_0(t|\alpha)=exp(\alpha)$
@@ -272,7 +272,7 @@ results.exp.psborrow$summary()
 
 The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
 
-```{r,fig.width=5,fig.height=5}
+```{r,fig.width=10,fig.height=8,fig.align='center', message = FALSE}
 bayesplot::mcmc_hist(draws1, c("treatment HR"))
 bayesplot::mcmc_hist(draws1, c("commensurability parameter"))
 bayesplot::color_scheme_set("mix-blue-pink")
@@ -284,7 +284,7 @@ summarize_draws(draws1, ~ quantile(.x, probs = c(0.025, 0.975)))
 ```
 
 We can graph other plots that help us evaluate convergence and diagnose problems with the MCMC sampler, such as trace plot.
-```{r,fig.width=5,fig.height=5}
+```{r,fig.width=10,fig.height=8,fig.align='center'}
 bayesplot::color_scheme_set("mix-blue-pink")
 
 bayesplot::mcmc_trace(
@@ -302,11 +302,11 @@ Non-informative normal prior is used for the baseline parameter $\mu$. An expone
 
 ```{r message=FALSE}
 #Outcome
-outcome <- weib_ph_surv_dist(
+outcome <- outcome_surv_weibull_ph(
   time_var = "time",
   cens_var = "cnsr",
-  shape_prior=exponential_prior(1),
-  baseline_prior = normal_prior(0, 1000),
+  shape_prior=prior_exponential(1),
+  baseline_prior = prior_normal(0, 1000),
   weight_var = "norm.weights"
 )
 
@@ -317,10 +317,9 @@ Next, the borrowing method is implemented as shown below. We consider Bayesian D
 
 ```{r message=FALSE}
 #Borrowing
-borrowing <- borrowing_details(
-  method = "BDB",
+borrowing <- borrowing_hierarchical_commensurate(
   ext_flag_col = "ext",
-  tau_prior = gamma_prior(0.001, 0.001)
+  tau_prior = prior_gamma(0.001, 0.001)
 )
 
 borrowing
@@ -333,7 +332,7 @@ Similarly, details regarding the treatment variable are specified below. Non-inf
 #Treatment
 treatment <- treatment_details(
   trt_flag_col = "group",
-  trt_prior = normal_prior(0, 1000)
+  trt_prior = prior_normal(0, 1000)
 )
 treatment
 ```
@@ -372,7 +371,7 @@ results.weib.psborrow$summary()
 
 Histogram of the posterior samples for hazard ratio and commensurability parameter are produced.
 
-```{r,fig.width=5,fig.height=5}
+```{r,fig.width=10,fig.height=8,fig.align='center', message = FALSE}
 bayesplot::mcmc_hist(draws2, c("treatment HR"))
 bayesplot::mcmc_hist(draws2, c("commensurability parameter"))
 bayesplot::color_scheme_set("mix-blue-pink")
@@ -384,7 +383,7 @@ summarize_draws(draws2, ~ quantile(.x, probs = c(0.025, 0.975)))
 ```
 
 We can see other plots that help us evaluate convergence and diagnose problems with the MCMC sampler, such as trace plot.
-```{r,fig.width=5,fig.height=5}
+```{r,fig.width=10,fig.height=8,fig.align='center'}
 bayesplot::color_scheme_set("mix-blue-pink")
 
 bayesplot::mcmc_trace(
@@ -576,12 +575,12 @@ c(summary(exp(model1$BUGSoutput$sims.list$beta[,1])),
   quantile(exp(model1$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
 ```
 The histogram of the treatment hazard ratio can also be produced.
-```{r message=FALSE,fig.width=5,fig.height=5}
+```{r message=FALSE,fig.width=10,fig.height=8,fig.align='center'}
 hist(exp(model1$BUGSoutput$sims.list$beta[,1]),xlab="treatmentHR",main="",ylab="")
 ```
 
 The traceplot can be generated as follows.
-```{r message=FALSE,fig.width=5,fig.height=5}
+```{r message=FALSE,fig.width=10,fig.height=8,fig.align='center'}
 traceplot(model1,varname=c("alpha","beta"))
 ```
 
@@ -774,17 +773,17 @@ c(summary(exp(model2$BUGSoutput$sims.list$beta[,1])),
   quantile(exp(model2$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
 ```
 The histogram of the treatment hazard ratio can also be produced.
-```{r message=FALSE,fig.width=5,fig.height=5}
+```{r message=FALSE,fig.width=10,fig.height=8,fig.align='center'}
 hist(exp(model2$BUGSoutput$sims.list$beta[,1]),xlab="treatmentHR",main="",ylab="")
 ```
 
 The histogram of the commensurability parameter can also be produced.
-```{r message=FALSE,fig.width=5,fig.height=5}
+```{r message=FALSE,fig.width=10,fig.height=8,fig.align='center'}
 hist(exp(model2$BUGSoutput$sims.list$tau[,1]),xlab="Commensurability Parameter",main="",ylab="")
 ```
 
 The traceplot can be created as follows.
-```{r message=FALSE,fig.width=5,fig.height=5}
+```{r message=FALSE,fig.width=10,fig.height=8,fig.align='center'}
 traceplot(model2,varname=c("alpha","alphaR","beta","tau"))
 ```
 
@@ -796,10 +795,10 @@ The `psborrow2` package will be used to conduct the analysis. Following are the 
 We use exponential distribution for the outcome model as follows. Non-informative normal prior is used for the baseline parameter.
 ```{r message=FALSE}
 #Outcome
-outcome <- exp_surv_dist(
+outcome <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
-  baseline_prior = normal_prior(0, 1000)
+  baseline_prior = prior_normal(0, 1000)
 )
 
 outcome
@@ -808,7 +807,7 @@ outcome
 Next, the borrowing method is implemented as shown below. We consider no borrowing as shown below.
 ```{r message=FALSE}
 #Borrowing
-borrowing <- borrowing_details(method="No borrowing",
+borrowing <- borrowing_none(
   ext_flag_col = "ext"
 )
 
@@ -820,7 +819,7 @@ Similarly, details regarding the treatment variable is specified below. Non-info
 #Treatment
 treatment <- treatment_details(
   trt_flag_col = "group",
-  trt_prior = normal_prior(0, 1000)
+  trt_prior = prior_normal(0, 1000)
 )
 treatment
 ```
@@ -859,7 +858,7 @@ results.no.psborrow$summary()
 
 The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
 
-```{r,fig.width=5,fig.height=5}
+```{r,fig.width=10,fig.height=8,fig.align='center', message = FALSE}
 bayesplot::mcmc_hist(draws3, c("treatment HR"))
 bayesplot::color_scheme_set("mix-blue-pink")
 ```
@@ -870,7 +869,7 @@ summarize_draws(draws3, ~ quantile(.x, probs = c(0.025, 0.975)))
 ```
 
 We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
-```{r,fig.width=5,fig.height=5}
+```{r,fig.width=10,fig.height=8,fig.align='center'}
 bayesplot::color_scheme_set("mix-blue-pink")
 
 bayesplot::mcmc_trace(
@@ -887,10 +886,10 @@ The `psborrow2` package will be used to conduct the analysis. Following are the 
 We use exponential distribution for the outcome model as follows. Non-informative normal prior is used for the baseline parameter.
 ```{r message=FALSE}
 #Outcome
-outcome <- exp_surv_dist(
+outcome <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
-  baseline_prior = normal_prior(0, 1000)
+  baseline_prior = prior_normal(0, 1000)
 )
 
 outcome
@@ -899,8 +898,7 @@ outcome
 Next, the borrowing method is implemented as shown below. We consider full borrowing as shown below.
 ```{r message=FALSE}
 #Borrowing
-borrowing <- borrowing_details(method="Full borrowing",
-                               ext_flag_col = "ext")
+borrowing <- borrowing_full(ext_flag_col = "ext")
 
 borrowing
 ```
@@ -910,7 +908,7 @@ Similarly, details regarding the treatment variable is specified below. Non-info
 #Treatment
 treatment <- treatment_details(
   trt_flag_col = "group",
-  trt_prior = normal_prior(0, 1000)
+  trt_prior = prior_normal(0, 1000)
 )
 treatment
 ```
@@ -948,7 +946,7 @@ results.full.psborrow$summary()
 
 The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
 
-```{r,fig.width=5,fig.height=5}
+```{r,fig.width=10,fig.height=8,fig.align='center', message = FALSE}
 bayesplot::mcmc_hist(draws4, c("treatment HR"))
 bayesplot::color_scheme_set("mix-blue-pink")
 ```
@@ -959,7 +957,7 @@ summarize_draws(draws4, ~ quantile(.x, probs = c(0.025, 0.975)))
 ```
 
 We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
-```{r,fig.width=5,fig.height=5}
+```{r,fig.width=10,fig.height=8,fig.align='center'}
 bayesplot::color_scheme_set("mix-blue-pink")
 
 bayesplot::mcmc_trace(

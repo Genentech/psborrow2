@@ -287,7 +287,7 @@ ps_trial <- psfit[final.data$indicator==1]
 ps_extcont <- psfit[final.data$indicator==0]
 ```
 
-```{r, fig.width=10,fig.height=10, fig.align = "center"}
+```{r, fig.width=10,fig.height=8, fig.align = "center"}
 overlap(list(ps_trial=ps_trial, ps_extcont=ps_extcont),plot=TRUE)
 ```
 
@@ -664,7 +664,7 @@ data_with_weights <- final.data
 # Balance Plots for Matching Methods
 We now conduct a balance diagnostic by considering SMD plot. The x-axis of the plot represent the absolute value of the SMD and y-axis represent the list of all covariates. SMD greater than $0.1$ can be considered a sign of imbalance [@zhang2019balance]. Hence, we put a threshold of $0.1$ in the plot with a vertical dashed line.
 
-```{r, fig.width=10,fig.height=10,fig.align = "center"}
+```{r, fig.width=10,fig.height=8,fig.align = "center"}
 love.plot(covs, 
           treat=data_with_weights$data,
           weights = list(NNMPS=data_with_weights$ratio1_caliper_weights,
@@ -687,7 +687,7 @@ love.plot(covs,
 
 # Balance Plots for Weighting Methods
 
-```{r, fig.width=10,fig.height=10,fig.align = "center"}
+```{r, fig.width=10,fig.height=8,fig.align = "center"}
 love.plot(covs, 
           treat=data_with_weights$data,
           weights = list(EB=data_with_weights$eb_weights,
