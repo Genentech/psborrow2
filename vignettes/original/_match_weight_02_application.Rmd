@@ -27,9 +27,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-In the previous vignette, we had used various matching/weighting methods to minimize selection bias. In this vignette, we will use matched/weighted cohort for Bayesian dynamic borrowing. This vignette is a follow-up to the matching/weighting vignette, which demonstrates methods to mitigate selection bias when designing externally controlled trial. In this vignette, we will illustrate Bayesian dynamic borrowing approaches using the matched and weighted cohort. We will use the `psborrow2`[@psborrow2] R package to demonstrate the use of Bayesian methods with an example for time to event outcome. In addition to using `psborrow2` package, we will also demonstrate how to implement power and commensurate prior models with piecewise exponential baseline hazard function.
+In the [previous article on matching/weighting methods](https://genentech.github.io/psborrow2/articles/match_weight_01_methods.html), we had used various matching/weighting methods to minimize selection bias. In this article, we will use matched/weighted cohort for Bayesian dynamic borrowing. This article is a follow-up to the matching/weighting article, which demonstrates methods to mitigate selection bias when designing externally controlled trial. In this article, we will illustrate Bayesian dynamic borrowing approaches using the matched and weighted cohort. We will use the `psborrow2`[@psborrow2] R package to demonstrate the use of Bayesian methods with an example for time to event outcome. In addition to using `psborrow2` package, we will also demonstrate how to implement power and commensurate prior models with piecewise exponential baseline hazard function.
 
-We consider the following time to event outcome models in this vignette
+We consider the following time to event outcome models in this article
 
 * Exponential distribution with constant hazard
 * Weibull distribution with proportional hazards parametrization
@@ -61,7 +61,7 @@ We start with the Cox proportional hazards model [@cox1972regression] for observ
 where $\boldsymbol{X}_i$ is the vector of baseline covariates and $Z_i$ is the treatment indicator.
 
 # Baseline hazard function
-Baseline hazard functions can be modeled using common probability distributions in survival analysis, such as exponential, Weibull, and Gompertz. However, these standard specifications have limited flexibility and cannot capture irregular behaviors. Alternatively, more flexible hazard shapes can be specified using piecewise constant, piecewise exponential or spline functions, allowing for the representation of multimodal patterns and accommodating diverse irregularities [@lazaro2021bayesian].The misspecification of the baseline hazard can lead to the loss of important model details which can be challenging to accurately estimate outcomes of interest, such as probabilities or survival curves. In this vignette, we consider the following baseline hazard functions.
+Baseline hazard functions can be modeled using common probability distributions in survival analysis, such as exponential, Weibull, and Gompertz. However, these standard specifications have limited flexibility and cannot capture irregular behaviors. Alternatively, more flexible hazard shapes can be specified using piecewise constant, piecewise exponential or spline functions, allowing for the representation of multimodal patterns and accommodating diverse irregularities [@lazaro2021bayesian].The misspecification of the baseline hazard can lead to the loss of important model details which can be challenging to accurately estimate outcomes of interest, such as probabilities or survival curves. In this article, we consider the following baseline hazard functions.
 
 * Exponential distribution with constant hazard
     + $\lambda_0(t|\alpha)=exp(\alpha)$

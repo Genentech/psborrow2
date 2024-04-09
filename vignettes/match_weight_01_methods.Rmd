@@ -4,7 +4,7 @@ bibliography: references.bib
 author: 
   - Manoj Khanal <khanal_manoj@lilly.com>
   - Eli Lilly & Company
-date: "2024-04-08"
+date: "2024-04-09"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{1. Matching and Weighting Methods}
@@ -105,10 +105,10 @@ trial.data <- rcorrvar2(n = n_t, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
 #> 
 #>  Constants: Distribution  5  
 #> 
-#> Constants calculation time: 0.003 minutes 
-#> Intercorrelation calculation time: 0.002 minutes 
+#> Constants calculation time: 0.005 minutes 
+#> Intercorrelation calculation time: 0.003 minutes 
 #> Error loop calculation time: 0 minutes 
-#> Total Simulation time: 0.005 minutes
+#> Total Simulation time: 0.008 minutes
 ```
 
 
@@ -1378,7 +1378,7 @@ out.ess <- data.frame(Unadjusted=c(length(which(final.data$data=="TRIAL")),lengt
 rownames(out.ess) <- c("Trial","External Control")
 ```
 
-Note: After applying the matching methods, some patients in RCT were excluded. For demonstration purpose in this vignette, we will also exclude RCT patients that were not matched in the Bayesian outcome model. However, in reality we may keep the full sample size in RCT and discounting could be done at the second stage with power prior and commensurate prior. Before, moving to the next stage of Bayesian borrowing, ESS also needs to be taken into account.
+Note: After applying the matching methods, some patients in RCT were excluded. For demonstration purpose in this article, we will also exclude RCT patients that were not matched in the Bayesian outcome model. However, in reality we may keep the full sample size in RCT and discounting could be done at the second stage with power prior and commensurate prior. Before, moving to the next stage of Bayesian borrowing, ESS also needs to be taken into account.
 
 The ESS for each cohort using different methods are shown below. 
 

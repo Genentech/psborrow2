@@ -1,0 +1,61 @@
+model{
+		#POWER PRIOR JAGS CODE
+  #Single Arm Trial Data
+  for (i in 1:n){
+    # Pieces of the cumulative hazard function
+    for (k in 1:int.obs[i]) {
+      cond[i,k] <- step(time[i] - a[k + 1])
+      HH[i , k] <- cond[i,k] * (a[k + 1] - a[k]) * exp(alpha[k]) +
+      (1 - cond[i,k] ) * (time[i] - a[k]) * exp(alpha[k])
+    }
+    # Cumulative hazard function
+    H[i] <- sum(HH[i,1 : int.obs[i]] )
+  }
+  for ( i in 1:n) {
+    # Linear predictor
+    elinpred[i] <- exp(inprod(beta[],X[i,]))
+    # Log-hazard function
+    logHaz[i] <- log( exp(alpha[int.obs[i]]) * elinpred[i])
+    # Log-survival function
+    logSurv[i] <- -H[i]  * elinpred[i]
+    # Definition of the log-likelihood using zeros trick
+    phi[i] <- 100000 - status[i] * logHaz[i] - logSurv[i]
+    zeros[i] ~ dpois(phi[i])
+  }
+
+  #Real World Data
+   for (i in 1:nR){
+    # Pieces of the cumulative hazard function
+    for (k in 1:int.obsR[i]) {
+      condR[i,k] <- step(timeR[i] - a[k + 1])
+      HHR[i , k] <- condR[i,k] * (a[k + 1] - a[k]) * exp(alpha[k]) +
+      (1 - condR[i,k] ) * (timeR[i] - a[k]) * exp(alpha[k])
+    }
+    # Cumulative hazard function
+    HR[i] <- sum(HHR[i,1 : int.obsR[i]] )
+  }
+  for ( i in 1:nR) {
+    # Linear predictor
+    elinpredR[i] <- exp(inprod(beta[],XR[i,]))
+    # Log-hazard function
+    logHazR[i] <- log(exp(alpha[int.obsR[i]]) * elinpredR[i])
+    # Log-survival function
+    logSurvR[i] <- -HR[i] * elinpredR[i]
+    # Definition of the log-likelihood using zeros trick
+    phiR[i] <- 100000 - rho[i] * statusR[i] * logHazR[i] - rho[i] * logSurvR[i] 
+    #rho[i] is the subject level weight as a power prior
+    zerosR[i] ~ dpois(phiR[i])
+  }
+  # Prior distributions
+  for(l in 1: Nbetas ){
+    beta[l] ~ dnorm(0 , 0.001)
+  }
+  #alpha[1] ~ dnorm(0,0.001)
+  #eta <- 1/(seta * seta)
+  #seta ~ dunif(0.01,100)
+  for( k in 1 :K) {
+  alpha[k] ~ dnorm(0,0.001)
+  }
+  
+
+} 

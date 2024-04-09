@@ -1,0 +1,62 @@
+model{
+  #Trial Data
+  for (i in 1:n){
+    # Pieces of the cumulative hazard function
+    for (k in 1:int.obs[i]) {
+      cond[i,k] <- step(time[i] - a[k + 1])
+      HH[i , k] <- cond[i,k] * (a[k + 1] - a[k]) * exp(alpha[k]) +
+      (1 - cond[i,k] ) * (time[i] - a[k]) * exp(alpha[k])
+    }
+    # Cumulative hazard function
+    H[i] <- sum(HH[i,1 : int.obs[i]] )
+  }
+  for ( i in 1:n) {
+    # Linear predictor
+    elinpred[i] <- exp(inprod(beta[],X[i,]))
+    # Log-hazard function
+    logHaz[i] <- log(exp(alpha[int.obs[i]]) * elinpred[i])
+    # Log-survival function
+    logSurv[i] <- -H[i] * elinpred[i]
+    # Definition of the log-likelihood using zeros trick
+    phi[i] <- 100000 - wt[i]*status[i] * logHaz[i] - wt[i]*logSurv[i]
+    zeros[i] ~ dpois(phi[i])
+  }
+
+  #External Control Data
+   for (i in 1:nR){
+    # Pieces of the cumulative hazard function
+    for (k in 1:int.obsR[i]) {
+      condE[i,k] <- step(timeR[i] - a[k + 1])
+      HHE[i , k] <- condE[i,k] * (a[k + 1] - a[k]) * exp(alphaR[k]) +
+      (1 - condE[i,k] ) * (timeR[i] - a[k]) * exp(alphaR[k])
+    }
+    # Cumulative hazard function
+    HE[i] <- sum(HHE[i,1 : int.obsR[i]] )
+  }
+  for ( i in 1:nR) {
+    # Linear predictor
+    elinpredE[i] <- exp(inprod(beta0[],XR[i,]))
+    # Log-hazard function
+    logHazE[i] <- log(exp(alphaR[int.obsR[i]]) * elinpredE[i])
+    # Log-survival function
+    logSurvE[i] <- -HE[i] * elinpredE[i]
+    # Definition of the log-likelihood using zeros trick
+    phiE[i] <- 100000 - wtR[i]*statusR[i] * logHazE[i] - wtR[i] * logSurvE[i]
+    zerosR[i] ~ dpois(phiE[i])
+  }
+
+
+  # Commensurate prior on the covariate effect
+  for(l in 1: Nbetas ){
+    beta0[l] ~ dnorm(0,0.0001);
+    tau[l] ~ dgamma(0.01,0.01);
+    beta[l] ~ dnorm(beta0[l],tau[l]);
+  }
+  
+  # Normal prior on the piecewise exponential parameters for each interval
+  for( m in 1 : K) {
+  alpha[m] ~ dnorm(alphaR[m],tau);
+  alphaR[m] ~ dnorm(0,0.0001);
+  }
+
+} 

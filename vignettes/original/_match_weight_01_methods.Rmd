@@ -779,7 +779,7 @@ out.ess <- data.frame(Unadjusted=c(length(which(final.data$data=="TRIAL")),lengt
 rownames(out.ess) <- c("Trial","External Control")
 ```
 
-Note: After applying the matching methods, some patients in RCT were excluded. For demonstration purpose in this vignette, we will also exclude RCT patients that were not matched in the Bayesian outcome model. However, in reality we may keep the full sample size in RCT and discounting could be done at the second stage with power prior and commensurate prior. Before, moving to the next stage of Bayesian borrowing, ESS also needs to be taken into account.
+Note: After applying the matching methods, some patients in RCT were excluded. For demonstration purpose in this article, we will also exclude RCT patients that were not matched in the Bayesian outcome model. However, in reality we may keep the full sample size in RCT and discounting could be done at the second stage with power prior and commensurate prior. Before, moving to the next stage of Bayesian borrowing, ESS also needs to be taken into account.
 
 The ESS for each cohort using different methods are shown below. 
 ```{r message=FALSE}

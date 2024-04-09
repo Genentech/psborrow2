@@ -4,7 +4,7 @@ bibliography: references.bib
 author: 
   - Manoj Khanal <khanal_manoj@lilly.com>
   - Eli Lilly & Company
-date: "2024-04-08"
+date: "2024-04-09"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{2. Matching and Weighting Application with Dynamic Borrowing}
@@ -22,9 +22,9 @@ vignette: >
 
 
 
-In the previous vignette, we had used various matching/weighting methods to minimize selection bias. In this vignette, we will use matched/weighted cohort for Bayesian dynamic borrowing. This vignette is a follow-up to the matching/weighting vignette, which demonstrates methods to mitigate selection bias when designing externally controlled trial. In this vignette, we will illustrate Bayesian dynamic borrowing approaches using the matched and weighted cohort. We will use the `psborrow2`[@psborrow2] R package to demonstrate the use of Bayesian methods with an example for time to event outcome. In addition to using `psborrow2` package, we will also demonstrate how to implement power and commensurate prior models with piecewise exponential baseline hazard function.
+In the [previous article on matching/weighting methods](https://genentech.github.io/psborrow2/articles/match_weight_01_methods.html), we had used various matching/weighting methods to minimize selection bias. In this article, we will use matched/weighted cohort for Bayesian dynamic borrowing. This article is a follow-up to the matching/weighting article, which demonstrates methods to mitigate selection bias when designing externally controlled trial. In this article, we will illustrate Bayesian dynamic borrowing approaches using the matched and weighted cohort. We will use the `psborrow2`[@psborrow2] R package to demonstrate the use of Bayesian methods with an example for time to event outcome. In addition to using `psborrow2` package, we will also demonstrate how to implement power and commensurate prior models with piecewise exponential baseline hazard function.
 
-We consider the following time to event outcome models in this vignette
+We consider the following time to event outcome models in this article
 
 * Exponential distribution with constant hazard
 * Weibull distribution with proportional hazards parametrization
@@ -56,7 +56,7 @@ We start with the Cox proportional hazards model [@cox1972regression] for observ
 where $\boldsymbol{X}_i$ is the vector of baseline covariates and $Z_i$ is the treatment indicator.
 
 # Baseline hazard function
-Baseline hazard functions can be modeled using common probability distributions in survival analysis, such as exponential, Weibull, and Gompertz. However, these standard specifications have limited flexibility and cannot capture irregular behaviors. Alternatively, more flexible hazard shapes can be specified using piecewise constant, piecewise exponential or spline functions, allowing for the representation of multimodal patterns and accommodating diverse irregularities [@lazaro2021bayesian].The misspecification of the baseline hazard can lead to the loss of important model details which can be challenging to accurately estimate outcomes of interest, such as probabilities or survival curves. In this vignette, we consider the following baseline hazard functions.
+Baseline hazard functions can be modeled using common probability distributions in survival analysis, such as exponential, Weibull, and Gompertz. However, these standard specifications have limited flexibility and cannot capture irregular behaviors. Alternatively, more flexible hazard shapes can be specified using piecewise constant, piecewise exponential or spline functions, allowing for the representation of multimodal patterns and accommodating diverse irregularities [@lazaro2021bayesian].The misspecification of the baseline hazard can lead to the loss of important model details which can be challenging to accurately estimate outcomes of interest, such as probabilities or survival curves. In this article, we consider the following baseline hazard functions.
 
 * Exponential distribution with constant hazard
     + $\lambda_0(t|\alpha)=exp(\alpha)$
@@ -318,13 +318,8 @@ anls_obj <- create_analysis_obj(
   treatment = treatment
 )
 #> Inputs look good.
-#> error: PCH file was compiled for the target 'x86_64-apple-macosx13.0.0' but the current translation unit is being compiled for target 'x86_64-apple-macosx14.0.0'
-#> 1 error generated.
-#> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
-#> If your model failed to compile please run rebuild_cmdstan().
-#> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/Rtmpr3ngkz/model-1623373f600c5.o] Error 1
-#> Error: An error occured during compilation! See the message above for more information.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
 ```
 
 Finally, we run the MCMC sample for $10,000$ iterations with $3$ chains.
@@ -338,19 +333,34 @@ results.exp.psborrow<- mcmc_sample(anls_obj,
   chains = 3,
   seed = 123
 )
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'anls_obj' not found
+#> Running MCMC with 3 sequential chains...
+#> 
+#> Chain 1 finished in 11.8 seconds.
+#> Chain 2 finished in 11.2 seconds.
+#> Chain 3 finished in 11.8 seconds.
+#> 
+#> All 3 chains finished successfully.
+#> Mean chain execution time: 11.6 seconds.
+#> Total execution time: 35.2 seconds.
 
 draws1 <- results.exp.psborrow$draws()
-#> Error in eval(expr, envir, enclos): object 'results.exp.psborrow' not found
 draws1 <- rename_draws_covariates(draws1, anls_obj)
-#> Error in eval(expr, envir, enclos): object 'draws1' not found
 ```
 
 The summary is shown below.
 
 ```r
 results.exp.psborrow$summary()
-#> Error in eval(expr, envir, enclos): object 'results.exp.psborrow' not found
+#> # A tibble: 6 × 10
+#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
+#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
+#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
+#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
+#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
+#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
+#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
+#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
+#> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
 The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
@@ -358,9 +368,19 @@ The histogram of the posterior samples for hazard ratio and commensurability par
 
 ```r
 bayesplot::mcmc_hist(draws1, c("treatment HR"))
-#> Error in eval(expr, envir, enclos): object 'draws1' not found
+#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![plot of chunk unnamed-chunk-10](figure-match_weight_02_application-unnamed-chunk-10-1.png)
+
+```r
 bayesplot::mcmc_hist(draws1, c("commensurability parameter"))
-#> Error in eval(expr, envir, enclos): object 'draws1' not found
+#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![plot of chunk unnamed-chunk-10](figure-match_weight_02_application-unnamed-chunk-10-2.png)
+
+```r
 bayesplot::color_scheme_set("mix-blue-pink")
 ```
 
@@ -368,7 +388,15 @@ The $95\%$ credible interval can be calculated as follows.
 
 ```r
 summarize_draws(draws1, ~ quantile(.x, probs = c(0.025, 0.975)))
-#> Error in eval(expr, envir, enclos): object 'draws1' not found
+#> # A tibble: 6 × 3
+#>   variable                                 `2.5%`  `97.5%`
+#>   <chr>                                     <dbl>    <dbl>
+#> 1 lp__                               -713.        -707.   
+#> 2 treatment log HR                     -0.266        0.195
+#> 3 commensurability parameter            0.0000886    0.428
+#> 4 baseline log hazard rate, internal   -1.14        -0.754
+#> 5 baseline log hazard rate, external    1.90         3.14 
+#> 6 treatment HR                          0.767        1.21
 ```
 
 We can graph other plots that help us evaluate convergence and diagnose problems with the MCMC sampler, such as trace plot.
@@ -381,8 +409,9 @@ bayesplot::mcmc_trace(
   pars = c("treatment HR", "commensurability parameter"),
   n_warmup = niter/10
 )
-#> Error in eval(expr, envir, enclos): object 'draws1' not found
 ```
+
+![plot of chunk unnamed-chunk-12](figure-match_weight_02_application-unnamed-chunk-12-1.png)
 
 # Time-to-event analysis with Weibull distribution and proportional hazards parametrization
 
@@ -480,13 +509,8 @@ anls_obj <- create_analysis_obj(
   treatment = treatment
 )
 #> Inputs look good.
-#> error: PCH file was compiled for the target 'x86_64-apple-macosx13.0.0' but the current translation unit is being compiled for target 'x86_64-apple-macosx14.0.0'
-#> 1 error generated.
-#> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
-#> If your model failed to compile please run rebuild_cmdstan().
-#> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/Rtmpr3ngkz/model-162336c589958.o] Error 1
-#> Error: An error occured during compilation! See the message above for more information.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
 ```
 
 Finally, we run the MCMC sample for $10,000$ iterations with $3$ chains.
@@ -499,19 +523,34 @@ results.weib.psborrow<- mcmc_sample(anls_obj,
   chains = 3,
   seed = 123
 )
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'anls_obj' not found
+#> Running MCMC with 3 sequential chains...
+#> 
+#> Chain 1 finished in 10.9 seconds.
+#> Chain 2 finished in 11.0 seconds.
+#> Chain 3 finished in 12.1 seconds.
+#> 
+#> All 3 chains finished successfully.
+#> Mean chain execution time: 11.3 seconds.
+#> Total execution time: 34.3 seconds.
 
 draws2 <- results.weib.psborrow$draws()
-#> Error in eval(expr, envir, enclos): object 'results.weib.psborrow' not found
 draws2 <- rename_draws_covariates(draws2, anls_obj)
-#> Error in eval(expr, envir, enclos): object 'draws2' not found
 ```
 
 The summary is shown below.
 
 ```r
 results.weib.psborrow$summary()
-#> Error in eval(expr, envir, enclos): object 'results.weib.psborrow' not found
+#> # A tibble: 6 × 10
+#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
+#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
+#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
+#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
+#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
+#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
+#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
+#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
+#> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
 Histogram of the posterior samples for hazard ratio and commensurability parameter are produced.
@@ -519,9 +558,19 @@ Histogram of the posterior samples for hazard ratio and commensurability paramet
 
 ```r
 bayesplot::mcmc_hist(draws2, c("treatment HR"))
-#> Error in eval(expr, envir, enclos): object 'draws2' not found
+#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![plot of chunk unnamed-chunk-19](figure-match_weight_02_application-unnamed-chunk-19-1.png)
+
+```r
 bayesplot::mcmc_hist(draws2, c("commensurability parameter"))
-#> Error in eval(expr, envir, enclos): object 'draws2' not found
+#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![plot of chunk unnamed-chunk-19](figure-match_weight_02_application-unnamed-chunk-19-2.png)
+
+```r
 bayesplot::color_scheme_set("mix-blue-pink")
 ```
 
@@ -529,7 +578,15 @@ The $95\%$ credible interval can be calculated as follows.
 
 ```r
 summarize_draws(draws2, ~ quantile(.x, probs = c(0.025, 0.975)))
-#> Error in eval(expr, envir, enclos): object 'draws2' not found
+#> # A tibble: 6 × 3
+#>   variable                                 `2.5%`  `97.5%`
+#>   <chr>                                     <dbl>    <dbl>
+#> 1 lp__                               -713.        -707.   
+#> 2 treatment log HR                     -0.266        0.195
+#> 3 commensurability parameter            0.0000886    0.428
+#> 4 baseline log hazard rate, internal   -1.14        -0.754
+#> 5 baseline log hazard rate, external    1.90         3.14 
+#> 6 treatment HR                          0.767        1.21
 ```
 
 We can see other plots that help us evaluate convergence and diagnose problems with the MCMC sampler, such as trace plot.
@@ -542,8 +599,9 @@ bayesplot::mcmc_trace(
   pars = c("treatment HR", "commensurability parameter"),
   n_warmup = round(niter/10)
 )
-#> Error in eval(expr, envir, enclos): object 'draws2' not found
 ```
+
+![plot of chunk unnamed-chunk-21](figure-match_weight_02_application-unnamed-chunk-21-1.png)
 
 # Power prior with piecewise exponential distribution (not implemented in `psborrow2` R package)
 
@@ -720,17 +778,29 @@ Now, we call the `jags` function to conduct MCMC sampling with $3$ chains as sho
 set.seed(1)
 model1 <- jags(data = d.jags, model.file = "powerprior.txt", inits = i.jags, n.chains = 3,
                parameters=p.jags,n.iter=niter,n.burnin = round(niter/2),n.thin = 10)
-#> Warning in file(modfile, "rt"): cannot open file 'powerprior.txt': No such file
-#> or directory
-#> Error in file(modfile, "rt") : cannot open the connection
-#> Error in jags.model(model.file, data = data, inits = init.values, n.chains = n.chains, : Cannot open model file "powerprior.txt"
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 1100
+#>    Unobserved stochastic nodes: 2
+#>    Total graph size: 23016
+#> 
+#> Initializing model
 ```
 
 The summary can be produced using the following command.
 
 ```r
 model1$BUGSoutput$summary
-#> Error in eval(expr, envir, enclos): object 'model1' not found
+#>                   mean         sd          2.5%           25%           50%
+#> alpha     7.672650e-01 0.08330851  6.030597e-01  7.109502e-01  7.679483e-01
+#> beta     -8.006893e-01 0.05042475 -8.986307e-01 -8.356531e-01 -8.005683e-01
+#> deviance  2.200010e+08 1.86370178  2.200009e+08  2.200010e+08  2.200010e+08
+#>                    75%         97.5%     Rhat n.eff
+#> alpha     8.249207e-01  9.219494e-01 1.000049  1500
+#> beta     -7.651435e-01 -7.026286e-01 1.000307  1500
+#> deviance  2.200010e+08  2.200010e+08 1.000000     1
 ```
 
 The summary of the hazard ratio for treatment variable is shown below.
@@ -738,21 +808,24 @@ The summary of the hazard ratio for treatment variable is shown below.
 ```r
 c(summary(exp(model1$BUGSoutput$sims.list$beta[,1])),
   quantile(exp(model1$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
-#> Error in eval(expr, envir, enclos): object 'model1' not found
+#>      Min.   1st Qu.    Median      Mean   3rd Qu.      Max.      2.5%     97.5% 
+#> 0.3871170 0.4335912 0.4490737 0.4495901 0.4652671 0.5259439 0.4071268 0.4952818
 ```
 The histogram of the treatment hazard ratio can also be produced.
 
 ```r
 hist(exp(model1$BUGSoutput$sims.list$beta[,1]),xlab="treatmentHR",main="",ylab="")
-#> Error in eval(expr, envir, enclos): object 'model1' not found
 ```
+
+![plot of chunk unnamed-chunk-31](figure-match_weight_02_application-unnamed-chunk-31-1.png)
 
 The traceplot can be generated as follows.
 
 ```r
 traceplot(model1,varname=c("alpha","beta"))
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'traceplot': object 'model1' not found
 ```
+
+![plot of chunk unnamed-chunk-32](figure-match_weight_02_application-unnamed-chunk-32-1.png)![plot of chunk unnamed-chunk-32](figure-match_weight_02_application-unnamed-chunk-32-2.png)
 
 
 
@@ -936,17 +1009,33 @@ Now, we call the `jags` function to conduct MCMC sampling with $3$ chains as sho
 set.seed(1)
 model2 <- jags(data = d.jags, model.file = "commensurateprior.txt", inits = i.jags, n.chains = 3,
                parameters=p.jags,n.iter=niter,n.burnin = round(niter/2),n.thin = 10)
-#> Warning in file(modfile, "rt"): cannot open file 'commensurateprior.txt': No
-#> such file or directory
-#> Error in file(modfile, "rt") : cannot open the connection
-#> Error in jags.model(model.file, data = data, inits = init.values, n.chains = n.chains, : Cannot open model file "commensurateprior.txt"
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 1100
+#>    Unobserved stochastic nodes: 5
+#>    Total graph size: 24222
+#> 
+#> Initializing model
 ```
 
 The summary can be produced using the following command.
 
 ```r
 model2$BUGSoutput$summary
-#> Error in eval(expr, envir, enclos): object 'model2' not found
+#>                   mean         sd          2.5%           25%           50%
+#> alpha     7.012442e-01 0.08417559  5.422684e-01  6.433417e-01  6.995345e-01
+#> alphaR    3.775493e+00 0.53271370  2.651884e+00  3.434386e+00  3.808735e+00
+#> beta     -7.699118e-01 0.04937989 -8.653964e-01 -8.023713e-01 -7.688038e-01
+#> deviance  2.200009e+08 3.59110530  2.200009e+08  2.200009e+08  2.200009e+08
+#> tau       4.990748e-02 0.19141621  2.688540e-04  3.312027e-03  1.147687e-02
+#>                    75%         97.5%     Rhat n.eff
+#> alpha     7.626370e-01  8.639186e-01 1.002131   940
+#> alphaR    4.142427e+00  4.781330e+00 1.002836   840
+#> beta     -7.368342e-01 -6.755448e-01 1.000972  1500
+#> deviance  2.200009e+08  2.200009e+08 1.000000     1
+#> tau       3.066659e-02  2.970125e-01 1.001709  1200
 ```
 
 The summary of the hazard ratio for treatment variable is shown below.
@@ -954,28 +1043,32 @@ The summary of the hazard ratio for treatment variable is shown below.
 ```r
 c(summary(exp(model2$BUGSoutput$sims.list$beta[,1])),
   quantile(exp(model2$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
-#> Error in eval(expr, envir, enclos): object 'model2' not found
+#>      Min.   1st Qu.    Median      Mean   3rd Qu.      Max.      2.5%     97.5% 
+#> 0.3924743 0.4482647 0.4635673 0.4636176 0.4786268 0.5455878 0.4208848 0.5088791
 ```
 The histogram of the treatment hazard ratio can also be produced.
 
 ```r
 hist(exp(model2$BUGSoutput$sims.list$beta[,1]),xlab="treatmentHR",main="",ylab="")
-#> Error in eval(expr, envir, enclos): object 'model2' not found
 ```
+
+![plot of chunk unnamed-chunk-42](figure-match_weight_02_application-unnamed-chunk-42-1.png)
 
 The histogram of the commensurability parameter can also be produced.
 
 ```r
 hist(exp(model2$BUGSoutput$sims.list$tau[,1]),xlab="Commensurability Parameter",main="",ylab="")
-#> Error in eval(expr, envir, enclos): object 'model2' not found
 ```
+
+![plot of chunk unnamed-chunk-43](figure-match_weight_02_application-unnamed-chunk-43-1.png)
 
 The traceplot can be created as follows.
 
 ```r
 traceplot(model2,varname=c("alpha","alphaR","beta","tau"))
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'traceplot': object 'model2' not found
 ```
+
+![plot of chunk unnamed-chunk-44](figure-match_weight_02_application-unnamed-chunk-44-1.png)![plot of chunk unnamed-chunk-44](figure-match_weight_02_application-unnamed-chunk-44-2.png)![plot of chunk unnamed-chunk-44](figure-match_weight_02_application-unnamed-chunk-44-3.png)![plot of chunk unnamed-chunk-44](figure-match_weight_02_application-unnamed-chunk-44-4.png)
 
 # Exponential distribution (constant hazard) and no borrowing: Using `psborrow2` R package
 In addition to specifying an exponential distribution using Bayesian dynamic borrowing, naive no-borrowing and full-borrowing analysis can be conducted using the exponential distribution following similar steps as above. These ype of analysis could be used as a sensitivity or exploratory analysis.
@@ -1066,13 +1159,8 @@ anls_obj <- create_analysis_obj(
   treatment = treatment
 )
 #> Inputs look good.
-#> error: PCH file was compiled for the target 'x86_64-apple-macosx13.0.0' but the current translation unit is being compiled for target 'x86_64-apple-macosx14.0.0'
-#> 1 error generated.
-#> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
-#> If your model failed to compile please run rebuild_cmdstan().
-#> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/Rtmpr3ngkz/model-1623370822c64.o] Error 1
-#> Error: An error occured during compilation! See the message above for more information.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
 ```
 
 Finally, we run the MCMC sample with $3$ chains.
@@ -1085,19 +1173,34 @@ results.no.psborrow<- mcmc_sample(anls_obj,
   chains = 3,
   seed = 123
 )
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'anls_obj' not found
+#> Running MCMC with 3 sequential chains...
+#> 
+#> Chain 1 finished in 11.4 seconds.
+#> Chain 2 finished in 11.5 seconds.
+#> Chain 3 finished in 11.9 seconds.
+#> 
+#> All 3 chains finished successfully.
+#> Mean chain execution time: 11.6 seconds.
+#> Total execution time: 35.1 seconds.
 
 draws3 <- results.no.psborrow$draws()
-#> Error in eval(expr, envir, enclos): object 'results.no.psborrow' not found
 draws3 <- rename_draws_covariates(draws3, anls_obj)
-#> Error in eval(expr, envir, enclos): object 'draws3' not found
 ```
 
 The summary is shown below.
 
 ```r
 results.no.psborrow$summary()
-#> Error in eval(expr, envir, enclos): object 'results.no.psborrow' not found
+#> # A tibble: 6 × 10
+#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
+#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
+#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
+#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
+#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
+#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
+#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
+#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
+#> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
 The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
@@ -1105,7 +1208,12 @@ The histogram of the posterior samples for hazard ratio and commensurability par
 
 ```r
 bayesplot::mcmc_hist(draws3, c("treatment HR"))
-#> Error in eval(expr, envir, enclos): object 'draws3' not found
+#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![plot of chunk unnamed-chunk-51](figure-match_weight_02_application-unnamed-chunk-51-1.png)
+
+```r
 bayesplot::color_scheme_set("mix-blue-pink")
 ```
 
@@ -1113,7 +1221,15 @@ The $95\%$ credible interval can be calculated as follows.
 
 ```r
 summarize_draws(draws3, ~ quantile(.x, probs = c(0.025, 0.975)))
-#> Error in eval(expr, envir, enclos): object 'draws3' not found
+#> # A tibble: 6 × 3
+#>   variable                                 `2.5%`  `97.5%`
+#>   <chr>                                     <dbl>    <dbl>
+#> 1 lp__                               -713.        -707.   
+#> 2 treatment log HR                     -0.266        0.195
+#> 3 commensurability parameter            0.0000886    0.428
+#> 4 baseline log hazard rate, internal   -1.14        -0.754
+#> 5 baseline log hazard rate, external    1.90         3.14 
+#> 6 treatment HR                          0.767        1.21
 ```
 
 We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
@@ -1126,8 +1242,9 @@ bayesplot::mcmc_trace(
   pars = c("treatment HR"),
   n_warmup = round(niter/10)
 )
-#> Error in eval(expr, envir, enclos): object 'draws3' not found
 ```
+
+![plot of chunk unnamed-chunk-53](figure-match_weight_02_application-unnamed-chunk-53-1.png)
 
 # Exponential distribution (constant hazard) and full borrowing: Using `psborrow2` R package
 
@@ -1215,13 +1332,8 @@ anls_obj <- create_analysis_obj(
   treatment = treatment
 )
 #> Inputs look good.
-#> error: PCH file was compiled for the target 'x86_64-apple-macosx13.0.0' but the current translation unit is being compiled for target 'x86_64-apple-macosx14.0.0'
-#> 1 error generated.
-#> Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
-#> If your model failed to compile please run rebuild_cmdstan().
-#> If the issue persists please open a bug report.
-#> make[1]: *** [/var/folders/r8/rnwp6vls7t97nz0w0_d18cpc0000gn/T/Rtmpr3ngkz/model-162333938101c.o] Error 1
-#> Error: An error occured during compilation! See the message above for more information.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
 ```
 
 Finally, we run the MCMC sample with $3$ chains.
@@ -1234,19 +1346,34 @@ results.full.psborrow<- mcmc_sample(anls_obj,
   chains = 3,
   seed = 123
 )
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'anls_obj' not found
+#> Running MCMC with 3 sequential chains...
+#> 
+#> Chain 1 finished in 10.8 seconds.
+#> Chain 2 finished in 10.9 seconds.
+#> Chain 3 finished in 11.9 seconds.
+#> 
+#> All 3 chains finished successfully.
+#> Mean chain execution time: 11.2 seconds.
+#> Total execution time: 34.0 seconds.
 
 draws4 <- results.full.psborrow$draws()
-#> Error in eval(expr, envir, enclos): object 'results.full.psborrow' not found
 draws4 <- rename_draws_covariates(draws4, anls_obj)
-#> Error in eval(expr, envir, enclos): object 'draws4' not found
 ```
 
 The summary is shown below.
 
 ```r
 results.full.psborrow$summary()
-#> Error in eval(expr, envir, enclos): object 'results.full.psborrow' not found
+#> # A tibble: 6 × 10
+#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
+#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
+#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
+#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
+#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
+#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
+#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
+#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
+#> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
 The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
@@ -1254,7 +1381,12 @@ The histogram of the posterior samples for hazard ratio and commensurability par
 
 ```r
 bayesplot::mcmc_hist(draws4, c("treatment HR"))
-#> Error in eval(expr, envir, enclos): object 'draws4' not found
+#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![plot of chunk unnamed-chunk-60](figure-match_weight_02_application-unnamed-chunk-60-1.png)
+
+```r
 bayesplot::color_scheme_set("mix-blue-pink")
 ```
 
@@ -1262,7 +1394,15 @@ The $95\%$ credible interval can be calculated as follows.
 
 ```r
 summarize_draws(draws4, ~ quantile(.x, probs = c(0.025, 0.975)))
-#> Error in eval(expr, envir, enclos): object 'draws4' not found
+#> # A tibble: 6 × 3
+#>   variable                                 `2.5%`  `97.5%`
+#>   <chr>                                     <dbl>    <dbl>
+#> 1 lp__                               -713.        -707.   
+#> 2 treatment log HR                     -0.266        0.195
+#> 3 commensurability parameter            0.0000886    0.428
+#> 4 baseline log hazard rate, internal   -1.14        -0.754
+#> 5 baseline log hazard rate, external    1.90         3.14 
+#> 6 treatment HR                          0.767        1.21
 ```
 
 We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
@@ -1275,8 +1415,9 @@ bayesplot::mcmc_trace(
   pars = c("treatment HR"),
   n_warmup = round(niter/10)
 )
-#> Error in eval(expr, envir, enclos): object 'draws4' not found
 ```
+
+![plot of chunk unnamed-chunk-62](figure-match_weight_02_application-unnamed-chunk-62-1.png)
 
 # Cox proportional hazards model using frequentist approach (No borrowing)
 
@@ -1337,54 +1478,36 @@ Now, we concatenate the results from all of the Bayesian and frequentist analysi
 
 ```r
 hr1=results.exp.psborrow$summary()[6,c(2)]
-#> Error in eval(expr, envir, enclos): object 'results.exp.psborrow' not found
 hr1conf = summarize_draws(draws1, ~ quantile(.x, probs = c(0.025, 0.975)))[6,c(2,3)]
-#> Error in eval(expr, envir, enclos): object 'draws1' not found
 hr1.conf=c(hr1$mean,hr1conf$`2.5%`,hr1conf$`97.5%`)
-#> Error in eval(expr, envir, enclos): object 'hr1' not found
 
 hr2=c(mean(exp(model1$BUGSoutput$sims.list$beta[,1])),
   quantile(exp(model1$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
-#> Error in eval(expr, envir, enclos): object 'model1' not found
 hr2.conf=c(hr2)
-#> Error in eval(expr, envir, enclos): object 'hr2' not found
 
 hr3=results.weib.psborrow$summary()[7,c(2)]
-#> Error in eval(expr, envir, enclos): object 'results.weib.psborrow' not found
 hr3conf = summarize_draws(draws2, ~ quantile(.x, probs = c(0.025, 0.975)))[7,c(2,3)]
-#> Error in eval(expr, envir, enclos): object 'draws2' not found
 hr3.conf=c(hr3$mean,hr3conf$`2.5%`,hr3conf$`97.5%`)
-#> Error in eval(expr, envir, enclos): object 'hr3' not found
 
 hr4=c(mean(exp(model2$BUGSoutput$sims.list$beta[,1])),
   quantile(exp(model2$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
-#> Error in eval(expr, envir, enclos): object 'model2' not found
 hr4.conf=c(hr4)
-#> Error in eval(expr, envir, enclos): object 'hr4' not found
 
 hr5=results.no.psborrow$summary()[4,c(2)]
-#> Error in eval(expr, envir, enclos): object 'results.no.psborrow' not found
 hr5conf = summarize_draws(draws3, ~ quantile(.x, probs = c(0.025, 0.975)))[4,c(2,3)]
-#> Error in eval(expr, envir, enclos): object 'draws3' not found
 hr5.conf=c(hr5$mean,hr5conf$`2.5%`,hr5conf$`97.5%`)
-#> Error in eval(expr, envir, enclos): object 'hr5' not found
 
 hr6=results.full.psborrow$summary()[4,c(2)]
-#> Error in eval(expr, envir, enclos): object 'results.full.psborrow' not found
 hr6conf = summarize_draws(draws4, ~ quantile(.x, probs = c(0.025, 0.975)))[4,c(2,3)]
-#> Error in eval(expr, envir, enclos): object 'draws4' not found
 hr6.conf=c(hr6$mean,hr6conf$`2.5%`,hr6conf$`97.5%`)
-#> Error in eval(expr, envir, enclos): object 'hr6' not found
 
 hr7.conf=c(exp(coef(f1)),exp(confint(f1)))
 
 hr8.conf=c(exp(coef(f2)),exp(confint(f2)))
 
 out = round(rbind(hr1.conf,hr2.conf,hr3.conf,hr4.conf,hr5.conf,hr6.conf,hr7.conf,hr8.conf),4)
-#> Error in eval(expr, envir, enclos): object 'hr1.conf' not found
 
 rownames(out)= NULL
-#> Error: object 'out' not found
 out = data.frame(Method=c("Exponential distribution (constant hazard) and gamma prior",
                           "Piecewise exponential distribution (proportional hazard) and power prior",
                           "Weibull distribution (proportional hazard) and gamma prior",
@@ -1393,17 +1516,77 @@ out = data.frame(Method=c("Exponential distribution (constant hazard) and gamma 
                           "Exponential distribution (constant hazard): Full borrowing",
                           "Cox model (Frequentist approach): No borrowing",
                           "Cox model (Frequentist approach): Full borrowing"),out)
-#> Error in eval(expr, envir, enclos): object 'out' not found
 colnames(out)[2:4] = c("Hazard Ratio","Lower 95% CI","Upper 95% CI")
-#> Error: object 'out' not found
 ```
 
 The hazard ratio estimates and $95\%$ credible intervals for all the methods are shown below.
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Method </th>
+   <th style="text-align:right;"> Hazard Ratio </th>
+   <th style="text-align:right;"> Lower 95% CI </th>
+   <th style="text-align:right;"> Upper 95% CI </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Exponential distribution (constant hazard) and gamma prior </td>
+   <td style="text-align:right;"> 0.9703 </td>
+   <td style="text-align:right;"> 0.7665 </td>
+   <td style="text-align:right;"> 1.2148 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Piecewise exponential distribution (proportional hazard) and power prior </td>
+   <td style="text-align:right;"> 0.4496 </td>
+   <td style="text-align:right;"> 0.4071 </td>
+   <td style="text-align:right;"> 0.4953 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Weibull distribution (proportional hazard) and gamma prior </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Piecewise exponential distribution (proportional hazard) and commensurate prior </td>
+   <td style="text-align:right;"> 0.4636 </td>
+   <td style="text-align:right;"> 0.4209 </td>
+   <td style="text-align:right;"> 0.5089 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Exponential distribution (constant hazard): No borrowing </td>
+   <td style="text-align:right;"> -0.9451 </td>
+   <td style="text-align:right;"> -1.1435 </td>
+   <td style="text-align:right;"> -0.7542 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Exponential distribution (constant hazard): Full borrowing </td>
+   <td style="text-align:right;"> -0.9451 </td>
+   <td style="text-align:right;"> -1.1435 </td>
+   <td style="text-align:right;"> -0.7542 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cox model (Frequentist approach): No borrowing </td>
+   <td style="text-align:right;"> 0.9710 </td>
+   <td style="text-align:right;"> 0.7724 </td>
+   <td style="text-align:right;"> 1.2206 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cox model (Frequentist approach): Full borrowing </td>
+   <td style="text-align:right;"> 0.3719 </td>
+   <td style="text-align:right;"> 0.3178 </td>
+   <td style="text-align:right;"> 0.4352 </td>
+  </tr>
+</tbody>
+<tfoot>
+<tr>
+<td style = 'padding: 0; border:0;' colspan='100%'><sup></sup> CI: Credible Interval for Bayesian methods and Confidence interval for Frequentist method</td>
+</tr>
+</tfoot>
+</table>
 
-```
-#> Error in eval(expr, envir, enclos): object 'out' not found
-#> Error in eval(expr, envir, enclos): object 'x' not found
-```
+
 
 # References
 
