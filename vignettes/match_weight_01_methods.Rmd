@@ -31,7 +31,6 @@ library(cobalt)
 library(dplyr)
 library(overlapping)
 library(survey)
-#> Warning: package 'survey' was built under R version 4.3.2
 ```
 
 To demonstrate the utility of the tools, we simulate data for a randomized controlled trial (RCT) and a dataset with external controls. We simulate a two arm trial where approximately $70\%$ of subjects receive the active treatment. The sample size for the RCT and external data is $n_D=600$ and $n_K=500$ respectively. In the RCT, we generate $5$ continuous and $3$ binary baseline covariates $X$ as follows:
@@ -110,7 +109,10 @@ trial.data <- rcorrvar2(n = n_t, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
 #> Intercorrelation calculation time: 0.002 minutes 
 #> Error loop calculation time: 0 minutes 
 #> Total Simulation time: 0.005 minutes
+```
 
+
+```r
 trial.data <- data.frame(cbind(id=paste("TRIAL",1:n_t,sep=""), trial.data$continuous_variables, 
                         ifelse(trial.data$ordinal_variables==1,1,0)))
 colnames(trial.data) <- c("ID", "Age", "Weight","Height","Biomarker1","Biomarker2","Smoker", 
@@ -245,7 +247,10 @@ ext.cont.data <- rcorrvar2(n = n_ec, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
 #> Intercorrelation calculation time: 0.001 minutes 
 #> Error loop calculation time: 0 minutes 
 #> Total Simulation time: 0.004 minutes
+```
 
+
+```r
 ext.cont.data <- data.frame(cbind(id=paste("EC",1:n_ec,sep=""), ext.cont.data$continuous_variables, 
                         ifelse(ext.cont.data$ordinal_variables==1,1,0)))
 colnames(ext.cont.data) <- c("ID", "Age", "Weight","Height","Biomarker1","Biomarker2","Smoker", "Sex", "ECOG1")
@@ -318,6 +323,10 @@ names(ext.cont.data)
 #>  [1] "ID"         "Age"        "Weight"     "Height"     "Biomarker1"
 #>  [6] "Biomarker2" "Smoker"     "Sex"        "ECOG1"      "group"     
 #> [11] "time"       "event"      "data"
+```
+
+
+```r
 names(trial.data)
 #>  [1] "ID"         "Age"        "Weight"     "Height"     "Biomarker1"
 #>  [6] "Biomarker2" "Smoker"     "Sex"        "ECOG1"      "group"     
@@ -446,7 +455,10 @@ ps_extcont <- psfit[final.data$indicator==0]
 overlap(list(ps_trial=ps_trial, ps_extcont=ps_extcont),plot=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-25](figure-match_weight_01_methods-unnamed-chunk-25-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_01_methods-unnamed-chunk-28-1.png" alt="plot of chunk unnamed-chunk-28"  />
+<p class="caption">plot of chunk unnamed-chunk-28</p>
+</div>
 
 ```
 #> $OV
@@ -539,7 +551,10 @@ summary(m.out.nearest.ratio1.caliper.lps)
 #> Matched       224     224
 #> Unmatched     276     376
 #> Discarded       0       0
+```
 
+
+```r
 final.data$ratio1_caliper_weights_lps = m.out.nearest.ratio1.caliper.lps$weights
 ```
 
@@ -650,7 +665,11 @@ summary(m.out.nearest.ratio1.caliper)
 #> Matched       203     203
 #> Unmatched     297     397
 #> Discarded       0       0
+```
 
+
+
+```r
 final.data$ratio1_caliper_weights = m.out.nearest.ratio1.caliper$weights
 ```
 
@@ -779,6 +798,10 @@ summary(m.out.genetic.ratio1)
 #> Matched        151.       600
 #> Unmatched      349.         0
 #> Discarded        0.         0
+```
+
+
+```r
 final.data$genetic_ratio1_weights = m.out.genetic.ratio1$weights
 ```
 
@@ -876,6 +899,10 @@ summary(m.out.genetic.ratio1)
 #> Matched       500     500
 #> Unmatched       0     100
 #> Discarded       0       0
+```
+
+
+```r
 final.data$genetic_ratio1_weights_no_replace = m.out.genetic.ratio1$weights
 ```
 
@@ -988,7 +1015,10 @@ summary(m.out.optimal.ratio1)
 #> Matched       500     500
 #> Unmatched       0     100
 #> Discarded       0       0
+```
 
+
+```r
 final.data$optimal_ratio1_weights = m.out.optimal.ratio1$weights
 ```
 
@@ -1043,6 +1073,7 @@ The GBM (Gradient Boosting Machine) is a machine learning method which generates
 ```r
 set.seed(1)
 
+
 # Toolkit for Weighting and Analysis of Nonequivalent Groups
 # https://cran.r-project.org/web/packages/twang/vignettes/twang.pdf
 
@@ -1077,10 +1108,6 @@ ps.AOD.ATT <- ps(indicator ~ Age + Weight + Height + Biomarker1  + Biomarker2 + 
 # bal.table(ps.AOD.ATT)
 
 final.data$weights_gbm <- ps.AOD.ATT$w[,1]
-
-# write.csv(bal.table(ps.AOD.ATT)$es.mean.ATT ,"balance_GBM.csv")
-# 
-# control.wts.ps <- subset(combined_data_imp, TREAT==0)$weights_gbm
 ```
 
 We now compare the SMD between the two datasets.
@@ -1107,25 +1134,11 @@ print(t1,smd=TRUE)
 #>   ECOG1 = 1 (%)            85.7 (30.2)   183.0 (30.5)   0.950       0.007
 ```
 
-<!-- We will also check the standardized mean difference after including all the treated patients from trial data and only matched patients from external control along with all control patients from trial. -->
-
-<!-- ```{r message=FALSE} -->
-<!-- final.data$weights_gbm_star = final.data$weights_gbm -->
-<!-- final.data$weights_gbm_star[final.data$data=="TRIAL"] = 1 -->
-<!-- ``` -->
-
-
 ## EB
 
 Entropy balancing is a weighting method to balance the covariates by assigning a scalar weight to each external control observations such that the reweighted groups satisfy a set of balance constraints that are imposed on the sample moments of the covariate distributions [@hainmueller2012entropy]. 
 
 ```r
-# dummy_matrix <- model.matrix(~ Age + Weight + Height + Biomarker1  + Biomarker2 + Smoker +
-#                              Sex +ECOG1 , data = combined_data_imp)
-# dummy_matrix <- dummy_matrix[,-1] #Remove the intercept term
-# dummy_matrix <- as.data.frame(dummy_matrix)
-# 
-# treat <- ifelse(combined_data_imp$group=="BRUIN",1,0)
 eb.out <- ebalance(final.data$indicator,final.data[,c(2:9)],max.iterations = 300)
 #> Converged within tolerance
 final.data$eb_weights <- rep(1,nrow(final.data))
@@ -1139,6 +1152,7 @@ Note that the entropy balancing method failed to converge.
 eb.out$converged
 #> [1] TRUE
 ```
+
 We now compare the SMD between the two datasets. By definition, the SMD after EB should be zero. 
 
 
@@ -1184,7 +1198,6 @@ psfit=predict(ps.logit,type = "response",data=final.data)
 
 ps_trial <- psfit[final.data$indicator==1] 
 ps_extcont <- psfit[final.data$indicator==0]
-
 
 final.data$invprob_weights <- NA
 final.data$invprob_weights[final.data$indicator==0] <- ps_extcont/(1-ps_extcont)
@@ -1239,7 +1252,6 @@ We now conduct a balance diagnostic by considering SMD plot. The x-axis of the p
 
 
 ```r
-
 love.plot(covs, 
           treat=data_with_weights$data,
           weights = list(NNMPS=data_with_weights$ratio1_caliper_weights,
@@ -1258,14 +1270,16 @@ love.plot(covs,
           s.d.denom="pooled")
 ```
 
-![plot of chunk unnamed-chunk-53](figure-match_weight_01_methods-unnamed-chunk-53-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_01_methods-unnamed-chunk-61-1.png" alt="plot of chunk unnamed-chunk-61"  />
+<p class="caption">plot of chunk unnamed-chunk-61</p>
+</div>
 
 
 # Balance Plots for Weighting Methods
 
 
 ```r
-
 love.plot(covs, 
           treat=data_with_weights$data,
           weights = list(EB=data_with_weights$eb_weights,
@@ -1280,7 +1294,10 @@ love.plot(covs,
           s.d.denom="pooled")
 ```
 
-![plot of chunk unnamed-chunk-54](figure-match_weight_01_methods-unnamed-chunk-54-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_01_methods-unnamed-chunk-62-1.png" alt="plot of chunk unnamed-chunk-62"  />
+<p class="caption">plot of chunk unnamed-chunk-62</p>
+</div>
 
 We now investigate the effective sample size (ESS) in the trial and external control cohort.
 
@@ -1386,7 +1403,10 @@ hist(data_with_weights$weights_gbm[data_with_weights$indicator==0],main=paste("G
 hist(data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==0],main=paste("GM \n ESS=",round(ess.genetic.extcont),sep=""),xlab="Weight")
 ```
 
-![plot of chunk unnamed-chunk-59](figure-match_weight_01_methods-unnamed-chunk-59-1.png)
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_01_methods-unnamed-chunk-67-1.png" alt="plot of chunk unnamed-chunk-67"  />
+<p class="caption">plot of chunk unnamed-chunk-67</p>
+</div>
 
 
 

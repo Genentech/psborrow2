@@ -23,7 +23,7 @@ Using external control in the analysis of clinical trial data can be challenging
 
 We first load all of the libraries used in this tutorial. 
 
-```{r message=FALSE}
+```{r message=FALSE, warning=FALSE}
 #Loading the libraries
 library(SimMultiCorrData)
 library(ebal)
@@ -96,7 +96,9 @@ trial.data <- rcorrvar2(n = n_t, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
                         means = means_cont_tc, vars = vars_cont_tc, # if continuous variables
                         skews = skews_tc, skurts = skurts_tc, 
                         marginal=marginal_tc, rho = rho_tc)
+```
 
+```{r message = FALSE}
 trial.data <- data.frame(cbind(id=paste("TRIAL",1:n_t,sep=""), trial.data$continuous_variables, 
                         ifelse(trial.data$ordinal_variables==1,1,0)))
 colnames(trial.data) <- c("ID", "Age", "Weight","Height","Biomarker1","Biomarker2","Smoker", 
@@ -181,6 +183,9 @@ ext.cont.data <- rcorrvar2(n = n_ec, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
                         skews = skews_tc, skurts = skurts_tc, 
                         marginal=marginal_ec, rho = rho_tc)
 
+```
+
+```{r message = FALSE}
 ext.cont.data <- data.frame(cbind(id=paste("EC",1:n_ec,sep=""), ext.cont.data$continuous_variables, 
                         ifelse(ext.cont.data$ordinal_variables==1,1,0)))
 colnames(ext.cont.data) <- c("ID", "Age", "Weight","Height","Biomarker1","Biomarker2","Smoker", "Sex", "ECOG1")
@@ -223,6 +228,9 @@ We can use `bind_rows` function to merge two datasets. Before using this functio
 
 ```{r message=FALSE}
 names(ext.cont.data)
+```
+
+```{r message=FALSE}
 names(trial.data)
 #MS I recommend adding a statement that forces the colnames to be the same, like names(ex.cont.data)[1:10]=names(trial.data)[1:10]
 ```
@@ -279,7 +287,7 @@ ps_trial <- psfit[final.data$indicator==1]
 ps_extcont <- psfit[final.data$indicator==0]
 ```
 
-```{r, fig.width=5,fig.height=5}
+```{r, fig.width=10,fig.height=10, fig.align = "center"}
 overlap(list(ps_trial=ps_trial, ps_extcont=ps_extcont),plot=TRUE)
 ```
 
@@ -308,7 +316,9 @@ m.out.nearest.ratio1.caliper.lps <- matchit(indicator ~ Age + Weight + Height + 
                                                         distance="glm",link="linear.logit",replace=FALSE,
                                                         m.order="largest")
 summary(m.out.nearest.ratio1.caliper.lps)
+```
 
+```{r message = FALSE}
 final.data$ratio1_caliper_weights_lps = m.out.nearest.ratio1.caliper.lps$weights
 ```
 
@@ -347,7 +357,10 @@ m.out.nearest.ratio1.caliper <- matchit(indicator ~ Age + Weight + Height + Biom
                                                     Sex +ECOG1, estimand="ATT",data = final.data, 
                                                     method = "nearest",  ratio = 1, caliper=0.2, replace=FALSE)
 summary(m.out.nearest.ratio1.caliper)
+```
 
+
+```{r message=FALSE}
 final.data$ratio1_caliper_weights = m.out.nearest.ratio1.caliper$weights
 ```
 
@@ -405,6 +418,9 @@ m.out.genetic.ratio1 <- matchit(indicator ~ Age + Weight + Height + Biomarker1  
                                             ratio = 1,pop.size=200)
 
 summary(m.out.genetic.ratio1)
+```
+
+```{r message=FALSE}
 final.data$genetic_ratio1_weights = m.out.genetic.ratio1$weights
 ```
 
@@ -430,6 +446,9 @@ m.out.genetic.ratio1 <- matchit(indicator ~ Age + Weight + Height + Biomarker1  
                                             ratio = 1,pop.size=200)
 
 summary(m.out.genetic.ratio1)
+```
+
+```{r message=FALSE}
 final.data$genetic_ratio1_weights_no_replace = m.out.genetic.ratio1$weights
 ```
 
@@ -470,7 +489,9 @@ m.out.optimal.ratio1 <- matchit(indicator ~ Age + Weight + Height + Biomarker1  
                                             ratio = 1)
 
 summary(m.out.optimal.ratio1)
+```
 
+```{r message=FALSE}
 final.data$optimal_ratio1_weights = m.out.optimal.ratio1$weights
 ```
 
@@ -511,6 +532,7 @@ The GBM (Gradient Boosting Machine) is a machine learning method which generates
 ```{r message=FALSE}
 set.seed(1)
 
+
 # Toolkit for Weighting and Analysis of Nonequivalent Groups
 # https://cran.r-project.org/web/packages/twang/vignettes/twang.pdf
 
@@ -545,11 +567,6 @@ ps.AOD.ATT <- ps(indicator ~ Age + Weight + Height + Biomarker1  + Biomarker2 + 
 # bal.table(ps.AOD.ATT)
 
 final.data$weights_gbm <- ps.AOD.ATT$w[,1]
-
-# write.csv(bal.table(ps.AOD.ATT)$es.mean.ATT ,"balance_GBM.csv")
-# 
-# control.wts.ps <- subset(combined_data_imp, TREAT==0)$weights_gbm
-
 ```
 
 We now compare the SMD between the two datasets.
@@ -563,24 +580,10 @@ t1 <- svyCreateTableOne(vars = myVars, strata = "data" , data = svy, factorVars 
 print(t1,smd=TRUE)
 ```
 
-<!-- We will also check the standardized mean difference after including all the treated patients from trial data and only matched patients from external control along with all control patients from trial. -->
-
-<!-- ```{r message=FALSE} -->
-<!-- final.data$weights_gbm_star = final.data$weights_gbm -->
-<!-- final.data$weights_gbm_star[final.data$data=="TRIAL"] = 1 -->
-<!-- ``` -->
-
-
 ## EB
 
 Entropy balancing is a weighting method to balance the covariates by assigning a scalar weight to each external control observations such that the reweighted groups satisfy a set of balance constraints that are imposed on the sample moments of the covariate distributions [@hainmueller2012entropy]. 
 ```{r message=FALSE}
-# dummy_matrix <- model.matrix(~ Age + Weight + Height + Biomarker1  + Biomarker2 + Smoker +
-#                              Sex +ECOG1 , data = combined_data_imp)
-# dummy_matrix <- dummy_matrix[,-1] #Remove the intercept term
-# dummy_matrix <- as.data.frame(dummy_matrix)
-# 
-# treat <- ifelse(combined_data_imp$group=="BRUIN",1,0)
 eb.out <- ebalance(final.data$indicator,final.data[,c(2:9)],max.iterations = 300)
 final.data$eb_weights <- rep(1,nrow(final.data))
 final.data$eb_weights[final.data$indicator==0] <- eb.out$w
@@ -591,6 +594,7 @@ Note that the entropy balancing method failed to converge.
 ```{r message=FALSE}
 eb.out$converged
 ```
+
 We now compare the SMD between the two datasets. By definition, the SMD after EB should be zero. 
 
 ```{r message=FALSE}
@@ -622,7 +626,6 @@ psfit=predict(ps.logit,type = "response",data=final.data)
 
 ps_trial <- psfit[final.data$indicator==1] 
 ps_extcont <- psfit[final.data$indicator==0]
-
 
 final.data$invprob_weights <- NA
 final.data$invprob_weights[final.data$indicator==0] <- ps_extcont/(1-ps_extcont)
@@ -661,8 +664,7 @@ data_with_weights <- final.data
 # Balance Plots for Matching Methods
 We now conduct a balance diagnostic by considering SMD plot. The x-axis of the plot represent the absolute value of the SMD and y-axis represent the list of all covariates. SMD greater than $0.1$ can be considered a sign of imbalance [@zhang2019balance]. Hence, we put a threshold of $0.1$ in the plot with a vertical dashed line.
 
-```{r, fig.width=5,fig.height=5}
-
+```{r, fig.width=10,fig.height=10,fig.align = "center"}
 love.plot(covs, 
           treat=data_with_weights$data,
           weights = list(NNMPS=data_with_weights$ratio1_caliper_weights,
@@ -685,8 +687,7 @@ love.plot(covs,
 
 # Balance Plots for Weighting Methods
 
-```{r, fig.width=5,fig.height=5}
-
+```{r, fig.width=10,fig.height=10,fig.align = "center"}
 love.plot(covs, 
           treat=data_with_weights$data,
           weights = list(EB=data_with_weights$eb_weights,
@@ -787,7 +788,7 @@ out.ess
 
 We also investigate the histogram of the weights for external control patients and the effective sample size (ESS).
 
-```{r, fig.width=5,fig.height=5}
+```{r, fig.width=10,fig.height=10, fig.align = "center" }
 par(mfrow=c(2,2))
 hist(data_with_weights$eb_weights[data_with_weights$indicator==0],main=paste("EB \n ESS=",round(ess.eb.extcont),sep=""),xlab="Weight")
 hist(data_with_weights$invprob_weights[data_with_weights$indicator==0],main=paste("IPW\n ESS=",round(ess.ipw.extcont),sep=""),xlab="Weight")
