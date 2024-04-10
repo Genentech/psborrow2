@@ -22,7 +22,8 @@ Authors@R: c(
       role = c("ctb"),
       email = "craig.gower-page@roche.com"
       ),
-   person("Genentech, Inc.", role = c("cph", "fnd"))
+   person("Genentech, Inc.", role = c("cph", "fnd")),
+   person("Eli Lilly & Company", role = c("ctb"))
    )
 Description: Bayesian dynamic borrowing is an approach to incorporating external
    data to supplement a randomized, controlled trial analysis in which

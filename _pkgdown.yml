@@ -3,6 +3,7 @@ url: https://genentech.github.io/psborrow2
 template:
   bootstrap: 5
   bootswatch: cerulean
+  favicon: man/figures/favicon.ico
   includes:
     in_header: |
       <!-- Global site tag (gtag.js) - Google Analytics -->
