@@ -69,7 +69,7 @@ matrices that were generated according to that data generation scenario.
 
 <center>
 
-![Figure 1](C:/Users/jink4/Bristol Myers Squibb/Yang, Zhi - External Control Borrowing Working Group\Genentech collaboration\Apr2024_NIH_conference/data_list.jpg){width=80%}
+![Figure 1](data_list.jpg){width=80%}
 
 </center>
 
@@ -779,27 +779,6 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.1 seconds.
 ## Running MCMC with 1 chain...
 ## 
-## Chain 1 finished in 0.2 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.2 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.2 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.1 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.1 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.1 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.2 seconds.
-## Running MCMC with 1 chain...
-## 
 ## Chain 1 finished in 0.1 seconds.
 ## Running MCMC with 1 chain...
 ## 
@@ -839,6 +818,30 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.1 seconds.
 ## Running MCMC with 1 chain...
 ## 
+## Chain 1 finished in 0.2 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.1 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.1 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.1 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.1 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.1 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.1 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.1 seconds.
+## Running MCMC with 1 chain...
+## 
 ## Chain 1 finished in 0.1 seconds.
 ## Running MCMC with 1 chain...
 ## 
@@ -872,9 +875,6 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.1 seconds.
 ## Running MCMC with 1 chain...
 ## 
-## Chain 1 finished in 0.2 seconds.
-## Running MCMC with 1 chain...
-## 
 ## Chain 1 finished in 0.1 seconds.
 ## Running MCMC with 1 chain...
 ## 
@@ -890,7 +890,7 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.1 seconds.
 ## Running MCMC with 1 chain...
 ## 
-## Chain 1 finished in 0.2 seconds.
+## Chain 1 finished in 0.1 seconds.
 ## Running MCMC with 1 chain...
 ## 
 ## Chain 1 finished in 0.4 seconds.
@@ -920,7 +920,16 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.3 seconds.
 ## Running MCMC with 1 chain...
 ## 
-## Chain 1 finished in 0.4 seconds.
+## Chain 1 finished in 0.3 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.3 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.3 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.3 seconds.
 ## Running MCMC with 1 chain...
 ## 
 ## Chain 1 finished in 0.3 seconds.
@@ -935,7 +944,16 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.3 seconds.
 ## Running MCMC with 1 chain...
 ## 
-## Chain 1 finished in 0.4 seconds.
+## Chain 1 finished in 0.3 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.3 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.3 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.3 seconds.
 ## Running MCMC with 1 chain...
 ## 
 ## Chain 1 finished in 0.3 seconds.
@@ -947,58 +965,10 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.4 seconds.
 ## Running MCMC with 1 chain...
 ## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
 ## Chain 1 finished in 0.3 seconds.
 ## Running MCMC with 1 chain...
 ## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
 ## Chain 1 finished in 0.3 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.3 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.3 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.3 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
 ## Running MCMC with 1 chain...
 ## 
 ## Chain 1 finished in 0.3 seconds.
@@ -1013,7 +983,13 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.4 seconds.
 ## Running MCMC with 1 chain...
 ## 
-## Chain 1 finished in 0.5 seconds.
+## Chain 1 finished in 0.4 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.4 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.4 seconds.
 ## Running MCMC with 1 chain...
 ## 
 ## Chain 1 finished in 0.4 seconds.
@@ -1037,19 +1013,13 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.4 seconds.
 ## Running MCMC with 1 chain...
 ## 
+## Chain 1 finished in 1.0 seconds.
+## Running MCMC with 1 chain...
+## 
 ## Chain 1 finished in 0.4 seconds.
 ## Running MCMC with 1 chain...
 ## 
 ## Chain 1 finished in 0.5 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.5 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
-## Running MCMC with 1 chain...
-## 
-## Chain 1 finished in 0.4 seconds.
 ## Running MCMC with 1 chain...
 ## 
 ## Chain 1 finished in 0.4 seconds.
@@ -1061,6 +1031,30 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.5 seconds.
 ## Running MCMC with 1 chain...
 ## 
+## Chain 1 finished in 0.4 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.4 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.5 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.7 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.5 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.4 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.4 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.6 seconds.
+## Running MCMC with 1 chain...
+## 
 ## Chain 1 finished in 0.5 seconds.
 ## Running MCMC with 1 chain...
 ## 
@@ -1068,6 +1062,12 @@ simulation_res <- mcmc_sample(
 ## Running MCMC with 1 chain...
 ## 
 ## Chain 1 finished in 0.5 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.4 seconds.
+## Running MCMC with 1 chain...
+## 
+## Chain 1 finished in 0.6 seconds.
 ## Running MCMC with 1 chain...
 ## 
 ## Chain 1 finished in 0.4 seconds.
@@ -1103,7 +1103,7 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.5 seconds.
 ## Running MCMC with 1 chain...
 ## 
-## Chain 1 finished in 0.5 seconds.
+## Chain 1 finished in 0.6 seconds.
 ## Running MCMC with 1 chain...
 ## 
 ## Chain 1 finished in 0.4 seconds.
@@ -1124,7 +1124,7 @@ simulation_res <- mcmc_sample(
 ## Chain 1 finished in 0.5 seconds.
 ## Running MCMC with 1 chain...
 ## 
-## Chain 1 finished in 0.5 seconds.
+## Chain 1 finished in 0.4 seconds.
 ## Running MCMC with 1 chain...
 ## 
 ## Chain 1 finished in 0.4 seconds.

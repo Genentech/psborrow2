@@ -68,7 +68,7 @@ matrices that were generated according to that data generation scenario.
 
 <center>
 
-![Figure 1](C:/Users/jink4/Bristol Myers Squibb/Yang, Zhi - External Control Borrowing Working Group\Genentech collaboration\Apr2024_NIH_conference/data_list.jpg){width=80%}
+![Figure 1](data_list.jpg){width=80%}
 
 </center>
 
