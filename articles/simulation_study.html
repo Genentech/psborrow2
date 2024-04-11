@@ -77,8 +77,8 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>4. Conduct a simulation study</h1>
-                        <h4 data-toc-skip class="author">Matt Secrest
-and Isaac Gravestock</h4>
+                        <h4 data-toc-skip class="author">Matt Secrest,
+Isaac Gravestock, Kexin Jin and Zhi Yang</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/Genentech/psborrow2/blob/HEAD/vignettes/simulation_study.Rmd" class="external-link"><code>vignettes/simulation_study.Rmd</code></a></small>
@@ -647,6 +647,98 @@ simulation of 0.6.</p>
 plot of chunk unnamed-chunk-25
 </p>
 </div>
+</div>
+<div class="section level4">
+<h4 id="ehss">EHSS<a class="anchor" aria-label="anchor" href="#ehss"></a>
+</h4>
+<p>We can calculate the external historical sample size (EHSS) based on
+the simulation results.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">var_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">simulation_res</span><span class="op">@</span><span class="va">results</span><span class="op">$</span><span class="va">trt_var</span><span class="op">)</span></span>
+<span><span class="va">N_internalcontrol</span> <span class="op">&lt;-</span> <span class="fl">250</span><span class="op">*</span><span class="fl">0.3</span></span>
+<span></span>
+<span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">EHSS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="va">var_mat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span>, <span class="op">]</span><span class="op">/</span><span class="va">var_mat</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="va">N_internalcontrol</span></span>
+<span><span class="va">simulation_res_df2</span> <span class="op">&lt;-</span> <span class="va">simulation_res_df</span><span class="op">[</span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">borrowing_scenario</span><span class="op">!=</span><span class="st">"No borrowing"</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">simulation_res_df2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">drift_hr</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">borrowing_scenario</span>, y <span class="op">=</span> <span class="va">EHSS</span><span class="op">)</span>,</span>
+<span>    stat <span class="op">=</span> <span class="st">"identity"</span>, position <span class="op">=</span> <span class="st">"dodge"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    fill <span class="op">=</span> <span class="st">"Borrowing scenario"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Drift HR"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"EHSS"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">true_hr</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">30</span>,<span class="fl">60</span>,<span class="va">N_internalcontrol</span>, <span class="fl">90</span>,<span class="fl">120</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="va">N_internalcontrol</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="figure-simulation_study-unnamed-chunk-26-1.png" alt="plot of chunk unnamed-chunk-26"><p class="caption">
+plot of chunk unnamed-chunk-26
+</p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="optimal-accuracy-design">Optimal Accuracy Design<a class="anchor" aria-label="anchor" href="#optimal-accuracy-design"></a>
+</h4>
+<p>We can also compare designs for accuracy on the basis of their
+Euclidean distance to the ideal design by minimizing the type I and type
+II errors <span class="citation">(Zabor et al. 2022)</span>. We can
+visualize the accuracy of any design using a scatterplot displaying type
+I error rate on the x-axis and power (1 -type II error rate) on the
+y-axis. A perfectly accurate design approaches the point (0, 1),
+representing no type I error and power of one.</p>
+<p>In the real design of clinical trial, we can designate probability to
+scenarios of drift hazard ratio and obtain weighted Euclidean distance
+to the ideal design. An example shows the probability of moderate drift
+hazard ratio is 0.2 and the probability of no drift hazard ratio is
+0.8.</p>
+<p>*results weighted by (0.8, 0.2) for no drift and moderate drift</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df_accuracy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">simulation_res_df2</span><span class="op">[</span><span class="va">simulation_res_df2</span><span class="op">$</span><span class="va">true_hr</span> <span class="op">==</span> <span class="fl">1.0</span>, </span>
+<span>                                            <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"drift_hr"</span>, <span class="st">"borrowing_scenario"</span><span class="op">)</span><span class="op">]</span>, </span>
+<span>                          typeI <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">simulation_res_df2</span><span class="op">[</span><span class="va">simulation_res_df2</span><span class="op">$</span><span class="va">true_hr</span> <span class="op">==</span> <span class="fl">1.0</span>,</span>
+<span>                                                        <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"true_coverage"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>                          Power <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">simulation_res_df2</span><span class="op">[</span><span class="va">simulation_res_df2</span><span class="op">$</span><span class="va">true_hr</span> <span class="op">==</span> <span class="fl">0.6</span>, </span>
+<span>                                                        <span class="st">"null_coverage"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.2</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">typeI</span><span class="op">*</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">weights</span>,</span>
+<span>                               <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">borrowing_scenario</span><span class="op">)</span>, <span class="va">sum</span><span class="op">)</span>, </span>
+<span>                     <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">Power</span><span class="op">*</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">weights</span>,</span>
+<span>                               <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">borrowing_scenario</span><span class="op">)</span>, <span class="va">sum</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">df_sum</span> <span class="op">&lt;-</span> <span class="va">df_sum</span><span class="op">[</span>, <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df_sum</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"borrowing_scenario"</span>, <span class="st">"typeI"</span>, <span class="st">"Power"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df_sum</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">typeI</span>, color <span class="op">=</span> <span class="va">borrowing_scenario</span>, y <span class="op">=</span> <span class="va">Power</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    color <span class="op">=</span> <span class="st">"Borrowing scenario"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Type I Error Rate"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Power"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Optimal Accuracy Design"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="figure-simulation_study-unnamed-chunk-27-1.png" alt="plot of chunk unnamed-chunk-27"><p class="caption">
+plot of chunk unnamed-chunk-27
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-zabor2022optimal" class="csl-entry">
+Zabor, Emily C, Alexander M Kaizer, Elizabeth Garrett-Mayer, and Brian P
+Hobbs. 2022. <span>“Optimal Sequential Predictive Probability Designs
+for Early-Phase Oncology Expansion Cohorts.”</span> <em>JCO Precision
+Oncology</em> 6: e2100390.
 </div>
 </div>
 </div>
