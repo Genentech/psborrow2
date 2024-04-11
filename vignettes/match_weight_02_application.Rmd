@@ -4,7 +4,7 @@ bibliography: references.bib
 author: 
   - Manoj Khanal <khanal_manoj@lilly.com>
   - Eli Lilly & Company
-date: "2024-04-10"
+date: "2024-04-09"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{2. Matching and Weighting Application with Dynamic Borrowing}
@@ -335,13 +335,14 @@ results.exp.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 12.1 seconds.
-#> Chain 2 finished in 11.6 seconds.
-#> Chain 3 finished in 12.3 seconds.
+#> Chain 1 finished in 11.5 seconds.
+#> Chain 2 finished in 13.0 seconds.
+#> Chain 3 finished in 13.1 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 12.0 seconds.
-#> Total execution time: 36.3 seconds.
+#> Mean chain execution time: 12.5 seconds.
+#> Total execution time: 38.0 seconds.
+
 
 draws1 <- results.exp.psborrow$draws()
 draws1 <- rename_draws_covariates(draws1, anls_obj)
@@ -535,13 +536,13 @@ results.weib.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 26.9 seconds.
-#> Chain 2 finished in 27.6 seconds.
-#> Chain 3 finished in 26.9 seconds.
+#> Chain 1 finished in 29.2 seconds.
+#> Chain 2 finished in 33.2 seconds.
+#> Chain 3 finished in 29.7 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 27.2 seconds.
-#> Total execution time: 81.8 seconds.
+#> Mean chain execution time: 30.7 seconds.
+#> Total execution time: 92.5 seconds.
 
 draws2 <- results.weib.psborrow$draws()
 draws2 <- rename_draws_covariates(draws2, anls_obj)
@@ -1211,13 +1212,14 @@ results.no.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 4.0 seconds.
-#> Chain 2 finished in 3.8 seconds.
-#> Chain 3 finished in 3.9 seconds.
+
+#> Chain 1 finished in 4.1 seconds.
+#> Chain 2 finished in 4.1 seconds.
+#> Chain 3 finished in 4.0 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 3.9 seconds.
-#> Total execution time: 12.1 seconds.
+#> Mean chain execution time: 4.1 seconds.
+#> Total execution time: 12.6 seconds.
 
 draws3 <- results.no.psborrow$draws()
 draws3 <- rename_draws_covariates(draws3, anls_obj)
@@ -1374,13 +1376,13 @@ results.full.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 5.3 seconds.
-#> Chain 2 finished in 5.0 seconds.
-#> Chain 3 finished in 4.9 seconds.
+#> Chain 1 finished in 5.7 seconds.
+#> Chain 2 finished in 5.6 seconds.
+#> Chain 3 finished in 5.6 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 5.1 seconds.
-#> Total execution time: 15.6 seconds.
+#> Mean chain execution time: 5.7 seconds.
+#> Total execution time: 17.4 seconds.
 
 draws4 <- results.full.psborrow$draws()
 draws4 <- rename_draws_covariates(draws4, anls_obj)
