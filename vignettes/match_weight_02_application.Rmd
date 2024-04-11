@@ -1,0 +1,1620 @@
+---
+title: "2. Matching and Weighting Application with Dynamic Borrowing"
+bibliography: references.bib
+author: 
+  - Manoj Khanal <khanal_manoj@lilly.com>
+  - Eli Lilly & Company
+date: "2024-04-09"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{2. Matching and Weighting Application with Dynamic Borrowing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+    \usepackage{amsthm,amssymb,bm}
+    \usepackage{amsmath}
+    \usepackage{mathrsfs}
+    \usepackage{amsbsy}
+    \usepackage{anysize}
+    \usepackage{enumitem}
+    \usepackage{natbib}
+    \usepackage{bm}
+---
+
+
+
+In the [previous article on matching/weighting methods](https://genentech.github.io/psborrow2/articles/match_weight_01_methods.html), we had used various matching/weighting methods to minimize selection bias. In this article, we will use matched/weighted cohort for Bayesian dynamic borrowing. This article is a follow-up to the matching/weighting article, which demonstrates methods to mitigate selection bias when designing externally controlled trial. In this article, we will illustrate Bayesian dynamic borrowing approaches using the matched and weighted cohort. We will use the `psborrow2`[@psborrow2] R package to demonstrate the use of Bayesian methods with an example for time to event outcome. In addition to using `psborrow2` package, we will also demonstrate how to implement power and commensurate prior models with piecewise exponential baseline hazard function.
+
+We consider the following time to event outcome models in this article
+
+* Exponential distribution with constant hazard
+* Weibull distribution with proportional hazards parametrization
+* Piecewise Exponential distribution (not implemented yet in `psborrow2` R package)
+
+We will also consider several Bayesian dynamic borrowing methods 
+
+* Commensurate prior
+* Power prior
+
+# Hazard function
+The hazard function of $T$ at time $t$ is defined as the instantaneous rate of the event occurence that is still at risk at time $t$. It is defined as
+
+\begin{equation}
+  h(t)=\lim_\limits{\Delta \rightarrow 0 } P\frac{(t\leq T<t+\Delta t|T\geq t)}{\Delta t}=\frac{f(t)}{S(t)},
+\end{equation}
+
+where $f(t)$ is the density function of $T$ given $\theta$, and $S(t)=P(T>t)$ is the survival function of $T$.
+
+# Cox proportional hazards model
+We start with the Cox proportional hazards model [@cox1972regression] for observation $i$ as follows. To estimate the regression coefficients under the Bayesian framework, the baseline hazard function needs to be specified. This is not the case under a Frequentist Cox regression. The hazard at time $t$ is
+
+\begin{equation}
+\label{eq:coxmodel}
+  \lambda(t|\boldsymbol{X}_i,Z_i)=\lambda_0(t|\alpha) \exp(\gamma Z_i +\beta^T \boldsymbol{X}_i), 
+\end{equation}
+
+
+where $\boldsymbol{X}_i$ is the vector of baseline covariates and $Z_i$ is the treatment indicator.
+
+# Baseline hazard function
+Baseline hazard functions can be modeled using common probability distributions in survival analysis, such as exponential, Weibull, and Gompertz. However, these standard specifications have limited flexibility and cannot capture irregular behaviors. Alternatively, more flexible hazard shapes can be specified using piecewise constant, piecewise exponential or spline functions, allowing for the representation of multimodal patterns and accommodating diverse irregularities [@lazaro2021bayesian]. The misspecification of the baseline hazard can lead to the loss of important model details which can be challenging to accurately estimate outcomes of interest, such as probabilities or survival curves. In this article, we consider the following baseline hazard functions.
+
+* Exponential distribution with constant hazard
+    + $\lambda_0(t|\alpha)=exp(\alpha)$
+
+
+* Weibull distribution with proportional hazards parametrization
+    + $\lambda_0(t|\zeta,\mu)=\alpha t\mu^{\zeta -1} \exp(-\mu t^\zeta)$ with shape parameter $\zeta$ and scale parameter $\mu$.
+
+* Piecewise exponential distribution
+    +  $\lambda_0(t|\alpha_1,...,\alpha_K)=exp(\alpha_k)$ for $t \in (s_{k-1},s_k],$ where $(s_{k-1},s_k]$ is the $k^{th}$ interval and $K$ is the total number of pre-specified intervals as in @murray2014semiparametric. In our example below, we will consider $s_k=(100*k/K)^{th}$ to the percentile of the event times from the treated group.
+
+# Likelihood
+
+We now introduce the likelihood along with the weight $w_i$ which is a subject specific weight. For the purpose of demonstration, we have considered the subject specific weight from inverse probability of treatment weighting method estimating ATT. In other words, $w_i=1$ for subject $i$ in RCT and $0 \leq w_i \leq 1$ for subject $i$ in RWD. Let ${Y}_{i}$ be the observed time, ${\delta}_{i}$ be an event indicator, $\boldsymbol{X}_{i}$ be the covariates, and ${Z}_{i}$ be the treatment indicator in the trial data. Similarly, let ${Y}_{0,i}$ be the observed time, ${\delta}_{0,i}$ be an event indicator, $\boldsymbol{X}_{0,i}$ be the covariates and ${Z}_{0,i}$ be the treatment indicator in external control data. The time axis is partitioned into $K$ intervals: $(0,\kappa_1],(\kappa_1,\kappa_2],\ldots,(\kappa_{K-1},\kappa_K)$. Let $\lambda_0(t|\alpha_k)=\exp{(\alpha_k)}$ be the piecewise exponential baseline hazard function with $t \in I_k=(\kappa_{k-1},\kappa_k)$ for $k=1,\ldots,K$. Denote $\boldsymbol{\alpha}=(\alpha_1,\ldots,\alpha_K)^\intercal$. Let $\boldsymbol\beta$ and $\gamma$ be the covariate and treatment effects respectively in trial. Similarly, let $\boldsymbol{\beta}_0$ and $\boldsymbol{\alpha}_0$ represent the parameters in external control. 
+
+The joint likelihood of trial and external control for right censored observations after taking account the weight $w_i$ with baseline hazard as a piecewise exponential function and $K$ intervals can be written by slightly extending @murray2014semiparametric as
+
+
+\[
+ \begin{equation}
+        \small
+        \begin{split}
+             & L(\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\gamma},\boldsymbol{\alpha}_0,\boldsymbol{\beta}_0 |\boldsymbol{D},\boldsymbol{D}_0 )   \\ & =  L(\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\gamma}|\boldsymbol{D},\boldsymbol \mu) L(\boldsymbol{\alpha}_0,\boldsymbol{\beta}_0|\boldsymbol{D}_0) \\
+            & =\prod_{i=1}^n  \prod_{k=1}^K \Bigg[\exp{\bigg\{\mathcal I(Y_{i} \in I_k)\mathcal S_{ik}\bigg\}}^{\delta_{i}}
+            \exp\bigg\{-\mathcal I(Y_{i} \in I_k) \bigg( \sum_{\ell=1}^{k-1} (\kappa_\ell  -  \kappa_{\ell-1}) \\
+            & \times \exp{(\mathcal S_{i\ell})} 
+             + (Y_{i} - \kappa_{k-1}) \exp{(\mathcal S_{ik}) } \bigg) \bigg\} \Bigg]
+             \Bigg[ \exp{\bigg\{\mathcal I(Y_{0,i} \in I_k)  \mathcal S_{0,ik} \bigg\} }^{\delta_{0,i}} \\ 
+          & \times \exp\bigg\{-\mathcal I(Y_{0,i} \in I_k) 
+            \bigg( \sum_{\ell=1}^{k-1} (\kappa_\ell - \kappa_{\ell-1})\exp{(\mathcal S_{0,i\ell})}
+             + (Y_{0,i} - \kappa_{k-1})\\ 
+             & \times \exp{(\mathcal S_{0,ik}) } \bigg)  \bigg\} \Bigg],
+        \end{split}
+    \end{equation}
+    \]
+    
+
+where $\mathcal S_{0,ik}=\alpha_{0,k} + \boldsymbol{\beta}_0^\intercal \boldsymbol{X}_{0,i}$, $\mathcal S_{ik}=\alpha_{k} + \boldsymbol{\beta}^\intercal \boldsymbol{X}_{i} + {\gamma} {Z}_{i}$, $n=n_T+n_E$; $n_T$ and $n_E$ are the sample size in trial and external control data respectively. If $w_i=1$, then the above likelihood becomes the traditional likelihood for Cox proportional hazards model. Above notations are similar as in @khanal2022semiparametric.
+
+The joint likelihood can also be constructed in a similar way for other baseline hazard functions.
+
+# Power prior model
+
+We denote the data for the randomized controlled trial (RCT) as $D_1$ with the corresponding likelihood as $L(\gamma,\beta,\alpha│D_1 )$ and external control (EC) data as $D_0$ with corresponding likelihood as $L(\gamma,\beta,\alpha│D_0)$. The formulation of power prior is [@ibrahim2015power]
+$$p(\gamma,\beta,\alpha│D_0,ν) \propto L(\gamma,\beta,\alpha│D_0 )^ν  *p(\gamma)*p(\beta)*p(\alpha),$$
+where $0 \leq ν \leq 1$ is the vector of subject specific weights in the EC data, and $p(\gamma)$, $p(\beta)$, and $p(\alpha)$ are the priors for $\gamma$, $\beta$ and $\alpha$ respectively.
+
+The posterior distribution is
+$$p(\beta│D_1,D_0,ν) \propto L(\gamma,\beta,\alpha│D_1 )  L(\gamma,\beta,\alpha│D_0 )^ν  *p(\gamma)*p(\beta)*p(\alpha).$$
+
+We consider the non-informative prior distributions for the parameters as $\gamma \sim N(0,0.001)$, $\beta_j \sim N(0,0.001)$ for $j=1...,P$ with $P$ baseline covariates, and $\alpha_k \sim N(0,0.001)$ for $k=1,...,K$ intervals.
+
+Note: To avoid confusion, $N(a,b)$ means a normal distribution with mean $a$ and precision $b$.
+
+# Commensurate prior model
+Let $\boldsymbol{\eta}=(\beta_1,...,\beta_P,\alpha_1,...,\alpha_K)$ and $\boldsymbol{\eta}_0=(\beta_{10},...,\beta_{P0},\alpha_{10},...,\alpha_{K0})$ be the parameter vector for RCT and RWD respectively. We consider the following commensurate prior 
+
+$$\eta_\ell|\eta_{0,\ell},\tau_\ell \sim N(\eta_{\ell 0},\tau_\ell) \quad \quad \ell=1,\cdots,P+K,$$
+
+where $\tau_\ell$ is the precision parameter that determines the degree of borrowing, $P$ is the total number of covariates and $K$ is the total number of intervals. For the precision parameter, we assign a gamma prior as $\tau_\ell \sim Gamma(0.01,0.01)$. 
+
+# Conducting Analysis
+
+We first load the following libraries.
+
+
+```r
+#Loading the libraries
+library(R2jags)
+library(psborrow2)
+library(cmdstanr)
+library(posterior)
+library(bayesplot)
+library(kableExtra)
+library(survival)
+```
+
+## Example data
+We also load the data set `data_with_weights`. 
+
+* The continuous variables are
+    + `Age` (years)
+    + `Weight` (lbs)
+    + `Height` (inches)
+    + `Biomarker1`
+    + `Biomarker2`
+
+* The categorical variables are
+    + `Smoker`: Yes = 1 and No = 0
+    + `Sex`: Male = 1 and Female = 0
+    + `ECOG1`: ECOG 1 = 1 and ECOG 0 = 0
+
+    
+* The treatment indicator is
+    + `group`: group = 1 is treatment and group = 0 is placebo
+ 
+    
+* The time to event variable is
+    + `time`
+ 
+    
+* The event indicator variable is
+    + `event`: event = 1 represents an event occurred and event = 0 indicates the event was censored
+
+    
+* The data source indicator variable is
+    + `indicator`: indicator=1 is the RCT data and indicator=0 is the EC data
+    
+* The estimated weights after applying matching/weighting methods are
+  + `ratio1_caliper_weights_lps`: Weights after 1:1 Nearest Neighbor Propensity score matching with a caliper width of 0.2 of the standard deviation of the logit of the propensity score
+  + `ratio_caliper_weights`: Weights after 1:1 Nearest Neighbor Propensity score matching with a caliper width of 0.2 of the standard deviation of raw propensity score
+  + `genetic_ratio1_weights`: Weights after 1:1 Genetic matching with replacement
+  + `genetic_ratio1_weights_no_replace`: Weights after 1:1 Genetic matching without replacement
+  + `optimal_ratio1_weights`: Weights after 1:1 Optimal matching
+  + `weights_gbm`: Weights (ATT) after using Generalized Boosted Model to estimate propensity score
+  + `eb_weights`: Weights (ATT) after Entropy Balancing
+  + `invprob_weights`: Weights (ATT) after Inverse Probability Treatment Weighting using logistic regression
+
+
+
+
+```r
+data_with_weights <- read.csv("data_with_weights.csv")
+data_with_weights$cnsr <- 1 - data_with_weights$event
+data_with_weights <- data_with_weights[, sapply(data_with_weights, class) %in% c("numeric", "integer")]
+data_with_weights$ext <- 1 - data_with_weights$indicator #External control flag
+data_with_weights$norm.weights=data_with_weights$invprob_weights
+data_with_weights$norm.weights[data_with_weights$ext==1]=data_with_weights$norm.weights[data_with_weights$ext==1]/max(data_with_weights$norm.weights[data_with_weights$ext==1])
+data_with_weights <- as.matrix(data_with_weights)
+```
+
+The first six observations of the data set is shown below.
+
+```r
+head(data_with_weights)
+#>           Age   Weight   Height Biomarker1 Biomarker2 Smoker Sex ECOG1 group
+#> [1,] 55.51419 148.5092 65.63899   33.71898   55.26178      0   1     0     1
+#> [2,] 49.93326 146.9441 63.44883   35.65828   45.50928      1   1     1     1
+#> [3,] 58.51588 153.5435 70.53193   35.53710   55.89283      0   1     0     0
+#> [4,] 48.61226 147.2873 64.10615   31.17663   55.80523      0   1     0     1
+#> [5,] 51.84943 151.0312 62.16361   33.99677   48.01981      0   1     0     0
+#> [6,] 51.81743 148.1115 68.69766   33.82398   47.32652      1   1     0     0
+#>           time event indicator ratio1_caliper_weights_lps
+#> [1,] 0.4089043     0         1                          0
+#> [2,] 0.9721405     0         1                          1
+#> [3,] 0.2956919     0         1                          0
+#> [4,] 4.3111823     0         1                          0
+#> [5,] 0.2644848     0         1                          0
+#> [6,] 0.3103544     0         1                          0
+#>      ratio1_caliper_weights genetic_ratio1_weights
+#> [1,]                      0                      1
+#> [2,]                      1                      1
+#> [3,]                      0                      1
+#> [4,]                      1                      1
+#> [5,]                      0                      1
+#> [6,]                      0                      1
+#>      genetic_ratio1_weights_no_replace optimal_ratio1_weights weights_gbm
+#> [1,]                                 1                      0           1
+#> [2,]                                 0                      1           1
+#> [3,]                                 1                      0           1
+#> [4,]                                 1                      0           1
+#> [5,]                                 1                      1           1
+#> [6,]                                 1                      1           1
+#>      eb_weights invprob_weights cnsr ext norm.weights
+#> [1,]          1               1    1   0            1
+#> [2,]          1               1    1   0            1
+#> [3,]          1               1    1   0            1
+#> [4,]          1               1    1   0            1
+#> [5,]          1               1    1   0            1
+#> [6,]          1               1    1   0            1
+```
+
+# Exponential distribution with constant hazard with gamma prior distribution (Using `psborrow2` R package)
+
+The `psborrow2` package will be used to conduct the analysis.
+
+
+We use exponential distribution for the outcome model as follows. Non-informative normal prior is used for the baseline parameter. The data `data_with_weights` contain the time and censoring variable. For demonstration purpose, we choose the subject level weight `invprob_weights` calculated using inverse probability of treatment weighting (IPTW). In this step we extract the time, censoring indicator and the normalized weight variables denoted by `time`, `cnsr` and `norm.weights` respectively.
+
+```r
+#Outcome
+outcome <- outcome_surv_exponential(
+  time_var = "time",
+  cens_var = "cnsr",
+  baseline_prior = prior_normal(0, 1000),
+  weight_var = "norm.weights"
+)
+
+outcome
+#> Outcome object with class OutcomeSurvExponential 
+#> 
+#> Outcome variables:
+#>       time_var       cens_var     weight_var 
+#>         "time"         "cnsr" "norm.weights" 
+#> 
+#> Baseline prior:
+#> Normal Distribution
+#> Parameters:
+#>  Stan  R    Value
+#>  mu    mean    0 
+#>  sigma sd   1000
+```
+
+
+Next, the borrowing method is implemented as shown below. We consider Bayesian Dynamic Borrowing (BDB) in which gamma prior is assigned for the commensurability parameter. The `tau_prior` shown below is the hyperparameter of the commensurate prior which determines the degree of borrowing. We assign a gamma prior for this hyperparameter. Furhtermore, we also need to specify a flag for external data which is denoted by `ext`.
+
+```r
+#Borrowing
+borrowing <- borrowing_hierarchical_commensurate(
+  ext_flag_col = "ext",
+  tau_prior = prior_gamma(0.001, 0.001)
+)
+
+borrowing
+#> Borrowing object using the  Bayesian dynamic borrowing with the hierarchical commensurate prior  approach
+#> 
+#> External control flag: ext 
+#> 
+#> Commensurability parameter prior:
+#> Gamma Distribution
+#> Parameters:
+#>  Stan  R     Value
+#>  alpha shape 0.001
+#>  beta  rate  0.001
+#> Constraints: <lower=0>
+```
+
+
+Similarly, details regarding the treatment variable is specified below. A Non-informative prior is used for the treatment effect parameter $\gamma$. 
+
+```r
+#Treatment
+treatment <- treatment_details(
+  trt_flag_col = "group",
+  trt_prior = prior_normal(0, 1000)
+)
+treatment
+#> Treatment object
+#> 
+#> Treatment flag column: group 
+#> 
+#> Treatment effect prior:
+#> Normal Distribution
+#> Parameters:
+#>  Stan  R    Value
+#>  mu    mean    0 
+#>  sigma sd   1000
+```
+
+Now, all the pieces are brought together to create the analysis object as shown below.
+
+
+```r
+#Application
+anls_obj <- create_analysis_obj(
+  data_matrix = data_with_weights,
+  outcome = outcome,
+  borrowing = borrowing,
+  treatment = treatment
+)
+#> Inputs look good.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+```
+
+Finally, we run the MCMC sample for $10,000$ iterations with $3$ chains.
+
+
+```r
+niter = 10000
+results.exp.psborrow<- mcmc_sample(anls_obj,
+  iter_warmup = round(niter/3),
+  iter_sampling = niter,
+  chains = 3,
+  seed = 123
+)
+#> Running MCMC with 3 sequential chains...
+#> 
+#> Chain 1 finished in 11.5 seconds.
+#> Chain 2 finished in 13.0 seconds.
+#> Chain 3 finished in 13.1 seconds.
+#> 
+#> All 3 chains finished successfully.
+#> Mean chain execution time: 12.5 seconds.
+#> Total execution time: 38.0 seconds.
+
+draws1 <- results.exp.psborrow$draws()
+draws1 <- rename_draws_covariates(draws1, anls_obj)
+```
+
+The summary is shown below.
+
+```r
+results.exp.psborrow$summary()
+#> # A tibble: 6 × 10
+#>   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk
+#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
+#> 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.
+#> 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.
+#> 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.
+#> 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.
+#> 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.
+#> 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.
+#> # ℹ 1 more variable: ess_tail <dbl>
+```
+
+The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
+
+
+```r
+bayesplot::mcmc_hist(draws1, c("treatment HR"))
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-10-1.png" alt="plot of chunk unnamed-chunk-10"  />
+<p class="caption">plot of chunk unnamed-chunk-10</p>
+</div>
+
+```r
+bayesplot::mcmc_hist(draws1, c("commensurability parameter"))
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-10-2.png" alt="plot of chunk unnamed-chunk-10"  />
+<p class="caption">plot of chunk unnamed-chunk-10</p>
+</div>
+
+```r
+bayesplot::color_scheme_set("mix-blue-pink")
+```
+
+The $95\%$ credible interval can be calculated as follows.
+
+```r
+summarize_draws(draws1, ~ quantile(.x, probs = c(0.025, 0.975)))
+#> # A tibble: 6 × 3
+#>   variable                                 `2.5%`  `97.5%`
+#>   <chr>                                     <dbl>    <dbl>
+#> 1 lp__                               -713.        -707.   
+#> 2 treatment log HR                     -0.266        0.195
+#> 3 commensurability parameter            0.0000886    0.428
+#> 4 baseline log hazard rate, internal   -1.14        -0.754
+#> 5 baseline log hazard rate, external    1.90         3.14 
+#> 6 treatment HR                          0.767        1.21
+```
+
+We can graph other plots that help us evaluate convergence and diagnose problems with the MCMC sampler, such as trace plot.
+
+```r
+bayesplot::color_scheme_set("mix-blue-pink")
+
+bayesplot::mcmc_trace(
+  draws1[1:(round(niter/2)), 1:2, ], # Using a subset of draws only
+  pars = c("treatment HR", "commensurability parameter"),
+  n_warmup = niter/10
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-12-1.png" alt="plot of chunk unnamed-chunk-12"  />
+<p class="caption">plot of chunk unnamed-chunk-12</p>
+</div>
+
+# Time-to-event analysis with Weibull distribution and proportional hazards parametrization
+
+We conduct analysis using a Weibull distribution for the outcome model using the `psborrow2` package as follows.
+
+Non-informative normal prior is used for the baseline parameter $\mu$. An exponential prior is used for the Weibull shape parameter $\zeta$.
+
+
+```r
+#Outcome
+outcome <- outcome_surv_weibull_ph(
+  time_var = "time",
+  cens_var = "cnsr",
+  shape_prior=prior_exponential(1),
+  baseline_prior = prior_normal(0, 1000),
+  weight_var = "norm.weights"
+)
+
+outcome
+#> Outcome object with class OutcomeSurvWeibullPH 
+#> 
+#> Outcome variables:
+#>       time_var       cens_var     weight_var 
+#>         "time"         "cnsr" "norm.weights" 
+#> 
+#> Baseline prior:
+#> Normal Distribution
+#> Parameters:
+#>  Stan  R    Value
+#>  mu    mean    0 
+#>  sigma sd   1000 
+#> 
+#> shape_weibull prior:
+#> Exponential Distribution
+#> Parameters:
+#>  Stan R    Value
+#>  beta rate 1    
+#> Constraints: <lower=0>
+```
+
+Next, the borrowing method is implemented as shown below. We consider Bayesian Dynamic Borrowing (BDB) in which a non-informative gamma prior is assigned for the commensurability parameter.
+
+
+```r
+#Borrowing
+borrowing <- borrowing_hierarchical_commensurate(
+  ext_flag_col = "ext",
+  tau_prior = prior_gamma(0.001, 0.001)
+)
+
+borrowing
+#> Borrowing object using the  Bayesian dynamic borrowing with the hierarchical commensurate prior  approach
+#> 
+#> External control flag: ext 
+#> 
+#> Commensurability parameter prior:
+#> Gamma Distribution
+#> Parameters:
+#>  Stan  R     Value
+#>  alpha shape 0.001
+#>  beta  rate  0.001
+#> Constraints: <lower=0>
+```
+
+
+Similarly, details regarding the treatment variable are specified below. Non-informative prior is used for treatment effect $\gamma$.
+
+
+```r
+#Treatment
+treatment <- treatment_details(
+  trt_flag_col = "group",
+  trt_prior = prior_normal(0, 1000)
+)
+treatment
+#> Treatment object
+#> 
+#> Treatment flag column: group 
+#> 
+#> Treatment effect prior:
+#> Normal Distribution
+#> Parameters:
+#>  Stan  R    Value
+#>  mu    mean    0 
+#>  sigma sd   1000
+```
+
+Now, all the pieces are brought together to create the analysis object as shown below.
+
+
+```r
+#Application
+data_with_weights <- as.matrix(data_with_weights)
+anls_obj <- create_analysis_obj(
+  data_matrix = data_with_weights,
+  outcome = outcome,
+  borrowing = borrowing,
+  treatment = treatment
+)
+#> Inputs look good.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+```
+
+Finally, we run the MCMC sample for $10,000$ iterations with $3$ chains.
+
+
+```r
+results.weib.psborrow<- mcmc_sample(anls_obj,
+  iter_warmup = round(niter/3),
+  iter_sampling = niter,
+  chains = 3,
+  seed = 123
+)
+#> Running MCMC with 3 sequential chains...
+#> 
+#> Chain 1 finished in 29.2 seconds.
+#> Chain 2 finished in 33.2 seconds.
+#> Chain 3 finished in 29.7 seconds.
+#> 
+#> All 3 chains finished successfully.
+#> Mean chain execution time: 30.7 seconds.
+#> Total execution time: 92.5 seconds.
+
+draws2 <- results.weib.psborrow$draws()
+draws2 <- rename_draws_covariates(draws2, anls_obj)
+```
+
+The summary is shown below.
+
+```r
+results.weib.psborrow$summary()
+#> # A tibble: 7 × 10
+#>   variable          mean   median     sd    mad       q5      q95  rhat ess_bulk
+#>   <chr>            <dbl>    <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl>    <dbl>
+#> 1 lp__          -6.96e+2 -6.96e+2 1.63   1.48   -6.99e+2 -694.     1.00   11832.
+#> 2 beta_trt      -2.84e-2 -2.87e-2 0.117  0.118  -2.20e-1    0.166  1.00   16067.
+#> 3 shape_weibull  8.19e-1  8.18e-1 0.0324 0.0324  7.67e-1    0.873  1.00   20840.
+#> 4 tau            1.23e-1  5.50e-2 0.179  0.0750  5.65e-4    0.474  1.00   15655.
+#> 5 alpha[1]      -7.76e-1 -7.75e-1 0.103  0.104  -9.49e-1   -0.611  1.00   16026.
+#> 6 alpha[2]       2.14e+0  2.15e+0 0.326  0.325   1.58e+0    2.65   1.00   21336.
+#> 7 HR_trt         9.79e-1  9.72e-1 0.116  0.115   8.03e-1    1.18   1.00   16067.
+#> # ℹ 1 more variable: ess_tail <dbl>
+```
+
+Histogram of the posterior samples for hazard ratio and commensurability parameter are produced.
+
+
+```r
+bayesplot::mcmc_hist(draws2, c("treatment HR"))
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-19-1.png" alt="plot of chunk unnamed-chunk-19"  />
+<p class="caption">plot of chunk unnamed-chunk-19</p>
+</div>
+
+```r
+bayesplot::mcmc_hist(draws2, c("commensurability parameter"))
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-19-2.png" alt="plot of chunk unnamed-chunk-19"  />
+<p class="caption">plot of chunk unnamed-chunk-19</p>
+</div>
+
+```r
+bayesplot::color_scheme_set("mix-blue-pink")
+```
+
+The $95\%$ credible interval can be calculated as follows.
+
+```r
+summarize_draws(draws2, ~ quantile(.x, probs = c(0.025, 0.975)))
+#> # A tibble: 7 × 3
+#>   variable                                `2.5%`  `97.5%`
+#>   <chr>                                    <dbl>    <dbl>
+#> 1 lp__                               -700.       -694.   
+#> 2 treatment log HR                     -0.254       0.203
+#> 3 Weibull shape parameter               0.757       0.884
+#> 4 commensurability parameter            0.000142    0.617
+#> 5 baseline log hazard rate, internal   -0.981      -0.582
+#> 6 baseline log hazard rate, external    1.46        2.74 
+#> 7 treatment HR                          0.776       1.22
+```
+
+We can see other plots that help us evaluate convergence and diagnose problems with the MCMC sampler, such as trace plot.
+
+```r
+bayesplot::color_scheme_set("mix-blue-pink")
+
+bayesplot::mcmc_trace(
+  draws2[1:(round(niter/2)), 1:2, ], # Using a subset of draws only
+  pars = c("treatment HR", "commensurability parameter"),
+  n_warmup = round(niter/10)
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-21-1.png" alt="plot of chunk unnamed-chunk-21"  />
+<p class="caption">plot of chunk unnamed-chunk-21</p>
+</div>
+
+# Power prior with piecewise exponential distribution (not implemented in `psborrow2` R package)
+
+We will consider the Bayesian power prior with subject specific power parameters. The weights from various matching and weighting methods can be used as subject specific power parameters for external control subjects. The baseline hazard function will be based on piecewise exponential distribution. The following JAGS code, adapted from [@alvares2021bayesian], implements the power prior with piecewise exponential baseline hazard. We will consider a subject specific power parameter as the weights from inverse probability weighting method. The subject specific weights for external control patients are normalized by dividing each weight by the maximum weight.
+
+
+```r
+model{
+		#POWER PRIOR JAGS CODE
+  #Trial Data
+  for (i in 1:n){
+    # Pieces of the cumulative hazard function
+    for (k in 1:int.obs[i]) {
+      cond[i,k] <- step(time[i] - a[k + 1])
+      HH[i , k] <- cond[i,k] * (a[k + 1] - a[k]) * exp(alpha[k]) +
+      (1 - cond[i,k] ) * (time[i] - a[k]) * exp(alpha[k])
+    }
+    # Cumulative hazard function
+    H[i] <- sum(HH[i,1 : int.obs[i]] )
+  }
+  for ( i in 1:n) {
+    # Linear predictor
+    elinpred[i] <- exp(inprod(beta[],X[i,]))
+    # Log-hazard function
+    logHaz[i] <- log( exp(alpha[int.obs[i]]) * elinpred[i])
+    # Log-survival function
+    logSurv[i] <- -H[i]  * elinpred[i]
+    # Definition of the log-likelihood using zeros trick
+    phi[i] <- 100000 - status[i] * logHaz[i] - logSurv[i]
+    zeros[i] ~ dpois(phi[i])
+  }
+
+  #Real World or External Control Data
+   for (i in 1:nR){
+    # Pieces of the cumulative hazard function
+    for (k in 1:int.obsR[i]) {
+      condR[i,k] <- step(timeR[i] - a[k + 1])
+      HHR[i , k] <- condR[i,k] * (a[k + 1] - a[k]) * exp(alpha[k]) +
+      (1 - condR[i,k] ) * (timeR[i] - a[k]) * exp(alpha[k])
+    }
+    # Cumulative hazard function
+    HR[i] <- sum(HHR[i,1 : int.obsR[i]] )
+  }
+  for ( i in 1:nR) {
+    # Linear predictor
+    elinpredR[i] <- exp(inprod(beta[],XR[i,]))
+    # Log-hazard function
+    logHazR[i] <- log(exp(alpha[int.obsR[i]]) * elinpredR[i])
+    # Log-survival function
+    logSurvR[i] <- -HR[i] * elinpredR[i]
+    # Definition of the log-likelihood using zeros trick
+    phiR[i] <- 100000 - rho[i] * statusR[i] * logHazR[i] - rho[i] * logSurvR[i] 
+    #rho[i] is the subject level weight as a power prior
+    zerosR[i] ~ dpois(phiR[i])
+  }
+  # Prior distributions
+  for(l in 1: Nbetas ){
+    beta[l] ~ dnorm(0 , 0.001)
+  }
+
+  for( k in 1 :m) {
+  alpha[k] ~ dnorm(0,0.001)
+  }
+
+} 
+```
+
+
+We now define all the variables as in input to JAGS.
+
+
+```r
+data_with_weights=data.frame(data_with_weights)
+
+#Trial Data
+trial.data <- data_with_weights[data_with_weights$indicator==1,]
+
+#External Control Data
+ext.control.data <- data_with_weights[data_with_weights$indicator==0,]
+
+#Input in JAGS code
+n <- nrow(trial.data) #Sample size in trial data
+nR <- nrow(ext.control.data) #Sample size in external control data
+
+time <- trial.data$time #Survival time in trial data
+timeR <- ext.control.data$time #Survival time in external control data
+
+status <- trial.data$event #Event indicator in trial data
+statusR <- ext.control.data$event #Event indicator in external control data
+
+rho <- ext.control.data$invprob_weights/max(ext.control.data$invprob_weights) #Power prior weights
+
+X <- as.matrix(trial.data[,10]) #Covariates in trial data
+XR <- as.matrix(ext.control.data[,10]) #Covariates in external control data
+
+Nbetas <- ncol(X)
+
+zeros = rep(0, n)
+zerosR = rep(0, nR)
+```
+
+We also need to pre-specify the number of intervals. For simplicity, we will consider $K=1$ interval. However, this method also works $K>1$.
+
+
+```r
+# Time axis partition
+K <- 1 # number of intervals
+
+#Cut points (Using the event times in trial data)
+a=c(0,quantile(trial.data$time[trial.data$event==1],seq(0,1,by=1/K))[-c(1,K+1)],
+    max(c(trial.data$time,ext.control.data$time))+0.0001)
+
+#Trial data
+# int.obs: vector that tells us at which interval each observation is
+int.obs <- matrix(data = NA, nrow = nrow(trial.data), ncol = length(a) - 1)
+d <- matrix(data = NA, nrow = nrow(trial.data), ncol = length(a) - 1)
+for(i in 1:nrow(trial.data)) {
+  for(k in 1:(length(a) - 1)) {
+    d[i, k] <- ifelse(trial.data$time[i] - a[k] > 0, 1, 0) * 
+      ifelse(a[k + 1] - trial.data$time[i] > 0, 1,0)
+    int.obs[i, k] <- d[i, k] * k
+  }
+}
+int.obs <- rowSums(int.obs)
+
+#External control data
+# int.obs: vector that tells us at which interval each observation is
+int.obsR <- matrix(data = NA, nrow = nrow(ext.control.data), ncol = length(a) - 1)
+d <- matrix(data = NA, nrow = nrow(ext.control.data), ncol = length(a) - 1)
+for(i in 1:nrow(ext.control.data)) {
+  for(k in 1:(length(a) - 1)) {
+    d[i, k] <- ifelse(ext.control.data$time[i] - a[k] > 0, 1, 0) * 
+      ifelse(a[k + 1] - ext.control.data$time[i] > 0, 1,0)
+    int.obsR[i, k] <- d[i, k] * k
+  }
+}
+int.obsR <- rowSums(int.obsR)
+```
+
+
+We now put all variables into a list as data inputs for JAGs.
+
+```r
+### JAGS ####
+d.jags <- list("n", "nR", "time", "timeR",
+               "a", "X", "XR","int.obs",
+               "int.obsR","Nbetas",
+               "zeros","zerosR","rho", 
+               "status", "statusR","K")
+```
+
+We specify the parameter of interest as follows.
+
+
+```r
+#Parameter of interest
+p.jags <- c("beta","alpha")
+```
+
+The standard normal distribution is used as an initial values for the parameter of interest.
+
+```r
+#Initial values for each parameter
+i.jags <- function(){
+  list(beta = rnorm(ncol(X)), alpha = rnorm(K))
+}
+```
+
+
+Now, we call the `jags` function to conduct MCMC sampling with $3$ chains as shown below. We set number of iterations as $niter=10,000$ with a burn in of $5000$ and thinning of $10$.
+
+
+```r
+set.seed(1)
+model1 <- jags(data = d.jags, model.file = "powerprior.txt", inits = i.jags, n.chains = 3,
+               parameters=p.jags,n.iter=niter,n.burnin = round(niter/2),n.thin = 10)
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 1100
+#>    Unobserved stochastic nodes: 2
+#>    Total graph size: 23016
+#> 
+#> Initializing model
+```
+
+The summary can be produced using the following command.
+
+```r
+model1$BUGSoutput$summary
+#>                   mean         sd          2.5%           25%           50%
+#> alpha     7.672650e-01 0.08330851  6.030597e-01  7.109502e-01  7.679483e-01
+#> beta     -8.006893e-01 0.05042475 -8.986307e-01 -8.356531e-01 -8.005683e-01
+#> deviance  2.200010e+08 1.86370178  2.200009e+08  2.200010e+08  2.200010e+08
+#>                    75%         97.5%     Rhat n.eff
+#> alpha     8.249207e-01  9.219494e-01 1.000049  1500
+#> beta     -7.651435e-01 -7.026286e-01 1.000307  1500
+#> deviance  2.200010e+08  2.200010e+08 1.000000     1
+```
+
+The summary of the hazard ratio for treatment variable is shown below.
+
+```r
+c(summary(exp(model1$BUGSoutput$sims.list$beta[,1])),
+  quantile(exp(model1$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
+#>      Min.   1st Qu.    Median      Mean   3rd Qu.      Max.      2.5%     97.5% 
+#> 0.3871170 0.4335912 0.4490737 0.4495901 0.4652671 0.5259439 0.4071268 0.4952818
+```
+The histogram of the treatment hazard ratio can also be produced.
+
+```r
+hist(exp(model1$BUGSoutput$sims.list$beta[,1]),xlab="treatmentHR",main="",ylab="")
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-31-1.png" alt="plot of chunk unnamed-chunk-31"  />
+<p class="caption">plot of chunk unnamed-chunk-31</p>
+</div>
+
+The traceplot can be generated as follows.
+
+```r
+traceplot(model1,varname=c("alpha","beta"))
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-32-1.png" alt="plot of chunk unnamed-chunk-32"  />
+<p class="caption">plot of chunk unnamed-chunk-32</p>
+</div><div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-32-2.png" alt="plot of chunk unnamed-chunk-32"  />
+<p class="caption">plot of chunk unnamed-chunk-32</p>
+</div>
+
+
+
+
+# Commensurate prior with piecewise exponential distribution (not implemented in `psborrow2` R package)
+
+We will consider the Bayesian commensurate prior model.
+
+
+```r
+model{
+  #Trial Data
+  for (i in 1:n){
+    # Pieces of the cumulative hazard function
+    for (k in 1:int.obs[i]) {
+      cond[i,k] <- step(time[i] - a[k + 1])
+      HH[i , k] <- cond[i,k] * (a[k + 1] - a[k]) * exp(alpha[k]) +
+      (1 - cond[i,k] ) * (time[i] - a[k]) * exp(alpha[k])
+    }
+    # Cumulative hazard function
+    H[i] <- sum(HH[i,1 : int.obs[i]] )
+  }
+  for ( i in 1:n) {
+    # Linear predictor
+    elinpred[i] <- exp(inprod(beta[],X[i,]))
+    # Log-hazard function
+    logHaz[i] <- log(exp(alpha[int.obs[i]]) * elinpred[i])
+    # Log-survival function
+    logSurv[i] <- -H[i] * elinpred[i]
+    # Definition of the log-likelihood using zeros trick
+    phi[i] <- 100000 - wt[i]*status[i] * logHaz[i] - wt[i]*logSurv[i]
+    zeros[i] ~ dpois(phi[i])
+  }
+
+  #Real World or External Control Data
+   for (i in 1:nR){
+    # Pieces of the cumulative hazard function
+    for (k in 1:int.obsR[i]) {
+      condE[i,k] <- step(timeR[i] - a[k + 1])
+      HHE[i , k] <- condE[i,k] * (a[k + 1] - a[k]) * exp(alphaR[k]) +
+      (1 - condE[i,k] ) * (timeR[i] - a[k]) * exp(alphaR[k])
+    }
+    # Cumulative hazard function
+    HE[i] <- sum(HHE[i,1 : int.obsR[i]] )
+  }
+  for ( i in 1:nR) {
+    # Linear predictor
+    elinpredE[i] <- exp(inprod(beta0[],XR[i,]))
+    # Log-hazard function
+    logHazE[i] <- log(exp(alphaR[int.obsR[i]]) * elinpredE[i])
+    # Log-survival function
+    logSurvE[i] <- -HE[i] * elinpredE[i]
+    # Definition of the log-likelihood using zeros trick
+    phiE[i] <- 100000 - wtR[i]*statusR[i] * logHazE[i] - wtR[i] * logSurvE[i]
+    zerosR[i] ~ dpois(phiE[i])
+  }
+
+
+  # Commensurate prior on the covariate effect
+  for(l in 1: Nbetas ){
+    beta0[l] ~ dnorm(0,0.0001);
+    tau[l] ~ dgamma(0.01,0.01);
+    beta[l] ~ dnorm(beta0[l],tau[l]);
+  }
+  
+  # Normal prior on the piecewise exponential parameters for each interval
+  for( m in 1 : K) {
+  taualpha[m] ~ dgamma(0.01,0.01);
+  alpha[m] ~ dnorm(alphaR[m],taualpha[m]);
+  alphaR[m] ~ dnorm(0,0.0001);
+  }
+
+} 
+```
+
+We now define all the variables as in input to JAGS.
+
+```r
+data_with_weights=data.frame(data_with_weights)
+
+#Trial Data
+trial.data <- data_with_weights[data_with_weights$indicator==1,]
+
+#External Control Data
+ext.control.data <- data_with_weights[data_with_weights$indicator==0,]
+
+#Input in JAGS code
+n <- nrow(trial.data) #Sample size in trial data
+nR <- nrow(ext.control.data) #Sample size in external control data
+
+time <- trial.data$time #Survival time in trial data
+timeR <- ext.control.data$time #Survival time in external control data
+
+status <- trial.data$event #Event indicator in trial data
+statusR <- ext.control.data$event #Event indicator in external control data
+
+wt <- trial.data$norm.weights #Vector of weights in trial data
+wtR <- ext.control.data$norm.weights #Vector of weights in external control data
+
+X <- as.matrix(trial.data[,10]) #Treatment indicator in trial data
+XR <- as.matrix(ext.control.data[,10]) #Treatment indicator in trial data
+
+Nbetas <- ncol(X)
+
+zeros = rep(0, n)
+zerosR = rep(0, nR)
+```
+We also need to pre-specify the number of intervals. For simplicity, we will consider $K=1$ interval. However, this method also works when $K>1$.
+
+
+```r
+# Time axis partition
+K <- 1 # number of intervals
+
+#Cut points (Using the event times in trial data)
+a=c(0,quantile(trial.data$time[trial.data$event==1],seq(0,1,by=1/K))[-c(1,K+1)],
+    max(c(trial.data$time,ext.control.data$time))+0.0001)
+
+#Trial data
+# int.obs: vector that tells us at which interval each observation is
+int.obs <- matrix(data = NA, nrow = nrow(trial.data), ncol = length(a) - 1)
+d <- matrix(data = NA, nrow = nrow(trial.data), ncol = length(a) - 1)
+for(i in 1:nrow(trial.data)) {
+  for(k in 1:(length(a) - 1)) {
+    d[i, k] <- ifelse(trial.data$time[i] - a[k] > 0, 1, 0) * 
+      ifelse(a[k + 1] - trial.data$time[i] > 0, 1, 0)
+    int.obs[i, k] <- d[i, k] * k
+  }
+}
+int.obs <- rowSums(int.obs)
+
+#External control data
+# int.obs: vector that tells us at which interval each observation is
+int.obsR <- matrix(data = NA, nrow = nrow(ext.control.data), ncol = length(a) - 1)
+d <- matrix(data = NA, nrow = nrow(ext.control.data), ncol = length(a) - 1)
+for(i in 1:nrow(ext.control.data)) {
+  for(k in 1:(length(a) - 1)) {
+    d[i, k] <- ifelse(ext.control.data$time[i] - a[k] > 0, 1, 0) * 
+      ifelse(a[k + 1] - ext.control.data$time[i] > 0, 1,0)
+    int.obsR[i, k] <- d[i, k] * k
+  }
+}
+int.obsR <- rowSums(int.obsR)
+```
+
+We now put all variables into a list as data inputs for JAGs. Note that the letter $R$ in the following corresponds to RWD. For example, $XR$ is the covariate matrix in RWD.
+
+
+```r
+### JAGS ####
+d.jags <- list("n", "nR", "time", "timeR",
+               "a", "X", "XR","int.obs",
+               "int.obsR","Nbetas",
+               "zeros","zerosR","wt", "wtR",
+               "status", "statusR","K")
+```
+
+We specify the parameter of interest as follows. Note that `alphaR` is the baseline hazard parameter for external control.
+
+
+```r
+#Parameter of interest
+p.jags <- c("beta","alpha","alphaR","tau")
+```
+
+We generate initial values for $\beta$ and $\alpha$ from standard normal distributions, and $\tau$ from a non-informative Gamma distribution.
+
+```r
+#Initial values for each parameter
+i.jags <- function(){
+  list(beta = rnorm(ncol(X)), beta0 = rnorm(ncol(X)),
+       alpha = rnorm(K),alphaR = rnorm(K),tau = rgamma(ncol(X),shape = 0.01,scale=0.01))
+}
+```
+
+
+Now, we call the `jags` function to conduct MCMC sampling with $3$ chains as shown below. We set number of iterations as $niter=10,000$ with a burn in of $5000$ and thinning of $10$.
+
+
+```r
+set.seed(1)
+model2 <- jags(data = d.jags, model.file = "commensurateprior.txt", inits = i.jags, n.chains = 3,
+               parameters=p.jags,n.iter=niter,n.burnin = round(niter/2),n.thin = 10)
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 1100
+#>    Unobserved stochastic nodes: 5
+#>    Total graph size: 24222
+#> 
+#> Initializing model
+```
+
+The summary can be produced using the following command.
+
+```r
+model2$BUGSoutput$summary
+#>                   mean         sd          2.5%           25%           50%
+#> alpha     7.012442e-01 0.08417559  5.422684e-01  6.433417e-01  6.995345e-01
+#> alphaR    3.775493e+00 0.53271370  2.651884e+00  3.434386e+00  3.808735e+00
+#> beta     -7.699118e-01 0.04937989 -8.653964e-01 -8.023713e-01 -7.688038e-01
+#> deviance  2.200009e+08 3.59110530  2.200009e+08  2.200009e+08  2.200009e+08
+#> tau       4.990748e-02 0.19141621  2.688540e-04  3.312027e-03  1.147687e-02
+#>                    75%         97.5%     Rhat n.eff
+#> alpha     7.626370e-01  8.639186e-01 1.002131   940
+#> alphaR    4.142427e+00  4.781330e+00 1.002836   840
+#> beta     -7.368342e-01 -6.755448e-01 1.000972  1500
+#> deviance  2.200009e+08  2.200009e+08 1.000000     1
+#> tau       3.066659e-02  2.970125e-01 1.001709  1200
+```
+
+The summary of the hazard ratio for treatment variable is shown below.
+
+```r
+c(summary(exp(model2$BUGSoutput$sims.list$beta[,1])),
+  quantile(exp(model2$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
+#>      Min.   1st Qu.    Median      Mean   3rd Qu.      Max.      2.5%     97.5% 
+#> 0.3924743 0.4482647 0.4635673 0.4636176 0.4786268 0.5455878 0.4208848 0.5088791
+```
+The histogram of the treatment hazard ratio can also be produced.
+
+```r
+hist(exp(model2$BUGSoutput$sims.list$beta[,1]),xlab="treatmentHR",main="",ylab="")
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-42-1.png" alt="plot of chunk unnamed-chunk-42"  />
+<p class="caption">plot of chunk unnamed-chunk-42</p>
+</div>
+
+The histogram of the commensurability parameter can also be produced.
+
+```r
+hist(exp(model2$BUGSoutput$sims.list$tau[,1]),xlab="Commensurability Parameter",main="",ylab="")
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-43-1.png" alt="plot of chunk unnamed-chunk-43"  />
+<p class="caption">plot of chunk unnamed-chunk-43</p>
+</div>
+
+The traceplot can be created as follows.
+
+```r
+traceplot(model2,varname=c("alpha","alphaR","beta","tau"))
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-44-1.png" alt="plot of chunk unnamed-chunk-44"  />
+<p class="caption">plot of chunk unnamed-chunk-44</p>
+</div><div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-44-2.png" alt="plot of chunk unnamed-chunk-44"  />
+<p class="caption">plot of chunk unnamed-chunk-44</p>
+</div><div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-44-3.png" alt="plot of chunk unnamed-chunk-44"  />
+<p class="caption">plot of chunk unnamed-chunk-44</p>
+</div><div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-44-4.png" alt="plot of chunk unnamed-chunk-44"  />
+<p class="caption">plot of chunk unnamed-chunk-44</p>
+</div>
+
+# Exponential distribution (constant hazard) and no borrowing: Using `psborrow2` R package
+In addition to specifying an exponential distribution using Bayesian dynamic borrowing, naive no-borrowing and full-borrowing analysis can be conducted using the exponential distribution following similar steps as above. These ype of analysis could be used as a sensitivity or exploratory analysis.
+
+The `psborrow2` package will be used to conduct the analysis. Following are the steps.
+  
+We use exponential distribution for the outcome model as follows. Non-informative normal prior is used for the baseline parameter.
+
+```r
+#Outcome
+outcome <- outcome_surv_exponential(
+  time_var = "time",
+  cens_var = "cnsr",
+  baseline_prior = prior_normal(0, 1000)
+)
+
+outcome
+#> Outcome object with class OutcomeSurvExponential 
+#> 
+#> Outcome variables:
+#> time_var cens_var 
+#>   "time"   "cnsr" 
+#> 
+#> Baseline prior:
+#> Normal Distribution
+#> Parameters:
+#>  Stan  R    Value
+#>  mu    mean    0 
+#>  sigma sd   1000
+```
+
+Next, the borrowing method is implemented as shown below. We consider no borrowing as shown below.
+
+```r
+#Borrowing
+borrowing <- borrowing_none(
+  ext_flag_col = "ext"
+)
+
+borrowing
+#> Borrowing object using the  No borrowing  approach
+#> 
+#> External control flag: ext
+```
+
+Similarly, details regarding the treatment variable is specified below. Non-informative prior is used a prior for treatment effect.
+
+```r
+#Treatment
+treatment <- treatment_details(
+  trt_flag_col = "group",
+  trt_prior = prior_normal(0, 1000)
+)
+treatment
+#> Treatment object
+#> 
+#> Treatment flag column: group 
+#> 
+#> Treatment effect prior:
+#> Normal Distribution
+#> Parameters:
+#>  Stan  R    Value
+#>  mu    mean    0 
+#>  sigma sd   1000
+```
+
+Now, all the pieces are brought together to create the analysis object as shown below.
+
+
+```r
+data_with_weights <- as.matrix(data_with_weights)
+#Application
+anls_obj <- create_analysis_obj(
+  data_matrix = data_with_weights,
+  outcome = outcome,
+  borrowing = borrowing,
+  treatment = treatment
+)
+#> Inputs look good.
+#> NOTE: excluding `ext` == `1`/`TRUE` for no borrowing.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+```
+
+Finally, we run the MCMC sample with $3$ chains.
+
+
+```r
+results.no.psborrow<- mcmc_sample(anls_obj,
+  iter_warmup = round(niter/3),
+  iter_sampling = niter,
+  chains = 3,
+  seed = 123
+)
+#> Running MCMC with 3 sequential chains...
+#> 
+#> Chain 1 finished in 4.1 seconds.
+#> Chain 2 finished in 4.1 seconds.
+#> Chain 3 finished in 4.0 seconds.
+#> 
+#> All 3 chains finished successfully.
+#> Mean chain execution time: 4.1 seconds.
+#> Total execution time: 12.6 seconds.
+
+draws3 <- results.no.psborrow$draws()
+draws3 <- rename_draws_covariates(draws3, anls_obj)
+```
+
+The summary is shown below.
+
+```r
+results.no.psborrow$summary()
+#> # A tibble: 4 × 10
+#>   variable      mean    median     sd    mad       q5      q95  rhat ess_bulk
+#>   <chr>        <dbl>     <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl>    <dbl>
+#> 1 lp__     -724.     -724.     0.995  0.718  -726.    -723.     1.00   10028.
+#> 2 beta_trt   -0.0343   -0.0352 0.117  0.116    -0.224    0.159  1.00    7950.
+#> 3 alpha      -0.948    -0.947  0.0989 0.0989   -1.11    -0.787  1.00    7991.
+#> 4 HR_trt      0.973     0.965  0.114  0.112     0.799    1.17   1.00    7950.
+#> # ℹ 1 more variable: ess_tail <dbl>
+```
+
+The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
+
+
+```r
+bayesplot::mcmc_hist(draws3, c("treatment HR"))
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-51-1.png" alt="plot of chunk unnamed-chunk-51"  />
+<p class="caption">plot of chunk unnamed-chunk-51</p>
+</div>
+
+```r
+bayesplot::color_scheme_set("mix-blue-pink")
+```
+
+The $95\%$ credible interval can be calculated as follows.
+
+```r
+summarize_draws(draws3, ~ quantile(.x, probs = c(0.025, 0.975)))
+#> # A tibble: 4 × 3
+#>   variable                   `2.5%`  `97.5%`
+#>   <chr>                       <dbl>    <dbl>
+#> 1 lp__                     -727.    -723.   
+#> 2 treatment log HR           -0.264    0.195
+#> 3 baseline log hazard rate   -1.14    -0.757
+#> 4 treatment HR                0.768    1.22
+```
+
+We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
+
+```r
+bayesplot::color_scheme_set("mix-blue-pink")
+
+bayesplot::mcmc_trace(
+  draws3[1:(round(niter/2)), 1:2, ], # Using a subset of draws only
+  pars = c("treatment HR"),
+  n_warmup = round(niter/10)
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-53-1.png" alt="plot of chunk unnamed-chunk-53"  />
+<p class="caption">plot of chunk unnamed-chunk-53</p>
+</div>
+
+# Exponential distribution (constant hazard) and full borrowing: Using `psborrow2` R package
+
+The `psborrow2` package will be used to conduct the analysis. Following are the steps.
+  
+We use exponential distribution for the outcome model as follows. Non-informative normal prior is used for the baseline parameter.
+
+```r
+#Outcome
+outcome <- outcome_surv_exponential(
+  time_var = "time",
+  cens_var = "cnsr",
+  baseline_prior = prior_normal(0, 1000)
+)
+
+outcome
+#> Outcome object with class OutcomeSurvExponential 
+#> 
+#> Outcome variables:
+#> time_var cens_var 
+#>   "time"   "cnsr" 
+#> 
+#> Baseline prior:
+#> Normal Distribution
+#> Parameters:
+#>  Stan  R    Value
+#>  mu    mean    0 
+#>  sigma sd   1000
+```
+
+Next, the borrowing method is implemented as shown below. We consider full borrowing as shown below.
+
+```r
+#Borrowing
+borrowing <- borrowing_full(ext_flag_col = "ext")
+
+borrowing
+#> Borrowing object using the  Full borrowing  approach
+#> 
+#> External control flag: ext
+```
+
+Similarly, details regarding the treatment variable is specified below. Non-informative prior is used a prior for treatment effect.
+
+```r
+#Treatment
+treatment <- treatment_details(
+  trt_flag_col = "group",
+  trt_prior = prior_normal(0, 1000)
+)
+treatment
+#> Treatment object
+#> 
+#> Treatment flag column: group 
+#> 
+#> Treatment effect prior:
+#> Normal Distribution
+#> Parameters:
+#>  Stan  R    Value
+#>  mu    mean    0 
+#>  sigma sd   1000
+```
+
+Now, all the pieces are brought together to create the analysis object as shown below.
+
+
+```r
+#Application
+anls_obj <- create_analysis_obj(
+  data_matrix = data_with_weights,
+  outcome = outcome,
+  borrowing = borrowing,
+  treatment = treatment
+)
+#> Inputs look good.
+#> NOTE: dropping column `ext` for full borrowing.
+#> Stan program compiled successfully!
+#> Ready to go! Now call `mcmc_sample()`.
+```
+
+Finally, we run the MCMC sample with $3$ chains.
+
+
+```r
+results.full.psborrow<- mcmc_sample(anls_obj,
+  iter_warmup = round(niter/3),
+  iter_sampling = niter,
+  chains = 3,
+  seed = 123
+)
+#> Running MCMC with 3 sequential chains...
+#> 
+#> Chain 1 finished in 5.7 seconds.
+#> Chain 2 finished in 5.6 seconds.
+#> Chain 3 finished in 5.6 seconds.
+#> 
+#> All 3 chains finished successfully.
+#> Mean chain execution time: 5.7 seconds.
+#> Total execution time: 17.4 seconds.
+
+draws4 <- results.full.psborrow$draws()
+draws4 <- rename_draws_covariates(draws4, anls_obj)
+```
+
+The summary is shown below.
+
+```r
+results.full.psborrow$summary()
+#> # A tibble: 4 × 10
+#>   variable     mean   median     sd    mad       q5      q95  rhat ess_bulk
+#>   <chr>       <dbl>    <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl>    <dbl>
+#> 1 lp__     -815.    -814.    1.01   0.710  -817.    -814.     1.00   14094.
+#> 2 beta_trt   -1.32    -1.32  0.0781 0.0775   -1.45    -1.19   1.00   11317.
+#> 3 alpha       0.339    0.339 0.0476 0.0480    0.260    0.416  1.00   11709.
+#> 4 HR_trt      0.268    0.267 0.0209 0.0207    0.235    0.303  1.00   11317.
+#> # ℹ 1 more variable: ess_tail <dbl>
+```
+
+The histogram of the posterior samples for hazard ratio and commensurability parameter as shown below.
+
+
+```r
+bayesplot::mcmc_hist(draws4, c("treatment HR"))
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-60-1.png" alt="plot of chunk unnamed-chunk-60"  />
+<p class="caption">plot of chunk unnamed-chunk-60</p>
+</div>
+
+```r
+bayesplot::color_scheme_set("mix-blue-pink")
+```
+
+The $95\%$ credible interval can be calculated as follows.
+
+```r
+summarize_draws(draws4, ~ quantile(.x, probs = c(0.025, 0.975)))
+#> # A tibble: 4 × 3
+#>   variable                   `2.5%`  `97.5%`
+#>   <chr>                       <dbl>    <dbl>
+#> 1 lp__                     -817.    -814.   
+#> 2 treatment log HR           -1.47    -1.17 
+#> 3 baseline log hazard rate    0.245    0.430
+#> 4 treatment HR                0.229    0.311
+```
+
+We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
+
+```r
+bayesplot::color_scheme_set("mix-blue-pink")
+
+bayesplot::mcmc_trace(
+  draws4[1:(round(niter/2)), 1:2, ], # Using a subset of draws only
+  pars = c("treatment HR"),
+  n_warmup = round(niter/10)
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-match_weight_02_application-unnamed-chunk-62-1.png" alt="plot of chunk unnamed-chunk-62"  />
+<p class="caption">plot of chunk unnamed-chunk-62</p>
+</div>
+
+# Cox proportional hazards model using frequentist approach (No borrowing)
+
+Now, we also demonstrate how researchers would fit a frequentist Cox model. For the first model, we will not borrow any information from external controls and use the trial data only.
+
+
+```r
+data_with_weights = data.frame(data_with_weights)
+f1 <- coxph(Surv(time,event)~group, data=data_with_weights[data_with_weights$ext==0,])
+summary(f1)
+#> Call:
+#> coxph(formula = Surv(time, event) ~ group, data = data_with_weights[data_with_weights$ext == 
+#>     0, ])
+#> 
+#>   n= 600, number of events= 367 
+#> 
+#>           coef exp(coef) se(coef)      z Pr(>|z|)
+#> group -0.02944   0.97099  0.11673 -0.252    0.801
+#> 
+#>       exp(coef) exp(-coef) lower .95 upper .95
+#> group     0.971       1.03    0.7724     1.221
+#> 
+#> Concordance= 0.512  (se = 0.014 )
+#> Likelihood ratio test= 0.06  on 1 df,   p=0.8
+#> Wald test            = 0.06  on 1 df,   p=0.8
+#> Score (logrank) test = 0.06  on 1 df,   p=0.8
+```
+
+# Cox proportional hazards model using frequentist approach (Full borrowing from external control)
+A frequentist Cox model can also be fitted using all of the external control data via full borrowing.
+
+
+```r
+f2 <- coxph(Surv(time,event)~group, data=data_with_weights)
+summary(f2)
+#> Call:
+#> coxph(formula = Surv(time, event) ~ group, data = data_with_weights)
+#> 
+#>   n= 1100, number of events= 703 
+#> 
+#>           coef exp(coef) se(coef)      z Pr(>|z|)    
+#> group -0.98910   0.37191  0.08018 -12.34   <2e-16 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> 
+#>       exp(coef) exp(-coef) lower .95 upper .95
+#> group    0.3719      2.689    0.3178    0.4352
+#> 
+#> Concordance= 0.662  (se = 0.007 )
+#> Likelihood ratio test= 158.1  on 1 df,   p=<2e-16
+#> Wald test            = 152.2  on 1 df,   p=<2e-16
+#> Score (logrank) test = 162.7  on 1 df,   p=<2e-16
+```
+
+
+# Summarizing all the results together
+Now, we concatenate the results from all of the Bayesian and frequentist analysis approaches together. 
+
+```r
+hr1=results.exp.psborrow$summary()[6,c(2)]
+hr1conf = summarize_draws(draws1, ~ quantile(.x, probs = c(0.025, 0.975)))[6,c(2,3)]
+hr1.conf=c(hr1$mean,hr1conf$`2.5%`,hr1conf$`97.5%`)
+
+hr2=c(mean(exp(model1$BUGSoutput$sims.list$beta[,1])),
+  quantile(exp(model1$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
+hr2.conf=c(hr2)
+
+hr3=results.weib.psborrow$summary()[7,c(2)]
+hr3conf = summarize_draws(draws2, ~ quantile(.x, probs = c(0.025, 0.975)))[7,c(2,3)]
+hr3.conf=c(hr3$mean,hr3conf$`2.5%`,hr3conf$`97.5%`)
+
+hr4=c(mean(exp(model2$BUGSoutput$sims.list$beta[,1])),
+  quantile(exp(model2$BUGSoutput$sims.list$beta[,1]),probs=c(0.025,0.975)))
+hr4.conf=c(hr4)
+
+hr5=results.no.psborrow$summary()[4,c(2)]
+hr5conf = summarize_draws(draws3, ~ quantile(.x, probs = c(0.025, 0.975)))[4,c(2,3)]
+hr5.conf=c(hr5$mean,hr5conf$`2.5%`,hr5conf$`97.5%`)
+
+hr6=results.full.psborrow$summary()[4,c(2)]
+hr6conf = summarize_draws(draws4, ~ quantile(.x, probs = c(0.025, 0.975)))[4,c(2,3)]
+hr6.conf=c(hr6$mean,hr6conf$`2.5%`,hr6conf$`97.5%`)
+
+hr7.conf=c(exp(coef(f1)),exp(confint(f1)))
+
+hr8.conf=c(exp(coef(f2)),exp(confint(f2)))
+
+out = round(rbind(hr1.conf,hr2.conf,hr3.conf,hr4.conf,hr5.conf,hr6.conf,hr7.conf,hr8.conf),4)
+
+rownames(out)= NULL
+out = data.frame(Method=c("Exponential distribution (constant hazard) and gamma prior",
+                          "Piecewise exponential distribution (proportional hazard) and power prior",
+                          "Weibull distribution (proportional hazard) and gamma prior",
+                          "Piecewise exponential distribution (proportional hazard) and commensurate prior",
+                          "Exponential distribution (constant hazard): No borrowing",
+                          "Exponential distribution (constant hazard): Full borrowing",
+                          "Cox model (Frequentist approach): No borrowing",
+                          "Cox model (Frequentist approach): Full borrowing"),out)
+colnames(out)[2:4] = c("Hazard Ratio","Lower 95% CI","Upper 95% CI")
+```
+
+The hazard ratio estimates and $95\%$ credible intervals for all the methods are shown below.
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Method </th>
+   <th style="text-align:right;"> Hazard Ratio </th>
+   <th style="text-align:right;"> Lower 95% CI </th>
+   <th style="text-align:right;"> Upper 95% CI </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Exponential distribution (constant hazard) and gamma prior </td>
+   <td style="text-align:right;"> 0.9703 </td>
+   <td style="text-align:right;"> 0.7665 </td>
+   <td style="text-align:right;"> 1.2148 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Piecewise exponential distribution (proportional hazard) and power prior </td>
+   <td style="text-align:right;"> 0.4496 </td>
+   <td style="text-align:right;"> 0.4071 </td>
+   <td style="text-align:right;"> 0.4953 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Weibull distribution (proportional hazard) and gamma prior </td>
+   <td style="text-align:right;"> 0.9787 </td>
+   <td style="text-align:right;"> 0.7756 </td>
+   <td style="text-align:right;"> 1.2249 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Piecewise exponential distribution (proportional hazard) and commensurate prior </td>
+   <td style="text-align:right;"> 0.4636 </td>
+   <td style="text-align:right;"> 0.4209 </td>
+   <td style="text-align:right;"> 0.5089 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Exponential distribution (constant hazard): No borrowing </td>
+   <td style="text-align:right;"> 0.9729 </td>
+   <td style="text-align:right;"> 0.7682 </td>
+   <td style="text-align:right;"> 1.2156 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Exponential distribution (constant hazard): Full borrowing </td>
+   <td style="text-align:right;"> 0.2678 </td>
+   <td style="text-align:right;"> 0.2290 </td>
+   <td style="text-align:right;"> 0.3110 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cox model (Frequentist approach): No borrowing </td>
+   <td style="text-align:right;"> 0.9710 </td>
+   <td style="text-align:right;"> 0.7724 </td>
+   <td style="text-align:right;"> 1.2206 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cox model (Frequentist approach): Full borrowing </td>
+   <td style="text-align:right;"> 0.3719 </td>
+   <td style="text-align:right;"> 0.3178 </td>
+   <td style="text-align:right;"> 0.4352 </td>
+  </tr>
+</tbody>
+<tfoot>
+<tr>
+<td style = 'padding: 0; border:0;' colspan='100%'><sup></sup> CI: Credible Interval for Bayesian methods and Confidence interval for Frequentist method</td>
+</tr>
+</tfoot>
+</table>
+
+
+
+# References
+
+

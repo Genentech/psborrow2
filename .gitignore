@@ -12,7 +12,6 @@
 *.sas.txt
 *~
 /.project
-articles
 devel/*
 develop/
 doc
@@ -36,3 +35,4 @@ coverage.*
 /Meta/
 inst/doc
 node_modules
+vignettes/original/data_with_weights.csv

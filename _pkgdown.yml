@@ -21,7 +21,7 @@ navbar:
       href: https://github.com/Genentech/psborrow2
 
 articles:
-  - title: All vignettes
+  - title: Core tutorials
     desc: ~
     contents:
       - "`psborrow2`"
@@ -31,3 +31,8 @@ articles:
       - "`propensity_scores`"
       - "`weighting`"
       - "`data_simulation`"
+  - title: Deep dive into matching/weighting
+    desc: ~
+    contents:
+      - "match_weight_01_methods"
+      - "match_weight_02_application"

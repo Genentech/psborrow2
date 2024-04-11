@@ -22,6 +22,18 @@ Authors@R: c(
       role = c("ctb"),
       email = "craig.gower-page@roche.com"
       ),
+   person(
+      given = "Manoj",
+      family = "Khanal",
+      role = c("ctb"),
+      email = "khanal_manoj@lilly.com"
+   ),
+   person(
+      given = "Mingyang",
+      family = "Shan",
+      role = c("ctb"),
+      email = "mingyang.shan@lilly.com"
+   ),
    person("Genentech, Inc.", role = c("cph", "fnd"))
    )
 Description: Bayesian dynamic borrowing is an approach to incorporating external
