@@ -1,6 +1,7 @@
 ---
 title: "4. Conduct a simulation study"
-author: "Matt Secrest and Isaac Gravestock"
+bibliography: references.bib
+author: "Matt Secrest, Isaac Gravestock, Kexin Jin and Zhi Yang"
 output:
   rmarkdown::html_vignette:
     toc: true
@@ -618,3 +619,84 @@ ggplot(simulation_res_df[simulation_res_df$true_hr == 0.6, ]) +
 <img src="figure-simulation_study-unnamed-chunk-25-1.png" alt="plot of chunk unnamed-chunk-25"  />
 <p class="caption">plot of chunk unnamed-chunk-25</p>
 </div>
+
+
+### EHSS
+
+We can calculate the external historical sample size (EHSS) based on the simulation results. 
+
+
+```{.r .fold-hide}
+var_mat <- do.call(rbind, simulation_res@results$trt_var)
+N_internalcontrol <- 250*0.3
+
+simulation_res_df$EHSS <- rowMeans(var_mat[rep(1:4, 4), ]/var_mat-1)*N_internalcontrol
+simulation_res_df2 <- simulation_res_df[simulation_res_df$borrowing_scenario!="No borrowing", ]
+
+ggplot(simulation_res_df2) +
+  geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = EHSS),
+    stat = "identity", position = "dodge"
+  ) +
+  labs(
+    fill = "Borrowing scenario",
+    x = "Drift HR",
+    y = "EHSS"
+  ) +
+  facet_grid(~true_hr)+
+  scale_fill_manual(values = c("#F7A9A8", "#7D82B8", "#613F75")) +
+  scale_y_continuous(breaks = c(0,30,60,N_internalcontrol, 90,120)) +
+  geom_hline(aes(yintercept = N_internalcontrol), linetype = 2)
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-simulation_study-unnamed-chunk-26-1.png" alt="plot of chunk unnamed-chunk-26"  />
+<p class="caption">plot of chunk unnamed-chunk-26</p>
+</div>
+
+
+### Optimal Accuracy Design 
+
+We can also compare designs for accuracy on the basis of their Euclidean distance to the ideal design by minimizing the type I and type II errors [@zabor2022optimal]. We can visualize the accuracy of any design using a scatterplot displaying type I error rate on the x-axis and power (1 -type II error rate) on the y-axis. A perfectly accurate design approaches the point (0, 1), representing no type I error and power of one.
+
+In the real design of clinical trial, we can designate probability to scenarios of drift hazard ratio and obtain weighted Euclidean distance to the ideal design. An example shows the probability of moderate drift hazard ratio is 0.2 and the probability of no drift hazard ratio is 0.8. 
+
+*results weighted by (0.8, 0.2) for no drift and moderate drift
+
+
+
+```{.r .fold-hide}
+df_accuracy <- data.frame(simulation_res_df2[simulation_res_df2$true_hr == 1.0, 
+                                            c("drift_hr", "borrowing_scenario")], 
+                          typeI = 1 - simulation_res_df2[simulation_res_df2$true_hr == 1.0,
+                                                        c("true_coverage")],
+                          Power = 1 - simulation_res_df2[simulation_res_df2$true_hr == 0.6, 
+                                                        "null_coverage"])
+df_accuracy$weights <- rep(c(0.8, 0.2), 3)
+
+df_sum <- data.frame(aggregate(df_accuracy$typeI*df_accuracy$weights,
+                               list(df_accuracy$borrowing_scenario), sum), 
+                     aggregate(df_accuracy$Power*df_accuracy$weights,
+                               list(df_accuracy$borrowing_scenario), sum))
+df_sum <- df_sum[, c(1,2,4)]
+colnames(df_sum) <- c("borrowing_scenario", "typeI", "Power")
+
+ggplot(df_sum) +
+  geom_point(aes(x = typeI, color = borrowing_scenario, y = Power), size = 4) +
+  xlim(c(0,1))+
+  ylim(c(0,1))+
+  labs(
+    color = "Borrowing scenario",
+    x = "Type I Error Rate",
+    y = "Power"
+  ) +
+  scale_color_manual(values = c("#F7A9A8", "#7D82B8", "#613F75")) +
+  ggtitle("Optimal Accuracy Design")
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure-simulation_study-unnamed-chunk-27-1.png" alt="plot of chunk unnamed-chunk-27"  />
+<p class="caption">plot of chunk unnamed-chunk-27</p>
+</div>
+
+
+# References

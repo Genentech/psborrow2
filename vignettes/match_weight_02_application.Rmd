@@ -343,6 +343,7 @@ results.exp.psborrow<- mcmc_sample(anls_obj,
 #> Mean chain execution time: 12.5 seconds.
 #> Total execution time: 38.0 seconds.
 
+
 draws1 <- results.exp.psborrow$draws()
 draws1 <- rename_draws_covariates(draws1, anls_obj)
 ```
@@ -1211,6 +1212,7 @@ results.no.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
+
 #> Chain 1 finished in 4.1 seconds.
 #> Chain 2 finished in 4.1 seconds.
 #> Chain 3 finished in 4.0 seconds.

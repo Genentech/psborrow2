@@ -246,6 +246,7 @@ ext.cont.data <- rcorrvar2(n = n_ec, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
 #> Constants calculation time: 0.003 minutes 
 #> Intercorrelation calculation time: 0.001 minutes 
 #> Error loop calculation time: 0 minutes 
+
 #> Total Simulation time: 0.005 minutes
 ```
 
