@@ -803,9 +803,5 @@ hist(data_with_weights$genetic_ratio1_weights[data_with_weights$indicator==0],ma
 Based on the standardized difference mean plot, PSML, PSMR, and GM can be the methods for selection. In terms of ESS, the PSML has the highest sample size of $215$ in both trial and external control data. 
 
 
-```{r echo=FALSE}
-readr::write_csv(data_with_weights, file = "data_with_weights.csv")
-```
-
 
 # References
