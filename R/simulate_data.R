@@ -325,7 +325,8 @@ cut_off_after_last <- function(time) {
 cut_off_after_events <- function(n) {
   .datasim_cut_off(
     fun = function(data) {
-      cut_time <- sort(data$enrollment + data$eventtime)[n]
+      data_s1 <- data[data$status == 1, ]
+      cut_time <- sort(data_s1$enrollment + data_s1$eventtime)[n]
       after_cut_off <- data$enrollment + data$eventtime > cut_time
       data$status <- ifelse(after_cut_off, 0, data$status)
       data$eventtime <- ifelse(after_cut_off, cut_time - data$enrollment, data$eventtime)
