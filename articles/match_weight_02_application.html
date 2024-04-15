@@ -82,7 +82,7 @@
                         <h4 data-toc-skip class="author">Eli Lilly &amp;
 Company</h4>
             
-            <h4 data-toc-skip class="date">2024-04-09</h4>
+            <h4 data-toc-skip class="date">2024-04-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Genentech/psborrow2/blob/HEAD/vignettes/match_weight_02_application.Rmd" class="external-link"><code>vignettes/match_weight_02_application.Rmd</code></a></small>
       <div class="d-none name"><code>match_weight_02_application.Rmd</code></div>
@@ -395,32 +395,32 @@ Probability Treatment Weighting using logistic regression</li>
 <p>The first six observations of the data set is shown below.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_with_weights</span><span class="op">)</span></span>
-<span><span class="co">#&gt;           Age   Weight   Height Biomarker1 Biomarker2 Smoker Sex ECOG1 group</span></span>
-<span><span class="co">#&gt; [1,] 55.51419 148.5092 65.63899   33.71898   55.26178      0   1     0     1</span></span>
-<span><span class="co">#&gt; [2,] 49.93326 146.9441 63.44883   35.65828   45.50928      1   1     1     1</span></span>
-<span><span class="co">#&gt; [3,] 58.51588 153.5435 70.53193   35.53710   55.89283      0   1     0     0</span></span>
-<span><span class="co">#&gt; [4,] 48.61226 147.2873 64.10615   31.17663   55.80523      0   1     0     1</span></span>
-<span><span class="co">#&gt; [5,] 51.84943 151.0312 62.16361   33.99677   48.01981      0   1     0     0</span></span>
-<span><span class="co">#&gt; [6,] 51.81743 148.1115 68.69766   33.82398   47.32652      1   1     0     0</span></span>
+<span><span class="co">#&gt;      X      Age   Weight   Height Biomarker1 Biomarker2 Smoker Sex ECOG1 group</span></span>
+<span><span class="co">#&gt; [1,] 1 56.63723 150.8678 65.79587   39.69306   47.71659      0   1     0     1</span></span>
+<span><span class="co">#&gt; [2,] 2 52.21456 145.0049 63.72807   29.83998   48.36954      1   1     1     1</span></span>
+<span><span class="co">#&gt; [3,] 3 53.46470 146.6449 63.73311   37.64033   48.64362      0   0     0     0</span></span>
+<span><span class="co">#&gt; [4,] 4 51.89528 147.6856 66.44799   41.08949   46.04826      1   1     1     1</span></span>
+<span><span class="co">#&gt; [5,] 5 52.17130 151.8084 66.16895   34.48727   51.26657      1   1     1     0</span></span>
+<span><span class="co">#&gt; [6,] 6 57.01979 144.6115 64.03365   34.82447   52.03498      0   1     0     0</span></span>
 <span><span class="co">#&gt;           time event indicator ratio1_caliper_weights_lps</span></span>
-<span><span class="co">#&gt; [1,] 0.4089043     0         1                          0</span></span>
-<span><span class="co">#&gt; [2,] 0.9721405     0         1                          1</span></span>
-<span><span class="co">#&gt; [3,] 0.2956919     0         1                          0</span></span>
-<span><span class="co">#&gt; [4,] 4.3111823     0         1                          0</span></span>
+<span><span class="co">#&gt; [1,] 0.4089043     0         1                          1</span></span>
+<span><span class="co">#&gt; [2,] 0.9721405     0         1                          0</span></span>
+<span><span class="co">#&gt; [3,] 0.2956919     0         1                          1</span></span>
+<span><span class="co">#&gt; [4,] 4.3111823     0         1                          1</span></span>
 <span><span class="co">#&gt; [5,] 0.2644848     0         1                          0</span></span>
-<span><span class="co">#&gt; [6,] 0.3103544     0         1                          0</span></span>
+<span><span class="co">#&gt; [6,] 0.3103544     0         1                          1</span></span>
 <span><span class="co">#&gt;      ratio1_caliper_weights genetic_ratio1_weights</span></span>
-<span><span class="co">#&gt; [1,]                      0                      1</span></span>
-<span><span class="co">#&gt; [2,]                      1                      1</span></span>
-<span><span class="co">#&gt; [3,]                      0                      1</span></span>
+<span><span class="co">#&gt; [1,]                      1                      1</span></span>
+<span><span class="co">#&gt; [2,]                      0                      1</span></span>
+<span><span class="co">#&gt; [3,]                      1                      1</span></span>
 <span><span class="co">#&gt; [4,]                      1                      1</span></span>
 <span><span class="co">#&gt; [5,]                      0                      1</span></span>
 <span><span class="co">#&gt; [6,]                      0                      1</span></span>
 <span><span class="co">#&gt;      genetic_ratio1_weights_no_replace optimal_ratio1_weights weights_gbm</span></span>
-<span><span class="co">#&gt; [1,]                                 1                      0           1</span></span>
-<span><span class="co">#&gt; [2,]                                 0                      1           1</span></span>
-<span><span class="co">#&gt; [3,]                                 1                      0           1</span></span>
-<span><span class="co">#&gt; [4,]                                 1                      0           1</span></span>
+<span><span class="co">#&gt; [1,]                                 0                      1           1</span></span>
+<span><span class="co">#&gt; [2,]                                 1                      1           1</span></span>
+<span><span class="co">#&gt; [3,]                                 0                      1           1</span></span>
+<span><span class="co">#&gt; [4,]                                 0                      1           1</span></span>
 <span><span class="co">#&gt; [5,]                                 1                      1           1</span></span>
 <span><span class="co">#&gt; [6,]                                 1                      1           1</span></span>
 <span><span class="co">#&gt;      eb_weights invprob_weights cnsr ext norm.weights</span></span>
@@ -539,14 +539,13 @@ object as shown below.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 3 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 11.5 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 13.0 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 13.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 12.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 12.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 10.9 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 3 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 12.5 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 38.0 seconds.</span></span>
-<span></span>
+<span><span class="co">#&gt; Mean chain execution time: 11.9 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 36.1 seconds.</span></span>
 <span></span>
 <span><span class="va">draws1</span> <span class="op">&lt;-</span> <span class="va">results.exp.psborrow</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">draws1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_draws_covariates.html">rename_draws_covariates</a></span><span class="op">(</span><span class="va">draws1</span>, <span class="va">anls_obj</span><span class="op">)</span></span></code></pre></div>
@@ -554,14 +553,14 @@ object as shown below.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results.exp.psborrow</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 10</span></span>
-<span><span class="co">#&gt;   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__     -709.     -709.     1.50   1.30   -712.       -707.     1.00   10252.</span></span>
-<span><span class="co">#&gt; 2 beta_trt   -0.0370   -0.0373 0.117  0.117    -0.230       0.157  1.00   12902.</span></span>
-<span><span class="co">#&gt; 3 tau         0.0838    0.0370 0.122  0.0506    0.000343    0.326  1.00   12113.</span></span>
-<span><span class="co">#&gt; 4 alpha[1]   -0.945    -0.943  0.0992 0.0996   -1.11       -0.784  1.00   12636.</span></span>
-<span><span class="co">#&gt; 5 alpha[2]    2.56      2.58   0.316  0.314     2.01        3.05   1.00   18595.</span></span>
-<span><span class="co">#&gt; 6 HR_trt      0.970     0.963  0.114  0.113     0.795       1.17   1.00   12902.</span></span>
+<span><span class="co">#&gt;   variable     mean    median     sd    mad          q5      q95  rhat ess_bulk</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 lp__     -718.    -718.     1.49   1.28   -721.       -716.     1.00   10631.</span></span>
+<span><span class="co">#&gt; 2 beta_trt   -0.359   -0.360  0.109  0.108    -0.536      -0.176  1.00   13963.</span></span>
+<span><span class="co">#&gt; 3 tau         0.120    0.0531 0.179  0.0723    0.000497    0.468  1.00   12567.</span></span>
+<span><span class="co">#&gt; 4 alpha[1]   -0.619   -0.618  0.0908 0.0904   -0.773      -0.475  1.00   13720.</span></span>
+<span><span class="co">#&gt; 5 alpha[2]    2.36     2.38   0.370  0.361     1.71        2.93   1.00   18458.</span></span>
+<span><span class="co">#&gt; 6 HR_trt      0.703    0.698  0.0773 0.0755    0.585       0.839  1.00   13963.</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></code></pre></div>
 <p>The histogram of the posterior samples for hazard ratio and
 commensurability parameter as shown below.</p>
@@ -586,14 +585,14 @@ be calculated as follows.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarize_draws</a></span><span class="op">(</span><span class="va">draws1</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">.x</span>, probs <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
-<span><span class="co">#&gt;   variable                                 `2.5%`  `97.5%`</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                                     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__                               -713.        -707.   </span></span>
-<span><span class="co">#&gt; 2 treatment log HR                     -0.266        0.195</span></span>
-<span><span class="co">#&gt; 3 commensurability parameter            0.0000886    0.428</span></span>
-<span><span class="co">#&gt; 4 baseline log hazard rate, internal   -1.14        -0.754</span></span>
-<span><span class="co">#&gt; 5 baseline log hazard rate, external    1.90         3.14 </span></span>
-<span><span class="co">#&gt; 6 treatment HR                          0.767        1.21</span></span></code></pre></div>
+<span><span class="co">#&gt;   variable                                `2.5%`  `97.5%`</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                                    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 lp__                               -722.       -716.   </span></span>
+<span><span class="co">#&gt; 2 treatment log HR                     -0.572      -0.141</span></span>
+<span><span class="co">#&gt; 3 commensurability parameter            0.000113    0.624</span></span>
+<span><span class="co">#&gt; 4 baseline log hazard rate, internal   -0.803      -0.448</span></span>
+<span><span class="co">#&gt; 5 baseline log hazard rate, external    1.56        3.02 </span></span>
+<span><span class="co">#&gt; 6 treatment HR                          0.565       0.869</span></span></code></pre></div>
 <p>We can graph other plots that help us evaluate convergence and
 diagnose problems with the MCMC sampler, such as trace plot.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -713,13 +712,13 @@ object as shown below.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 3 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 29.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 33.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 29.7 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 26.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 26.6 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 29.2 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 3 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 30.7 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 92.5 seconds.</span></span>
+<span><span class="co">#&gt; Mean chain execution time: 27.3 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 82.2 seconds.</span></span>
 <span></span>
 <span><span class="va">draws2</span> <span class="op">&lt;-</span> <span class="va">results.weib.psborrow</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">draws2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_draws_covariates.html">rename_draws_covariates</a></span><span class="op">(</span><span class="va">draws2</span>, <span class="va">anls_obj</span><span class="op">)</span></span></code></pre></div>
@@ -729,13 +728,13 @@ object as shown below.</p>
 <span><span class="co">#&gt; # A tibble: 7 × 10</span></span>
 <span><span class="co">#&gt;   variable          mean   median     sd    mad       q5      q95  rhat ess_bulk</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__          -6.96e+2 -6.96e+2 1.63   1.48   -6.99e+2 -694.     1.00   11832.</span></span>
-<span><span class="co">#&gt; 2 beta_trt      -2.84e-2 -2.87e-2 0.117  0.118  -2.20e-1    0.166  1.00   16067.</span></span>
-<span><span class="co">#&gt; 3 shape_weibull  8.19e-1  8.18e-1 0.0324 0.0324  7.67e-1    0.873  1.00   20840.</span></span>
-<span><span class="co">#&gt; 4 tau            1.23e-1  5.50e-2 0.179  0.0750  5.65e-4    0.474  1.00   15655.</span></span>
-<span><span class="co">#&gt; 5 alpha[1]      -7.76e-1 -7.75e-1 0.103  0.104  -9.49e-1   -0.611  1.00   16026.</span></span>
-<span><span class="co">#&gt; 6 alpha[2]       2.14e+0  2.15e+0 0.326  0.325   1.58e+0    2.65   1.00   21336.</span></span>
-<span><span class="co">#&gt; 7 HR_trt         9.79e-1  9.72e-1 0.116  0.115   8.03e-1    1.18   1.00   16067.</span></span>
+<span><span class="co">#&gt; 1 lp__          -708.    -7.07e+2 1.67   1.49   -7.11e+2 -706.     1.00   11161.</span></span>
+<span><span class="co">#&gt; 2 beta_trt        -0.304 -3.03e-1 0.111  0.112  -4.84e-1   -0.120  1.00   16356.</span></span>
+<span><span class="co">#&gt; 3 shape_weibull    0.836  8.36e-1 0.0322 0.0317  7.83e-1    0.889  1.00   21704.</span></span>
+<span><span class="co">#&gt; 4 tau              0.177  7.56e-2 0.281  0.104   6.44e-4    0.688  1.00   14385.</span></span>
+<span><span class="co">#&gt; 5 alpha[1]        -0.508 -5.07e-1 0.0931 0.0934 -6.63e-1   -0.357  1.00   16280.</span></span>
+<span><span class="co">#&gt; 6 alpha[2]         1.97   1.99e+0 0.380  0.373   1.32e+0    2.56   1.00   19904.</span></span>
+<span><span class="co">#&gt; 7 HR_trt           0.743  7.38e-1 0.0826 0.0827  6.16e-1    0.887  1.00   16356.</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></code></pre></div>
 <p>Histogram of the posterior samples for hazard ratio and
 commensurability parameter are produced.</p>
@@ -760,15 +759,15 @@ be calculated as follows.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarize_draws</a></span><span class="op">(</span><span class="va">draws2</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">.x</span>, probs <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 7 × 3</span></span>
-<span><span class="co">#&gt;   variable                                `2.5%`  `97.5%`</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                                    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__                               -700.       -694.   </span></span>
-<span><span class="co">#&gt; 2 treatment log HR                     -0.254       0.203</span></span>
-<span><span class="co">#&gt; 3 Weibull shape parameter               0.757       0.884</span></span>
-<span><span class="co">#&gt; 4 commensurability parameter            0.000142    0.617</span></span>
-<span><span class="co">#&gt; 5 baseline log hazard rate, internal   -0.981      -0.582</span></span>
-<span><span class="co">#&gt; 6 baseline log hazard rate, external    1.46        2.74 </span></span>
-<span><span class="co">#&gt; 7 treatment HR                          0.776       1.22</span></span></code></pre></div>
+<span><span class="co">#&gt;   variable                                `2.5%`   `97.5%`</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                                    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 lp__                               -712.       -705.    </span></span>
+<span><span class="co">#&gt; 2 treatment log HR                     -0.517      -0.0851</span></span>
+<span><span class="co">#&gt; 3 Weibull shape parameter               0.774       0.900 </span></span>
+<span><span class="co">#&gt; 4 commensurability parameter            0.000151    0.929 </span></span>
+<span><span class="co">#&gt; 5 baseline log hazard rate, internal   -0.694      -0.330 </span></span>
+<span><span class="co">#&gt; 6 baseline log hazard rate, external    1.17        2.65  </span></span>
+<span><span class="co">#&gt; 7 treatment HR                          0.596       0.918</span></span></code></pre></div>
 <p>We can see other plots that help us evaluate convergence and diagnose
 problems with the MCMC sampler, such as trace plot.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
@@ -954,27 +953,27 @@ set number of iterations as <span class="math inline">\(niter=10,000\)</span> wi
 <span><span class="co">#&gt; Graph information:</span></span>
 <span><span class="co">#&gt;    Observed stochastic nodes: 1100</span></span>
 <span><span class="co">#&gt;    Unobserved stochastic nodes: 2</span></span>
-<span><span class="co">#&gt;    Total graph size: 23016</span></span>
+<span><span class="co">#&gt;    Total graph size: 17432</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Initializing model</span></span></code></pre></div>
 <p>The summary can be produced using the following command.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model1</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">summary</span></span>
 <span><span class="co">#&gt;                   mean         sd          2.5%           25%           50%</span></span>
-<span><span class="co">#&gt; alpha     7.672650e-01 0.08330851  6.030597e-01  7.109502e-01  7.679483e-01</span></span>
-<span><span class="co">#&gt; beta     -8.006893e-01 0.05042475 -8.986307e-01 -8.356531e-01 -8.005683e-01</span></span>
-<span><span class="co">#&gt; deviance  2.200010e+08 1.86370178  2.200009e+08  2.200010e+08  2.200010e+08</span></span>
+<span><span class="co">#&gt; alpha    -5.566809e-01 0.08954522 -7.394070e-01 -6.170039e-01 -5.543440e-01</span></span>
+<span><span class="co">#&gt; beta     -4.200419e-01 0.10776354 -6.340181e-01 -4.921314e-01 -4.202084e-01</span></span>
+<span><span class="co">#&gt; deviance  2.200015e+08 1.99156129  2.200015e+08  2.200015e+08  2.200015e+08</span></span>
 <span><span class="co">#&gt;                    75%         97.5%     Rhat n.eff</span></span>
-<span><span class="co">#&gt; alpha     8.249207e-01  9.219494e-01 1.000049  1500</span></span>
-<span><span class="co">#&gt; beta     -7.651435e-01 -7.026286e-01 1.000307  1500</span></span>
-<span><span class="co">#&gt; deviance  2.200010e+08  2.200010e+08 1.000000     1</span></span></code></pre></div>
+<span><span class="co">#&gt; alpha    -4.952955e-01 -3.884554e-01 1.000476  1500</span></span>
+<span><span class="co">#&gt; beta     -3.479730e-01 -2.076608e-01 1.000497  1500</span></span>
+<span><span class="co">#&gt; deviance  2.200015e+08  2.200015e+08 1.000000     1</span></span></code></pre></div>
 <p>The summary of the hazard ratio for treatment variable is shown
 below.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">model1</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">model1</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>,probs<span class="op">=</span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>,<span class="fl">0.975</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      Min.   1st Qu.    Median      Mean   3rd Qu.      Max.      2.5%     97.5% </span></span>
-<span><span class="co">#&gt; 0.3871170 0.4335912 0.4490737 0.4495901 0.4652671 0.5259439 0.4071268 0.4952818</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.4931593 0.6113220 0.6569099 0.6608469 0.7061179 0.9601307 0.5304561 0.8124826</span></span></code></pre></div>
 <p>The histogram of the treatment hazard ratio can also be produced.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">model1</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>,xlab<span class="op">=</span><span class="st">"treatmentHR"</span>,main<span class="op">=</span><span class="st">""</span>,ylab<span class="op">=</span><span class="st">""</span><span class="op">)</span></span></code></pre></div>
@@ -1170,31 +1169,31 @@ set number of iterations as <span class="math inline">\(niter=10,000\)</span> wi
 <span><span class="co">#&gt; Graph information:</span></span>
 <span><span class="co">#&gt;    Observed stochastic nodes: 1100</span></span>
 <span><span class="co">#&gt;    Unobserved stochastic nodes: 5</span></span>
-<span><span class="co">#&gt;    Total graph size: 24222</span></span>
+<span><span class="co">#&gt;    Total graph size: 18642</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Initializing model</span></span></code></pre></div>
 <p>The summary can be produced using the following command.</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model2</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">summary</span></span>
 <span><span class="co">#&gt;                   mean         sd          2.5%           25%           50%</span></span>
-<span><span class="co">#&gt; alpha     7.012442e-01 0.08417559  5.422684e-01  6.433417e-01  6.995345e-01</span></span>
-<span><span class="co">#&gt; alphaR    3.775493e+00 0.53271370  2.651884e+00  3.434386e+00  3.808735e+00</span></span>
-<span><span class="co">#&gt; beta     -7.699118e-01 0.04937989 -8.653964e-01 -8.023713e-01 -7.688038e-01</span></span>
-<span><span class="co">#&gt; deviance  2.200009e+08 3.59110530  2.200009e+08  2.200009e+08  2.200009e+08</span></span>
-<span><span class="co">#&gt; tau       4.990748e-02 0.19141621  2.688540e-04  3.312027e-03  1.147687e-02</span></span>
+<span><span class="co">#&gt; alpha    -6.191206e-01 0.08842641 -7.909870e-01 -6.787401e-01 -6.193462e-01</span></span>
+<span><span class="co">#&gt; alphaR    2.366979e+00 0.36366809  1.593958e+00  2.144550e+00  2.379864e+00</span></span>
+<span><span class="co">#&gt; beta     -3.596931e-01 0.10541071 -5.626927e-01 -4.319852e-01 -3.571647e-01</span></span>
+<span><span class="co">#&gt; deviance  2.200014e+08 2.44607662  2.200014e+08  2.200014e+08  2.200014e+08</span></span>
+<span><span class="co">#&gt; tau       1.254783e-01 0.18316338  4.693678e-04  1.536327e-02  5.811439e-02</span></span>
 <span><span class="co">#&gt;                    75%         97.5%     Rhat n.eff</span></span>
-<span><span class="co">#&gt; alpha     7.626370e-01  8.639186e-01 1.002131   940</span></span>
-<span><span class="co">#&gt; alphaR    4.142427e+00  4.781330e+00 1.002836   840</span></span>
-<span><span class="co">#&gt; beta     -7.368342e-01 -6.755448e-01 1.000972  1500</span></span>
-<span><span class="co">#&gt; deviance  2.200009e+08  2.200009e+08 1.000000     1</span></span>
-<span><span class="co">#&gt; tau       3.066659e-02  2.970125e-01 1.001709  1200</span></span></code></pre></div>
+<span><span class="co">#&gt; alpha    -5.575406e-01 -4.477827e-01 1.001772  1100</span></span>
+<span><span class="co">#&gt; alphaR    2.627147e+00  3.007402e+00 1.004616   440</span></span>
+<span><span class="co">#&gt; beta     -2.884953e-01 -1.600480e-01 1.000624  1500</span></span>
+<span><span class="co">#&gt; deviance  2.200014e+08  2.200014e+08 1.000000     1</span></span>
+<span><span class="co">#&gt; tau       1.585465e-01  6.215560e-01 1.001367  1500</span></span></code></pre></div>
 <p>The summary of the hazard ratio for treatment variable is shown
 below.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">model2</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">model2</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>,probs<span class="op">=</span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>,<span class="fl">0.975</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      Min.   1st Qu.    Median      Mean   3rd Qu.      Max.      2.5%     97.5% </span></span>
-<span><span class="co">#&gt; 0.3924743 0.4482647 0.4635673 0.4636176 0.4786268 0.5455878 0.4208848 0.5088791</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.4932769 0.6492190 0.6996573 0.7017649 0.7493903 0.9788045 0.5696732 0.8521031</span></span></code></pre></div>
 <p>The histogram of the treatment hazard ratio can also be produced.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">model2</span><span class="op">$</span><span class="va">BUGSoutput</span><span class="op">$</span><span class="va">sims.list</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>,xlab<span class="op">=</span><span class="st">"treatmentHR"</span>,main<span class="op">=</span><span class="st">""</span>,ylab<span class="op">=</span><span class="st">""</span><span class="op">)</span></span></code></pre></div>
@@ -1326,14 +1325,13 @@ object as shown below.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 3 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span></span>
-<span><span class="co">#&gt; Chain 1 finished in 4.1 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 4.1 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 4.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 4.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 4.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 4.4 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 3 chains finished successfully.</span></span>
 <span><span class="co">#&gt; Mean chain execution time: 4.1 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 12.6 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 12.7 seconds.</span></span>
 <span></span>
 <span><span class="va">draws3</span> <span class="op">&lt;-</span> <span class="va">results.no.psborrow</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">draws3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_draws_covariates.html">rename_draws_covariates</a></span><span class="op">(</span><span class="va">draws3</span>, <span class="va">anls_obj</span><span class="op">)</span></span></code></pre></div>
@@ -1341,12 +1339,12 @@ object as shown below.</p>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results.no.psborrow</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 4 × 10</span></span>
-<span><span class="co">#&gt;   variable      mean    median     sd    mad       q5      q95  rhat ess_bulk</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__     -724.     -724.     0.995  0.718  -726.    -723.     1.00   10028.</span></span>
-<span><span class="co">#&gt; 2 beta_trt   -0.0343   -0.0352 0.117  0.116    -0.224    0.159  1.00    7950.</span></span>
-<span><span class="co">#&gt; 3 alpha      -0.948    -0.947  0.0989 0.0989   -1.11    -0.787  1.00    7991.</span></span>
-<span><span class="co">#&gt; 4 HR_trt      0.973     0.965  0.114  0.112     0.799    1.17   1.00    7950.</span></span>
+<span><span class="co">#&gt;   variable     mean   median     sd    mad       q5      q95  rhat ess_bulk</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 lp__     -727.    -727.    0.982  0.694  -729.    -726.     1.00   10388.</span></span>
+<span><span class="co">#&gt; 2 beta_trt   -0.355   -0.355 0.109  0.108    -0.533   -0.178  1.00    9046.</span></span>
+<span><span class="co">#&gt; 3 alpha      -0.623   -0.622 0.0906 0.0905   -0.775   -0.476  1.00    9092.</span></span>
+<span><span class="co">#&gt; 4 HR_trt      0.705    0.701 0.0769 0.0761    0.587    0.837  1.00    9046.</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></code></pre></div>
 <p>The histogram of the posterior samples for hazard ratio and
 commensurability parameter as shown below.</p>
@@ -1366,10 +1364,10 @@ be calculated as follows.</p>
 <span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
 <span><span class="co">#&gt;   variable                   `2.5%`  `97.5%`</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;                       &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__                     -727.    -723.   </span></span>
-<span><span class="co">#&gt; 2 treatment log HR           -0.264    0.195</span></span>
-<span><span class="co">#&gt; 3 baseline log hazard rate   -1.14    -0.757</span></span>
-<span><span class="co">#&gt; 4 treatment HR                0.768    1.22</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 lp__                     -730.    -726.   </span></span>
+<span><span class="co">#&gt; 2 treatment log HR           -0.568   -0.141</span></span>
+<span><span class="co">#&gt; 3 baseline log hazard rate   -0.804   -0.451</span></span>
+<span><span class="co">#&gt; 4 treatment HR                0.567    0.869</span></span></code></pre></div>
 <p>We can see other plots that help us understand and diagnose problems
 with the MCMC sampler, such as trace plot.</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
@@ -1468,13 +1466,13 @@ object as shown below.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 3 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 5.7 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 5.6 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 5.6 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 5.5 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 4.9 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 4.7 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 3 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 5.7 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 17.4 seconds.</span></span>
+<span><span class="co">#&gt; Mean chain execution time: 5.0 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 15.5 seconds.</span></span>
 <span></span>
 <span><span class="va">draws4</span> <span class="op">&lt;-</span> <span class="va">results.full.psborrow</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">draws4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_draws_covariates.html">rename_draws_covariates</a></span><span class="op">(</span><span class="va">draws4</span>, <span class="va">anls_obj</span><span class="op">)</span></span></code></pre></div>
@@ -1484,10 +1482,10 @@ object as shown below.</p>
 <span><span class="co">#&gt; # A tibble: 4 × 10</span></span>
 <span><span class="co">#&gt;   variable     mean   median     sd    mad       q5      q95  rhat ess_bulk</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__     -815.    -814.    1.01   0.710  -817.    -814.     1.00   14094.</span></span>
-<span><span class="co">#&gt; 2 beta_trt   -1.32    -1.32  0.0781 0.0775   -1.45    -1.19   1.00   11317.</span></span>
-<span><span class="co">#&gt; 3 alpha       0.339    0.339 0.0476 0.0480    0.260    0.416  1.00   11709.</span></span>
-<span><span class="co">#&gt; 4 HR_trt      0.268    0.267 0.0209 0.0207    0.235    0.303  1.00   11317.</span></span>
+<span><span class="co">#&gt; 1 lp__     -747.    -747.    0.994  0.716  -749.    -746.     1.00   14116.</span></span>
+<span><span class="co">#&gt; 2 beta_trt   -1.51    -1.51  0.0768 0.0773   -1.64    -1.39   1.00   12217.</span></span>
+<span><span class="co">#&gt; 3 alpha       0.534    0.535 0.0468 0.0467    0.456    0.611  1.00   12320.</span></span>
+<span><span class="co">#&gt; 4 HR_trt      0.221    0.220 0.0170 0.0170    0.194    0.250  1.00   12217.</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></code></pre></div>
 <p>The histogram of the posterior samples for hazard ratio and
 commensurability parameter as shown below.</p>
@@ -1507,10 +1505,10 @@ be calculated as follows.</p>
 <span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
 <span><span class="co">#&gt;   variable                   `2.5%`  `97.5%`</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;                       &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__                     -817.    -814.   </span></span>
-<span><span class="co">#&gt; 2 treatment log HR           -1.47    -1.17 </span></span>
-<span><span class="co">#&gt; 3 baseline log hazard rate    0.245    0.430</span></span>
-<span><span class="co">#&gt; 4 treatment HR                0.229    0.311</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 lp__                     -750.    -746.   </span></span>
+<span><span class="co">#&gt; 2 treatment log HR           -1.67    -1.36 </span></span>
+<span><span class="co">#&gt; 3 baseline log hazard rate    0.442    0.625</span></span>
+<span><span class="co">#&gt; 4 treatment HR                0.189    0.256</span></span></code></pre></div>
 <p>We can see other plots that help us understand and diagnose problems
 with the MCMC sampler, such as trace plot.</p>
 <div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
@@ -1542,18 +1540,20 @@ external controls and use the trial data only.</p>
 <span><span class="co">#&gt; coxph(formula = Surv(time, event) ~ group, data = data_with_weights[data_with_weights$ext == </span></span>
 <span><span class="co">#&gt;     0, ])</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   n= 600, number of events= 367 </span></span>
+<span><span class="co">#&gt;   n= 600, number of events= 389 </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;           coef exp(coef) se(coef)      z Pr(&gt;|z|)</span></span>
-<span><span class="co">#&gt; group -0.02944   0.97099  0.11673 -0.252    0.801</span></span>
+<span><span class="co">#&gt;          coef exp(coef) se(coef)      z Pr(&gt;|z|)  </span></span>
+<span><span class="co">#&gt; group -0.2540    0.7757   0.1105 -2.298   0.0216 *</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       exp(coef) exp(-coef) lower .95 upper .95</span></span>
-<span><span class="co">#&gt; group     0.971       1.03    0.7724     1.221</span></span>
+<span><span class="co">#&gt; group    0.7757      1.289    0.6246    0.9633</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Concordance= 0.512  (se = 0.014 )</span></span>
-<span><span class="co">#&gt; Likelihood ratio test= 0.06  on 1 df,   p=0.8</span></span>
-<span><span class="co">#&gt; Wald test            = 0.06  on 1 df,   p=0.8</span></span>
-<span><span class="co">#&gt; Score (logrank) test = 0.06  on 1 df,   p=0.8</span></span></code></pre></div>
+<span><span class="co">#&gt; Concordance= 0.527  (se = 0.013 )</span></span>
+<span><span class="co">#&gt; Likelihood ratio test= 5.1  on 1 df,   p=0.02</span></span>
+<span><span class="co">#&gt; Wald test            = 5.28  on 1 df,   p=0.02</span></span>
+<span><span class="co">#&gt; Score (logrank) test = 5.31  on 1 df,   p=0.02</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="cox-proportional-hazards-model-using-frequentist-approach-full-borrowing-from-external-control">Cox proportional hazards model using frequentist approach (Full
@@ -1567,20 +1567,20 @@ control data via full borrowing.</p>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; coxph(formula = Surv(time, event) ~ group, data = data_with_weights)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   n= 1100, number of events= 703 </span></span>
+<span><span class="co">#&gt;   n= 1100, number of events= 727 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           coef exp(coef) se(coef)      z Pr(&gt;|z|)    </span></span>
-<span><span class="co">#&gt; group -0.98910   0.37191  0.08018 -12.34   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; group -1.10052   0.33270  0.07978 -13.79   &lt;2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       exp(coef) exp(-coef) lower .95 upper .95</span></span>
-<span><span class="co">#&gt; group    0.3719      2.689    0.3178    0.4352</span></span>
+<span><span class="co">#&gt; group    0.3327      3.006    0.2845     0.389</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Concordance= 0.662  (se = 0.007 )</span></span>
-<span><span class="co">#&gt; Likelihood ratio test= 158.1  on 1 df,   p=&lt;2e-16</span></span>
-<span><span class="co">#&gt; Wald test            = 152.2  on 1 df,   p=&lt;2e-16</span></span>
-<span><span class="co">#&gt; Score (logrank) test = 162.7  on 1 df,   p=&lt;2e-16</span></span></code></pre></div>
+<span><span class="co">#&gt; Concordance= 0.664  (se = 0.007 )</span></span>
+<span><span class="co">#&gt; Likelihood ratio test= 198.5  on 1 df,   p=&lt;2e-16</span></span>
+<span><span class="co">#&gt; Wald test            = 190.3  on 1 df,   p=&lt;2e-16</span></span>
+<span><span class="co">#&gt; Score (logrank) test = 205.9  on 1 df,   p=&lt;2e-16</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="summarizing-all-the-results-together">Summarizing all the results together<a class="anchor" aria-label="anchor" href="#summarizing-all-the-results-together"></a>
@@ -1651,13 +1651,13 @@ Upper 95% CI
 Exponential distribution (constant hazard) and gamma prior
 </td>
 <td style="text-align:right;">
-0.9703
+0.7026
 </td>
 <td style="text-align:right;">
-0.7665
+0.5645
 </td>
 <td style="text-align:right;">
-1.2148
+0.8689
 </td>
 </tr>
 <tr>
@@ -1665,13 +1665,13 @@ Exponential distribution (constant hazard) and gamma prior
 Piecewise exponential distribution (proportional hazard) and power prior
 </td>
 <td style="text-align:right;">
-0.4496
+0.6608
 </td>
 <td style="text-align:right;">
-0.4071
+0.5305
 </td>
 <td style="text-align:right;">
-0.4953
+0.8125
 </td>
 </tr>
 <tr>
@@ -1679,13 +1679,13 @@ Piecewise exponential distribution (proportional hazard) and power prior
 Weibull distribution (proportional hazard) and gamma prior
 </td>
 <td style="text-align:right;">
-0.9787
+0.7428
 </td>
 <td style="text-align:right;">
-0.7756
+0.5961
 </td>
 <td style="text-align:right;">
-1.2249
+0.9184
 </td>
 </tr>
 <tr>
@@ -1694,13 +1694,13 @@ Piecewise exponential distribution (proportional hazard) and
 commensurate prior
 </td>
 <td style="text-align:right;">
-0.4636
+0.7018
 </td>
 <td style="text-align:right;">
-0.4209
+0.5697
 </td>
 <td style="text-align:right;">
-0.5089
+0.8521
 </td>
 </tr>
 <tr>
@@ -1708,13 +1708,13 @@ commensurate prior
 Exponential distribution (constant hazard): No borrowing
 </td>
 <td style="text-align:right;">
-0.9729
+0.7052
 </td>
 <td style="text-align:right;">
-0.7682
+0.5667
 </td>
 <td style="text-align:right;">
-1.2156
+0.8687
 </td>
 </tr>
 <tr>
@@ -1722,13 +1722,13 @@ Exponential distribution (constant hazard): No borrowing
 Exponential distribution (constant hazard): Full borrowing
 </td>
 <td style="text-align:right;">
-0.2678
+0.2209
 </td>
 <td style="text-align:right;">
-0.2290
+0.1892
 </td>
 <td style="text-align:right;">
-0.3110
+0.2556
 </td>
 </tr>
 <tr>
@@ -1736,13 +1736,13 @@ Exponential distribution (constant hazard): Full borrowing
 Cox model (Frequentist approach): No borrowing
 </td>
 <td style="text-align:right;">
-0.9710
+0.7757
 </td>
 <td style="text-align:right;">
-0.7724
+0.6246
 </td>
 <td style="text-align:right;">
-1.2206
+0.9633
 </td>
 </tr>
 <tr>
@@ -1750,13 +1750,13 @@ Cox model (Frequentist approach): No borrowing
 Cox model (Frequentist approach): Full borrowing
 </td>
 <td style="text-align:right;">
-0.3719
+0.3327
 </td>
 <td style="text-align:right;">
-0.3178
+0.2845
 </td>
 <td style="text-align:right;">
-0.4352
+0.3890
 </td>
 </tr>
 </tbody>
