@@ -105,8 +105,8 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x564761743ca8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x564761743b20&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5649e67a59a8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5649e67a57e8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slot "label":</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "No cut off"</span>
@@ -123,8 +123,8 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         data$eventtime)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data[data$enrollment &lt; cut_time, ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56476191a5d8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56476191cae0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5649e74f6380&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5649e74f7900&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slot "label":</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Cut off after first enrolled patient reaches time = 36</span>
@@ -141,8 +141,8 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         data$eventtime)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x564764ae4068&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x564764ae9ae0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5649e7868fe0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5649e78cf3d8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slot "label":</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Cut off after last enrolled patient reaches time=36</span>
@@ -153,15 +153,16 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (data) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data_s1 &lt;- data[data$status == 1, ]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     cut_time &lt;- sort(data_s1$enrollment + data_s1$eventtime)[n]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     cut_time &lt;- min(sort(data_s1$enrollment + data_s1$eventtime)[n], </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Inf, na.rm = TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     after_cut_off &lt;- data$enrollment + data$eventtime &gt; cut_time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data$status &lt;- ifelse(after_cut_off, 0, data$status)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data$eventtime &lt;- ifelse(after_cut_off, cut_time - data$enrollment, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         data$eventtime)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data[data$enrollment &lt; cut_time, ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x564764585ab8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56476555d2c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5649e861b528&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5649e86342c8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slot "label":</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Cut off after 20 events</span>
