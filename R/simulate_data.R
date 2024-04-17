@@ -326,7 +326,7 @@ cut_off_after_events <- function(n) {
   .datasim_cut_off(
     fun = function(data) {
       data_s1 <- data[data$status == 1, ]
-      cut_time <- sort(data_s1$enrollment + data_s1$eventtime)[n]
+      cut_time <- min(sort(data_s1$enrollment + data_s1$eventtime)[n], Inf, na.rm = TRUE)
       after_cut_off <- data$enrollment + data$eventtime > cut_time
       data$status <- ifelse(after_cut_off, 0, data$status)
       data$eventtime <- ifelse(after_cut_off, cut_time - data$enrollment, data$eventtime)
