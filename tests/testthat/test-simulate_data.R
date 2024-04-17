@@ -178,12 +178,12 @@ test_that("cut_off_after_events works as expected", {
   result <- cut_off_after_events(n = 2)
   expect_class(result, "DataSimCutOff")
   test_data <- data.frame(
-    id = 1:8, 
+    id = 1:8,
     status = rep(c(1, 0), length.out = 8),
     eventtime = rep(1:4, each = 2),
     enrollment = rep(2:5, length.out = 8)
   )
-  
+
   cutoff_data <- result@fun(test_data)
 
   # for n = 2, 2nd event is at 5 time units: pts 1 and 5
@@ -191,10 +191,26 @@ test_that("cut_off_after_events works as expected", {
     id = c(1, 2, 3, 5, 6, 7), # Lose pts who enroll on/after 5 time units
     status = c(1, 0, 0, 1, 0, 0), # Reassign pts who have events > 5 time units (enroll+event)
     eventtime = c(1, 1, 1, 3, 2, 1), # Max follow-up is 5 units,
-    enrollment = rep(c(2,3,4), length.out = 6)
+    enrollment = rep(c(2, 3, 4), length.out = 6)
   )
 
   expect_equal(cutoff_data, expected_data, ignore_attr = TRUE)
+})
+
+test_that("cut_off_after_events works with limit greater than number of observed events", {
+  result <- cut_off_after_events(n = 20)
+  expect_class(result, "DataSimCutOff")
+  test_data <- data.frame(
+    id = 1:8,
+    status = rep(c(1, 0), length.out = 8),
+    eventtime = rep(1:4, each = 2),
+    enrollment = rep(2:5, length.out = 8)
+  )
+
+  cutoff_data <- result@fun(test_data)
+
+  # expect no observations to be changed
+  expect_equal(cutoff_data, test_data)
 })
 
 # set_cut_off --------
