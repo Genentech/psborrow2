@@ -28,6 +28,10 @@ Authors:
 Other contributors:
 \itemize{
   \item Craig Gower-Page \email{craig.gower-page@roche.com} [contributor]
+  \item Manoj Khanal \email{khanal_manoj@lilly.com} [contributor]
+  \item Mingyang Shan \email{mingyang.shan@lilly.com} [contributor]
+  \item Kexin Jin \email{kexin.jin@bms.com} [contributor]
+  \item Zhi Yang \email{zhi.yang@bms.com} [contributor]
   \item Genentech, Inc. [copyright holder, funder]
 }
 
