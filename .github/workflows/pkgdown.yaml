@@ -20,7 +20,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -33,7 +33,7 @@ jobs:
           extra-packages: any::pkgdown, local::., github::stan-dev/cmdstanr
           needs: website
 
-      - name: Install and unpack cmdstan 
+      - name: Install and unpack cmdstan
         run: |
           Rscript -e "cmdstanr::check_cmdstan_toolchain(fix = TRUE)"
           Rscript -e "cmdstanr::install_cmdstan()"
