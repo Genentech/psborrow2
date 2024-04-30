@@ -1,11 +1,11 @@
-  functions {
+functions {
   vector make_durations(vector starts, vector time) {
   vector [rows(starts)] ends = append_row(tail(starts, rows(starts) - 1), max(time));
   return fdim(ends, starts);
 }
 }
 
-  data {
+data {
   int<lower=0> N;
   vector[N] trt;
   vector[N] time;
@@ -18,9 +18,9 @@ vector[K] L_beta;
 vector[K] U_beta;
 }
 
-  transformed data {
+transformed data {
   int<lower = 1> M = 5;
-vector[M] starts = [0, 10, 20, 30, 40]';
+vector[M] starts = [0, 10, 20, 30, 40];
 vector[M] durations;
 matrix[N,M] T;
 matrix[N,M] D;

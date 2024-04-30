@@ -217,9 +217,9 @@ make_model_string_pem_full_none <- function(borrowing, outcome, analysis_obj) {
   has_covariates <- !is.null(analysis_obj@covariates)
 
   linear_predictor <- if (has_covariates) {
-    h_glue("lp = rep_matrix(alpha', N) + rep_matrix(trt * beta_trt + X * beta, M);")
+    h_glue("lp = rep_matrix(alpha, N) + rep_matrix(trt * beta_trt + X * beta, M);")
   } else if (!has_covariates) {
-    h_glue("lp = rep_matrix(alpha', N) + rep_matrix(trt * beta_trt, M);")
+    h_glue("lp = rep_matrix(alpha, N) + rep_matrix(trt * beta_trt, M);")
   }
 
   ### Add priors for relevant parameters
