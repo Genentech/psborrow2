@@ -156,9 +156,9 @@ setMethod(
     has_covariates <- !is.null(analysis_obj@covariates)
 
     linear_predictor <- if (has_covariates) {
-      h_glue("lp = Z*alpha_ext' + (1-Z)*alpha' + rep_matrix(trt * beta_trt + X * beta, M);")
+      h_glue("lp = Z*alpha' + rep_matrix(trt * beta_trt + X * beta, M);")
     } else if (!has_covariates) {
-      h_glue("lp = Z*alpha_ext' + (1-Z)*alpha' + rep_matrix(trt * beta_trt, M);")
+      h_glue("lp = Z*alpha' + rep_matrix(trt * beta_trt, M);")
     }
 
     ### Add priors for relevant parameters
@@ -187,8 +187,8 @@ setMethod(
       tau ~ {{tau_prior}} ;
       real sigma;
       sigma = 1 / tau;
-      alpha_ext ~ {{alpha_2_prior}};
-      alpha ~ normal(alpha_ext, sqrt(sigma)) ;
+      alpha[, 2] ~ {{alpha_2_prior}};
+      alpha[, 1] ~ normal(alpha[,2], sqrt(sigma)) ;
       ")
 
     ### Add in likelihood function
@@ -209,50 +209,45 @@ setMethod(
 )
 
 # BorrowingNone, OutcomeSurvPiecewiseExponential -----
-#' @rdname make_model_string_model
-setMethod(
-  "make_model_string_model",
-  signature("BorrowingNone", "OutcomeSurvPiecewiseExponential", "Analysis"),
-  function(borrowing, outcome, analysis_obj) {
-    ### Treatment prior
-    beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
+make_model_string_pem_full_none <- function(borrowing, outcome, analysis_obj) {
+  ### Treatment prior
+  beta_trt_prior <- get_prior_string(analysis_obj@treatment@trt_prior)
 
-    ### Linear predictor
-    has_covariates <- !is.null(analysis_obj@covariates)
+  ### Linear predictor
+  has_covariates <- !is.null(analysis_obj@covariates)
 
-    linear_predictor <- if (has_covariates) {
-      h_glue("lp = alpha' + rep_matrix(trt * beta_trt + X * beta, M);")
-    } else if (!has_covariates) {
-      h_glue("lp = alpha' + rep_matrix(trt * beta_trt, M);")
-    }
+  linear_predictor <- if (has_covariates) {
+    h_glue("lp = rep_matrix(alpha', N) + rep_matrix(trt * beta_trt + X * beta, M);")
+  } else if (!has_covariates) {
+    h_glue("lp = rep_matrix(alpha', N) + rep_matrix(trt * beta_trt, M);")
+  }
 
-    ### Add priors for relevant parameters
-    if (NROW(analysis_obj@outcome@param_priors) > 0) {
-      names <- names(analysis_obj@outcome@param_priors)
-      values <- get_prior_string(analysis_obj@outcome@param_priors)
-      outcome_prior <- h_glue("{{names}} ~ {{values}} ;", collapse = TRUE)
-    } else {
-      outcome_prior <- ""
-    }
+  ### Add priors for relevant parameters
+  if (NROW(analysis_obj@outcome@param_priors) > 0) {
+    names <- names(analysis_obj@outcome@param_priors)
+    values <- get_prior_string(analysis_obj@outcome@param_priors)
+    outcome_prior <- h_glue("{{names}} ~ {{values}} ;", collapse = TRUE)
+  } else {
+    outcome_prior <- ""
+  }
 
-    ### Add priors on betas
-    if (has_covariates) {
-      i <- seq_along(analysis_obj@covariates@covariates)
-      value <- get_prior_string(analysis_obj@covariates@priors)
-      index <- if (test_named(value)) get_vars(analysis_obj@covariates) else rep(1, length(i))
-      covariate_prior <- h_glue("beta[{{i}}] ~ {{value[index]}} ;", collapse = TRUE)
-    } else {
-      covariate_prior <- ""
-    }
+  ### Add priors on betas
+  if (has_covariates) {
+    i <- seq_along(analysis_obj@covariates@covariates)
+    value <- get_prior_string(analysis_obj@covariates@priors)
+    index <- if (test_named(value)) get_vars(analysis_obj@covariates) else rep(1, length(i))
+    covariate_prior <- h_glue("beta[{{i}}] ~ {{value[index]}} ;", collapse = TRUE)
+  } else {
+    covariate_prior <- ""
+  }
 
-    tau_prior <- get_prior_string(analysis_obj@borrowing@tau_prior)
-    alpha_prior <- get_prior_string(analysis_obj@outcome@baseline_prior)
-    borrowing_string <- h_glue("alpha ~ {{alpha_prior}};")
+  alpha_prior <- get_prior_string(analysis_obj@outcome@baseline_prior)
+  borrowing_string <- h_glue("alpha ~ {{alpha_prior}};")
 
-    ### Add in likelihood function
-    likelihood_string <- "target += sum((lp .* D) - (exp(lp) .* T));"
+  ### Add in likelihood function
+  likelihood_string <- "target += sum((lp .* D) - (exp(lp) .* T));"
 
-    h_glue("
+  h_glue("
   model {
     matrix[N,M] lp;
     beta_trt ~ {{beta_trt_prior}};
@@ -262,5 +257,18 @@ setMethod(
     {{borrowing_string}}
     {{likelihood_string}}
   }")
-  }
+}
+
+#' @rdname make_model_string_model
+setMethod(
+  "make_model_string_model",
+  signature("BorrowingNone", "OutcomeSurvPiecewiseExponential", "Analysis"),
+  make_model_string_pem_full_none
+)
+
+#' @rdname make_model_string_model
+setMethod(
+  "make_model_string_model",
+  signature("BorrowingFull", "OutcomeSurvPiecewiseExponential", "Analysis"),
+  make_model_string_pem_full_none
 )

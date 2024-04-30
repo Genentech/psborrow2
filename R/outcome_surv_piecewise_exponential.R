@@ -74,8 +74,6 @@ outcome_surv_piecewise_exp <- function(time_var, cens_var, start_times, baseline
       "
       vector[N] time;
       vector[N] cens;
-      int<lower = 1> M = {{length(start_times)}};
-      vector[M] starts = [{{toString(start_times)}}]';
       {{weight}}",
       weight = if (has_weight) "vector[N] weight;" else ""
     ),
@@ -86,6 +84,8 @@ outcome_surv_piecewise_exp <- function(time_var, cens_var, start_times, baseline
     }"),
     param_stan_code = "vector[M] alpha;",
     transformed_data_stan_code = h_glue("
+      int<lower = 1> M = {{length(start_times)}};
+      vector[M] starts = [{{toString(start_times)}}]';
       vector[M] durations;
       matrix[N,M] T;
       matrix[N,M] D;

@@ -14,7 +14,7 @@
 #'   borrowing = borrowing_full("ext"),
 #'   treatment = treatment_details("trt", prior_normal(0, 100))
 #' )
-#' 
+#'
 #' make_model_string_parameters(anls_obj)
 #' @noRd
 make_model_string_parameters <- function(analysis_obj) {
@@ -22,6 +22,7 @@ make_model_string_parameters <- function(analysis_obj) {
   trt_string <- h_glue("real{{eval_constraints(analysis_obj@treatment@trt_prior)}} beta_trt;")
 
   is_bdb <- isTRUE(is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate"))
+  is_pem <- isTRUE(is(analysis_obj@outcome, "OutcomeSurvPiecewiseExponential"))
   ### Set tau
   borrowing_string <- if (is_bdb) h_glue("real{{eval_constraints(analysis_obj@borrowing@tau_prior)}} tau;") else ""
 
@@ -32,6 +33,7 @@ make_model_string_parameters <- function(analysis_obj) {
     constraint = eval_constraints(analysis_obj@outcome@baseline_prior),
     n = if (is_bdb) "[2]" else ""
   )
+  if (is_pem) intercept_string <- ""
 
   ### Add outcome specific parameters
   if (NROW(analysis_obj@outcome@param_priors) > 0) {
@@ -39,6 +41,11 @@ make_model_string_parameters <- function(analysis_obj) {
     outcome_string <- h_glue("real{{constraints}} {{names(constraints)}};")
   } else {
     outcome_string <- analysis_obj@outcome@param_stan_code
+  }
+
+  if (is_pem && is_bdb) {
+    intercept_string <- "matrix[M, 2] alpha;"
+    outcome_string <- ""
   }
 
   ### Add in vector of coefficients if covariates are provided
