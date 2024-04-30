@@ -6,6 +6,8 @@
 \alias{make_model_string_model,BorrowingFull,ANY,Analysis-method}
 \alias{make_model_string_model,BorrowingNone,ANY,Analysis-method}
 \alias{make_model_string_model,BorrowingHierarchicalCommensurate,ANY,Analysis-method}
+\alias{make_model_string_model,BorrowingHierarchicalCommensurate,OutcomeSurvPiecewiseExponential,Analysis-method}
+\alias{make_model_string_model,BorrowingNone,OutcomeSurvPiecewiseExponential,Analysis-method}
 \title{Create Stan Code for Model}
 \usage{
 make_model_string_model(borrowing, outcome, analysis_obj)
@@ -17,6 +19,10 @@ make_model_string_model(borrowing, outcome, analysis_obj)
 \S4method{make_model_string_model}{BorrowingNone,ANY,Analysis}(borrowing, outcome, analysis_obj)
 
 \S4method{make_model_string_model}{BorrowingHierarchicalCommensurate,ANY,Analysis}(borrowing, outcome, analysis_obj)
+
+\S4method{make_model_string_model}{BorrowingHierarchicalCommensurate,OutcomeSurvPiecewiseExponential,Analysis}(borrowing, outcome, analysis_obj)
+
+\S4method{make_model_string_model}{BorrowingNone,OutcomeSurvPiecewiseExponential,Analysis}(borrowing, outcome, analysis_obj)
 }
 \arguments{
 \item{borrowing}{borrowing object}

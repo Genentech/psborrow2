@@ -95,6 +95,7 @@ create_analysis_obj <- function(data_matrix,
   # Model string components
   functions_str <- make_model_string_functions(analysis_obj)
   data_str <- make_model_string_data(analysis_obj)
+  trans_data_str <- make_model_string_transf_data(analysis_obj)
   param_str <- make_model_string_parameters(analysis_obj)
   trans_param_str <- make_model_string_transf_param(analysis_obj)
   model_str <- make_model_string_model(analysis_obj@borrowing, analysis_obj@outcome, analysis_obj)
@@ -105,6 +106,8 @@ create_analysis_obj <- function(data_matrix,
     {{functions_str}}
 
     {{data_str}}
+
+    {{trans_data_str}}
 
     {{param_str}}
 
