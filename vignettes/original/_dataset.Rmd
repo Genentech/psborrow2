@@ -45,7 +45,7 @@ and the external program. More information can be found in the
 The short version is:
 ```{r install-cmdstan-2, eval=FALSE}
 # Install the cmdstanr package
-install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
+install.packages("cmdstanr", repos = c("https://stan-dev.r-universe.dev", getOption("repos")))
 library(cmdstanr)
 
 # Install the external CmdStan program

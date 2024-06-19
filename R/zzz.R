@@ -3,7 +3,7 @@
     packageStartupMessage(
       "psborrow2 uses cmdstanr for compiling and sampling from models, but it does not seem to be installed.\n",
       "To install:\n",
-      "install.packages(\"cmdstanr\", repos = c(\"https://mc-stan.org/r-packages/\", getOption(\"repos\")))"
+      "install.packages(\"cmdstanr\", repos = c(\"https://stan-dev.r-universe.dev\", getOption(\"repos\")))"
     )
   } else if (is.null(cmdstanr::cmdstan_version(error_on_NA = FALSE))) {
     possible_paths <- unique(c(

@@ -96,7 +96,7 @@ Please refer to [https://genentech.github.io/psborrow2/articles/index.html](http
 `cmdstanr` is highly recommended for use with `psborrow2`. To install `cmdstanr`, follow the instructions outlined by the [`cmdstanr` documentation](https://mc-stan.org/cmdstanr/) or use:
 
 ```
-install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
+install.packages("cmdstanr", repos = c("https://stan-dev.r-universe.dev", getOption("repos")))
 ```
 
 

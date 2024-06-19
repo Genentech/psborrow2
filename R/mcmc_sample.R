@@ -212,7 +212,7 @@ setMethod(
         "Install `cmdstanr` and create another simulation object with `create_simulation_obj()`, ",
         "then call `mcmc_sample()` again.\n",
         "To install:\n",
-        "install.packages(\"cmdstanr\", repos = c(\"https://mc-stan.org/r-packages/\", getOption(\"repos\")))"
+        "install.packages(\"cmdstanr\", repos = c(\"https://stan-dev.r-universe.dev\", getOption(\"repos\")))"
       )
     }
     # Input checks
