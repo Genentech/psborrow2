@@ -14,7 +14,7 @@ analyses and simulation studies (Lewis et al 2019, Viele et al 2014)
 `psborrow2` helps the user:
 
 1. **Apply Bayesian dynamic borrowing methods**. `psborrow2` has a user-friendly interface for
-   conducting Bayesian dynamic borrowing analyses using the hierarchical commensurate prior approach 
+   conducting Bayesian dynamic borrowing analyses using the hierarchical commensurate prior approach
    that handles the computationally-difficult MCMC sampling
    on behalf of the user.
 
@@ -39,10 +39,11 @@ or you can install the development version with:
 remotes::install_github("Genentech/psborrow2")
 ```
 
-Please note that [`cmdstanr`](https://mc-stan.org/cmdstanr/) is highly recommended, but will not be installed by default when installing `psborrow2`. 
+Please note that [`cmdstanr`](https://mc-stan.org/cmdstanr/) is highly recommended, but will not be installed by default when installing `psborrow2`.
 To install `cmdstanr`, follow the instructions outlined by the [`cmdstanr` documentation](https://mc-stan.org/cmdstanr/) or use:
-```
-install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
+
+```r
+install.packages("cmdstanr", repos = c("https://stan-dev.r-universe.dev", getOption("repos")))
 ```
 
 ## Tutorial

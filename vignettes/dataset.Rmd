@@ -32,7 +32,7 @@ The short version is:
 
 ```r
 # Install the cmdstanr package
-install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
+install.packages("cmdstanr", repos = c("https://stan-dev.r-universe.dev", getOption("repos")))
 library(cmdstanr)
 
 # Install the external CmdStan program
