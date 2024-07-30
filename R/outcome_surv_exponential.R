@@ -94,7 +94,7 @@ outcome_surv_exponential <- function(time_var, cens_var, baseline_prior, weight_
                target += exponential_lpdf(time[i] | elp[i] ){{weight}};
             }
          }",
-        weight = if (weight_var != "") " * weight[i]" else ""
+        weight = if (has_weight) " * weight[i]" else ""
       ),
     data_stan_code = h_glue("
       vector[N] time;

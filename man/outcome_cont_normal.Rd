@@ -56,6 +56,7 @@ norm <- outcome_cont_normal(
 Other outcome models: 
 \code{\link{outcome_bin_logistic}()},
 \code{\link{outcome_surv_exponential}()},
+\code{\link{outcome_surv_piecewise_exponential}()},
 \code{\link{outcome_surv_weibull_ph}()}
 }
 \concept{outcome models}

@@ -59,6 +59,7 @@ ws <- outcome_surv_weibull_ph(
 Other outcome models: 
 \code{\link{outcome_bin_logistic}()},
 \code{\link{outcome_cont_normal}()},
-\code{\link{outcome_surv_exponential}()}
+\code{\link{outcome_surv_exponential}()},
+\code{\link{outcome_surv_piecewise_exponential}()}
 }
 \concept{outcome models}
