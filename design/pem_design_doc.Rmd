@@ -1,0 +1,101 @@
+---
+title: "Piecewise Exponential Model Design Document"
+author: "Matt Secrest"
+date: "2024-08-21"
+output: html_document
+---
+
+# Overview of functionality
+
+User specifies:
+
+- The cutpoints
+- One prior for all cutpoints or separate priors for each cutpoint
+
+Within each cutpoint:
+
+- one baseline hazard rate (alpha)
+
+Across cutpoints:
+
+- one tau
+
+# Question on method: how to handle cutpoints with few events?
+
+Suppose the data are commensurate. Suppose there are only events in the internal control in period 2. We have prior structure for period 2 as:
+
+```
+alpha[2][2] ~ normal(0, 1000)
+alpha[2][1] ~ normal(alpha[2][2], 1/sqrt(tau))
+```
+
+Given there are no events in the internal control, the posterior for `alpha[2][2]` will be `normal(0, 1000)`. Will this impact
+the weight of `tau` as a function of the events and not the commensurability?
+
+# Related question on method: whether to introduce a relationship between periods?
+
+- Dynamic linear model
+- Hierarchical model
+
+# What assertive errors to provide to the user?
+
+- Cutpoints with no events?
+- Cutpoints with few events?
+- Cutpoints out of the range of data?
+
+# Example functionality
+
+```
+library(psborrow2)
+
+cutpoints <- c(1, 2, 3)
+
+# One prior for all cutpoints
+anls_obj <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = outcome_surv_pem(
+      "time",
+      "cnsr",
+      cutpoints = cutpoints,
+      baseline_prior = prior_normal(0, 1000)
+    ),
+    borrowing = borrowing_hierarchical_commensurate(
+      "ext",
+      prior_exponential(.001)
+    ),
+    treatment = treatment_details(
+      "trt",
+      prior_normal(0, 1000)
+    ),
+    covariates = add_covariates(
+      covariates = c("cov1", "cov2"),
+      priors = prior_normal(0, 1000)
+    )
+  )
+
+# Different priors for all cutpoints
+anls_obj <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = outcome_surv_pem(
+      "time",
+      "cnsr",
+      cutpoints = cutpoints,
+      baseline_prior = list(prior_normal(0, 1000), prior_normal(0, 10), prior_normal(0, 1))
+    ),
+    borrowing = borrowing_hierarchical_commensurate(
+      "ext",
+      prior_exponential(.001)
+    ),
+    treatment = treatment_details(
+      "trt",
+      prior_normal(0, 1000)
+    ),
+    covariates = add_covariates(
+      covariates = c("cov1", "cov2"),
+      priors = prior_normal(0, 1000)
+    )
+  )
+
+
+```
+
