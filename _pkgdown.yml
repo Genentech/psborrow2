@@ -31,6 +31,7 @@ articles:
       - "`propensity_scores`"
       - "`weighting`"
       - "`data_simulation`"
+      - "`simple_overview`"
   - title: Deep dive into matching/weighting
     desc: ~
     contents:

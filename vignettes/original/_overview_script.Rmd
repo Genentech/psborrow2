@@ -1,9 +1,0 @@
----
-title: "8. Simple Overview Script"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{8. Simple Overview Script}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
