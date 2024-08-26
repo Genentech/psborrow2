@@ -11,7 +11,7 @@ vignette: >
 The goal of this demo is to conduct a Bayesian Dynamic Borrowing
 (BDB) analysis using the hierarchical commensurate prior on a dataset.
 
-```{r}
+```{r, include = FALSE}
 # Load packages ----
 library(psborrow2)
 
@@ -27,6 +27,23 @@ library(posterior)
 # Comparing populations
 library(table1)
 
+```
+
+```
+# Load packages ----
+library(psborrow2)
+
+# Survival analysis
+library(survival)
+library(ggsurvfit)
+library(flexsurv)
+
+# Additional tools for draws objects
+library(bayesplot)
+library(posterior)
+
+# Comparing populations
+library(table1)
 ```
 
 
@@ -130,7 +147,7 @@ exp_outcome <- outcome_surv_exponential(
 )
 ```
 
-# Borrowing objectsi 
+# Borrowing object
 
 Borrowing objects are created with:
 ```
@@ -144,7 +161,6 @@ bdb_borrowing <- borrowing_hierarchical_commensurate(
   ext_flag_col = "ext",
   tau_prior = prior_gamma(0.001, 0.001)
 )
-
 ```
 
 # Treatment objects
@@ -186,7 +202,7 @@ Conduct MCMC sampling with:
 results <- mcmc_sample(
   x = analysis_object,
   iter_warmup = 1000,
-  iter_sampling = 1000,
+  iter_sampling = 5000,
   chains = 1
 )
 ```
@@ -195,7 +211,7 @@ results <- mcmc_sample(
 results <- mcmc_sample(
   x = analysis_object,
   iter_warmup = 1000,
-  iter_sampling = 1000,
+  iter_sampling = 5000,
   chains = 1
 )
 ```
@@ -301,7 +317,7 @@ anls_ps_no_borrow <- create_analysis_obj(
 res_ps_no_borrow <- mcmc_sample(
   x = anls_ps_no_borrow,
   iter_warmup = 1000,
-  iter_sampling = 500,
+  iter_sampling = 5000,
   chains = 1
 )
 ```
@@ -321,7 +337,7 @@ anls_ps_no_borrow <- create_analysis_obj(
 res_ps_no_borrow <- mcmc_sample(
   x = anls_ps_no_borrow,
   iter_warmup = 1000,
-  iter_sampling = 500,
+  iter_sampling = 5000,
   chains = 1
 )
 ```
@@ -353,7 +369,7 @@ anls_ps_bdb <- create_analysis_obj(
 res_ps_bdb <- mcmc_sample(
   x = anls_ps_bdb,
   iter_warmup = 1000,
-  iter_sampling = 500,
+  iter_sampling = 5000,
   chains = 1
 )
 
@@ -374,7 +390,7 @@ anls_ps_bdb <- create_analysis_obj(
 res_ps_bdb <- mcmc_sample(
   x = anls_ps_bdb,
   iter_warmup = 1000,
-  iter_sampling = 500,
+  iter_sampling = 5000,
   chains = 1
 )
 ```
