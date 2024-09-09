@@ -1,0 +1,408 @@
+---
+title: "8. Simple Overview"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{8. Simple Overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Purpose
+The goal of this demo is to conduct a Bayesian Dynamic Borrowing
+(BDB) analysis using the hierarchical commensurate prior on a dataset.
+
+```{r, include = FALSE}
+# Load packages ----
+library(psborrow2)
+
+# Survival analysis
+library(survival)
+library(ggsurvfit)
+library(flexsurv)
+
+# Additional tools for draws objects
+library(bayesplot)
+library(posterior)
+
+# Comparing populations
+library(table1)
+
+```
+
+```
+# Load packages ----
+library(psborrow2)
+
+# Survival analysis
+library(survival)
+library(ggsurvfit)
+library(flexsurv)
+
+# Additional tools for draws objects
+library(bayesplot)
+library(posterior)
+
+# Comparing populations
+library(table1)
+```
+
+
+# Explore example data
+
+## {psborrow2} contains an example matrix
+```{r}
+head(example_matrix)
+```
+
+```
+?example_matrix # for more details
+```
+
+
+## Load as data.frame for some functions
+```{r}
+example_dataframe <- as.data.frame(example_matrix)
+```
+
+
+## Look at distribution of arms
+```{r}
+table(ext = example_matrix[, "ext"], trt = example_matrix[, "trt"])
+```
+
+## Naive internal comparisons
+
+### Kaplan-Meier curves
+```{r}
+km_fit <- survfit(Surv(time = time, event = 1 - cnsr) ~ trt + ext,
+  data = example_dataframe
+)
+
+ggsurvfit(km_fit)
+```
+
+The internal and external control arms look quite different...
+
+### Cox model
+```{r}
+cox_fit <- coxph(Surv(time = time, event = 1 - cnsr) ~ trt,
+  data = example_dataframe,
+  subset = ext == 0
+)
+
+cox_fit
+exp(confint(cox_fit)) # The internal HR is 0.90 (95% CI 0.61 - 1.32)
+```
+
+# Hybrid control analysis
+
+Let's start by demonstrating the utility of BDB by trying to
+borrow data from the external control arm which we know
+experiences worse survival.
+
+The end goal is to create an Analysis object with:
+```
+?create_analysis_obj
+```
+
+# A note on prior distributions
+psborrow2 allows the user to specify priors with the following
+functions:
+
+```
+?prior_bernoulli
+?prior_beta
+?prior_cauchy
+?prior_exponential
+?prior_gamma
+?prior_normal
+?prior_poisson
+?prior_uniform
+```
+
+Prior distributions can be plotted with the plot() method
+```{r}
+plot(prior_normal(0, 1), xlim = c(-100, 100), ylim = c(0, 1))
+plot(prior_normal(0, 10), xlim = c(-100, 100), ylim = c(0, 1))
+plot(prior_normal(0, 10000), xlim = c(-100, 100), ylim = c(0, 1))
+```
+
+# Outcome objects
+
+psborrow2 currently supports 4 outcomes:
+
+```
+?outcome_surv_weibull_ph # Weibull survival w/ proportional hazards
+?outcome_surv_exponential # Exponential survival
+?outcome_bin_logistic # Logistic binary outcome
+?outocme_cont_normal # Normal continuous outcome
+```
+
+# Create an exponential survival distribution Outcome object
+```{r}
+exp_outcome <- outcome_surv_exponential(
+  time_var = "time",
+  cens_var = "cnsr",
+  baseline_prior = prior_normal(0, 10000)
+)
+```
+
+# Borrowing object
+
+Borrowing objects are created with:
+```
+?borrowing_hierarchical_commensurate # Hierarchical commensurate borrowing
+?borrowing_none # No borrowing
+?borrowing_full # Full borrowing
+```
+
+```{r}
+bdb_borrowing <- borrowing_hierarchical_commensurate(
+  ext_flag_col = "ext",
+  tau_prior = prior_gamma(0.001, 0.001)
+)
+```
+
+# Treatment objects
+
+Treatment objects are created with:
+```
+?treatment_details
+```
+
+```{r}
+trt_details <- treatment_details(
+  trt_flag_col = "trt",
+  trt_prior = prior_normal(0, 10000)
+)
+```
+
+# Analysis objects
+
+Combine everything and create object of class Analysis:
+```{r}
+analysis_object <- create_analysis_obj(
+  data_matrix = example_matrix,
+  outcome = exp_outcome,
+  borrowing = bdb_borrowing,
+  treatment = trt_details
+)
+
+analysis_object
+```
+
+# MCMC sampling
+
+Conduct MCMC sampling with:
+```
+?mcmc_sample
+```
+
+```{r, include = FALSE}
+results <- mcmc_sample(
+  x = analysis_object,
+  iter_warmup = 1000,
+  iter_sampling = 5000,
+  chains = 1
+)
+```
+
+```
+results <- mcmc_sample(
+  x = analysis_object,
+  iter_warmup = 1000,
+  iter_sampling = 5000,
+  chains = 1
+)
+```
+
+```{r}
+class(results)
+
+results
+
+```
+
+# Interpret results
+
+
+Dictionary to interpret parameters:
+```{r}
+variable_dictionary(analysis_object)
+```
+
+Create a draws object
+```{r}
+draws <- results$draws()
+```
+
+Rename draws object parameters
+```{r}
+draws <- rename_draws_covariates(draws, analysis_object)
+```
+
+
+Get 95% credible intervals with posterior package
+```{r}
+posterior::summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
+```
+
+Look at histogram of draws with bayesplot package
+```{r}
+bayesplot::mcmc_hist(draws, c("treatment HR"))
+```
+
+Our model does not borrow much from the external arm!
+This is the ***desired outcome*** given how different the control arms were.
+
+# Control arm imbalances
+
+Check balance between arms
+```{r}
+table1(
+  ~ cov1 + cov2 + cov3 + cov4 |
+    factor(ext, labels = c("Internal RCT", "External data")) +
+      factor(trt, labels = c("Not treated", "Treated")),
+  data = example_dataframe
+)
+```
+
+Because the imbalance may be conditional on observed covariates,
+let's adjust for propensity scores in our analysis
+
+Create a propensity score model
+```{r}
+ps_model <- glm(ext ~ cov1 + cov2 + cov3 + cov4,
+  data = example_dataframe,
+  family = binomial
+)
+ps <- predict(ps_model, type = "response")
+example_dataframe$ps <- ps
+example_dataframe$ps_cat_ <- cut(
+  example_dataframe$ps,
+  breaks = 5,
+  include.lowest = TRUE
+)
+levels(example_dataframe$ps_cat_) <- c(
+  "ref", "low",
+  "low_med", "high_med", "high"
+)
+```
+
+
+Convert the data back to a matrix with dummy variables for `ps_cat_` levels
+```{r}
+example_matrix_ps <- create_data_matrix(
+  example_dataframe,
+  outcome = c("time", "cnsr"),
+  trt_flag_col = "trt",
+  ext_flag_col = "ext",
+  covariates = ~ps_cat_
+)
+```
+
+Propensity score analysis without borrowing
+```{r, include = FALSE}
+anls_ps_no_borrow <- create_analysis_obj(
+  data_matrix = example_matrix_ps,
+  covariates = add_covariates(
+    c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
+    prior_normal(0, 10000)
+  ),
+  outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
+  borrowing = borrowing_none("ext"),
+  treatment = treatment_details("trt", prior_normal(0, 10000))
+)
+
+res_ps_no_borrow <- mcmc_sample(
+  x = anls_ps_no_borrow,
+  iter_warmup = 1000,
+  iter_sampling = 5000,
+  chains = 1
+)
+```
+
+```
+anls_ps_no_borrow <- create_analysis_obj(
+  data_matrix = example_matrix_ps,
+  covariates = add_covariates(
+    c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
+    prior_normal(0, 10000)
+  ),
+  outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
+  borrowing = borrowing_none("ext"),
+  treatment = treatment_details("trt", prior_normal(0, 10000))
+)
+
+res_ps_no_borrow <- mcmc_sample(
+  x = anls_ps_no_borrow,
+  iter_warmup = 1000,
+  iter_sampling = 5000,
+  chains = 1
+)
+```
+
+```{r}
+draws_ps_no_borrow <- rename_draws_covariates(
+  res_ps_no_borrow$draws(),
+  anls_ps_no_borrow
+)
+
+summarize_draws(draws_ps_no_borrow, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
+```
+
+
+# Propensity score analysis with BDB
+
+```{r, include = FALSE}
+anls_ps_bdb <- create_analysis_obj(
+  data_matrix = example_matrix_ps,
+  covariates = add_covariates(
+    c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
+    prior_normal(0, 10000)
+  ),
+  outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
+  borrowing = borrowing_hierarchical_commensurate("ext", prior_gamma(0.001, 0.001)),
+  treatment = treatment_details("trt", prior_normal(0, 10000))
+)
+
+res_ps_bdb <- mcmc_sample(
+  x = anls_ps_bdb,
+  iter_warmup = 1000,
+  iter_sampling = 5000,
+  chains = 1
+)
+
+```
+
+```
+anls_ps_bdb <- create_analysis_obj(
+  data_matrix = example_matrix_ps,
+  covariates = add_covariates(
+    c("ps_cat_low", "ps_cat_low_med", "ps_cat_high_med", "ps_cat_high"),
+    prior_normal(0, 10000)
+  ),
+  outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
+  borrowing = borrowing_hierarchical_commensurate("ext", prior_gamma(0.001, 0.001)),
+  treatment = treatment_details("trt", prior_normal(0, 10000))
+)
+
+res_ps_bdb <- mcmc_sample(
+  x = anls_ps_bdb,
+  iter_warmup = 1000,
+  iter_sampling = 5000,
+  chains = 1
+)
+```
+
+```{r}
+draws_ps_bdb <- rename_draws_covariates(
+  res_ps_bdb$draws(),
+  anls_ps_bdb
+)
+
+summarize_draws(draws_ps_bdb, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
+```
+
+It looks like PS + BDB allowed us to most accurately recover the
+true hazard ratio of 0.70.
