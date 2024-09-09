@@ -5,18 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="psborrow2">
 <title>2. Matching and Weighting Application with Dynamic Borrowing • psborrow2</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="2. Matching and Weighting Application with Dynamic Borrowing">
-<meta property="og:description" content="psborrow2">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-125641273-1"></script><script>
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="2. Matching and Weighting Application with Dynamic Borrowing">
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-125641273-1"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
@@ -25,49 +20,32 @@
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.4</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../articles/psborrow2.html">Get started</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
-<li class="active nav-item">
-  <a class="nav-link" href="../articles/index.html">Articles</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../articles/psborrow2.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/Genentech/psborrow2">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Genentech/psborrow2"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -76,7 +54,8 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>2. Matching and Weighting Application with Dynamic Borrowing</h1>
+
+      <h1>2. Matching and Weighting Application with Dynamic Borrowing</h1>
                         <h4 data-toc-skip class="author">Manoj Khanal <a href="mailto:khanal_manoj@lilly.com" class="email">khanal_manoj@lilly.com</a>
 </h4>
                         <h4 data-toc-skip class="author">Eli Lilly &amp;
@@ -84,7 +63,7 @@ Company</h4>
             
             <h4 data-toc-skip class="date">2024-04-12</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/Genentech/psborrow2/blob/HEAD/vignettes/match_weight_02_application.Rmd" class="external-link"><code>vignettes/match_weight_02_application.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Genentech/psborrow2/blob/main/vignettes/match_weight_02_application.Rmd" class="external-link"><code>vignettes/match_weight_02_application.Rmd</code></a></small>
       <div class="d-none name"><code>match_weight_02_application.Rmd</code></div>
     </div>
 
@@ -119,32 +98,48 @@ article</p>
 <div class="section level2">
 <h2 id="hazard-function">Hazard function<a class="anchor" aria-label="anchor" href="#hazard-function"></a>
 </h2>
-<p>The hazard function of <span class="math inline">\(T\)</span> at time
-<span class="math inline">\(t\)</span> is defined as the instantaneous
-rate of the event occurence that is still at risk at time <span class="math inline">\(t\)</span>. It is defined as</p>
-<p><span class="math display">\[\begin{equation}
+<p>The hazard function of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
+at time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+is defined as the instantaneous rate of the event occurence that is
+still at risk at time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.
+It is defined as</p>
+<p><span class="math display">$$\begin{equation}
   h(t)=\lim_\limits{\Delta \rightarrow 0 } P\frac{(t\leq T&lt;t+\Delta
 t|T\geq t)}{\Delta t}=\frac{f(t)}{S(t)},
-\end{equation}\]</span></p>
-<p>where <span class="math inline">\(f(t)\)</span> is the density
-function of <span class="math inline">\(T\)</span> given <span class="math inline">\(\theta\)</span>, and <span class="math inline">\(S(t)=P(T&gt;t)\)</span> is the survival function
-of <span class="math inline">\(T\)</span>.</p>
+\end{equation}$$</span></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f(t)</annotation></semantics></math>
+is the density function of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
+given
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>T</mi><mo>&gt;</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">S(t)=P(T&gt;t)</annotation></semantics></math>
+is the survival function of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>.</p>
 </div>
 <div class="section level2">
 <h2 id="cox-proportional-hazards-model">Cox proportional hazards model<a class="anchor" aria-label="anchor" href="#cox-proportional-hazards-model"></a>
 </h2>
-<p>We start with the Cox proportional hazards model <span class="citation">(Cox 1972)</span> for observation <span class="math inline">\(i\)</span> as follows. To estimate the regression
-coefficients under the Bayesian framework, the baseline hazard function
-needs to be specified. This is not the case under a Frequentist Cox
-regression. The hazard at time <span class="math inline">\(t\)</span>
+<p>We start with the Cox proportional hazards model <span class="citation">(Cox 1972)</span> for observation
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+as follows. To estimate the regression coefficients under the Bayesian
+framework, the baseline hazard function needs to be specified. This is
+not the case under a Frequentist Cox regression. The hazard at time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
 is</p>
-<p><span class="math display">\[\begin{equation}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>𝐗</mi><mi>i</mi></msub><mo>,</mo><msub><mi>Z</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><msub><mi>Z</mi><mi>i</mi></msub><mo>+</mo><msup><mi>β</mi><mi>T</mi></msup><msub><mi>𝐗</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{equation}
 \label{eq:coxmodel}
-  \lambda(t|\boldsymbol{X}_i,Z_i)=\lambda_0(t|\alpha) \exp(\gamma Z_i
-+\beta^T \boldsymbol{X}_i),
-\end{equation}\]</span></p>
-<p>where <span class="math inline">\(\boldsymbol{X}_i\)</span> is the
-vector of baseline covariates and <span class="math inline">\(Z_i\)</span> is the treatment indicator.</p>
+  \lambda(t|\boldsymbol{X}_i,Z_i)=\lambda_0(t|\alpha) \exp(\gamma Z_i +\beta^T \boldsymbol{X}_i), 
+\end{equation}</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐗</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\boldsymbol{X}_i</annotation></semantics></math>
+is the vector of baseline covariates and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Z</mi><mi>i</mi></msub><annotation encoding="application/x-tex">Z_i</annotation></semantics></math>
+is the treatment indicator.</p>
 </div>
 <div class="section level2">
 <h2 id="baseline-hazard-function">Baseline hazard function<a class="anchor" aria-label="anchor" href="#baseline-hazard-function"></a>
@@ -165,25 +160,35 @@ hazard functions.</p>
 <ul>
 <li>Exponential distribution with constant hazard
 <ul>
-<li><span class="math inline">\(\lambda_0(t|\alpha)=exp(\alpha)\)</span></li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_0(t|\alpha)=exp(\alpha)</annotation></semantics></math></li>
 </ul>
 </li>
 <li>Weibull distribution with proportional hazards parametrization
 <ul>
 <li>
-<span class="math inline">\(\lambda_0(t|\zeta,\mu)=\alpha
-t\mu^{\zeta -1} \exp(-\mu t^\zeta)\)</span> with shape parameter <span class="math inline">\(\zeta\)</span> and scale parameter <span class="math inline">\(\mu\)</span>.</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>ζ</mi><mo>,</mo><mi>μ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>α</mi><mi>t</mi><msup><mi>μ</mi><mrow><mi>ζ</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mi>μ</mi><msup><mi>t</mi><mi>ζ</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_0(t|\zeta,\mu)=\alpha t\mu^{\zeta -1} \exp(-\mu t^\zeta)</annotation></semantics></math>
+with shape parameter
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ζ</mi><annotation encoding="application/x-tex">\zeta</annotation></semantics></math>
+and scale parameter
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>.</li>
 </ul>
 </li>
 <li>Piecewise exponential distribution
 <ul>
 <li>
-<span class="math inline">\(\lambda_0(t|\alpha_1,...,\alpha_K)=exp(\alpha_k)\)</span>
-for <span class="math inline">\(t \in (s_{k-1},s_k],\)</span> where
-<span class="math inline">\((s_{k-1},s_k]\)</span> is the <span class="math inline">\(k^{th}\)</span> interval and <span class="math inline">\(K\)</span> is the total number of pre-specified
-intervals as in <span class="citation">Murray et al. (2014)</span>. In
-our example below, we will consider <span class="math inline">\(s_k=(100*k/K)^{th}\)</span> to the percentile of
-the event times from the treated group.</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>α</mi><mi>K</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_0(t|\alpha_1,...,\alpha_K)=exp(\alpha_k)</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>s</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>s</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">]</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">t \in (s_{k-1},s_k],</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>s</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>s</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">(s_{k-1},s_k]</annotation></semantics></math>
+is the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>k</mi><mrow><mi>t</mi><mi>h</mi></mrow></msup><annotation encoding="application/x-tex">k^{th}</annotation></semantics></math>
+interval and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+is the total number of pre-specified intervals as in <span class="citation">Murray et al. (2014)</span>. In our example below, we
+will consider
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>k</mi></msub><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>100</mn><mo>*</mo><mi>k</mi><mi>/</mi><mi>K</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>t</mi><mi>h</mi></mrow></msup></mrow><annotation encoding="application/x-tex">s_k=(100*k/K)^{th}</annotation></semantics></math>
+to the percentile of the event times from the treated group.</li>
 </ul>
 </li>
 </ul>
@@ -191,27 +196,64 @@ the event times from the treated group.</li>
 <div class="section level2">
 <h2 id="likelihood">Likelihood<a class="anchor" aria-label="anchor" href="#likelihood"></a>
 </h2>
-<p>We now introduce the likelihood along with the weight <span class="math inline">\(w_i\)</span> which is a subject specific weight.
-For the purpose of demonstration, we have considered the subject
-specific weight from inverse probability of treatment weighting method
-estimating ATT. In other words, <span class="math inline">\(w_i=1\)</span> for subject <span class="math inline">\(i\)</span> in RCT and <span class="math inline">\(0 \leq w_i \leq 1\)</span> for subject <span class="math inline">\(i\)</span> in RWD. Let <span class="math inline">\({Y}_{i}\)</span> be the observed time, <span class="math inline">\({\delta}_{i}\)</span> be an event indicator, <span class="math inline">\(\boldsymbol{X}_{i}\)</span> be the covariates, and
-<span class="math inline">\({Z}_{i}\)</span> be the treatment indicator
-in the trial data. Similarly, let <span class="math inline">\({Y}_{0,i}\)</span> be the observed time, <span class="math inline">\({\delta}_{0,i}\)</span> be an event indicator,
-<span class="math inline">\(\boldsymbol{X}_{0,i}\)</span> be the
-covariates and <span class="math inline">\({Z}_{0,i}\)</span> be the
-treatment indicator in external control data. The time axis is
-partitioned into <span class="math inline">\(K\)</span> intervals: <span class="math inline">\((0,\kappa_1],(\kappa_1,\kappa_2],\ldots,(\kappa_{K-1},\kappa_K)\)</span>.
-Let <span class="math inline">\(\lambda_0(t|\alpha_k)=\exp{(\alpha_k)}\)</span> be
-the piecewise exponential baseline hazard function with <span class="math inline">\(t \in I_k=(\kappa_{k-1},\kappa_k)\)</span> for
-<span class="math inline">\(k=1,\ldots,K\)</span>. Denote <span class="math inline">\(\boldsymbol{\alpha}=(\alpha_1,\ldots,\alpha_K)^\intercal\)</span>.
-Let <span class="math inline">\(\boldsymbol\beta\)</span> and <span class="math inline">\(\gamma\)</span> be the covariate and treatment
-effects respectively in trial. Similarly, let <span class="math inline">\(\boldsymbol{\beta}_0\)</span> and <span class="math inline">\(\boldsymbol{\alpha}_0\)</span> represent the
-parameters in external control.</p>
+<p>We now introduce the likelihood along with the weight
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>i</mi></msub><annotation encoding="application/x-tex">w_i</annotation></semantics></math>
+which is a subject specific weight. For the purpose of demonstration, we
+have considered the subject specific weight from inverse probability of
+treatment weighting method estimating ATT. In other words,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">w_i=1</annotation></semantics></math>
+for subject
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+in RCT and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><msub><mi>w</mi><mi>i</mi></msub><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0 \leq w_i \leq 1</annotation></semantics></math>
+for subject
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+in RWD. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Y</mi><mi>i</mi></msub><annotation encoding="application/x-tex">{Y}_{i}</annotation></semantics></math>
+be the observed time,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>δ</mi><mi>i</mi></msub><annotation encoding="application/x-tex">{\delta}_{i}</annotation></semantics></math>
+be an event indicator,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐗</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\boldsymbol{X}_{i}</annotation></semantics></math>
+be the covariates, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Z</mi><mi>i</mi></msub><annotation encoding="application/x-tex">{Z}_{i}</annotation></semantics></math>
+be the treatment indicator in the trial data. Similarly, let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi></mrow></msub><annotation encoding="application/x-tex">{Y}_{0,i}</annotation></semantics></math>
+be the observed time,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>δ</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi></mrow></msub><annotation encoding="application/x-tex">{\delta}_{0,i}</annotation></semantics></math>
+be an event indicator,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐗</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi></mrow></msub><annotation encoding="application/x-tex">\boldsymbol{X}_{0,i}</annotation></semantics></math>
+be the covariates and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Z</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi></mrow></msub><annotation encoding="application/x-tex">{Z}_{0,i}</annotation></semantics></math>
+be the treatment indicator in external control data. The time axis is
+partitioned into
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+intervals:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><msub><mi>κ</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>κ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>κ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mi>…</mi><mo>,</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>κ</mi><mrow><mi>K</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>κ</mi><mi>K</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">(0,\kappa_1],(\kappa_1,\kappa_2],\ldots,(\kappa_{K-1},\kappa_K)</annotation></semantics></math>.
+Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>α</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_0(t|\alpha_k)=\exp{(\alpha_k)}</annotation></semantics></math>
+be the piecewise exponential baseline hazard function with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><msub><mi>I</mi><mi>k</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>κ</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>κ</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">t \in I_k=(\kappa_{k-1},\kappa_k)</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">k=1,\ldots,K</annotation></semantics></math>.
+Denote
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝛂</mi><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>K</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>⊺</mo></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{\alpha}=(\alpha_1,\ldots,\alpha_K)^\intercal</annotation></semantics></math>.
+Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝛃</mi><annotation encoding="application/x-tex">\boldsymbol\beta</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>
+be the covariate and treatment effects respectively in trial. Similarly,
+let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝛃</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\boldsymbol{\beta}_0</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝛂</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\boldsymbol{\alpha}_0</annotation></semantics></math>
+represent the parameters in external control.</p>
 <p>The joint likelihood of trial and external control for right censored
-observations after taking account the weight <span class="math inline">\(w_i\)</span> with baseline hazard as a piecewise
-exponential function and <span class="math inline">\(K\)</span>
+observations after taking account the weight
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>i</mi></msub><annotation encoding="application/x-tex">w_i</annotation></semantics></math>
+with baseline hazard as a piecewise exponential function and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
 intervals can be written by slightly extending <span class="citation">Murray et al. (2014)</span> as</p>
-<p><span class="math display">\[
+<p><span class="math display">$$
 \begin{equation}
         \small
         \begin{split}
@@ -238,55 +280,89 @@ S_{0,ik} \bigg\} }^{\delta_{0,i}} \\
 \Bigg],
         \end{split}
     \end{equation}
-    \]</span></p>
-<p>where <span class="math inline">\(\mathcal S_{0,ik}=\alpha_{0,k} +
-\boldsymbol{\beta}_0^\intercal \boldsymbol{X}_{0,i}\)</span>, <span class="math inline">\(\mathcal S_{ik}=\alpha_{k} +
-\boldsymbol{\beta}^\intercal \boldsymbol{X}_{i} + {\gamma}
-{Z}_{i}\)</span>, <span class="math inline">\(n=n_T+n_E\)</span>; <span class="math inline">\(n_T\)</span> and <span class="math inline">\(n_E\)</span> are the sample size in trial and
-external control data respectively. If <span class="math inline">\(w_i=1\)</span>, then the above likelihood becomes
-the traditional likelihood for Cox proportional hazards model. Above
-notations are similar as in <span class="citation">Khanal
-(2022)</span>.</p>
+    $$</span></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝒮</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><msub><mi>α</mi><mrow><mn>0</mn><mo>,</mo><mi>k</mi></mrow></msub><mo>+</mo><msubsup><mi>𝛃</mi><mn>0</mn><mo>⊺</mo></msubsup><msub><mi>𝐗</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal S_{0,ik}=\alpha_{0,k} + \boldsymbol{\beta}_0^\intercal \boldsymbol{X}_{0,i}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝒮</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><msub><mi>α</mi><mi>k</mi></msub><mo>+</mo><msup><mi>𝛃</mi><mo>⊺</mo></msup><msub><mi>𝐗</mi><mi>i</mi></msub><mo>+</mo><mi>γ</mi><msub><mi>Z</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\mathcal S_{ik}=\alpha_{k} + \boldsymbol{\beta}^\intercal \boldsymbol{X}_{i} + {\gamma} {Z}_{i}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msub><mi>n</mi><mi>T</mi></msub><mo>+</mo><msub><mi>n</mi><mi>E</mi></msub></mrow><annotation encoding="application/x-tex">n=n_T+n_E</annotation></semantics></math>;
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>T</mi></msub><annotation encoding="application/x-tex">n_T</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>E</mi></msub><annotation encoding="application/x-tex">n_E</annotation></semantics></math>
+are the sample size in trial and external control data respectively. If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">w_i=1</annotation></semantics></math>,
+then the above likelihood becomes the traditional likelihood for Cox
+proportional hazards model. Above notations are similar as in <span class="citation">Khanal (2022)</span>.</p>
 <p>The joint likelihood can also be constructed in a similar way for
 other baseline hazard functions.</p>
 </div>
 <div class="section level2">
 <h2 id="power-prior-model">Power prior model<a class="anchor" aria-label="anchor" href="#power-prior-model"></a>
 </h2>
-<p>We denote the data for the randomized controlled trial (RCT) as <span class="math inline">\(D_1\)</span> with the corresponding likelihood as
-<span class="math inline">\(L(\gamma,\beta,\alpha│D_1 )\)</span> and
-external control (EC) data as <span class="math inline">\(D_0\)</span>
-with corresponding likelihood as <span class="math inline">\(L(\gamma,\beta,\alpha│D_0)\)</span>. The
-formulation of power prior is <span class="citation">(Ibrahim et al.
-2015)</span> <span class="math display">\[p(\gamma,\beta,\alpha│D_0,ν)
-\propto L(\gamma,\beta,\alpha│D_0
-)^ν  *p(\gamma)*p(\beta)*p(\alpha),\]</span> where <span class="math inline">\(0 \leq ν \leq 1\)</span> is the vector of subject
-specific weights in the EC data, and <span class="math inline">\(p(\gamma)\)</span>, <span class="math inline">\(p(\beta)\)</span>, and <span class="math inline">\(p(\alpha)\)</span> are the priors for <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\alpha\)</span> respectively.</p>
-<p>The posterior distribution is <span class="math display">\[p(\beta│D_1,D_0,ν) \propto
-L(\gamma,\beta,\alpha│D_1 )  L(\gamma,\beta,\alpha│D_0
-)^ν  *p(\gamma)*p(\beta)*p(\alpha).\]</span></p>
+<p>We denote the data for the randomized controlled trial (RCT) as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>D</mi><mn>1</mn></msub><annotation encoding="application/x-tex">D_1</annotation></semantics></math>
+with the corresponding likelihood as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(\gamma,\beta,\alpha│D_1 )</annotation></semantics></math>
+and external control (EC) data as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>D</mi><mn>0</mn></msub><annotation encoding="application/x-tex">D_0</annotation></semantics></math>
+with corresponding likelihood as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(\gamma,\beta,\alpha│D_0)</annotation></semantics></math>.
+The formulation of power prior is <span class="citation">(Ibrahim et al.
+2015)</span>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><mo>,</mo><mi>ν</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∝</mo><mi>L</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>ν</mi></msup><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>β</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">p(\gamma,\beta,\alpha│D_0,ν) \propto L(\gamma,\beta,\alpha│D_0 )^ν  *p(\gamma)*p(\beta)*p(\alpha),</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>ν</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0 \leq ν \leq 1</annotation></semantics></math>
+is the vector of subject specific weights in the EC data, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(\gamma)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>β</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(\beta)</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(\alpha)</annotation></semantics></math>
+are the priors for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+respectively.</p>
+<p>The posterior distribution is
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>β</mi><mi>│</mi><msub><mi>D</mi><mn>1</mn></msub><mo>,</mo><msub><mi>D</mi><mn>0</mn></msub><mo>,</mo><mi>ν</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∝</mo><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>L</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>ν</mi></msup><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>β</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">p(\beta│D_1,D_0,ν) \propto L(\gamma,\beta,\alpha│D_1 )  L(\gamma,\beta,\alpha│D_0 )^ν  *p(\gamma)*p(\beta)*p(\alpha).</annotation></semantics></math></p>
 <p>We consider the non-informative prior distributions for the
-parameters as <span class="math inline">\(\gamma \sim
-N(0,0.001)\)</span>, <span class="math inline">\(\beta_j \sim
-N(0,0.001)\)</span> for <span class="math inline">\(j=1...,P\)</span>
-with <span class="math inline">\(P\)</span> baseline covariates, and
-<span class="math inline">\(\alpha_k \sim N(0,0.001)\)</span> for <span class="math inline">\(k=1,...,K\)</span> intervals.</p>
-<p>Note: To avoid confusion, <span class="math inline">\(N(a,b)\)</span>
-means a normal distribution with mean <span class="math inline">\(a\)</span> and precision <span class="math inline">\(b\)</span>.</p>
+parameters as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0.001</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\gamma \sim N(0,0.001)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>j</mi></msub><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0.001</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta_j \sim N(0,0.001)</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>=</mo><mn>1</mn><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>P</mi></mrow><annotation encoding="application/x-tex">j=1...,P</annotation></semantics></math>
+with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+baseline covariates, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>k</mi></msub><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0.001</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\alpha_k \sim N(0,0.001)</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">k=1,...,K</annotation></semantics></math>
+intervals.</p>
+<p>Note: To avoid confusion,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">N(a,b)</annotation></semantics></math>
+means a normal distribution with mean
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+and precision
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>.</p>
 </div>
 <div class="section level2">
 <h2 id="commensurate-prior-model">Commensurate prior model<a class="anchor" aria-label="anchor" href="#commensurate-prior-model"></a>
 </h2>
-<p>Let <span class="math inline">\(\boldsymbol{\eta}=(\beta_1,...,\beta_P,\alpha_1,...,\alpha_K)\)</span>
-and <span class="math inline">\(\boldsymbol{\eta}_0=(\beta_{10},...,\beta_{P0},\alpha_{10},...,\alpha_{K0})\)</span>
+<p>Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝛈</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>β</mi><mi>P</mi></msub><mo>,</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>α</mi><mi>K</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\boldsymbol{\eta}=(\beta_1,...,\beta_P,\alpha_1,...,\alpha_K)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝛈</mi><mn>0</mn></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mn>10</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>β</mi><mrow><mi>P</mi><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>α</mi><mn>10</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>α</mi><mrow><mi>K</mi><mn>0</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\boldsymbol{\eta}_0=(\beta_{10},...,\beta_{P0},\alpha_{10},...,\alpha_{K0})</annotation></semantics></math>
 be the parameter vector for RCT and RWD respectively. We consider the
 following commensurate prior</p>
-<p><span class="math display">\[\eta_\ell|\eta_{0,\ell},\tau_\ell \sim
-N(\eta_{\ell 0},\tau_\ell) \quad \quad \ell=1,\cdots,P+K,\]</span></p>
-<p>where <span class="math inline">\(\tau_\ell\)</span> is the precision
-parameter that determines the degree of borrowing, <span class="math inline">\(P\)</span> is the total number of covariates and
-<span class="math inline">\(K\)</span> is the total number of intervals.
-For the precision parameter, we assign a gamma prior as <span class="math inline">\(\tau_\ell \sim Gamma(0.01,0.01)\)</span>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>η</mi><mo>ℓ</mo></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>η</mi><mrow><mn>0</mn><mo>,</mo><mo>ℓ</mo></mrow></msub><mo>,</mo><msub><mi>τ</mi><mo>ℓ</mo></msub><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>η</mi><mrow><mo>ℓ</mo><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>τ</mi><mo>ℓ</mo></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="1.0em"></mspace><mspace width="1.0em"></mspace><mo>ℓ</mo><mo>=</mo><mn>1</mn><mo>,</mo><mi>⋯</mi><mo>,</mo><mi>P</mi><mo>+</mo><mi>K</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\eta_\ell|\eta_{0,\ell},\tau_\ell \sim N(\eta_{\ell 0},\tau_\ell) \quad \quad \ell=1,\cdots,P+K,</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mo>ℓ</mo></msub><annotation encoding="application/x-tex">\tau_\ell</annotation></semantics></math>
+is the precision parameter that determines the degree of borrowing,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+is the total number of covariates and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+is the total number of intervals. For the precision parameter, we assign
+a gamma prior as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mo>ℓ</mo></msub><mo>∼</mo><mi>G</mi><mi>a</mi><mi>m</mi><mi>m</mi><mi>a</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.01</mn><mo>,</mo><mn>0.01</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\tau_\ell \sim Gamma(0.01,0.01)</annotation></semantics></math>.</p>
 </div>
 <div class="section level2">
 <h2 id="conducting-analysis">Conducting Analysis<a class="anchor" aria-label="anchor" href="#conducting-analysis"></a>
@@ -497,7 +573,8 @@ denoted by <code>ext</code>.</p>
 <span><span class="co">#&gt; Constraints: &lt;lower=0&gt;</span></span></code></pre></div>
 <p>Similarly, details regarding the treatment variable is specified
 below. A Non-informative prior is used for the treatment effect
-parameter <span class="math inline">\(\gamma\)</span>.</p>
+parameter
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Treatment</span></span>
 <span><span class="va">treatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span></span>
@@ -528,7 +605,11 @@ object as shown below.</p>
 <span><span class="co">#&gt; Inputs look good.</span></span>
 <span><span class="co">#&gt; Stan program compiled successfully!</span></span>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span></code></pre></div>
-<p>Finally, we run the MCMC sample for <span class="math inline">\(10,000\)</span> iterations with <span class="math inline">\(3\)</span> chains.</p>
+<p>Finally, we run the MCMC sample for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">10,000</annotation></semantics></math>
+iterations with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>
+chains.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">niter</span> <span class="op">=</span> <span class="fl">10000</span></span>
 <span><span class="va">results.exp.psborrow</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">anls_obj</span>,</span>
@@ -580,8 +661,9 @@ plot of chunk unnamed-chunk-10
 </div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/bayesplot-colors.html" class="external-link">color_scheme_set</a></span><span class="op">(</span><span class="st">"mix-blue-pink"</span><span class="op">)</span></span></code></pre></div>
-<p>The <span class="math inline">\(95\%\)</span> credible interval can
-be calculated as follows.</p>
+<p>The
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>95</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">95\%</annotation></semantics></math>
+credible interval can be calculated as follows.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarize_draws</a></span><span class="op">(</span><span class="va">draws1</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">.x</span>, probs <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
@@ -615,8 +697,10 @@ hazards parametrization<a class="anchor" aria-label="anchor" href="#time-to-even
 </h2>
 <p>We conduct analysis using a Weibull distribution for the outcome
 model using the <code>psborrow2</code> package as follows.</p>
-<p>Non-informative normal prior is used for the baseline parameter <span class="math inline">\(\mu\)</span>. An exponential prior is used for the
-Weibull shape parameter <span class="math inline">\(\zeta\)</span>.</p>
+<p>Non-informative normal prior is used for the baseline parameter
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>.
+An exponential prior is used for the Weibull shape parameter
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ζ</mi><annotation encoding="application/x-tex">\zeta</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Outcome</span></span>
 <span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outcome_surv_weibull_ph.html">outcome_surv_weibull_ph</a></span><span class="op">(</span></span>
@@ -670,7 +754,8 @@ is assigned for the commensurability parameter.</p>
 <span><span class="co">#&gt;  beta  rate  0.001</span></span>
 <span><span class="co">#&gt; Constraints: &lt;lower=0&gt;</span></span></code></pre></div>
 <p>Similarly, details regarding the treatment variable are specified
-below. Non-informative prior is used for treatment effect <span class="math inline">\(\gamma\)</span>.</p>
+below. Non-informative prior is used for treatment effect
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Treatment</span></span>
 <span><span class="va">treatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/treatment_details.html">treatment_details</a></span><span class="op">(</span></span>
@@ -702,7 +787,11 @@ object as shown below.</p>
 <span><span class="co">#&gt; Inputs look good.</span></span>
 <span><span class="co">#&gt; Stan program compiled successfully!</span></span>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span></code></pre></div>
-<p>Finally, we run the MCMC sample for <span class="math inline">\(10,000\)</span> iterations with <span class="math inline">\(3\)</span> chains.</p>
+<p>Finally, we run the MCMC sample for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">10,000</annotation></semantics></math>
+iterations with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>
+chains.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results.weib.psborrow</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">anls_obj</span>,</span>
 <span>  iter_warmup <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">niter</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span>,</span>
@@ -754,8 +843,9 @@ plot of chunk unnamed-chunk-19
 </div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/bayesplot-colors.html" class="external-link">color_scheme_set</a></span><span class="op">(</span><span class="st">"mix-blue-pink"</span><span class="op">)</span></span></code></pre></div>
-<p>The <span class="math inline">\(95\%\)</span> credible interval can
-be calculated as follows.</p>
+<p>The
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>95</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">95\%</annotation></semantics></math>
+credible interval can be calculated as follows.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarize_draws</a></span><span class="op">(</span><span class="va">draws2</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">.x</span>, probs <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 7 × 3</span></span>
@@ -886,8 +976,10 @@ weight.</p>
 <span><span class="va">zeros</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">n</span><span class="op">)</span></span>
 <span><span class="va">zerosR</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nR</span><span class="op">)</span></span></code></pre></div>
 <p>We also need to pre-specify the number of intervals. For simplicity,
-we will consider <span class="math inline">\(K=1\)</span> interval.
-However, this method also works <span class="math inline">\(K&gt;1\)</span>.</p>
+we will consider
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K=1</annotation></semantics></math>
+interval. However, this method also works
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>&gt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K&gt;1</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Time axis partition</span></span>
 <span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># number of intervals</span></span>
@@ -941,8 +1033,14 @@ parameter of interest.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>beta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">K</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Now, we call the <code>jags</code> function to conduct MCMC sampling
-with <span class="math inline">\(3\)</span> chains as shown below. We
-set number of iterations as <span class="math inline">\(niter=10,000\)</span> with a burn in of <span class="math inline">\(5000\)</span> and thinning of <span class="math inline">\(10\)</span>.</p>
+with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>
+chains as shown below. We set number of iterations as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>i</mi><mi>t</mi><mi>e</mi><mi>r</mi><mo>=</mo><mn>10</mn><mo>,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">niter=10,000</annotation></semantics></math>
+with a burn in of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>5000</mn><annotation encoding="application/x-tex">5000</annotation></semantics></math>
+and thinning of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10</mn><annotation encoding="application/x-tex">10</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">model1</span> <span class="op">&lt;-</span> <span class="fu">jags</span><span class="op">(</span>data <span class="op">=</span> <span class="va">d.jags</span>, model.file <span class="op">=</span> <span class="st">"powerprior.txt"</span>, inits <span class="op">=</span> <span class="va">i.jags</span>, n.chains <span class="op">=</span> <span class="fl">3</span>,</span>
@@ -1095,8 +1193,10 @@ implemented in <code>psborrow2</code> R package)<a class="anchor" aria-label="an
 <span><span class="va">zeros</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">n</span><span class="op">)</span></span>
 <span><span class="va">zerosR</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nR</span><span class="op">)</span></span></code></pre></div>
 <p>We also need to pre-specify the number of intervals. For simplicity,
-we will consider <span class="math inline">\(K=1\)</span> interval.
-However, this method also works when <span class="math inline">\(K&gt;1\)</span>.</p>
+we will consider
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K=1</annotation></semantics></math>
+interval. However, this method also works when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>&gt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K&gt;1</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Time axis partition</span></span>
 <span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># number of intervals</span></span>
@@ -1131,8 +1231,10 @@ However, this method also works when <span class="math inline">\(K&gt;1\)</span>
 <span><span class="op">}</span></span>
 <span><span class="va">int.obsR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">int.obsR</span><span class="op">)</span></span></code></pre></div>
 <p>We now put all variables into a list as data inputs for JAGs. Note
-that the letter <span class="math inline">\(R\)</span> in the following
-corresponds to RWD. For example, <span class="math inline">\(XR\)</span>
+that the letter
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
+in the following corresponds to RWD. For example,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">XR</annotation></semantics></math>
 is the covariate matrix in RWD.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">### JAGS ####</span></span>
@@ -1147,9 +1249,13 @@ control.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Parameter of interest</span></span>
 <span><span class="va">p.jags</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"beta"</span>,<span class="st">"alpha"</span>,<span class="st">"alphaR"</span>,<span class="st">"tau"</span><span class="op">)</span></span></code></pre></div>
-<p>We generate initial values for <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\alpha\)</span> from standard normal
-distributions, and <span class="math inline">\(\tau\)</span> from a
-non-informative Gamma distribution.</p>
+<p>We generate initial values for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+from standard normal distributions, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>
+from a non-informative Gamma distribution.</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Initial values for each parameter</span></span>
 <span><span class="va">i.jags</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span></span>
@@ -1157,8 +1263,14 @@ non-informative Gamma distribution.</p>
 <span>       alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">K</span><span class="op">)</span>,alphaR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">K</span><span class="op">)</span>,tau <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,shape <span class="op">=</span> <span class="fl">0.01</span>,scale<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Now, we call the <code>jags</code> function to conduct MCMC sampling
-with <span class="math inline">\(3\)</span> chains as shown below. We
-set number of iterations as <span class="math inline">\(niter=10,000\)</span> with a burn in of <span class="math inline">\(5000\)</span> and thinning of <span class="math inline">\(10\)</span>.</p>
+with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>
+chains as shown below. We set number of iterations as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>i</mi><mi>t</mi><mi>e</mi><mi>r</mi><mo>=</mo><mn>10</mn><mo>,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">niter=10,000</annotation></semantics></math>
+with a burn in of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>5000</mn><annotation encoding="application/x-tex">5000</annotation></semantics></math>
+and thinning of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10</mn><annotation encoding="application/x-tex">10</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">model2</span> <span class="op">&lt;-</span> <span class="fu">jags</span><span class="op">(</span>data <span class="op">=</span> <span class="va">d.jags</span>, model.file <span class="op">=</span> <span class="st">"commensurateprior.txt"</span>, inits <span class="op">=</span> <span class="va">i.jags</span>, n.chains <span class="op">=</span> <span class="fl">3</span>,</span>
@@ -1315,7 +1427,9 @@ object as shown below.</p>
 <span><span class="co">#&gt; NOTE: excluding `ext` == `1`/`TRUE` for no borrowing.</span></span>
 <span><span class="co">#&gt; Stan program compiled successfully!</span></span>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span></code></pre></div>
-<p>Finally, we run the MCMC sample with <span class="math inline">\(3\)</span> chains.</p>
+<p>Finally, we run the MCMC sample with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>
+chains.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results.no.psborrow</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">anls_obj</span>,</span>
 <span>  iter_warmup <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">niter</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span>,</span>
@@ -1357,8 +1471,9 @@ plot of chunk unnamed-chunk-51
 </div>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/bayesplot-colors.html" class="external-link">color_scheme_set</a></span><span class="op">(</span><span class="st">"mix-blue-pink"</span><span class="op">)</span></span></code></pre></div>
-<p>The <span class="math inline">\(95\%\)</span> credible interval can
-be calculated as follows.</p>
+<p>The
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>95</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">95\%</annotation></semantics></math>
+credible interval can be calculated as follows.</p>
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarize_draws</a></span><span class="op">(</span><span class="va">draws3</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">.x</span>, probs <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
@@ -1456,7 +1571,9 @@ object as shown below.</p>
 <span><span class="co">#&gt; NOTE: dropping column `ext` for full borrowing.</span></span>
 <span><span class="co">#&gt; Stan program compiled successfully!</span></span>
 <span><span class="co">#&gt; Ready to go! Now call `mcmc_sample()`.</span></span></code></pre></div>
-<p>Finally, we run the MCMC sample with <span class="math inline">\(3\)</span> chains.</p>
+<p>Finally, we run the MCMC sample with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>
+chains.</p>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results.full.psborrow</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_sample.html">mcmc_sample</a></span><span class="op">(</span><span class="va">anls_obj</span>,</span>
 <span>  iter_warmup <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">niter</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span>,</span>
@@ -1498,8 +1615,9 @@ plot of chunk unnamed-chunk-60
 </div>
 <div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/bayesplot-colors.html" class="external-link">color_scheme_set</a></span><span class="op">(</span><span class="st">"mix-blue-pink"</span><span class="op">)</span></span></code></pre></div>
-<p>The <span class="math inline">\(95\%\)</span> credible interval can
-be calculated as follows.</p>
+<p>The
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>95</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">95\%</annotation></semantics></math>
+credible interval can be calculated as follows.</p>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarize_draws</a></span><span class="op">(</span><span class="va">draws4</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">.x</span>, probs <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
@@ -1628,7 +1746,8 @@ frequentist analysis approaches together.</p>
 <span>                          <span class="st">"Cox model (Frequentist approach): No borrowing"</span>,</span>
 <span>                          <span class="st">"Cox model (Frequentist approach): Full borrowing"</span><span class="op">)</span>,<span class="va">out</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"Hazard Ratio"</span>,<span class="st">"Lower 95% CI"</span>,<span class="st">"Upper 95% CI"</span><span class="op">)</span></span></code></pre></div>
-The hazard ratio estimates and <span class="math inline">\(95\%\)</span>
+The hazard ratio estimates and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>95</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">95\%</annotation></semantics></math>
 credible intervals for all the methods are shown below.
 <table class="table">
 <thead><tr>
@@ -1810,7 +1929,7 @@ Historical Data.”</span> <em>Biometrics</em> 70 (1): 185–91.
 </div>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -1821,15 +1940,15 @@ Historical Data.”</span> <em>Biometrics</em> 70 (1): 185–91.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>
