@@ -103,12 +103,17 @@ outcome_surv_pem <- function(time_var, cens_var, baseline_prior, weight_var = ""
     stop("`cut_points` must be sorted in ascending order.")
   }
 
-  cut_points_positive <- all(cut_points > 0)
+  cut_points_neg0 <- any(cut_points <= 0)
   cut_points_inf <- any(cut_points == Inf)
-  if (!cut_points_positive) {
+  if (cut_points_neg0 | cut_points_inf) {
     stop("`cut_points` must be positive, non-infinite and exclude 0. Just put internal cutpoints, the model will automatically add 0 and Inf.")
   }
 
+  n_cuts <- length(cut_points)
+  if (n_cuts < 1) {
+    stop("`cut_points` must have at least one element.")
+  }
+  
   # Create the object  
   has_weight <- isTRUE(weight_var != "")
   .outcome_surv_pem(
