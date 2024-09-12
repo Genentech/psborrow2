@@ -49,6 +49,7 @@ Other outcome:
 \code{\link{OutcomeBinaryLogistic-class}},
 \code{\link{OutcomeContinuousNormal-class}},
 \code{\link{OutcomeSurvExponential-class}},
+\code{\link{OutcomeSurvPEM-class}},
 \code{\link{TimeToEvent-class}}
 }
 \concept{outcome}

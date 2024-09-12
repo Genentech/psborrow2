@@ -152,6 +152,7 @@ Collate:
     'mcmc_simulation_result.R'
     'prior_half_cauchy.R'
     'outcome_cont_normal.R'
+    'outcome_surv_pem.R'
     'package.R'
     'prepare_stan_data_inputs.R'
     'prior_bernoulli.R'
