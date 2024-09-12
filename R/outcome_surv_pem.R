@@ -22,13 +22,15 @@
 #' @slot name_exp_trt. Named vector for exponentiated beta_trt
 #' @slot alpha_type. How to interpret alpha.
 #' @slot name_addnl_params. Named vector for additional parameters.
+#' @slot n_periods. Number of periods.
 #' @include outcome_class.R
 #' @family outcome
 .outcome_surv_pem <- setClass(
   "OutcomeSurvPEM",
   contains = "TimeToEvent",
   slots = list(
-    n_periods = "integer"
+    n_periods = "integer",
+    cut_points = "numeric"
   ),
   prototype = list(
     n_param = 0L,
@@ -59,7 +61,7 @@
 #' @param cut_points numeric. Vector of internal cut points for the piecewise exponential model. Note: the choice of 
 #' cut points will impact the amount of borrowing between arms when dynamic borrowing methods are selected. It is 
 #' recommended to choose cut points that contain an equal number of events within each interval. Please include only internal 
-#' cut points in the vector. For instance, for cut points of [0, 15], (15, 20], (20, max follow-up], the vector should be c(15, 20).
+#' cut points in the vector. For instance, for cut points of [0, 15], (15, 20], (20, Inf], the vector should be c(15, 20).
 #' If you pass cut-points beyond the follow-up of the data, you will receive an informative warning when calling 
 #' `create_analysis_object()` and these cut points will be ignored.
 #'
@@ -87,13 +89,28 @@
 #'   cut_points = c(10, 15, 30)
 #' )
 outcome_surv_pem <- function(time_var, cens_var, baseline_prior, weight_var = "", cut_points) {
+
+  # Standard input checks
   assert_string(time_var)
   assert_string(cens_var)
   assert_string(weight_var)
   assert_class(baseline_prior, "Prior")
   assert_numeric(cut_points)
+
+  # Cut points
+  cut_points_is_sorted <- all(diff(cut_points) > 0)
+  if (!cut_points_is_sorted) {
+    stop("`cut_points` must be sorted in ascending order.")
+  }
+
+  cut_points_positive <- all(cut_points > 0)
+  cut_points_inf <- any(cut_points == Inf)
+  if (!cut_points_positive) {
+    stop("`cut_points` must be positive, non-infinite and exclude 0. Just put internal cutpoints, the model will automatically add 0 and Inf.")
+  }
+
+  # Create the object  
   has_weight <- isTRUE(weight_var != "")
-  
   .outcome_surv_pem(
     time_var = time_var,
     cens_var = cens_var,
@@ -101,13 +118,13 @@ outcome_surv_pem <- function(time_var, cens_var, baseline_prior, weight_var = ""
     weight_var = weight_var,
     likelihood_stan_code =
       h_glue("
-          for (i in 1:N) {
+         for (i in 1:N) {
             if (cens[i] == 1) {
-                target += exponential_lccdf(time[i] | elp[i] ){{weight}};
+               target += exponential_lccdf(time[i] | elp[i] ){{weight}};
             } else {
-                target += exponential_lpdf(time[i] | elp[i] ){{weight}};
+               target += exponential_lpdf(time[i] | elp[i] ){{weight}};
             }
-          }",
+         }",
         weight = if (weight_var != "") " * weight[i]" else ""
       ),
     data_stan_code = h_glue("

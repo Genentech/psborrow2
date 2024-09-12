@@ -42,6 +42,8 @@ specifying prior distribution for the baseline outcome.}
 \item{\code{alpha_type.}}{How to interpret alpha.}
 
 \item{\code{name_addnl_params.}}{Named vector for additional parameters.}
+
+\item{\code{n_periods.}}{Number of periods.}
 }}
 
 \seealso{
