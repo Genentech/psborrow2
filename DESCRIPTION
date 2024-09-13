@@ -124,6 +124,7 @@ Collate:
     'borrowing_full.R'
     'borrowing_hierarchical_commensurate.R'
     'borrowing_none.R'
+    'cast_mat_to_long_pem.R'
     'check_data_matrix_has_columns.R'
     'cmdstan.R'
     'create_analysis_obj.R'

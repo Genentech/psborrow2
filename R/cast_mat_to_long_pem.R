@@ -42,11 +42,25 @@ cast_mat_to_long_pem <- function(analysis_obj) {
   ## Check cut points
   cut_points <- analysis_obj@outcome@cut_points
   max_fup <- max(df[,analysis_obj@outcome@time_var])
-  cut_points_keep <- cut_points[cut_points <= max_fup]
+  cut_points_keep <- cut_points[cut_points < max_fup]
   if (length(cut_points_keep) < length(cut_points)) {
     warning(paste0("Some cut points are greater than the maximum follow-up time of ", max_fup, ". These will be ignored."))
   }
 
   ## Create long data
+  long_fmla <- as.formula(paste0("Surv(", analysis_obj@outcome@time_var, ", 1 - ", analysis_obj@outcome@cens_var, ") ~ ", paste0(colnames(df)[!colnames(df) %in% c(analysis_obj@outcome@time_var, analysis_obj@outcome@cens_var)], collapse = " + ")))
+  long_df <- survival::survSplit(long_fmla,
+                                 data = df, 
+                                 cut = cut_points_keep, 
+                                 event = "psb2__event",
+                                 episode = "psb2__period",  
+                                 start = "psb2__tstart",
+                                 end = "psb2__tend")
+  long_df[, analysis_obj@outcome@cens_var] <- 1 - long_df[, "psb2__event"]
+  long_df[, analysis_obj@outcome@time_var] <- long_df[,"psb2__tend"] - long_df[,"psb2__tstart"]
+  long_df <- long_df[, c(colnames(df), "psb2__period")]
+  long_mat <- as.matrix(long_df)
+
+  return(long_mat)
 
 }
