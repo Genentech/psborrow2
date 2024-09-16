@@ -6,7 +6,7 @@
 #' @param analysis_obj `Analysis`. An object of class `Analysis`
 #' as created through `.create_analysis_obj()`.
 #'
-#' @return Long data matrix
+#' @return An updated analysis object with the data matrix in "long" format
 #' @noRd
 #' @examples
 #'
@@ -32,7 +32,7 @@
 #'   )
 #' )
 #'
-#' trimmed_mat <- psborrow2:::cast_mat_to_long_pem(anls)
+#' anls_obj <- psborrow2:::cast_mat_to_long_pem(anls)
 #'
 cast_mat_to_long_pem <- function(analysis_obj) {
 
@@ -64,7 +64,9 @@ cast_mat_to_long_pem <- function(analysis_obj) {
   long_df <- long_df[, c(colnames(df), "__period__")]
   long_mat <- as.matrix(long_df)
 
-  # Return
-  return(long_mat)
+  # Update and return
+  analysis_obj@data_matrix <- long_mat
+  analysis_obj@outcome@n_periods <- as.integer(length(cut_points_keep) + 2)
+  return(analysis_obj)
 
 }

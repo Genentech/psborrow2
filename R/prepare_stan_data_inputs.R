@@ -25,13 +25,6 @@
 #' data_in <- psborrow2:::prepare_stan_data_inputs(anls_obj)
 #'
 prepare_stan_data_inputs <- function(analysis_obj) {
-  ## Trimmed data matrix
-  data_matrix <- trim_data_matrix(analysis_obj)
-
-  ## Cast to long 
-  if (is(analysis_obj@outcome, "OutcomeSurvPEM")) {
-    data_matrix <- cast_mat_to_long_pem(analysis_obj)
-  }
 
   ## Common inputs
   data_in <- list(
