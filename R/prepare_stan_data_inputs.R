@@ -45,6 +45,7 @@ prepare_stan_data_inputs <- function(analysis_obj) {
     data_in[["cens"]] <- data_matrix[, analysis_obj@outcome@cens_var]
     if (is(analysis_obj@outcome, "OutcomeSurvPEM")) {
       data_in[["period"]] <- data_matrix[, "__period__"]
+      data_in[["n_periods"]] <-  max(data_matrix[, "__period__"])
     }
   } else if (is(analysis_obj@outcome, "BinaryOutcome")) {
     data_in[["y"]] <- data_matrix[, analysis_obj@outcome@binary_var]
