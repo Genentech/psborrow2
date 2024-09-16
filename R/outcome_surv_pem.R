@@ -43,7 +43,7 @@
                target += exponential_lpdf(time[i] | elp[i] );
             }
          }"),
-    n_periods = 0L
+    n_periods = 1L
   ),
   validity = function(object) {
     return(TRUE)

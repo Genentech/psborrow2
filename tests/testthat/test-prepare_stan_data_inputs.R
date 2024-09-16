@@ -147,5 +147,6 @@ test_that("prepare_stan_data_inputs works with PEM", {
   result <- psborrow2:::prepare_stan_data_inputs(object)
   expect_list(result, types = "numeric", len = 7)
   expect_equal(names(result), c("N", "trt", "time", "cens", "period", "n_periods", "Z"))
+  expect_equal(dim(result[["Z"]])[2], 10)
 
 })

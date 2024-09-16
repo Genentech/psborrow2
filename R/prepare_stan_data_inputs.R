@@ -26,6 +26,8 @@
 #'
 prepare_stan_data_inputs <- function(analysis_obj) {
 
+  data_matrix <- analysis_obj@data_matrix
+
   ## Common inputs
   data_in <- list(
     N = NROW(data_matrix),
@@ -50,10 +52,24 @@ prepare_stan_data_inputs <- function(analysis_obj) {
 
   ## BDB additions
   if (is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate")) {
-    data_in[["Z"]] <- cbind(
-      1 - data_matrix[, analysis_obj@borrowing@ext_flag_col],
-      data_matrix[, analysis_obj@borrowing@ext_flag_col]
+    if (is(analysis_obj@outcome, "OutcomeSurvPEM")) {
+      n_periods <- analysis_obj@outcome@n_periods
+      Z <- matrix(0, nrow = NROW(data_matrix), ncol = n_periods * 2)
+      for (i in 1:NROW(data_matrix)) {
+        period <- data_matrix[i, "__period__"]
+        if (data_matrix[i, analysis_obj@borrowing@ext_flag_col] == 0) {
+          Z[i, period] <- 1
+        } else {
+          Z[i, period + n_periods] <- 1
+        }
+      }
+      data_in[["Z"]] <- Z
+    } else {
+      data_in[["Z"]] <- cbind(
+        1 - data_matrix[, analysis_obj@borrowing@ext_flag_col],
+        data_matrix[, analysis_obj@borrowing@ext_flag_col]
     ) # Column 1 is the indicator for internal. Column 2 is the external indicator.
+    }
   }
 
   ## Covariate additions
