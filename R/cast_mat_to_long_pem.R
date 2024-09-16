@@ -54,9 +54,9 @@ cast_mat_to_long_pem <- function(analysis_obj) {
                                  episode = "psb2__period",  
                                  start = "psb2__tstart",
                                  end = "time")
-  long_df[, analysis_obj@outcome@cens_var] <- 1 - long_df[, "psb2__event"]
-  long_df[, analysis_obj@outcome@time_var] <- long_df[,"psb2__tend"] - long_df[,"psb2__tstart"]
-  long_df <- long_df[, c(colnames(df), "psb2__period")]
+  names(long_df)[which(names(long_df) == "psb2__period")] <- "__period__"
+  long_df[, analysis_obj@outcome@cens_var] <- 1 - long_df[, "status"]
+  long_df <- long_df[, c(colnames(df), "__period__")]
   long_mat <- as.matrix(long_df)
 
   # Return
