@@ -48,19 +48,18 @@ cast_mat_to_long_pem <- function(analysis_obj) {
   }
 
   ## Create long data
-  long_fmla <- as.formula(paste0("Surv(", analysis_obj@outcome@time_var, ", 1 - ", analysis_obj@outcome@cens_var, ") ~ ", paste0(colnames(df)[!colnames(df) %in% c(analysis_obj@outcome@time_var, analysis_obj@outcome@cens_var)], collapse = " + ")))
-  long_df <- survival::survSplit(long_fmla,
-                                 data = df, 
+  long_df <- survival::survSplit(data = df, 
                                  cut = cut_points_keep, 
-                                 event = "psb2__event",
+                                 event = "status",
                                  episode = "psb2__period",  
                                  start = "psb2__tstart",
-                                 end = "psb2__tend")
+                                 end = "time")
   long_df[, analysis_obj@outcome@cens_var] <- 1 - long_df[, "psb2__event"]
   long_df[, analysis_obj@outcome@time_var] <- long_df[,"psb2__tend"] - long_df[,"psb2__tstart"]
   long_df <- long_df[, c(colnames(df), "psb2__period")]
   long_mat <- as.matrix(long_df)
 
+  # Return
   return(long_mat)
 
 }

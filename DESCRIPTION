@@ -83,10 +83,10 @@ Imports:
     Matrix,
     mvtnorm,
     future,
-    simsurv
+    simsurv,
+    survival
 Suggests:
     cmdstanr,
-    survival,
     flexsurv,
     testthat (>= 3.0),
     usethis (>= 2.1.5),
