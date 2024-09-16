@@ -22,6 +22,8 @@ make_model_string_parameters <- function(analysis_obj) {
   trt_string <- h_glue("real{{eval_constraints(analysis_obj@treatment@trt_prior)}} beta_trt;")
 
   is_bdb <- isTRUE(is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate"))
+  is_pem <- isTRUE(is(analysis_obj@outcome, "OutcomeSurvPEM"))
+
   ### Set tau
   borrowing_string <- if (is_bdb) h_glue("real{{eval_constraints(analysis_obj@borrowing@tau_prior)}} tau;") else ""
 
@@ -30,7 +32,10 @@ make_model_string_parameters <- function(analysis_obj) {
     "{{type}}{{constraint}}{{n}} alpha;",
     type = if (is_bdb) "vector" else "real",
     constraint = eval_constraints(analysis_obj@outcome@baseline_prior),
-    n = if (is_bdb) "[2]" else ""
+    n = if (is_bdb & !is_pem) {
+      "[2]"} else if (is_bdb & is_pem) {
+      h_glue("[{{(NROW(analysis_obj@outcome@cut_points)+2) * 2}}]")
+      }
   )
 
   ### Add outcome specific parameters

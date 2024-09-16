@@ -7,8 +7,8 @@ test_that("prepare_stan_data_inputs works with exponential survival and full bor
   )
 
   result <- psborrow2:::prepare_stan_data_inputs(object)
-  expect_list(result, types = "numeric", len = 4)
-  expect_equal(names(result), c("N", "trt", "time", "cens"))
+  expect_list(result, types = "numeric", len = 5)
+  expect_equal(names(result), c("N", "trt", "time", "cens", "n_periods"))
 })
 
 test_that("prepare_stan_data_inputs works with exponential survival and BDB", {
@@ -23,8 +23,8 @@ test_that("prepare_stan_data_inputs works with exponential survival and BDB", {
   )
 
   result <- psborrow2:::prepare_stan_data_inputs(object)
-  expect_list(result, types = "numeric", len = 5)
-  expect_equal(names(result), c("N", "trt", "time", "cens", "Z"))
+  expect_list(result, types = "numeric", len = 6)
+  expect_equal(names(result), c("N", "trt", "time", "cens", "n_periods", "Z"))
 })
 
 test_that("prepare_stan_data_inputs works with weibull survival and BDB and covariates", {
@@ -48,8 +48,8 @@ test_that("prepare_stan_data_inputs works with weibull survival and BDB and cova
   )
 
   result <- psborrow2:::prepare_stan_data_inputs(object)
-  expect_list(result, types = "numeric", len = 9)
-  expect_equal(names(result), c("N", "trt", "time", "cens", "Z", "K", "X", "L_beta", "U_beta"))
+  expect_list(result, types = "numeric", len = 10)
+  expect_equal(names(result), c("N", "trt", "time", "cens", "n_periods", "Z", "K", "X", "L_beta", "U_beta"))
 })
 
 test_that("prepare_stan_data_inputs works with binary outcome and BDB and covariates", {
@@ -121,8 +121,8 @@ test_that("prepare_stan_data_inputs works with weights", {
   )
 
   result <- psborrow2:::prepare_stan_data_inputs(object)
-  expect_list(result, types = "numeric", len = 5)
-  expect_equal(names(result), c("N", "trt", "time", "cens", "weight"))
+  expect_list(result, types = "numeric", len = 6)
+  expect_equal(names(result), c("N", "trt", "time", "cens", "n_periods", "weight"))
   expect_equal(result[["weight"]], weights)
 })
 
