@@ -46,7 +46,7 @@ test_that("cast_mat_to_long_pem handles reserved names correctly", {
       borrowing = borrowing_hierarchical_commensurate("ext", prior_exponential(.001)),
       treatment = treatment_details("trt", prior_normal(0, 1000))
     )
-  expect_error(cast_mat_to_long_pem(anls_nm), "The column names 'psb2__period', 'psb2__start', and '__period__' are reserved. Please rename your columns.")
+  expect_error(cast_mat_to_long_pem(anls_nm), "The column names 'psb2__period', 'psb2__start', and '__period__' are reserved when using PEM. Please rename your columns.")
 })
 
 test_that("cast_mat_to_long_pem transforms data correctly", {

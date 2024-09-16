@@ -125,3 +125,27 @@ test_that("prepare_stan_data_inputs works with weights", {
   expect_equal(names(result), c("N", "trt", "time", "cens", "weight"))
   expect_equal(result[["weight"]], weights)
 })
+
+
+test_that("prepare_stan_data_inputs works with PEM", {
+  
+  object <- psborrow2:::.analysis_obj(
+    data_matrix = example_matrix,
+    outcome = outcome_surv_pem(
+      "time",
+      "cnsr",
+      prior_normal(0, 1000),
+      cut_points = c(1, 2, 3)
+    ),
+    borrowing = borrowing_hierarchical_commensurate(
+      "ext",
+      prior_exponential(0.001)
+    ),
+    treatment = treatment_details("trt", prior_normal(0, 1000))
+  )
+
+  result <- psborrow2:::prepare_stan_data_inputs(object)
+  expect_list(result, types = "numeric", len = 6)
+  expect_equal(names(result), c("N", "trt", "time", "cens", "period", "Z"))
+
+})

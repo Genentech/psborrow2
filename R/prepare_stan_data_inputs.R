@@ -30,7 +30,7 @@ prepare_stan_data_inputs <- function(analysis_obj) {
 
   ## Cast to long 
   if (is(analysis_obj@outcome, "OutcomeSurvPEM")) {
-    data_matrix <- cast_to_long_pem(data_matrix, analysis_obj@outcome@cut_points)
+    data_matrix <- cast_mat_to_long_pem(analysis_obj)
   }
 
   ## Common inputs
@@ -44,7 +44,7 @@ prepare_stan_data_inputs <- function(analysis_obj) {
     data_in[["time"]] <- data_matrix[, analysis_obj@outcome@time_var]
     data_in[["cens"]] <- data_matrix[, analysis_obj@outcome@cens_var]
     if (is(analysis_obj@outcome, "OutcomeSurvPEM")) {
-      data_in[["period"]] <- data_matrix[, "period"]
+      data_in[["period"]] <- data_matrix[, "__period__"]
     }
   } else if (is(analysis_obj@outcome, "BinaryOutcome")) {
     data_in[["y"]] <- data_matrix[, analysis_obj@outcome@binary_var]

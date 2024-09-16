@@ -49,7 +49,7 @@ cast_mat_to_long_pem <- function(analysis_obj) {
 
   ## Did they use a protected name?
   if (any(c("psb2__period", "psb2__start", "__period__") %in% colnames(df))) {
-    stop("The column names 'psb2__period', 'psb2__start', and '__period__' are reserved. Please rename your columns.")
+    stop("The column names 'psb2__period', 'psb2__start', and '__period__' are reserved when using PEM. Please rename your columns.")
   }
 
   ## Create long data
