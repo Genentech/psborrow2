@@ -58,18 +58,18 @@
 #' @param baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for each cut point.
 #' See `Details` for more information.
-#' @param cut_points numeric. Vector of internal cut points for the piecewise exponential model. Note: the choice of 
-#' cut points will impact the amount of borrowing between arms when dynamic borrowing methods are selected. It is 
-#' recommended to choose cut points that contain an equal number of events within each interval. Please include only internal 
+#' @param cut_points numeric. Vector of internal cut points for the piecewise exponential model. Note: the choice of
+#' cut points will impact the amount of borrowing between arms when dynamic borrowing methods are selected. It is
+#' recommended to choose cut points that contain an equal number of events within each interval. Please include only internal
 #' cut points in the vector. For instance, for cut points of [0, 15], (15, 20], (20, Inf], the vector should be c(15, 20).
-#' If you pass cut-points beyond the follow-up of the data, you will receive an informative warning when calling 
+#' If you pass cut-points beyond the follow-up of the data, you will receive an informative warning when calling
 #' `create_analysis_object()` and these cut points will be ignored.
 #'
 #' @details
 #' ## Baseline Prior
 #'
 #' The `baseline_prior` argument specifies the prior distribution for the
-#' baseline log hazard rate within each cutpoint. Currently, there is no option to 
+#' baseline log hazard rate within each cutpoint. Currently, there is no option to
 #' consider different baseline priors within each cut point.
 #' The interpretation of the `baseline_prior` differs
 #' slightly between borrowing methods selected.
@@ -113,8 +113,8 @@ outcome_surv_pem <- function(time_var, cens_var, baseline_prior, weight_var = ""
   if (n_cuts < 1) {
     stop("`cut_points` must have at least one element.")
   }
-  
-  # Create the object  
+
+  # Create the object
   has_weight <- isTRUE(weight_var != "")
   .outcome_surv_pem(
     time_var = time_var,
@@ -142,3 +142,26 @@ outcome_surv_pem <- function(time_var, cens_var, baseline_prior, weight_var = ""
   )
 }
 
+# show ----
+setMethod(
+  f = "show",
+  signature = "Outcome",
+  definition = function(object) {
+    cat("Outcome object with class", class(object)[1], "\n\n")
+    cat("Outcome variables:\n")
+    print(get_vars(object))
+    cat("\n")
+    cat("Baseline prior:\n")
+    show(object@baseline_prior)
+
+    if (!is.null(object@param_priors)) {
+      cat("\n")
+      for (i in names(object@param_priors)) {
+        cat(i, "prior:\n")
+        show(object@param_priors[[i]])
+      }
+    }
+
+    cat("Cut points:", paste0(object@cut_points, collapse = ", "))
+  }
+)
