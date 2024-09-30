@@ -38,6 +38,7 @@ cast_mat_to_long_pem <- function(analysis_obj) {
 
   ## Start with data.frame
   df <- as.data.frame(analysis_obj@data_matrix)
+  cn <- colnames(df)
 
   ## Check cut points
   cut_points <- analysis_obj@outcome@cut_points
@@ -48,20 +49,23 @@ cast_mat_to_long_pem <- function(analysis_obj) {
   }
 
   ## Did they use a protected name?
-  if (any(c("psb2__period", "psb2__start", "__period__") %in% colnames(df))) {
-    stop("The column names 'psb2__period', 'psb2__start', and '__period__' are reserved when using PEM. Please rename your columns.")
+  if (any(c("psb2__period", "psb2__start", "psb2__status", "__period__") %in% cn)) {
+    stop("The column names 'psb2__period', 'psb2__status', 'psb2__start', and '__period__' are reserved when using PEM. Please rename your columns.")
   }
 
+  ## Censorship flag -> event flag
+  df$psb2__status <- 1 - df[, analysis_obj@outcome@cens_var]
+
   ## Create long data
-  long_df <- survival::survSplit(data = df, 
-                                 cut = cut_points_keep, 
-                                 event = "status",
-                                 episode = "psb2__period",  
+  long_df <- survival::survSplit(data = df,
+                                 cut = cut_points_keep,
+                                 event = "psb2__status",
+                                 episode = "psb2__period",
                                  start = "psb2__tstart",
-                                 end = "time")
+                                 end = analysis_obj@outcome@time_var)
   names(long_df)[which(names(long_df) == "psb2__period")] <- "__period__"
-  long_df[, analysis_obj@outcome@cens_var] <- 1 - long_df[, "status"]
-  long_df <- long_df[, c(colnames(df), "__period__")]
+  long_df[, analysis_obj@outcome@cens_var] <- 1 - long_df[, "psb2__status"]
+  long_df <- long_df[, c(cn, "__period__")]
   long_mat <- as.matrix(long_df)
 
   # Update and return
