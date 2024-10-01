@@ -30,12 +30,14 @@ make_model_string_parameters <- function(analysis_obj) {
   ### Set alpha
   intercept_string <- h_glue(
     "{{type}}{{constraint}}{{n}} alpha;",
-    type = if (is_bdb) "vector" else "real",
+    type = if (is_bdb | is_pem) "vector" else "real",
     constraint = eval_constraints(analysis_obj@outcome@baseline_prior),
     n = if (is_bdb & !is_pem) {
       "[2]"} else if (is_bdb & is_pem) {
-      h_glue("[{{(NROW(analysis_obj@outcome@cut_points)+2) * 2}}]")
-      }
+      h_glue("[{{analysis_obj@outcome@n_periods * 2}}]")
+      } else if (!is_bdb & is_pem) {
+      h_glue("[{{analysis_obj@outcome@n_periods}}]")
+      } else ""
   )
 
   ### Add outcome specific parameters

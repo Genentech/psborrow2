@@ -135,6 +135,7 @@ outcome_surv_pem <- function(time_var, cens_var, baseline_prior, weight_var = ""
     data_stan_code = h_glue("
       vector[N] time;
       vector[N] cens;
+      
       {{weight}}",
       weight = if (has_weight) "vector[N] weight;" else ""
     ),

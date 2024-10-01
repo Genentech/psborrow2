@@ -68,9 +68,12 @@ cast_mat_to_long_pem <- function(analysis_obj) {
   long_df <- long_df[, c(cn, "__period__")]
   long_mat <- as.matrix(long_df)
 
-  # Update and return
+  # Update data matrix
   analysis_obj@data_matrix <- long_mat
-  analysis_obj@outcome@n_periods <- as.integer(length(cut_points_keep) + 2)
+  
+  # Update periods
+  analysis_obj@outcome@n_periods <- NROW(unique(long_df[,"__period__"]))
+
   return(analysis_obj)
 
 }

@@ -77,6 +77,17 @@ create_analysis_obj <- function(data_matrix,
   check_data_matrix_has_columns(analysis_obj)
 
   # Trim data
+  if (is(analysis_obj@borrowing, "BorrowingFull")) {
+    message(
+      h_glue("NOTE: dropping column `{{analysis_obj@borrowing@ext_flag_col}}` for full borrowing.")
+    )
+  }
+
+  if (is(analysis_obj@borrowing, "BorrowingNone")) {
+    message(
+      h_glue("NOTE: excluding `{{analysis_obj@borrowing@ext_flag_col}}` == `1`/`TRUE` for no borrowing.")
+    )
+  }
   analysis_obj@data_matrix <- trim_data_matrix(analysis_obj)
 
   # Cast to long if PEM
@@ -86,18 +97,6 @@ create_analysis_obj <- function(data_matrix,
 
   if (!quiet) {
     message("Inputs look good.")
-
-    if (is(analysis_obj@borrowing, "BorrowingFull")) {
-      message(
-        h_glue("NOTE: dropping column `{{analysis_obj@borrowing@ext_flag_col}}` for full borrowing.")
-      )
-    }
-
-    if (is(analysis_obj@borrowing, "BorrowingNone")) {
-      message(
-        h_glue("NOTE: excluding `{{analysis_obj@borrowing@ext_flag_col}}` == `1`/`TRUE` for no borrowing.")
-      )
-    }
   }
 
   # Model string components
