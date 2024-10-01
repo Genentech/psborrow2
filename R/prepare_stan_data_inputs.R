@@ -50,26 +50,34 @@ prepare_stan_data_inputs <- function(analysis_obj) {
     data_in[["y"]] <- data_matrix[, analysis_obj@outcome@continuous_var]
   }
 
-  ## BDB additions
-  if (is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate")) {
-    if (is(analysis_obj@outcome, "OutcomeSurvPEM")) {
-      n_periods <- analysis_obj@outcome@n_periods
-      Z <- matrix(0, nrow = NROW(data_matrix), ncol = n_periods * 2)
-      for (i in 1:NROW(data_matrix)) {
-        period <- data_matrix[i, "__period__"]
-        if (data_matrix[i, analysis_obj@borrowing@ext_flag_col] == 0) {
-          Z[i, period] <- 1
-        } else {
-          Z[i, period + n_periods] <- 1
-        }
+  ## BDB additions and PEM additions (Z matrix for alphas)
+  is_bdb <- is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate")
+  is_pem <- is(analysis_obj@outcome, "OutcomeSurvPEM")
+  if (is_bdb & is_pem) {
+    n_periods <- analysis_obj@outcome@n_periods
+    Z <- matrix(0, nrow = NROW(data_matrix), ncol = n_periods * 2)
+    for (i in 1:NROW(data_matrix)) {
+      period <- data_matrix[i, "__period__"]
+      if (data_matrix[i, analysis_obj@borrowing@ext_flag_col] == 0) {
+        Z[i, period] <- 1
+      } else {
+        Z[i, period + n_periods] <- 1
       }
-      data_in[["Z"]] <- Z
-    } else {
-      data_in[["Z"]] <- cbind(
-        1 - data_matrix[, analysis_obj@borrowing@ext_flag_col],
-        data_matrix[, analysis_obj@borrowing@ext_flag_col]
-    ) # Column 1 is the indicator for internal. Column 2 is the external indicator.
     }
+    data_in[["Z"]] <- Z
+  } else if (is_bdb & !is_pem) {
+    data_in[["Z"]] <- cbind(
+      1 - data_matrix[, analysis_obj@borrowing@ext_flag_col],
+      data_matrix[, analysis_obj@borrowing@ext_flag_col]
+  ) # Column 1 is the indicator for internal. Column 2 is the external indicator.
+  } else if (!is_bdb & is_pem) {
+    n_periods <- analysis_obj@outcome@n_periods
+    Z <- matrix(0, nrow = NROW(data_matrix), ncol = n_periods)
+    for (i in 1:NROW(data_matrix)) {
+      period <- data_matrix[i, "__period__"]
+      Z[i, period] <- 1
+    }
+    data_in[["Z"]] <- Z
   }
 
   ## Covariate additions
