@@ -18,9 +18,21 @@
 #' make_model_string_data(anls_obj)
 #' @noRd
 make_model_string_data <- function(analysis_obj) {
+  
   outcome_string <- analysis_obj@outcome@data_stan_code
 
-  borrowing_string <- analysis_obj@borrowing@data_stan_code
+  is_bdb  <- is(analysis_obj@borrowing, "BorrowingHierarchicalCommensurate")
+  is_pem  <- is(analysis_obj@outcome, "OutcomeSurvPEM")
+
+  if (!is_bdb & !is_pem) {
+    borrowing_string <- ""
+  } else if (is_bdb & !is_pem) {
+    borrowing_string <- "matrix[N,2] Z;"
+  } else if (is_bdb & is_pem) {
+    borrowing_string <- h_glue("matrix[N, {{analysis_obj@outcome@n_periods * 2}}] Z;")
+  } else {
+    borrowing_string <- h_glue("matrix[N, {{analysis_obj@outcome@n_periods}}] Z;")
+  }
 
   covariate_string <- ifelse(
     !is.null(analysis_obj@covariates),
