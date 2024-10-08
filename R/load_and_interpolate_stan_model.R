@@ -21,13 +21,13 @@ setMethod(
     
     model_string <- h_glue(      
       template,
-      weights.data = if (is.null(outcome@weight_var)) "" else "vector[N] weights;",
+      weights.data = if (outcome@weight_var == "") "" else "vector[N] weights;",
       cov.data = "",
       cov.parameters = "",
       trt.prior = "",
       cov.priors = "",
       cov.linpred = "",
-      weights.likelihood = if (is.null(outcome@weight_var)) "" else "* weight[i]",
+      weights.likelihood = if (outcome@weight_var == "") "" else "* weight[i]",
       baseline.prior = h_glue("alpha ~ {{get_prior_string(outcome@baseline_prior)}} ;"),
     )
     cat(model_string)
