@@ -33,7 +33,7 @@ model {
   {{ cov.priors }}
   {{ baseline.prior }}
   
-  lp = alpha + {{ cov.linpred }} + trt * beta_trt;
+  lp = alpha + trt * beta_trt {{ cov.linpred }} ;
   elp = exp(lp);
   
   for (i in 1:N) {

@@ -16,7 +16,21 @@ setMethod(
   f = "load_and_interpolate_stan_model",
   signature = c("OutcomeSurvExponential", "BorrowingNoneFull", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
+    
     template <- load_stan_file("surv", "exp_nb.stan")
-    return(template)
+    
+    model_string <- h_glue(      
+      template,
+      weights.data = if (is.null(outcome@weight_var)) "" else "vector[N] weights;",
+      cov.data = "",
+      cov.parameters = "",
+      trt.prior = "",
+      cov.priors = "",
+      cov.linpred = "",
+      weights.likelihood = if (is.null(outcome@weight_var)) "" else "* weight[i]",
+      baseline.prior = h_glue("alpha ~ {{get_prior_string(outcome@baseline_prior)}} ;"),
+    )
+    cat(model_string)
+
   }
 )
