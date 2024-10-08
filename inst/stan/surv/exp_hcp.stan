@@ -1,5 +1,5 @@
 // Exponential survival model
-// No / full borrowing
+// Hierarchical commensurate prior
 
 data {
 

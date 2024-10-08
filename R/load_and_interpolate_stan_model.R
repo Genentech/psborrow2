@@ -28,7 +28,7 @@ setMethod(
       cov.priors = if (!is.null(analysis_obj@covariates)) get_prior_string_covariates(analysis_obj@covariates) else "",
       cov.linpred = if (!is.null(analysis_obj@covariates)) "+ X * beta" else "",
       weights.likelihood = if (outcome@weight_var == "") "" else "* weight[i]",
-      baseline.prior = h_glue("alpha ~ {{get_prior_string(outcome@baseline_prior)}} ;"),
+      baseline.prior = h_glue("alpha ~ {{get_prior_string(outcome@baseline_prior)}} ;")
     )
 
     return(model_string)
@@ -54,7 +54,61 @@ setMethod(
       cov.linpred = if (!is.null(analysis_obj@covariates)) "+ X * beta" else "",
       tau.prior = h_glue("tau ~ {{get_prior_string(borrowing@tau_prior)}} ;"),
       weights.likelihood = if (outcome@weight_var == "") "" else "* weight[i]",
+      baseline.prior = h_glue("alpha[2] ~ {{get_prior_string(outcome@baseline_prior)}} ;")
+    )
+
+    return(model_string)
+
+  }
+)
+
+## Weibull Proportional Hazards ---- 
+### No/full borrowing ---- 
+setMethod(
+  f = "load_and_interpolate_stan_model",
+  signature = c("OutcomeSurvWeibullPH", "BorrowingNoneFull", "ANY"),
+  definition = function(outcome, borrowing, analysis_obj) {
+    
+    template <- load_stan_file("surv", "weib_ph_nb.stan")
+    
+    model_string <- h_glue(      
+      template,
+      weights.data = if (outcome@weight_var == "") "" else "vector[N] weight;",
+      cov.data = if (!is.null(analysis_obj@covariates)) h_glue("int<lower=0> K;\n  matrix[N, K] X;\n  vector[K]  L_beta;\n  vector[K] U_beta;\n") else "",
+      cov.parameters = if (!is.null(analysis_obj@covariates)) "vector<lower=L_beta, upper=U_beta>[K] beta;" else "",
+      trt.prior = h_glue("beta_trt ~ {{get_prior_string(analysis_obj@treatment@trt_prior)}} ;"),
+      cov.priors = if (!is.null(analysis_obj@covariates)) get_prior_string_covariates(analysis_obj@covariates) else "",
+      cov.linpred = if (!is.null(analysis_obj@covariates)) "+ X * beta" else "",
+      weights.likelihood = if (outcome@weight_var == "") "" else "* weight[i]",
+      baseline.prior = h_glue("alpha ~ {{get_prior_string(outcome@baseline_prior)}} ;"),
+      shape.prior = h_glue("shape_weibull ~ {{get_prior_string(outcome@param_priors$shape_weibull)}} ;")
+    )
+
+    return(model_string)
+
+  }
+)
+
+### Hierarchical commensurate prior borrowing ---- 
+setMethod(
+  f = "load_and_interpolate_stan_model",
+  signature = c("OutcomeSurvWeibullPH", "BorrowingHierarchicalCommensurate", "ANY"),
+  definition = function(outcome, borrowing, analysis_obj) {
+    
+    template <- load_stan_file("surv", "weib_ph_hcp.stan")
+    
+    model_string <- h_glue(      
+      template,
+      weights.data = if (outcome@weight_var == "") "" else "vector[N] weight;",
+      cov.data = if (!is.null(analysis_obj@covariates)) h_glue("int<lower=0> K;\n  matrix[N, K] X;\n  vector[K]  L_beta;\n  vector[K] U_beta;\n") else "",
+      cov.parameters = if (!is.null(analysis_obj@covariates)) "vector<lower=L_beta, upper=U_beta>[K] beta;" else "",
+      trt.prior = h_glue("beta_trt ~ {{get_prior_string(analysis_obj@treatment@trt_prior)}} ;"),
+      cov.priors = if (!is.null(analysis_obj@covariates)) get_prior_string_covariates(analysis_obj@covariates) else "",
+      cov.linpred = if (!is.null(analysis_obj@covariates)) "+ X * beta" else "",
+      weights.likelihood = if (outcome@weight_var == "") "" else "* weight[i]",
       baseline.prior = h_glue("alpha[2] ~ {{get_prior_string(outcome@baseline_prior)}} ;"),
+      shape.prior = h_glue("shape_weibull ~ {{get_prior_string(outcome@param_priors$shape_weibull)}} ;"),
+      tau.prior = h_glue("tau ~ {{get_prior_string(borrowing@tau_prior)}} ;")
     )
 
     return(model_string)
