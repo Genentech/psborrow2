@@ -213,3 +213,11 @@ setGeneric("set_transformations", function(object, ..., overwrite = FALSE) stand
 #' @return String containing the Stan model
 #' @export
 setGeneric("get_stan_code", function(object) standardGeneric("get_stan_code"))
+
+#' Load and interpolate Stan model
+#' @param object `Outcome` object
+#' @param borrowing `Borrowing` object
+#' @param analysis_obj `Analysis` object
+#' @return String containing the interpolated Stan model
+#' @export
+setGeneric("load_and_interpolate_stan_model", function(outcome, borrowing, analysis_obj) standardGeneric("load_and_interpolate_stan_model"))
