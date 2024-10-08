@@ -10,9 +10,11 @@ data {
 
   {{ weights.data }}
   {{ cov.data }}
+
 }
 
 parameters {
+
   real beta_trt;        // treatment effect                                
   real alpha;           // baseline hazard
   
@@ -21,7 +23,9 @@ parameters {
 }
 
 transformed parameters {
+
   real HR_trt = exp(beta_trt);
+
 }
 
 model {
@@ -43,4 +47,5 @@ model {
       target += exponential_lpdf(time[i] | elp[i]) {{ weights.likelihood }};
     }
   }
+  
 }

@@ -2,6 +2,7 @@
 // No / full borrowing
 
 functions {
+
   real weibull_ph_lpdf(real y, real alpha, real lambda) {
     real lprob = log(alpha) + log(lambda) + (alpha - 1) * log(y) - lambda * (y^alpha);
     return lprob;
@@ -16,9 +17,11 @@ functions {
     real lprob = -lambda * y^alpha;
     return lprob;
   }
+
 }
 
 data {
+
   int<lower=0> N;       // number of observations
   vector[N] trt;        // treatment indicator
   vector[N] time;       // survival time
@@ -26,21 +29,27 @@ data {
 
   {{ weights.data }}
   {{ cov.data }}
+
 }
 
 parameters {
+
   real beta_trt;        // treatment effect                                
   real alpha;           // baseline hazard
   real shape_weibull;   // weibull shape parameter
   
   {{ cov.parameters }}
+
 }
 
 transformed parameters {
+
   real HR_trt = exp(beta_trt);
+
 }
 
 model {
+
   vector[N] lp;
   vector[N] elp;
   
@@ -59,4 +68,5 @@ model {
       target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i]) {{ weights.likelihood }};
     }
   }
+  
 }
