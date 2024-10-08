@@ -21,7 +21,7 @@ setMethod(
     
     model_string <- h_glue(      
       template,
-      weights.data = if (outcome@weight_var == "") "" else "vector[N] weights;",
+      weights.data = if (outcome@weight_var == "") "" else "vector[N] weight;",
       cov.data = if (!is.null(analysis_obj@covariates)) h_glue("int<lower=0> K;\n  matrix[N, K] X;\n  vector[K]  L_beta;\n  vector[K] U_beta;\n") else "",
       cov.parameters = if (!is.null(analysis_obj@covariates)) "vector<lower=L_beta, upper=U_beta>[K] beta;" else "",
       trt.prior = h_glue("beta_trt ~ {{get_prior_string(analysis_obj@treatment@trt_prior)}} ;"),
@@ -46,7 +46,7 @@ setMethod(
     
     model_string <- h_glue(      
       template,
-      weights.data = if (outcome@weight_var == "") "" else "vector[N] weights;",
+      weights.data = if (outcome@weight_var == "") "" else "vector[N] weight;",
       cov.data = if (!is.null(analysis_obj@covariates)) h_glue("int<lower=0> K;\n  matrix[N, K] X;\n  vector[K]  L_beta;\n  vector[K] U_beta;\n") else "",
       cov.parameters = if (!is.null(analysis_obj@covariates)) "vector<lower=L_beta, upper=U_beta>[K] beta;" else "",
       trt.prior = h_glue("beta_trt ~ {{get_prior_string(analysis_obj@treatment@trt_prior)}} ;"),

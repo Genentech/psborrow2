@@ -7,6 +7,7 @@ data {
   vector[N] trt;        // treatment indicator
   vector[N] time;       // survival time
   vector[N] cens;       // censoring indicator
+  matrix[N,2] Z;        // external flag indicators
 
   {{ weights.data }}
   {{ cov.data }}
@@ -15,6 +16,7 @@ data {
 parameters {
   real beta_trt;        // treatment effect                                
   vector[2] alpha;      // baseline hazard
+  real<lower=0> tau;    // precision on dynamic borrowing
   
   {{ cov.parameters }}
   
@@ -35,7 +37,7 @@ model {
 
   real sigma;
   sigma = 1 / tau;
-  alpha[1] ~ normal(alpha[2], sqrt(sigma))
+  alpha[1] ~ normal(alpha[2], sqrt(sigma));
   {{ tau.prior }}
 
   lp = Z * alpha + trt * beta_trt {{ cov.linpred }} ;
