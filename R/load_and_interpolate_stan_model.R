@@ -22,15 +22,16 @@ setMethod(
     model_string <- h_glue(      
       template,
       weights.data = if (outcome@weight_var == "") "" else "vector[N] weights;",
-      cov.data = "",
-      cov.parameters = "",
-      trt.prior = "",
-      cov.priors = "",
-      cov.linpred = "",
+      cov.data = if (!is.null(analysis_obj@covariates)) h_glue("int<lower=0> K;\n  matrix[N, K] X;\n  vector[K]  L_beta;\n  vector[K] U_beta;\n") else "",
+      cov.parameters = if (!is.null(analysis_obj@covariates)) "vector<lower=L_beta, upper=U_beta>[K] beta;" else "",
+      trt.prior = h_glue("beta_trt ~ {{get_prior_string(analysis_obj@treatment@trt_prior)}} ;"),
+      cov.priors = if (!is.null(analysis_obj@covariates)) get_prior_string_covariates(analysis_obj@covariates) else "",
+      cov.linpred = if (!is.null(analysis_obj@covariates)) "+ X * beta" else "",
       weights.likelihood = if (outcome@weight_var == "") "" else "* weight[i]",
       baseline.prior = h_glue("alpha ~ {{get_prior_string(outcome@baseline_prior)}} ;"),
     )
-    cat(model_string)
+
+    return(model_string)
 
   }
 )
