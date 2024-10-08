@@ -142,6 +142,8 @@ Collate:
     'simulation_class.R'
     'create_simulation_obj.R'
     'data.R'
+    'load_stan_file.R'
+    'load_and_interpolate_stan_model.R'
     'make_analysis_object_list.R'
     'make_model_string_data.R'
     'make_model_string_functions.R'
