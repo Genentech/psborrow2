@@ -12,10 +12,6 @@ setClassUnion(
 
 #' `TimeToEvent` class
 #'
-#' @slot function_stan_code character. Code to include in the Stan functions program block.
-#' @slot param_stan_code character. Code to include in the Stan parameters program block.
-#' @slot likelihood_stan_code character. Code defining the likelihood to include in the Stan model program block.
-#' @slot data_stan_code character. Code to include in the Stan data program block.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate.
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' @slot time_var character. Variable used for time in `TimeToEvent` objects.
@@ -30,10 +26,6 @@ setClassUnion(
 setClass(
   "TimeToEvent",
   slots = c(
-    function_stan_code = "character",
-    param_stan_code = "character",
-    likelihood_stan_code = "character",
-    data_stan_code = "character",
     n_param = "integer",
     param_priors = "list",
     time_var = "character",
@@ -47,12 +39,7 @@ setClass(
   ),
   prototype = list(
     n_param = 0L,
-    function_stan_code = "",
-    param_stan_code = "",
-    likelihood_stan_code = "",
     weight_var = NULL,
-    data_stan_code = "vector[N] time;
-    vector[N] cens;",
     baseline_prior = NULL,
     name_beta_trt = c("treatment log HR" = "beta_trt"),
     name_exp_trt = c("treatment HR" = "HR_trt"),
@@ -63,10 +50,6 @@ setClass(
 )
 
 #' `BinaryOutcome` class
-#' @slot function_stan_code character. Code to include in the Stan functions program block.
-#' @slot param_stan_code character. Code to include in the Stan parameters program block.
-#' @slot likelihood_stan_code character. Code defining the likelihood to include in the Stan model program block.
-#' @slot data_stan_code character. Code to include in the Stan data program block.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate.
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' @slot binary_var character. Variable used for outcome in `BinaryOutcome` objects.
@@ -80,10 +63,6 @@ setClass(
 setClass(
   "BinaryOutcome",
   slots = c(
-    function_stan_code = "character",
-    param_stan_code = "character",
-    likelihood_stan_code = "character",
-    data_stan_code = "character",
     n_param = "integer",
     param_priors = "list",
     binary_var = "character",
@@ -96,11 +75,7 @@ setClass(
   ),
   prototype = list(
     n_param = 0L,
-    function_stan_code = "",
-    param_stan_code = "",
-    likelihood_stan_code = "",
     weight_var = "",
-    data_stan_code = "array[N] int y;",
     baseline_prior = NULL,
     name_beta_trt = c("treatment log OR" = "beta_trt"),
     name_exp_trt = c("treatment OR" = "OR_trt"),
@@ -111,10 +86,6 @@ setClass(
 )
 
 #' `ContinuousOutcome` class
-#' @slot function_stan_code character. Code to include in the Stan functions program block.
-#' @slot param_stan_code character. Code to include in the Stan parameters program block.
-#' @slot likelihood_stan_code character. Code defining the likelihood to include in the Stan model program block.
-#' @slot data_stan_code character. Code to include in the Stan data program block.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate.
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' @slot continuous_var character. Variable used for outcome in `ContinuousOutcome` objects.
@@ -128,10 +99,6 @@ setClass(
 setClass(
   "ContinuousOutcome",
   slots = c(
-    function_stan_code = "character",
-    param_stan_code = "character",
-    likelihood_stan_code = "character",
-    data_stan_code = "character",
     n_param = "integer",
     param_priors = "list",
     continuous_var = "character",
@@ -144,11 +111,7 @@ setClass(
   ),
   prototype = list(
     n_param = 0L,
-    function_stan_code = "",
-    param_stan_code = "",
-    likelihood_stan_code = "",
     weight_var = "",
-    data_stan_code = "array[N] int y;",
     baseline_prior = NULL,
     name_beta_trt = c("treatment effect" = "beta_trt"),
     name_exp_trt = c("exponentiated treatment effect" = "beta_trt"),

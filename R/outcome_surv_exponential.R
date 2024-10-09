@@ -5,12 +5,6 @@
 #' Objects of class `OutcomeSurvExponential` should not be created directly
 #' but by the constructor [outcome_surv_exponential()].
 #'
-#' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
-#' Empty string for `OutcomeSurvExponential`.
-#' @slot param_stan_code character. stan parameter code block containing text to interpolate into stan model.
-#' Empty string for `OutcomeSurvExponential`.
-#' @slot likelihood_stan_code character. stan model likelihood code block containing text
-#' to interpolate into stan model.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate (0).
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' Empty for `OutcomeSurvExponential`.
@@ -28,16 +22,7 @@
   "OutcomeSurvExponential",
   contains = "TimeToEvent",
   prototype = list(
-    n_param = 0L,
-    likelihood_stan_code =
-      h_glue("
-         for (i in 1:N) {
-            if (cens[i] == 1) {
-               target += exponential_lccdf(time[i] | elp[i] );
-            } else {
-               target += exponential_lpdf(time[i] | elp[i] );
-            }
-         }")
+    n_param = 0L
   ),
   validity = function(object) {
     return(TRUE)
@@ -84,24 +69,7 @@ outcome_surv_exponential <- function(time_var, cens_var, baseline_prior, weight_
     time_var = time_var,
     cens_var = cens_var,
     baseline_prior = baseline_prior,
-    weight_var = weight_var,
-    likelihood_stan_code =
-      h_glue("
-         for (i in 1:N) {
-            if (cens[i] == 1) {
-               target += exponential_lccdf(time[i] | elp[i] ){{weight}};
-            } else {
-               target += exponential_lpdf(time[i] | elp[i] ){{weight}};
-            }
-         }",
-        weight = if (weight_var != "") " * weight[i]" else ""
-      ),
-    data_stan_code = h_glue("
-      vector[N] time;
-      vector[N] cens;
-      {{weight}}",
-      weight = if (has_weight) "vector[N] weight;" else ""
-    )
+    weight_var = weight_var
   )
 }
 
@@ -109,12 +77,12 @@ outcome_surv_exponential <- function(time_var, cens_var, baseline_prior, weight_
 #'
 #' Please use `outcome_surv_exponential()` instead.
 #' @param ... Deprecated arguments to `exp_surv_dist()`.
-#' 
+#'
 #' @return
-#' This function does not return a value. When called, it triggers an error 
-#' message indicating that `exp_surv_dist()` is deprecated and that 
+#' This function does not return a value. When called, it triggers an error
+#' message indicating that `exp_surv_dist()` is deprecated and that
 #' `outcome_surv_exponential()` should be used instead.
-#' 
+#'
 #' @export
 exp_surv_dist <- function(...) {
   .Defunct(

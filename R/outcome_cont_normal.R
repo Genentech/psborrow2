@@ -5,12 +5,6 @@
 #' Objects of class `OutcomeContinuousNormal` should not be created directly but by
 #' the constructor [outcome_cont_normal()].
 #'
-#' @slot function_stan_code character. stan function code block containing text to interpolate into stan model.
-#' Empty string for `OutcomeContinuousNormal`.
-#' @slot param_stan_code character. stan parameter code block containing text to interpolate into stan model.
-#' Empty string for `OutcomeContinuousNormal`.
-#' @slot likelihood_stan_code character. stan model likelihood code block containing text
-#' to interpolate into stan model.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate (0).
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' Empty for `OutcomeContinuousNormal`.
@@ -28,12 +22,6 @@
   contains = "ContinuousOutcome",
   prototype = list(
     n_param = 0L,
-    likelihood_stan_code =
-      h_glue("
-         for (i in 1:N) {
-            target += normal_lupdf(y[i] | lp[i], std_dev_outcome) * weight[i];
-         }"),
-    param_stan_code = "real<lower=0> std_dev_outcome; ",
     param_priors = list(
       std_dev_outcome = prior_half_cauchy(1, 5)
     )
@@ -95,17 +83,6 @@ outcome_cont_normal <- function(continuous_var,
     weight_var = weight_var,
     param_priors = list(
       std_dev_outcome = std_dev_prior
-    ),
-    likelihood_stan_code = h_glue("
-      for (i in 1:N) {
-        target += normal_lupdf(y[i] | lp[i], std_dev_outcome){{weight}};
-      }",
-      weight = if (has_weight) " * weight[i]" else ""
-    ),
-    data_stan_code = h_glue("
-      array[N] real y;
-      {{weight}}",
-      weight = if (has_weight) "vector[N] weight;" else ""
     )
   )
 }

@@ -57,7 +57,7 @@ setGeneric("mcmc_sample", function(x, ...) standardGeneric("mcmc_sample"))
 #' @rdname show_guide
 #'
 #' @return A `data.frame` showing all simulation scenarios.
-#' 
+#'
 #' @export
 #'
 setGeneric("show_guide", function(object) standardGeneric("show_guide"))
@@ -69,7 +69,7 @@ setGeneric("show_guide", function(object) standardGeneric("show_guide"))
 #' @param object `MCMCSimulationResults` object
 #'
 #' @rdname get_results
-#' 
+#'
 #' @return data.frame with simulation results.
 #'
 #' @export
@@ -83,7 +83,7 @@ setGeneric("get_results", function(object) standardGeneric("get_results"))
 #' @param object `MCMCSimulationResults` object
 #'
 #' @rdname get_cmd_stan_models
-#' 
+#'
 #' @return List of lists of `CmdStanModel` objects for each model.
 #'
 #' @export
@@ -98,7 +98,7 @@ setGeneric("get_cmd_stan_models", function(object) standardGeneric("get_cmd_stan
 #' @rdname generate
 #'
 #' @return Object of class [`SimDataList`][SimDataList-class].
-#' 
+#'
 #' @export
 setGeneric("generate", function(x, ...) standardGeneric("generate"))
 
@@ -132,41 +132,6 @@ setGeneric("create_alpha_string", function(borrowing_object, outcome_object) sta
 #'
 #' @rdname create_tau_string
 setGeneric("create_tau_string", function(borrowing_object) standardGeneric("create_tau_string"))
-
-#' Create Stan Code for Model
-#'
-#' @param borrowing borrowing object
-#' @param outcome outcome object
-#' @param analysis_obj analysis object
-#'
-#' @rdname make_model_string_model
-#' @return `glue` `character` containing the Stan code for the data block.
-#' @export
-#' @examples
-#' anls_obj <- create_analysis_obj(
-#'     data_matrix = example_matrix,
-#'     outcome = outcome_surv_exponential(
-#'       "time",
-#'       "cnsr",
-#'       baseline_prior = prior_normal(0, 1000)
-#'     ),
-#'     borrowing = borrowing_hierarchical_commensurate(
-#'       "ext",
-#'       prior_exponential(.001)
-#'     ),
-#'     treatment = treatment_details(
-#'       "trt",
-#'       prior_normal(0, 1000)
-#'     ),
-#'     covariates = add_covariates(
-#'       covariates = c("cov1", "cov2"),
-#'       priors = prior_normal(0, 1000)
-#'     )
-#'   )
-#' make_model_string_model(anls_obj@borrowing, anls_obj@outcome, anls_obj)
-setGeneric("make_model_string_model", function(borrowing, outcome, analysis_obj) {
-  standardGeneric("make_model_string_model")
-})
 
 #' @title Coerce a `psborrow2` object to a data frame
 #'

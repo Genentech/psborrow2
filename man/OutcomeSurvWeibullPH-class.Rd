@@ -14,13 +14,6 @@ but by the constructor \code{\link[=outcome_surv_weibull_ph]{outcome_surv_weibul
 \section{Slots}{
 
 \describe{
-\item{\code{function_stan_code}}{character. Stan function code block containing text to interpolate into Stan model.}
-
-\item{\code{param_stan_code}}{character. Stan parameter code block containing text to interpolate into Stan model.}
-
-\item{\code{likelihood_stan_code}}{character. Stan model likelihood code block containing text
-to interpolate into Stan model.}
-
 \item{\code{n_param}}{integer. Number of ancillary parameters for the model to estimate (1).}
 
 \item{\code{param_priors}}{list. Named list of prior distributions on the ancillary parameters in the model.}

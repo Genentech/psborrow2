@@ -93,28 +93,11 @@ create_analysis_obj <- function(data_matrix,
   }
 
   # Model string components
-  functions_str <- make_model_string_functions(analysis_obj)
-  data_str <- make_model_string_data(analysis_obj)
-  param_str <- make_model_string_parameters(analysis_obj)
-  trans_param_str <- make_model_string_transf_param(analysis_obj)
-  model_str <- make_model_string_model(analysis_obj@borrowing, analysis_obj@outcome, analysis_obj)
-
-  # Model string
-  stan_model_string <- h_glue("
-
-    {{functions_str}}
-
-    {{data_str}}
-
-    {{param_str}}
-
-    {{trans_param_str}}
-
-    {{model_str}}
-
-  ")
-
-  analysis_obj@model_string <- stan_model_string
+  analysis_obj@model_string <- load_and_interpolate_stan_model(
+    analysis_obj@outcome,
+    analysis_obj@borrowing,
+    analysis_obj
+  )
 
   # Compile model
   if (check_cmdstan()) {

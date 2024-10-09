@@ -47,20 +47,6 @@ test_that("outcome_surv_exponential works with weights", {
   )
   expect_class(result, "OutcomeSurvExponential")
   expect_equal(result@weight_var, "w")
-  expect_string(
-    result@likelihood_stan_code,
-    fixed = "for (i in 1:N) {
-   if (cens[i] == 1) {
-      target += exponential_lccdf(time[i] | elp[i] ) * weight[i];
-   } else {
-      target += exponential_lpdf(time[i] | elp[i] ) * weight[i];
-   }
-}"
-  )
-  expect_string(
-    result@data_stan_code,
-    fixed = "vector[N] time;\nvector[N] cens;\nvector[N] weight;"
-  )
 })
 
 test_that("exp_surv_dist() throws error", {

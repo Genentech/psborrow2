@@ -5,7 +5,6 @@
 #' should not be created directly but by the constructor
 #' [borrowing_full()].
 #'
-#' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.
 #' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @slot name_tau named vector for hierarchical commensurability parameter hyperprior.
@@ -14,7 +13,6 @@
 .borrowing_full <- setClass(
   "BorrowingFull",
   prototype = list(
-    data_stan_code = "",
     method_name = "Full borrowing"
   ),
   contains = "Borrowing"

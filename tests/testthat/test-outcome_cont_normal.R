@@ -46,12 +46,4 @@ test_that("outcome_cont_normal works with weights", {
   )
   expect_class(result, "OutcomeContinuousNormal")
   expect_equal(result@weight_var, "w")
-  expect_string(
-    result@likelihood_stan_code,
-    fixed = "for (i in 1:N) {\n  target += normal_lupdf(y[i] | lp[i], std_dev_outcome) * weight[i];\n}"
-  )
-  expect_string(
-    result@data_stan_code,
-    fixed = "array[N] real y;\nvector[N] weight;"
-  )
 })
