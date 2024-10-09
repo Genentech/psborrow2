@@ -16,7 +16,7 @@ parameters {
 
   real beta_trt;     // treatment effect
   real alpha;        // baseline log-odds
-  
+
   {{ cov.parameters }}
 
 }
@@ -35,10 +35,10 @@ model {
   {{ cov.priors }}
   {{ baseline.prior }}
 
-  lp = Z * alpha + trt * beta_trt {{ cov.linpred }} ;
-  
+  lp = alpha + trt * beta_trt {{ cov.linpred }} ;
+
   for (i in 1:N) {
     target += bernoulli_logit_lupmf(y[i] | lp[i]) {{ weights.likelihood }};
   }
-  
+
 }
