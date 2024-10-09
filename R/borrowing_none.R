@@ -5,7 +5,6 @@
 #' should not be created directly but by the constructor
 #' [borrowing_none()].
 #'
-#' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.
 #' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @include borrowing_class.R
@@ -13,7 +12,6 @@
 .borrowing_none <- setClass(
   "BorrowingNone",
   prototype = list(
-    data_stan_code = "",
     method_name = "No borrowing"
   ),
   contains = "Borrowing"

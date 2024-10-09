@@ -7,11 +7,11 @@
 load_and_interpolate_stan_model(outcome, borrowing, analysis_obj)
 }
 \arguments{
+\item{outcome}{\code{Outcome} object}
+
 \item{borrowing}{\code{Borrowing} object}
 
 \item{analysis_obj}{\code{Analysis} object}
-
-\item{object}{\code{Outcome} object}
 }
 \value{
 String containing the interpolated Stan model

@@ -51,20 +51,6 @@ test_that("outcome_surv_weibull_ph works with weights", {
   )
   expect_class(result, "OutcomeSurvWeibullPH")
   expect_equal(result@weight_var, "w")
-  expect_string(
-    result@likelihood_stan_code,
-    fixed = "for (i in 1:N) {
-   if (cens[i] == 1) {
-      target += weibull_ph_lccdf(time[i] | shape_weibull, elp[i] ) * weight[i];
-   } else {
-      target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i] ) * weight[i];
-   }
-}"
-  )
-  expect_string(
-    result@data_stan_code,
-    fixed = "vector[N] time;\nvector[N] cens;\nvector[N] weight;"
-  )
 })
 
 test_that("weib_ph_surv_dist() throws error", {

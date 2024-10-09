@@ -2,7 +2,7 @@
 setClassUnion("BorrowingNoneFull", c("BorrowingFull", "BorrowingNone"))
 
 #' Load and interpolate Stan model
-#' @param object `Outcome` object
+#' @param outcome `Outcome` object
 #' @param borrowing `Borrowing` object
 #' @param analysis_obj `Analysis` object
 #' @include analysis_class.R outcome_bin_logistic.R outcome_cont_normal.R outcome_surv_exponential.R outcome_surv_weibull_ph.R

@@ -4,7 +4,6 @@
 #' `Borrowing` should not be created directly but by the constructors
 #' [borrowing_hierarchical_commensurate()], [borrowing_none()], [borrowing_full()].
 #'
-#' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.
 #' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @family borrowing classes
@@ -12,7 +11,6 @@
 setClass(
   "Borrowing",
   slots = c(
-    data_stan_code = "character",
     method_name = "character",
     ext_flag_col = "character"
   ),

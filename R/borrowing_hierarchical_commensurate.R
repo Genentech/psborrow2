@@ -6,7 +6,6 @@
 #' should not be created directly but by the constructor
 #' [borrowing_hierarchical_commensurate()].
 #'
-#' @slot data_stan_code string. Code to include in the Stan data program block.
 #' @slot method_name string. The name of the method.
 #' @slot ext_flag_col character. Name of the external flag column in the matrix.
 #' @slot tau_prior Prior. Prior for the commensurability parameter.
@@ -18,7 +17,6 @@
     tau_prior = "Prior"
   ),
   prototype = list(
-    data_stan_code = "matrix[N,2] Z;",
     method_name = "Bayesian dynamic borrowing with the hierarchical commensurate prior"
   ),
   contains = "Borrowing",

@@ -14,15 +14,6 @@ but by the constructor \code{\link[=outcome_surv_exponential]{outcome_surv_expon
 \section{Slots}{
 
 \describe{
-\item{\code{function_stan_code}}{character. stan function code block containing text to interpolate into stan model.
-Empty string for \code{OutcomeSurvExponential}.}
-
-\item{\code{param_stan_code}}{character. stan parameter code block containing text to interpolate into stan model.
-Empty string for \code{OutcomeSurvExponential}.}
-
-\item{\code{likelihood_stan_code}}{character. stan model likelihood code block containing text
-to interpolate into stan model.}
-
 \item{\code{n_param}}{integer. Number of ancillary parameters for the model to estimate (0).}
 
 \item{\code{param_priors}}{list. Named list of prior distributions on the ancillary parameters in the model.

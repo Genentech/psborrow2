@@ -5,10 +5,6 @@
 #' Objects of class `OutcomeSurvWeibullPH` should not be created directly
 #' but by the constructor [outcome_surv_weibull_ph()].
 #'
-#' @slot function_stan_code character. Stan function code block containing text to interpolate into Stan model.
-#' @slot param_stan_code character. Stan parameter code block containing text to interpolate into Stan model.
-#' @slot likelihood_stan_code character. Stan model likelihood code block containing text
-#' to interpolate into Stan model.
 #' @slot n_param integer. Number of ancillary parameters for the model to estimate (1).
 #' @slot param_priors list. Named list of prior distributions on the ancillary parameters in the model.
 #' @slot time_var character. Variable used for time in `TimeToEvent` objects.
@@ -29,33 +25,6 @@
   contains = "TimeToEvent",
   prototype = list(
     n_param = 1L,
-    function_stan_code =
-      h_glue("
-          real weibull_ph_lpdf(real y, real alpha, real lambda) {
-              real lprob = log(alpha) + log(lambda) + (alpha - 1) * log(y) - lambda * (y^alpha);
-              return lprob;
-          }
-
-          real weibull_ph_lcdf(real y, real alpha, real lambda) {
-              real lprob = log(1-exp(-lambda * y^alpha));
-              return lprob;
-          }
-
-          real weibull_ph_lccdf(real y, real alpha, real lambda) {
-              real lprob = -lambda * y^alpha;
-              return lprob;
-          }
-         "),
-    likelihood_stan_code =
-      h_glue("
-         for (i in 1:N) {
-            if (cens[i] == 1) {
-               target += weibull_ph_lccdf(time[i] | shape_weibull, elp[i] );
-            } else {
-               target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i] );
-            }
-         }"),
-    param_stan_code = "real<lower=0> shape_weibull; ",
     param_priors = list(
       shape_weibull = prior_exponential(beta = 0.0001)
     ),
@@ -119,24 +88,7 @@ outcome_surv_weibull_ph <- function(time_var,
     param_priors = list(
       shape_weibull = shape_prior
     ),
-    baseline_prior = baseline_prior,
-    likelihood_stan_code = h_glue(
-      "
-       for (i in 1:N) {
-          if (cens[i] == 1) {
-             target += weibull_ph_lccdf(time[i] | shape_weibull, elp[i] ){{weight}};
-          } else {
-             target += weibull_ph_lpdf(time[i] | shape_weibull, elp[i] ){{weight}};
-          }
-       }",
-      weight = if (has_weight) " * weight[i]" else ""
-    ),
-    data_stan_code = h_glue("
-      vector[N] time;
-      vector[N] cens;
-      {{weight}}",
-      weight = if (has_weight) "vector[N] weight;" else ""
-    )
+    baseline_prior = baseline_prior
   )
 }
 
@@ -144,12 +96,12 @@ outcome_surv_weibull_ph <- function(time_var,
 #'
 #' Please use `outcome_surv_weibull_ph()` instead.
 #' @param ... Deprecated arguments to `weib_ph_surv_dist()`.
-#' 
+#'
 #' @return
-#' This function does not return a value. When called, it triggers an error 
-#' message indicating that `weib_ph_surv_dist()` is deprecated and that 
+#' This function does not return a value. When called, it triggers an error
+#' message indicating that `weib_ph_surv_dist()` is deprecated and that
 #' `outcome_surv_weibull_ph()` should be used instead.
-#' 
+#'
 #' @export
 weib_ph_surv_dist <- function(...) {
   .Defunct(
