@@ -7,28 +7,32 @@
 #' @param ... Additional named arguments to be passed for interpolation
 #' @return String containing the interpolated Stan model
 build_model_string <- function(template_domain, template_filename, outcome, borrowing, analysis_obj, ...) {
-  
   # Load the Stan template
   template <- load_stan_file(template_domain, template_filename)
-  
+
   # Common interpolations
   model_string <- h_glue(
     template,
     weights.data = if (outcome@weight_var == "") "" else "vector[N] weight;",
-    cov.data = if (!is.null(analysis_obj@covariates)) h_glue(
-      "int<lower=0> K;\n  matrix[N, K] X;\n  vector[K]  L_beta;\n  vector[K] U_beta;\n"
-    ) else "",
-    cov.parameters = if (!is.null(analysis_obj@covariates)) 
-      "vector<lower=L_beta, upper=U_beta>[K] beta;" else "",
+    cov.data = if (!is.null(analysis_obj@covariates)) {
+      h_glue("
+        int<lower=0> K;
+        matrix[N, K] X;
+        vector[K] L_beta;
+        vector[K] U_beta;
+      ")
+    } else {
+      ""
+    },
+    cov.parameters = if (!is.null(analysis_obj@covariates)) "vector<lower=L_beta, upper=U_beta>[K] beta;" else "",
     trt.prior = h_glue("beta_trt ~ {{get_prior_string(analysis_obj@treatment@trt_prior)}} ;"),
-    cov.priors = if (!is.null(analysis_obj@covariates)) 
-      get_prior_string_covariates(analysis_obj@covariates) else "",
+    cov.priors = if (!is.null(analysis_obj@covariates)) get_prior_string_covariates(analysis_obj@covariates) else "",
     cov.linpred = if (!is.null(analysis_obj@covariates)) "+ X * beta" else "",
     weights.likelihood = if (outcome@weight_var == "") "" else "* weight[i]",
     baseline.prior = h_glue("alpha ~ {{get_prior_string(outcome@baseline_prior)}} ;"),
-    ...  # additional interpolation variables
+    ... # additional interpolation variables
   )
-  
+
   return(model_string)
 }
 
@@ -39,9 +43,13 @@ setClassUnion("BorrowingNoneFull", c("BorrowingFull", "BorrowingNone"))
 #' @param outcome `Outcome` object
 #' @param borrowing `Borrowing` object
 #' @param analysis_obj `Analysis` object
-#' @include analysis_class.R outcome_bin_logistic.R outcome_cont_normal.R outcome_surv_exponential.R outcome_surv_weibull_ph.R
+#' @include analysis_class.R outcome_bin_logistic.R outcome_cont_normal.R outcome_surv_exponential.R
+#'   outcome_surv_weibull_ph.R
 #' @return String containing the interpolated Stan model
-setGeneric("load_and_interpolate_stan_model", function(outcome, borrowing, analysis_obj) standardGeneric("load_and_interpolate_stan_model"))
+setGeneric(
+  "load_and_interpolate_stan_model",
+  function(outcome, borrowing, analysis_obj) standardGeneric("load_and_interpolate_stan_model")
+)
 
 # Survival ----
 ## Exponential ----
@@ -50,7 +58,6 @@ setMethod(
   f = "load_and_interpolate_stan_model",
   signature = c("OutcomeSurvExponential", "BorrowingNoneFull", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
-
     model_string <- build_model_string(
       template_domain = "surv",
       template_filename = "exp_nb.stan",
@@ -60,7 +67,6 @@ setMethod(
     )
 
     return(model_string)
-
   }
 )
 
@@ -69,7 +75,6 @@ setMethod(
   f = "load_and_interpolate_stan_model",
   signature = c("OutcomeSurvExponential", "BorrowingHierarchicalCommensurate", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
-
     model_string <- build_model_string(
       template_domain = "surv",
       template_filename = "exp_hcp.stan",
@@ -81,7 +86,6 @@ setMethod(
     )
 
     return(model_string)
-
   }
 )
 
@@ -91,7 +95,6 @@ setMethod(
   f = "load_and_interpolate_stan_model",
   signature = c("OutcomeSurvWeibullPH", "BorrowingNoneFull", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
-
     model_string <- build_model_string(
       template_domain = "surv",
       template_filename = "weib_ph_nb.stan",
@@ -102,7 +105,6 @@ setMethod(
     )
 
     return(model_string)
-
   }
 )
 
@@ -111,7 +113,6 @@ setMethod(
   f = "load_and_interpolate_stan_model",
   signature = c("OutcomeSurvWeibullPH", "BorrowingHierarchicalCommensurate", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
-
     model_string <- build_model_string(
       template_domain = "surv",
       template_filename = "weib_ph_hcp.stan",
@@ -124,7 +125,6 @@ setMethod(
     )
 
     return(model_string)
-
   }
 )
 
@@ -135,7 +135,6 @@ setMethod(
   f = "load_and_interpolate_stan_model",
   signature = c("OutcomeBinaryLogistic", "BorrowingNoneFull", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
-
     model_string <- build_model_string(
       template_domain = "bin",
       template_filename = "logit_nb.stan",
@@ -145,7 +144,6 @@ setMethod(
     )
 
     return(model_string)
-
   }
 )
 
@@ -154,7 +152,6 @@ setMethod(
   f = "load_and_interpolate_stan_model",
   signature = c("OutcomeBinaryLogistic", "BorrowingHierarchicalCommensurate", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
-
     model_string <- build_model_string(
       template_domain = "bin",
       template_filename = "logit_hcp.stan",
@@ -166,7 +163,6 @@ setMethod(
     )
 
     return(model_string)
-
   }
 )
 
@@ -178,7 +174,6 @@ setMethod(
   f = "load_and_interpolate_stan_model",
   signature = c("OutcomeContinuousNormal", "BorrowingNoneFull", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
-
     model_string <- build_model_string(
       template_domain = "cont",
       template_filename = "gauss_nb.stan",
@@ -189,7 +184,6 @@ setMethod(
     )
 
     return(model_string)
-
   }
 )
 
@@ -198,7 +192,6 @@ setMethod(
   f = "load_and_interpolate_stan_model",
   signature = c("OutcomeContinuousNormal", "BorrowingHierarchicalCommensurate", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
-
     model_string <- build_model_string(
       template_domain = "cont",
       template_filename = "gauss_hcp.stan",
@@ -211,6 +204,5 @@ setMethod(
     )
 
     return(model_string)
-
   }
 )

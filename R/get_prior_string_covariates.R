@@ -1,5 +1,5 @@
 #' Get prior string for all covariates
-#' 
+#'
 #' @param covariates `Covariates` object
 #' @include generics.R covariate_class.R
 get_prior_string_covariates <- function(covariates) {
