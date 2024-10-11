@@ -75,6 +75,7 @@
 <url><loc>https://genentech.github.io/psborrow2/reference/borrowing_full.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/borrowing_hierarchical_commensurate.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/borrowing_none.html</loc></url>
+<url><loc>https://genentech.github.io/psborrow2/reference/build_model_string.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/c.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/cauchy_prior.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/check_cmdstanr.html</loc></url>
@@ -104,6 +105,7 @@
 <url><loc>https://genentech.github.io/psborrow2/reference/generate.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/get_cmd_stan_models.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/get_data.html</loc></url>
+<url><loc>https://genentech.github.io/psborrow2/reference/get_prior_string_covariates.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/get_quantiles.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/get_results.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/get_stan_code.html</loc></url>
@@ -111,8 +113,9 @@
 <url><loc>https://genentech.github.io/psborrow2/reference/half_cauchy_prior.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/half_normal_prior.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/index.html</loc></url>
+<url><loc>https://genentech.github.io/psborrow2/reference/load_and_interpolate_stan_model.html</loc></url>
+<url><loc>https://genentech.github.io/psborrow2/reference/load_stan_file.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/logistic_bin_outcome.html</loc></url>
-<url><loc>https://genentech.github.io/psborrow2/reference/make_model_string_model.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/mcmc_sample.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/normal_prior.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/outcome_bin_logistic.html</loc></url>

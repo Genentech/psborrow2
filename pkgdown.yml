@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.0
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   data_simulation: data_simulation.html
@@ -12,7 +12,7 @@ articles:
   simple_overview: simple_overview.html
   simulation_study: simulation_study.html
   weighting: weighting.html
-last_built: 2024-09-09T04:14Z
+last_built: 2024-10-11T16:05Z
 urls:
   reference: https://genentech.github.io/psborrow2/reference
   article: https://genentech.github.io/psborrow2/articles
