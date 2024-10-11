@@ -42,14 +42,6 @@ test_that("outcome_bin_logistic works with weights", {
   )
   expect_class(result, "OutcomeBinaryLogistic")
   expect_equal(result@weight_var, "w")
-  expect_string(
-    result@likelihood_stan_code,
-    fixed = "for (i in 1:N) {\n  target += bernoulli_logit_lupmf(y[i] | lp[i]) * weight[i];\n}"
-  )
-  expect_string(
-    result@data_stan_code,
-    fixed = "array[N] int y;\nvector[N] weight;"
-  )
 })
 
 

@@ -12,8 +12,6 @@ A class for defining borrowing details. Objects of class
 \section{Slots}{
 
 \describe{
-\item{\code{data_stan_code}}{string. Code to include in the Stan data program block.}
-
 \item{\code{method_name}}{string. The name of the method.}
 
 \item{\code{ext_flag_col}}{character. Name of the external flag column in the matrix.}
