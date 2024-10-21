@@ -76,6 +76,11 @@ create_analysis_obj <- function(data_matrix,
   # check data matrix has columns
   check_data_matrix_has_columns(analysis_obj)
 
+  # Cast to long if PEM
+  if (is(analysis_obj@outcome, "OutcomeSurvPEM")) {
+    analysis_obj <- cast_mat_to_long_pem(analysis_obj)
+  } 
+
   if (!quiet) {
     message("Inputs look good.")
 

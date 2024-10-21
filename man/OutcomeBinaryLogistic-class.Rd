@@ -40,6 +40,7 @@ Other outcome:
 \code{\link{Outcome-class}},
 \code{\link{OutcomeContinuousNormal-class}},
 \code{\link{OutcomeSurvExponential-class}},
+\code{\link{OutcomeSurvPEM-class}},
 \code{\link{OutcomeSurvWeibullPH-class}},
 \code{\link{TimeToEvent-class}}
 }
