@@ -26,7 +26,7 @@
 #' data_in <- psborrow2:::prepare_stan_data_inputs(anls_obj@outcome, anls_obj@borrowing, anls_obj)
 #'
 setGeneric(
-  "prepare_stan_data_inputs", 
+  "prepare_stan_data_inputs",
   function(outcome, borrowing, analysis_obj) standardGeneric("prepare_stan_data_inputs")
 )
 
@@ -41,7 +41,7 @@ setGeneric(
 #' @return Named list of data inputs with covariates and weights added.
 #' @noRd
 add_covariates_and_weights <- function(data_in, analysis_obj, data_matrix) {
-  
+
   ## Covariate additions
   if (!is.null(analysis_obj@covariates)) {
     data_in[["K"]] <- NROW(analysis_obj@covariates@covariates)
@@ -69,7 +69,7 @@ setMethod(
   f = "prepare_stan_data_inputs",
   signature = c("OutcomeSurvExponentialWeibull", "BorrowingNoneFull", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
-    data_matrix <- analysis_obj@data_matrix
+    data_matrix <- trim_data_matrix(analysis_obj)
     data_in <- list(
       N = nrow(data_matrix),
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
@@ -115,7 +115,11 @@ setMethod(
   f = "prepare_stan_data_inputs",
   signature = c("OutcomeSurvPEM", "BorrowingNoneFull", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
+
+    analysis_obj@data_matrix <- trim_data_matrix(analysis_obj)
+    analysis_obj <- cast_mat_to_long_pem(analysis_obj)
     data_matrix <- analysis_obj@data_matrix
+
     n_periods <- outcome@n_periods
     Z <- matrix(0, nrow = nrow(data_matrix), ncol = n_periods)
     for (i in 1:nrow(data_matrix)) {
@@ -146,7 +150,7 @@ setMethod(
   f = "prepare_stan_data_inputs",
   signature = c("OutcomeBinaryLogistic", "BorrowingNoneFull", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
-    data_matrix <- analysis_obj@data_matrix
+    data_matrix <- trim_data_matrix(analysis_obj)
     data_in <- list(
       N = nrow(data_matrix),
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
@@ -190,7 +194,7 @@ setMethod(
   f = "prepare_stan_data_inputs",
   signature = c("OutcomeContinuousNormal", "BorrowingNoneFull", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
-    data_matrix <- analysis_obj@data_matrix
+    data_matrix <- trim_data_matrix(analysis_obj)
     data_in <- list(
       N = nrow(data_matrix),
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
