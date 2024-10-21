@@ -7,6 +7,7 @@
 #' @param ... Additional named arguments to be passed for interpolation
 #' @return String containing the interpolated Stan model
 build_model_string <- function(template_domain, template_filename, outcome, borrowing, analysis_obj, ...) {
+  
   # Load the Stan template
   template <- load_stan_file(template_domain, template_filename)
 
