@@ -8,6 +8,7 @@ data {
   vector[N] time;       // survival time
   vector[N] cens;       // censoring indicator
   vector[N] Z;          // period indicators
+  int N_periods;        // number of periods
 
   {{ weights.data }}
   {{ cov.data }}

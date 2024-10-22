@@ -8,6 +8,7 @@ data {
   vector[N] time;       // survival time
   vector[N] cens;       // censoring indicator
   vector[N] Z;          // period indicators
+  int n_periods;        // number of periods
 
   {{ weights.data }}
   {{ cov.data }}
@@ -17,7 +18,7 @@ data {
 parameters {
 
   real beta_trt;                // treatment effect                                
-  vector[N_periods] alpha;      // baseline hazard
+  vector[n_periods] alpha;      // baseline hazard
 
   {{ cov.parameters }}
 
