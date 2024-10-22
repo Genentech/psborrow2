@@ -131,7 +131,7 @@ setMethod(
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
       time = data_matrix[, outcome@time_var],
       cens = data_matrix[, outcome@cens_var],
-      n_periods = max(data_matrix[, "__period__"]),
+      N_periods = max(data_matrix[, "__period__"]),
       Z = Z
     )
 
@@ -163,7 +163,7 @@ setMethod(
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
       time = data_matrix[, outcome@time_var],
       cens = data_matrix[, outcome@cens_var],
-      n_periods = max(data_matrix[, "__period__"]),
+      N_periods = max(data_matrix[, "__period__"]),
       Z0 = Z0,
       Z1 = Z1
     )

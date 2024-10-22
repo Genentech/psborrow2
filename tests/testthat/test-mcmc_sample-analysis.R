@@ -29,8 +29,6 @@ test_that("mcmc_sample gracefully fails if cmdstanr is unavailable", {
   )
 })
 
-
-
 skip_if_not(check_cmdstan())
 
 # Error checking----
@@ -543,4 +541,33 @@ test_that("mcmc_sample for Analysis works for logistic regression BDB, aggressiv
   expect_equal(result_summary[["median"]], 1.65, tolerance = .05)
   expect_equal(result_summary[["q5"]], 1.10, tolerance = .05)
   expect_equal(result_summary[["q95"]], 2.44, tolerance = .05)
+})
+
+
+# Piecewise exponential, no BDB ----
+test_that("mcmc_sample for Analysis works for full borrowing, piecewise exponential dist", {
+  skip_on_cran()
+  skip_on_ci()
+  library(eha)
+  cuts = c(1, 5, 10)
+  pem_eha <- eha::pchreg(survival::Surv(time, status) ~ trt + cov1 + cov2, data = as.data.frame(psborrow2::example_matrix), cuts = c(0, cuts, 1000))
+  
+  full_pem_bayes_ao <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = outcome_surv_pem("time", "cnsr", prior_normal(0, 100000), cut_points = cuts),
+    borrowing = borrowing_full("ext"),
+    treatment = treatment_details("trt", prior_normal(0, 100000)),
+    covariates = add_covariates(c("cov1", "cov2"), prior_normal(0, 100000))
+  )
+
+  full_pem_bayes <- mcmc_sample(full_pem_bayes_ao,
+    iter_warmup = 2000,
+    iter_sampling = 10000,
+    chains = 4
+  )
+  expect_r6(full_pem_bayes, "CmdStanMCMC")
+  expect_equal(full_pem_bayes$summary("beta_trt")[[2]], pem_eha$coefficients[['trt']], tolerance = 0.1)
+  expect_equal(full_pem_bayes$summary("beta[1]")[[2]], pem_eha$coefficients[['cov1']], tolerance = 0.1)
+  expect_equal(full_pem_bayes$summary("beta[2]")[[2]], pem_eha$coefficients[['cov2']], tolerance = 0.1)
+
 })

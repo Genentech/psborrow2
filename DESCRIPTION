@@ -88,6 +88,7 @@ Suggests:
     cmdstanr,
     survival,
     flexsurv,
+    eha,
     testthat (>= 3.0),
     usethis (>= 2.1.5),
     vdiffr,

@@ -3,13 +3,13 @@
 
 data {
 
-  int<lower=0> N;       // number of observation-periods
-  vector[N] trt;        // treatment indicator
-  vector[N] time;       // survival time
-  vector[N] cens;       // censoring indicator
-  vector[N] Z0;         // period indicators - internal
-  vector[N] Z1;         // period indicators - external
-  int N_periods;        // number of periods
+  int<lower=0> N;                   // number of observation-periods
+  vector[N] trt;                    // treatment indicator
+  vector[N] time;                   // survival time
+  vector[N] cens;                   // censoring indicator
+  int N_periods;                    // number of periods
+  matrix[N, N_periods] Z0;          // period indicators - internal
+  matrix[N, N_periods] Z1;          // period indicators - external
 
   {{ weights.data }}
   {{ cov.data }}
@@ -41,7 +41,10 @@ model {
 
   {{ trt.prior }}
   {{ cov.priors }}
-  {{ baseline.prior }}
+  
+  for (i in 1:N_periods) {
+    alpha1[i] ~ {{ baseline.prior }};
+  }
 
   sigma = 1 / tau;
   for (i in 1:N_periods) {

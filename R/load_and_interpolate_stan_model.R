@@ -141,7 +141,8 @@ setMethod(
       template_filename = "pem_nb.stan",
       outcome = outcome,
       borrowing = borrowing,
-      analysis_obj = analysis_obj
+      analysis_obj = analysis_obj,
+      baseline.prior = get_prior_string(outcome@baseline_prior)
     )
 
     return(model_string)
@@ -159,9 +160,7 @@ setMethod(
       outcome = outcome,
       borrowing = borrowing,
       analysis_obj = analysis_obj,
-      baseline.prior = h_glue("for (i in 1:N_periods) {
-        alpha1[i] ~ {{get_prior_string(outcome@baseline_prior)}};
-      };"),
+      baseline.prior = get_prior_string(outcome@baseline_prior),
       tau.prior = h_glue("tau ~ {{get_prior_string(borrowing@tau_prior)}} ;")
     )
 

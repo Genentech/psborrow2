@@ -3,12 +3,12 @@
 
 data {
 
-  int<lower=0> N;       // number of observation-periods
-  vector[N] trt;        // treatment indicator
-  vector[N] time;       // survival time
-  vector[N] cens;       // censoring indicator
-  vector[N] Z;          // period indicators
-  int n_periods;        // number of periods
+  int<lower=0> N;                 // number of observation-periods
+  vector[N] trt;                  // treatment indicator
+  vector[N] time;                 // survival time
+  vector[N] cens;                 // censoring indicator
+  int N_periods;                  // number of periods
+  matrix[N, N_periods] Z;         // period indicators
 
   {{ weights.data }}
   {{ cov.data }}
@@ -18,7 +18,7 @@ data {
 parameters {
 
   real beta_trt;                // treatment effect                                
-  vector[n_periods] alpha;      // baseline hazard
+  vector[N_periods] alpha;      // baseline hazard
 
   {{ cov.parameters }}
 
@@ -38,7 +38,10 @@ model {
 
   {{ trt.prior }}
   {{ cov.priors }}
-  {{ baseline.prior }}
+
+  for (i in 1:N_periods) {
+    alpha[i] ~ {{ baseline.prior }};
+  }
 
   lp = Z * alpha + trt * beta_trt {{ cov.linpred }} ;
   elp = exp(lp);
