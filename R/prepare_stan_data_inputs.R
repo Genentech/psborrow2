@@ -120,7 +120,7 @@ setMethod(
     analysis_obj <- cast_mat_to_long_pem(analysis_obj)
     data_matrix <- analysis_obj@data_matrix
 
-    n_periods <- outcome@n_periods
+    n_periods <- analysis_obj@outcome@n_periods
     Z <- matrix(0, nrow = nrow(data_matrix), ncol = n_periods)
     for (i in 1:nrow(data_matrix)) {
       period <- data_matrix[i, "__period__"]
@@ -151,11 +151,12 @@ setMethod(
     analysis_obj <- cast_mat_to_long_pem(analysis_obj)
     data_matrix <- analysis_obj@data_matrix
 
-    n_periods <- outcome@n_periods
-    Z <- matrix(0, nrow = nrow(data_matrix), ncol = n_periods)
+    n_periods <- analysis_obj@outcome@n_periods
+    Z0 <- Z1 <- matrix(0, nrow = nrow(data_matrix), ncol = n_periods)
     for (i in 1:nrow(data_matrix)) {
       period <- data_matrix[i, "__period__"]
-      Z[i, period] <- 1
+      Z0[i, period] <- data_matrix[i, "ext"]
+      Z1[i, period] <- 1 - data_matrix[i, "ext"]
     }
     data_in <- list(
       N = nrow(data_matrix),
@@ -163,7 +164,8 @@ setMethod(
       time = data_matrix[, outcome@time_var],
       cens = data_matrix[, outcome@cens_var],
       n_periods = max(data_matrix[, "__period__"]),
-      Z = Z
+      Z0 = Z0,
+      Z1 = Z1
     )
 
     # Add covariates and weights

@@ -159,7 +159,9 @@ setMethod(
       outcome = outcome,
       borrowing = borrowing,
       analysis_obj = analysis_obj,
-      baseline.prior = h_glue("alpha[2] ~ {{get_prior_string(outcome@baseline_prior)}} ;"),
+      baseline.prior = h_glue("for (i in 1:N_periods) {
+        alpha1[i] ~ {{get_prior_string(outcome@baseline_prior)}};
+      };"),
       tau.prior = h_glue("tau ~ {{get_prior_string(borrowing@tau_prior)}} ;")
     )
 

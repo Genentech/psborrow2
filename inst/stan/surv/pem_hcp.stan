@@ -7,7 +7,8 @@ data {
   vector[N] trt;        // treatment indicator
   vector[N] time;       // survival time
   vector[N] cens;       // censoring indicator
-  vector[N] Z;          // period indicators
+  vector[N] Z0;         // period indicators - internal
+  vector[N] Z1;         // period indicators - external
   int N_periods;        // number of periods
 
   {{ weights.data }}
@@ -18,7 +19,9 @@ data {
 parameters {
 
   real beta_trt;                // treatment effect                                
-  vector[N_periods] alpha;      // baseline hazard
+  vector[N_periods] alpha0;     // baseline hazard - internal
+  vector[N_periods] alpha1;     // baseline hazard - external
+  real<lower=0> tau;            // precision on dynamic borrowing
 
   {{ cov.parameters }}
 
@@ -40,7 +43,12 @@ model {
   {{ cov.priors }}
   {{ baseline.prior }}
 
-  lp = Z * alpha + trt * beta_trt {{ cov.linpred }} ;
+  sigma = 1 / tau;
+  for (i in 1:N_periods) {
+    alpha0[i] ~ normal(alpha1[i], sqrt(sigma));
+  }
+
+  lp = Z0 * alpha0 + Z1 * alpha1 + trt * beta_trt {{ cov.linpred }} ;
   elp = exp(lp);
 
   for (i in 1:N) {
