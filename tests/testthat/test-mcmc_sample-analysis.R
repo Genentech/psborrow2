@@ -577,3 +577,86 @@ test_that("mcmc_sample for Analysis works for full borrowing, piecewise exponent
   expect_equal(full_pem_bayes$summary("alpha[4]")[[2]], log(pem_eha$hazards[4]), tolerance = 0.05)
 
 })
+
+# Piecewise exponential, BDB ----
+test_that("mcmc_sample for Analysis works for BDB, piecewise exponential dist", {
+  skip_on_cran()
+  skip_on_ci()
+  cuts = c(1, 5, 10)
+
+  # Make commensurate matrix
+  internal_as_external <- example_matrix[example_matrix[, 'ext'] == 0 & example_matrix[,'trt'] == 0,]
+  internal_as_external[, 'ext'] <- 1
+  internal_as_external[, 'id'] <- seq(10000, 10000 + nrow(internal_as_external) - 1)
+  commensurate_matrix <- rbind(
+    example_matrix[example_matrix[,'ext'] == 0,],
+    internal_as_external
+  )
+  
+  ## Conservative commensurate
+  bdb_pem_bayes_commens_conserv_ao <- create_analysis_obj(
+    data_matrix = commensurate_matrix,
+    outcome = outcome_surv_pem("time", "cnsr", prior_normal(0, 100000), cut_points = cuts),
+    borrowing = borrowing_hierarchical_commensurate("ext", prior_gamma(0.001, 0.001)),
+    treatment = treatment_details("trt", prior_normal(0, 100000))
+  )
+
+  bdb_pem_bayes_commens_conserv <- mcmc_sample(bdb_pem_bayes_commens_conserv_ao,
+    iter_warmup = 2000,
+    iter_sampling = 5000,
+    chains = 2
+  )
+  tau_commens_conserv <- bdb_pem_bayes_commens_conserv$summary("tau")[["median"]] 
+
+  ## Conservative incommensurate
+  bdb_pem_bayes_incommens_conserv_ao <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = outcome_surv_pem("time", "cnsr", prior_normal(0, 100000), cut_points = cuts),
+    borrowing = borrowing_hierarchical_commensurate("ext", prior_gamma(0.001, 0.001)),
+    treatment = treatment_details("trt", prior_normal(0, 100000))
+  )
+
+  bdb_pem_bayes_incommens_conserv <- mcmc_sample(bdb_pem_bayes_incommens_conserv_ao,
+    iter_warmup = 2000,
+    iter_sampling = 5000,
+    chains = 2
+  )
+  tau_incommens_conserv <- bdb_pem_bayes_incommens_conserv$summary("tau")[["median"]]
+
+  ## Aggressive commensurate
+  bdb_pem_bayes_commens_aggr_ao <- create_analysis_obj(
+    data_matrix = commensurate_matrix,
+    outcome = outcome_surv_pem("time", "cnsr", prior_normal(0, 100000), cut_points = cuts),
+    borrowing = borrowing_hierarchical_commensurate("ext", prior_gamma(1, .001)),
+    treatment = treatment_details("trt", prior_normal(0, 100000))
+  )
+
+  bdb_pem_bayes_commens_aggr <- mcmc_sample(bdb_pem_bayes_commens_aggr_ao,
+    iter_warmup = 2000,
+    iter_sampling = 5000,
+    chains = 2
+  )
+  tau_commens_aggr <- bdb_pem_bayes_commens_aggr$summary("tau")[["median"]]
+
+  ## Aggressive incommensurate
+  bdb_pem_bayes_incommens_aggr_ao <- create_analysis_obj(
+    data_matrix = example_matrix,
+    outcome = outcome_surv_pem("time", "cnsr", prior_normal(0, 100000), cut_points = cuts),
+    borrowing = borrowing_hierarchical_commensurate("ext", prior_gamma(1, .001)),
+    treatment = treatment_details("trt", prior_normal(0, 100000))
+  )
+
+  bdb_pem_bayes_incommens_aggr <- mcmc_sample(bdb_pem_bayes_incommens_aggr_ao,
+    iter_warmup = 2000,
+    iter_sampling = 5000,
+    chains = 2
+  )
+  tau_incommens_aggr <- bdb_pem_bayes_incommens_aggr$summary("tau")[["median"]]
+
+  # Comparisons
+  expect_true(tau_commens_conserv > tau_incommens_conserv)
+  expect_true(tau_commens_aggr > tau_incommens_aggr)
+  expect_true(tau_commens_aggr > tau_commens_conserv)
+  expect_true(tau_incommens_aggr > tau_incommens_conserv)
+
+})
