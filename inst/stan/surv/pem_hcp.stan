@@ -41,6 +41,7 @@ model {
 
   {{ trt.prior }}
   {{ cov.priors }}
+  {{ tau.prior }}
   
   for (i in 1:N_periods) {
     alpha1[i] ~ {{ baseline.prior }};
