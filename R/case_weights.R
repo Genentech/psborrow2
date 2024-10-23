@@ -82,7 +82,7 @@ split_data <- function(data, time_var, event_var, cuts) {
 #' res <- case_weights(
 #'  sim.data, cuts = 3, event.var = "nu", time.var = "t",
 #'  treat.var = "treat", cov.names = c("age", "sex2"), samples = c(7, 5),
-#'  control_pars = control_pars()
+#'  pars = control_pars()
 #'  )
 case_interval_weights <- function(sim.data,
                          cuts = NULL,
@@ -106,7 +106,7 @@ case_interval_weights <- function(sim.data,
   interval.names <- paste0("interval", seq_along(cut.time.mod))
 
   inner.t <- setdiff(cut.time.mod, 0)
-  diff <- diff(cut.time.mod)
+  diff <- c(diff(cut.time.mod), Inf)
 
   sim.split <- split_data(
     data = sim.data,
@@ -142,7 +142,7 @@ case_interval_weights <- function(sim.data,
   # }
 
   # same for censoring models -------
-browser()
+
   # Fit model for historical censoring
   # if (n.seg >= 3) {
   sim.poisson.theta <- fit_poisson_glm(
@@ -161,17 +161,16 @@ browser()
     sim.poisson,
     sim.poisson.lambda,
     sim.poisson.theta,
+    event.var,
+    time.var,
+    treat.var,
+    external.var,
     cov.names,
     interval.names,
     sim.split,
     diff,
     pars = pars
   )
-  # do_thing(
-  #   sim.poisson, sim.poisson.lambda, sim.poisson.theta, cov.names, interval.names, n.seg, sim.split,
-  #   a0.outer,  inner.t, diff,
-  #   control_pars
-  # )
 
 }
 
@@ -192,7 +191,7 @@ sample_coefs <- function(model, covs) {
   coef.model <- model$coefficients
   cov.index <- names(coef.model) %in% c(covs)
 
-  mvrnorm(1, coef.model[cov.index], vcov(model)[cov.index, cov.index])
+  MASS::mvrnorm(1, coef.model[cov.index], vcov(model)[cov.index, cov.index])
 }
 
 # Some magic functions rotate3
@@ -311,13 +310,17 @@ get_boxp_kde <- function(a, lambda_t, lambda_c) {
 calculate_case_weights <- function(sim.poisson,
                                    sim.poisson.lambda,
                                    sim.poisson.theta,
+                                   event.var,
+                                   time.var,
+                                   treat.var,
+                                   external.var,
                                    cov.names,
                                    interval.names,
                                    sim.split,
                                    diff,
                                    pars) {
 
-  sim.split.ex <- sim.split[sim.split$external == 1, ]
+  sim.split.ex <- sim.split[sim.split[[external.var]] == 1, ]
   sim.mm <- model.matrix(sim.poisson) # model matrix with external == 1 and covariates
 
   interval.names <- names(sim.poisson.theta$coefficients)
@@ -334,15 +337,15 @@ calculate_case_weights <- function(sim.poisson,
     sim.split.idx <- sim.split.ex # 2021-08-03
 
     # Identify rows which are alive and uncensored at the end of the period:
-    impute_these_id <- sim.split.idx$nu == 0 & sim.split.idx$expo == diff[sim.split.idx$interval]
+    impute_these_id <- sim.split.idx[[event.var]] == 0 & sim.split.idx[["expo"]] == diff[sim.split.idx$interval]
     rate_t <- exp(sim.mm[impute_these_id,] %*% lambda)
     rate_c <- exp(sim.mm[impute_these_id, interval.names] %*% theta)
-
+# browser()
     temp.y <- rexp(rep(1, sum(impute_these_id)), rate_t + rate_c)
     sim.split.idx$expo[impute_these_id] <- sim.split.idx$expo[impute_these_id] + temp.y
 
     # subset to historical only
-    idx_a0_n <- control_pars$samples_2 # default 5? Some magic number...
+    idx_a0_n <- pars$samples_2 # default 5? Some magic number...
 
     box.p.log <- matrix(NA, ncol = idx_a0_n, nrow = nrow(sim.split.idx))
 
@@ -352,21 +355,21 @@ calculate_case_weights <- function(sim.poisson,
       theta <- sample_coefs(sim.poisson.theta, interval.names)
 
       # debugging code - prevent theta from being positive
-      for (i in 1:length(theta)) {
-        if (theta[i] > 0) theta[i] <- min(theta)
-      }
+      if (any(theta > 0)) {browser()}
+      # for (i in 1:length(theta)) {
+      #   if (theta[i] > 0) theta[i] <- min(theta)
+      # }
 
       ### Loop 3) (idx_a0) generate y.h.pred incorporating variability in estimating lambda and assess compatibility, use interval + expo
       rate_t <- exp(sim.mm %*% lambda) # this is the other lambda!
       rate_c <- exp(sim.mm[, interval.names] %*% theta)
 
       a <- log(sim.split.idx$expo)
-      boxp_fun <- switch(control_pars$boxp_dist,
+      boxp_fun <- switch(pars$boxp_dist,
                          "W" = get_boxp_W,
                          "density" = get_boxp_density,
                          "kde" = get_boxp_kde
       )
-
       box.p.log[, idx_a0] <- boxp_fun(a, rate_t, rate_c)
 
     } # ends for (idx_a0 in 1:idx_a0_n)
@@ -376,7 +379,7 @@ calculate_case_weights <- function(sim.poisson,
     a0[a0 == 0] <- 1E-6 # a0 should never be exactly 0
     a0
   }
-  replicate(control_pars$samples_1, iteration_fun(sim.split.ex, sim.mm))
+  replicate(pars$samples_1, iteration_fun(sim.split.ex, sim.mm))
 
 }
 
