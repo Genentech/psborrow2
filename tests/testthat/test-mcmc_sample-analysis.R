@@ -562,12 +562,18 @@ test_that("mcmc_sample for Analysis works for full borrowing, piecewise exponent
 
   full_pem_bayes <- mcmc_sample(full_pem_bayes_ao,
     iter_warmup = 2000,
-    iter_sampling = 10000,
-    chains = 4
+    iter_sampling = 5000,
+    chains = 2
   )
   expect_r6(full_pem_bayes, "CmdStanMCMC")
-  expect_equal(full_pem_bayes$summary("beta_trt")[[2]], pem_eha$coefficients[['trt']], tolerance = 0.1)
-  expect_equal(full_pem_bayes$summary("beta[1]")[[2]], pem_eha$coefficients[['cov1']], tolerance = 0.1)
-  expect_equal(full_pem_bayes$summary("beta[2]")[[2]], pem_eha$coefficients[['cov2']], tolerance = 0.1)
+  expect_equal(full_pem_bayes$summary("beta_trt")[[2]], pem_eha$coefficients[['trt']], tolerance = 0.05)
+  expect_equal(full_pem_bayes$summary("beta[1]")[[2]], pem_eha$coefficients[['cov1']], tolerance = 0.05)
+  expect_equal(full_pem_bayes$summary("beta[2]")[[2]], pem_eha$coefficients[['cov2']], tolerance = 0.05)
+
+  # Check that the cut points are the same
+  expect_equal(full_pem_bayes$summary("alpha[1]")[[2]], log(pem_eha$hazards[1]), tolerance = 0.05)
+  expect_equal(full_pem_bayes$summary("alpha[2]")[[2]], log(pem_eha$hazards[2]), tolerance = 0.05)
+  expect_equal(full_pem_bayes$summary("alpha[3]")[[2]], log(pem_eha$hazards[3]), tolerance = 0.05)
+  expect_equal(full_pem_bayes$summary("alpha[4]")[[2]], log(pem_eha$hazards[4]), tolerance = 0.05)
 
 })

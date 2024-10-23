@@ -65,6 +65,7 @@ cast_mat_to_long_pem <- function(analysis_obj) {
                                  end = analysis_obj@outcome@time_var)
   names(long_df)[which(names(long_df) == "psb2__period")] <- "__period__"
   long_df[, analysis_obj@outcome@cens_var] <- 1 - long_df[, "psb2__status"]
+  long_df[, "time"] <- long_df[, "time"] - long_df[, "psb2__tstart"]
   long_df <- long_df[, c(cn, "__period__")]
   long_mat <- as.matrix(long_df)
 
