@@ -41,6 +41,17 @@ lbo <- outcome_bin_logistic(
   binary_var = "resp",
   baseline_prior = prior_normal(0, 1000)
 )
+pem <- outcome_surv_pem(
+  time_var = "time",
+  cens_var = "cnsr",
+  baseline_prior = prior_normal(0, 1000),
+  cut_points = c(2, 3, 10)
+)
+cont <- outcome_cont_normal(
+  continuous_var = "time",
+  baseline_prior = prior_normal(0, 1000),
+  std_dev_prior = prior_half_cauchy(0, .0001)
+)
 
 test_that("Inputs classes are correct", {
   # Matrix
@@ -223,7 +234,7 @@ skip_if_not(check_cmdstan())
 
 # Test All combinations
 borrowing_list <- list(bd_fb, bd_nb, bd_db)
-outcome_list <- list(esd, wpsd, lbo)
+outcome_list <- list(esd, wpsd, lbo, pem, cont)
 covariates_list <- list(ac, ac2, NULL)
 
 for (bd in 1:3) {
