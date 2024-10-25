@@ -88,6 +88,7 @@ Suggests:
     cmdstanr,
     survival,
     flexsurv,
+    eha,
     testthat (>= 3.0),
     usethis (>= 2.1.5),
     vdiffr,
@@ -124,6 +125,7 @@ Collate:
     'borrowing_full.R'
     'borrowing_hierarchical_commensurate.R'
     'borrowing_none.R'
+    'cast_mat_to_long_pem.R'
     'check_data_matrix_has_columns.R'
     'cmdstan.R'
     'create_analysis_obj.R'
@@ -145,6 +147,7 @@ Collate:
     'get_prior_string_covariates.R'
     'prior_half_cauchy.R'
     'outcome_cont_normal.R'
+    'outcome_surv_pem.R'
     'load_and_interpolate_stan_model.R'
     'load_stan_file.R'
     'make_analysis_object_list.R'
