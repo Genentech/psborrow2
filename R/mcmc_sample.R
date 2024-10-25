@@ -77,7 +77,7 @@ setMethod(
 
     if (verbose) {
       x@model$sample(
-        data = prepare_stan_data_inputs(x),
+        data = prepare_stan_data_inputs(x@outcome, x@borrowing, x),
         iter_warmup = iter_warmup,
         iter_sampling = iter_sampling,
         chains = chains,
@@ -86,7 +86,7 @@ setMethod(
     } else {
       suppressMessages(
         x@model$sample(
-          data = prepare_stan_data_inputs(x),
+          data = prepare_stan_data_inputs(x@outcome, x@borrowing, x),
           iter_warmup = iter_warmup,
           iter_sampling = iter_sampling,
           chains = chains,
