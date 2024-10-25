@@ -122,7 +122,7 @@ setMethod(
 
     n_periods <- analysis_obj@outcome@n_periods
     Z <- matrix(0, nrow = nrow(data_matrix), ncol = n_periods)
-    for (i in 1:nrow(data_matrix)) {
+    for (i in seq_len(nrow(data_matrix))) {
       period <- data_matrix[i, "__period__"]
       Z[i, period] <- 1
     }
@@ -153,11 +153,12 @@ setMethod(
 
     n_periods <- analysis_obj@outcome@n_periods
     Z0 <- Z1 <- matrix(0, nrow = nrow(data_matrix), ncol = n_periods)
-    for (i in 1:nrow(data_matrix)) {
+    for (i in seq_len(nrow(data_matrix))) {
       period <- data_matrix[i, "__period__"]
       Z0[i, period] <- data_matrix[i, "ext"]
       Z1[i, period] <- 1 - data_matrix[i, "ext"]
     }
+
     data_in <- list(
       N = nrow(data_matrix),
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
