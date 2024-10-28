@@ -8,7 +8,7 @@
 #' @return String containing the interpolated Stan model
 #' @include outcome_surv_pem.R
 build_model_string <- function(template_domain, template_filename, outcome, borrowing, analysis_obj, ...) {
-  
+
   # Load the Stan template
   template <- load_stan_file(template_domain, template_filename)
 
@@ -162,6 +162,27 @@ setMethod(
       analysis_obj = analysis_obj,
       baseline.prior = get_prior_string(outcome@baseline_prior),
       tau.prior = h_glue("tau ~ {{get_prior_string(borrowing@tau_prior)}} ;")
+    )
+
+    return(model_string)
+  }
+)
+
+
+### Case Weights Power Prior Borrowing ----
+setMethod(
+  f = "load_and_interpolate_stan_model",
+  signature = c("OutcomeSurvPEM", "BorrowingCaseWeights", "ANY"),
+  definition = function(outcome, borrowing, analysis_obj) {
+    model_string <- build_model_string(
+      template_domain = "surv",
+      template_filename = "pem_nb.stan",
+      outcome = outcome,
+      borrowing = borrowing,
+      analysis_obj = analysis_obj,
+      baseline.prior = get_prior_string(outcome@baseline_prior),
+      weights.likelihood = "* weights[i]",
+      weights.data = "vector[N] weights;"
     )
 
     return(model_string)

@@ -176,6 +176,41 @@ setMethod(
   }
 )
 
+
+### Case Weights Power Prior Borrowing ----
+#' @include case_weight_helpers.R
+setMethod(
+  f = "prepare_stan_data_inputs",
+  signature = c("OutcomeSurvPEM", "BorrowingCaseWeights", "ANY"),
+  definition = function(outcome, borrowing, analysis_obj) {
+
+    analysis_obj <- cast_mat_to_long_pem(analysis_obj)
+    # calculate case weights here
+    data_matrix <- analysis_obj@data_matrix
+
+    n_periods <- analysis_obj@outcome@n_periods
+    Z <- matrix(0, nrow = nrow(data_matrix), ncol = n_periods)
+    Z[cbind(
+        row = seq_len(nrow(data_matrix)),
+        col = data_matrix[, "__period__"])
+      ] <- 1
+    data_in <- list(
+      N = nrow(data_matrix),
+      trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
+      time = data_matrix[, outcome@time_var],
+      cens = data_matrix[, outcome@cens_var],
+      N_periods = max(data_matrix[, "__period__"]),
+      Z = Z
+    )
+
+    # Add covariates and weights
+    data_in <- add_covariates_and_weights(data_in, analysis_obj, data_matrix)
+    data_in <- analysis_case_weights(data_in, analysis_obj)
+
+    return(data_in)
+  }
+)
+
 # Binary ----
 ## Logistic ----
 ### No/full borrowing ----
