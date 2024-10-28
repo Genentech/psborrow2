@@ -56,7 +56,7 @@
 #' @return Object of class [`BorrowingCaseWeights`][BorrowingCaseWeights-class].
 #' @export
 #' @examples
-#' db <- BorrowingCaseWeights(
+#' borrowing_case_weights(
 #'   ext_flag_col = "ext",
 #'   p = 1,
 #'   q = 50,

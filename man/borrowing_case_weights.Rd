@@ -43,7 +43,7 @@ contains the flag indicating a patient is from the external control cohort.
 }
 }
 \examples{
-db <- BorrowingCaseWeights(
+borrowing_case_weights(
   ext_flag_col = "ext",
   p = 1,
   q = 50,

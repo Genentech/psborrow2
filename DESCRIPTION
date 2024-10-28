@@ -83,7 +83,8 @@ Imports:
     Matrix,
     mvtnorm,
     future,
-    simsurv
+    simsurv,
+    lamW
 Suggests:
     cmdstanr,
     survival,

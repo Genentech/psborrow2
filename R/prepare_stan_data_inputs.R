@@ -191,9 +191,9 @@ setMethod(
     n_periods <- analysis_obj@outcome@n_periods
     Z <- matrix(0, nrow = nrow(data_matrix), ncol = n_periods)
     Z[cbind(
-        row = seq_len(nrow(data_matrix)),
-        col = data_matrix[, "__period__"])
-      ] <- 1
+      row = seq_len(nrow(data_matrix)),
+      col = data_matrix[, "__period__"]
+    )] <- 1
     data_in <- list(
       N = nrow(data_matrix),
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],

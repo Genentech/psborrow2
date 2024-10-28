@@ -1,9 +1,8 @@
 # Helper functions for case weight calculation
-
+#' @importFrom stats approxfun density glm poisson predict reformulate rexp update vcov
 
 # Main function called from `prepare_stan_data_inputs` ----------
 analysis_case_weights <- function(data_in, analysis_object) {
-
   df <- as.data.frame(analysis_object@data_matrix)
   models <- case_weight_models(
     df,
@@ -89,7 +88,7 @@ control_pars <- function(boxp_dist = "W", samples_1 = 100, samples_2 = 100) {
 sample_coefs <- function(model, covs) {
   coef.model <- model$coefficients
   cov.index <- names(coef.model) %in% c(covs)
-  MASS::mvrnorm(1, coef.model[cov.index], vcov(model)[cov.index, cov.index])
+  mvtnorm::rmvnorm(1, coef.model[cov.index], vcov(model)[cov.index, cov.index])
 }
 
 # Transformation functions -------
@@ -142,7 +141,7 @@ dlog_exp <- function(x, rate) {
 # }
 
 # Find x values where pdf(x|rate) == pdf(a|rate)
-critical_values <- function(a, rate = this_rate) {
+critical_values <- function(a, rate) {
   matrix(
     log(a / rate) - c(lamW::lambertW0(-a), lamW::lambertWm1(-a)),
     nrow = length(a)
@@ -212,8 +211,6 @@ calculate_case_weights <- function(sim.poisson,
                                    ext_data,
                                    diff,
                                    pars) {
-
-
   sim.mm <- model.matrix(sim.poisson) # model matrix with external == 1 and covariates
 
   interval.names <- names(sim.poisson.theta$coefficients)
@@ -231,7 +228,7 @@ calculate_case_weights <- function(sim.poisson,
 
     # Identify rows which are alive and uncensored at the end of the period:
     impute_these_id <- sim.split.idx[["cnsr"]] == 1 & sim.split.idx[["time"]] == diff[sim.split.idx[["__period__"]]]
-    rate_t <- exp(sim.mm[impute_these_id,] %*% lambda)
+    rate_t <- exp(sim.mm[impute_these_id, ] %*% lambda)
     rate_c <- exp(sim.mm[impute_these_id, interval.names] %*% theta)
 
     temp.y <- rexp(rep(1, sum(impute_these_id)), rate_t + rate_c)
@@ -259,9 +256,9 @@ calculate_case_weights <- function(sim.poisson,
 
       a <- log(sim.split.idx$time)
       boxp_fun <- switch(pars$boxp_dist,
-                         "W" = get_boxp_W,
-                         "density" = get_boxp_density,
-                         "kde" = get_boxp_kde
+        "W" = get_boxp_W,
+        "density" = get_boxp_density,
+        "kde" = get_boxp_kde
       )
       box.p.log[, idx_a0] <- boxp_fun(a, rate_t, rate_c)
     }
@@ -272,5 +269,3 @@ calculate_case_weights <- function(sim.poisson,
   }
   replicate(pars$samples_1, iteration_fun(ext_data, sim.mm))
 }
-
-
