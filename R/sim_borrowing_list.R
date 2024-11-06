@@ -11,6 +11,7 @@
 #' @include borrowing_full.R
 #' @include borrowing_none.R
 #' @include borrowing_hierarchical_commensurate.R
+#' @include borrowing_case_weights.R
 .sim_borrowing_list <- setClass(
   "SimBorrowingList",
   slots = c(

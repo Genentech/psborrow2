@@ -24,6 +24,7 @@ should not be created directly but by the constructor
 \seealso{
 Other borrowing classes: 
 \code{\link{Borrowing-class}},
+\code{\link{BorrowingCaseWeights-class}},
 \code{\link{BorrowingHierarchicalCommensurate-class}},
 \code{\link{BorrowingNone-class}}
 }
