@@ -88,7 +88,7 @@ control_pars <- function(boxp_dist = "W", samples_1 = 100, samples_2 = 100) {
 sample_coefs <- function(model, covs) {
   coef.model <- model$coefficients
   cov.index <- names(coef.model) %in% c(covs)
-  mvtnorm::rmvnorm(1, coef.model[cov.index], vcov(model)[cov.index, cov.index])
+  t(mvtnorm::rmvnorm(1, coef.model[cov.index], vcov(model)[cov.index, cov.index]))
 }
 
 # Transformation functions -------
