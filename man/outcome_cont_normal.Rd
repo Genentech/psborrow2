@@ -12,15 +12,13 @@ outcome_cont_normal(
 )
 }
 \arguments{
-\item{continuous_var}{character. Name of continuous outcome variable in the
-model matrix}
+\item{continuous_var}{character. Name of continuous outcome variable in the model matrix}
 
-\item{baseline_prior}{\code{Prior}. Object of class \code{Prior}
-specifying prior distribution for the baseline outcome.
-See \code{Details} for more information.}
+\item{baseline_prior}{\code{Prior}. Object of class \code{Prior} specifying prior distribution for the baseline outcome. See
+\code{Details} for more information.}
 
-\item{std_dev_prior}{\code{Prior}. Object of class \code{Prior}
-specifying prior distribution for the standard deviation of the outcome distribution (i.e. "sigma").}
+\item{std_dev_prior}{\code{Prior}. Object of class \code{Prior} specifying prior distribution for the standard deviation of the
+outcome distribution (i.e. "sigma").}
 
 \item{weight_var}{character. Optional name of variable in model matrix for weighting the log likelihood.}
 }
@@ -33,15 +31,13 @@ Normal Outcome Distribution
 \details{
 \subsection{Baseline Prior}{
 
-The \code{baseline_prior} argument specifies the prior distribution for the
-intercept of the linear model. The interpretation of the \code{baseline_prior} differs
-slightly between borrowing methods selected.
+The \code{baseline_prior} argument specifies the prior distribution for the intercept of the linear model. The
+interpretation of the \code{baseline_prior} differs slightly between borrowing methods selected.
 \itemize{
-\item \emph{Dynamic borrowing using \code{borrowing_hierarchical_commensurate()}}: the \code{baseline_prior} for Bayesian Dynamic Borrowing
-refers to the intercept of the external control arm.
-\item \emph{Full borrowing} or \emph{No borrowing} using \code{borrowing_full()} or \code{borrowing_none()}: the \code{baseline_prior} for
-these borrowing methods refers to the intercept for the
-internal control arm.
+\item \emph{Dynamic borrowing using \code{borrowing_hierarchical_commensurate()}}: the \code{baseline_prior} for
+Bayesian Dynamic Borrowing refers to the intercept of the external control arm.
+\item \emph{Full borrowing} or \emph{No borrowing} using \code{borrowing_full()} or \code{borrowing_none()}: the
+\code{baseline_prior} for these borrowing methods refers to the intercept for the internal control arm.
 }
 }
 }

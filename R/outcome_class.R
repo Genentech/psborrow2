@@ -92,7 +92,6 @@ setClass(
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @slot name_beta_trt. Named vector for beta_trt.
-#' @slot name_exp_trt. Named vector for exponentiated beta_trt
 #' @slot alpha_type. How to interpret alpha.
 #' @slot name_addnl_params. Named vector for additional parameters.
 #' @family outcome
@@ -114,7 +113,6 @@ setClass(
     weight_var = "",
     baseline_prior = NULL,
     name_beta_trt = c("treatment effect" = "beta_trt"),
-    name_exp_trt = c("exponentiated treatment effect" = "beta_trt"),
     alpha_type = "intercept",
     name_addnl_params = NULL
   ),

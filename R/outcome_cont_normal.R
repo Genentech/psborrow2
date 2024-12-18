@@ -12,7 +12,6 @@
 #' @slot baseline_prior `Prior`. Object of class `Prior`
 #' specifying prior distribution for the baseline outcome.
 #' @slot name_beta_trt. Named vector for beta_trt.
-#' @slot name_exp_trt. Named vector for exponentiated beta_trt
 #' @slot alpha_type. How to interpret alpha.
 #' @slot name_addnl_params. Named vector for additional parameters.
 #' @include outcome_class.R helpers.R prior_half_cauchy.R
@@ -37,26 +36,21 @@
 
 #' Normal Outcome Distribution
 #'
-#' @param continuous_var character. Name of continuous outcome variable in the
-#' model matrix
+#' @param continuous_var character. Name of continuous outcome variable in the model matrix
 #' @param weight_var character. Optional name of variable in model matrix for weighting the log likelihood.
-#' @param baseline_prior `Prior`. Object of class `Prior`
-#' specifying prior distribution for the baseline outcome.
-#' See `Details` for more information.
-#' @param std_dev_prior `Prior`. Object of class `Prior`
-#' specifying prior distribution for the standard deviation of the outcome distribution (i.e. "sigma").
+#' @param baseline_prior `Prior`. Object of class `Prior` specifying prior distribution for the baseline outcome. See
+#'   `Details` for more information.
+#' @param std_dev_prior `Prior`. Object of class `Prior` specifying prior distribution for the standard deviation of the
+#'   outcome distribution (i.e. "sigma").
 #'
-#' @details
-#' ## Baseline Prior
+#' @details ## Baseline Prior
 #'
-#' The `baseline_prior` argument specifies the prior distribution for the
-#' intercept of the linear model. The interpretation of the `baseline_prior` differs
-#' slightly between borrowing methods selected.
-#' - \emph{Dynamic borrowing using `borrowing_hierarchical_commensurate()`}: the `baseline_prior` for Bayesian Dynamic Borrowing
-#' refers to the intercept of the external control arm.
-#' - \emph{Full borrowing} or \emph{No borrowing} using `borrowing_full()` or `borrowing_none()`: the `baseline_prior` for
-#' these borrowing methods refers to the intercept for the
-#' internal control arm.
+#' The `baseline_prior` argument specifies the prior distribution for the intercept of the linear model. The
+#' interpretation of the `baseline_prior` differs slightly between borrowing methods selected.
+#' - \emph{Dynamic borrowing using `borrowing_hierarchical_commensurate()`}: the `baseline_prior` for
+#' Bayesian Dynamic Borrowing refers to the intercept of the external control arm.
+#' - \emph{Full borrowing} or \emph{No borrowing} using `borrowing_full()` or `borrowing_none()`: the
+#' `baseline_prior` for these borrowing methods refers to the intercept for the internal control arm.
 #'
 #' @return Object of class [`OutcomeContinuousNormal`][OutcomeContinuousNormal-class].
 #' @export
