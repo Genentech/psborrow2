@@ -166,3 +166,52 @@ test_that("variable_dictionary includes shape parameter for Weibull PH", {
     )
   )
 })
+
+
+test_that("variable_dictionary works for normal outcome and no borrowing", {
+  object <- psborrow2:::.analysis_obj(
+    data_matrix = cbind(example_matrix, outcome = runif(500)),
+    outcome = outcome_cont_normal(
+      continuous_var = "outcome",
+      baseline_prior = prior_normal(0, 100),
+      std_dev_prior = prior_half_cauchy(1, 5)
+    ),
+    borrowing = borrowing_full("ext"),
+    treatment = treatment_details("trt", prior_normal(0, 1000))
+  )
+  result <- variable_dictionary(object)
+  expect_equal(
+    result,
+    data.frame(
+      Stan_variable = c("alpha", "beta_trt"),
+      Description = c("intercept", "treatment effect")
+    )
+  )
+})
+
+test_that("variable_dictionary works for normal outcome with BDB borrowing", {
+  object <- psborrow2:::.analysis_obj(
+    data_matrix = cbind(example_matrix, outcome = runif(500)),
+    outcome = outcome_cont_normal(
+      continuous_var = "outcome",
+      baseline_prior = prior_normal(0, 100),
+      std_dev_prior = prior_half_cauchy(1, 5)
+    ),
+    borrowing = borrowing_hierarchical_commensurate(
+      ext_flag_col = "ext",
+      tau_prior = prior_gamma(0.001, 0.001)
+    ),
+    treatment = treatment_details("trt", prior_normal(0, 1000))
+  )
+  result <- variable_dictionary(object)
+  expect_equal(
+    result,
+    data.frame(
+      Stan_variable = c("tau", "alpha[1]", "alpha[2]", "beta_trt"),
+      Description = c(
+        "commensurability parameter", "intercept, internal",
+        "intercept, external", "treatment effect"
+      )
+    )
+  )
+})

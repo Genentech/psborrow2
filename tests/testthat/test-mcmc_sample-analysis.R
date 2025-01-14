@@ -456,34 +456,87 @@ test_that("mcmc_sample for Analysis works for no borrowing, binomial dist, two c
   )
 })
 
-# Exponential models, BDB conservative----
-test_that("mcmc_sample for Analysis works for exponential BDB, conservative borrowing", {
+# Continuous normal models, Full Borrowing ----
+test_that("mcmc_sample for Analysis works for normal with full borrowing", {
   skip_on_cran()
   skip_on_ci()
-  exp_bdb_conservative <- create_analysis_obj(
-    data_matrix = example_matrix,
-    outcome = outcome_surv_exponential(
-      time_var = "time",
-      cens_var = "cnsr",
-      prior_normal(0, 100000)
-    ),
-    borrowing = borrowing_hierarchical_commensurate(
-      ext_flag_col = "ext",
-      tau_prior = prior_gamma(0.001, 0.001)
-    ),
-    treatment = treatment_details("trt", prior_normal(0, 100000))
+  set.seed(123)
+
+  outcome_col <- 5 + example_matrix[, "trt"] + example_matrix[, "cov1"] + 2 * example_matrix[, "cov2"] +
+    0.5 * example_matrix[, "cov3"] - 1.5 * example_matrix[, "cov4"] + rnorm(500, 0, 1)
+
+  outcome <- outcome_cont_normal(
+    continuous_var = "outcome",
+    baseline_prior = prior_normal(0, 100),
+    std_dev_prior=prior_half_cauchy(1, 5)
+  )
+  borrowing <- borrowing_full(
+    ext_flag_col = "ext"
+  )
+  treatment <- treatment_details(
+    trt_flag_col = "trt",
+    trt_prior = prior_normal(0, 1000)
+  )
+  anls_obj <- create_analysis_obj(
+    data_matrix = cbind(example_matrix, outcome = outcome_col),
+    outcome =  outcome,
+    borrowing = borrowing,
+    treatment = treatment,
+    quiet = FALSE
   )
   result <- mcmc_sample(
-    exp_bdb_conservative,
+    anls_obj,
     iter_warmup = 2000,
     iter_sampling = 2000,
     chains = 1
   )
 
-  result_summary <- result$summary("HR_trt")
-  expect_equal(result_summary[["median"]], 0.85, tolerance = .05)
-  expect_equal(result_summary[["q5"]], 0.62, tolerance = .05)
-  expect_equal(result_summary[["q95"]], 1.18, tolerance = .05)
+  result_summary <- result$summary(c("alpha", "beta_trt"))
+  expect_equal(result_summary[["median"]], c(6.58, 0.42), tolerance = .05)
+  expect_equal(result_summary[["q5"]], c(6.45, 0.128), tolerance = .05)
+  expect_equal(result_summary[["q95"]], c(6.72, 0.72), tolerance = .05)
+})
+
+# Continuous normal models, BDB ----
+test_that("mcmc_sample for Analysis works for normal with BDB", {
+  skip_on_cran()
+  skip_on_ci()
+  set.seed(123)
+
+  outcome_col <- 5 + example_matrix[, "trt"] + example_matrix[, "cov1"] + 2 * example_matrix[, "cov2"] +
+    0.5 * example_matrix[, "cov3"] - 1.5 * example_matrix[, "cov4"] + rnorm(500, 0, 1)
+
+  outcome <- outcome_cont_normal(
+    continuous_var = "outcome",
+    baseline_prior = prior_normal(0, 100),
+    std_dev_prior=prior_half_cauchy(1, 5)
+  )
+  borrowing <- borrowing_hierarchical_commensurate(
+    ext_flag_col = "ext",
+    tau_prior = prior_gamma(0.001, 0.001)
+  )
+  treatment <- treatment_details(
+    trt_flag_col = "trt",
+    trt_prior = prior_normal(0, 1000)
+  )
+  anls_obj <- create_analysis_obj(
+    data_matrix = cbind(example_matrix, outcome = outcome_col),
+    outcome =  outcome,
+    borrowing = borrowing,
+    treatment = treatment,
+    quiet = FALSE
+  )
+  result <- mcmc_sample(
+    anls_obj,
+    iter_warmup = 2000,
+    iter_sampling = 2000,
+    chains = 1
+  )
+
+  result_summary <- result$summary("beta_trt")
+  expect_equal(result_summary[["median"]], 1.20, tolerance = .05)
+  expect_equal(result_summary[["q5"]], 0.715, tolerance = .05)
+  expect_equal(result_summary[["q95"]], 1.71, tolerance = .05)
 })
 
 # Weibull models, BDB aggressive----
@@ -551,7 +604,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, piecewise exponent
   library(eha)
   cuts = c(1, 5, 10)
   pem_eha <- eha::pchreg(survival::Surv(time, status) ~ trt + cov1 + cov2, data = as.data.frame(psborrow2::example_matrix), cuts = c(0, cuts, 1000))
-  
+
   full_pem_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_pem("time", "cnsr", prior_normal(0, 100000), cut_points = cuts),
@@ -592,7 +645,7 @@ test_that("mcmc_sample for Analysis works for BDB, piecewise exponential dist", 
     example_matrix[example_matrix[,'ext'] == 0,],
     internal_as_external
   )
-  
+
   ## Conservative commensurate
   bdb_pem_bayes_commens_conserv_ao <- create_analysis_obj(
     data_matrix = commensurate_matrix,
@@ -606,7 +659,7 @@ test_that("mcmc_sample for Analysis works for BDB, piecewise exponential dist", 
     iter_sampling = 5000,
     chains = 2
   )
-  tau_commens_conserv <- bdb_pem_bayes_commens_conserv$summary("tau")[["median"]] 
+  tau_commens_conserv <- bdb_pem_bayes_commens_conserv$summary("tau")[["median"]]
 
   ## Conservative incommensurate
   bdb_pem_bayes_incommens_conserv_ao <- create_analysis_obj(
