@@ -533,6 +533,7 @@ sim_obj <- create_simulation_obj(
   treatment = treatment,
   covariate = covariate
 )
+#> Error in create_simulation_obj(data_matrix_list = my_data_list, outcome = outcome, : Missing data detected in >1 matrix in `data_matrix_list`. Could be one of the following columns: 'age', 'score_high', 'ext', 'trt', 'eventtime', 'cens'. Error found in simulation_obj@data_matrix_list@data_list[[1]][[1]]
 ```
 
 And finally sample from these models. See the vignette "4. Conduct a simulation study" for more details.

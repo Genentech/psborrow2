@@ -28,6 +28,7 @@ Let's load `psborrow2` to start:
 ```r
 library(psborrow2)
 library(cmdstanr)
+# Warning: package 'cmdstanr' was built under R version 4.3.3
 ```
 
 # Bringing your own simulated data
@@ -513,19 +514,19 @@ head(simulation_res_df)
 # 5     0.6       No drift HR  1                  100          default
 # 6     1.0       No drift HR  2                  100          default
 #   borrowing_scenario covariate_scenario treatment_scenario    trt_var
-# 1       No borrowing      No adjustment            default 0.06383754
-# 2       No borrowing      No adjustment            default 0.06233316
-# 3       No borrowing      No adjustment            default 0.06306555
-# 4       No borrowing      No adjustment            default 0.06333808
-# 5     Full borrowing      No adjustment            default 0.02648792
-# 6     Full borrowing      No adjustment            default 0.02573194
+# 1       No borrowing      No adjustment            default 0.06385613
+# 2       No borrowing      No adjustment            default 0.06300573
+# 3       No borrowing      No adjustment            default 0.06358375
+# 4       No borrowing      No adjustment            default 0.06146742
+# 5     Full borrowing      No adjustment            default 0.02640545
+# 6     Full borrowing      No adjustment            default 0.02538354
 #     mse_mean  bias_mean null_coverage true_coverage
-# 1 0.05915273 0.06270199          0.58          0.96
-# 2 0.13032971 0.03916893          0.96          0.96
-# 3 0.04724394 0.01524864          0.44          0.96
-# 4 0.13079915 0.03571795          0.95          0.95
-# 5 0.02027734 0.02150292          0.10          0.96
-# 6 0.05067948 0.01040672          0.97          0.97
+# 1 0.05884766 0.05935161          0.55          0.97
+# 2 0.13329996 0.03483396          0.99          0.99
+# 3 0.04709898 0.01135305          0.46          0.96
+# 4 0.12446717 0.02322880          0.96          0.96
+# 5 0.02005176 0.02065375          0.11          0.98
+# 6 0.04977218 0.00931398          0.96          0.96
 ```
 
 Let's quickly visualize the results using `ggplot2`. We will first
@@ -535,6 +536,7 @@ load `ggplot2` and factorize our borrowing scenarios:
 ```r
 # Load ggplot2
 library(ggplot2)
+# Warning: package 'ggplot2' was built under R version 4.3.2
 
 # Factorize
 simulation_res_df$borrowing_scenario <- factor(simulation_res_df$borrowing_scenario,
