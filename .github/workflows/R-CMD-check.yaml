@@ -47,14 +47,14 @@ jobs:
           sudo apt-get install -y texlive-fonts-extra
 
       - name: R CMD check before cmdstanr installed
-        uses: r-lib/actions/check-r-package@v2
+        uses: r-lib/actions/check-r-package@v2.10.0
 
       - name: Install cmdstanr but not cmdstan
         run: |
           Rscript -e "install.packages('cmdstanr', repos = c('https://stan-dev.r-universe.dev', getOption('repos')))"
 
       - name: R CMD check after cmdstanr installed but before cmdstan
-        uses: r-lib/actions/check-r-package@v2
+        uses: r-lib/actions/check-r-package@v2.10.0
 
       - name: Install cmdstan
         run: |
@@ -62,4 +62,4 @@ jobs:
           Rscript -e "cmdstanr::install_cmdstan()"
 
       - name: R CMD check after cmdstanr and cmdstan are installed
-        uses: r-lib/actions/check-r-package@v2
+        uses: r-lib/actions/check-r-package@vv2.10.0
