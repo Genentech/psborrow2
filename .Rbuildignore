@@ -33,3 +33,4 @@ develop
 ^node_modules$
 ^vignettes/match_weight_01_methods.Rmd$
 ^vignettes/match_weight_02_application.Rmd$
+^vignettes/figure$
