@@ -15,7 +15,9 @@
 #' @export
 #'
 #' @examples
-#' dat <- survival::diabetic
+#' library(survival)
+#' data("diabetic")
+#' dat <- diabetic
 #' dat$ext <- dat$trt == 0 & dat$id > 1000
 #' data_mat <- create_data_matrix(
 #'   dat,
