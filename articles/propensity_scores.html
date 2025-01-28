@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,7 +68,8 @@ Gravestock and Matt Secrest</h4>
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Genentech/psborrow2" class="external-link">psborrow2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/cmdstanr/" class="external-link">cmdstanr</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/cmdstanr/" class="external-link">cmdstanr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: package 'cmdstanr' was built under R version 4.3.3</span></span></code></pre></div>
 <p>Propensity scores (PS) methods offer various ways to adjust analyses
 for differences in groups of patients. <span class="citation">Austin (<a href="#ref-austin2013">2013</a>)</span> discusses various approaches for
 using PS with survival analyses to obtain effect measures similar to
@@ -90,6 +91,7 @@ differently for different estimands. Here, we specifying
 average treatment effect among the treated (ATT).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ngreifer.github.io/WeightIt/" class="external-link">WeightIt</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: package 'WeightIt' was built under R version 4.3.2</span></span>
 <span></span>
 <span><span class="va">example_dataframe</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">example_matrix</span><span class="op">)</span></span>
 <span><span class="va">example_dataframe</span><span class="op">$</span><span class="va">int</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">example_dataframe</span><span class="op">$</span><span class="va">ext</span></span>
@@ -100,7 +102,7 @@ average treatment effect among the treated (ATT).</p>
 <span>  method <span class="op">=</span> <span class="st">"gbm"</span>,</span>
 <span>  estimand <span class="op">=</span> <span class="st">"ATT"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: No `criterion` was provided. Using "smd.mean"FALSETRUE.</span></span>
+<span><span class="co">#&gt; Warning: No `criterion` was provided. Using "smd.mean".</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">weightit_model</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                  Summary of weights</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -136,6 +138,7 @@ for more details. We can use the <code>cobalt</code> package to assess
 balance with <code><a href="https://ngreifer.github.io/cobalt/reference/bal.plot.html" class="external-link">bal.plot()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ngreifer.github.io/cobalt/" class="external-link">cobalt</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: package 'cobalt' was built under R version 4.3.2</span></span>
 <span><span class="fu"><a href="https://ngreifer.github.io/cobalt/reference/bal.plot.html" class="external-link">bal.plot</a></span><span class="op">(</span><span class="va">weightit_model</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="figure-propensity_scores-balplot-1.png" alt="plot of chunk balplot"><p class="caption">
@@ -413,65 +416,65 @@ and specify summary statistics.</p>
 <tr class="odd">
 <td align="left">No borrowing</td>
 <td align="left">HR_trt</td>
-<td align="right">0.896</td>
-<td align="right">0.879</td>
-<td align="right">0.179</td>
-<td align="right">0.635</td>
-<td align="right">1.214</td>
+<td align="right">0.894</td>
+<td align="right">0.877</td>
+<td align="right">0.178</td>
+<td align="right">0.636</td>
+<td align="right">1.210</td>
 </tr>
 <tr class="even">
 <td align="left">Full borrowing</td>
 <td align="left">HR_trt</td>
-<td align="right">0.387</td>
-<td align="right">0.385</td>
+<td align="right">0.388</td>
+<td align="right">0.386</td>
 <td align="right">0.049</td>
 <td align="right">0.311</td>
-<td align="right">0.471</td>
+<td align="right">0.473</td>
 </tr>
 <tr class="odd">
 <td align="left">Power Prior 01</td>
 <td align="left">HR_trt</td>
-<td align="right">0.633</td>
-<td align="right">0.625</td>
-<td align="right">0.106</td>
-<td align="right">0.475</td>
-<td align="right">0.819</td>
+<td align="right">0.634</td>
+<td align="right">0.626</td>
+<td align="right">0.105</td>
+<td align="right">0.476</td>
+<td align="right">0.821</td>
 </tr>
 <tr class="even">
 <td align="left">ATT Weights</td>
 <td align="left">HR_trt</td>
-<td align="right">0.893</td>
-<td align="right">0.884</td>
-<td align="right">0.127</td>
-<td align="right">0.700</td>
-<td align="right">1.114</td>
+<td align="right">0.895</td>
+<td align="right">0.886</td>
+<td align="right">0.126</td>
+<td align="right">0.701</td>
+<td align="right">1.116</td>
 </tr>
 <tr class="odd">
 <td align="left">IPTW + BDB</td>
 <td align="left">HR_trt</td>
-<td align="right">0.893</td>
-<td align="right">0.877</td>
-<td align="right">0.164</td>
-<td align="right">0.654</td>
-<td align="right">1.186</td>
+<td align="right">0.897</td>
+<td align="right">0.882</td>
+<td align="right">0.165</td>
+<td align="right">0.656</td>
+<td align="right">1.188</td>
 </tr>
 <tr class="even">
 <td align="left">Matching 1:1</td>
 <td align="left">HR_trt</td>
-<td align="right">0.796</td>
-<td align="right">0.785</td>
-<td align="right">0.130</td>
-<td align="right">0.601</td>
-<td align="right">1.028</td>
+<td align="right">0.793</td>
+<td align="right">0.784</td>
+<td align="right">0.128</td>
+<td align="right">0.600</td>
+<td align="right">1.018</td>
 </tr>
 <tr class="odd">
 <td align="left">BDB</td>
 <td align="left">HR_trt</td>
-<td align="right">0.873</td>
-<td align="right">0.855</td>
-<td align="right">0.176</td>
-<td align="right">0.620</td>
-<td align="right">1.190</td>
+<td align="right">0.871</td>
+<td align="right">0.852</td>
+<td align="right">0.175</td>
+<td align="right">0.619</td>
+<td align="right">1.187</td>
 </tr>
 </tbody>
 </table>

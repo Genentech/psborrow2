@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,7 +91,8 @@ installation guide</a>.</p>
 <p>Now you’re ready to start with <code>psborrow2</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Genentech/psborrow2" class="external-link">psborrow2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/cmdstanr/" class="external-link">cmdstanr</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/cmdstanr/" class="external-link">cmdstanr</a></span><span class="op">)</span></span>
+<span><span class="co"># Warning: package 'cmdstanr' was built under R version 4.3.3</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 class="tabset" id="creating-an-analysis-object">Creating an analysis object<a class="anchor" aria-label="anchor" href="#creating-an-analysis-object"></a>
@@ -457,12 +458,12 @@ distribution samples with <code>results$summary()</code>:</p>
 <span><span class="co"># # A tibble: 6 × 10</span></span>
 <span><span class="co">#   variable      mean    median     sd    mad          q5      q95  rhat ess_bulk</span></span>
 <span><span class="co">#   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co"># 1 lp__     -1618.    -1618.    1.50   1.29   -1621.      -1.62e+3  1.00   71314.</span></span>
-<span><span class="co"># 2 beta_trt    -0.155    -0.158 0.199  0.198     -0.477    1.74e-1  1.00   85216.</span></span>
-<span><span class="co"># 3 tau          1.21      0.506 1.92   0.693      0.00418  4.74e+0  1.00   81024.</span></span>
-<span><span class="co"># 4 alpha[1]    -3.36     -3.35  0.161  0.161     -3.63    -3.10e+0  1.00   86029.</span></span>
-<span><span class="co"># 5 alpha[2]    -2.40     -2.40  0.0557 0.0557    -2.49    -2.31e+0  1.00  132062.</span></span>
-<span><span class="co"># 6 HR_trt       0.873     0.854 0.176  0.168      0.620    1.19e+0  1.00   85216.</span></span>
+<span><span class="co"># 1 lp__     -1618.    -1618.    1.49   1.29   -1621.      -1.62e+3  1.00   73570.</span></span>
+<span><span class="co"># 2 beta_trt    -0.156    -0.158 0.198  0.198     -0.479    1.74e-1  1.00   87479.</span></span>
+<span><span class="co"># 3 tau          1.21      0.507 1.93   0.695      0.00448  4.76e+0  1.00   87300.</span></span>
+<span><span class="co"># 4 alpha[1]    -3.36     -3.35  0.161  0.160     -3.63    -3.10e+0  1.00   87253.</span></span>
+<span><span class="co"># 5 alpha[2]    -2.40     -2.40  0.0557 0.0556    -2.49    -2.31e+0  1.00  127633.</span></span>
+<span><span class="co"># 6 HR_trt       0.873     0.854 0.176  0.168      0.620    1.19e+0  1.00   87479.</span></span>
 <span><span class="co"># # ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></code></pre></div>
 <p>The summary includes information for several parameter estimates from
 our BDB model. Because it may not be immediately clear what the
@@ -490,41 +491,41 @@ sampling software packages and allow us to leverage packages such as
 <span><span class="co"># </span></span>
 <span><span class="co">#          chain</span></span>
 <span><span class="co"># iteration     1     2     3     4</span></span>
-<span><span class="co">#         1 -1616 -1616 -1616 -1616</span></span>
-<span><span class="co">#         2 -1616 -1616 -1618 -1618</span></span>
-<span><span class="co">#         3 -1616 -1617 -1619 -1617</span></span>
-<span><span class="co">#         4 -1616 -1618 -1619 -1618</span></span>
-<span><span class="co">#         5 -1617 -1617 -1617 -1617</span></span>
+<span><span class="co">#         1 -1620 -1617 -1617 -1618</span></span>
+<span><span class="co">#         2 -1616 -1617 -1619 -1618</span></span>
+<span><span class="co">#         3 -1619 -1618 -1618 -1617</span></span>
+<span><span class="co">#         4 -1619 -1617 -1619 -1617</span></span>
+<span><span class="co">#         5 -1620 -1617 -1618 -1617</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># , , variable = beta_trt</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co">#          chain</span></span>
-<span><span class="co"># iteration     1      2      3      4</span></span>
-<span><span class="co">#         1 -0.20 -0.009 -0.022 -0.109</span></span>
-<span><span class="co">#         2 -0.31 -0.092 -0.167 -0.305</span></span>
-<span><span class="co">#         3 -0.16 -0.082  0.027  0.092</span></span>
-<span><span class="co">#         4 -0.24 -0.319 -0.092  0.226</span></span>
-<span><span class="co">#         5 -0.30 -0.081 -0.012 -0.439</span></span>
+<span><span class="co"># iteration      1      2      3      4</span></span>
+<span><span class="co">#         1  0.297  0.037 -0.227 -0.164</span></span>
+<span><span class="co">#         2 -0.200 -0.148 -0.312 -0.290</span></span>
+<span><span class="co">#         3 -0.506 -0.472  0.033 -0.207</span></span>
+<span><span class="co">#         4  0.043 -0.454  0.042 -0.126</span></span>
+<span><span class="co">#         5  0.114  0.014 -0.151 -0.033</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># , , variable = tau</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co">#          chain</span></span>
-<span><span class="co"># iteration    1    2    3    4</span></span>
-<span><span class="co">#         1 1.62 1.14 1.94 2.58</span></span>
-<span><span class="co">#         2 0.84 1.03 1.32 0.23</span></span>
-<span><span class="co">#         3 0.48 1.90 0.61 1.12</span></span>
-<span><span class="co">#         4 1.46 0.48 0.18 0.48</span></span>
-<span><span class="co">#         5 0.33 1.64 0.32 2.15</span></span>
+<span><span class="co"># iteration      1    2     3     4</span></span>
+<span><span class="co">#         1 0.0136 0.45 0.083 0.607</span></span>
+<span><span class="co">#         2 1.8391 0.41 0.012 0.041</span></span>
+<span><span class="co">#         3 0.1793 2.85 0.310 0.079</span></span>
+<span><span class="co">#         4 0.0056 1.55 0.088 0.043</span></span>
+<span><span class="co">#         5 0.0017 0.90 0.020 0.113</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># , , variable = alpha[1]</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co">#          chain</span></span>
 <span><span class="co"># iteration    1    2    3    4</span></span>
-<span><span class="co">#         1 -3.4 -3.4 -3.5 -3.4</span></span>
-<span><span class="co">#         2 -3.3 -3.4 -3.5 -3.4</span></span>
-<span><span class="co">#         3 -3.4 -3.4 -3.7 -3.5</span></span>
-<span><span class="co">#         4 -3.3 -3.4 -3.6 -3.6</span></span>
-<span><span class="co">#         5 -3.3 -3.5 -3.5 -3.2</span></span>
+<span><span class="co">#         1 -3.7 -3.6 -3.3 -3.2</span></span>
+<span><span class="co">#         2 -3.4 -3.3 -3.2 -3.4</span></span>
+<span><span class="co">#         3 -3.2 -3.2 -3.5 -3.4</span></span>
+<span><span class="co">#         4 -3.4 -3.1 -3.5 -3.3</span></span>
+<span><span class="co">#         5 -3.5 -3.5 -3.4 -3.5</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># # ... with 49995 more iterations, and 2 more variables</span></span></code></pre></div>
 <p><code>psborrow2</code> also has a function to rename variables in
@@ -538,12 +539,12 @@ results easier to interpret:</p>
 <span><span class="co"># # A tibble: 6 × 10</span></span>
 <span><span class="co">#   variable          mean   median     sd    mad       q5      q95  rhat ess_bulk</span></span>
 <span><span class="co">#   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co"># 1 lp__          -1.62e+3 -1.62e+3 1.50   1.29   -1.62e+3 -1.62e+3  1.00   71314.</span></span>
-<span><span class="co"># 2 treatment lo… -1.55e-1 -1.58e-1 0.199  0.198  -4.77e-1  1.74e-1  1.00   85216.</span></span>
-<span><span class="co"># 3 commensurabi…  1.21e+0  5.06e-1 1.92   0.693   4.18e-3  4.74e+0  1.00   81024.</span></span>
-<span><span class="co"># 4 baseline log… -3.36e+0 -3.35e+0 0.161  0.161  -3.63e+0 -3.10e+0  1.00   86029.</span></span>
-<span><span class="co"># 5 baseline log… -2.40e+0 -2.40e+0 0.0557 0.0557 -2.49e+0 -2.31e+0  1.00  132062.</span></span>
-<span><span class="co"># 6 treatment HR   8.73e-1  8.54e-1 0.176  0.168   6.20e-1  1.19e+0  1.00   85216.</span></span>
+<span><span class="co"># 1 lp__          -1.62e+3 -1.62e+3 1.49   1.29   -1.62e+3 -1.62e+3  1.00   73570.</span></span>
+<span><span class="co"># 2 treatment lo… -1.56e-1 -1.58e-1 0.198  0.198  -4.79e-1  1.74e-1  1.00   87479.</span></span>
+<span><span class="co"># 3 commensurabi…  1.21e+0  5.07e-1 1.93   0.695   4.48e-3  4.76e+0  1.00   87300.</span></span>
+<span><span class="co"># 4 baseline log… -3.36e+0 -3.35e+0 0.161  0.160  -3.63e+0 -3.10e+0  1.00   87253.</span></span>
+<span><span class="co"># 5 baseline log… -2.40e+0 -2.40e+0 0.0557 0.0556 -2.49e+0 -2.31e+0  1.00  127633.</span></span>
+<span><span class="co"># 6 treatment HR   8.73e-1  8.54e-1 0.176  0.168   6.20e-1  1.19e+0  1.00   87479.</span></span>
 <span><span class="co"># # ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="using-bayesplot">Using <code>bayesplot</code><a class="anchor" aria-label="anchor" href="#using-bayesplot"></a>
@@ -591,14 +592,14 @@ for all parameters:</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/posterior/" class="external-link">posterior</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarize_draws</a></span><span class="op">(</span><span class="va">draws</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">.x</span>, probs <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># # A tibble: 6 × 3</span></span>
-<span><span class="co">#   variable                                `10%`     `90%`</span></span>
-<span><span class="co">#   &lt;chr&gt;                                   &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co"># 1 lp__                               -1620.     -1616.   </span></span>
-<span><span class="co"># 2 treatment log HR                      -0.408      0.100</span></span>
-<span><span class="co"># 3 commensurability parameter             0.0172     3.22 </span></span>
-<span><span class="co"># 4 baseline log hazard rate, internal    -3.57      -3.15 </span></span>
-<span><span class="co"># 5 baseline log hazard rate, external    -2.47      -2.33 </span></span>
-<span><span class="co"># 6 treatment HR                           0.665      1.11</span></span></code></pre></div>
+<span><span class="co">#   variable                                `10%`      `90%`</span></span>
+<span><span class="co">#   &lt;chr&gt;                                   &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 lp__                               -1620.     -1616.    </span></span>
+<span><span class="co"># 2 treatment log HR                      -0.408      0.0998</span></span>
+<span><span class="co"># 3 commensurability parameter             0.0178     3.22  </span></span>
+<span><span class="co"># 4 baseline log hazard rate, internal    -3.57      -3.16  </span></span>
+<span><span class="co"># 5 baseline log hazard rate, external    -2.47      -2.33  </span></span>
+<span><span class="co"># 6 treatment HR                           0.665      1.10</span></span></code></pre></div>
 <p>Another useful application of the <code>posterior</code> package is
 the evaluation of the Monte Carlo standard error for quantiles of a
 variable of interest:</p>
@@ -606,7 +607,7 @@ variable of interest:</p>
 <code class="sourceCode R"><span><span class="va">vm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/posterior/reference/extract_variable_matrix.html" class="external-link">extract_variable_matrix</a></span><span class="op">(</span><span class="va">draws</span>, <span class="st">"treatment HR"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://mc-stan.org/posterior/reference/mcse_quantile.html" class="external-link">mcse_quantile</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">vm</span>, probs <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#  mcse_q10  mcse_q50  mcse_q90 </span></span>
-<span><span class="co"># 0.0006465 0.0006845 0.0012300</span></span></code></pre></div>
+<span><span class="co"># 0.0006160 0.0006435 0.0012350</span></span></code></pre></div>
 <p><code>posterior</code> contains many other helpful functions, as
 outlined in their <a href="https://CRAN.R-project.org/package=posterior/vignettes/posterior.html" class="external-link">vignettes</a>.</p>
 </div>

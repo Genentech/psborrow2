@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -564,7 +564,8 @@ off time.</p>
 <span>  borrowing <span class="op">=</span> <span class="va">borrowing</span>,</span>
 <span>  treatment <span class="op">=</span> <span class="va">treatment</span>,</span>
 <span>  covariate <span class="op">=</span> <span class="va">covariate</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in create_simulation_obj(data_matrix_list = my_data_list, outcome = outcome, : Missing data detected in &gt;1 matrix in `data_matrix_list`. Could be one of the following columns: 'age', 'score_high', 'ext', 'trt', 'eventtime', 'cens'. Error found in simulation_obj@data_matrix_list@data_list[[1]][[1]]</span></span></code></pre></div>
 <p>And finally sample from these models. See the vignette “4. Conduct a
 simulation study” for more details.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">

@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@
                         <h4 data-toc-skip class="author">Eli Lilly &amp;
 Company</h4>
             
-            <h4 data-toc-skip class="date">2024-04-12</h4>
+            <h4 data-toc-skip class="date">2025-01-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Genentech/psborrow2/blob/main/vignettes/match_weight_01_methods.Rmd" class="external-link"><code>vignettes/match_weight_01_methods.Rmd</code></a></small>
       <div class="d-none name"><code>match_weight_01_methods.Rmd</code></div>
@@ -222,7 +222,7 @@ simulate the covariates using <code>rcorrvar2</code> function from
 <span><span class="co">#&gt; Constants calculation time: 0.003 minutes </span></span>
 <span><span class="co">#&gt; Intercorrelation calculation time: 0.002 minutes </span></span>
 <span><span class="co">#&gt; Error loop calculation time: 0 minutes </span></span>
-<span><span class="co">#&gt; Total Simulation time: 0.005 minutes</span></span></code></pre></div>
+<span><span class="co">#&gt; Total Simulation time: 0.006 minutes</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial.data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"TRIAL"</span>,<span class="fl">1</span><span class="op">:</span><span class="va">n_t</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span>, <span class="va">trial.data</span><span class="op">$</span><span class="va">continuous_variables</span>, </span>
 <span>                        <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">trial.data</span><span class="op">$</span><span class="va">ordinal_variables</span><span class="op">==</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -527,10 +527,10 @@ according to the code below.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Constants: Distribution  5  </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Constants calculation time: 0.003 minutes </span></span>
+<span><span class="co">#&gt; Constants calculation time: 0.004 minutes </span></span>
 <span><span class="co">#&gt; Intercorrelation calculation time: 0.001 minutes </span></span>
 <span><span class="co">#&gt; Error loop calculation time: 0 minutes </span></span>
-<span><span class="co">#&gt; Total Simulation time: 0.004 minutes</span></span></code></pre></div>
+<span><span class="co">#&gt; Total Simulation time: 0.005 minutes</span></span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ext.cont.data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"EC"</span>,<span class="fl">1</span><span class="op">:</span><span class="va">n_ec</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span>, <span class="va">ext.cont.data</span><span class="op">$</span><span class="va">continuous_variables</span>, </span>
 <span>                        <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">ext.cont.data</span><span class="op">$</span><span class="va">ordinal_variables</span><span class="op">==</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
