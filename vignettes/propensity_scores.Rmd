@@ -16,6 +16,7 @@ link-citations: yes
 ```r
 library(psborrow2)
 library(cmdstanr)
+#> Warning: package 'cmdstanr' was built under R version 4.3.3
 ```
 
 Propensity scores (PS) methods offer various ways to adjust analyses for differences in groups of patients.
@@ -34,6 +35,7 @@ In addition, weights can be calculated differently for different estimands. Here
 
 ```r
 library(WeightIt)
+#> Warning: package 'WeightIt' was built under R version 4.3.2
 
 example_dataframe <- as.data.frame(example_matrix)
 example_dataframe$int <- 1 - example_dataframe$ext
@@ -44,7 +46,7 @@ weightit_model <- weightit(
   method = "gbm",
   estimand = "ATT"
 )
-#> Warning: No `criterion` was provided. Using "smd.mean"FALSETRUE.
+#> Warning: No `criterion` was provided. Using "smd.mean".
 summary(weightit_model)
 #>                  Summary of weights
 #> 
@@ -82,6 +84,7 @@ We can use the `cobalt` package to assess balance with `bal.plot()`.
 
 ```r
 library(cobalt)
+#> Warning: package 'cobalt' was built under R version 4.3.2
 bal.plot(weightit_model)
 ```
 
@@ -384,13 +387,13 @@ knitr::kable(cbind(models = names(models), results_table), digits = 3)
 
 |models         |variable |  mean| median|    sd|    q5|   q95|
 |:--------------|:--------|-----:|------:|-----:|-----:|-----:|
-|No borrowing   |HR_trt   | 0.896|  0.879| 0.179| 0.635| 1.214|
-|Full borrowing |HR_trt   | 0.387|  0.385| 0.049| 0.311| 0.471|
-|Power Prior 01 |HR_trt   | 0.633|  0.625| 0.106| 0.475| 0.819|
-|ATT Weights    |HR_trt   | 0.893|  0.884| 0.127| 0.700| 1.114|
-|IPTW + BDB     |HR_trt   | 0.893|  0.877| 0.164| 0.654| 1.186|
-|Matching 1:1   |HR_trt   | 0.796|  0.785| 0.130| 0.601| 1.028|
-|BDB            |HR_trt   | 0.873|  0.855| 0.176| 0.620| 1.190|
+|No borrowing   |HR_trt   | 0.894|  0.877| 0.178| 0.636| 1.210|
+|Full borrowing |HR_trt   | 0.388|  0.386| 0.049| 0.311| 0.473|
+|Power Prior 01 |HR_trt   | 0.634|  0.626| 0.105| 0.476| 0.821|
+|ATT Weights    |HR_trt   | 0.895|  0.886| 0.126| 0.701| 1.116|
+|IPTW + BDB     |HR_trt   | 0.897|  0.882| 0.165| 0.656| 1.188|
+|Matching 1:1   |HR_trt   | 0.793|  0.784| 0.128| 0.600| 1.018|
+|BDB            |HR_trt   | 0.871|  0.852| 0.175| 0.619| 1.187|
 
 
 

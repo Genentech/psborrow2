@@ -4,7 +4,7 @@ bibliography: references.bib
 author: 
   - Manoj Khanal <khanal_manoj@lilly.com>
   - Eli Lilly & Company
-date: "2024-04-12"
+date: "2025-01-27"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{2. Matching and Weighting Application with Dynamic Borrowing}
@@ -126,12 +126,18 @@ We first load the following libraries.
 ```r
 #Loading the libraries
 library(R2jags)
+#> Warning: package 'R2jags' was built under R version 4.3.2
+#> Warning: package 'coda' was built under R version 4.3.2
 library(psborrow2)
 library(cmdstanr)
+#> Warning: package 'cmdstanr' was built under R version 4.3.3
 library(posterior)
 library(bayesplot)
+#> Warning: package 'bayesplot' was built under R version 4.3.2
 library(kableExtra)
+#> Warning: package 'kableExtra' was built under R version 4.3.2
 library(survival)
+#> Warning: package 'survival' was built under R version 4.3.3
 ```
 
 ## Example data
@@ -335,13 +341,13 @@ results.exp.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 12.1 seconds.
-#> Chain 2 finished in 12.8 seconds.
-#> Chain 3 finished in 10.9 seconds.
+#> Chain 1 finished in 13.6 seconds.
+#> Chain 2 finished in 12.2 seconds.
+#> Chain 3 finished in 12.8 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 11.9 seconds.
-#> Total execution time: 36.1 seconds.
+#> Mean chain execution time: 12.8 seconds.
+#> Total execution time: 38.9 seconds.
 
 draws1 <- results.exp.psborrow$draws()
 draws1 <- rename_draws_covariates(draws1, anls_obj)
@@ -354,12 +360,12 @@ results.exp.psborrow$summary()
 #> # A tibble: 6 × 10
 #>   variable     mean    median     sd    mad          q5      q95  rhat ess_bulk
 #>   <chr>       <dbl>     <dbl>  <dbl>  <dbl>       <dbl>    <dbl> <dbl>    <dbl>
-#> 1 lp__     -718.    -718.     1.49   1.28   -721.       -716.     1.00   10631.
-#> 2 beta_trt   -0.359   -0.360  0.109  0.108    -0.536      -0.176  1.00   13963.
-#> 3 tau         0.120    0.0531 0.179  0.0723    0.000497    0.468  1.00   12567.
-#> 4 alpha[1]   -0.619   -0.618  0.0908 0.0904   -0.773      -0.475  1.00   13720.
-#> 5 alpha[2]    2.36     2.38   0.370  0.361     1.71        2.93   1.00   18458.
-#> 6 HR_trt      0.703    0.698  0.0773 0.0755    0.585       0.839  1.00   13963.
+#> 1 lp__     -718.    -718.     1.51   1.29   -721.       -716.     1.00   10716.
+#> 2 beta_trt   -0.357   -0.359  0.110  0.111    -0.536      -0.175  1.00   11632.
+#> 3 tau         0.119    0.0505 0.183  0.0694    0.000443    0.470  1.00   12583.
+#> 4 alpha[1]   -0.621   -0.620  0.0910 0.0924   -0.772      -0.474  1.00   11977.
+#> 5 alpha[2]    2.36     2.38   0.374  0.368     1.70        2.93   1.00   18690.
+#> 6 HR_trt      0.704    0.699  0.0778 0.0773    0.585       0.839  1.00   11632.
 #> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
@@ -396,11 +402,11 @@ summarize_draws(draws1, ~ quantile(.x, probs = c(0.025, 0.975)))
 #>   variable                                `2.5%`  `97.5%`
 #>   <chr>                                    <dbl>    <dbl>
 #> 1 lp__                               -722.       -716.   
-#> 2 treatment log HR                     -0.572      -0.141
-#> 3 commensurability parameter            0.000113    0.624
-#> 4 baseline log hazard rate, internal   -0.803      -0.448
+#> 2 treatment log HR                     -0.569      -0.141
+#> 3 commensurability parameter            0.000109    0.628
+#> 4 baseline log hazard rate, internal   -0.801      -0.448
 #> 5 baseline log hazard rate, external    1.56        3.02 
-#> 6 treatment HR                          0.565       0.869
+#> 6 treatment HR                          0.566       0.869
 ```
 
 We can graph other plots that help us evaluate convergence and diagnose problems with the MCMC sampler, such as trace plot.
@@ -535,13 +541,13 @@ results.weib.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 26.0 seconds.
-#> Chain 2 finished in 26.6 seconds.
-#> Chain 3 finished in 29.2 seconds.
+#> Chain 1 finished in 30.6 seconds.
+#> Chain 2 finished in 28.8 seconds.
+#> Chain 3 finished in 33.1 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 27.3 seconds.
-#> Total execution time: 82.2 seconds.
+#> Mean chain execution time: 30.8 seconds.
+#> Total execution time: 92.8 seconds.
 
 draws2 <- results.weib.psborrow$draws()
 draws2 <- rename_draws_covariates(draws2, anls_obj)
@@ -554,13 +560,13 @@ results.weib.psborrow$summary()
 #> # A tibble: 7 × 10
 #>   variable          mean   median     sd    mad       q5      q95  rhat ess_bulk
 #>   <chr>            <dbl>    <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl>    <dbl>
-#> 1 lp__          -708.    -7.07e+2 1.67   1.49   -7.11e+2 -706.     1.00   11161.
-#> 2 beta_trt        -0.304 -3.03e-1 0.111  0.112  -4.84e-1   -0.120  1.00   16356.
-#> 3 shape_weibull    0.836  8.36e-1 0.0322 0.0317  7.83e-1    0.889  1.00   21704.
-#> 4 tau              0.177  7.56e-2 0.281  0.104   6.44e-4    0.688  1.00   14385.
-#> 5 alpha[1]        -0.508 -5.07e-1 0.0931 0.0934 -6.63e-1   -0.357  1.00   16280.
-#> 6 alpha[2]         1.97   1.99e+0 0.380  0.373   1.32e+0    2.56   1.00   19904.
-#> 7 HR_trt           0.743  7.38e-1 0.0826 0.0827  6.16e-1    0.887  1.00   16356.
+#> 1 lp__          -708.    -7.07e+2 1.68   1.49   -7.11e+2 -706.     1.00   11530.
+#> 2 beta_trt        -0.302 -3.03e-1 0.110  0.109  -4.82e-1   -0.120  1.00   16857.
+#> 3 shape_weibull    0.836  8.35e-1 0.0322 0.0322  7.83e-1    0.890  1.00   21009.
+#> 4 tau              0.180  7.77e-2 0.288  0.106   6.77e-4    0.693  1.00   14413.
+#> 5 alpha[1]        -0.509 -5.08e-1 0.0931 0.0934 -6.62e-1   -0.358  1.00   16847.
+#> 6 alpha[2]         1.97   2.00e+0 0.386  0.380   1.29e+0    2.57   1.00   20959.
+#> 7 HR_trt           0.744  7.39e-1 0.0823 0.0804  6.17e-1    0.887  1.00   16857.
 #> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
@@ -597,12 +603,12 @@ summarize_draws(draws2, ~ quantile(.x, probs = c(0.025, 0.975)))
 #>   variable                                `2.5%`   `97.5%`
 #>   <chr>                                    <dbl>     <dbl>
 #> 1 lp__                               -712.       -705.    
-#> 2 treatment log HR                     -0.517      -0.0851
+#> 2 treatment log HR                     -0.515      -0.0855
 #> 3 Weibull shape parameter               0.774       0.900 
-#> 4 commensurability parameter            0.000151    0.929 
-#> 5 baseline log hazard rate, internal   -0.694      -0.330 
-#> 6 baseline log hazard rate, external    1.17        2.65  
-#> 7 treatment HR                          0.596       0.918
+#> 4 commensurability parameter            0.000170    0.945 
+#> 5 baseline log hazard rate, internal   -0.692      -0.331 
+#> 6 baseline log hazard rate, external    1.15        2.66  
+#> 7 treatment HR                          0.598       0.918
 ```
 
 We can see other plots that help us evaluate convergence and diagnose problems with the MCMC sampler, such as trace plot.
@@ -1211,13 +1217,13 @@ results.no.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 4.0 seconds.
-#> Chain 2 finished in 4.0 seconds.
-#> Chain 3 finished in 4.4 seconds.
+#> Chain 1 finished in 4.2 seconds.
+#> Chain 2 finished in 4.4 seconds.
+#> Chain 3 finished in 4.1 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 4.1 seconds.
-#> Total execution time: 12.7 seconds.
+#> Mean chain execution time: 4.2 seconds.
+#> Total execution time: 13.2 seconds.
 
 draws3 <- results.no.psborrow$draws()
 draws3 <- rename_draws_covariates(draws3, anls_obj)
@@ -1230,10 +1236,10 @@ results.no.psborrow$summary()
 #> # A tibble: 4 × 10
 #>   variable     mean   median     sd    mad       q5      q95  rhat ess_bulk
 #>   <chr>       <dbl>    <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl>    <dbl>
-#> 1 lp__     -727.    -727.    0.982  0.694  -729.    -726.     1.00   10388.
-#> 2 beta_trt   -0.355   -0.355 0.109  0.108    -0.533   -0.178  1.00    9046.
-#> 3 alpha      -0.623   -0.622 0.0906 0.0905   -0.775   -0.476  1.00    9092.
-#> 4 HR_trt      0.705    0.701 0.0769 0.0761    0.587    0.837  1.00    9046.
+#> 1 lp__     -727.    -727.    0.983  0.706  -729.    -726.     1.00   10417.
+#> 2 beta_trt   -0.355   -0.356 0.109  0.109    -0.534   -0.174  1.00    8852.
+#> 3 alpha      -0.623   -0.622 0.0910 0.0901   -0.776   -0.477  1.00    8695.
+#> 4 HR_trt      0.705    0.700 0.0773 0.0757    0.586    0.840  1.00    8852.
 #> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
@@ -1261,9 +1267,9 @@ summarize_draws(draws3, ~ quantile(.x, probs = c(0.025, 0.975)))
 #>   variable                   `2.5%`  `97.5%`
 #>   <chr>                       <dbl>    <dbl>
 #> 1 lp__                     -730.    -726.   
-#> 2 treatment log HR           -0.568   -0.141
-#> 3 baseline log hazard rate   -0.804   -0.451
-#> 4 treatment HR                0.567    0.869
+#> 2 treatment log HR           -0.568   -0.139
+#> 3 baseline log hazard rate   -0.806   -0.451
+#> 4 treatment HR                0.567    0.870
 ```
 
 We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
@@ -1374,13 +1380,13 @@ results.full.psborrow<- mcmc_sample(anls_obj,
 )
 #> Running MCMC with 3 sequential chains...
 #> 
-#> Chain 1 finished in 5.5 seconds.
-#> Chain 2 finished in 4.9 seconds.
-#> Chain 3 finished in 4.7 seconds.
+#> Chain 1 finished in 6.1 seconds.
+#> Chain 2 finished in 5.3 seconds.
+#> Chain 3 finished in 5.9 seconds.
 #> 
 #> All 3 chains finished successfully.
-#> Mean chain execution time: 5.0 seconds.
-#> Total execution time: 15.5 seconds.
+#> Mean chain execution time: 5.7 seconds.
+#> Total execution time: 17.6 seconds.
 
 draws4 <- results.full.psborrow$draws()
 draws4 <- rename_draws_covariates(draws4, anls_obj)
@@ -1393,10 +1399,10 @@ results.full.psborrow$summary()
 #> # A tibble: 4 × 10
 #>   variable     mean   median     sd    mad       q5      q95  rhat ess_bulk
 #>   <chr>       <dbl>    <dbl>  <dbl>  <dbl>    <dbl>    <dbl> <dbl>    <dbl>
-#> 1 lp__     -747.    -747.    0.994  0.716  -749.    -746.     1.00   14116.
-#> 2 beta_trt   -1.51    -1.51  0.0768 0.0773   -1.64    -1.39   1.00   12217.
-#> 3 alpha       0.534    0.535 0.0468 0.0467    0.456    0.611  1.00   12320.
-#> 4 HR_trt      0.221    0.220 0.0170 0.0170    0.194    0.250  1.00   12217.
+#> 1 lp__     -747.    -747.    1.01   0.710  -749.    -746.     1.00   13060.
+#> 2 beta_trt   -1.51    -1.51  0.0765 0.0762   -1.64    -1.39   1.00   10894.
+#> 3 alpha       0.534    0.535 0.0467 0.0463    0.458    0.610  1.00   10829.
+#> 4 HR_trt      0.221    0.220 0.0169 0.0168    0.194    0.250  1.00   10894.
 #> # ℹ 1 more variable: ess_tail <dbl>
 ```
 
@@ -1424,9 +1430,9 @@ summarize_draws(draws4, ~ quantile(.x, probs = c(0.025, 0.975)))
 #>   variable                   `2.5%`  `97.5%`
 #>   <chr>                       <dbl>    <dbl>
 #> 1 lp__                     -750.    -746.   
-#> 2 treatment log HR           -1.67    -1.36 
+#> 2 treatment log HR           -1.66    -1.36 
 #> 3 baseline log hazard rate    0.442    0.625
-#> 4 treatment HR                0.189    0.256
+#> 4 treatment HR                0.190    0.256
 ```
 
 We can see other plots that help us understand and diagnose problems with the MCMC sampler, such as trace plot.
@@ -1549,71 +1555,21 @@ colnames(out)[2:4] = c("Hazard Ratio","Lower 95% CI","Upper 95% CI")
 ```
 
 The hazard ratio estimates and $95\%$ credible intervals for all the methods are shown below.
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> Method </th>
-   <th style="text-align:right;"> Hazard Ratio </th>
-   <th style="text-align:right;"> Lower 95% CI </th>
-   <th style="text-align:right;"> Upper 95% CI </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Exponential distribution (constant hazard) and gamma prior </td>
-   <td style="text-align:right;"> 0.7026 </td>
-   <td style="text-align:right;"> 0.5645 </td>
-   <td style="text-align:right;"> 0.8689 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Piecewise exponential distribution (proportional hazard) and power prior </td>
-   <td style="text-align:right;"> 0.6608 </td>
-   <td style="text-align:right;"> 0.5305 </td>
-   <td style="text-align:right;"> 0.8125 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Weibull distribution (proportional hazard) and gamma prior </td>
-   <td style="text-align:right;"> 0.7428 </td>
-   <td style="text-align:right;"> 0.5961 </td>
-   <td style="text-align:right;"> 0.9184 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Piecewise exponential distribution (proportional hazard) and commensurate prior </td>
-   <td style="text-align:right;"> 0.7018 </td>
-   <td style="text-align:right;"> 0.5697 </td>
-   <td style="text-align:right;"> 0.8521 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Exponential distribution (constant hazard): No borrowing </td>
-   <td style="text-align:right;"> 0.7052 </td>
-   <td style="text-align:right;"> 0.5667 </td>
-   <td style="text-align:right;"> 0.8687 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Exponential distribution (constant hazard): Full borrowing </td>
-   <td style="text-align:right;"> 0.2209 </td>
-   <td style="text-align:right;"> 0.1892 </td>
-   <td style="text-align:right;"> 0.2556 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Cox model (Frequentist approach): No borrowing </td>
-   <td style="text-align:right;"> 0.7757 </td>
-   <td style="text-align:right;"> 0.6246 </td>
-   <td style="text-align:right;"> 0.9633 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Cox model (Frequentist approach): Full borrowing </td>
-   <td style="text-align:right;"> 0.3327 </td>
-   <td style="text-align:right;"> 0.2845 </td>
-   <td style="text-align:right;"> 0.3890 </td>
-  </tr>
-</tbody>
-<tfoot>
-<tr>
-<td style = 'padding: 0; border:0;' colspan='100%'><sup></sup> CI: Credible Interval for Bayesian methods and Confidence interval for Frequentist method</td>
-</tr>
-</tfoot>
-</table>
+
+
+|Method                                                                          | Hazard Ratio| Lower 95% CI| Upper 95% CI|
+|:-------------------------------------------------------------------------------|------------:|------------:|------------:|
+|Exponential distribution (constant hazard) and gamma prior                      |       0.7040|       0.5660|       0.8688|
+|Piecewise exponential distribution (proportional hazard) and power prior        |       0.6608|       0.5305|       0.8125|
+|Weibull distribution (proportional hazard) and gamma prior                      |       0.7437|       0.5978|       0.9180|
+|Piecewise exponential distribution (proportional hazard) and commensurate prior |       0.7018|       0.5697|       0.8521|
+|Exponential distribution (constant hazard): No borrowing                        |       0.7054|       0.5666|       0.8699|
+|Exponential distribution (constant hazard): Full borrowing                      |       0.2209|       0.1896|       0.2560|
+|Cox model (Frequentist approach): No borrowing                                  |       0.7757|       0.6246|       0.9633|
+|Cox model (Frequentist approach): Full borrowing                                |       0.3327|       0.2845|       0.3890|
+
+__Note:__
+CI: Credible Interval for Bayesian methods and Confidence interval for Frequentist method
 
 
 

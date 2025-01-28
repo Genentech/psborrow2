@@ -1,3 +1,9 @@
+# psborrow2 0.0.4
+
+- Additional bug fixes impacting continuous endpoints
+- Additional test cases
+- Internal refactoring to improve code quality
+
 # psborrow2 0.0.3
 
 - Addition of data generation functions for simulation studies
