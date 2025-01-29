@@ -35,9 +35,7 @@ Creates a matrix suitable for \code{\link[=create_analysis_obj]{create_analysis_
 allows transformations of covariates specified with a formula.
 }
 \examples{
-library(survival)
-data("diabetic")
-dat <- diabetic
+dat <- survival::diabetic
 dat$ext <- dat$trt == 0 & dat$id > 1000
 data_mat <- create_data_matrix(
   dat,
