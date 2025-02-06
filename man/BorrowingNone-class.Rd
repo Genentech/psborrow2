@@ -20,8 +20,9 @@ should not be created directly but by the constructor
 }}
 
 \seealso{
-Other borrowing classes: 
+Other borrowing classes:
 \code{\link{Borrowing-class}},
+\code{\link{BorrowingFixedPowerPrior-class}},
 \code{\link{BorrowingFull-class}},
 \code{\link{BorrowingHierarchicalCommensurate-class}}
 }
