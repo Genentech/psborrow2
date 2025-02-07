@@ -20,6 +20,6 @@ Fixed Power Prior Borrowing
 \examples{
 borrowing_fixed_power_prior(
   ext_flag_col = "ext",
-  power_col = "power")
+  power_col = "power"
 )
 }

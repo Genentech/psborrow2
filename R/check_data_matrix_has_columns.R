@@ -39,8 +39,8 @@ check_data_matrix_has_columns <- function(object) {
     error_col <- c(error_col, get_vars(object@treatment))
   }
 
-  if (!get_vars(object@borrowing) %in% data_cols) {
-    error_col <- c(error_col, get_vars(object@borrowing))
+  if (any(missing_outcomes <- !get_vars(object@borrowing) %in% data_cols)) {
+    error_col <- c(error_col, get_vars(object@borrowing)[missing_outcomes])
   }
 
   missing_covs <- setdiff(get_vars(object@covariates), data_cols)

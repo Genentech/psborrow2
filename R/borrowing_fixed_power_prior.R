@@ -27,7 +27,7 @@
 #' @examples
 #' borrowing_fixed_power_prior(
 #'   ext_flag_col = "ext",
-#'   power_col = "power")
+#'   power_col = "power"
 #' )
 borrowing_fixed_power_prior <- function(ext_flag_col, power_col) {
   assert_string(ext_flag_col)
@@ -51,6 +51,16 @@ setMethod(
   f = "trim_cols",
   signature = "BorrowingFixedPowerPrior",
   definition = function(borrowing_object, analysis_object) {
-    c(ext_flag_col = object@ext_flag_col, power_col = power_col)
+    get_vars(analysis_object)
+  }
+)
+# get vars -----
+#' @rdname get_vars
+#' @include generics.R
+setMethod(
+  f = "get_vars",
+  signature = "BorrowingFixedPowerPrior",
+  definition = function(object) {
+    c(ext_flag_col = object@ext_flag_col, power_col = object@power_col)
   }
 )
