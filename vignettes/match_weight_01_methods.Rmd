@@ -4,7 +4,7 @@ bibliography: references.bib
 author: 
   - Manoj Khanal <khanal_manoj@lilly.com>
   - Eli Lilly & Company
-date: "2025-01-28"
+date: "2025-02-11"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{1. Matching and Weighting Methods}
@@ -105,7 +105,7 @@ trial.data <- rcorrvar2(n = n_t, k_cont = k_cont, k_cat = k_cat, k_nb = 0,
 #> 
 #>  Constants: Distribution  5  
 #> 
-#> Constants calculation time: 0.004 minutes 
+#> Constants calculation time: 0.003 minutes 
 #> Intercorrelation calculation time: 0.002 minutes 
 #> Error loop calculation time: 0 minutes 
 #> Total Simulation time: 0.006 minutes
