@@ -49,3 +49,23 @@ test_that("data matrix trimming works with No Borrowing", {
     colnames(result), c("time", "cnsr", "trt", "cov1")
   )
 })
+
+
+test_that("data matrix trimming works with Fixed Power Prior Borrowing", {
+  object <- psborrow2:::.analysis_obj(
+    data_matrix = cbind(example_matrix, power = runif(500)),
+    outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 1000)),
+    treatment = treatment_details("trt", trt_prior = prior_normal(0, 1000)),
+    covariates = add_covariates("cov1", prior_normal(0, 1000)),
+    borrowing = borrowing_fixed_power_prior(
+      ext_flag_col = "ext",
+      power_col = "power"
+    )
+  )
+
+  result <- psborrow2:::trim_data_matrix(object)
+  expect_matrix(result, mode = "numeric", nrows = 500, ncols = 6)
+  expect_set_equal(
+    colnames(result), c("time", "cnsr", "ext", "trt", "power", "cov1")
+  )
+})

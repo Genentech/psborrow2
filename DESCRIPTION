@@ -122,6 +122,7 @@ Collate:
     'outcome_class.R'
     'analysis_class.R'
     'borrowing_details.R'
+    'borrowing_fixed_power_prior.R'
     'borrowing_full.R'
     'borrowing_hierarchical_commensurate.R'
     'borrowing_none.R'
