@@ -89,6 +89,9 @@ setMethod(
   signature = c("OutcomeSurvExponentialWeibull", "BorrowingFixedPowerPrior", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
     data_matrix <- trim_data_matrix(analysis_obj)
+
+    assert_numeric(data_matrix[, borrowing@power_col], lower = 0, upper = 1, any.missing = FALSE)
+
     data_in <- list(
       N = nrow(data_matrix),
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
@@ -169,6 +172,8 @@ setMethod(
     analysis_obj@data_matrix <- trim_data_matrix(analysis_obj)
     analysis_obj <- cast_mat_to_long_pem(analysis_obj)
     data_matrix <- analysis_obj@data_matrix
+
+    assert_numeric(data_matrix[, borrowing@power_col], lower = 0, upper = 1, any.missing = FALSE)
 
     n_periods <- analysis_obj@outcome@n_periods
     Z <- matrix(0, nrow = nrow(data_matrix), ncol = n_periods)
@@ -253,6 +258,9 @@ setMethod(
   signature = c("OutcomeBinaryLogistic", "BorrowingFixedPowerPrior", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
     data_matrix <- trim_data_matrix(analysis_obj)
+
+    assert_numeric(data_matrix[, borrowing@power_col], lower = 0, upper = 1, any.missing = FALSE)
+
     data_in <- list(
       N = nrow(data_matrix),
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
@@ -317,6 +325,9 @@ setMethod(
   signature = c("OutcomeContinuousNormal", "BorrowingFixedPowerPrior", "ANY"),
   definition = function(outcome, borrowing, analysis_obj) {
     data_matrix <- trim_data_matrix(analysis_obj)
+
+    assert_numeric(data_matrix[, borrowing@power_col], lower = 0, upper = 1, any.missing = FALSE)
+
     data_in <- list(
       N = nrow(data_matrix),
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
