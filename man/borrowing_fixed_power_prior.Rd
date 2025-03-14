@@ -4,12 +4,12 @@
 \alias{borrowing_fixed_power_prior}
 \title{Fixed Power Prior Borrowing}
 \usage{
-borrowing_fixed_power_prior(ext_flag_col, power_col)
+borrowing_fixed_power_prior(ext_flag_col, power_par)
 }
 \arguments{
 \item{ext_flag_col}{character. Name of the external flag column in the matrix.}
 
-\item{power_col}{character. Name of the column containing values to be used as the power parameters.}
+\item{power_par}{numeric. Fixed power parameter for all external data. Must be between 0 and 1.}
 }
 \value{
 Object of class \code{\link[=BorrowingFixedPowerPrior-class]{BorrowingFixedPowerPrior}}.
@@ -20,6 +20,6 @@ Fixed Power Prior Borrowing
 \examples{
 borrowing_fixed_power_prior(
   ext_flag_col = "ext",
-  power_col = "power"
+  power_par = 0.5
 )
 }

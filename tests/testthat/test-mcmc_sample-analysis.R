@@ -468,7 +468,7 @@ test_that("mcmc_sample for Analysis works for normal with full borrowing", {
   outcome <- outcome_cont_normal(
     continuous_var = "outcome",
     baseline_prior = prior_normal(0, 100),
-    std_dev_prior=prior_half_cauchy(1, 5)
+    std_dev_prior = prior_half_cauchy(1, 5)
   )
   borrowing <- borrowing_full(
     ext_flag_col = "ext"
@@ -479,7 +479,7 @@ test_that("mcmc_sample for Analysis works for normal with full borrowing", {
   )
   anls_obj <- create_analysis_obj(
     data_matrix = cbind(example_matrix, outcome = outcome_col),
-    outcome =  outcome,
+    outcome = outcome,
     borrowing = borrowing,
     treatment = treatment,
     quiet = FALSE
@@ -509,7 +509,7 @@ test_that("mcmc_sample for Analysis works for normal with BDB", {
   outcome <- outcome_cont_normal(
     continuous_var = "outcome",
     baseline_prior = prior_normal(0, 100),
-    std_dev_prior=prior_half_cauchy(1, 5)
+    std_dev_prior = prior_half_cauchy(1, 5)
   )
   borrowing <- borrowing_hierarchical_commensurate(
     ext_flag_col = "ext",
@@ -521,7 +521,7 @@ test_that("mcmc_sample for Analysis works for normal with BDB", {
   )
   anls_obj <- create_analysis_obj(
     data_matrix = cbind(example_matrix, outcome = outcome_col),
-    outcome =  outcome,
+    outcome = outcome,
     borrowing = borrowing,
     treatment = treatment,
     quiet = FALSE
@@ -602,7 +602,7 @@ test_that("mcmc_sample for Analysis works for full borrowing, piecewise exponent
   skip_on_cran()
   skip_on_ci()
   library(eha)
-  cuts = c(1, 5, 10)
+  cuts <- c(1, 5, 10)
   pem_eha <- eha::pchreg(survival::Surv(time, status) ~ trt + cov1 + cov2, data = as.data.frame(psborrow2::example_matrix), cuts = c(0, cuts, 1000))
 
   full_pem_bayes_ao <- create_analysis_obj(
@@ -619,30 +619,29 @@ test_that("mcmc_sample for Analysis works for full borrowing, piecewise exponent
     chains = 2
   )
   expect_r6(full_pem_bayes, "CmdStanMCMC")
-  expect_equal(full_pem_bayes$summary("beta_trt")[[2]], pem_eha$coefficients[['trt']], tolerance = 0.05)
-  expect_equal(full_pem_bayes$summary("beta[1]")[[2]], pem_eha$coefficients[['cov1']], tolerance = 0.05)
-  expect_equal(full_pem_bayes$summary("beta[2]")[[2]], pem_eha$coefficients[['cov2']], tolerance = 0.05)
+  expect_equal(full_pem_bayes$summary("beta_trt")[[2]], pem_eha$coefficients[["trt"]], tolerance = 0.05)
+  expect_equal(full_pem_bayes$summary("beta[1]")[[2]], pem_eha$coefficients[["cov1"]], tolerance = 0.05)
+  expect_equal(full_pem_bayes$summary("beta[2]")[[2]], pem_eha$coefficients[["cov2"]], tolerance = 0.05)
 
   # Check that the cut points are the same
   expect_equal(full_pem_bayes$summary("alpha[1]")[[2]], log(pem_eha$hazards[1]), tolerance = 0.05)
   expect_equal(full_pem_bayes$summary("alpha[2]")[[2]], log(pem_eha$hazards[2]), tolerance = 0.05)
   expect_equal(full_pem_bayes$summary("alpha[3]")[[2]], log(pem_eha$hazards[3]), tolerance = 0.05)
   expect_equal(full_pem_bayes$summary("alpha[4]")[[2]], log(pem_eha$hazards[4]), tolerance = 0.05)
-
 })
 
 # Piecewise exponential, BDB ----
 test_that("mcmc_sample for Analysis works for BDB, piecewise exponential dist", {
   skip_on_cran()
   skip_on_ci()
-  cuts = c(1, 5, 10)
+  cuts <- c(1, 5, 10)
 
   # Make commensurate matrix
-  internal_as_external <- example_matrix[example_matrix[, 'ext'] == 0 & example_matrix[,'trt'] == 0,]
-  internal_as_external[, 'ext'] <- 1
-  internal_as_external[, 'id'] <- seq(10000, 10000 + nrow(internal_as_external) - 1)
+  internal_as_external <- example_matrix[example_matrix[, "ext"] == 0 & example_matrix[, "trt"] == 0, ]
+  internal_as_external[, "ext"] <- 1
+  internal_as_external[, "id"] <- seq(10000, 10000 + nrow(internal_as_external) - 1)
   commensurate_matrix <- rbind(
-    example_matrix[example_matrix[,'ext'] == 0,],
+    example_matrix[example_matrix[, "ext"] == 0, ],
     internal_as_external
   )
 
@@ -711,7 +710,6 @@ test_that("mcmc_sample for Analysis works for BDB, piecewise exponential dist", 
   expect_true(tau_commens_aggr > tau_incommens_aggr)
   expect_true(tau_commens_aggr > tau_commens_conserv)
   expect_true(tau_incommens_aggr > tau_incommens_conserv)
-
 })
 
 # Fixed Power Prior ------
@@ -729,11 +727,11 @@ test_that("mcmc_sample for Analysis works for fixed power prior borrowing, expon
 
 
   fpp_exp_bayes_ao <- create_analysis_obj(
-    data_matrix = cbind(example_matrix, power = power),
+    data_matrix = example_matrix,
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
     borrowing = borrowing_fixed_power_prior(
       ext_flag_col = "ext",
-      power_col = "power"
+      power_par = 0.7
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
@@ -764,12 +762,12 @@ test_that("mcmc_sample for Analysis works for fixed power prior, exponential dis
   ))[["trt"]])
 
   fpp_exp_bayes_c1_ao <- create_analysis_obj(
-    data_matrix = cbind(example_matrix, power = power),
+    data_matrix = example_matrix,
     covariates = add_covariates("cov1", prior_normal(0, 100000)),
     outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 100000)),
     borrowing = borrowing_fixed_power_prior(
       ext_flag_col = "ext",
-      power_col = "power"
+      power_par = 0.7
     ),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
@@ -801,14 +799,14 @@ test_that("mcmc_sample for Analysis works for fixed power prior borrowing, norma
   )
   borrowing <- borrowing_fixed_power_prior(
     ext_flag_col = "ext",
-    power_col = "power"
+    power_par = 0.5
   )
   treatment <- treatment_details(
     trt_flag_col = "trt",
     trt_prior = prior_normal(0, 1000)
   )
   anls_obj <- create_analysis_obj(
-    data_matrix = cbind(example_matrix, outcome = outcome_col, power = power),
+    data_matrix = cbind(example_matrix, outcome = outcome_col),
     outcome = outcome,
     borrowing = borrowing,
     treatment = treatment,
@@ -834,9 +832,9 @@ test_that("mcmc_sample for Analysis works for fixed power prior borrowing, logis
   set.seed(123)
   power <- 1 - 0.5 * example_matrix[, "ext"]
   fpp_bin_bayes_ao <- create_analysis_obj(
-    data_matrix = cbind(example_matrix, power = power),
+    data_matrix = example_matrix,
     outcome = outcome_bin_logistic("resp", prior_normal(0, 100000)),
-    borrowing = borrowing_fixed_power_prior("ext", power_col = "power"),
+    borrowing = borrowing_fixed_power_prior("ext", power_par = 0.5),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
@@ -867,13 +865,12 @@ test_that("mcmc_sample for Analysis works for fixed power prior borrowing, PEM d
     internal_as_external
   )
   power <- 1 - 0.5 * data_matrix[, "ext"]
-  data_matrix <- cbind(data_matrix, power = power)
 
   ## Conservative commensurate
   fpp_pem_ao <- create_analysis_obj(
     data_matrix = data_matrix,
     outcome = outcome_surv_pem("time", "cnsr", prior_normal(0, 100000), cut_points = cuts),
-    borrowing = borrowing_fixed_power_prior("ext", "power"),
+    borrowing = borrowing_fixed_power_prior("ext", 0.5),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 
@@ -908,7 +905,7 @@ test_that("mcmc_sample for Analysis works for fixed power prior borrowing, Weibu
       prior_normal(0, 100000),
       prior_normal(0, 100000)
     ),
-    borrowing = borrowing_fixed_power_prior("ext", "power"),
+    borrowing = borrowing_fixed_power_prior("ext", 0.5),
     treatment = treatment_details("trt", prior_normal(0, 100000))
   )
 

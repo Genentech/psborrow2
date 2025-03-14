@@ -9,7 +9,7 @@
 .borrowing_fixed_power_prior <- setClass(
   "BorrowingFixedPowerPrior",
   slots = c(
-    power_col = "character"
+    power_par = "numeric"
   ),
   prototype = list(
     method_name = "Borrowing with fixed power prior"
@@ -20,19 +20,19 @@
 #' Fixed Power Prior Borrowing
 #'
 #' @param ext_flag_col character. Name of the external flag column in the matrix.
-#' @param power_col character. Name of the column containing values to be used as the power parameters.
+#' @param power_par numeric. Fixed power parameter for all external data. Must be between 0 and 1.
 #'
 #' @return Object of class [`BorrowingFixedPowerPrior`][BorrowingFixedPowerPrior-class].
 #' @export
 #' @examples
 #' borrowing_fixed_power_prior(
 #'   ext_flag_col = "ext",
-#'   power_col = "power"
+#'   power_par = 0.5
 #' )
-borrowing_fixed_power_prior <- function(ext_flag_col, power_col) {
+borrowing_fixed_power_prior <- function(ext_flag_col, power_par) {
   assert_string(ext_flag_col)
-  assert_string(power_col)
-  .borrowing_fixed_power_prior(ext_flag_col = ext_flag_col, power_col = power_col)
+  assert_number(power_par, lower = 0, upper = 1)
+  .borrowing_fixed_power_prior(ext_flag_col = ext_flag_col, power_par = power_par)
 }
 
 # show ----
@@ -61,6 +61,6 @@ setMethod(
   f = "get_vars",
   signature = "BorrowingFixedPowerPrior",
   definition = function(object) {
-    c(ext_flag_col = object@ext_flag_col, power_col = object@power_col)
+    c(ext_flag_col = object@ext_flag_col)
   }
 )

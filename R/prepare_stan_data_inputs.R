@@ -90,14 +90,16 @@ setMethod(
   definition = function(outcome, borrowing, analysis_obj) {
     data_matrix <- trim_data_matrix(analysis_obj)
 
-    assert_numeric(data_matrix[, borrowing@power_col], lower = 0, upper = 1, any.missing = FALSE)
+    assert_number(borrowing@power_par, lower = 0, upper = 1)
+    power <- 1 - (1 - borrowing@power_par) * data_matrix[, borrowing@ext_flag_col]
+
 
     data_in <- list(
       N = nrow(data_matrix),
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
       time = data_matrix[, outcome@time_var],
       cens = data_matrix[, outcome@cens_var],
-      power = data_matrix[, borrowing@power_col]
+      power = power
     )
 
     # Add covariates and weights
@@ -173,7 +175,8 @@ setMethod(
     analysis_obj <- cast_mat_to_long_pem(analysis_obj)
     data_matrix <- analysis_obj@data_matrix
 
-    assert_numeric(data_matrix[, borrowing@power_col], lower = 0, upper = 1, any.missing = FALSE)
+    assert_number(borrowing@power_par, lower = 0, upper = 1)
+    power <- 1 - (1 - borrowing@power_par) * data_matrix[, borrowing@ext_flag_col]
 
     n_periods <- analysis_obj@outcome@n_periods
     Z <- matrix(0, nrow = nrow(data_matrix), ncol = n_periods)
@@ -188,7 +191,7 @@ setMethod(
       cens = data_matrix[, outcome@cens_var],
       N_periods = max(data_matrix[, "__period__"]),
       Z = Z,
-      power = data_matrix[, borrowing@power_col]
+      power = power
     )
 
     # Add covariates and weights
@@ -259,13 +262,14 @@ setMethod(
   definition = function(outcome, borrowing, analysis_obj) {
     data_matrix <- trim_data_matrix(analysis_obj)
 
-    assert_numeric(data_matrix[, borrowing@power_col], lower = 0, upper = 1, any.missing = FALSE)
+    assert_number(borrowing@power_par, lower = 0, upper = 1)
+    power <- 1 - (1 - borrowing@power_par) * data_matrix[, borrowing@ext_flag_col]
 
     data_in <- list(
       N = nrow(data_matrix),
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
       y = data_matrix[, outcome@binary_var],
-      power = data_matrix[, borrowing@power_col]
+      power = power
     )
 
     # Add covariates and weights
@@ -326,13 +330,14 @@ setMethod(
   definition = function(outcome, borrowing, analysis_obj) {
     data_matrix <- trim_data_matrix(analysis_obj)
 
-    assert_numeric(data_matrix[, borrowing@power_col], lower = 0, upper = 1, any.missing = FALSE)
+    assert_number(borrowing@power_par, lower = 0, upper = 1)
+    power <- 1 - (1 - borrowing@power_par) * data_matrix[, borrowing@ext_flag_col]
 
     data_in <- list(
       N = nrow(data_matrix),
       trt = data_matrix[, analysis_obj@treatment@trt_flag_col],
       y = data_matrix[, outcome@continuous_var],
-      power = data_matrix[, borrowing@power_col]
+      power = power
     )
 
     # Add covariates and weights
