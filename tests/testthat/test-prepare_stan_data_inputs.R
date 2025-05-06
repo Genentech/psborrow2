@@ -150,3 +150,28 @@ test_that("prepare_stan_data_inputs works with PEM", {
   expect_equal(dim(result[["Z1"]])[2], result[["N_periods"]])
 
 })
+
+
+test_that("prepare_stan_data_inputs works with a fixed power prior", {
+  
+  object <- psborrow2:::.analysis_obj(
+    data_matrix = example_matrix,
+    outcome = outcome_surv_exponential(
+      "time",
+      "cnsr",
+      prior_normal(0, 1000)
+    ),
+    borrowing = borrowing_fixed_power_prior(
+      "ext",
+      0.8
+    ),
+    treatment = treatment_details("trt", prior_normal(0, 1000))
+  )
+
+  result <- psborrow2:::prepare_stan_data_inputs(object@outcome, object@borrowing, object)
+  power <- result$power
+
+  expect_atomic_vector(power)
+  expect_equal(sum(power==1), sum(1-example_matrix[,'ext']))
+  
+})
