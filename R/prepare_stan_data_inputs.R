@@ -91,8 +91,7 @@ setMethod(
     data_matrix <- trim_data_matrix(analysis_obj)
 
     assert_number(borrowing@power_par, lower = 0, upper = 1)
-    power <- 1 - (1 - borrowing@power_par) * data_matrix[, borrowing@ext_flag_col]
-
+    power <- ifelse(data_matrix[, borrowing@ext_flag_col] == 1, borrowing@power_par, 1)
 
     data_in <- list(
       N = nrow(data_matrix),
@@ -176,7 +175,7 @@ setMethod(
     data_matrix <- analysis_obj@data_matrix
 
     assert_number(borrowing@power_par, lower = 0, upper = 1)
-    power <- 1 - (1 - borrowing@power_par) * data_matrix[, borrowing@ext_flag_col]
+    power <- ifelse(data_matrix[, borrowing@ext_flag_col] == 1, borrowing@power_par, 1)
 
     n_periods <- analysis_obj@outcome@n_periods
     Z <- matrix(0, nrow = nrow(data_matrix), ncol = n_periods)
@@ -263,7 +262,7 @@ setMethod(
     data_matrix <- trim_data_matrix(analysis_obj)
 
     assert_number(borrowing@power_par, lower = 0, upper = 1)
-    power <- 1 - (1 - borrowing@power_par) * data_matrix[, borrowing@ext_flag_col]
+    power <- ifelse(data_matrix[, borrowing@ext_flag_col] == 1, borrowing@power_par, 1)
 
     data_in <- list(
       N = nrow(data_matrix),
@@ -331,7 +330,7 @@ setMethod(
     data_matrix <- trim_data_matrix(analysis_obj)
 
     assert_number(borrowing@power_par, lower = 0, upper = 1)
-    power <- 1 - (1 - borrowing@power_par) * data_matrix[, borrowing@ext_flag_col]
+    power <- ifelse(data_matrix[, borrowing@ext_flag_col] == 1, borrowing@power_par, 1)
 
     data_in <- list(
       N = nrow(data_matrix),
