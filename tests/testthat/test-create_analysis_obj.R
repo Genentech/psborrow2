@@ -196,6 +196,19 @@ test_that("Columns in analysis_obj should be in matrix", {
     ),
     "The following specified variables were not found in `data_matrix`:\n  ext_flag_col: tira"
   )
+
+  expect_no_error(
+    create_analysis_obj(
+      data_matrix = example_matrix,
+      covariates = ac,
+      outcome = esd,
+      treatment = td,
+      borrowing = borrowing_fixed_power_prior(
+        ext_flag_col = "ext",
+        power_par = 0.3
+      )
+    )
+  )
 })
 
 

@@ -8,7 +8,7 @@
 #' @return String containing the interpolated Stan model
 #' @include outcome_surv_pem.R
 build_model_string <- function(template_domain, template_filename, outcome, borrowing, analysis_obj, ...) {
-  
+
   # Load the Stan template
   template <- load_stan_file(template_domain, template_filename)
 
@@ -72,6 +72,23 @@ setMethod(
   }
 )
 
+### Fixed power prior borrowing ----
+setMethod(
+  f = "load_and_interpolate_stan_model",
+  signature = c("OutcomeSurvExponential", "BorrowingFixedPowerPrior", "ANY"),
+  definition = function(outcome, borrowing, analysis_obj) {
+    model_string <- build_model_string(
+      template_domain = "surv",
+      template_filename = "exp_fpp.stan",
+      outcome = outcome,
+      borrowing = borrowing,
+      analysis_obj = analysis_obj
+    )
+
+    return(model_string)
+  }
+)
+
 ### Hierarchical commensurate prior borrowing ----
 setMethod(
   f = "load_and_interpolate_stan_model",
@@ -100,6 +117,24 @@ setMethod(
     model_string <- build_model_string(
       template_domain = "surv",
       template_filename = "weib_ph_nb.stan",
+      outcome = outcome,
+      borrowing = borrowing,
+      analysis_obj = analysis_obj,
+      shape.prior = h_glue("shape_weibull ~ {{get_prior_string(outcome@param_priors$shape_weibull)}} ;")
+    )
+
+    return(model_string)
+  }
+)
+
+### Fixed power prior borrowing ----
+setMethod(
+  f = "load_and_interpolate_stan_model",
+  signature = c("OutcomeSurvWeibullPH", "BorrowingFixedPowerPrior", "ANY"),
+  definition = function(outcome, borrowing, analysis_obj) {
+    model_string <- build_model_string(
+      template_domain = "surv",
+      template_filename = "weib_ph_fpp.stan",
       outcome = outcome,
       borrowing = borrowing,
       analysis_obj = analysis_obj,
@@ -149,6 +184,24 @@ setMethod(
   }
 )
 
+### Fixed power prior borrowing ----
+setMethod(
+  f = "load_and_interpolate_stan_model",
+  signature = c("OutcomeSurvPEM", "BorrowingFixedPowerPrior", "ANY"),
+  definition = function(outcome, borrowing, analysis_obj) {
+    model_string <- build_model_string(
+      template_domain = "surv",
+      template_filename = "pem_fpp.stan",
+      outcome = outcome,
+      borrowing = borrowing,
+      analysis_obj = analysis_obj,
+      baseline.prior = get_prior_string(outcome@baseline_prior)
+    )
+
+    return(model_string)
+  }
+)
+
 ### Hierarchical commensurate prior borrowing ----
 setMethod(
   f = "load_and_interpolate_stan_model",
@@ -188,6 +241,23 @@ setMethod(
   }
 )
 
+### Fixed power prior borrowing ----
+setMethod(
+  f = "load_and_interpolate_stan_model",
+  signature = c("OutcomeBinaryLogistic", "BorrowingFixedPowerPrior", "ANY"),
+  definition = function(outcome, borrowing, analysis_obj) {
+    model_string <- build_model_string(
+      template_domain = "bin",
+      template_filename = "logit_fpp.stan",
+      outcome = outcome,
+      borrowing = borrowing,
+      analysis_obj = analysis_obj
+    )
+
+    return(model_string)
+  }
+)
+
 ### Hierarchical commensurate prior borrowing ----
 setMethod(
   f = "load_and_interpolate_stan_model",
@@ -218,6 +288,24 @@ setMethod(
     model_string <- build_model_string(
       template_domain = "cont",
       template_filename = "gauss_nb.stan",
+      outcome = outcome,
+      borrowing = borrowing,
+      analysis_obj = analysis_obj,
+      stdev.prior = h_glue("std_dev_outcome ~ {{get_prior_string(outcome@param_priors$std_dev_outcome)}} ;")
+    )
+
+    return(model_string)
+  }
+)
+
+### Fixed power prior borrowing ----
+setMethod(
+  f = "load_and_interpolate_stan_model",
+  signature = c("OutcomeContinuousNormal", "BorrowingFixedPowerPrior", "ANY"),
+  definition = function(outcome, borrowing, analysis_obj) {
+    model_string <- build_model_string(
+      template_domain = "cont",
+      template_filename = "gauss_fpp.stan",
       outcome = outcome,
       borrowing = borrowing,
       analysis_obj = analysis_obj,

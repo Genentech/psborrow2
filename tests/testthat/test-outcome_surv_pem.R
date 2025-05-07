@@ -40,3 +40,13 @@ test_that("get_vars works for OutcomeSurvPEM", {
     c(time_var = "TIME", cens_var = "CENS", weight_var = "W")
   )
 })
+
+test_that("show works as expected for OutcomeSurvPem", {
+  result <- outcome_surv_pem(
+    time_var = "time",
+    cens_var = "cens",
+    baseline_prior = prior_normal(0, 1000),
+    cut_points = c(10, 15, 30)
+  )
+  expect_snapshot(show(result))
+})

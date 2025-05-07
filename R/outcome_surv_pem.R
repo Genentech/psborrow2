@@ -117,7 +117,7 @@ outcome_surv_pem <- function(time_var, cens_var, baseline_prior, weight_var = ""
 # show ----
 setMethod(
   f = "show",
-  signature = "Outcome",
+  signature = "OutcomeSurvPEM",
   definition = function(object) {
     cat("Outcome object with class", class(object)[1], "\n\n")
     cat("Outcome variables:\n")

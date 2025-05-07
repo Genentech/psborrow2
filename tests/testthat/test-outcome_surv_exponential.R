@@ -58,3 +58,13 @@ test_that("exp_surv_dist() throws error", {
     regexp = "deprecated"
   )
 })
+
+test_that("show works as expected for OutcomeSurvExponential", {
+  result <- outcome_surv_exponential(
+    time_var = "time",
+    cens_var = "cens",
+    prior_normal(0, 1000),
+    weight_var = "w"
+  )
+  expect_snapshot(show(result))
+})

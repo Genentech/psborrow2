@@ -15,6 +15,7 @@ biopharmaceutical
 bootswatch
 Bove
 cauchy
+cens
 ci
 CJ
 CMD
@@ -30,8 +31,10 @@ costructor
 cov
 dataLayer
 desc
+dev
 doi
 eg
+elp
 Enas
 estimands
 et
@@ -70,8 +73,16 @@ Kexin
 Khanal
 Kinnersley
 knitr
+lccdf
+lcdf
 Lifecycle
 Lindborg
+linpred
+lp
+lpdf
+lprob
+lupdf
+lupmf
 Mandrekar
 Manoj
 MatchIt
@@ -87,6 +98,7 @@ operatorname
 ORCID
 parametrized
 patsubst
+ph
 Pharmaceut
 poisson
 propto
@@ -113,6 +125,7 @@ sourcenotes
 src
 stan
 Statist
+stdev
 survial
 tabset
 tbody
@@ -126,6 +139,7 @@ UA
 vgwzvpznzo
 Viele
 Walkthrough
+weibull
 wpfbyktkdu
 www
 Yichen

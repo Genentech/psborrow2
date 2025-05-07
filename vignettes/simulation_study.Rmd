@@ -25,10 +25,9 @@ Note that we'll need `cmdstanr` to run the simulation study. Please install
 Let's load `psborrow2` to start:
 
 
-```r
+``` r
 library(psborrow2)
 library(cmdstanr)
-# Warning: package 'cmdstanr' was built under R version 4.3.3
 ```
 
 # Bringing your own simulated data
@@ -139,7 +138,7 @@ sim_single_matrix <- function(n = 500, # n simulated pts
 
 
 
-```r
+``` r
 set.seed(123)
 head(sim_single_matrix(n = 500, hr = 0.5, drift_hr = 1.2))
 #      id ext trt      time status cnsr
@@ -160,7 +159,7 @@ scenarios:
 - True HR = 1.0, drift HR = 1.5
 
 
-```r
+``` r
 # Seed for reproducibility
 set.seed(123)
 
@@ -191,7 +190,7 @@ my_data_list <- list(
 There are 4 scenarios.
 
 
-```r
+``` r
 NROW(my_data_list)
 # [1] 4
 ```
@@ -199,7 +198,7 @@ NROW(my_data_list)
 Each scenario has 100 matrices.
 
 
-```r
+``` r
 NROW(my_data_list[[1]])
 # [1] 100
 ```
@@ -207,7 +206,7 @@ NROW(my_data_list[[1]])
 The lowest level of the list of lists is a data matrix.
 
 
-```r
+``` r
 head(my_data_list[[1]][[1]])
 #      id ext trt      time status cnsr
 # [1,]  1   0   0  8.179722      1    0
@@ -236,7 +235,7 @@ In this example, the 4 scenarios are
 summarized with the below `guide`:
 
 
-```r
+``` r
 my_sim_data_guide <- expand.grid(
   true_hr = c(0.6, 1.0),
   drift_hr = c("No drift HR", "Moderate drift HR")
@@ -265,7 +264,7 @@ For our study, these are `"true_hr"`, `"drift_hr"`, and `"id"`.
 Putting it all together, we can create an object of class `SimDataList`:
 
 
-```r
+``` r
 my_sim_data_list <- sim_data_list(
   data_list = my_data_list,
   guide = my_sim_data_guide,
@@ -291,7 +290,7 @@ or a list of `Outcome` class objects passed to `sim_outcome_list()`. For our
 example, let's just use a single exponential distribution.
 
 
-```r
+``` r
 my_sim_out <- outcome_surv_exponential(
   time_var = "time",
   cens_var = "cnsr",
@@ -330,7 +329,7 @@ We'll use a special list of `Borrowing` objects,
 which we'll create through the function `sim_borrowing_list()`.
 
 
-```r
+``` r
 my_borrowing_list <- sim_borrowing_list(
   list(
     "No borrowing" = borrowing_none("ext"),
@@ -365,7 +364,7 @@ or a list of these classes, created with `sim_treatment_list()`. Let's
 just use a single instance:
 
 
-```r
+``` r
 my_sim_treat <- treatment_details("trt", prior_normal(0, 1000))
 
 my_sim_treat
@@ -401,7 +400,7 @@ combinations of parameters. Let's create a simulation object of class
 
 
 
-```r
+``` r
 simulation_obj <- create_simulation_obj(
   my_sim_data_list,
   outcome = my_sim_out,
@@ -421,7 +420,7 @@ We can access the guide to see the specific scenarios that will be
 simulated with `show_guide()`:
 
 
-```r
+``` r
 show_guide(simulation_obj)
 #    true_hr          drift_hr id n_datasets_per_param outcome_scenario
 # 1      0.6       No drift HR  1                  100          default
@@ -473,7 +472,7 @@ specifies the quantiles for null coverage and true coverage. For instance,
 
 
 
-```r
+``` r
 simulation_res <- mcmc_sample(
   simulation_obj,
   posterior_quantiles = c(0.025, 0.975),
@@ -492,7 +491,7 @@ Instead, it returns a class unique to simulation study results:
 `MCMCSimulationResult`.
 
 
-```r
+``` r
 class(simulation_res)
 # [1] "MCMCSimulationResult"
 # attr(,"package")
@@ -503,7 +502,7 @@ Let's look at the performance of our simulation study by extracting the data.fra
 that summarizes results, `get_results()`:
 
 
-```r
+``` r
 simulation_res_df <- get_results(simulation_res)
 head(simulation_res_df)
 #   true_hr          drift_hr id n_datasets_per_param outcome_scenario
@@ -514,29 +513,28 @@ head(simulation_res_df)
 # 5     0.6       No drift HR  1                  100          default
 # 6     1.0       No drift HR  2                  100          default
 #   borrowing_scenario covariate_scenario treatment_scenario    trt_var
-# 1       No borrowing      No adjustment            default 0.06385613
-# 2       No borrowing      No adjustment            default 0.06300573
-# 3       No borrowing      No adjustment            default 0.06358375
-# 4       No borrowing      No adjustment            default 0.06146742
-# 5     Full borrowing      No adjustment            default 0.02640545
-# 6     Full borrowing      No adjustment            default 0.02538354
+# 1       No borrowing      No adjustment            default 0.06359053
+# 2       No borrowing      No adjustment            default 0.06276921
+# 3       No borrowing      No adjustment            default 0.06305379
+# 4       No borrowing      No adjustment            default 0.06286691
+# 5     Full borrowing      No adjustment            default 0.02635029
+# 6     Full borrowing      No adjustment            default 0.02537450
 #     mse_mean  bias_mean null_coverage true_coverage
-# 1 0.05884766 0.05935161          0.55          0.97
-# 2 0.13329996 0.03483396          0.99          0.99
-# 3 0.04709898 0.01135305          0.46          0.96
-# 4 0.12446717 0.02322880          0.96          0.96
-# 5 0.02005176 0.02065375          0.11          0.98
-# 6 0.04977218 0.00931398          0.96          0.96
+# 1 0.05917938 0.06011393          0.59          0.96
+# 2 0.13170714 0.03556530          0.95          0.95
+# 3 0.04730839 0.01311444          0.41          0.96
+# 4 0.12775243 0.02715064          0.96          0.96
+# 5 0.02024202 0.02088567          0.10          0.96
+# 6 0.05035481 0.01011514          0.96          0.96
 ```
 
 Let's quickly visualize the results using `ggplot2`. We will first
 load `ggplot2` and factorize our borrowing scenarios:
 
 
-```r
+``` r
 # Load ggplot2
 library(ggplot2)
-# Warning: package 'ggplot2' was built under R version 4.3.2
 
 # Factorize
 simulation_res_df$borrowing_scenario <- factor(simulation_res_df$borrowing_scenario,

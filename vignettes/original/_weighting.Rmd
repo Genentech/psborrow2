@@ -44,7 +44,7 @@ Note that we'll need `cmdstanr` to run this analysis. Please install
 
 ```{r packages, results = "hide", message = FALSE}
 library(psborrow2)
-library(cmdstsanr)
+library(cmdstanr)
 library(BayesPPD)
 library(ggplot2)
 ```
