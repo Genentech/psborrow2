@@ -19,7 +19,7 @@
 }}
 
 \seealso{
-Other borrowing classes:
+Other borrowing classes: 
 \code{\link{Borrowing-class}},
 \code{\link{BorrowingFull-class}},
 \code{\link{BorrowingHierarchicalCommensurate-class}},

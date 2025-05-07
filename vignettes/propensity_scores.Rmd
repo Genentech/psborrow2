@@ -13,10 +13,9 @@ link-citations: yes
 
 
 
-```r
+``` r
 library(psborrow2)
 library(cmdstanr)
-#> Warning: package 'cmdstanr' was built under R version 4.3.3
 ```
 
 Propensity scores (PS) methods offer various ways to adjust analyses for differences in groups of patients.
@@ -33,9 +32,8 @@ In addition, weights can be calculated differently for different estimands. Here
 `estimand = "ATT"`, to calculate weights for estimating the average treatment effect among the treated (ATT).
 
 
-```r
+``` r
 library(WeightIt)
-#> Warning: package 'WeightIt' was built under R version 4.3.2
 
 example_dataframe <- as.data.frame(example_matrix)
 example_dataframe$int <- 1 - example_dataframe$ext
@@ -48,32 +46,32 @@ weightit_model <- weightit(
 )
 #> Warning: No `criterion` was provided. Using "smd.mean".
 summary(weightit_model)
-#>                  Summary of weights
+#>                   Summary of weights
 #> 
 #> - Weight ranges:
 #> 
 #>            Min                                  Max
 #> treated 1.0000      ||                       1.0000
-#> control 0.0826 |---------------------------| 5.8966
+#> control 0.0742 |---------------------------| 5.7137
 #> 
 #> - Units with the 5 most extreme weights by group:
 #>                                            
 #>               5      4      3      2      1
 #>  treated      1      1      1      1      1
 #>             195    158    465    438    371
-#>  control 2.7924 2.7924 5.8966 5.8966 5.8966
+#>  control 2.7859 2.7859 5.7137 5.7137 5.7137
 #> 
 #> - Weight statistics:
 #> 
-#>         Coef of Var  MAD Entropy # Zeros
-#> treated       0.000 0.00     0.0       0
-#> control       1.582 0.82     0.6       0
+#>         Coef of Var   MAD Entropy # Zeros
+#> treated       0.000 0.000   0.000       0
+#> control       1.564 0.831   0.603       0
 #> 
 #> - Effective Sample Sizes:
 #> 
 #>            Control Treated
 #> Unweighted  350.       150
-#> Weighted    100.09     150
+#> Weighted    101.76     150
 ```
 
 Another useful package is [cobalt](https://cran.r-project.org/package=cobalt), which provides tools for
@@ -82,9 +80,8 @@ See the [vignette](https://CRAN.R-project.org/package=cobalt/vignettes/cobalt.ht
 We can use the `cobalt` package to assess balance with `bal.plot()`.
 
 
-```r
+``` r
 library(cobalt)
-#> Warning: package 'cobalt' was built under R version 4.3.2
 bal.plot(weightit_model)
 ```
 
@@ -96,7 +93,7 @@ bal.plot(weightit_model)
 "Love plots" can also be generated that compare the populations before and after weighting:
 
 
-```r
+``` r
 love.plot(weightit_model, stars = "std")
 ```
 
@@ -110,7 +107,7 @@ The PS values can be copied into the data set and the analysis object can be con
 
 
 
-```r
+``` r
 example_dataframe$att <- weightit_model$weights
 
 example_matrix_att <- create_data_matrix(
@@ -143,7 +140,7 @@ As described in the [Getting Started vignette](https://CRAN.R-project.org/packag
 it can be useful to check the imbalance before matching.
 
 
-```r
+``` r
 library(MatchIt)
 #> 
 #> Attaching package: 'MatchIt'
@@ -187,7 +184,7 @@ Here we are matching treated to untreated to select the most comparable control 
 internal or external. For simplicity let's try a 1:1 nearest matching approach.
 
 
-```r
+``` r
 match_11 <- matchit(trt ~ cov1 + cov2 + cov3 + cov4,
   data = example_dataframe,
   method = "nearest", distance = "glm"
@@ -235,7 +232,7 @@ summary(match_11)
 ```
 
 
-```r
+``` r
 set.seed(123)
 plot(match_11, type = "jitter", interactive = FALSE)
 ```
@@ -252,7 +249,7 @@ vignette. Again the `cobalt` package can be useful here.
 However, if you are happy with the results of the matching procedure, you can extract the data for use in `psborrow2`.
 
 
-```r
+``` r
 example_matrix_match <- create_data_matrix(
   data = example_dataframe[match_11$weights == 1, ],
   ext_flag_col = "ext",
@@ -264,7 +261,7 @@ example_matrix_match <- create_data_matrix(
 
 
 
-```r
+``` r
 analysis_match <- create_analysis_obj(
   data_matrix = example_matrix_match,
   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000)),
@@ -283,7 +280,7 @@ is equivalent to fixed power prior weights. This allows for the combination of m
 IPTW + commensurate prior approach.
 
 
-```r
+``` r
 analysis_iptw_bdb <- create_analysis_obj(
   data_matrix = example_matrix_att,
   outcome = outcome_surv_exponential("time", "cnsr", prior_normal(0, 10000), weight_var = "att"),
@@ -301,7 +298,7 @@ We can also use weights to specify a fixed power prior model. Here we set the po
 for the external controls.
 
 
-```r
+``` r
 example_matrix_pp01 <- cbind(example_matrix, pp_alpha = ifelse(example_matrix[, "ext"] == 1, 0.1, 1))
 
 analysis_pp01 <- create_analysis_obj(
@@ -320,7 +317,7 @@ result_pp01 <- mcmc_sample(analysis_pp01, seed = 123)
 For comparison, we also fit a full borrowing, a no borrowing, and a BDB model without weights.
 
 
-```r
+``` r
 result_full <- mcmc_sample(
   create_analysis_obj(
     data_matrix = example_matrix,
@@ -361,7 +358,7 @@ result_bdb <- mcmc_sample(
 # Comparison of Results
 
 
-```r
+``` r
 models <- list(
   "No borrowing" = result_none,
   "Full borrowing" = result_full,
@@ -375,7 +372,7 @@ models <- list(
 
 We can use `summary()` to extract the variable of interest and specify summary statistics.
 
-```r
+``` r
 results_table <- do.call(rbind, lapply(
   models,
   function(i) i$summary("HR_trt", c("mean", "median", "sd", "quantile2"))
@@ -387,20 +384,20 @@ knitr::kable(cbind(models = names(models), results_table), digits = 3)
 
 |models         |variable |  mean| median|    sd|    q5|   q95|
 |:--------------|:--------|-----:|------:|-----:|-----:|-----:|
-|No borrowing   |HR_trt   | 0.894|  0.877| 0.178| 0.636| 1.210|
-|Full borrowing |HR_trt   | 0.388|  0.386| 0.049| 0.311| 0.473|
-|Power Prior 01 |HR_trt   | 0.634|  0.626| 0.105| 0.476| 0.821|
-|ATT Weights    |HR_trt   | 0.895|  0.886| 0.126| 0.701| 1.116|
-|IPTW + BDB     |HR_trt   | 0.897|  0.882| 0.165| 0.656| 1.188|
-|Matching 1:1   |HR_trt   | 0.793|  0.784| 0.128| 0.600| 1.018|
-|BDB            |HR_trt   | 0.871|  0.852| 0.175| 0.619| 1.187|
+|No borrowing   |HR_trt   | 0.898|  0.878| 0.180| 0.638| 1.223|
+|Full borrowing |HR_trt   | 0.388|  0.386| 0.049| 0.310| 0.471|
+|Power Prior 01 |HR_trt   | 0.634|  0.625| 0.106| 0.478| 0.824|
+|ATT Weights    |HR_trt   | 0.891|  0.882| 0.126| 0.697| 1.110|
+|IPTW + BDB     |HR_trt   | 0.893|  0.877| 0.165| 0.653| 1.185|
+|Matching 1:1   |HR_trt   | 0.819|  0.808| 0.133| 0.620| 1.054|
+|BDB            |HR_trt   | 0.875|  0.857| 0.178| 0.619| 1.194|
 
 
 
 We can extract a `draws` object from each model and plot the posterior distribution of the
 treatment hazard ratio.
 
-```r
+``` r
 plot(density(models[[1]]$draws("HR_trt")),
   col = 1, xlim = c(0, 2), ylim = c(0, 9), lwd = 2,
   xlab = "HR_trt",
