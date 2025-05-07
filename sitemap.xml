@@ -24,6 +24,7 @@
 <url><loc>https://genentech.github.io/psborrow2/reference/BaselineObject-class.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/BinaryOutcome-class.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/Borrowing-class.html</loc></url>
+<url><loc>https://genentech.github.io/psborrow2/reference/BorrowingFixedPowerPrior-class.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/BorrowingFull-class.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/BorrowingHierarchicalCommensurate-class.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/BorrowingNone-class.html</loc></url>
@@ -73,6 +74,7 @@
 <url><loc>https://genentech.github.io/psborrow2/reference/bin_var.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/binary_cutoff.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/borrowing_details.html</loc></url>
+<url><loc>https://genentech.github.io/psborrow2/reference/borrowing_fixed_power_prior.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/borrowing_full.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/borrowing_hierarchical_commensurate.html</loc></url>
 <url><loc>https://genentech.github.io/psborrow2/reference/borrowing_none.html</loc></url>
