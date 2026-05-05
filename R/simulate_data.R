@@ -609,48 +609,57 @@ generate.DataSimObject <- function(x, n = 1, treatment_hr = NULL, drift_hr = NUL
   guide <- cbind(sim_id = seq_len(nrow(guide)), guide)
 
   simulated_data <- list()
-  for (i in seq_len(nrow(guide))) {
-    betas <- c(
-      x@coefficients,
-      trt = log(guide$treatment_hr[i]),
-      ext = log(guide$drift_hr[i])
-    )
+  for (i in seq_len(nrow(guide))) simulated_data[[i]] <- list()
 
-    simulated_data[[i]] <- replicate(n, simplify = FALSE, expr = {
-      # generate baseline data
+  for (trt_idx in seq_along(treatment_hr)) {
+    betas_int <- c(x@coefficients, trt = log(treatment_hr[trt_idx]), ext = 0)
+
+    for (j in seq_len(n)) {
+      # generate baseline data (shared across drift values)
       df_list <- generate(x@baseline)
 
-      df_list <- .mapply(
+      int_arms <- .mapply(
         FUN = make_one_dataset,
         dots = list(
-          baseline = df_list,
-          enrollment = list(x@enrollment_internal, x@enrollment_internal, x@enrollment_external),
-          dropout = list(x@dropout_internal_treated, x@dropout_internal_control, x@dropout_external_control)
+          baseline = df_list[1:2],
+          enrollment = list(x@enrollment_internal, x@enrollment_internal),
+          dropout = list(x@dropout_internal_treated, x@dropout_internal_control)
         ),
         MoreArgs = list(
-          betas = betas,
+          betas = betas_int,
           event_dist = x@event_dist
         )
       )
+      internal_df <- x@cut_off_internal@fun(rbind(int_arms[[1]], int_arms[[2]]))
 
-      if (x@fixed_external_data@n > 0) {
-        x@fixed_external_data@data$patid <- seq_len(x@fixed_external_data@n) + sum(sapply(df_list, nrow))
-        missing_cols <- setdiff(colnames(df_list[[1]]), colnames(x@fixed_external_data@data))
-        if (length(missing_cols)) {
-          warning("Missing columns in fixed external data: ", toString(missing_cols), call. = FALSE)
-          x@fixed_external_data@data[, missing_cols] <- NA
+      for (drift_idx in seq_along(drift_hr)) {
+        betas_ext <- c(x@coefficients, trt = 0, ext = log(drift_hr[drift_idx]))
+
+        ext_arm <- make_one_dataset(
+          df_list[[3]], betas_ext, x@event_dist,
+          x@enrollment_external, x@dropout_external_control
+        )
+        external_df <- x@cut_off_external@fun(ext_arm)
+
+        if (x@fixed_external_data@n > 0) {
+          x@fixed_external_data@data$patid <- seq_len(x@fixed_external_data@n) +
+            nrow(internal_df) + nrow(external_df)
+          missing_cols <- setdiff(colnames(int_arms[[1]]), colnames(x@fixed_external_data@data))
+          if (length(missing_cols)) {
+            warning("Missing columns in fixed external data: ", toString(missing_cols), call. = FALSE)
+            x@fixed_external_data@data[, missing_cols] <- NA
+          }
         }
-      }
 
-      # Apply clinical cut off
-      df <- rbind(
-        x@cut_off_internal@fun(rbind(df_list[[1]], df_list[[2]])),
-        x@cut_off_external@fun(df_list[[3]]),
-        x@fixed_external_data@data
-      )
-      df$cens <- 1 - df$status
-      as.matrix(df)
-    })
+        # Apply clinical cut off
+        df <- rbind(internal_df, external_df, x@fixed_external_data@data)
+        df$cens <- 1 - df$status
+
+        sim_id <- guide$sim_id[guide$treatment_hr == treatment_hr[trt_idx] &
+          guide$drift_hr == drift_hr[drift_idx]]
+        simulated_data[[sim_id]][[j]] <- as.matrix(df)
+      }
+    }
   }
   sim_data_list(
     data_list = simulated_data,
