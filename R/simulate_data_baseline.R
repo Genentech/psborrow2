@@ -321,7 +321,7 @@ generate.BaselineObject <- function(x, ...) {
         dots = list(
           data = arm_data,
           mean = list(cov@means_int, cov@means_int, cov@means_ext),
-          sigma = list(cov@covariance_int, cov@covariance_int, cov@covariance_int)
+          sigma = list(cov@covariance_int, cov@covariance_int, cov@covariance_ext)
         ),
         MoreArgs = list(names = cov@names),
         FUN = function(data, mean, sigma, names) {
