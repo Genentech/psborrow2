@@ -1,0 +1,92 @@
+# 1. Getting started with psborrow2
+
+In this vignette, you’ll learn about the scope of `psborrow2` and where
+to find additional information on how to implement analyses in
+`psborrow2`.
+
+## Introduction
+
+While the randomized controlled trial (RCT) comparing experimental and
+control arms remains the gold standard for evaluating the efficacy of a
+novel therapy, one may want to leverage relevant existing external
+control data to inform the study outcome. External control data can help
+increase study power and thereby shorten trial duration or reduce the
+number of subjects needed. However, analysis of external control data
+can also introduce bias. One method for incorporating external control
+data to mitigate bias is **Bayesian dynamic borrowing (BDB)**, in which
+external control data is borrowed to the extent that the external and
+RCT control arms have similar outcomes. See @viele2014use for a summary.
+
+Implementing BDB is computationally involved and requires Markov chain
+Monte Carlo (MCMC) sampling methods, which in turn may require knowledge
+of MCMC sampling software. To overcome these technical barriers and we
+developed `psborrow2`, an R package which facilitates the use of the
+MCMC sampling program Stan (via CMD Stan).
+
+`psborrow2` helps the user:
+
+1.  **Apply Bayesian dynamic borrowing methods**. `psborrow2` has a
+    user-friendly interface for conducting Bayesian dynamic borrowing
+    analyses using the hierarchical commensurate prior approach that
+    handles the computationally-difficult MCMC sampling on behalf of the
+    user.
+
+2.  **Conduct simulation studies of Bayesian dynamic borrowing
+    methods**. `psborrow2` includes a framework to compare different
+    trial and borrowing characteristics in a unified way in simulation
+    studies to inform trial design.
+
+3.  **Generate data for simulation studies**. `psborrow2` includes a set
+    of functions to generate data for simulation studies.
+
+`psborrow2` supports time-to-event, binary, and continuous endpoints.
+
+### 1. Apply Bayesian dynamic borrowing methods
+
+`psborrow2` can implement BDB in a scenario wherein a two-arm RCT is
+supplemented with external data on the control arm. Three arms are
+required to implement BDB in `psborrow2`. They are:
+
+- The internal control arm from within the RCT
+- The external control arm using observational data or experimental data
+  from another trial with the same intervention/treatment and population
+  as the internal control arm
+- The internal experimental arm from within the RCT
+
+Such scenarios are common in drug development because the comparator arm
+for a novel therapy is often the standard of care, for which data exists
+from electronic health care records or from previous phase III
+registrational trials.
+
+Refer to the “dataset” article for more information on how to implement
+BDB analyses on your own data:
+(<https://genentech.github.io/psborrow2/articles/dataset.html>)\[<https://genentech.github.io/psborrow2/articles/dataset.html>\]
+
+### 2. Conduct simulation studies of Bayesian dynamic borrowing methods
+
+Refer to the “simulation study” article for more information on how to
+create a simulation study involving BDB and other innovative trial
+designs:
+<https://genentech.github.io/psborrow2/articles/simulation_study.html>
+
+### 3. Generate data for simulation studies
+
+Refer to the “data generation” article for more information on how to
+generate data for simulation studies:
+<https://genentech.github.io/psborrow2/articles/data_simulation.html>
+
+## Additional articles
+
+Please refer to
+<https://genentech.github.io/psborrow2/articles/index.html> for
+additional articles on `psborrow2` functionality.
+
+## Installing `cmdstanr`
+
+`cmdstanr` is highly recommended for use with `psborrow2`. To install
+`cmdstanr`, follow the instructions outlined by the [`cmdstanr`
+documentation](https://mc-stan.org/cmdstanr/) or use:
+
+    install.packages("cmdstanr", repos = c("https://stan-dev.r-universe.dev", getOption("repos")))
+
+## References

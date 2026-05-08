@@ -231,11 +231,11 @@ simulate the covariates using <code>rcorrvar2</code> function from
 <p>We now simulate the survival outcome data using the Cox proportional
 hazards model <span class="citation">(Cox 1972)</span> in which the
 hazard function
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda(t|\boldsymbol X, Z)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\lambda(t|\boldsymbol X, Z)</annotation></semantics></math>
 is given by
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>exp</mo><mo stretchy="false" form="prefix">{</mo><mi>𝐗</mi><msub><mi>𝛃</mi><mrow><mi>T</mi><mi>r</mi><mi>i</mi><mi>a</mi><mi>l</mi></mrow></msub><mo>+</mo><mi>Z</mi><mi>γ</mi><mo stretchy="false" form="postfix">}</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\lambda(t|\boldsymbol X, Z)=\lambda_0(t) \exp\{\boldsymbol X \boldsymbol \beta_{Trial} + Z \gamma\},</annotation></semantics></math></p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>λ</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">exp</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">{</mo><mi>𝐗</mi><msub><mi>𝛃</mi><mrow><mi>T</mi><mi>r</mi><mi>i</mi><mi>a</mi><mi>l</mi></mrow></msub><mo>+</mo><mi>Z</mi><mi>γ</mi><mo stretchy="false" form="postfix">}</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\lambda(t|\boldsymbol X, Z)=\lambda_0(t) \exp\{\boldsymbol X \boldsymbol \beta_{Trial} + Z \gamma\},</annotation></semantics></math></p>
 <p>where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\lambda_0(t)=2</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\lambda_0(t)=2</annotation></semantics></math>
 is the baseline hazard function and assumed to be constant,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐗</mi><annotation encoding="application/x-tex">\boldsymbol X</annotation></semantics></math>
 is a matrix of baseline covariates,
@@ -257,9 +257,9 @@ is the treatment effect in terms of the log hazard ratio.</p>
 <!--       + $\beta_{ECOG1,Trial}=-1$ -->
 <!--       + $\gamma=-0.4$ -->
 <p>The survival function is given by
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>e</mi><mi>x</mi><mi>p</mi><mo stretchy="false" form="prefix">{</mo><mo>−</mo><mi>Λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">}</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">S(t|\boldsymbol X, Z)=exp\{-\Lambda(t|\boldsymbol X, Z)\},</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>e</mi><mi>x</mi><mi>p</mi><mo stretchy="false" form="prefix">{</mo><mi>−</mi><mi mathvariant="normal">Λ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">}</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">S(t|\boldsymbol X, Z)=exp\{-\Lambda(t|\boldsymbol X, Z)\},</annotation></semantics></math>
 where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mi>t</mi></msubsup><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>d</mi><mi>u</mi></mrow><annotation encoding="application/x-tex">\Lambda(t|\boldsymbol X, Z)=\int_0^t\lambda(u|\boldsymbol X, Z)du</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Λ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mi>t</mi></msubsup><mi>λ</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>,</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>u</mi></mrow><annotation encoding="application/x-tex">\Lambda(t|\boldsymbol X, Z)=\int_0^t\lambda(u|\boldsymbol X, Z)du</annotation></semantics></math>.
 The time to event is generated using a inverse CDF method. The censoring
 time is generated independently from an exponential distribution with
 <code>rate=1/4</code>.</p>
@@ -1478,7 +1478,7 @@ used to maintain the sample size in the treated arm <span class="citation">(Sekh
 and a control unit
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>,
 genetic matching uses the generalized Mahalanobis distance as
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mrow><mi>G</mi><mi>M</mi><mi>D</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐱</mi><mi>i</mi></msub><mo>,</mo><msub><mi>𝐱</mi><mi>j</mi></msub><mo>,</mo><mi>𝐖</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msqrt><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐱</mi><mi>i</mi></msub><mo>−</mo><msub><mi>𝐱</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>′</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>𝐒</mi><mrow><mo>−</mo><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi>′</mi><mi>𝐖</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>𝐒</mi><mrow><mo>−</mo><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐱</mi><mi>i</mi></msub><mo>−</mo><msub><mi>𝐱</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msqrt></mrow><annotation encoding="application/x-tex">\delta_{GMD}(\mathbf{x}_i,\mathbf{x}_j, \mathbf{W})=\sqrt{(\mathbf{x}_i - \mathbf{x}_j)'(\mathbf{S}^{-1/2})'\mathbf{W}(\mathbf{S}^{-1/2})(\mathbf{x}_i - \mathbf{x}_j)}</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mrow><mi>G</mi><mi>M</mi><mi>D</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>𝐱</mi><mi>i</mi></msub><mo>,</mo><msub><mi>𝐱</mi><mi>j</mi></msub><mo>,</mo><mi>𝐖</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msqrt><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>𝐱</mi><mi>i</mi></msub><mo>−</mo><msub><mi>𝐱</mi><mi>j</mi></msub><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><msup><mi>𝐒</mi><mrow><mi>−</mi><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><mi>𝐖</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>𝐒</mi><mrow><mi>−</mi><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>𝐱</mi><mi>i</mi></msub><mo>−</mo><msub><mi>𝐱</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></msqrt></mrow><annotation encoding="application/x-tex">\delta_{GMD}(\mathbf{x}_i,\mathbf{x}_j, \mathbf{W})=\sqrt{(\mathbf{x}_i - \mathbf{x}_j)'(\mathbf{S}^{-1/2})'\mathbf{W}(\mathbf{S}^{-1/2})(\mathbf{x}_i - \mathbf{x}_j)}</annotation></semantics></math>
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐱</mi><annotation encoding="application/x-tex">\mathbf{x}</annotation></semantics></math>
 is a
@@ -1486,7 +1486,7 @@ is a
 vector containing the value of each of the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 included covariates for that unit,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>𝐒</mi><mrow><mo>−</mo><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><annotation encoding="application/x-tex">\mathbf{S}^{-1/2}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>𝐒</mi><mrow><mi>−</mi><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><annotation encoding="application/x-tex">\mathbf{S}^{-1/2}</annotation></semantics></math>
 is the Cholesky decomposition of the covariance matrix
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐒</mi><annotation encoding="application/x-tex">\mathbf{S}</annotation></semantics></math>
 of the covariates, and
@@ -1931,10 +1931,10 @@ SMD after EB should be zero.</p>
 in a trial given the observed baseline covariates. We utilized the ATT
 weights, which are defined for the IPW as fixing the trial patients
 weight at unity, and external control patients as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>e</mi><mo accent="true">̂</mo></mover><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mover><mi>e</mi><mo accent="true">̂</mo></mover><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat{e}(x)/(1-\hat{e}(x))</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>e</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mover><mi>e</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\hat{e}(x)/(1-\hat{e}(x))</annotation></semantics></math>
 where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>e</mi><mo accent="true">̂</mo></mover><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat{e}(x)</annotation></semantics></math>
-is estimated using a logistic regression model <span class="citation">(Amusa, Zewotir, and North 2019)</span>.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>e</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\hat{e}(x)</annotation></semantics></math>
+is estimated using a logistic regression model <span class="citation">(Amusa et al. 2019)</span>.</p>
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ps.logit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">indicator</span> <span class="op">~</span> <span class="va">Age</span> <span class="op">+</span> <span class="va">Weight</span> <span class="op">+</span> <span class="va">Height</span> <span class="op">+</span> <span class="va">Biomarker1</span>  <span class="op">+</span> <span class="va">Biomarker2</span> <span class="op">+</span> <span class="va">Smoker</span> <span class="op">+</span></span>
 <span>                            <span class="va">Sex</span> <span class="op">+</span><span class="va">ECOG1</span>, data <span class="op">=</span> <span class="va">final.data</span>,</span>
@@ -1982,8 +1982,8 @@ is estimated using a logistic regression model <span class="citation">(Amusa, Ze
 x-axis of the plot represent the absolute value of the SMD and y-axis
 represent the list of all covariates. SMD greater than
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.1</mn><annotation encoding="application/x-tex">0.1</annotation></semantics></math>
-can be considered a sign of imbalance <span class="citation">(Zhang et
-al. 2019)</span>. Hence, we put a threshold of
+can be considered a sign of imbalance <span class="citation">(<span class="nocase">Zhang et al.</span> 2019)</span>. Hence, we put a
+threshold of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.1</mn><annotation encoding="application/x-tex">0.1</annotation></semantics></math>
 in the plot with a vertical dashed line.</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
@@ -2141,7 +2141,7 @@ in both trial and external control data.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-amusa2019examination" class="csl-entry">
 Amusa, Lateef, Temesgen Zewotir, and Delia North. 2019.
 <span>“Examination of Entropy Balancing Technique for Estimating Some
@@ -2180,7 +2180,7 @@ McCaffrey, Daniel F, Beth Ann Griffin, Daniel Almirall, Mary Ellen
 Slaughter, Rajeev Ramchand, and Lane F Burgette. 2013. <span>“A Tutorial
 on Propensity Score Estimation for Multiple Treatments Using Generalized
 Boosted Models.”</span> <em>Statistics in Medicine</em> 32 (19):
-3388–3414.
+3388–414.
 </div>
 <div id="ref-sekhon2008multivariate" class="csl-entry">
 Sekhon, Jasjeet S. 2008. <span>“Multivariate and Propensity Score
@@ -2194,9 +2194,10 @@ Preprocessing for Parametric 368 Causal Inference.”</span> <em>Journal
 of Statistical Software</em> 369.
 </div>
 <div id="ref-zhang2019balance" class="csl-entry">
-Zhang, Zhongheng, Hwa Jung Kim, Guillaume Lonjon, Yibing Zhu, et al.
-2019. <span>“Balance Diagnostics After Propensity Score
-Matching.”</span> <em>Annals of Translational Medicine</em> 7 (1).
+<span class="nocase">Zhang, Zhongheng, Hwa Jung Kim, Guillaume Lonjon,
+Yibing Zhu, et al.</span> 2019. <span>“Balance Diagnostics After
+Propensity Score Matching.”</span> <em>Annals of Translational
+Medicine</em> 7 (1).
 </div>
 </div>
 </div>
@@ -2211,7 +2212,7 @@ Matching.”</span> <em>Annals of Translational Medicine</em> 7 (1).
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

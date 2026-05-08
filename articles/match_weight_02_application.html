@@ -111,13 +111,13 @@ It is defined as</p>
 t|T\geq t)}{\Delta t}=\frac{f(t)}{S(t)},
 \end{equation}$$</span></p>
 <p>where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f(t)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(t)</annotation></semantics></math>
 is the density function of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
 given
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>,
 and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>T</mi><mo>&gt;</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">S(t)=P(T&gt;t)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo>&gt;</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">S(t)=P(T&gt;t)</annotation></semantics></math>
 is the survival function of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>.</p>
 </div>
@@ -131,7 +131,7 @@ framework, the baseline hazard function needs to be specified. This is
 not the case under a Frequentist Cox regression. The hazard at time
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
 is</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>𝐗</mi><mi>i</mi></msub><mo>,</mo><msub><mi>Z</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><msub><mi>Z</mi><mi>i</mi></msub><mo>+</mo><msup><mi>β</mi><mi>T</mi></msup><msub><mi>𝐗</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{equation}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>𝐗</mi><mi>i</mi></msub><mo>,</mo><msub><mi>Z</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>λ</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">exp</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>γ</mi><msub><mi>Z</mi><mi>i</mi></msub><mo>+</mo><msup><mi>β</mi><mi>T</mi></msup><msub><mi>𝐗</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{equation}
 \label{eq:coxmodel}
   \lambda(t|\boldsymbol{X}_i,Z_i)=\lambda_0(t|\alpha) \exp(\gamma Z_i +\beta^T \boldsymbol{X}_i), 
 \end{equation}</annotation></semantics></math></p>
@@ -151,22 +151,21 @@ flexibility and cannot capture irregular behaviors. Alternatively, more
 flexible hazard shapes can be specified using piecewise constant,
 piecewise exponential or spline functions, allowing for the
 representation of multimodal patterns and accommodating diverse
-irregularities <span class="citation">(Lázaro, Armero, and Alvares
-2021)</span>. The misspecification of the baseline hazard can lead to
-the loss of important model details which can be challenging to
-accurately estimate outcomes of interest, such as probabilities or
-survival curves. In this article, we consider the following baseline
-hazard functions.</p>
+irregularities <span class="citation">(Lázaro et al. 2021)</span>. The
+misspecification of the baseline hazard can lead to the loss of
+important model details which can be challenging to accurately estimate
+outcomes of interest, such as probabilities or survival curves. In this
+article, we consider the following baseline hazard functions.</p>
 <ul>
 <li>Exponential distribution with constant hazard
 <ul>
-<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_0(t|\alpha)=exp(\alpha)</annotation></semantics></math></li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>e</mi><mi>x</mi><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\lambda_0(t|\alpha)=exp(\alpha)</annotation></semantics></math></li>
 </ul>
 </li>
 <li>Weibull distribution with proportional hazards parametrization
 <ul>
 <li>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>ζ</mi><mo>,</mo><mi>μ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>α</mi><mi>t</mi><msup><mi>μ</mi><mrow><mi>ζ</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mi>μ</mi><msup><mi>t</mi><mi>ζ</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_0(t|\zeta,\mu)=\alpha t\mu^{\zeta -1} \exp(-\mu t^\zeta)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><mi>ζ</mi><mo>,</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>α</mi><mi>t</mi><msup><mi>μ</mi><mrow><mi>ζ</mi><mo>−</mo><mn>1</mn></mrow></msup><mrow><mi mathvariant="normal">exp</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>μ</mi><msup><mi>t</mi><mi>ζ</mi></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\lambda_0(t|\zeta,\mu)=\alpha t\mu^{\zeta -1} \exp(-\mu t^\zeta)</annotation></semantics></math>
 with shape parameter
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ζ</mi><annotation encoding="application/x-tex">\zeta</annotation></semantics></math>
 and scale parameter
@@ -176,7 +175,7 @@ and scale parameter
 <li>Piecewise exponential distribution
 <ul>
 <li>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>α</mi><mi>K</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_0(t|\alpha_1,...,\alpha_K)=exp(\alpha_k)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>α</mi><mi>K</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>e</mi><mi>x</mi><mi>p</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\lambda_0(t|\alpha_1,...,\alpha_K)=exp(\alpha_k)</annotation></semantics></math>
 for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>s</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>s</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">]</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">t \in (s_{k-1},s_k],</annotation></semantics></math>
 where
@@ -187,7 +186,7 @@ interval and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
 is the total number of pre-specified intervals as in <span class="citation">Murray et al. (2014)</span>. In our example below, we
 will consider
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>k</mi></msub><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>100</mn><mo>*</mo><mi>k</mi><mi>/</mi><mi>K</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>t</mi><mi>h</mi></mrow></msup></mrow><annotation encoding="application/x-tex">s_k=(100*k/K)^{th}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>k</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>100</mn><mo>*</mo><mi>k</mi><mi>/</mi><mi>K</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>t</mi><mi>h</mi></mrow></msup></mrow><annotation encoding="application/x-tex">s_k=(100*k/K)^{th}</annotation></semantics></math>
 to the percentile of the event times from the treated group.</li>
 </ul>
 </li>
@@ -228,15 +227,15 @@ be the treatment indicator in external control data. The time axis is
 partitioned into
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
 intervals:
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><msub><mi>κ</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>κ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>κ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mi>…</mi><mo>,</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>κ</mi><mrow><mi>K</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>κ</mi><mi>K</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">(0,\kappa_1],(\kappa_1,\kappa_2],\ldots,(\kappa_{K-1},\kappa_K)</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><msub><mi>κ</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>κ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>κ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mi>…</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>κ</mi><mrow><mi>K</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>κ</mi><mi>K</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,\kappa_1],(\kappa_1,\kappa_2],\ldots,(\kappa_{K-1},\kappa_K)</annotation></semantics></math>.
 Let
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>α</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_0(t|\alpha_k)=\exp{(\alpha_k)}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>α</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">exp</mi><mo>⁡</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_0(t|\alpha_k)=\exp{(\alpha_k)}</annotation></semantics></math>
 be the piecewise exponential baseline hazard function with
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><msub><mi>I</mi><mi>k</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>κ</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>κ</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">t \in I_k=(\kappa_{k-1},\kappa_k)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><msub><mi>I</mi><mi>k</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>κ</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>κ</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">t \in I_k=(\kappa_{k-1},\kappa_k)</annotation></semantics></math>
 for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">k=1,\ldots,K</annotation></semantics></math>.
 Denote
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝛂</mi><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>K</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>⊺</mo></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{\alpha}=(\alpha_1,\ldots,\alpha_K)^\intercal</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝛂</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>α</mi><mi>K</mi></msub><msup><mo stretchy="false" form="postfix">)</mo><mo>⊺</mo></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{\alpha}=(\alpha_1,\ldots,\alpha_K)^\intercal</annotation></semantics></math>.
 Let
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝛃</mi><annotation encoding="application/x-tex">\boldsymbol\beta</annotation></semantics></math>
 and
@@ -301,21 +300,21 @@ other baseline hazard functions.</p>
 <p>We denote the data for the randomized controlled trial (RCT) as
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>D</mi><mn>1</mn></msub><annotation encoding="application/x-tex">D_1</annotation></semantics></math>
 with the corresponding likelihood as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(\gamma,\beta,\alpha│D_1 )</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\gamma,\beta,\alpha│D_1 )</annotation></semantics></math>
 and external control (EC) data as
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>D</mi><mn>0</mn></msub><annotation encoding="application/x-tex">D_0</annotation></semantics></math>
 with corresponding likelihood as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(\gamma,\beta,\alpha│D_0)</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\gamma,\beta,\alpha│D_0)</annotation></semantics></math>.
 The formulation of power prior is <span class="citation">(Ibrahim et al.
 2015)</span>
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><mo>,</mo><mi>ν</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∝</mo><mi>L</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>ν</mi></msup><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>β</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">p(\gamma,\beta,\alpha│D_0,ν) \propto L(\gamma,\beta,\alpha│D_0 )^ν  *p(\gamma)*p(\beta)*p(\alpha),</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><mo>,</mo><mi>ν</mi><mo stretchy="false" form="postfix">)</mo><mo>∝</mo><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mi>ν</mi></msup><mo>*</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>γ</mi><mo stretchy="false" form="postfix">)</mo><mo>*</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>β</mi><mo stretchy="false" form="postfix">)</mo><mo>*</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">p(\gamma,\beta,\alpha│D_0,ν) \propto L(\gamma,\beta,\alpha│D_0 )^ν  *p(\gamma)*p(\beta)*p(\alpha),</annotation></semantics></math>
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>ν</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0 \leq ν \leq 1</annotation></semantics></math>
 is the vector of subject specific weights in the EC data, and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(\gamma)</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>β</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(\beta)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>γ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p(\gamma)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>β</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p(\beta)</annotation></semantics></math>,
 and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(\alpha)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p(\alpha)</annotation></semantics></math>
 are the priors for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
@@ -323,22 +322,22 @@ and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
 respectively.</p>
 <p>The posterior distribution is
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>β</mi><mi>│</mi><msub><mi>D</mi><mn>1</mn></msub><mo>,</mo><msub><mi>D</mi><mn>0</mn></msub><mo>,</mo><mi>ν</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∝</mo><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>L</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>ν</mi></msup><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>β</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">p(\beta│D_1,D_0,ν) \propto L(\gamma,\beta,\alpha│D_1 )  L(\gamma,\beta,\alpha│D_0 )^ν  *p(\gamma)*p(\beta)*p(\alpha).</annotation></semantics></math></p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>β</mi><mi>│</mi><msub><mi>D</mi><mn>1</mn></msub><mo>,</mo><msub><mi>D</mi><mn>0</mn></msub><mo>,</mo><mi>ν</mi><mo stretchy="false" form="postfix">)</mo><mo>∝</mo><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>γ</mi><mo>,</mo><mi>β</mi><mo>,</mo><mi>α</mi><mi>│</mi><msub><mi>D</mi><mn>0</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mi>ν</mi></msup><mo>*</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>γ</mi><mo stretchy="false" form="postfix">)</mo><mo>*</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>β</mi><mo stretchy="false" form="postfix">)</mo><mo>*</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">p(\beta│D_1,D_0,ν) \propto L(\gamma,\beta,\alpha│D_1 )  L(\gamma,\beta,\alpha│D_0 )^ν  *p(\gamma)*p(\beta)*p(\alpha).</annotation></semantics></math></p>
 <p>We consider the non-informative prior distributions for the
 parameters as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0.001</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\gamma \sim N(0,0.001)</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>j</mi></msub><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0.001</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta_j \sim N(0,0.001)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>∼</mo><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0.001</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\gamma \sim N(0,0.001)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>j</mi></msub><mo>∼</mo><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0.001</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\beta_j \sim N(0,0.001)</annotation></semantics></math>
 for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>=</mo><mn>1</mn><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>P</mi></mrow><annotation encoding="application/x-tex">j=1...,P</annotation></semantics></math>
 with
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
 baseline covariates, and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>k</mi></msub><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0.001</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\alpha_k \sim N(0,0.001)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>k</mi></msub><mo>∼</mo><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0.001</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\alpha_k \sim N(0,0.001)</annotation></semantics></math>
 for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">k=1,...,K</annotation></semantics></math>
 intervals.</p>
 <p>Note: To avoid confusion,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">N(a,b)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(a,b)</annotation></semantics></math>
 means a normal distribution with mean
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
 and precision
@@ -348,21 +347,21 @@ and precision
 <h2 id="commensurate-prior-model">Commensurate prior model<a class="anchor" aria-label="anchor" href="#commensurate-prior-model"></a>
 </h2>
 <p>Let
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝛈</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>β</mi><mi>P</mi></msub><mo>,</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>α</mi><mi>K</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\boldsymbol{\eta}=(\beta_1,...,\beta_P,\alpha_1,...,\alpha_K)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝛈</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>β</mi><mi>P</mi></msub><mo>,</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>α</mi><mi>K</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\boldsymbol{\eta}=(\beta_1,...,\beta_P,\alpha_1,...,\alpha_K)</annotation></semantics></math>
 and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝛈</mi><mn>0</mn></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mn>10</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>β</mi><mrow><mi>P</mi><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>α</mi><mn>10</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>α</mi><mrow><mi>K</mi><mn>0</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\boldsymbol{\eta}_0=(\beta_{10},...,\beta_{P0},\alpha_{10},...,\alpha_{K0})</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝛈</mi><mn>0</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>10</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>β</mi><mrow><mi>P</mi><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>α</mi><mn>10</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>α</mi><mrow><mi>K</mi><mn>0</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\boldsymbol{\eta}_0=(\beta_{10},...,\beta_{P0},\alpha_{10},...,\alpha_{K0})</annotation></semantics></math>
 be the parameter vector for RCT and RWD respectively. We consider the
 following commensurate prior</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>η</mi><mo>ℓ</mo></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>η</mi><mrow><mn>0</mn><mo>,</mo><mo>ℓ</mo></mrow></msub><mo>,</mo><msub><mi>τ</mi><mo>ℓ</mo></msub><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>η</mi><mrow><mo>ℓ</mo><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>τ</mi><mo>ℓ</mo></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="1.0em"></mspace><mspace width="1.0em"></mspace><mo>ℓ</mo><mo>=</mo><mn>1</mn><mo>,</mo><mi>⋯</mi><mo>,</mo><mi>P</mi><mo>+</mo><mi>K</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\eta_\ell|\eta_{0,\ell},\tau_\ell \sim N(\eta_{\ell 0},\tau_\ell) \quad \quad \ell=1,\cdots,P+K,</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>η</mi><mi>ℓ</mi></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>η</mi><mrow><mn>0</mn><mo>,</mo><mi>ℓ</mi></mrow></msub><mo>,</mo><msub><mi>τ</mi><mi>ℓ</mi></msub><mo>∼</mo><mi>N</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>η</mi><mrow><mi>ℓ</mi><mn>0</mn></mrow></msub><mo>,</mo><msub><mi>τ</mi><mi>ℓ</mi></msub><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mspace width="1.0em"></mspace><mi>ℓ</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>⋯</mi><mo>,</mo><mi>P</mi><mo>+</mo><mi>K</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\eta_\ell|\eta_{0,\ell},\tau_\ell \sim N(\eta_{\ell 0},\tau_\ell) \quad \quad \ell=1,\cdots,P+K,</annotation></semantics></math></p>
 <p>where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mo>ℓ</mo></msub><annotation encoding="application/x-tex">\tau_\ell</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>ℓ</mi></msub><annotation encoding="application/x-tex">\tau_\ell</annotation></semantics></math>
 is the precision parameter that determines the degree of borrowing,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
 is the total number of covariates and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
 is the total number of intervals. For the precision parameter, we assign
 a gamma prior as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mo>ℓ</mo></msub><mo>∼</mo><mi>G</mi><mi>a</mi><mi>m</mi><mi>m</mi><mi>a</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.01</mn><mo>,</mo><mn>0.01</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\tau_\ell \sim Gamma(0.01,0.01)</annotation></semantics></math>.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mi>ℓ</mi></msub><mo>∼</mo><mi>G</mi><mi>a</mi><mi>m</mi><mi>m</mi><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mn>0.01</mn><mo>,</mo><mn>0.01</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\tau_\ell \sim Gamma(0.01,0.01)</annotation></semantics></math>.</p>
 </div>
 <div class="section level2">
 <h2 id="conducting-analysis">Conducting Analysis<a class="anchor" aria-label="anchor" href="#conducting-analysis"></a>
@@ -1755,7 +1754,7 @@ credible intervals for all the methods are shown below.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-alvares2021bayesian" class="csl-entry">
 Alvares, Danilo, Elena Lázaro, Virgilio Gómez-Rubio, and Carmen Armero.
 2021. <span>“Bayesian Survival Analysis with BUGS.”</span>
@@ -1772,9 +1771,8 @@ Ibrahim, Joseph G, Ming-Hui Chen, Yeongjin Gwon, and Fang Chen. 2015.
 in Medicine</em> 34 (28): 3724–49.
 </div>
 <div id="ref-psborrow2" class="csl-entry">
-Isaac Gravestock, Matthew H Secrest. 2024. <span>“Psborrow2: An r
-Package for Bayesian Dynamic Borrowing Simulation Study and
-Analysis.”</span> <a href="https://github.com/Genentech/psborrow2" class="external-link">https://github.com/Genentech/psborrow2</a>.
+Isaac Gravestock, Matthew H Secrest. 2024. <em>Psborrow2: An r Package
+for Bayesian Dynamic Borrowing Simulation Study and Analysis</em>. <a href="https://github.com/Genentech/psborrow2" class="external-link">https://github.com/Genentech/psborrow2</a>.
 </div>
 <div id="ref-khanal2022semiparametric" class="csl-entry">
 Khanal, Manoj. 2022. <span>“Semiparametric Regression Models for
@@ -1805,7 +1803,7 @@ Historical Data.”</span> <em>Biometrics</em> 70 (1): 185–91.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

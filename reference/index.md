@@ -1,0 +1,594 @@
+# Package index
+
+## All functions
+
+- [`Analysis-class`](https://genentech.github.io/psborrow2/reference/Analysis-class.md)
+  [`.analysis_obj`](https://genentech.github.io/psborrow2/reference/Analysis-class.md)
+  :
+
+  `Analysis` Class
+
+- [`BaselineDataFrame-class`](https://genentech.github.io/psborrow2/reference/BaselineDataFrame-class.md)
+  [`.baseline_dataframe`](https://genentech.github.io/psborrow2/reference/BaselineDataFrame-class.md)
+  : Baseline Data Frame Object
+
+- [`BaselineDataList-class`](https://genentech.github.io/psborrow2/reference/BaselineDataList-class.md)
+  [`.baseline_data_list`](https://genentech.github.io/psborrow2/reference/BaselineDataList-class.md)
+  : Baseline Data Frame List
+
+- [`BaselineObject-class`](https://genentech.github.io/psborrow2/reference/BaselineObject-class.md)
+  [`.baseline_object`](https://genentech.github.io/psborrow2/reference/BaselineObject-class.md)
+  :
+
+  `BaselineObject` class for data simulation
+
+- [`BinaryOutcome-class`](https://genentech.github.io/psborrow2/reference/BinaryOutcome-class.md)
+  :
+
+  `BinaryOutcome` class
+
+- [`Borrowing-class`](https://genentech.github.io/psborrow2/reference/Borrowing-class.md)
+  :
+
+  `Borrowing` Class
+
+- [`BorrowingFixedPowerPrior-class`](https://genentech.github.io/psborrow2/reference/BorrowingFixedPowerPrior-class.md)
+  [`.borrowing_fixed_power_prior`](https://genentech.github.io/psborrow2/reference/BorrowingFixedPowerPrior-class.md)
+  :
+
+  `BorrowingFixedPowerPrior` class
+
+- [`BorrowingFull-class`](https://genentech.github.io/psborrow2/reference/BorrowingFull-class.md)
+  [`.borrowing_full`](https://genentech.github.io/psborrow2/reference/BorrowingFull-class.md)
+  :
+
+  `BorrowingFull` class
+
+- [`BorrowingHierarchicalCommensurate-class`](https://genentech.github.io/psborrow2/reference/BorrowingHierarchicalCommensurate-class.md)
+  [`.borrowing_hierarchical_commensurate`](https://genentech.github.io/psborrow2/reference/BorrowingHierarchicalCommensurate-class.md)
+  :
+
+  `BorrowingHierarchicalCommensurate` class
+
+- [`BorrowingNone-class`](https://genentech.github.io/psborrow2/reference/BorrowingNone-class.md)
+  [`.borrowing_none`](https://genentech.github.io/psborrow2/reference/BorrowingNone-class.md)
+  :
+
+  `BorrowingNone` class
+
+- [`ContinuousOutcome-class`](https://genentech.github.io/psborrow2/reference/ContinuousOutcome-class.md)
+  :
+
+  `ContinuousOutcome` class
+
+- [`Covariates-class`](https://genentech.github.io/psborrow2/reference/Covariates-class.md)
+  [`.covariate_class`](https://genentech.github.io/psborrow2/reference/Covariates-class.md)
+  :
+
+  `Covariate` Class
+
+- [`DataSimCutOff-class`](https://genentech.github.io/psborrow2/reference/DataSimCutOff-class.md)
+  [`.datasim_cut_off`](https://genentech.github.io/psborrow2/reference/DataSimCutOff-class.md)
+  : Cut Off Object
+
+- [`DataSimEnrollment-class`](https://genentech.github.io/psborrow2/reference/DataSimEnrollment-class.md)
+  [`.datasim_enrollment`](https://genentech.github.io/psborrow2/reference/DataSimEnrollment-class.md)
+  : Enrollment Object
+
+- [`DataSimEvent-class`](https://genentech.github.io/psborrow2/reference/DataSimEvent-class.md)
+  [`.datasim_event`](https://genentech.github.io/psborrow2/reference/DataSimEvent-class.md)
+  : Event Time Distribution Object
+
+- [`DataSimFixedExternalData-class`](https://genentech.github.io/psborrow2/reference/DataSimFixedExternalData-class.md)
+  [`.datasim_fixed_external_data`](https://genentech.github.io/psborrow2/reference/DataSimFixedExternalData-class.md)
+  : Fixed External Control Data Object
+
+- [`DataSimObject-class`](https://genentech.github.io/psborrow2/reference/DataSimObject-class.md)
+  [`.datasim_object`](https://genentech.github.io/psborrow2/reference/DataSimObject-class.md)
+  : Data Simulation Object Class
+
+- [`MCMCSimulationResult-class`](https://genentech.github.io/psborrow2/reference/MCMCSimulationResult-class.md)
+  [`.mcmc_simulation_result`](https://genentech.github.io/psborrow2/reference/MCMCSimulationResult-class.md)
+  :
+
+  `MCMCSimulationResult` Class
+
+- [`Outcome-class`](https://genentech.github.io/psborrow2/reference/Outcome-class.md)
+  :
+
+  `Outcome` class
+
+- [`OutcomeBinaryLogistic-class`](https://genentech.github.io/psborrow2/reference/OutcomeBinaryLogistic-class.md)
+  [`.outcome_bin_logistic`](https://genentech.github.io/psborrow2/reference/OutcomeBinaryLogistic-class.md)
+  :
+
+  `OutcomeBinaryLogistic` class
+
+- [`OutcomeContinuousNormal-class`](https://genentech.github.io/psborrow2/reference/OutcomeContinuousNormal-class.md)
+  [`.outcome_cont_normal`](https://genentech.github.io/psborrow2/reference/OutcomeContinuousNormal-class.md)
+  :
+
+  `OutcomeContinuousNormal` class
+
+- [`OutcomeSurvExponential-class`](https://genentech.github.io/psborrow2/reference/OutcomeSurvExponential-class.md)
+  [`.outcome_surv_exponential`](https://genentech.github.io/psborrow2/reference/OutcomeSurvExponential-class.md)
+  :
+
+  `OutcomeSurvExponential` Class
+
+- [`OutcomeSurvPEM-class`](https://genentech.github.io/psborrow2/reference/OutcomeSurvPEM-class.md)
+  [`.outcome_surv_pem`](https://genentech.github.io/psborrow2/reference/OutcomeSurvPEM-class.md)
+  :
+
+  `OutcomeSurvPEM` Class
+
+- [`OutcomeSurvWeibullPH-class`](https://genentech.github.io/psborrow2/reference/OutcomeSurvWeibullPH-class.md)
+  [`.outcome_surv_weibull_ph`](https://genentech.github.io/psborrow2/reference/OutcomeSurvWeibullPH-class.md)
+  :
+
+  `OutcomeSurvWeibullPH` Class
+
+- [`Prior-class`](https://genentech.github.io/psborrow2/reference/Prior-class.md)
+  :
+
+  `Prior` Class
+
+- [`PriorBernoulli-class`](https://genentech.github.io/psborrow2/reference/PriorBernoulli-class.md)
+  [`.prior_bernoulli`](https://genentech.github.io/psborrow2/reference/PriorBernoulli-class.md)
+  :
+
+  `PriorBernoulli` Class
+
+- [`PriorBeta-class`](https://genentech.github.io/psborrow2/reference/PriorBeta-class.md)
+  [`.prior_beta`](https://genentech.github.io/psborrow2/reference/PriorBeta-class.md)
+  :
+
+  `PriorBeta` Class
+
+- [`PriorCauchy-class`](https://genentech.github.io/psborrow2/reference/PriorCauchy-class.md)
+  [`.prior_cauchy`](https://genentech.github.io/psborrow2/reference/PriorCauchy-class.md)
+  :
+
+  `PriorCauchy` Class
+
+- [`PriorExponential-class`](https://genentech.github.io/psborrow2/reference/PriorExponential-class.md)
+  [`.prior_exponential`](https://genentech.github.io/psborrow2/reference/PriorExponential-class.md)
+  :
+
+  `PriorExponential` Class
+
+- [`PriorGamma-class`](https://genentech.github.io/psborrow2/reference/PriorGamma-class.md)
+  [`.prior_gamma`](https://genentech.github.io/psborrow2/reference/PriorGamma-class.md)
+  :
+
+  `PriorGamma` Class
+
+- [`PriorHalfCauchy-class`](https://genentech.github.io/psborrow2/reference/PriorHalfCauchy-class.md)
+  [`.prior_half_cauchy`](https://genentech.github.io/psborrow2/reference/PriorHalfCauchy-class.md)
+  :
+
+  `PriorHalfCauchy` Class
+
+- [`PriorHalfNormal-class`](https://genentech.github.io/psborrow2/reference/PriorHalfNormal-class.md)
+  [`.prior_half_normal`](https://genentech.github.io/psborrow2/reference/PriorHalfNormal-class.md)
+  :
+
+  `PriorHalfNormal` Class
+
+- [`PriorNormal-class`](https://genentech.github.io/psborrow2/reference/PriorNormal-class.md)
+  [`.prior_normal`](https://genentech.github.io/psborrow2/reference/PriorNormal-class.md)
+  :
+
+  `PriorNormal` Class
+
+- [`PriorPoisson-class`](https://genentech.github.io/psborrow2/reference/PriorPoisson-class.md)
+  [`.prior_poisson`](https://genentech.github.io/psborrow2/reference/PriorPoisson-class.md)
+  :
+
+  `PriorPoisson` Class
+
+- [`SimBorrowingList-class`](https://genentech.github.io/psborrow2/reference/SimBorrowingList-class.md)
+  [`.sim_borrowing_list`](https://genentech.github.io/psborrow2/reference/SimBorrowingList-class.md)
+  :
+
+  `SimBorrowingList` Class
+
+- [`SimCovariateList-class`](https://genentech.github.io/psborrow2/reference/SimCovariateList-class.md)
+  [`.sim_covariate_list`](https://genentech.github.io/psborrow2/reference/SimCovariateList-class.md)
+  :
+
+  `SimCovariateList` Class
+
+- [`SimCovariates-class`](https://genentech.github.io/psborrow2/reference/SimCovariates-class.md)
+  [`.sim_covariates`](https://genentech.github.io/psborrow2/reference/SimCovariates-class.md)
+  :
+
+  `SimCovariates` Class
+
+- [`SimDataList-class`](https://genentech.github.io/psborrow2/reference/SimDataList-class.md)
+  [`.sim_data_list`](https://genentech.github.io/psborrow2/reference/SimDataList-class.md)
+  :
+
+  `SimDataList` Class
+
+- [`SimOutcomeList-class`](https://genentech.github.io/psborrow2/reference/SimOutcomeList-class.md)
+  [`.sim_outcome_list`](https://genentech.github.io/psborrow2/reference/SimOutcomeList-class.md)
+  :
+
+  `SimOutcomeList` Class
+
+- [`SimSampleSize-class`](https://genentech.github.io/psborrow2/reference/SimSampleSize-class.md)
+  [`.sim_samplesize`](https://genentech.github.io/psborrow2/reference/SimSampleSize-class.md)
+  :
+
+  `SimSampleSize` Class
+
+- [`SimTreatmentList-class`](https://genentech.github.io/psborrow2/reference/SimTreatmentList-class.md)
+  [`.sim_treatment_list`](https://genentech.github.io/psborrow2/reference/SimTreatmentList-class.md)
+  :
+
+  `SimTreatmentList` Class
+
+- [`SimVar-class`](https://genentech.github.io/psborrow2/reference/SimVar-class.md)
+  :
+
+  `SimVar` Class
+
+- [`SimVarBin-class`](https://genentech.github.io/psborrow2/reference/SimVarBin-class.md)
+  [`.bin_var`](https://genentech.github.io/psborrow2/reference/SimVarBin-class.md)
+  :
+
+  `SimVarBin` class
+
+- [`SimVarCont-class`](https://genentech.github.io/psborrow2/reference/SimVarCont-class.md)
+  [`.cont_var`](https://genentech.github.io/psborrow2/reference/SimVarCont-class.md)
+  :
+
+  `SimVarCont` class
+
+- [`Simulation-class`](https://genentech.github.io/psborrow2/reference/Simulation-class.md)
+  [`.simulation_obj`](https://genentech.github.io/psborrow2/reference/Simulation-class.md)
+  :
+
+  `Simulation` Class
+
+- [`TimeToEvent-class`](https://genentech.github.io/psborrow2/reference/TimeToEvent-class.md)
+  :
+
+  `TimeToEvent` class
+
+- [`Treatment-class`](https://genentech.github.io/psborrow2/reference/Treatment-class.md)
+  [`.treatment_class`](https://genentech.github.io/psborrow2/reference/Treatment-class.md)
+  :
+
+  `Treatment` Class
+
+- [`UniformPrior-class`](https://genentech.github.io/psborrow2/reference/UniformPrior-class.md)
+  [`.uniform_prior`](https://genentech.github.io/psborrow2/reference/UniformPrior-class.md)
+  :
+
+  `UniformPrior` Class
+
+- [`add_covariates()`](https://genentech.github.io/psborrow2/reference/add_covariates.md)
+  : Add Covariates for Model Adjustment
+
+- [`as.data.frame(`*`<BaselineDataList>`*`)`](https://genentech.github.io/psborrow2/reference/as_data_frame.md)
+  :
+
+  Coerce a `psborrow2` object to a data frame
+
+- [`baseline_covariates()`](https://genentech.github.io/psborrow2/reference/baseline_covariates.md)
+  : Specify Correlated Baseline Covariates
+
+- [`bernoulli_prior()`](https://genentech.github.io/psborrow2/reference/bernoulli_prior.md)
+  : Legacy function for the bernoulli prior
+
+- [`beta_prior()`](https://genentech.github.io/psborrow2/reference/beta_prior.md)
+  : Legacy function for the beta prior
+
+- [`bin_var()`](https://genentech.github.io/psborrow2/reference/bin_var.md)
+  : Create binary covariate
+
+- [`binary_cutoff()`](https://genentech.github.io/psborrow2/reference/binary_cutoff.md)
+  : Binary Cut-Off Transformation
+
+- [`borrowing_details()`](https://genentech.github.io/psborrow2/reference/borrowing_details.md)
+  : Legacy function for specifying borrowing details
+
+- [`borrowing_fixed_power_prior()`](https://genentech.github.io/psborrow2/reference/borrowing_fixed_power_prior.md)
+  : Fixed Power Prior Borrowing
+
+- [`borrowing_full()`](https://genentech.github.io/psborrow2/reference/borrowing_full.md)
+  : Full borrowing
+
+- [`borrowing_hierarchical_commensurate()`](https://genentech.github.io/psborrow2/reference/borrowing_hierarchical_commensurate.md)
+  : Hierarchical commensurate borrowing
+
+- [`borrowing_none()`](https://genentech.github.io/psborrow2/reference/borrowing_none.md)
+  : No borrowing
+
+- [`build_model_string()`](https://genentech.github.io/psborrow2/reference/build_model_string.md)
+  : Build the model string by interpolating the Stan template
+
+- [`c(`*`<SimDataList>`*`)`](https://genentech.github.io/psborrow2/reference/c.md)
+  :
+
+  Combine objects in `psborrow2`
+
+- [`cauchy_prior()`](https://genentech.github.io/psborrow2/reference/cauchy_prior.md)
+  : Legacy function for the cauchy prior
+
+- [`check_cmdstanr()`](https://genentech.github.io/psborrow2/reference/check_cmdstanr.md)
+  [`check_cmdstan()`](https://genentech.github.io/psborrow2/reference/check_cmdstanr.md)
+  : Check Stan
+
+- [`check_data_matrix_has_columns()`](https://genentech.github.io/psborrow2/reference/check_data_matrix_has_columns.md)
+  : Check Data Matrix for Required Columns
+
+- [`check_fixed_external_data()`](https://genentech.github.io/psborrow2/reference/check_fixed_external_data.md)
+  : Create a Fixed External Data Object
+
+- [`cont_var()`](https://genentech.github.io/psborrow2/reference/cont_var.md)
+  : Create continuous covariate
+
+- [`covariance_matrix()`](https://genentech.github.io/psborrow2/reference/covariance_matrix.md)
+  : Create Covariance Matrix
+
+- [`create_alpha_string()`](https://genentech.github.io/psborrow2/reference/create_alpha_string.md)
+  : Create alpha string
+
+- [`create_analysis_obj()`](https://genentech.github.io/psborrow2/reference/create_analysis_obj.md)
+  : Compile MCMC sampler using STAN and create analysis object
+
+- [`create_baseline_object()`](https://genentech.github.io/psborrow2/reference/create_baseline_object.md)
+  : Create Baseline Data Simulation Object
+
+- [`create_data_matrix()`](https://genentech.github.io/psborrow2/reference/create_data_matrix.md)
+  : Create Data Matrix
+
+- [`create_data_simulation()`](https://genentech.github.io/psborrow2/reference/create_data_simulation.md)
+  : Data Simulation
+
+- [`create_event_dist()`](https://genentech.github.io/psborrow2/reference/create_event_dist.md)
+  [`null_event_dist()`](https://genentech.github.io/psborrow2/reference/create_event_dist.md)
+  : Specify a Time to Event Distribution
+
+- [`create_simulation_obj()`](https://genentech.github.io/psborrow2/reference/create_simulation_obj.md)
+  : Compile MCMC sampler using STAN and create simulation object
+
+- [`create_tau_string()`](https://genentech.github.io/psborrow2/reference/create_tau_string.md)
+  : Create tau string
+
+- [`custom_enrollment()`](https://genentech.github.io/psborrow2/reference/custom_enrollment.md)
+  :
+
+  Create a `DataSimEnrollment` Object
+
+- [`cut_off_none()`](https://genentech.github.io/psborrow2/reference/cut_off_funs.md)
+  [`cut_off_after_first()`](https://genentech.github.io/psborrow2/reference/cut_off_funs.md)
+  [`cut_off_after_last()`](https://genentech.github.io/psborrow2/reference/cut_off_funs.md)
+  [`cut_off_after_events()`](https://genentech.github.io/psborrow2/reference/cut_off_funs.md)
+  : Cut Off Functions
+
+- [`enrollment_constant()`](https://genentech.github.io/psborrow2/reference/enrollment_constant.md)
+  : Constant Enrollment Rates
+
+- [`eval_constraints()`](https://genentech.github.io/psborrow2/reference/eval_constraints.md)
+  : Evaluate constraints
+
+- [`example_matrix`](https://genentech.github.io/psborrow2/reference/example_matrix.md)
+  : Example data matrix
+
+- [`example_surv`](https://genentech.github.io/psborrow2/reference/example_surv.md)
+  : Simulated Survival Data
+
+- [`exp_surv_dist()`](https://genentech.github.io/psborrow2/reference/exp_surv_dist.md)
+  : Legacy function for the exponential survival distribution
+
+- [`exponential_prior()`](https://genentech.github.io/psborrow2/reference/exponential_prior.md)
+  : Legacy function for the exponential prior
+
+- [`gamma_prior()`](https://genentech.github.io/psborrow2/reference/gamma_prior.md)
+  : Legacy function for the gamma prior
+
+- [`generate(`*`<BaselineObject>`*`)`](https://genentech.github.io/psborrow2/reference/generate-BaselineObject-method.md)
+  :
+
+  Generate Data for a `BaselineObject`
+
+- [`generate(`*`<DataSimObject>`*`)`](https://genentech.github.io/psborrow2/reference/generate-DataSimObject-method.md)
+  :
+
+  Generate Data for a `DataSimObject`
+
+- [`generate()`](https://genentech.github.io/psborrow2/reference/generate.md)
+  : Generate Data from Object
+
+- [`get_cmd_stan_models()`](https://genentech.github.io/psborrow2/reference/get_cmd_stan_models.md)
+  :
+
+  Get `CmdStanModel` objects for `MCMCSimulationResults`
+
+- [`get_data()`](https://genentech.github.io/psborrow2/reference/get_data.md)
+  :
+
+  Get Simulated Data from `SimDataList` object
+
+- [`get_prior_string_covariates()`](https://genentech.github.io/psborrow2/reference/get_prior_string_covariates.md)
+  : Get prior string for all covariates
+
+- [`get_quantiles()`](https://genentech.github.io/psborrow2/reference/get_quantiles.md)
+  : Get Quantiles of Random Data
+
+- [`get_results()`](https://genentech.github.io/psborrow2/reference/get_results.md)
+  :
+
+  Get results for `MCMCSimulationResults` objects
+
+- [`get_stan_code()`](https://genentech.github.io/psborrow2/reference/get_stan_code.md)
+  : Get method for Stan model
+
+- [`get_vars()`](https://genentech.github.io/psborrow2/reference/get_vars.md)
+  : Get Variables
+
+- [`half_cauchy_prior()`](https://genentech.github.io/psborrow2/reference/half_cauchy_prior.md)
+  : Legacy function for the half-cauchy prior
+
+- [`half_normal_prior()`](https://genentech.github.io/psborrow2/reference/half_normal_prior.md)
+  : Legacy function for the normal half prior
+
+- [`load_and_interpolate_stan_model()`](https://genentech.github.io/psborrow2/reference/load_and_interpolate_stan_model.md)
+  : Load and interpolate Stan model
+
+- [`load_stan_file()`](https://genentech.github.io/psborrow2/reference/load_stan_file.md)
+  :
+
+  Load a Stan `psborrow2` template
+
+- [`logistic_bin_outcome()`](https://genentech.github.io/psborrow2/reference/logistic_bin_outcome.md)
+  : Legacy function for binary logistic regression
+
+- [`mcmc_sample()`](https://genentech.github.io/psborrow2/reference/mcmc_sample.md)
+  : Sample from Stan model
+
+- [`normal_prior()`](https://genentech.github.io/psborrow2/reference/normal_prior.md)
+  : Legacy function for the normal prior
+
+- [`outcome_bin_logistic()`](https://genentech.github.io/psborrow2/reference/outcome_bin_logistic.md)
+  : Bernoulli distribution with logit parametrization
+
+- [`outcome_cont_normal()`](https://genentech.github.io/psborrow2/reference/outcome_cont_normal.md)
+  : Normal Outcome Distribution
+
+- [`outcome_surv_exponential()`](https://genentech.github.io/psborrow2/reference/outcome_surv_exponential.md)
+  : Exponential survival distribution
+
+- [`outcome_surv_pem()`](https://genentech.github.io/psborrow2/reference/outcome_surv_pem.md)
+  : Piecewise exponential survival distribution
+
+- [`outcome_surv_weibull_ph()`](https://genentech.github.io/psborrow2/reference/outcome_surv_weibull_ph.md)
+  : Weibull survival distribution (proportional hazards formulation)
+
+- [`plot(`*`<Prior>`*`,`*`<missing>`*`)`](https://genentech.github.io/psborrow2/reference/plot.md)
+  [`plot(`*`<PriorNormal>`*`,`*`<missing>`*`)`](https://genentech.github.io/psborrow2/reference/plot.md)
+  [`plot(`*`<PriorExponential>`*`,`*`<missing>`*`)`](https://genentech.github.io/psborrow2/reference/plot.md)
+  [`plot(`*`<PriorHalfCauchy>`*`,`*`<missing>`*`)`](https://genentech.github.io/psborrow2/reference/plot.md)
+  [`plot(`*`<PriorBernoulli>`*`,`*`<missing>`*`)`](https://genentech.github.io/psborrow2/reference/plot.md)
+  [`plot(`*`<PriorBeta>`*`,`*`<missing>`*`)`](https://genentech.github.io/psborrow2/reference/plot.md)
+  [`plot(`*`<PriorCauchy>`*`,`*`<missing>`*`)`](https://genentech.github.io/psborrow2/reference/plot.md)
+  [`plot(`*`<PriorGamma>`*`,`*`<missing>`*`)`](https://genentech.github.io/psborrow2/reference/plot.md)
+  [`plot(`*`<PriorHalfNormal>`*`,`*`<missing>`*`)`](https://genentech.github.io/psborrow2/reference/plot.md)
+  [`plot(`*`<PriorPoisson>`*`,`*`<missing>`*`)`](https://genentech.github.io/psborrow2/reference/plot.md)
+  [`plot(`*`<UniformPrior>`*`,`*`<missing>`*`)`](https://genentech.github.io/psborrow2/reference/plot.md)
+  : Plot Prior Objects
+
+- [`plot_pdf()`](https://genentech.github.io/psborrow2/reference/plot_pdf.md)
+  : Plot Probability Density Function Values
+
+- [`plot_pmf()`](https://genentech.github.io/psborrow2/reference/plot_pmf.md)
+  : Plot Probability Mass Function Values
+
+- [`poisson_prior()`](https://genentech.github.io/psborrow2/reference/poisson_prior.md)
+  : Legacy function for the poisson prior
+
+- [`possible_data_sim_vars()`](https://genentech.github.io/psborrow2/reference/possible_data_sim_vars.md)
+  : Get All Variable Names in Simulated Data Model Matrix
+
+- [`prior_bernoulli()`](https://genentech.github.io/psborrow2/reference/prior_bernoulli.md)
+  : Prior bernoulli distribution
+
+- [`prior_beta()`](https://genentech.github.io/psborrow2/reference/prior_beta.md)
+  : Prior beta distribution
+
+- [`prior_cauchy()`](https://genentech.github.io/psborrow2/reference/prior_cauchy.md)
+  : Prior cauchy distribution
+
+- [`prior_exponential()`](https://genentech.github.io/psborrow2/reference/prior_exponential.md)
+  : Prior exponential distribution
+
+- [`prior_gamma()`](https://genentech.github.io/psborrow2/reference/prior_gamma.md)
+  : Prior gamma distribution
+
+- [`prior_half_cauchy()`](https://genentech.github.io/psborrow2/reference/prior_half_cauchy.md)
+  : Prior half-cauchy distribution
+
+- [`prior_half_normal()`](https://genentech.github.io/psborrow2/reference/prior_half_normal.md)
+  : Prior half-normal distribution
+
+- [`prior_normal()`](https://genentech.github.io/psborrow2/reference/prior_normal.md)
+  : Prior normal distribution
+
+- [`prior_poisson()`](https://genentech.github.io/psborrow2/reference/prior_poisson.md)
+  : Prior poisson distribution
+
+- [`rename_draws_covariates()`](https://genentech.github.io/psborrow2/reference/rename_draws_covariates.md)
+  :
+
+  Rename Covariates in `draws` Object
+
+- [`set_cut_off()`](https://genentech.github.io/psborrow2/reference/set_cut_off.md)
+  : Set Clinical Cut Off Rule
+
+- [`set_dropout()`](https://genentech.github.io/psborrow2/reference/set_dropout.md)
+  : Set Drop Out Distribution
+
+- [`set_enrollment()`](https://genentech.github.io/psborrow2/reference/set_enrollment.md)
+  : Set Enrollment Rates for Internal and External Trials
+
+- [`set_transformations(`*`<BaselineObject>`*`)`](https://genentech.github.io/psborrow2/reference/set_transformations-BaselineObject-method.md)
+  : Set Transformations in Baseline Objects
+
+- [`set_transformations()`](https://genentech.github.io/psborrow2/reference/set_transformations.md)
+  :
+
+  Set transformations in `BaselineObject` objects
+
+- [`show_guide()`](https://genentech.github.io/psborrow2/reference/show_guide.md)
+  : Show guide for objects with guides
+
+- [`sim_borrowing_list()`](https://genentech.github.io/psborrow2/reference/sim_borrowing_list.md)
+  : Input borrowing details for a simulation study
+
+- [`sim_covariate_list()`](https://genentech.github.io/psborrow2/reference/sim_covariate_list.md)
+  : Input covariate adjustment details for a simulation study
+
+- [`sim_covariates()`](https://genentech.github.io/psborrow2/reference/sim_covariates.md)
+  : Specify covariates for simulation study
+
+- [`sim_covariates_summ()`](https://genentech.github.io/psborrow2/reference/sim_covariates_summ.md)
+  :
+
+  Summarize the number of continuous and binary covariates in a
+  `SimCovariates` object created by
+  [`sim_covariates()`](https://genentech.github.io/psborrow2/reference/sim_covariates.md)
+
+- [`sim_data_list()`](https://genentech.github.io/psborrow2/reference/sim_data_list.md)
+  : Input generated data for a simulation study
+
+- [`sim_outcome_list()`](https://genentech.github.io/psborrow2/reference/sim_outcome_list.md)
+  : Input outcome details for a simulation study
+
+- [`sim_samplesize()`](https://genentech.github.io/psborrow2/reference/sim_samplesize.md)
+  : Set simulation study parameters for sample size
+
+- [`sim_treatment_list()`](https://genentech.github.io/psborrow2/reference/sim_treatment_list.md)
+  : Input treatment details for a simulation study
+
+- [`treatment_details()`](https://genentech.github.io/psborrow2/reference/treatment_details.md)
+  : Specify Treatment Details
+
+- [`trim_cols()`](https://genentech.github.io/psborrow2/reference/trim_cols.md)
+  : Trim columns from Data Matrix Based on Borrowing object type
+
+- [`trim_rows()`](https://genentech.github.io/psborrow2/reference/trim_rows.md)
+  : Trim Rows from Data Matrix Based on Borrowing object type
+
+- [`uniform_prior()`](https://genentech.github.io/psborrow2/reference/uniform_prior.md)
+  : Prior uniform distribution
+
+- [`variable_dictionary()`](https://genentech.github.io/psborrow2/reference/variable_dictionary.md)
+  : Create Variable Dictionary
+
+- [`weib_ph_surv_dist()`](https://genentech.github.io/psborrow2/reference/weib_ph_surv_dist.md)
+  : Legacy function for the Weibull proportional Hazards survival
+  distribution
