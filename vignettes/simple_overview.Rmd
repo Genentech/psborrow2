@@ -303,12 +303,12 @@ results
 
 ```
 ##  variable     mean   median   sd  mad       q5      q95 rhat ess_bulk ess_tail
-##  lp__     -1618.00 -1617.68 1.51 1.38 -1620.85 -1616.19 1.00     1747     2189
-##  beta_trt    -0.16    -0.17 0.20 0.21    -0.48     0.18 1.00     2400     2911
-##  alpha[1]    -3.35    -3.34 0.16 0.17    -3.64    -3.10 1.00     2292     2763
-##  alpha[2]    -2.40    -2.40 0.06 0.06    -2.49    -2.30 1.00     2848     2880
-##  tau          1.21     0.46 2.02 0.64     0.00     4.88 1.00     1917     1265
-##  HR_trt       0.87     0.85 0.18 0.17     0.62     1.20 1.00     2400     2911
+##  lp__     -1617.94 -1617.65 1.46 1.26 -1620.73 -1616.19 1.00     2005     2457
+##  beta_trt    -0.15    -0.16 0.20 0.20    -0.47     0.18 1.00     1933     2381
+##  alpha[1]    -3.36    -3.36 0.16 0.17    -3.64    -3.11 1.00     1943     2545
+##  alpha[2]    -2.40    -2.40 0.06 0.06    -2.49    -2.31 1.00     2486     2637
+##  tau          1.16     0.48 1.82 0.66     0.01     4.64 1.00     2408     1617
+##  HR_trt       0.88     0.86 0.18 0.17     0.63     1.20 1.00     1933     2381
 ```
 
 # Interpret results
@@ -350,14 +350,14 @@ posterior::summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
 
 ```
 ## # A tibble: 6 × 4
-##   variable                                 `2.5%`     `50%`   `97.5%`
-##   <chr>                                     <dbl>     <dbl>     <dbl>
-## 1 lp__                               -1622.       -1618.    -1616.   
-## 2 treatment log HR                      -0.548       -0.165     0.256
-## 3 baseline log hazard rate, internal    -3.68        -3.34     -3.06 
-## 4 baseline log hazard rate, external    -2.51        -2.40     -2.29 
-## 5 commensurability parameter             0.000673     0.459     6.90 
-## 6 treatment HR                           0.578        0.848     1.29
+##   variable                                `2.5%`     `50%`   `97.5%`
+##   <chr>                                    <dbl>     <dbl>     <dbl>
+## 1 lp__                               -1622.      -1618.    -1616.   
+## 2 treatment log HR                      -0.531      -0.156     0.254
+## 3 baseline log hazard rate, internal    -3.70       -3.36     -3.06 
+## 4 baseline log hazard rate, external    -2.51       -2.40     -2.29 
+## 5 commensurability parameter             0.00123     0.481     6.02 
+## 6 treatment HR                           0.588       0.856     1.29
 ```
 
 Look at histogram of draws with bayesplot package
@@ -367,7 +367,13 @@ bayesplot::mcmc_hist(draws, c("treatment HR"))
 ```
 
 ```
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## Registered S3 method overwritten by 'plyr':
+##   method    from  
+##   [.indexed table1
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 ```
 
 ![plot of chunk unnamed-chunk-18](figure-simple_overview-unnamed-chunk-18-1.png)
@@ -398,16 +404,16 @@ table1(
 </tr>
 <tr>
 <th class='rowlabel firstrow lastrow'></th>
-<th class='firstrow lastrow'><span class='stratlabel'>Not treated<br><span class='stratn'>(N=50)</span></span></th>
-<th class='firstrow lastrow'><span class='stratlabel'>Treated<br><span class='stratn'>(N=100)</span></span></th>
-<th class='firstrow lastrow'><span class='stratlabel'>Not treated<br><span class='stratn'>(N=350)</span></span></th>
-<th class='firstrow lastrow'><span class='stratlabel'>Not treated<br><span class='stratn'>(N=400)</span></span></th>
-<th class='firstrow lastrow'><span class='stratlabel'>Treated<br><span class='stratn'>(N=100)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Not treated<br/><span class='stratn'>(N=50)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Treated<br/><span class='stratn'>(N=100)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Not treated<br/><span class='stratn'>(N=350)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Not treated<br/><span class='stratn'>(N=400)</span></span></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Treated<br/><span class='stratn'>(N=100)</span></span></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class='rowlabel firstrow'>cov1</td>
+<td class='rowlabel firstrow'><span class='varlabel'>cov1</span></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
@@ -431,7 +437,7 @@ table1(
 <td class='lastrow'>1.00 [0, 1.00]</td>
 </tr>
 <tr>
-<td class='rowlabel firstrow'>cov2</td>
+<td class='rowlabel firstrow'><span class='varlabel'>cov2</span></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
@@ -455,7 +461,7 @@ table1(
 <td class='lastrow'>0 [0, 1.00]</td>
 </tr>
 <tr>
-<td class='rowlabel firstrow'>cov3</td>
+<td class='rowlabel firstrow'><span class='varlabel'>cov3</span></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
@@ -479,7 +485,7 @@ table1(
 <td class='lastrow'>1.00 [0, 1.00]</td>
 </tr>
 <tr>
-<td class='rowlabel firstrow'>cov4</td>
+<td class='rowlabel firstrow'><span class='varlabel'>cov4</span></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
 <td class='firstrow'></td>
@@ -583,14 +589,14 @@ summarize_draws(draws_ps_no_borrow, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)
 ## # A tibble: 8 × 4
 ##   variable                   `2.5%`    `50%`   `97.5%`
 ##   <chr>                       <dbl>    <dbl>     <dbl>
-## 1 lp__                     -466.    -462.    -459.    
-## 2 treatment log HR           -0.738   -0.347    0.0689
-## 3 baseline log hazard rate   -4.76    -4.20    -3.72  
-## 4 ps_cat_low                 -0.344    0.408    1.13  
-## 5 ps_cat_low_med              0.460    0.998    1.61  
-## 6 ps_cat_high_med             1.44     2.10     2.80  
-## 7 ps_cat_high                 2.42     3.01     3.66  
-## 8 treatment HR                0.478    0.707    1.07
+## 1 lp__                     -466.    -462.    -460.    
+## 2 treatment log HR           -0.736   -0.342    0.0575
+## 3 baseline log hazard rate   -4.76    -4.20    -3.71  
+## 4 ps_cat_low                 -0.342    0.403    1.16  
+## 5 ps_cat_low_med              0.454    1.01     1.60  
+## 6 ps_cat_high_med             1.42     2.10     2.78  
+## 7 ps_cat_high                 2.41     3.01     3.65  
+## 8 treatment HR                0.479    0.710    1.06
 ```
 
 
@@ -630,18 +636,18 @@ summarize_draws(draws_ps_bdb, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
 
 ```
 ## # A tibble: 10 × 4
-##    variable                              `2.5%`     `50%`    `97.5%`
-##    <chr>                                  <dbl>     <dbl>      <dbl>
-##  1 lp__                               -1426.    -1420.    -1418.    
-##  2 treatment log HR                      -0.671    -0.350    -0.0350
-##  3 baseline log hazard rate, internal    -4.65     -4.19     -3.77  
-##  4 baseline log hazard rate, external    -4.64     -4.21     -3.80  
-##  5 commensurability parameter             0.107    58.0    1659.    
-##  6 ps_cat_low                            -0.300     0.274     0.851 
-##  7 ps_cat_low_med                         0.639     1.07      1.52  
-##  8 ps_cat_high_med                        1.65      2.10      2.58  
-##  9 ps_cat_high                            2.54      2.95      3.40  
-## 10 treatment HR                           0.511     0.705     0.966
+##    variable                               `2.5%`     `50%`    `97.5%`
+##    <chr>                                   <dbl>     <dbl>      <dbl>
+##  1 lp__                               -1426.     -1421.    -1418.    
+##  2 treatment log HR                      -0.687     -0.344    -0.0294
+##  3 baseline log hazard rate, internal    -4.62      -4.19     -3.77  
+##  4 baseline log hazard rate, external    -4.64      -4.19     -3.80  
+##  5 commensurability parameter             0.0759    56.2    1653.    
+##  6 ps_cat_low                            -0.305      0.259     0.830 
+##  7 ps_cat_low_med                         0.626      1.06      1.52  
+##  8 ps_cat_high_med                        1.64       2.09      2.57  
+##  9 ps_cat_high                            2.53       2.94      3.39  
+## 10 treatment HR                           0.503      0.709     0.971
 ```
 
 It looks like PS + BDB allowed us to most accurately recover the

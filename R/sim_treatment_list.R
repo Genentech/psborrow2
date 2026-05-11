@@ -16,7 +16,8 @@
     guide = "data.frame"
   ),
   validity = function(object) {
-    if (!all(vapply(object@treatment_list,
+    if (!all(vapply(
+      object@treatment_list,
       function(item) is(item, "Treatment"),
       FUN.VALUE = logical(1)
     ))) {

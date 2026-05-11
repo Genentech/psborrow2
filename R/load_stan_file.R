@@ -1,7 +1,7 @@
 #' Load a Stan `psborrow2` template
 #'
 #' This function loads a Stan template file from the package's 'inst/stan' directory.
-#' @param ... subidrectories
+#' @param ... subdirectories
 #' @return template string
 load_stan_file <- function(...) {
   # Construct the path within the package

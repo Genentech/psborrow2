@@ -603,7 +603,11 @@ test_that("mcmc_sample for Analysis works for full borrowing, piecewise exponent
   skip_on_ci()
   library(eha)
   cuts <- c(1, 5, 10)
-  pem_eha <- eha::pchreg(survival::Surv(time, status) ~ trt + cov1 + cov2, data = as.data.frame(psborrow2::example_matrix), cuts = c(0, cuts, 1000))
+  pem_eha <- eha::pchreg(
+    survival::Surv(time, status) ~ trt + cov1 + cov2,
+    data = as.data.frame(psborrow2::example_matrix),
+    cuts = c(0, cuts, 1000)
+  )
 
   full_pem_bayes_ao <- create_analysis_obj(
     data_matrix = example_matrix,

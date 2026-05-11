@@ -18,7 +18,8 @@
     guide = "data.frame"
   ),
   validity = function(object) {
-    if (!all(vapply(object@borrowing_list,
+    if (!all(vapply(
+      object@borrowing_list,
       function(item) is(item, "Borrowing"),
       FUN.VALUE = logical(1)
     ))) {

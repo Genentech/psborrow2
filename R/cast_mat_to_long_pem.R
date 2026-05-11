@@ -44,12 +44,20 @@ cast_mat_to_long_pem <- function(analysis_obj) {
   max_fup <- max(df[, analysis_obj@outcome@time_var])
   cut_points_keep <- cut_points[cut_points < max_fup]
   if (length(cut_points_keep) < length(cut_points)) {
-    warning(paste0("Some cut points are greater than the maximum follow-up time of ", max_fup, ". These will be ignored."))
+    warning(
+      paste0(
+        "Some cut points are greater than the maximum follow-up time of ",
+        max_fup, ". These will be ignored."
+      )
+    )
   }
 
   ## Did they use a protected name?
   if (any(c("psb2__period", "psb2__start", "psb2__status", "__period__") %in% cn)) {
-    stop("The column names 'psb2__period', 'psb2__status', 'psb2__start', and '__period__' are reserved when using PEM. Please rename your columns.")
+    stop(
+      "The column names 'psb2__period', 'psb2__status', 'psb2__start', ",
+      "and '__period__' are reserved when using PEM. Please rename your columns."
+    )
   }
 
   ## Censorship flag -> event flag

@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Using external control in the analysis of clinical trial data can be challenging as the two data source may be heterogenous. In this document, we demonstrate the use of various matching and weighting techniques using readily available packages in R to adjust for imbalance in baseline covariates between the data sets. 
+Using external control in the analysis of clinical trial data can be challenging as the two data source may be heterogeneous. In this document, we demonstrate the use of various matching and weighting techniques using readily available packages in R to adjust for imbalance in baseline covariates between the data sets. 
 
 We first load all of the libraries used in this tutorial. 
 

@@ -7,7 +7,7 @@
 load_stan_file(...)
 }
 \arguments{
-\item{...}{subidrectories}
+\item{...}{subdirectories}
 }
 \value{
 template string

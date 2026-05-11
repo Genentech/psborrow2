@@ -49,8 +49,10 @@
 #' See `Details` for more information.
 #' @param cut_points numeric. Vector of internal cut points for the piecewise exponential model. Note: the choice of
 #' cut points will impact the amount of borrowing between arms when dynamic borrowing methods are selected. It is
-#' recommended to choose cut points that contain an equal number of events within each interval. Please include only internal
-#' cut points in the vector. For instance, for cut points of \[0, 15], (15, 20\], (20, Inf), the vector should be c(15, 20).
+#' recommended to choose cut points that contain an equal number of events
+#' within each interval. Please include only internal
+#' cut points in the vector. For instance, for cut points of
+#' \[0, 15], (15, 20\], (20, Inf), the vector should be c(15, 20).
 #' If you pass cut-points beyond the follow-up of the data, you will receive an informative warning when calling
 #' `create_analysis_object()` and these cut points will be ignored.
 #'
@@ -62,10 +64,13 @@
 #' consider different baseline priors within each cut point.
 #' The interpretation of the `baseline_prior` differs
 #' slightly between borrowing methods selected.
-#' - \emph{Dynamic borrowing using `borrowing_hierarchical_commensurate()`}: the `baseline_prior` for Bayesian Dynamic Borrowing
+#' - \emph{Dynamic borrowing using `borrowing_hierarchical_commensurate()`}:
+#' the `baseline_prior` for Bayesian Dynamic Borrowing
 #' refers to the log hazard rate of the external control arm.
-#' - \emph{Full borrowing} or \emph{No borrowing} using `borrowing_full()` or `borrowing_none()`: the `baseline_prior` for
-#' these borrowing methods refers to the log hazard rate for the internal control arm.
+#' - \emph{Full borrowing} or \emph{No borrowing} using
+#' `borrowing_full()` or `borrowing_none()`: the `baseline_prior` for
+#' these borrowing methods refers to the log hazard rate for the
+#' internal control arm.
 #' @return Object of class [`OutcomeSurvPEM`][OutcomeSurvPEM-class].
 #' @export
 #' @family outcome models
@@ -93,8 +98,11 @@ outcome_surv_pem <- function(time_var, cens_var, baseline_prior, weight_var = ""
 
   cut_points_neg0 <- any(cut_points <= 0)
   cut_points_inf <- any(cut_points == Inf)
-  if (cut_points_neg0 | cut_points_inf) {
-    stop("`cut_points` must be positive, non-infinite and exclude 0. Just put internal cutpoints, the model will automatically add 0 and Inf.")
+  if (cut_points_neg0 || cut_points_inf) {
+    stop(
+      "`cut_points` must be positive, non-infinite and exclude 0. ",
+      "Just put internal cutpoints, the model will automatically add 0 and Inf."
+    )
   }
 
   n_cuts <- length(cut_points)

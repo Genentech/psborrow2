@@ -74,7 +74,8 @@
 #'   __Pharmaceut. Statist., 13: 41--54__. \doi{10.1002/pst.1589}
 #'
 #' Hobbes, B.P., Carlin, B.P., Mandrekar, S.J. and Sargent, D.J. (2011),
-#'  Hierarchical commensurate and power prior models for adaptive incorporation of historical information in clinical trials.
+#'  Hierarchical commensurate and power prior models for adaptive
+#'  incorporation of historical information in clinical trials.
 #'  __Biometrics, 67: 1047--1056__. \doi{10.1111/j.1541-0420.2011.01564.x}
 #'
 #' @return Object of class [`BorrowingHierarchicalCommensurate`][BorrowingHierarchicalCommensurate-class].
