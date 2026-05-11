@@ -1,4 +1,3 @@
-
 anls <- psborrow2:::.analysis_obj(
   data_matrix = example_matrix,
   outcome = outcome_surv_pem(

@@ -6,11 +6,11 @@
 #'
 #' Plots the density values as a curve with the lower vertical limit set to 0.
 #'
-#' 
+#'
 #' @return No return value, this function generates a plot in the current graphics device.
 #'
 #' @export
-#' 
+#'
 #' @examples
 #' x <- seq(-2, 2, len = 100)
 #' y <- dnorm(x)

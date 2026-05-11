@@ -78,7 +78,6 @@
 #'   cut_points = c(10, 15, 30)
 #' )
 outcome_surv_pem <- function(time_var, cens_var, baseline_prior, weight_var = "", cut_points) {
-
   # Standard input checks
   assert_string(time_var)
   assert_string(cens_var)

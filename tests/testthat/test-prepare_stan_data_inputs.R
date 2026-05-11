@@ -127,7 +127,6 @@ test_that("prepare_stan_data_inputs works with weights", {
 
 
 test_that("prepare_stan_data_inputs works with PEM", {
-  
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_pem(
@@ -148,12 +147,10 @@ test_that("prepare_stan_data_inputs works with PEM", {
   expect_equal(names(result), c("N", "trt", "time", "cens", "N_periods", "Z0", "Z1"))
   expect_equal(dim(result[["Z0"]])[2], result[["N_periods"]])
   expect_equal(dim(result[["Z1"]])[2], result[["N_periods"]])
-
 })
 
 
 test_that("prepare_stan_data_inputs works with a fixed power prior", {
-  
   object <- psborrow2:::.analysis_obj(
     data_matrix = example_matrix,
     outcome = outcome_surv_exponential(
@@ -172,6 +169,5 @@ test_that("prepare_stan_data_inputs works with a fixed power prior", {
   power <- result$power
 
   expect_atomic_vector(power)
-  expect_equal(sum(power==1), sum(1-example_matrix[,'ext']))
-  
+  expect_equal(sum(power == 1), sum(1 - example_matrix[, "ext"]))
 })

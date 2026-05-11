@@ -117,7 +117,6 @@ test_that("Covariate `guide` is produced correctly", {
 })
 
 
-
 test_that("get_vars for `sim_covariate_list` works", {
   covariate_obj <- sim_covariate_list(
     list(
