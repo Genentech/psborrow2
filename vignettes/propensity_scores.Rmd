@@ -34,8 +34,6 @@ In addition, weights can be calculated differently for different estimands. Here
 
 ``` r
 library(WeightIt)
-#> Error in `library()`:
-#> ! there is no package called 'WeightIt'
 
 example_dataframe <- as.data.frame(example_matrix)
 example_dataframe$int <- 1 - example_dataframe$ext
@@ -46,11 +44,34 @@ weightit_model <- weightit(
   method = "gbm",
   estimand = "ATT"
 )
-#> Error in `weightit()`:
-#> ! could not find function "weightit"
+#> Warning: No `criterion` was provided. Using "smd.mean".
 summary(weightit_model)
-#> Error:
-#> ! object 'weightit_model' not found
+#>                   Summary of weights
+#> 
+#> - Weight ranges:
+#> 
+#>           Min                                 Max
+#> treated 1.         ||                       1.   
+#> control 0.083 |---------------------------| 5.897
+#> 
+#> - Units with the 5 most extreme weights by group:
+#>                                       
+#>              5     4     3     2     1
+#>  treated     1     1     1     1     1
+#>            195   158   465   438   371
+#>  control 2.792 2.792 5.897 5.897 5.897
+#> 
+#> - Weight statistics:
+#> 
+#>         Coef of Var  MAD Entropy # Zeros
+#> treated       0.    0.       0.        0
+#> control       1.582 0.82     0.6       0
+#> 
+#> - Effective Sample Sizes:
+#> 
+#>            Control Treated
+#> Unweighted  350.       150
+#> Weighted    100.09     150
 ```
 
 Another useful package is [cobalt](https://cran.r-project.org/package=cobalt), which provides tools for
@@ -61,21 +82,25 @@ We can use the `cobalt` package to assess balance with `bal.plot()`.
 
 ``` r
 library(cobalt)
-#> Error in `library()`:
-#> ! there is no package called 'cobalt'
 bal.plot(weightit_model)
-#> Error in `bal.plot()`:
-#> ! could not find function "bal.plot"
 ```
+
+<div class="figure" style="text-align: center">
+<img src="figure-propensity_scores-balplot-1.png" alt="plot of chunk balplot"  />
+<p class="caption">plot of chunk balplot</p>
+</div>
 
 "Love plots" can also be generated that compare the populations before and after weighting:
 
 
 ``` r
 love.plot(weightit_model, stars = "std")
-#> Error in `love.plot()`:
-#> ! could not find function "love.plot"
 ```
+
+<div class="figure" style="text-align: center">
+<img src="figure-propensity_scores-loveplot-1.png" alt="plot of chunk loveplot"  />
+<p class="caption">plot of chunk loveplot</p>
+</div>
 
 The PS values can be copied into the data set and the analysis object can be constructed as before.
 
@@ -84,8 +109,6 @@ The PS values can be copied into the data set and the analysis object can be con
 
 ``` r
 example_dataframe$att <- weightit_model$weights
-#> Error:
-#> ! object 'weightit_model' not found
 
 example_matrix_att <- create_data_matrix(
   example_dataframe,
@@ -94,8 +117,6 @@ example_matrix_att <- create_data_matrix(
   trt_flag_col = "trt",
   weight_var = "att"
 )
-#> Error in `create_data_matrix()`:
-#> ! Assertion on 'weight_var' failed: Must be a subset of {'id','ext','trt','cov4','cov3','cov2','cov1','time','status','cnsr','resp','int'}, but has additional elements {'att'}.
 
 analysis_att <- create_analysis_obj(
   data_matrix = example_matrix_att,
@@ -104,12 +125,8 @@ analysis_att <- create_analysis_obj(
   treatment = treatment_details("trt", prior_normal(0, 10000)),
   quiet = TRUE
 )
-#> Error:
-#> ! object 'example_matrix_att' not found
 
 result_att <- mcmc_sample(analysis_att, seed = 123)
-#> Error in `h()`:
-#> ! error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'analysis_att' not found
 ```
 
 
@@ -125,18 +142,42 @@ it can be useful to check the imbalance before matching.
 
 ``` r
 library(MatchIt)
-#> Error in `library()`:
-#> ! there is no package called 'MatchIt'
+#> 
+#> Attaching package: 'MatchIt'
+#> The following object is masked from 'package:cobalt':
+#> 
+#>     lalonde
 # No matching; constructing a pre-match matchit object
 no_match <- matchit(trt ~ cov1 + cov2 + cov3 + cov4,
   data = example_dataframe,
   method = NULL, distance = "glm"
 )
-#> Error in `matchit()`:
-#> ! could not find function "matchit"
 summary(no_match)
-#> Error:
-#> ! object 'no_match' not found
+#> 
+#> Call:
+#> matchit(formula = trt ~ cov1 + cov2 + cov3 + cov4, data = example_dataframe, 
+#>     method = NULL, distance = "glm")
+#> 
+#> Summary of Balance for All Data:
+#>          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
+#> distance        0.2898        0.1776          0.7585     1.5831    0.2328
+#> cov1            0.6300        0.7150         -0.1761          .    0.0850
+#> cov2            0.3700        0.4625         -0.1916          .    0.0925
+#> cov3            0.7600        0.4475          0.7317          .    0.3125
+#> cov4            0.4600        0.2250          0.4715          .    0.2350
+#>          eCDF Max
+#> distance   0.3375
+#> cov1       0.0850
+#> cov2       0.0925
+#> cov3       0.3125
+#> cov4       0.2350
+#> 
+#> Sample Sizes:
+#>           Control Treated
+#> All           400     100
+#> Matched       400     100
+#> Unmatched       0       0
+#> Discarded       0       0
 ```
 
 Here we are matching treated to untreated to select the most comparable control group, regardless of whether they are
@@ -148,20 +189,58 @@ match_11 <- matchit(trt ~ cov1 + cov2 + cov3 + cov4,
   data = example_dataframe,
   method = "nearest", distance = "glm"
 )
-#> Error in `matchit()`:
-#> ! could not find function "matchit"
 summary(match_11)
-#> Error:
-#> ! object 'match_11' not found
+#> 
+#> Call:
+#> matchit(formula = trt ~ cov1 + cov2 + cov3 + cov4, data = example_dataframe, 
+#>     method = "nearest", distance = "glm")
+#> 
+#> Summary of Balance for All Data:
+#>          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
+#> distance        0.2898        0.1776          0.7585     1.5831    0.2328
+#> cov1            0.6300        0.7150         -0.1761          .    0.0850
+#> cov2            0.3700        0.4625         -0.1916          .    0.0925
+#> cov3            0.7600        0.4475          0.7317          .    0.3125
+#> cov4            0.4600        0.2250          0.4715          .    0.2350
+#>          eCDF Max
+#> distance   0.3375
+#> cov1       0.0850
+#> cov2       0.0925
+#> cov3       0.3125
+#> cov4       0.2350
+#> 
+#> Summary of Balance for Matched Data:
+#>          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
+#> distance        0.2898        0.2845          0.0355     1.1082    0.0075
+#> cov1            0.6300        0.6800         -0.1036          .    0.0500
+#> cov2            0.3700        0.3900         -0.0414          .    0.0200
+#> cov3            0.7600        0.7600          0.0000          .    0.0000
+#> cov4            0.4600        0.4600          0.0000          .    0.0000
+#>          eCDF Max Std. Pair Dist.
+#> distance     0.07          0.0355
+#> cov1         0.05          0.1036
+#> cov2         0.02          0.1243
+#> cov3         0.00          0.0000
+#> cov4         0.00          0.0000
+#> 
+#> Sample Sizes:
+#>           Control Treated
+#> All           400     100
+#> Matched       100     100
+#> Unmatched     300       0
+#> Discarded       0       0
 ```
 
 
 ``` r
 set.seed(123)
 plot(match_11, type = "jitter", interactive = FALSE)
-#> Error in `h()`:
-#> ! error in evaluating the argument 'x' in selecting a method for function 'plot': object 'match_11' not found
 ```
+
+<div class="figure" style="text-align: center">
+<img src="figure-propensity_scores-matchit_jitter-1.png" alt="plot of chunk matchit_jitter"  />
+<p class="caption">plot of chunk matchit_jitter</p>
+</div>
 
 Determining whether the balance after matching is appropriate is beyond the scope of this vignette. You can read more in
 the [MatchIt Assessing Balance](https://CRAN.R-project.org/package=MatchIt/vignettes/assessing-balance.html)
@@ -177,8 +256,6 @@ example_matrix_match <- create_data_matrix(
   outcome = c("time", "cnsr"),
   trt_flag_col = "trt"
 )
-#> Error:
-#> ! object 'match_11' not found
 ```
 
 
@@ -192,12 +269,8 @@ analysis_match <- create_analysis_obj(
   treatment = treatment_details("trt", prior_normal(0, 10000)),
   quiet = TRUE
 )
-#> Error:
-#> ! object 'example_matrix_match' not found
 
 result_match <- mcmc_sample(analysis_match, seed = 123)
-#> Error in `h()`:
-#> ! error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'analysis_match' not found
 ```
 
 ## Combined Weighting and Dynamic Borrowing
@@ -215,12 +288,8 @@ analysis_iptw_bdb <- create_analysis_obj(
   treatment = treatment_details("trt", prior_normal(0, 10000)),
   quiet = TRUE
 )
-#> Error:
-#> ! object 'example_matrix_att' not found
 
 result_iptw_bdb <- mcmc_sample(analysis_iptw_bdb, seed = 123)
-#> Error in `h()`:
-#> ! error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'analysis_iptw_bdb' not found
 ```
 
 ## Fixed Weights
@@ -281,8 +350,6 @@ result_bdb <- mcmc_sample(
   ),
   seed = 123
 )
-#> Error in `h()`:
-#> ! error in evaluating the argument 'x' in selecting a method for function 'mcmc_sample': object 'example_matrix_att' not found
 ```
 
 
@@ -301,8 +368,6 @@ models <- list(
   "Matching 1:1" = result_match,
   "BDB" = result_bdb
 )
-#> Error:
-#> ! object 'result_att' not found
 ```
 
 We can use `summary()` to extract the variable of interest and specify summary statistics.
@@ -312,12 +377,22 @@ results_table <- do.call(rbind, lapply(
   models,
   function(i) i$summary("HR_trt", c("mean", "median", "sd", "quantile2"))
 ))
-#> Error:
-#> ! object 'models' not found
 knitr::kable(cbind(models = names(models), results_table), digits = 3)
-#> Error:
-#> ! object 'models' not found
 ```
+
+
+
+|models         |variable |  mean| median|    sd|    q5|   q95|
+|:--------------|:--------|-----:|------:|-----:|-----:|-----:|
+|No borrowing   |HR_trt   | 0.896|  0.878| 0.178| 0.638| 1.216|
+|Full borrowing |HR_trt   | 0.388|  0.385| 0.049| 0.311| 0.473|
+|Power Prior 01 |HR_trt   | 0.635|  0.626| 0.105| 0.479| 0.821|
+|ATT Weights    |HR_trt   | 0.892|  0.884| 0.128| 0.697| 1.114|
+|IPTW + BDB     |HR_trt   | 0.894|  0.879| 0.164| 0.653| 1.183|
+|Matching 1:1   |HR_trt   | 0.818|  0.808| 0.134| 0.619| 1.056|
+|BDB            |HR_trt   | 0.875|  0.857| 0.176| 0.622| 1.187|
+
+
 
 We can extract a `draws` object from each model and plot the posterior distribution of the
 treatment hazard ratio.
@@ -328,17 +403,16 @@ plot(density(models[[1]]$draws("HR_trt")),
   xlab = "HR_trt",
   main = "Posterior Hazard Ratio"
 )
-#> Error in `h()`:
-#> ! error in evaluating the argument 'x' in selecting a method for function 'plot': object 'models' not found
 for (i in 2:7) {
   lines(density(models[[i]]$draws("HR_trt")), col = i, lty = i, lwd = 2)
 }
-#> Error:
-#> ! object 'models' not found
 legend("topright", col = seq_along(models), lty = seq_along(models), legend = names(models))
-#> Error:
-#> ! object 'models' not found
 ```
+
+<div class="figure" style="text-align: center">
+<img src="figure-propensity_scores-plots-1.png" alt="plot of chunk plots"  />
+<p class="caption">plot of chunk plots</p>
+</div>
 
 Here we see no borrowing and full borrowing at the extremes and the other methods in between.
 
