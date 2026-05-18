@@ -82,17 +82,16 @@ setMethod(
 )
 
 
-
 #' Legacy function for the poisson prior
 #'
 #' Please use `prior_poisson()` instead.
 #' @param ... Deprecated arguments to `poisson_prior()`.
-#' 
+#'
 #' @return
-#' This function does not return a value. When called, it triggers an error 
-#' message indicating that `poisson_prior()` is deprecated and that 
-#' `prior_poisson()` should be used instead. 
-#' 
+#' This function does not return a value. When called, it triggers an error
+#' message indicating that `poisson_prior()` is deprecated and that
+#' `prior_poisson()` should be used instead.
+#'
 #' @export
 poisson_prior <- function(...) {
   .Defunct(

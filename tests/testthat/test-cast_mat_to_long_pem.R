@@ -1,4 +1,3 @@
-
 anls <- psborrow2:::.analysis_obj(
   data_matrix = example_matrix,
   outcome = outcome_surv_pem(
@@ -28,8 +27,13 @@ test_that("cast_mat_to_long_pem handles cut points correctly", {
     borrowing = borrowing_hierarchical_commensurate("ext", prior_exponential(.001)),
     treatment = treatment_details("trt", prior_normal(0, 1000))
   )
-  expect_warning(result <- cast_mat_to_long_pem(anls_cut), "Some cut points are greater than the maximum follow-up time")
-  cut_points_keep <- anls_cut@outcome@cut_points[anls_cut@outcome@cut_points < max(anls_cut@data_matrix[, anls_cut@outcome@time_var])]
+  expect_warning(
+    result <- cast_mat_to_long_pem(anls_cut),
+    "Some cut points are greater than the maximum follow-up time"
+  )
+  cut_points_keep <- anls_cut@outcome@cut_points[
+    anls_cut@outcome@cut_points < max(anls_cut@data_matrix[, anls_cut@outcome@time_var])
+  ]
   expect_equal(length(cut_points_keep) + 1, result@outcome@n_periods)
 })
 

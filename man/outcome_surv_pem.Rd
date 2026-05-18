@@ -25,8 +25,10 @@ See \code{Details} for more information.}
 
 \item{cut_points}{numeric. Vector of internal cut points for the piecewise exponential model. Note: the choice of
 cut points will impact the amount of borrowing between arms when dynamic borrowing methods are selected. It is
-recommended to choose cut points that contain an equal number of events within each interval. Please include only internal
-cut points in the vector. For instance, for cut points of [0, 15], (15, 20], (20, Inf), the vector should be c(15, 20).
+recommended to choose cut points that contain an equal number of events
+within each interval. Please include only internal
+cut points in the vector. For instance, for cut points of
+[0, 15], (15, 20], (20, Inf), the vector should be c(15, 20).
 If you pass cut-points beyond the follow-up of the data, you will receive an informative warning when calling
 \code{create_analysis_object()} and these cut points will be ignored.}
 }
@@ -45,10 +47,13 @@ consider different baseline priors within each cut point.
 The interpretation of the \code{baseline_prior} differs
 slightly between borrowing methods selected.
 \itemize{
-\item \emph{Dynamic borrowing using \code{borrowing_hierarchical_commensurate()}}: the \code{baseline_prior} for Bayesian Dynamic Borrowing
+\item \emph{Dynamic borrowing using \code{borrowing_hierarchical_commensurate()}}:
+the \code{baseline_prior} for Bayesian Dynamic Borrowing
 refers to the log hazard rate of the external control arm.
-\item \emph{Full borrowing} or \emph{No borrowing} using \code{borrowing_full()} or \code{borrowing_none()}: the \code{baseline_prior} for
-these borrowing methods refers to the log hazard rate for the internal control arm.
+\item \emph{Full borrowing} or \emph{No borrowing} using
+\code{borrowing_full()} or \code{borrowing_none()}: the \code{baseline_prior} for
+these borrowing methods refers to the log hazard rate for the
+internal control arm.
 }
 }
 }

@@ -8,7 +8,6 @@
 #' @return String containing the interpolated Stan model
 #' @include outcome_surv_pem.R
 build_model_string <- function(template_domain, template_filename, outcome, borrowing, analysis_obj, ...) {
-
   # Load the Stan template
   template <- load_stan_file(template_domain, template_filename)
 

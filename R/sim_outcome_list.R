@@ -18,7 +18,8 @@
     guide = "data.frame"
   ),
   validity = function(object) {
-    if (!all(vapply(object@outcome_list,
+    if (!all(vapply(
+      object@outcome_list,
       function(item) is(item, "Outcome"),
       FUN.VALUE = logical(1)
     ))) {
@@ -45,7 +46,7 @@
 #' by `outcome_details()`.
 #'
 #' @family simulation classes
-#' 
+#'
 #' @return Object of class [`SimOutcomeList`][SimOutcomeList-class].
 #'
 #' @export

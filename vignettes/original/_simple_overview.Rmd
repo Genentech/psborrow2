@@ -26,7 +26,6 @@ library(posterior)
 
 # Comparing populations
 library(table1)
-
 ```
 
 ```
@@ -220,7 +219,6 @@ results <- mcmc_sample(
 class(results)
 
 results
-
 ```
 
 # Interpret results
@@ -372,7 +370,6 @@ res_ps_bdb <- mcmc_sample(
   iter_sampling = 5000,
   chains = 1
 )
-
 ```
 
 ```

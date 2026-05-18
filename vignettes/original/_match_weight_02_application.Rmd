@@ -42,7 +42,7 @@ We will also consider several Bayesian dynamic borrowing methods
 * Power prior
 
 # Hazard function
-The hazard function of $T$ at time $t$ is defined as the instantaneous rate of the event occurence that is still at risk at time $t$. It is defined as
+The hazard function of $T$ at time $t$ is defined as the instantaneous rate of the event occurrence that is still at risk at time $t$. It is defined as
 
 \begin{equation}
   h(t)=\lim_\limits{\Delta \rightarrow 0 } P\frac{(t\leq T<t+\Delta t|T\geq t)}{\Delta t}=\frac{f(t)}{S(t)},
@@ -217,7 +217,7 @@ outcome
 ```
 
 
-Next, the borrowing method is implemented as shown below. We consider Bayesian Dynamic Borrowing (BDB) in which gamma prior is assigned for the commensurability parameter. The `tau_prior` shown below is the hyperparameter of the commensurate prior which determines the degree of borrowing. We assign a gamma prior for this hyperparameter. Furhtermore, we also need to specify a flag for external data which is denoted by `ext`.
+Next, the borrowing method is implemented as shown below. We consider Bayesian Dynamic Borrowing (BDB) in which gamma prior is assigned for the commensurability parameter. The `tau_prior` shown below is the hyperparameter of the commensurate prior which determines the degree of borrowing. We assign a gamma prior for this hyperparameter. Furthermore, we also need to specify a flag for external data which is denoted by `ext`.
 ```{r message=FALSE}
 #Borrowing
 borrowing <- borrowing_hierarchical_commensurate(
@@ -789,7 +789,7 @@ traceplot(model2,varname=c("alpha","alphaR","beta","tau"))
 ```
 
 # Exponential distribution (constant hazard) and no borrowing: Using `psborrow2` R package
-In addition to specifying an exponential distribution using Bayesian dynamic borrowing, naive no-borrowing and full-borrowing analysis can be conducted using the exponential distribution following similar steps as above. These ype of analysis could be used as a sensitivity or exploratory analysis.
+In addition to specifying an exponential distribution using Bayesian dynamic borrowing, naive no-borrowing and full-borrowing analysis can be conducted using the exponential distribution following similar steps as above. These type of analysis could be used as a sensitivity or exploratory analysis.
 
 The `psborrow2` package will be used to conduct the analysis. Following are the steps.
   

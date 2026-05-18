@@ -147,7 +147,6 @@ create_event_dist <- function(dist = NULL,
 }
 
 
-
 #' No specified event distribution
 #'
 #' @return `null_event_dist` returns an object with no parameters specified that does not simulate event times.

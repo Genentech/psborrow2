@@ -34,7 +34,6 @@ check_cmdstanr <- function(check_sampling = FALSE) {
 }
 
 
-
 #' @return `check_cmdstan()` returns `TRUE` if `CmdStan` seems to be installed, otherwise `FALSE`
 #' @describeIn check_cmdstanr Check if the `CmdStan` command line tools are available.
 #' @export

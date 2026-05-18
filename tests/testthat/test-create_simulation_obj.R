@@ -380,7 +380,6 @@ test_that("`create_simulation_obj()` does not create deep copies", {
 })
 
 test_that("`show_guide()` gives correct output", {
-
   valid_simulation_obj <- create_simulation_obj(
     data_matrix_list = valid_data_list,
     covariate = valid_covariate,
@@ -410,10 +409,10 @@ test_that("`show_guide()` gives correct output", {
     1,
     NROW(guide[
       guide$true_hr == 0.6 &
-      guide$drift_hr == 1.0 & 
-      guide$borrowing_scenario == "bdb" & 
-      guide$covariate_scenario == "cov1" &
-      guide$treatment_scenario == "standard_tx",
+        guide$drift_hr == 1.0 &
+        guide$borrowing_scenario == "bdb" &
+        guide$covariate_scenario == "cov1" &
+        guide$treatment_scenario == "standard_tx",
     ])
   )
 })

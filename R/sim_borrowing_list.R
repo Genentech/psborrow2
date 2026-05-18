@@ -18,7 +18,8 @@
     guide = "data.frame"
   ),
   validity = function(object) {
-    if (!all(vapply(object@borrowing_list,
+    if (!all(vapply(
+      object@borrowing_list,
       function(item) is(item, "Borrowing"),
       FUN.VALUE = logical(1)
     ))) {
@@ -46,7 +47,7 @@
 #' by `borrowing_full()`, `borrowing_none()`, or `borrowing_hierarchical_commensurate()`.
 #'
 #' @return Object of class [`SimBorrowingList`][SimBorrowingList-class].
-#' 
+#'
 #' @export
 #'
 #' @family simulation classes

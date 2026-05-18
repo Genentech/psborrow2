@@ -85,10 +85,10 @@ setMethod(
 #' @param ... Deprecated arguments to `bernoulli_prior()`.
 #'
 #' @return
-#' This function does not return a value. When called, it triggers an error 
-#' message indicating that `bernoulli_prior()` is deprecated and that 
+#' This function does not return a value. When called, it triggers an error
+#' message indicating that `bernoulli_prior()` is deprecated and that
 #' `prior_bernoulli()` should be used instead.
-#' 
+#'
 #' @export
 bernoulli_prior <- function(...) {
   .Defunct(

@@ -17,7 +17,8 @@
     guide = "data.frame"
   ),
   validity = function(object) {
-    if (!all(vapply(object@covariate_list,
+    if (!all(vapply(
+      object@covariate_list,
       function(item) is(item, "CovariatesOrNULL"),
       FUN.VALUE = logical(1)
     ))) {
