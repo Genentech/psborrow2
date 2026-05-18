@@ -22,7 +22,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/Genentech/psborrow2/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/Genentech/psborrow2/blob/v0.0.5.1/DESCRIPTION)
 
 Secrest M, Gravestock I (2026). *psborrow2: Bayesian Dynamic Borrowing
 Analysis and Simulation*. R package version 0.0.5.1,

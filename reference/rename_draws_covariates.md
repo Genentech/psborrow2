@@ -59,7 +59,7 @@ if (check_cmdstan()) {
 #> Ready to go! Now call `mcmc_sample()`.
 #> Running MCMC with 1 chain...
 #> 
-#> Chain 1 finished in 0.3 seconds.
+#> Chain 1 finished in 0.4 seconds.
 #> # A tibble: 8 × 10
 #>   variable        mean   median      sd     mad       q5      q95  rhat ess_bulk
 #>   <chr>          <dbl>    <dbl>   <dbl>   <dbl>    <dbl>    <dbl> <dbl>    <dbl>

@@ -49,8 +49,8 @@ cut_off_none()
 #> {
 #>     data
 #> }
-#> <bytecode: 0x55e4a29ccf30>
-#> <environment: 0x55e4a29cd0b8>
+#> <bytecode: 0x55aa6ab48b30>
+#> <environment: 0x55aa6ab48cb8>
 #> 
 #> Slot "label":
 #> [1] "No cut off"
@@ -67,8 +67,8 @@ cut_off_after_first(time = 36)
 #>         data$eventtime)
 #>     data[data$enrollment < cut_time, ]
 #> }
-#> <bytecode: 0x55e4a2960c00>
-#> <environment: 0x55e4a295e5e0>
+#> <bytecode: 0x55aa6a9c9b48>
+#> <environment: 0x55aa6a9c7528>
 #> 
 #> Slot "label":
 #> Cut off after first enrolled patient reaches time = 36
@@ -85,8 +85,8 @@ cut_off_after_last(time = 36)
 #>         data$eventtime)
 #>     data
 #> }
-#> <bytecode: 0x55e4a25f1780>
-#> <environment: 0x55e4a25eef30>
+#> <bytecode: 0x55aa6a744ee8>
+#> <environment: 0x55aa6a740778>
 #> 
 #> Slot "label":
 #> Cut off after last enrolled patient reaches time=36
@@ -105,8 +105,8 @@ cut_off_after_events(n = 20)
 #>         data$eventtime)
 #>     data[data$enrollment < cut_time, ]
 #> }
-#> <bytecode: 0x55e4a254f050>
-#> <environment: 0x55e4a254cfe0>
+#> <bytecode: 0x55aa6a6a7f68>
+#> <environment: 0x55aa6a6a5ef8>
 #> 
 #> Slot "label":
 #> Cut off after 20 events
