@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>4. Conduct a simulation study • psborrow2</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="4. Conduct a simulation study">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-125641273-1"></script><script>
@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -533,19 +533,19 @@ the data.frame that summarizes results, <code><a href="../reference/get_results.
 <span><span class="co"># 5     0.6       No drift HR  1                  100          default</span></span>
 <span><span class="co"># 6     1.0       No drift HR  2                  100          default</span></span>
 <span><span class="co">#   borrowing_scenario covariate_scenario treatment_scenario    trt_var</span></span>
-<span><span class="co"># 1       No borrowing      No adjustment            default 0.06359053</span></span>
-<span><span class="co"># 2       No borrowing      No adjustment            default 0.06276921</span></span>
-<span><span class="co"># 3       No borrowing      No adjustment            default 0.06305379</span></span>
-<span><span class="co"># 4       No borrowing      No adjustment            default 0.06286691</span></span>
-<span><span class="co"># 5     Full borrowing      No adjustment            default 0.02635029</span></span>
-<span><span class="co"># 6     Full borrowing      No adjustment            default 0.02537450</span></span>
+<span><span class="co"># 1       No borrowing      No adjustment            default 0.06325259</span></span>
+<span><span class="co"># 2       No borrowing      No adjustment            default 0.06248074</span></span>
+<span><span class="co"># 3       No borrowing      No adjustment            default 0.06315199</span></span>
+<span><span class="co"># 4       No borrowing      No adjustment            default 0.06261805</span></span>
+<span><span class="co"># 5     Full borrowing      No adjustment            default 0.02637975</span></span>
+<span><span class="co"># 6     Full borrowing      No adjustment            default 0.02520886</span></span>
 <span><span class="co">#     mse_mean  bias_mean null_coverage true_coverage</span></span>
-<span><span class="co"># 1 0.05917938 0.06011393          0.59          0.96</span></span>
-<span><span class="co"># 2 0.13170714 0.03556530          0.95          0.95</span></span>
-<span><span class="co"># 3 0.04730839 0.01311444          0.41          0.96</span></span>
-<span><span class="co"># 4 0.12775243 0.02715064          0.96          0.96</span></span>
-<span><span class="co"># 5 0.02024202 0.02088567          0.10          0.96</span></span>
-<span><span class="co"># 6 0.05035481 0.01011514          0.96          0.96</span></span></code></pre></div>
+<span><span class="co"># 1 0.05786728 0.05914705          0.56          0.97</span></span>
+<span><span class="co"># 2 0.12951999 0.03316452          0.96          0.96</span></span>
+<span><span class="co"># 3 0.04697662 0.01242635          0.44          0.96</span></span>
+<span><span class="co"># 4 0.12886423 0.02776839          0.96          0.96</span></span>
+<span><span class="co"># 5 0.02018223 0.02087946          0.10          0.96</span></span>
+<span><span class="co"># 6 0.05019592 0.01050302          0.96          0.96</span></span></code></pre></div>
 <p>Let’s quickly visualize the results using <code>ggplot2</code>. We
 will first load <code>ggplot2</code> and factorize our borrowing
 scenarios:</p>
@@ -638,10 +638,10 @@ plot of chunk unnamed-chunk-25
 the simulation results.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">var_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">simulation_res</span><span class="op">@</span><span class="va">results</span><span class="op">$</span><span class="va">trt_var</span><span class="op">)</span></span>
-<span><span class="va">N_internalcontrol</span> <span class="op">&lt;-</span> <span class="fl">250</span><span class="op">*</span><span class="fl">0.3</span></span>
+<span><span class="va">N_internalcontrol</span> <span class="op">&lt;-</span> <span class="fl">250</span> <span class="op">*</span> <span class="fl">0.3</span></span>
 <span></span>
-<span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">EHSS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="va">var_mat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span>, <span class="op">]</span><span class="op">/</span><span class="va">var_mat</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="va">N_internalcontrol</span></span>
-<span><span class="va">simulation_res_df2</span> <span class="op">&lt;-</span> <span class="va">simulation_res_df</span><span class="op">[</span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">borrowing_scenario</span><span class="op">!=</span><span class="st">"No borrowing"</span>, <span class="op">]</span></span>
+<span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">EHSS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="va">var_mat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span>, <span class="op">]</span> <span class="op">/</span> <span class="va">var_mat</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="va">N_internalcontrol</span></span>
+<span><span class="va">simulation_res_df2</span> <span class="op">&lt;-</span> <span class="va">simulation_res_df</span><span class="op">[</span><span class="va">simulation_res_df</span><span class="op">$</span><span class="va">borrowing_scenario</span> <span class="op">!=</span> <span class="st">"No borrowing"</span>, <span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">simulation_res_df2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">drift_hr</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">borrowing_scenario</span>, y <span class="op">=</span> <span class="va">EHSS</span><span class="op">)</span>,</span>
@@ -652,9 +652,9 @@ the simulation results.</p>
 <span>    x <span class="op">=</span> <span class="st">"Drift HR"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"EHSS"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">true_hr</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">true_hr</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"#F7A9A8"</span>, <span class="st">"#7D82B8"</span>, <span class="st">"#613F75"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">30</span>,<span class="fl">60</span>,<span class="va">N_internalcontrol</span>, <span class="fl">90</span>,<span class="fl">120</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span>, <span class="fl">60</span>, <span class="va">N_internalcontrol</span>, <span class="fl">90</span>, <span class="fl">120</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="va">N_internalcontrol</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="figure-simulation_study-unnamed-chunk-26-1.png" alt="plot of chunk unnamed-chunk-26"><p class="caption">
@@ -679,25 +679,39 @@ hazard ratio is 0.2 and the probability of no drift hazard ratio is
 0.8.</p>
 <p>*results weighted by (0.8, 0.2) for no drift and moderate drift</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df_accuracy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">simulation_res_df2</span><span class="op">[</span><span class="va">simulation_res_df2</span><span class="op">$</span><span class="va">true_hr</span> <span class="op">==</span> <span class="fl">1.0</span>, </span>
-<span>                                            <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"drift_hr"</span>, <span class="st">"borrowing_scenario"</span><span class="op">)</span><span class="op">]</span>, </span>
-<span>                          typeI <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">simulation_res_df2</span><span class="op">[</span><span class="va">simulation_res_df2</span><span class="op">$</span><span class="va">true_hr</span> <span class="op">==</span> <span class="fl">1.0</span>,</span>
-<span>                                                        <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"true_coverage"</span><span class="op">)</span><span class="op">]</span>,</span>
-<span>                          Power <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">simulation_res_df2</span><span class="op">[</span><span class="va">simulation_res_df2</span><span class="op">$</span><span class="va">true_hr</span> <span class="op">==</span> <span class="fl">0.6</span>, </span>
-<span>                                                        <span class="st">"null_coverage"</span><span class="op">]</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">df_accuracy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="va">simulation_res_df2</span><span class="op">[</span></span>
+<span>    <span class="va">simulation_res_df2</span><span class="op">$</span><span class="va">true_hr</span> <span class="op">==</span> <span class="fl">1.0</span>,</span>
+<span>    <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"drift_hr"</span>, <span class="st">"borrowing_scenario"</span><span class="op">)</span></span>
+<span>  <span class="op">]</span>,</span>
+<span>  typeI <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">simulation_res_df2</span><span class="op">[</span></span>
+<span>    <span class="va">simulation_res_df2</span><span class="op">$</span><span class="va">true_hr</span> <span class="op">==</span> <span class="fl">1.0</span>,</span>
+<span>    <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"true_coverage"</span><span class="op">)</span></span>
+<span>  <span class="op">]</span>,</span>
+<span>  Power <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">simulation_res_df2</span><span class="op">[</span></span>
+<span>    <span class="va">simulation_res_df2</span><span class="op">$</span><span class="va">true_hr</span> <span class="op">==</span> <span class="fl">0.6</span>,</span>
+<span>    <span class="st">"null_coverage"</span></span>
+<span>  <span class="op">]</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.2</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">df_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">typeI</span><span class="op">*</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">weights</span>,</span>
-<span>                               <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">borrowing_scenario</span><span class="op">)</span>, <span class="va">sum</span><span class="op">)</span>, </span>
-<span>                     <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">Power</span><span class="op">*</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">weights</span>,</span>
-<span>                               <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">borrowing_scenario</span><span class="op">)</span>, <span class="va">sum</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">df_sum</span> <span class="op">&lt;-</span> <span class="va">df_sum</span><span class="op">[</span>, <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">df_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<span>    <span class="va">df_accuracy</span><span class="op">$</span><span class="va">typeI</span> <span class="op">*</span> <span class="va">df_accuracy</span><span class="op">$</span><span class="va">weights</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">borrowing_scenario</span><span class="op">)</span>, <span class="va">sum</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span></span>
+<span>    <span class="va">df_accuracy</span><span class="op">$</span><span class="va">Power</span> <span class="op">*</span> <span class="va">df_accuracy</span><span class="op">$</span><span class="va">weights</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">df_accuracy</span><span class="op">$</span><span class="va">borrowing_scenario</span><span class="op">)</span>, <span class="va">sum</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">df_sum</span> <span class="op">&lt;-</span> <span class="va">df_sum</span><span class="op">[</span>, <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df_sum</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"borrowing_scenario"</span>, <span class="st">"typeI"</span>, <span class="st">"Power"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df_sum</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">typeI</span>, color <span class="op">=</span> <span class="va">borrowing_scenario</span>, y <span class="op">=</span> <span class="va">Power</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    color <span class="op">=</span> <span class="st">"Borrowing scenario"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Type I Error Rate"</span>,</span>

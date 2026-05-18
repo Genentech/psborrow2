@@ -282,12 +282,12 @@ results
 ```
 
     ##  variable     mean   median   sd  mad       q5      q95 rhat ess_bulk ess_tail
-    ##  lp__     -1618.00 -1617.68 1.51 1.38 -1620.85 -1616.19 1.00     1747     2189
-    ##  beta_trt    -0.16    -0.17 0.20 0.21    -0.48     0.18 1.00     2400     2911
-    ##  alpha[1]    -3.35    -3.34 0.16 0.17    -3.64    -3.10 1.00     2292     2763
-    ##  alpha[2]    -2.40    -2.40 0.06 0.06    -2.49    -2.30 1.00     2848     2880
-    ##  tau          1.21     0.46 2.02 0.64     0.00     4.88 1.00     1917     1265
-    ##  HR_trt       0.87     0.85 0.18 0.17     0.62     1.20 1.00     2400     2911
+    ##  lp__     -1617.98 -1617.62 1.52 1.30 -1620.95 -1616.18 1.00     1933     1780
+    ##  beta_trt    -0.15    -0.16 0.20 0.20    -0.48     0.18 1.00     2167     2493
+    ##  alpha[1]    -3.36    -3.36 0.16 0.16    -3.62    -3.10 1.00     2129     2970
+    ##  alpha[2]    -2.40    -2.40 0.05 0.05    -2.49    -2.31 1.00     4276     3255
+    ##  tau          1.12     0.46 1.79 0.64     0.00     4.43 1.00     1650     1382
+    ##  HR_trt       0.88     0.86 0.18 0.17     0.62     1.19 1.00     2167     2493
 
 ## Interpret results
 
@@ -330,11 +330,11 @@ posterior::summarize_draws(draws, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
     ##   variable                                 `2.5%`     `50%`   `97.5%`
     ##   <chr>                                     <dbl>     <dbl>     <dbl>
     ## 1 lp__                               -1622.       -1618.    -1616.   
-    ## 2 treatment log HR                      -0.548       -0.165     0.256
-    ## 3 baseline log hazard rate, internal    -3.68        -3.34     -3.06 
+    ## 2 treatment log HR                      -0.545       -0.156     0.234
+    ## 3 baseline log hazard rate, internal    -3.68        -3.36     -3.05 
     ## 4 baseline log hazard rate, external    -2.51        -2.40     -2.29 
-    ## 5 commensurability parameter             0.000673     0.459     6.90 
-    ## 6 treatment HR                           0.578        0.848     1.29
+    ## 5 commensurability parameter             0.000452     0.456     6.14 
+    ## 6 treatment HR                           0.580        0.856     1.26
 
 Look at histogram of draws with bayesplot package
 
@@ -343,7 +343,11 @@ Look at histogram of draws with bayesplot package
 bayesplot::mcmc_hist(draws, c("treatment HR"))
 ```
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+    ## Registered S3 method overwritten by 'plyr':
+    ##   method    from  
+    ##   [.indexed table1
+
+    ## `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 
 ![plot of chunk
 unnamed-chunk-18](figure-simple_overview-unnamed-chunk-18-1.png)
@@ -443,13 +447,13 @@ summarize_draws(draws_ps_no_borrow, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)
     ##   variable                   `2.5%`    `50%`   `97.5%`
     ##   <chr>                       <dbl>    <dbl>     <dbl>
     ## 1 lp__                     -466.    -462.    -459.    
-    ## 2 treatment log HR           -0.738   -0.347    0.0689
-    ## 3 baseline log hazard rate   -4.76    -4.20    -3.72  
-    ## 4 ps_cat_low                 -0.344    0.408    1.13  
-    ## 5 ps_cat_low_med              0.460    0.998    1.61  
-    ## 6 ps_cat_high_med             1.44     2.10     2.80  
-    ## 7 ps_cat_high                 2.42     3.01     3.66  
-    ## 8 treatment HR                0.478    0.707    1.07
+    ## 2 treatment log HR           -0.732   -0.355    0.0462
+    ## 3 baseline log hazard rate   -4.73    -4.19    -3.73  
+    ## 4 ps_cat_low                 -0.314    0.413    1.13  
+    ## 5 ps_cat_low_med              0.436    1.01     1.58  
+    ## 6 ps_cat_high_med             1.43     2.10     2.80  
+    ## 7 ps_cat_high                 2.42     3.02     3.64  
+    ## 8 treatment HR                0.481    0.701    1.05
 
 ## Propensity score analysis with BDB
 
@@ -484,16 +488,16 @@ summarize_draws(draws_ps_bdb, ~ quantile(.x, probs = c(0.025, 0.50, 0.975)))
     ## # A tibble: 10 × 4
     ##    variable                              `2.5%`     `50%`    `97.5%`
     ##    <chr>                                  <dbl>     <dbl>      <dbl>
-    ##  1 lp__                               -1426.    -1420.    -1418.    
-    ##  2 treatment log HR                      -0.671    -0.350    -0.0350
-    ##  3 baseline log hazard rate, internal    -4.65     -4.19     -3.77  
-    ##  4 baseline log hazard rate, external    -4.64     -4.21     -3.80  
-    ##  5 commensurability parameter             0.107    58.0    1659.    
-    ##  6 ps_cat_low                            -0.300     0.274     0.851 
-    ##  7 ps_cat_low_med                         0.639     1.07      1.52  
-    ##  8 ps_cat_high_med                        1.65      2.10      2.58  
-    ##  9 ps_cat_high                            2.54      2.95      3.40  
-    ## 10 treatment HR                           0.511     0.705     0.966
+    ##  1 lp__                               -1426.    -1421.    -1418.    
+    ##  2 treatment log HR                      -0.702    -0.355    -0.0330
+    ##  3 baseline log hazard rate, internal    -4.65     -4.17     -3.75  
+    ##  4 baseline log hazard rate, external    -4.66     -4.19     -3.77  
+    ##  5 commensurability parameter             0.119    54.3    1212.    
+    ##  6 ps_cat_low                            -0.364     0.250     0.853 
+    ##  7 ps_cat_low_med                         0.589     1.04      1.56  
+    ##  8 ps_cat_high_med                        1.62      2.08      2.59  
+    ##  9 ps_cat_high                            2.51      2.93      3.43  
+    ## 10 treatment HR                           0.496     0.701     0.968
 
 It looks like PS + BDB allowed us to most accurately recover the true
 hazard ratio of 0.70.

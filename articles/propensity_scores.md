@@ -44,28 +44,28 @@ summary(weightit_model)
 #> 
 #> - Weight ranges:
 #> 
-#>            Min                                  Max
-#> treated 1.0000      ||                       1.0000
-#> control 0.0742 |---------------------------| 5.7137
+#>           Min                                 Max
+#> treated 1.         ||                       1.   
+#> control 0.083 |---------------------------| 5.897
 #> 
 #> - Units with the 5 most extreme weights by group:
-#>                                            
-#>               5      4      3      2      1
-#>  treated      1      1      1      1      1
-#>             195    158    465    438    371
-#>  control 2.7859 2.7859 5.7137 5.7137 5.7137
+#>                                       
+#>              5     4     3     2     1
+#>  treated     1     1     1     1     1
+#>            195   158   465   438   371
+#>  control 2.792 2.792 5.897 5.897 5.897
 #> 
 #> - Weight statistics:
 #> 
-#>         Coef of Var   MAD Entropy # Zeros
-#> treated       0.000 0.000   0.000       0
-#> control       1.564 0.831   0.603       0
+#>         Coef of Var  MAD Entropy # Zeros
+#> treated       0.    0.       0.        0
+#> control       1.582 0.82     0.6       0
 #> 
 #> - Effective Sample Sizes:
 #> 
 #>            Control Treated
 #> Unweighted  350.       150
-#> Weighted    101.76     150
+#> Weighted    100.09     150
 ```
 
 Another useful package is
@@ -378,13 +378,13 @@ knitr::kable(cbind(models = names(models), results_table), digits = 3)
 
 | models         | variable |  mean | median |    sd |    q5 |   q95 |
 |:---------------|:---------|------:|-------:|------:|------:|------:|
-| No borrowing   | HR_trt   | 0.898 |  0.878 | 0.180 | 0.638 | 1.223 |
-| Full borrowing | HR_trt   | 0.388 |  0.386 | 0.049 | 0.310 | 0.471 |
-| Power Prior 01 | HR_trt   | 0.634 |  0.625 | 0.106 | 0.478 | 0.824 |
-| ATT Weights    | HR_trt   | 0.891 |  0.882 | 0.126 | 0.697 | 1.110 |
-| IPTW + BDB     | HR_trt   | 0.893 |  0.877 | 0.165 | 0.653 | 1.185 |
-| Matching 1:1   | HR_trt   | 0.819 |  0.808 | 0.133 | 0.620 | 1.054 |
-| BDB            | HR_trt   | 0.875 |  0.857 | 0.178 | 0.619 | 1.194 |
+| No borrowing   | HR_trt   | 0.896 |  0.878 | 0.178 | 0.638 | 1.216 |
+| Full borrowing | HR_trt   | 0.388 |  0.385 | 0.049 | 0.311 | 0.473 |
+| Power Prior 01 | HR_trt   | 0.635 |  0.626 | 0.105 | 0.479 | 0.821 |
+| ATT Weights    | HR_trt   | 0.892 |  0.884 | 0.128 | 0.697 | 1.114 |
+| IPTW + BDB     | HR_trt   | 0.894 |  0.879 | 0.164 | 0.653 | 1.183 |
+| Matching 1:1   | HR_trt   | 0.818 |  0.808 | 0.134 | 0.619 | 1.056 |
+| BDB            | HR_trt   | 0.875 |  0.857 | 0.176 | 0.622 | 1.187 |
 
 We can extract a `draws` object from each model and plot the posterior
 distribution of the treatment hazard ratio.

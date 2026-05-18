@@ -36,7 +36,7 @@ custom_enrollment(
 #> Slot "fun":
 #> function (n) 
 #> rpois(n, lambda = 5)
-#> <environment: 0x555bb1fb0f98>
+#> <environment: 0x55e4a6029000>
 #> 
 #> Slot "label":
 #> [1] "Poisson enrollment distribution"

@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>8. Simple Overview • psborrow2</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="8. Simple Overview">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-125641273-1"></script><script>
@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -294,12 +294,12 @@ functions:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span></span></code></pre></div>
 <pre><code><span><span class="co">##  variable     mean   median   sd  mad       q5      q95 rhat ess_bulk ess_tail</span></span>
-<span><span class="co">##  lp__     -1618.00 -1617.68 1.51 1.38 -1620.85 -1616.19 1.00     1747     2189</span></span>
-<span><span class="co">##  beta_trt    -0.16    -0.17 0.20 0.21    -0.48     0.18 1.00     2400     2911</span></span>
-<span><span class="co">##  alpha[1]    -3.35    -3.34 0.16 0.17    -3.64    -3.10 1.00     2292     2763</span></span>
-<span><span class="co">##  alpha[2]    -2.40    -2.40 0.06 0.06    -2.49    -2.30 1.00     2848     2880</span></span>
-<span><span class="co">##  tau          1.21     0.46 2.02 0.64     0.00     4.88 1.00     1917     1265</span></span>
-<span><span class="co">##  HR_trt       0.87     0.85 0.18 0.17     0.62     1.20 1.00     2400     2911</span></span></code></pre>
+<span><span class="co">##  lp__     -1617.98 -1617.62 1.52 1.30 -1620.95 -1616.18 1.00     1933     1780</span></span>
+<span><span class="co">##  beta_trt    -0.15    -0.16 0.20 0.20    -0.48     0.18 1.00     2167     2493</span></span>
+<span><span class="co">##  alpha[1]    -3.36    -3.36 0.16 0.16    -3.62    -3.10 1.00     2129     2970</span></span>
+<span><span class="co">##  alpha[2]    -2.40    -2.40 0.05 0.05    -2.49    -2.31 1.00     4276     3255</span></span>
+<span><span class="co">##  tau          1.12     0.46 1.79 0.64     0.00     4.43 1.00     1650     1382</span></span>
+<span><span class="co">##  HR_trt       0.88     0.86 0.18 0.17     0.62     1.19 1.00     2167     2493</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="interpret-results">Interpret results<a class="anchor" aria-label="anchor" href="#interpret-results"></a>
@@ -326,15 +326,18 @@ functions:</p>
 <span><span class="co">##   variable                                 `2.5%`     `50%`   `97.5%`</span></span>
 <span><span class="co">##   &lt;chr&gt;                                     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 lp__                               -1622.       -1618.    -1616.   </span></span>
-<span><span class="co">## 2 treatment log HR                      -0.548       -0.165     0.256</span></span>
-<span><span class="co">## 3 baseline log hazard rate, internal    -3.68        -3.34     -3.06 </span></span>
+<span><span class="co">## 2 treatment log HR                      -0.545       -0.156     0.234</span></span>
+<span><span class="co">## 3 baseline log hazard rate, internal    -3.68        -3.36     -3.05 </span></span>
 <span><span class="co">## 4 baseline log hazard rate, external    -2.51        -2.40     -2.29 </span></span>
-<span><span class="co">## 5 commensurability parameter             0.000673     0.459     6.90 </span></span>
-<span><span class="co">## 6 treatment HR                           0.578        0.848     1.29</span></span></code></pre>
+<span><span class="co">## 5 commensurability parameter             0.000452     0.456     6.14 </span></span>
+<span><span class="co">## 6 treatment HR                           0.580        0.856     1.26</span></span></code></pre>
 <p>Look at histogram of draws with bayesplot package</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-distributions.html" class="external-link">mcmc_hist</a></span><span class="op">(</span><span class="va">draws</span>, <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"treatment HR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code></pre>
+<pre><code><span><span class="co">## Registered S3 method overwritten by 'plyr':</span></span>
+<span><span class="co">##   method    from  </span></span>
+<span><span class="co">##   [.indexed table1</span></span></code></pre>
+<pre><code><span><span class="co">## `stat_bin()` using `bins = 30`. Pick better value `binwidth`.</span></span></code></pre>
 <div class="float">
 <img src="figure-simple_overview-unnamed-chunk-18-1.png" alt="plot of chunk unnamed-chunk-18"><div class="figcaption">plot of chunk unnamed-chunk-18</div>
 </div>
@@ -346,7 +349,7 @@ control arms were.</p>
 <h2 id="control-arm-imbalances">Control arm imbalances<a class="anchor" aria-label="anchor" href="#control-arm-imbalances"></a>
 </h2>
 <p>Check balance between arms</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">table1</span><span class="op">(</span></span>
 <span>  <span class="op">~</span> <span class="va">cov1</span> <span class="op">+</span> <span class="va">cov2</span> <span class="op">+</span> <span class="va">cov3</span> <span class="op">+</span> <span class="va">cov4</span> <span class="op">|</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">ext</span>, labels <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"Internal RCT"</span>, <span class="st">"External data"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -372,7 +375,7 @@ control arms were.</p>
 </thead>
 <tbody>
 <tr>
-<td class="rowlabel firstrow">cov1</td>
+<td class="rowlabel firstrow"><span class="varlabel">cov1</span></td>
 <td class="firstrow"></td>
 <td class="firstrow"></td>
 <td class="firstrow"></td>
@@ -396,7 +399,7 @@ control arms were.</p>
 <td class="lastrow">1.00 [0, 1.00]</td>
 </tr>
 <tr>
-<td class="rowlabel firstrow">cov2</td>
+<td class="rowlabel firstrow"><span class="varlabel">cov2</span></td>
 <td class="firstrow"></td>
 <td class="firstrow"></td>
 <td class="firstrow"></td>
@@ -420,7 +423,7 @@ control arms were.</p>
 <td class="lastrow">0 [0, 1.00]</td>
 </tr>
 <tr>
-<td class="rowlabel firstrow">cov3</td>
+<td class="rowlabel firstrow"><span class="varlabel">cov3</span></td>
 <td class="firstrow"></td>
 <td class="firstrow"></td>
 <td class="firstrow"></td>
@@ -444,7 +447,7 @@ control arms were.</p>
 <td class="lastrow">1.00 [0, 1.00]</td>
 </tr>
 <tr>
-<td class="rowlabel firstrow">cov4</td>
+<td class="rowlabel firstrow"><span class="varlabel">cov4</span></td>
 <td class="firstrow"></td>
 <td class="firstrow"></td>
 <td class="firstrow"></td>
@@ -472,7 +475,7 @@ control arms were.</p>
 <p>Because the imbalance may be conditional on observed covariates,
 let’s adjust for propensity scores in our analysis</p>
 <p>Create a propensity score model</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ps_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">ext</span> <span class="op">~</span> <span class="va">cov1</span> <span class="op">+</span> <span class="va">cov2</span> <span class="op">+</span> <span class="va">cov3</span> <span class="op">+</span> <span class="va">cov4</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">example_dataframe</span>,</span>
 <span>  family <span class="op">=</span> <span class="va">binomial</span></span>
@@ -490,7 +493,7 @@ let’s adjust for propensity scores in our analysis</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Convert the data back to a matrix with dummy variables for
 <code>ps_cat_</code> levels</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_matrix_ps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_data_matrix.html">create_data_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">example_dataframe</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"cnsr"</span><span class="op">)</span>,</span>
@@ -517,7 +520,7 @@ let’s adjust for propensity scores in our analysis</p>
 <span>  iter_sampling <span class="op">=</span> <span class="fl">5000</span>,</span>
 <span>  chains <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">draws_ps_no_borrow</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_draws_covariates.html">rename_draws_covariates</a></span><span class="op">(</span></span>
 <span>  <span class="va">res_ps_no_borrow</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">anls_ps_no_borrow</span></span>
@@ -528,13 +531,13 @@ let’s adjust for propensity scores in our analysis</p>
 <span><span class="co">##   variable                   `2.5%`    `50%`   `97.5%`</span></span>
 <span><span class="co">##   &lt;chr&gt;                       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 lp__                     -466.    -462.    -459.    </span></span>
-<span><span class="co">## 2 treatment log HR           -0.738   -0.347    0.0689</span></span>
-<span><span class="co">## 3 baseline log hazard rate   -4.76    -4.20    -3.72  </span></span>
-<span><span class="co">## 4 ps_cat_low                 -0.344    0.408    1.13  </span></span>
-<span><span class="co">## 5 ps_cat_low_med              0.460    0.998    1.61  </span></span>
-<span><span class="co">## 6 ps_cat_high_med             1.44     2.10     2.80  </span></span>
-<span><span class="co">## 7 ps_cat_high                 2.42     3.01     3.66  </span></span>
-<span><span class="co">## 8 treatment HR                0.478    0.707    1.07</span></span></code></pre>
+<span><span class="co">## 2 treatment log HR           -0.732   -0.355    0.0462</span></span>
+<span><span class="co">## 3 baseline log hazard rate   -4.73    -4.19    -3.73  </span></span>
+<span><span class="co">## 4 ps_cat_low                 -0.314    0.413    1.13  </span></span>
+<span><span class="co">## 5 ps_cat_low_med              0.436    1.01     1.58  </span></span>
+<span><span class="co">## 6 ps_cat_high_med             1.43     2.10     2.80  </span></span>
+<span><span class="co">## 7 ps_cat_high                 2.42     3.02     3.64  </span></span>
+<span><span class="co">## 8 treatment HR                0.481    0.701    1.05</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="propensity-score-analysis-with-bdb">Propensity score analysis with BDB<a class="anchor" aria-label="anchor" href="#propensity-score-analysis-with-bdb"></a>
@@ -556,7 +559,7 @@ let’s adjust for propensity scores in our analysis</p>
 <span>  iter_sampling <span class="op">=</span> <span class="fl">5000</span>,</span>
 <span>  chains <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">draws_ps_bdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_draws_covariates.html">rename_draws_covariates</a></span><span class="op">(</span></span>
 <span>  <span class="va">res_ps_bdb</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">anls_ps_bdb</span></span>
@@ -566,16 +569,16 @@ let’s adjust for propensity scores in our analysis</p>
 <pre><code><span><span class="co">## # A tibble: 10 × 4</span></span>
 <span><span class="co">##    variable                              `2.5%`     `50%`    `97.5%`</span></span>
 <span><span class="co">##    &lt;chr&gt;                                  &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;</span></span>
-<span><span class="co">##  1 lp__                               -1426.    -1420.    -1418.    </span></span>
-<span><span class="co">##  2 treatment log HR                      -0.671    -0.350    -0.0350</span></span>
-<span><span class="co">##  3 baseline log hazard rate, internal    -4.65     -4.19     -3.77  </span></span>
-<span><span class="co">##  4 baseline log hazard rate, external    -4.64     -4.21     -3.80  </span></span>
-<span><span class="co">##  5 commensurability parameter             0.107    58.0    1659.    </span></span>
-<span><span class="co">##  6 ps_cat_low                            -0.300     0.274     0.851 </span></span>
-<span><span class="co">##  7 ps_cat_low_med                         0.639     1.07      1.52  </span></span>
-<span><span class="co">##  8 ps_cat_high_med                        1.65      2.10      2.58  </span></span>
-<span><span class="co">##  9 ps_cat_high                            2.54      2.95      3.40  </span></span>
-<span><span class="co">## 10 treatment HR                           0.511     0.705     0.966</span></span></code></pre>
+<span><span class="co">##  1 lp__                               -1426.    -1421.    -1418.    </span></span>
+<span><span class="co">##  2 treatment log HR                      -0.702    -0.355    -0.0330</span></span>
+<span><span class="co">##  3 baseline log hazard rate, internal    -4.65     -4.17     -3.75  </span></span>
+<span><span class="co">##  4 baseline log hazard rate, external    -4.66     -4.19     -3.77  </span></span>
+<span><span class="co">##  5 commensurability parameter             0.119    54.3    1212.    </span></span>
+<span><span class="co">##  6 ps_cat_low                            -0.364     0.250     0.853 </span></span>
+<span><span class="co">##  7 ps_cat_low_med                         0.589     1.04      1.56  </span></span>
+<span><span class="co">##  8 ps_cat_high_med                        1.62      2.08      2.59  </span></span>
+<span><span class="co">##  9 ps_cat_high                            2.51      2.93      3.43  </span></span>
+<span><span class="co">## 10 treatment HR                           0.496     0.701     0.968</span></span></code></pre>
 <p>It looks like PS + BDB allowed us to most accurately recover the true
 hazard ratio of 0.70.</p>
 </div>

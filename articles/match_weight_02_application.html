@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>2. Matching and Weighting Application with Dynamic Borrowing • psborrow2</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="2. Matching and Weighting Application with Dynamic Borrowing">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-125641273-1"></script><script>
@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@
                         <h4 data-toc-skip class="author">Eli Lilly &amp;
 Company</h4>
             
-            <h4 data-toc-skip class="date">2025-05-07</h4>
+            <h4 data-toc-skip class="date">2026-05-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Genentech/psborrow2/blob/main/vignettes/match_weight_02_application.Rmd" class="external-link"><code>vignettes/match_weight_02_application.Rmd</code></a></small>
       <div class="d-none name"><code>match_weight_02_application.Rmd</code></div>
@@ -102,7 +102,7 @@ article</p>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
 at time
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
-is defined as the instantaneous rate of the event occurence that is
+is defined as the instantaneous rate of the event occurrence that is
 still at risk at time
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.
 It is defined as</p>
@@ -375,7 +375,6 @@ a gamma prior as
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/posterior/" class="external-link">posterior</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/bayesplot/" class="external-link">bayesplot</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/" class="external-link">kableExtra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in library(kableExtra): there is no package called 'kableExtra'</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="example-data">Example data<a class="anchor" aria-label="anchor" href="#example-data"></a>
@@ -550,7 +549,7 @@ Bayesian Dynamic Borrowing (BDB) in which gamma prior is assigned for
 the commensurability parameter. The <code>tau_prior</code> shown below
 is the hyperparameter of the commensurate prior which determines the
 degree of borrowing. We assign a gamma prior for this hyperparameter.
-Furhtermore, we also need to specify a flag for external data which is
+Furthermore, we also need to specify a flag for external data which is
 denoted by <code>ext</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Borrowing</span></span>
@@ -620,13 +619,13 @@ chains.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 3 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 5.9 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 5.2 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 6.3 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 7.2 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 7.1 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 9.4 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 3 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 5.8 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 17.6 seconds.</span></span>
+<span><span class="co">#&gt; Mean chain execution time: 7.9 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 23.9 seconds.</span></span>
 <span></span>
 <span><span class="va">draws1</span> <span class="op">&lt;-</span> <span class="va">results.exp.psborrow</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">draws1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_draws_covariates.html">rename_draws_covariates</a></span><span class="op">(</span><span class="va">draws1</span>, <span class="va">anls_obj</span><span class="op">)</span></span></code></pre></div>
@@ -636,12 +635,12 @@ chains.</p>
 <span><span class="co">#&gt; # A tibble: 6 × 10</span></span>
 <span><span class="co">#&gt;   variable     mean    median     sd    mad          q5      q95  rhat ess_bulk</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__     -718.    -718.     1.48   1.32   -721.       -716.     1.00   11600.</span></span>
-<span><span class="co">#&gt; 2 beta_trt   -0.358   -0.360  0.110  0.109    -0.537      -0.173  1.00   12088.</span></span>
-<span><span class="co">#&gt; 3 alpha[1]   -0.620   -0.618  0.0916 0.0915   -0.775      -0.474  1.00   11788.</span></span>
-<span><span class="co">#&gt; 4 alpha[2]    2.36     2.38   0.371  0.367     1.71        2.93   1.00   17931.</span></span>
-<span><span class="co">#&gt; 5 tau         0.119    0.0511 0.182  0.0701    0.000400    0.468  1.00   12852.</span></span>
-<span><span class="co">#&gt; 6 HR_trt      0.704    0.698  0.0777 0.0758    0.584       0.841  1.00   12088.</span></span>
+<span><span class="co">#&gt; 1 lp__     -718.    -718.     1.48   1.28   -721.       -716.     1.00   10917.</span></span>
+<span><span class="co">#&gt; 2 beta_trt   -0.358   -0.358  0.109  0.108    -0.537      -0.179  1.00   13767.</span></span>
+<span><span class="co">#&gt; 3 alpha[1]   -0.621   -0.620  0.0904 0.0902   -0.771      -0.475  1.00   13896.</span></span>
+<span><span class="co">#&gt; 4 alpha[2]    2.36     2.38   0.368  0.363     1.72        2.92   1.00   16892.</span></span>
+<span><span class="co">#&gt; 5 tau         0.119    0.0507 0.181  0.0697    0.000480    0.463  1.00   12986.</span></span>
+<span><span class="co">#&gt; 6 HR_trt      0.704    0.699  0.0768 0.0756    0.585       0.836  1.00   13767.</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></code></pre></div>
 <p>The histogram of the posterior samples for hazard ratio and
 commensurability parameter as shown below.</p>
@@ -667,14 +666,14 @@ credible interval can be calculated as follows.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarize_draws</a></span><span class="op">(</span><span class="va">draws1</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">.x</span>, probs <span class="op">=</span> <span class="fu"><a href="../reference/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
-<span><span class="co">#&gt;   variable                                 `2.5%`  `97.5%`</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                                     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__                               -722.        -716.   </span></span>
-<span><span class="co">#&gt; 2 treatment log HR                     -0.571       -0.138</span></span>
-<span><span class="co">#&gt; 3 baseline log hazard rate, internal   -0.806       -0.445</span></span>
-<span><span class="co">#&gt; 4 baseline log hazard rate, external    1.56         3.02 </span></span>
-<span><span class="co">#&gt; 5 commensurability parameter            0.0000996    0.621</span></span>
-<span><span class="co">#&gt; 6 treatment HR                          0.565        0.871</span></span></code></pre></div>
+<span><span class="co">#&gt;   variable                                `2.5%`  `97.5%`</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                                    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 lp__                               -722.       -716.   </span></span>
+<span><span class="co">#&gt; 2 treatment log HR                     -0.571      -0.145</span></span>
+<span><span class="co">#&gt; 3 baseline log hazard rate, internal   -0.802      -0.447</span></span>
+<span><span class="co">#&gt; 4 baseline log hazard rate, external    1.58        3.02 </span></span>
+<span><span class="co">#&gt; 5 commensurability parameter            0.000120    0.619</span></span>
+<span><span class="co">#&gt; 6 treatment HR                          0.565       0.865</span></span></code></pre></div>
 <p>We can graph other plots that help us evaluate convergence and
 diagnose problems with the MCMC sampler, such as trace plot.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -801,13 +800,13 @@ chains.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 3 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 14.7 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 14.8 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 11.5 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 11.9 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 12.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 12.6 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 3 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 13.6 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 41.1 seconds.</span></span>
+<span><span class="co">#&gt; Mean chain execution time: 12.4 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 37.5 seconds.</span></span>
 <span></span>
 <span><span class="va">draws2</span> <span class="op">&lt;-</span> <span class="va">results.weib.psborrow</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">draws2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_draws_covariates.html">rename_draws_covariates</a></span><span class="op">(</span><span class="va">draws2</span>, <span class="va">anls_obj</span><span class="op">)</span></span></code></pre></div>
@@ -817,13 +816,13 @@ chains.</p>
 <span><span class="co">#&gt; # A tibble: 7 × 10</span></span>
 <span><span class="co">#&gt;   variable          mean   median     sd    mad       q5      q95  rhat ess_bulk</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__          -708.    -7.07e+2 1.66   1.48   -7.11e+2 -705.     1.00   11420.</span></span>
-<span><span class="co">#&gt; 2 beta_trt        -0.301 -3.01e-1 0.111  0.111  -4.82e-1   -0.118  1.00   16859.</span></span>
-<span><span class="co">#&gt; 3 alpha[1]        -0.510 -5.09e-1 0.0944 0.0940 -6.68e-1   -0.357  1.00   16239.</span></span>
-<span><span class="co">#&gt; 4 alpha[2]         1.97   1.99e+0 0.382  0.377   1.30e+0    2.56   1.00   22836.</span></span>
-<span><span class="co">#&gt; 5 tau              0.177  7.53e-2 0.281  0.103   6.87e-4    0.691  1.00   14556.</span></span>
-<span><span class="co">#&gt; 6 shape_weibull    0.836  8.36e-1 0.0323 0.0327  7.83e-1    0.889  1.00   22322.</span></span>
-<span><span class="co">#&gt; 7 HR_trt           0.744  7.40e-1 0.0828 0.0815  6.18e-1    0.888  1.00   16859.</span></span>
+<span><span class="co">#&gt; 1 lp__          -708.    -7.07e+2 1.66   1.47   -7.11e+2 -705.     1.00   11655.</span></span>
+<span><span class="co">#&gt; 2 beta_trt        -0.300 -3.01e-1 0.110  0.110  -4.79e-1   -0.117  1.00   15789.</span></span>
+<span><span class="co">#&gt; 3 alpha[1]        -0.511 -5.09e-1 0.0936 0.0946 -6.67e-1   -0.361  1.00   15831.</span></span>
+<span><span class="co">#&gt; 4 alpha[2]         1.97   1.99e+0 0.382  0.378   1.31e+0    2.55   1.00   21480.</span></span>
+<span><span class="co">#&gt; 5 tau              0.182  7.54e-2 0.320  0.104   6.30e-4    0.710  1.00   14273.</span></span>
+<span><span class="co">#&gt; 6 shape_weibull    0.836  8.36e-1 0.0319 0.0319  7.84e-1    0.889  1.00   21440.</span></span>
+<span><span class="co">#&gt; 7 HR_trt           0.745  7.40e-1 0.0827 0.0817  6.20e-1    0.890  1.00   15789.</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></code></pre></div>
 <p>Histogram of the posterior samples for hazard ratio and
 commensurability parameter are produced.</p>
@@ -852,12 +851,12 @@ credible interval can be calculated as follows.</p>
 <span><span class="co">#&gt;   variable                                `2.5%`   `97.5%`</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;                                    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 lp__                               -712.       -705.    </span></span>
-<span><span class="co">#&gt; 2 treatment log HR                     -0.516      -0.0847</span></span>
-<span><span class="co">#&gt; 3 baseline log hazard rate, internal   -0.699      -0.328 </span></span>
-<span><span class="co">#&gt; 4 baseline log hazard rate, external    1.15        2.66  </span></span>
-<span><span class="co">#&gt; 5 commensurability parameter            0.000179    0.933 </span></span>
-<span><span class="co">#&gt; 6 Weibull shape parameter               0.773       0.900 </span></span>
-<span><span class="co">#&gt; 7 treatment HR                          0.597       0.919</span></span></code></pre></div>
+<span><span class="co">#&gt; 2 treatment log HR                     -0.513      -0.0816</span></span>
+<span><span class="co">#&gt; 3 baseline log hazard rate, internal   -0.699      -0.334 </span></span>
+<span><span class="co">#&gt; 4 baseline log hazard rate, external    1.16        2.64  </span></span>
+<span><span class="co">#&gt; 5 commensurability parameter            0.000165    0.957 </span></span>
+<span><span class="co">#&gt; 6 Weibull shape parameter               0.775       0.900 </span></span>
+<span><span class="co">#&gt; 7 treatment HR                          0.599       0.922</span></span></code></pre></div>
 <p>We can see other plots that help us evaluate convergence and diagnose
 problems with the MCMC sampler, such as trace plot.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
@@ -1354,7 +1353,7 @@ plot of chunk unnamed-chunk-44
 <p>In addition to specifying an exponential distribution using Bayesian
 dynamic borrowing, naive no-borrowing and full-borrowing analysis can be
 conducted using the exponential distribution following similar steps as
-above. These ype of analysis could be used as a sensitivity or
+above. These type of analysis could be used as a sensitivity or
 exploratory analysis.</p>
 <p>The <code>psborrow2</code> package will be used to conduct the
 analysis. Following are the steps.</p>
@@ -1439,13 +1438,13 @@ chains.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 3 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 2.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 1.7 seconds.</span></span>
 <span><span class="co">#&gt; Chain 2 finished in 1.7 seconds.</span></span>
 <span><span class="co">#&gt; Chain 3 finished in 1.8 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 3 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 1.8 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 5.7 seconds.</span></span>
+<span><span class="co">#&gt; Mean chain execution time: 1.7 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 5.4 seconds.</span></span>
 <span></span>
 <span><span class="va">draws3</span> <span class="op">&lt;-</span> <span class="va">results.no.psborrow</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">draws3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_draws_covariates.html">rename_draws_covariates</a></span><span class="op">(</span><span class="va">draws3</span>, <span class="va">anls_obj</span><span class="op">)</span></span></code></pre></div>
@@ -1455,10 +1454,10 @@ chains.</p>
 <span><span class="co">#&gt; # A tibble: 4 × 10</span></span>
 <span><span class="co">#&gt;   variable     mean   median     sd    mad       q5      q95  rhat ess_bulk</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__     -727.    -727.    1.02   0.728  -729.    -726.     1.00    9041.</span></span>
-<span><span class="co">#&gt; 2 beta_trt   -0.357   -0.357 0.111  0.111    -0.537   -0.172  1.00    8473.</span></span>
-<span><span class="co">#&gt; 3 alpha      -0.622   -0.621 0.0929 0.0926   -0.778   -0.472  1.00    8588.</span></span>
-<span><span class="co">#&gt; 4 HR_trt      0.704    0.699 0.0788 0.0773    0.584    0.842  1.00    8473.</span></span>
+<span><span class="co">#&gt; 1 lp__     -727.    -727.    1.03   0.719  -729.    -726.     1.00   10367.</span></span>
+<span><span class="co">#&gt; 2 beta_trt   -0.357   -0.358 0.111  0.111    -0.537   -0.172  1.00    8928.</span></span>
+<span><span class="co">#&gt; 3 alpha      -0.622   -0.621 0.0926 0.0929   -0.775   -0.473  1.00    8752.</span></span>
+<span><span class="co">#&gt; 4 HR_trt      0.704    0.699 0.0788 0.0775    0.585    0.842  1.00    8928.</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></code></pre></div>
 <p>The histogram of the posterior samples for hazard ratio and
 commensurability parameter as shown below.</p>
@@ -1480,9 +1479,9 @@ credible interval can be calculated as follows.</p>
 <span><span class="co">#&gt;   variable                   `2.5%`  `97.5%`</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;                       &lt;dbl&gt;    &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 lp__                     -730.    -726.   </span></span>
-<span><span class="co">#&gt; 2 treatment log HR           -0.576   -0.138</span></span>
-<span><span class="co">#&gt; 3 baseline log hazard rate   -0.807   -0.444</span></span>
-<span><span class="co">#&gt; 4 treatment HR                0.562    0.871</span></span></code></pre></div>
+<span><span class="co">#&gt; 2 treatment log HR           -0.571   -0.137</span></span>
+<span><span class="co">#&gt; 3 baseline log hazard rate   -0.807   -0.445</span></span>
+<span><span class="co">#&gt; 4 treatment HR                0.565    0.872</span></span></code></pre></div>
 <p>We can see other plots that help us understand and diagnose problems
 with the MCMC sampler, such as trace plot.</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
@@ -1583,13 +1582,13 @@ chains.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 3 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 2.8 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 finished in 2.5 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 finished in 2.8 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 3.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 2.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 2.5 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 3 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 2.7 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 8.4 seconds.</span></span>
+<span><span class="co">#&gt; Mean chain execution time: 2.6 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 8.1 seconds.</span></span>
 <span></span>
 <span><span class="va">draws4</span> <span class="op">&lt;-</span> <span class="va">results.full.psborrow</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">draws4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_draws_covariates.html">rename_draws_covariates</a></span><span class="op">(</span><span class="va">draws4</span>, <span class="va">anls_obj</span><span class="op">)</span></span></code></pre></div>
@@ -1599,10 +1598,10 @@ chains.</p>
 <span><span class="co">#&gt; # A tibble: 4 × 10</span></span>
 <span><span class="co">#&gt;   variable     mean   median     sd    mad       q5      q95  rhat ess_bulk</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 lp__     -747.    -747.    0.992  0.698  -749.    -746.     1.00   13207.</span></span>
-<span><span class="co">#&gt; 2 beta_trt   -1.51    -1.51  0.0761 0.0761   -1.64    -1.39   1.00   11791.</span></span>
-<span><span class="co">#&gt; 3 alpha       0.534    0.534 0.0464 0.0459    0.456    0.609  1.00   11410.</span></span>
-<span><span class="co">#&gt; 4 HR_trt      0.221    0.221 0.0169 0.0168    0.194    0.250  1.00   11791.</span></span>
+<span><span class="co">#&gt; 1 lp__     -747.    -747.    1.00   0.709  -749.    -746.     1.00   13222.</span></span>
+<span><span class="co">#&gt; 2 beta_trt   -1.51    -1.51  0.0763 0.0755   -1.64    -1.39   1.00   11880.</span></span>
+<span><span class="co">#&gt; 3 alpha       0.535    0.535 0.0465 0.0465    0.458    0.610  1.00   11478.</span></span>
+<span><span class="co">#&gt; 4 HR_trt      0.221    0.220 0.0169 0.0166    0.194    0.249  1.00   11880.</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: ess_tail &lt;dbl&gt;</span></span></code></pre></div>
 <p>The histogram of the posterior samples for hazard ratio and
 commensurability parameter as shown below.</p>
@@ -1625,7 +1624,7 @@ credible interval can be calculated as follows.</p>
 <span><span class="co">#&gt;   &lt;chr&gt;                       &lt;dbl&gt;    &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 lp__                     -750.    -746.   </span></span>
 <span><span class="co">#&gt; 2 treatment log HR           -1.66    -1.36 </span></span>
-<span><span class="co">#&gt; 3 baseline log hazard rate    0.441    0.624</span></span>
+<span><span class="co">#&gt; 3 baseline log hazard rate    0.442    0.623</span></span>
 <span><span class="co">#&gt; 4 treatment HR                0.190    0.256</span></span></code></pre></div>
 <p>We can see other plots that help us understand and diagnose problems
 with the MCMC sampler, such as trace plot.</p>
@@ -1749,7 +1748,78 @@ frequentist analysis approaches together.</p>
 <p>The hazard ratio estimates and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>95</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">95\%</annotation></semantics></math>
 credible intervals for all the methods are shown below.</p>
-<pre><code><span><span class="co">#&gt; Error in add_footnote(x, c("CI: Credible Interval for Bayesian methods and Confidence interval for Frequentist method"), : could not find function "add_footnote"</span></span></code></pre>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="67%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Method</th>
+<th align="right">Hazard Ratio</th>
+<th align="right">Lower 95% CI</th>
+<th align="right">Upper 95% CI</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Exponential distribution (constant hazard) and gamma
+prior</td>
+<td align="right">0.7035</td>
+<td align="right">0.5652</td>
+<td align="right">0.8648</td>
+</tr>
+<tr class="even">
+<td align="left">Piecewise exponential distribution (proportional
+hazard) and power prior</td>
+<td align="right">0.6594</td>
+<td align="right">0.5342</td>
+<td align="right">0.8055</td>
+</tr>
+<tr class="odd">
+<td align="left">Weibull distribution (proportional hazard) and gamma
+prior</td>
+<td align="right">0.7453</td>
+<td align="right">0.5987</td>
+<td align="right">0.9216</td>
+</tr>
+<tr class="even">
+<td align="left">Piecewise exponential distribution (proportional
+hazard) and commensurate prior</td>
+<td align="right">0.7039</td>
+<td align="right">0.5634</td>
+<td align="right">0.8713</td>
+</tr>
+<tr class="odd">
+<td align="left">Exponential distribution (constant hazard): No
+borrowing</td>
+<td align="right">0.7043</td>
+<td align="right">0.5651</td>
+<td align="right">0.8718</td>
+</tr>
+<tr class="even">
+<td align="left">Exponential distribution (constant hazard): Full
+borrowing</td>
+<td align="right">0.2210</td>
+<td align="right">0.1898</td>
+<td align="right">0.2558</td>
+</tr>
+<tr class="odd">
+<td align="left">Cox model (Frequentist approach): No borrowing</td>
+<td align="right">0.7757</td>
+<td align="right">0.6246</td>
+<td align="right">0.9633</td>
+</tr>
+<tr class="even">
+<td align="left">Cox model (Frequentist approach): Full borrowing</td>
+<td align="right">0.3327</td>
+<td align="right">0.2845</td>
+<td align="right">0.3890</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> CI: Credible Interval for Bayesian methods and
+Confidence interval for Frequentist method</p>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

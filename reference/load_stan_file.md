@@ -13,7 +13,7 @@ load_stan_file(...)
 
 - ...:
 
-  subidrectories
+  subdirectories
 
 ## Value
 

@@ -121,7 +121,7 @@ if (check_cmdstan()) {
 #> Ready to go! Now call `mcmc_sample()`.
 #> Running MCMC with 1 chain...
 #> 
-#> Chain 1 finished in 3.4 seconds.
+#> Chain 1 finished in 2.7 seconds.
 
 ## Simulation objects
 base_mat <- matrix(
@@ -182,28 +182,28 @@ if (check_cmdstan()) {
 }
 #> Running MCMC with 1 chain...
 #> 
-#> Chain 1 finished in 0.5 seconds.
-#> Running MCMC with 1 chain...
-#> 
-#> Chain 1 finished in 0.5 seconds.
-#> Running MCMC with 1 chain...
-#> 
 #> Chain 1 finished in 0.4 seconds.
 #> Running MCMC with 1 chain...
 #> 
 #> Chain 1 finished in 0.4 seconds.
 #> Running MCMC with 1 chain...
 #> 
-#> Chain 1 finished in 3.9 seconds.
+#> Chain 1 finished in 0.3 seconds.
 #> Running MCMC with 1 chain...
 #> 
-#> Chain 1 finished in 2.6 seconds.
+#> Chain 1 finished in 0.3 seconds.
 #> Running MCMC with 1 chain...
 #> 
-#> Chain 1 finished in 3.3 seconds.
+#> Chain 1 finished in 3.0 seconds.
 #> Running MCMC with 1 chain...
 #> 
-#> Chain 1 finished in 2.9 seconds.
+#> Chain 1 finished in 2.0 seconds.
+#> Running MCMC with 1 chain...
+#> 
+#> Chain 1 finished in 2.5 seconds.
+#> Running MCMC with 1 chain...
+#> 
+#> Chain 1 finished in 2.3 seconds.
 #> `MCMCSimulationResult` object.  Call `get_results()` to save outputs as a data.frame
 if (FALSE) { # \dontrun{
 library(future)

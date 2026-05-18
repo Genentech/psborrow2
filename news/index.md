@@ -1,5 +1,12 @@
 # Changelog
 
+## psborrow2 0.0.5
+
+- Fixed a bug where operating characteristics in no-borrowing scenarios
+  incorrectly varied by external drift
+- Fixed a bug with the fixed power prior
+- Additional test cases
+
 ## psborrow2 0.0.4
 
 - Additional bug fixes impacting continuous endpoints

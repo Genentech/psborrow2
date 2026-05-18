@@ -505,19 +505,19 @@ head(simulation_res_df)
 # 5     0.6       No drift HR  1                  100          default
 # 6     1.0       No drift HR  2                  100          default
 #   borrowing_scenario covariate_scenario treatment_scenario    trt_var
-# 1       No borrowing      No adjustment            default 0.06359053
-# 2       No borrowing      No adjustment            default 0.06276921
-# 3       No borrowing      No adjustment            default 0.06305379
-# 4       No borrowing      No adjustment            default 0.06286691
-# 5     Full borrowing      No adjustment            default 0.02635029
-# 6     Full borrowing      No adjustment            default 0.02537450
+# 1       No borrowing      No adjustment            default 0.06325259
+# 2       No borrowing      No adjustment            default 0.06248074
+# 3       No borrowing      No adjustment            default 0.06315199
+# 4       No borrowing      No adjustment            default 0.06261805
+# 5     Full borrowing      No adjustment            default 0.02637975
+# 6     Full borrowing      No adjustment            default 0.02520886
 #     mse_mean  bias_mean null_coverage true_coverage
-# 1 0.05917938 0.06011393          0.59          0.96
-# 2 0.13170714 0.03556530          0.95          0.95
-# 3 0.04730839 0.01311444          0.41          0.96
-# 4 0.12775243 0.02715064          0.96          0.96
-# 5 0.02024202 0.02088567          0.10          0.96
-# 6 0.05035481 0.01011514          0.96          0.96
+# 1 0.05786728 0.05914705          0.56          0.97
+# 2 0.12951999 0.03316452          0.96          0.96
+# 3 0.04697662 0.01242635          0.44          0.96
+# 4 0.12886423 0.02776839          0.96          0.96
+# 5 0.02018223 0.02087946          0.10          0.96
+# 6 0.05019592 0.01050302          0.96          0.96
 ```
 
 Let’s quickly visualize the results using `ggplot2`. We will first load
@@ -621,10 +621,10 @@ simulation results.
 ``` r
 
 var_mat <- do.call(rbind, simulation_res@results$trt_var)
-N_internalcontrol <- 250*0.3
+N_internalcontrol <- 250 * 0.3
 
-simulation_res_df$EHSS <- rowMeans(var_mat[rep(1:4, 4), ]/var_mat-1)*N_internalcontrol
-simulation_res_df2 <- simulation_res_df[simulation_res_df$borrowing_scenario!="No borrowing", ]
+simulation_res_df$EHSS <- rowMeans(var_mat[rep(1:4, 4), ] / var_mat - 1) * N_internalcontrol
+simulation_res_df2 <- simulation_res_df[simulation_res_df$borrowing_scenario != "No borrowing", ]
 
 ggplot(simulation_res_df2) +
   geom_bar(aes(x = factor(drift_hr), fill = borrowing_scenario, y = EHSS),
@@ -635,9 +635,9 @@ ggplot(simulation_res_df2) +
     x = "Drift HR",
     y = "EHSS"
   ) +
-  facet_grid(~true_hr)+
+  facet_grid(~true_hr) +
   scale_fill_manual(values = c("#F7A9A8", "#7D82B8", "#613F75")) +
-  scale_y_continuous(breaks = c(0,30,60,N_internalcontrol, 90,120)) +
+  scale_y_continuous(breaks = c(0, 30, 60, N_internalcontrol, 90, 120)) +
   geom_hline(aes(yintercept = N_internalcontrol), linetype = 2)
 ```
 
@@ -665,25 +665,39 @@ hazard ratio is 0.2 and the probability of no drift hazard ratio is 0.8.
 
 ``` r
 
-df_accuracy <- data.frame(simulation_res_df2[simulation_res_df2$true_hr == 1.0, 
-                                            c("drift_hr", "borrowing_scenario")], 
-                          typeI = 1 - simulation_res_df2[simulation_res_df2$true_hr == 1.0,
-                                                        c("true_coverage")],
-                          Power = 1 - simulation_res_df2[simulation_res_df2$true_hr == 0.6, 
-                                                        "null_coverage"])
+df_accuracy <- data.frame(
+  simulation_res_df2[
+    simulation_res_df2$true_hr == 1.0,
+    c("drift_hr", "borrowing_scenario")
+  ],
+  typeI = 1 - simulation_res_df2[
+    simulation_res_df2$true_hr == 1.0,
+    c("true_coverage")
+  ],
+  Power = 1 - simulation_res_df2[
+    simulation_res_df2$true_hr == 0.6,
+    "null_coverage"
+  ]
+)
 df_accuracy$weights <- rep(c(0.8, 0.2), 3)
 
-df_sum <- data.frame(aggregate(df_accuracy$typeI*df_accuracy$weights,
-                               list(df_accuracy$borrowing_scenario), sum), 
-                     aggregate(df_accuracy$Power*df_accuracy$weights,
-                               list(df_accuracy$borrowing_scenario), sum))
-df_sum <- df_sum[, c(1,2,4)]
+df_sum <- data.frame(
+  aggregate(
+    df_accuracy$typeI * df_accuracy$weights,
+    list(df_accuracy$borrowing_scenario), sum
+  ),
+  aggregate(
+    df_accuracy$Power * df_accuracy$weights,
+    list(df_accuracy$borrowing_scenario), sum
+  )
+)
+df_sum <- df_sum[, c(1, 2, 4)]
 colnames(df_sum) <- c("borrowing_scenario", "typeI", "Power")
 
 ggplot(df_sum) +
   geom_point(aes(x = typeI, color = borrowing_scenario, y = Power), size = 4) +
-  xlim(c(0,1))+
-  ylim(c(0,1))+
+  xlim(c(0, 1)) +
+  ylim(c(0, 1)) +
   labs(
     color = "Borrowing scenario",
     x = "Type I Error Rate",

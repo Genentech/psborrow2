@@ -25,13 +25,13 @@ Source:
 [`DESCRIPTION`](https://github.com/Genentech/psborrow2/blob/main/DESCRIPTION)
 
 Secrest M, Gravestock I (2026). *psborrow2: Bayesian Dynamic Borrowing
-Analysis and Simulation*. R package version 0.0.4.0,
+Analysis and Simulation*. R package version 0.0.5.1,
 <https://github.com/Genentech/psborrow2>.
 
     @Manual{,
       title = {psborrow2: Bayesian Dynamic Borrowing Analysis and Simulation},
       author = {Matt Secrest and Isaac Gravestock},
       year = {2026},
-      note = {R package version 0.0.4.0},
+      note = {R package version 0.0.5.1},
       url = {https://github.com/Genentech/psborrow2},
     }

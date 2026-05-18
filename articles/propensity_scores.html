@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>5. Incorporating propensity scores analysis in psborrow2 • psborrow2</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="5. Incorporating propensity scores analysis in psborrow2">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-125641273-1"></script><script>
@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">psborrow2</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,28 +106,28 @@ average treatment effect among the treated (ATT).</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; - Weight ranges:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;            Min                                  Max</span></span>
-<span><span class="co">#&gt; treated 1.0000      ||                       1.0000</span></span>
-<span><span class="co">#&gt; control 0.0742 |---------------------------| 5.7137</span></span>
+<span><span class="co">#&gt;           Min                                 Max</span></span>
+<span><span class="co">#&gt; treated 1.         ||                       1.   </span></span>
+<span><span class="co">#&gt; control 0.083 |---------------------------| 5.897</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; - Units with the 5 most extreme weights by group:</span></span>
-<span><span class="co">#&gt;                                            </span></span>
-<span><span class="co">#&gt;               5      4      3      2      1</span></span>
-<span><span class="co">#&gt;  treated      1      1      1      1      1</span></span>
-<span><span class="co">#&gt;             195    158    465    438    371</span></span>
-<span><span class="co">#&gt;  control 2.7859 2.7859 5.7137 5.7137 5.7137</span></span>
+<span><span class="co">#&gt;                                       </span></span>
+<span><span class="co">#&gt;              5     4     3     2     1</span></span>
+<span><span class="co">#&gt;  treated     1     1     1     1     1</span></span>
+<span><span class="co">#&gt;            195   158   465   438   371</span></span>
+<span><span class="co">#&gt;  control 2.792 2.792 5.897 5.897 5.897</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; - Weight statistics:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;         Coef of Var   MAD Entropy # Zeros</span></span>
-<span><span class="co">#&gt; treated       0.000 0.000   0.000       0</span></span>
-<span><span class="co">#&gt; control       1.564 0.831   0.603       0</span></span>
+<span><span class="co">#&gt;         Coef of Var  MAD Entropy # Zeros</span></span>
+<span><span class="co">#&gt; treated       0.    0.       0.        0</span></span>
+<span><span class="co">#&gt; control       1.582 0.82     0.6       0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; - Effective Sample Sizes:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;            Control Treated</span></span>
 <span><span class="co">#&gt; Unweighted  350.       150</span></span>
-<span><span class="co">#&gt; Weighted    101.76     150</span></span></code></pre></div>
+<span><span class="co">#&gt; Weighted    100.09     150</span></span></code></pre></div>
 <p>Another useful package is <a href="https://cran.r-project.org/package=cobalt" class="external-link">cobalt</a>, which
 provides tools for assessing balance between groups after weighting or
 matching. It is compatible with many matching and weighting packages.
@@ -413,65 +413,65 @@ and specify summary statistics.</p>
 <tr class="odd">
 <td align="left">No borrowing</td>
 <td align="left">HR_trt</td>
-<td align="right">0.898</td>
+<td align="right">0.896</td>
 <td align="right">0.878</td>
-<td align="right">0.180</td>
+<td align="right">0.178</td>
 <td align="right">0.638</td>
-<td align="right">1.223</td>
+<td align="right">1.216</td>
 </tr>
 <tr class="even">
 <td align="left">Full borrowing</td>
 <td align="left">HR_trt</td>
 <td align="right">0.388</td>
-<td align="right">0.386</td>
+<td align="right">0.385</td>
 <td align="right">0.049</td>
-<td align="right">0.310</td>
-<td align="right">0.471</td>
+<td align="right">0.311</td>
+<td align="right">0.473</td>
 </tr>
 <tr class="odd">
 <td align="left">Power Prior 01</td>
 <td align="left">HR_trt</td>
-<td align="right">0.634</td>
-<td align="right">0.625</td>
-<td align="right">0.106</td>
-<td align="right">0.478</td>
-<td align="right">0.824</td>
+<td align="right">0.635</td>
+<td align="right">0.626</td>
+<td align="right">0.105</td>
+<td align="right">0.479</td>
+<td align="right">0.821</td>
 </tr>
 <tr class="even">
 <td align="left">ATT Weights</td>
 <td align="left">HR_trt</td>
-<td align="right">0.891</td>
-<td align="right">0.882</td>
-<td align="right">0.126</td>
+<td align="right">0.892</td>
+<td align="right">0.884</td>
+<td align="right">0.128</td>
 <td align="right">0.697</td>
-<td align="right">1.110</td>
+<td align="right">1.114</td>
 </tr>
 <tr class="odd">
 <td align="left">IPTW + BDB</td>
 <td align="left">HR_trt</td>
-<td align="right">0.893</td>
-<td align="right">0.877</td>
-<td align="right">0.165</td>
+<td align="right">0.894</td>
+<td align="right">0.879</td>
+<td align="right">0.164</td>
 <td align="right">0.653</td>
-<td align="right">1.185</td>
+<td align="right">1.183</td>
 </tr>
 <tr class="even">
 <td align="left">Matching 1:1</td>
 <td align="left">HR_trt</td>
-<td align="right">0.819</td>
+<td align="right">0.818</td>
 <td align="right">0.808</td>
-<td align="right">0.133</td>
-<td align="right">0.620</td>
-<td align="right">1.054</td>
+<td align="right">0.134</td>
+<td align="right">0.619</td>
+<td align="right">1.056</td>
 </tr>
 <tr class="odd">
 <td align="left">BDB</td>
 <td align="left">HR_trt</td>
 <td align="right">0.875</td>
 <td align="right">0.857</td>
-<td align="right">0.178</td>
-<td align="right">0.619</td>
-<td align="right">1.194</td>
+<td align="right">0.176</td>
+<td align="right">0.622</td>
+<td align="right">1.187</td>
 </tr>
 </tbody>
 </table>

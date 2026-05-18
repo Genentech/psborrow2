@@ -199,8 +199,8 @@ generate(with_age_score)
 #>  [ reached 'max' / getOption("max.print") -- omitted 4 rows ]
 #> External Control
 #>  patid ext trt      age    score score_high score_rounded
-#>    151   1   0 58.40067 4.247311          0             4
-#>    152   1   0 57.90136 3.947487          0             4
+#>    151   1   0 58.37822 4.154307          0             4
+#>    152   1   0 57.86995 3.819286          0             4
 #>  [ reached 'max' / getOption("max.print") -- omitted 4 rows ]
 ```
 
